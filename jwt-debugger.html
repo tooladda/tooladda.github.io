@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+  <meta name="description" content="Free online JWT debugger. Decode JSON Web Tokens instantly, inspect header, payload &amp; claims, check expiry, run a security analysis, and verify HS256/RS256/ES256/PS256 signatures — 100% client-side, nothing ever uploaded." />
+  <meta name="theme-color" content="#7b3fe4" />
+  <title>JWT Debugger – Decode, Validate &amp; Verify JSON Web Tokens | ToolAdda</title>
+  <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="author" content="ToolAdda" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <link rel="canonical" href="https://tooladda.online/jwt-debugger.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta property="og:title" content="JWT Debugger – Decode, Validate &amp; Verify JSON Web Tokens | ToolAdda" />
+  <meta property="og:description" content="Decode JWTs, inspect header/payload/claims, run a security analysis, and verify HS/RS/PS/ES signatures. Free, private, 100% browser-based." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tooladda.online/jwt-debugger.html" />
+  <meta property="og:site_name" content="ToolAdda" />
+  <meta property="og:image" content="https://tooladda.online/assets/images/og/jwt-debugger.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="JWT Debugger – Decode, Validate &amp;amp; Verify JSON Web Tokens — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="JWT Debugger – Decode, Validate &amp;amp; Verify JSON Web Tokens — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="JWT Debugger – Decode, Validate &amp; Verify JSON Web Tokens | ToolAdda" />
+  <meta name="twitter:description" content="Decode and verify JSON Web Tokens in your browser. Inspect claims, run a security analysis, and validate HS/RS/PS/ES signatures." />
+  <meta name="twitter:image" content="https://tooladda.online/assets/images/og/jwt-debugger.jpg" />
+
+  <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://tooladda.online/#website",
+      "name": "ToolAdda",
+      "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+      "url": "https://tooladda.online/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://tooladda.online/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+      "url": "https://tooladda.online/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tooladda.online/assets/images/logo.svg"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/jwt-debugger.html#webpage",
+      "url": "https://tooladda.online/jwt-debugger.html",
+      "name": "JWT Debugger – Decode, Validate & Verify JSON Web Tokens | ToolAdda",
+      "description": "Decode JSON Web Tokens, inspect header/payload/claims, run a security analysis, and verify HS256/RS256/ES256/PS256 signatures — 100% client-side.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://tooladda.online/jwt-debugger.html#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://tooladda.online/jwt-debugger.html#softwareapplication"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://tooladda.online/jwt-debugger.html#softwareapplication",
+      "name": "JWT Debugger",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any (Web Browser)",
+      "url": "https://tooladda.online/jwt-debugger.html",
+      "description": "Free online JWT debugger. Decode JSON Web Tokens, inspect header and payload, read claims and expiry, run a security analysis, and verify HS256/RS256/ES256/PS256 signatures — entirely in the browser.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Instant JWT decoding of header and payload",
+        "Color-coded token with three segments",
+        "Registered and custom claim analysis with expiry countdown",
+        "Automated security analysis with a heuristic score",
+        "Signature verification for HS256/384/512, RS256/384/512, PS256/384/512, ES256/384",
+        "Copy and download decoded JSON",
+        "Drag & drop or upload a token file",
+        "100% client-side — token and secret never leave your device"
+      ],
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tooladda.online/jwt-debugger.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "JWT Debugger"
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to decode and verify a JWT",
+      "totalTime": "PT20S",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Paste your token",
+          "text": "Paste, type, drag & drop a file, or load the sample JWT into the token box."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Review the decode",
+          "text": "The header, payload, claims, token insights and security analysis all update instantly."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Verify the signature",
+          "text": "Enter the shared secret for HS256/384/512, or paste a PEM public key for RS/PS/ES tokens, to confirm the signature is valid."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Export if needed",
+          "text": "Copy or download the decoded header and payload as JSON for use elsewhere."
+        }
+      ]
+    },
+    {
+      "@type": "TechArticle",
+      "@id": "https://tooladda.online/jwt-debugger.html#techarticle",
+      "headline": "The Complete Guide to JSON Web Tokens (JWT)",
+      "url": "https://tooladda.online/jwt-debugger.html",
+      "author": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "about": "JSON Web Tokens, JWT structure, JWT security, signature verification, authentication"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a JWT?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A JSON Web Token (JWT) is a compact, URL-safe token made of three base64url parts separated by dots: header, payload, and signature. It is widely used for authentication and passing claims between services."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does JWT decoding work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A JWT's header and payload are split on the dots and base64url-decoded into readable JSON. No key or secret is needed to decode a token — only to verify its signature."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is decoding the same as verification?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Decoding just reads the base64url-encoded header and payload, which anyone can do. Verification cryptographically checks the signature against a secret or public key to confirm the token has not been tampered with."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my token uploaded anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Decoding and signature verification both run entirely in your browser using the Web Crypto API. Your token, secret, and keys are never sent to any server."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I verify a JWT?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Enter the shared secret for HMAC algorithms (HS256/384/512), or paste a PEM public key for RSA and ECDSA algorithms (RS, PS, ES). The tool recomputes the signature and shows whether it matches."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is HS256?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "HS256 is HMAC using SHA-256 — a symmetric algorithm where the same secret both signs and verifies the token. Both the issuer and verifier must keep that secret private."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is RS256?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "RS256 is RSA signature with SHA-256 — an asymmetric algorithm where a private key signs the token and a separate public key verifies it, so the verifier never needs the private key."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is my token expired?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The token's exp (expiration) claim is a Unix timestamp in the past. Once exp has passed, a correctly implemented server should reject the token even if the signature is valid."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does exp mean?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "exp is the expiration time claim — a Unix timestamp (seconds since 1970) after which the token must no longer be accepted."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does nbf mean?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "nbf (not before) is a Unix timestamp before which the token must not be accepted, useful for issuing tokens that only become valid at a future time."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I verify RSA signatures?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. RS256/384/512 and PS256/384/512 (RSA-PSS) are both supported — paste the PEM-encoded public key to verify."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use PEM keys?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, paste a standard PEM-formatted public key (starting with -----BEGIN PUBLIC KEY-----) for RSA or ECDSA algorithms."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this tool free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, completely free with no sign-up, no watermark and no usage limits."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work offline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Once the page has loaded, decoding and verification both work without an internet connection since everything runs locally."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I decode malformed JWTs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The tool will attempt to decode each segment independently and clearly reports which part (header or payload) failed to parse, rather than failing silently."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens if verification fails?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You'll see a clear invalid-signature status. Common causes are a wrong secret/key, a token that was edited after signing, or mismatching the algorithm the token actually uses."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I export the payload JSON?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, both the header and payload can be copied to your clipboard or downloaded as .json files individually."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it browser-based?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, 100%. There is no backend — parsing, decoding and cryptographic verification all happen with JavaScript running locally on your device."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can beginners use this tool?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Load the sample token to see a working example, and every claim, warning and status is explained in plain language."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it support ES256?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, ES256 and ES384 (ECDSA) are supported for verification using a PEM public key."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are registered claims?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Registered claims are the standard, predefined JWT payload fields — iss, sub, aud, exp, nbf, iat and jti — recognized and given special handling by this tool and by JWT libraries generally."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How secure is JWT?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A JWT is only as secure as its signature and how the verifier checks it. The header and payload are merely encoded, not encrypted, so nothing secret should ever be stored in one, and the alg field must never be trusted blindly by a verifier."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is Base64URL?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Base64URL is a variant of Base64 encoding that replaces + and / with - and _ and omits padding, making the output safe to use directly inside URLs and HTTP headers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are my secrets stored anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Secrets and keys you enter for verification stay in your browser's memory for the current session only and are never saved, logged, or transmitted."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What browsers are supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Any modern browser with Web Crypto API support — recent Chrome, Edge, Firefox and Safari all work, on both desktop and mobile."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I generate a new JWT instead of decoding one?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — use ToolAdda's companion JWT Encoder tool to build and sign a new token, then paste it back here to double-check it decodes as expected."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+
+  <style>
+    main > .section { padding-top: 1.1rem; }
+    .breadcrumb { margin-bottom: .75rem; }
+    .jwtx-shell { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+    .jwtx-shell > *, .jwtx-compare-block { min-width: 0; }
+    /* Auto side margins make a grid item fit-content, so the wide comparison table used to stretch the page on phones. */
+    .jwtx-shell > .jwtx-section { width: 100%; }
+
+    /* Hero */
+    .jwtx-hero { display: grid; gap: .7rem; }
+    .jwtx-eyebrow { display: inline-flex; align-items: center; gap: .4rem; justify-self: start; font-weight: 800; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; padding: .35rem .7rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent-strong); }
+    .jwtx-title { margin: 0; font-weight: 900; line-height: 1.06; letter-spacing: -.03em; font-size: clamp(2rem, 5.4vw, 3rem); color: var(--text); }
+    .jwtx-title em { font-style: normal; background: linear-gradient(135deg, #ef4444, #8b5cf6 55%, #0ea5e9); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+    .jwtx-lead { margin: 0; max-width: 68ch; color: var(--text-muted); font-size: clamp(1rem, 2.2vw, 1.12rem); line-height: 1.7; }
+    .jwtx-badges { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .2rem; }
+    .jwtx-badges span { display: inline-flex; align-items: center; gap: .35rem; font-size: .78rem; font-weight: 700; padding: .4rem .75rem; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); }
+
+    /* Tool card */
+    .jwtx-tool { position: relative; overflow: hidden; padding: clamp(1rem, 3vw, 1.5rem); border-radius: 26px; border: 1px solid var(--border); background: linear-gradient(160deg, rgba(255,255,255,.9), rgba(238,242,255,.6)); box-shadow: 0 24px 70px -18px rgba(15,23,42,.28); }
+    [data-theme="dark"] .jwtx-tool { border-color: rgba(148,163,184,.22); background: linear-gradient(160deg, rgba(15,23,42,.92), rgba(2,6,23,.8)); }
+
+    .jwtx-toolbar { display: flex; flex-wrap: wrap; gap: .55rem; align-items: center; margin-bottom: 1rem; }
+    .jwtx-btn { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; padding: .6rem .95rem; border-radius: 10px; font-weight: 800; font-size: .84rem; cursor: pointer; border: none; text-decoration: none; min-height: 2.5rem; transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease; }
+    .jwtx-btn--primary { color: #fff; background: linear-gradient(135deg,#4f46e5,#8b5cf6); box-shadow: 0 10px 24px -6px rgba(79,70,229,.45); }
+    .jwtx-btn--primary:hover { transform: translateY(-2px); }
+    .jwtx-btn--ghost { color: var(--text); background: var(--surface); border: 1px solid var(--border); }
+    .jwtx-btn--ghost:hover { background: var(--surface-strong); border-color: var(--accent); }
+    .jwtx-btn--icon { padding: .5rem; width: 2.4rem; height: 2.4rem; flex: 0 0 auto; }
+    .jwtx-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .jwtx-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .jwtx-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+    @media (min-width: 900px) { .jwtx-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+
+    .jwtx-dropzone { border-radius: 16px; border: 1.5px dashed rgba(79,70,229,.35); background: var(--surface); padding: .5rem; transition: border-color .15s, background .15s; }
+    .jwtx-dropzone.is-dragover { border-color: var(--accent); background: var(--accent-soft); }
+    .jwtx-input { width: 100%; min-height: 200px; resize: vertical; border: none; border-radius: 12px; padding: .85rem .95rem; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88rem; line-height: 1.6; background: var(--surface-strong); color: var(--text); outline: none; word-break: break-all; }
+    .jwtx-input:focus { box-shadow: 0 0 0 3px var(--accent-soft); border-radius: 12px; }
+    .jwtx-stats-line { display: flex; flex-wrap: wrap; gap: .5rem 1rem; font-size: .76rem; color: var(--text-muted); font-weight: 700; margin: .5rem 0 0; }
+    .jwtx-colored { margin-top: .6rem; border: 1px solid var(--border); border-radius: 12px; padding: .75rem .9rem; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .84rem; line-height: 1.7; word-break: break-all; background: var(--surface-strong); min-height: 2.4rem; max-height: 140px; overflow-y: auto; }
+    .jwtx-colored .c-h { color: #ef4444; font-weight: 700; }
+    .jwtx-colored .c-p { color: #8b5cf6; font-weight: 700; }
+    .jwtx-colored .c-s { color: #0ea5e9; font-weight: 700; }
+    .jwtx-colored .c-dot { color: var(--text-muted); }
+    .jwtx-colored .c-empty { color: var(--text-muted); font-family: inherit; }
+
+    .jwtx-part { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: .85rem; }
+    .jwtx-part-head { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .55rem .8rem; font-weight: 800; font-size: .82rem; }
+    .jwtx-part-head.h { background: rgba(239,68,68,.12); color: #ef4444; }
+    .jwtx-part-head.p { background: rgba(139,92,246,.12); color: #8b5cf6; }
+    .jwtx-part-head-actions { display: flex; gap: .3rem; }
+    .jwtx-mini-btn { background: none; border: 1px solid currentColor; color: inherit; border-radius: 7px; padding: .18rem .55rem; font-size: .7rem; font-weight: 700; cursor: pointer; opacity: .85; }
+    .jwtx-mini-btn:hover { opacity: 1; }
+    .jwtx-pre { margin: 0; padding: .85rem .9rem; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .84rem; line-height: 1.6; white-space: pre-wrap; word-break: break-word; background: var(--surface-strong); color: var(--text); max-height: 260px; overflow: auto; }
+    .jwtx-pre .k { color: #0ea5e9; } .jwtx-pre .s { color: #10b981; } .jwtx-pre .n { color: #f59e0b; } .jwtx-pre .b { color: #ef4444; }
+
+    /* Token insights */
+    .jwtx-insights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem; margin-top: 1rem; }
+    .jwtx-insights div { padding: .7rem .5rem; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); text-align: center; }
+    .jwtx-insights b { display: block; font-size: 1.05rem; color: var(--text); word-break: break-word; }
+    .jwtx-insights span { font-size: .66rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: .03em; }
+    .jwtx-insights b.is-good { color: #16a34a; } .jwtx-insights b.is-warn { color: #d97706; } .jwtx-insights b.is-bad { color: #dc2626; }
+
+    /* Security analysis */
+    .jwtx-security { margin-top: 1rem; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); padding: 1rem 1.1rem; }
+    .jwtx-security-head { display: flex; align-items: center; justify-content: space-between; gap: .6rem; flex-wrap: wrap; margin-bottom: .6rem; }
+    .jwtx-score-ring { position: relative; width: 3.4rem; height: 3.4rem; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(var(--score-color,#16a34a) calc(var(--score,100)*1%), var(--border) 0); flex-shrink: 0; }
+    .jwtx-score-ring::before { content: ""; position: absolute; inset: 4px; border-radius: 50%; background: var(--surface); }
+    .jwtx-score-ring b { position: relative; font-size: .92rem; font-weight: 900; color: var(--text); }
+    .jwtx-security-title { font-weight: 800; font-size: .92rem; }
+    .jwtx-security-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .45rem; }
+    .jwtx-security-list li { display: flex; gap: .5rem; align-items: flex-start; font-size: .84rem; line-height: 1.5; padding: .5rem .65rem; border-radius: 10px; background: var(--surface-strong); }
+    .jwtx-security-list li.is-critical { border-left: 3px solid #dc2626; color: #991b1b; }
+    [data-theme="dark"] .jwtx-security-list li.is-critical { color: #fca5a5; }
+    .jwtx-security-list li.is-warn { border-left: 3px solid #d97706; color: #92400e; }
+    [data-theme="dark"] .jwtx-security-list li.is-warn { color: #fbbf24; }
+    .jwtx-security-list li.is-info { border-left: 3px solid #0ea5e9; color: var(--text); }
+    .jwtx-security-list li.is-ok { border-left: 3px solid #16a34a; color: #166534; }
+    [data-theme="dark"] .jwtx-security-list li.is-ok { color: #86efac; }
+
+    /* Claims table */
+    .jwtx-claims-table { width: 100%; border-collapse: collapse; font-size: .84rem; margin-top: .4rem; }
+    .jwtx-claims-table th, .jwtx-claims-table td { text-align: left; padding: .5rem .6rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .jwtx-claims-table th { color: var(--text-muted); font-weight: 700; font-size: .74rem; text-transform: uppercase; letter-spacing: .03em; }
+    .jwtx-claims-table code { color: var(--accent-strong); font-weight: 700; }
+    .jwtx-badge { display: inline-block; font-size: .68rem; font-weight: 800; padding: .12rem .5rem; border-radius: 999px; white-space: nowrap; }
+    .jwtx-badge.ok { color: #059669; background: rgba(16,185,129,.14); }
+    .jwtx-badge.warn { color: #b45309; background: rgba(245,158,11,.16); }
+    .jwtx-badge.bad { color: #dc2626; background: rgba(239,68,68,.14); }
+    .jwtx-badge.registered { color: var(--accent-strong); background: var(--accent-soft); }
+    .jwtx-badge.custom { color: var(--text-muted); background: var(--surface-strong); border: 1px solid var(--border); }
+
+    /* Verify box */
+    .jwtx-verify { border: 1px solid var(--border); border-radius: 16px; padding: 1rem 1.1rem; background: var(--surface); margin-top: 1rem; }
+    .jwtx-verify label { font-weight: 700; font-size: .86rem; display: block; margin-bottom: .4rem; }
+    .jwtx-verify textarea { width: 100%; border: 1px solid var(--border); border-radius: 10px; padding: .65rem .8rem; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 1rem; background: var(--surface-strong); color: var(--text); outline: none; resize: vertical; min-height: 2.7rem; }
+    .jwtx-verify textarea[data-multiline] { min-height: 7rem; word-break: break-all; }
+    .jwtx-verify textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+    .jwtx-verify-status { margin-top: .85rem; display: flex; align-items: center; gap: .6rem; font-weight: 700; flex-wrap: wrap; }
+    .jwtx-pill { padding: .45rem .9rem; border-radius: 10px; font-size: .88rem; }
+    .jwtx-pill.ok { color: #059669; background: rgba(16,185,129,.14); }
+    .jwtx-pill.bad { color: #dc2626; background: rgba(239,68,68,.14); }
+    .jwtx-pill.idle { color: var(--text-muted); background: var(--surface-strong); border: 1px solid var(--border); }
+    .jwtx-verify-hint { font-size: .8rem; color: var(--text-muted); margin-top: .6rem; }
+    .jwtx-note { color: var(--text-muted); font-size: .84rem; margin: .8rem 0 0; }
+
+    /* Sections */
+    .jwtx-section { max-width: 1180px; margin: 0 auto; padding: clamp(1.15rem,4vw,2rem); border-radius: 24px; border: 1px solid var(--border); background: rgba(255,255,255,.85); }
+    [data-theme="dark"] .jwtx-section { background: rgba(15,23,42,.72); }
+    .jwtx-section h2 { margin: 0 0 .5rem; font-size: clamp(1.3rem,2.6vw,1.7rem); position: relative; display: inline-block; padding-bottom: .35rem; }
+    .jwtx-section h2::after { content: ""; position: absolute; left: 0; bottom: 0; width: 2.5rem; height: 3px; border-radius: 999px; background: var(--accent); }
+    .jwtx-section > p.jwtx-sub { color: var(--text-muted); margin: 0 0 1rem; max-width: 70ch; line-height: 1.7; }
+
+    .jwtx-grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: .9rem; }
+    .jwtx-tile { padding: 1.1rem; border-radius: 18px; border: 1px solid var(--border); background: var(--surface); transition: transform .18s, box-shadow .18s, border-color .18s; }
+    .jwtx-tile:hover { transform: translateY(-4px); box-shadow: 0 16px 34px -18px rgba(15,23,42,.32); border-color: var(--accent); }
+    .jwtx-tile .ic { font-size: 1.6rem; display: inline-flex; width: 2.6rem; height: 2.6rem; align-items: center; justify-content: center; border-radius: 12px; background: var(--accent-soft); margin-bottom: .5rem; }
+    .jwtx-tile h3 { margin: 0 0 .3rem; font-size: 1rem; }
+    .jwtx-tile p { margin: 0; font-size: .86rem; color: var(--text-muted); line-height: 1.55; }
+
+    .jwtx-steps { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: .9rem; counter-reset: jwtx-step; }
+    .jwtx-step { position: relative; padding: 1.1rem 1rem 1rem; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); }
+    .jwtx-step::before { counter-increment: jwtx-step; content: counter(jwtx-step); display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: 50%; background: linear-gradient(135deg,#4f46e5,#8b5cf6); color: #fff; font-weight: 800; margin-bottom: .5rem; }
+    .jwtx-step h3 { margin: .2rem 0 .3rem; font-size: .96rem; }
+    .jwtx-step p { margin: 0; font-size: .84rem; color: var(--text-muted); line-height: 1.55; }
+
+    .jwtx-compare-wrap { overflow-x: auto; margin-top: .7rem; }
+    .jwtx-compare { width: 100%; border-collapse: collapse; font-size: .86rem; min-width: 460px; }
+    .jwtx-compare th, .jwtx-compare td { padding: .6rem .75rem; border: 1px solid var(--border); text-align: left; }
+    .jwtx-compare th { background: var(--surface-strong); }
+    .jwtx-compare td:nth-child(2) { color: var(--accent-strong); font-weight: 700; }
+    .jwtx-compare-block h3 { font-size: 1rem; margin: 1.3rem 0 0; }
+    .jwtx-compare-block:first-child h3 { margin-top: 0; }
+
+    .jwtx-article { line-height: 1.75; }
+    .jwtx-article h2 { font-size: clamp(1.15rem,3vw,1.45rem); margin: 1.5rem 0 .6rem; }
+    .jwtx-article h2:first-of-type { margin-top: 0; }
+    .jwtx-article h3 { font-size: 1rem; margin: 1rem 0 .4rem; color: var(--text); }
+    .jwtx-article p { color: var(--text-muted); margin: 0 0 .85rem; }
+    .jwtx-article ul, .jwtx-article ol { color: var(--text-muted); margin: 0 0 .85rem; padding-left: 1.3rem; line-height: 1.7; }
+    .jwtx-article li { margin-bottom: .3rem; }
+    .jwtx-article code { background: var(--surface-strong); border: 1px solid var(--border); border-radius: 5px; padding: .05rem .35rem; font-size: .88em; }
+    .jwtx-toc { display: flex; flex-wrap: wrap; gap: .4rem .6rem; padding: .9rem 1rem; border-radius: 14px; background: var(--surface-strong); border: 1px solid var(--border); margin-bottom: 1.2rem; font-size: .84rem; }
+    .jwtx-toc a { color: var(--accent-strong); font-weight: 700; text-decoration: none; }
+    .jwtx-toc a:hover { text-decoration: underline; }
+
+    .jwtx-related-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: .9rem; }
+    .jwtx-related-card { padding: 1rem; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); display: flex; flex-direction: column; gap: .4rem; }
+    .jwtx-related-card h3 { margin: 0; font-size: .98rem; }
+    .jwtx-related-card p { margin: 0; font-size: .84rem; color: var(--text-muted); flex: 1; }
+    .jwtx-related-card a { font-weight: 700; color: var(--accent); font-size: .86rem; text-decoration: none; }
+
+    .jwtx-faq { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: .65rem; margin-top: .85rem; }
+    .jwtx-faq details { padding: .85rem 1rem; border-radius: 14px; border: 1px solid var(--border); background: var(--surface-strong); }
+    .jwtx-faq summary { cursor: pointer; font-weight: 700; list-style: none; }
+    .jwtx-faq summary::-webkit-details-marker { display: none; }
+    .jwtx-faq summary::after { content: "+"; float: right; font-weight: 900; color: var(--accent); }
+    .jwtx-faq details[open] summary::after { content: "\2212"; }
+    .jwtx-faq p { margin: .55rem 0 0; color: var(--text-muted); line-height: 1.6; }
+
+    .jwtx-cta { max-width: 1180px; margin: 0 auto; padding: clamp(1.6rem,4vw,2.6rem); border-radius: 24px; text-align: center; background: linear-gradient(135deg,#4f46e5,#8b5cf6); color: #fff; position: relative; overflow: hidden; box-shadow: 0 20px 50px -22px rgba(79,70,229,.7); }
+    .jwtx-cta::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 18% 20%, rgba(255,255,255,.22), transparent 42%), radial-gradient(circle at 85% 80%, rgba(255,255,255,.14), transparent 40%); pointer-events: none; }
+    .jwtx-cta > * { position: relative; }
+    .jwtx-cta h2 { margin: 0 0 .5rem; color: #fff; }
+    .jwtx-cta p { margin: 0 0 1.2rem; color: rgba(255,255,255,.92); }
+    .jwtx-cta .jwtx-btn--primary { background: #fff; color: #4338ca; }
+
+    .jwtx-sticky { display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; padding: .7rem .9rem calc(.7rem + env(safe-area-inset-bottom)); background: color-mix(in srgb, var(--surface-strong) 92%, transparent); backdrop-filter: blur(12px); border-top: 1px solid var(--border); box-shadow: 0 -8px 28px rgba(15,23,42,.16); }
+    .jwtx-sticky .jwtx-btn { width: 100%; min-height: 2.9rem; }
+    @media (max-width: 760px) { .jwtx-sticky.is-visible { display: block; } body { padding-bottom: 4.6rem; } }
+
+    @media (max-width: 900px) { .jwtx-grid-3, .jwtx-related-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } .jwtx-steps { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+    @media (max-width: 640px) { .jwtx-insights { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 560px) { .jwtx-grid-3, .jwtx-related-grid, .jwtx-steps, .jwtx-faq { grid-template-columns: minmax(0, 1fr); } .jwtx-compare { min-width: 400px; } }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+    /* =====================================================================
+       2026-09 redesign: "the signed ticket". A JWT is three stubs torn from
+       one ticket - header, payload, signature - so the page is built from
+       perforated stubs in the token's own colours (header red, payload
+       violet, signature blue, as the decoder colours them). Violet is also
+       the one action colour; green, amber and red stay with the security
+       verdicts. Scoped to .jw-page.
+       ===================================================================== */
+    .jw-page {
+      --jw-bg: #f3f1f8; --jw-card: #ffffff; --jw-well: #f7f5fb;
+      --jw-ink: #1a1530; --jw-body: #3f3a55; --jw-mute: #666080; --jw-line: #dfdaeb;
+      --jw-violet: #7b3fe4; --jw-violet-hover: #6a2fd0; --jw-violet-soft: rgba(123, 63, 228, .09); --jw-violet-ring: rgba(123, 63, 228, .34); --jw-on-violet: #ffffff;
+      --jw-h: #dc2f45; --jw-p: #7b3fe4; --jw-s: #0a86c2;
+      --jw-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --jw-shadow: 0 1px 0 rgba(26, 21, 48, .04), 0 14px 30px -18px rgba(26, 21, 48, .3);
+      --accent: var(--jw-violet); --accent-soft: rgba(123, 63, 228, .14); --accent-strong: var(--jw-violet-hover);
+      background: var(--jw-bg);
+    }
+    [data-theme="dark"] .jw-page {
+      --jw-bg: #100d1a; --jw-card: #17132a; --jw-well: #130f22;
+      --jw-ink: #ece8fb; --jw-body: #c8c1e3; --jw-mute: #9a92ba; --jw-line: #2c2645;
+      --jw-violet: #b69cff; --jw-violet-hover: #cbb8ff; --jw-violet-soft: rgba(182, 156, 255, .12); --jw-violet-ring: rgba(182, 156, 255, .4); --jw-on-violet: #1a0d3a;
+      --jw-h: #ff7a8a; --jw-p: #b69cff; --jw-s: #5cc6f5;
+      --jw-shadow: 0 1px 0 rgba(0, 0, 0, .25), 0 16px 32px -18px rgba(0, 0, 0, .75);
+      --accent: var(--jw-violet); --accent-soft: rgba(182, 156, 255, .16); --accent-strong: var(--jw-violet-hover);
+    }
+    /* The script hides and shows panels with the hidden attribute, but
+       .jwtx-insights sets display: grid, which beat it: six empty "—" tiles
+       showed before any token was pasted. */
+    .jw-page [hidden] { display: none !important; }
+    .jw-page main > .section { padding-top: 1.1rem; background: var(--jw-bg); }
+    .jw-page .breadcrumb { margin: .2rem 0 .8rem; }
+    .jw-page .breadcrumb a { color: var(--jw-violet); font-weight: 700; }
+    .jw-page .jwtx-shell { gap: 1.2rem; }
+
+    /* ---------- cover ---------- */
+    .jw-cover { display: grid; gap: 1rem 2rem; align-items: center; padding: 1.25rem 1.45rem; border-radius: 12px; background: var(--jw-card); border: 1px solid var(--jw-line); box-shadow: var(--jw-shadow); color: var(--jw-ink); }
+    @media (min-width: 900px) { .jw-cover { grid-template-columns: minmax(0, 1fr) 380px; padding: 1.15rem 1.5rem; } }
+    .jw-page .jw-cover .jwtx-eyebrow { margin-bottom: .55rem; border-radius: 5px; }
+    .jw-title { margin: 0; font-weight: 900; line-height: 1.04; letter-spacing: -.03em; color: var(--jw-ink); font-size: clamp(2rem, 1.25rem + 2.8vw, 3.2rem); }
+    .jw-t1 { display: block; }
+    .jw-t1 em { font-style: normal; color: var(--jw-violet); }
+    /* J, W and T in the three segment colours */
+    .jw-seg .h { color: var(--jw-h); } .jw-seg .p { color: var(--jw-p); } .jw-seg .s { color: var(--jw-s); }
+    .jw-t2 { display: block; margin-top: .25rem; font-size: .48em; font-weight: 800; letter-spacing: -.01em; color: var(--jw-mute); }
+
+    /* the ticket: three perforated stubs */
+    .jw-ticket { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-radius: 10px; overflow: hidden; background: var(--jw-well); border: 1px solid var(--jw-line); font-family: var(--jw-mono); }
+    .jw-stub { position: relative; padding: .7rem .65rem .8rem; border-top: 4px solid; min-width: 0; }
+    .jw-stub + .jw-stub { border-left: 2px dashed var(--jw-line); }
+    .jw-stub.h { border-top-color: var(--jw-h); } .jw-stub.p { border-top-color: var(--jw-p); } .jw-stub.s { border-top-color: var(--jw-s); }
+    .jw-stub small { display: block; margin-bottom: .35rem; font: 800 .6rem/1 system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--jw-mute); }
+    .jw-stub code { display: block; font-size: .72rem; line-height: 1.45; word-break: break-all; background: none; padding: 0; }
+    .jw-stub.h code { color: var(--jw-h); } .jw-stub.p code { color: var(--jw-p); } .jw-stub.s code { color: var(--jw-s); }
+    .jw-stamp { display: inline-block; margin-top: .5rem; padding: .15rem .4rem; border: 2px solid var(--jw-s); border-radius: 4px; transform: rotate(-6deg); font: 900 .62rem/1.2 system-ui, sans-serif; letter-spacing: .1em; color: var(--jw-s); }
+
+    /* ---------- the tool grid ----------
+       [data-jwt] (the script's root) is the grid. Phones: the token box,
+       the ad, the decoded token, then verification. 700-999px: the ad
+       beside everything. From 1000px the token and verification sit on the
+       left, the decoded token on the right, the ad beside both. */
+    .jw-page .jwtx-tool.jw-work, [data-theme="dark"] .jw-page .jwtx-tool.jw-work { padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; overflow: visible; }
+    .jw-work { display: grid; gap: 1rem; align-items: start; grid-template-areas: "in" "ad" "out" "ver"; }
+    .jw-work > * { min-width: 0; }
+    .jw-box--in { grid-area: in; }
+    .jw-box--out { grid-area: out; }
+    .jw-box--ver { grid-area: ver; }
+    .jw-work > .jw-ad-zone { grid-area: ad; }
+    @media (min-width: 700px) {
+      .jw-work { grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "in ad" "out ad" "ver ad"; grid-template-rows: auto auto 1fr; column-gap: 1.1rem; }
+      .jw-work > .jw-ad-zone { position: sticky; top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+    }
+    @media (min-width: 1000px) {
+      .jw-work { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 300px; grid-template-areas: "in out ad" "ver out ad"; grid-template-rows: auto 1fr; }
+    }
+    body.jw-page .jw-ad-zone { text-align: center; }
+    body.jw-page .jw-ad-zone .ta-inline-ad { display: block !important; margin: 0 auto !important; }
+    .jw-page [data-jwt] { scroll-margin-top: calc(var(--header-overlap, 5.5rem) + .75rem); }
+
+    .jw-box { position: relative; padding: 1.05rem 1.1rem; border-radius: 12px; background: var(--jw-card); border: 1px solid var(--jw-line); box-shadow: var(--jw-shadow); color: var(--jw-ink); }
+    .jw-box--in { border-top: 4px solid var(--jw-violet); }
+    .jw-box-h { display: flex; align-items: center; gap: .45rem; margin: 0 0 .55rem; font: 800 .72rem/1.3 system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--jw-mute); }
+    .jw-box-h i { display: inline-flex; gap: 3px; }
+    .jw-box-h i b { width: 9px; height: 9px; border-radius: 2px; }
+    .jw-box-h i b:nth-child(1) { background: var(--jw-h); } .jw-box-h i b:nth-child(2) { background: var(--jw-p); } .jw-box-h i b:nth-child(3) { background: var(--jw-s); }
+    .jw-page .jwtx-toolbar { margin-bottom: .75rem; gap: .4rem; }
+    .jw-page .jwtx-btn { border-radius: 7px; }
+    .jw-page .jwtx-btn--primary { background: var(--jw-violet); color: var(--jw-on-violet); box-shadow: none; }
+    .jw-page .jwtx-btn--primary:hover { background: var(--jw-violet-hover); color: var(--jw-on-violet); transform: none; }
+    .jw-page .jwtx-btn--ghost { background: var(--jw-card); color: var(--jw-ink); border-color: var(--jw-line); }
+    .jw-page .jwtx-btn--ghost:hover { background: var(--jw-well); border-color: var(--jw-violet); color: var(--jw-violet); }
+    .jw-page .jwtx-dropzone { border-radius: 8px; border-color: var(--jw-violet-ring); background: var(--jw-well); }
+    .jw-page .jwtx-input { border-radius: 6px; background: transparent; color: var(--jw-ink); }
+    .jw-page .jwtx-colored { border-radius: 8px; border-color: var(--jw-line); background: var(--jw-well); }
+    .jw-page .jwtx-colored .c-h { color: var(--jw-h); } .jw-page .jwtx-colored .c-p { color: var(--jw-p); } .jw-page .jwtx-colored .c-s { color: var(--jw-s); }
+
+    /* decoded: header and payload as their own stubs */
+    .jw-page .jwtx-part { border-radius: 8px; border-color: var(--jw-line); }
+    .jw-page .jwtx-part-head.h { background: var(--jw-well); color: var(--jw-h); box-shadow: inset 0 3px 0 var(--jw-h); }
+    .jw-page .jwtx-part-head.p { background: var(--jw-well); color: var(--jw-p); box-shadow: inset 0 3px 0 var(--jw-p); }
+    .jw-page .jwtx-pre { background: var(--jw-card); color: var(--jw-ink); }
+    .jw-page .jwtx-insights div, .jw-page .jwtx-security, .jw-page .jwtx-verify { border-radius: 8px; border-color: var(--jw-line); background: var(--jw-well); }
+    .jw-page .jwtx-security-list li { border-radius: 6px; }
+    .jw-page .jwtx-verify { margin-top: 0; background: var(--jw-card); border: 0; padding: 0; }
+    .jw-page .jwtx-verify textarea { border-radius: 6px; border-color: var(--jw-line); background: var(--jw-well); color: var(--jw-ink); }
+    .jw-page .jwtx-pill { border-radius: 6px; }
+    .jw-page .jwtx-claims-table code { color: var(--jw-violet); }
+
+    /* ---------- below the tool ---------- */
+    .jw-after { display: grid; gap: .8rem 1.6rem; align-items: center; padding: 1.1rem 1.3rem; border-radius: 12px; background: var(--jw-card); border: 1px solid var(--jw-line); color: var(--jw-ink); }
+    @media (min-width: 900px) { .jw-after { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); } }
+    .jw-page .jw-after .jwtx-lead { max-width: none; color: var(--jw-body); }
+    .jw-page .jwtx-badges span { border-radius: 6px; background: var(--jw-well); border-color: var(--jw-line); color: var(--jw-ink); }
+    .jw-page .jwtx-section, [data-theme="dark"] .jw-page .jwtx-section { border-radius: 12px; background: var(--jw-card); border-color: var(--jw-line); box-shadow: var(--jw-shadow); }
+    .jw-page .jwtx-section h2::after { background: var(--jw-violet); border-radius: 2px; }
+    .jw-page .jwtx-tile, .jw-page .jwtx-step, .jw-page .jwtx-related-card, .jw-page .jwtx-faq details, .jw-page .jwtx-toc { border-radius: 8px; border-color: var(--jw-line); background: var(--jw-well); }
+    .jw-page .jwtx-tile:hover { transform: none; border-color: var(--jw-violet); box-shadow: none; }
+    .jw-page .jwtx-tile .ic { border-radius: 8px; background: var(--jw-violet-soft); }
+    .jw-page .jwtx-step::before { border-radius: 6px; background: var(--jw-violet); color: var(--jw-on-violet); }
+    .jw-page .jwtx-article p, .jw-page .jwtx-article li { color: var(--jw-body); }
+    .jw-page .jwtx-cta { border-radius: 12px; background: linear-gradient(90deg, var(--jw-h) 0 33.3%, var(--jw-p) 33.3% 66.6%, var(--jw-s) 66.6%) top / 100% 5px no-repeat, #1f1838; }
+    .jw-page .jwtx-cta::before { display: none; }
+    .jw-page .jwtx-cta .jwtx-btn--primary, .jw-page .jwtx-cta .jwtx-btn--primary:hover { background: #fff; color: #4a1fa8; }
+    .jw-page .related-tools-section { background: var(--jw-card); border-color: var(--jw-line); border-radius: 12px; box-shadow: var(--jw-shadow); }
+    .jw-page .related-tools-eyebrow { color: var(--jw-violet); }
+    .jw-page .related-tools-title { color: var(--jw-ink); }
+    .jw-page .related-tools-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: .6rem; }
+    .jw-page .related-tool-card { border-radius: 8px; background: var(--jw-well); border-color: var(--jw-line); box-shadow: none; }
+
+    /* the new "score" section */
+    .jw-score { width: 100%; margin: .9rem 0 .5rem; border-collapse: separate; border-spacing: 0; font-size: .9rem; border: 1px solid var(--jw-line); border-radius: 10px; overflow: hidden; }
+    .jw-score th { padding: .55rem .75rem; text-align: left; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; background: var(--jw-ink); color: var(--jw-card); }
+    .jw-score td { padding: .6rem .75rem; border-top: 1px solid var(--jw-line); vertical-align: top; color: var(--jw-body); line-height: 1.55; }
+    .jw-score tbody tr:nth-child(even) td { background: var(--jw-well); }
+    .jw-score td:last-child { font: 800 .95rem var(--jw-mono); color: var(--jw-ink); white-space: nowrap; }
+    .jw-sev { display: inline-block; padding: .12rem .45rem; border-radius: 4px; font-size: .74rem; font-weight: 800; white-space: nowrap; border-left: 3px solid; }
+    .jw-sev.crit { color: #b91c1c; background: rgba(220, 38, 38, .1); } .jw-sev.warn { color: #92400e; background: rgba(217, 119, 6, .12); } .jw-sev.info { color: #075985; background: rgba(14, 165, 233, .12); }
+    [data-theme="dark"] .jw-sev.crit { color: #fca5a5; } [data-theme="dark"] .jw-sev.warn { color: #fbbf24; } [data-theme="dark"] .jw-sev.info { color: #7dd3fc; }
+    .jw-bands { display: flex; flex-wrap: wrap; gap: .5rem; margin: .4rem 0 0; padding: 0; list-style: none; }
+    .jw-bands li { display: inline-flex; align-items: center; gap: .45rem; padding: .35rem .7rem; border-radius: 6px; border: 1px solid var(--jw-line); background: var(--jw-well); font-size: .86rem; color: var(--jw-body); }
+    .jw-bands li::before { content: "" / ""; width: 12px; height: 12px; border-radius: 50%; }
+    .jw-bands li.g::before { background: #16a34a; } .jw-bands li.a::before { background: #d97706; } .jw-bands li.r::before { background: #dc2626; }
+
+    /* ---------- the phone quick bar ----------
+       It covered the bottom of every phone screen from first load. It now
+       shows only when the token box is off screen - which is when "Decode a
+       JWT" (it scrolls back to the box) is useful. */
+    .jw-page .jwtx-sticky.is-visible { display: none; }
+    @media (max-width: 760px) {
+      body.jw-page { padding-bottom: 0; }
+      body.jw-page.jw-in-away .jwtx-sticky.is-visible { display: block; }
+      .jw-page .jwtx-sticky .jwtx-btn--primary { background: var(--jw-violet); color: var(--jw-on-violet); }
+    }
+
+    /* ---------- smaller screens ---------- */
+    @media (max-width: 899px) { .jw-ticket { display: none; } }
+    @media (max-width: 699px) {
+      /* phones: the headline, then the token box, so the ad after it reaches
+         the first screen; the decoded token follows the ad */
+      .jw-page .breadcrumb { display: none; }
+      .jw-cover { padding: 1rem 1.05rem; }
+      .jw-page .jw-cover .jwtx-eyebrow { display: none; }
+      .jw-title { font-size: clamp(2rem, 10vw, 2.5rem); }
+      .jw-box { padding: .85rem; }
+      .jw-page .jwtx-toolbar { flex-wrap: nowrap; }
+      .jw-page .jwtx-toolbar .jwtx-btn { flex: 1 1 auto; padding: .5rem .45rem; font-size: .78rem; white-space: nowrap; }
+      .jw-page .jwtx-toolbar a.jwtx-btn { display: none; }
+      .jw-page .jwtx-input { min-height: 6.5rem; height: 6.5rem; }
+      /* the colour-coded copy says nothing until there is a token */
+      .jw-page .jwtx-colored:has(.c-empty) { display: none; }
+    }
+    @media (max-width: 359px) {
+      .jw-page .jwtx-toolbar { flex-wrap: wrap; }
+    }
+    @media (max-width: 559px) {
+      body.jw-page .section > .container, body.jw-page .ta-support { width: calc(100% - 20px); }
+      .jw-page .related-tools-section { padding: 1rem .85rem; }
+      .jw-page .jwtx-section { padding: 1.05rem .95rem; }
+      .jw-score, .jw-score tbody, .jw-score tr, .jw-score td { display: block; }
+      .jw-score { border: 0; }
+      .jw-score thead { display: none; }
+      .jw-score tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; margin-bottom: .5rem; border: 1px solid var(--jw-line); border-radius: 8px; overflow: hidden; }
+      .jw-score td { border-top: 0; padding: .45rem .75rem; }
+      .jw-score td:first-child { grid-column: 1 / -1; background: var(--jw-well); }
+      .jw-score tbody tr:nth-child(even) td { background: none; }
+      .jw-score tbody tr:nth-child(even) td:first-child { background: var(--jw-well); }
+      .jw-score td:nth-child(2)::before, .jw-score td:nth-child(3)::before { content: attr(data-label) / ""; display: block; font: 800 .6rem/1.4 system-ui, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--jw-mute); }
+    }
+  </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/jwt-debugger.html#webpage",
+      "url": "https://tooladda.online/jwt-debugger.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-24",
+      "dateModified": "2026-09-21",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+    <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 123, 63, 228; }
+      [data-theme="dark"] { --pca: 182, 156, 255; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 182, 156, 255; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+</head>
+<body class="jw-page">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+            <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+            <path d="M3.1 16.9h10.8" />
+            <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+          </svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+        <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="section">
+      <aside class="ta-support" aria-label="Support ToolAdda">
+        <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+        <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+      </aside>
+
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span>›</span>
+          <a href="/">Developer Tools</a><span>›</span>
+          <span>JWT Debugger</span>
+        </nav>
+
+        <div class="jwtx-shell">
+          <!-- Cover: one band. Headline on the left (J, W, T in the three
+               segment colours); from 900px the famous sample token as a ticket
+               of three stubs (decorative). -->
+          <header class="jw-cover">
+            <div>
+              <span class="jwtx-eyebrow">🔐 Decode • Validate • Verify</span>
+              <h1 class="jw-title"><span class="jw-t1"><span class="jw-seg"><span class="h">J</span><span class="p">W</span><span class="s">T</span></span> <em>Debugger</em></span> <span class="jw-t2">&amp; Inspector</span></h1>
+            </div>
+            <div class="jw-ticket" aria-hidden="true">
+              <div class="jw-stub h"><small>Header</small><code>eyJhbGciOiJIUzI1NiIsInR5cCI6…</code></div>
+              <div class="jw-stub p"><small>Payload</small><code>eyJzdWIiOiIxMjM0NTY3ODkwIiwi…</code></div>
+              <div class="jw-stub s"><small>Signature</small><code>SflKxwRJSMeKKF2QT4fwpMeJf3…</code><span class="jw-stamp">HS256</span></div>
+            </div>
+          </header>
+
+          <!-- The tool is one grid (.jw-work) and the script's root ([data-jwt]).
+               Phones: the token box, the ad, the decoded token, verification.
+               From 700px the ad sits beside the tool and spans every row, never
+               above it; from 1000px token + verification sit left of the
+               decoded token. -->
+          <div class="jwtx-tool jw-work" data-jwt>
+            <div class="jw-box jw-box--in">
+              <div class="jwtx-toolbar">
+                <button class="jwtx-btn jwtx-btn--primary" type="button" data-sample>✨ Load sample token</button>
+                <label class="jwtx-btn jwtx-btn--ghost" for="jwtxFile">⬆ Upload file<input id="jwtxFile" type="file" accept=".txt,.json,text/plain,application/json" hidden data-upload-input /></label>
+                <button class="jwtx-btn jwtx-btn--ghost" type="button" data-clear>✕ Clear</button>
+                <a class="jwtx-btn jwtx-btn--ghost" href="jwt-encoder.html">🛠️ Generate a JWT</a>
+              </div>
+              <h3 style="margin:0 0 .5rem;font-size:.92rem;display:flex;align-items:center;gap:.4rem;">🔗 Encoded token</h3>
+              <div class="jwtx-dropzone" data-drop-zone>
+                <textarea class="jwtx-input" data-token placeholder="Paste your JWT here (eyJhbGci...header.payload.signature)" spellcheck="false" autocomplete="off" aria-label="Encoded JWT input"></textarea>
+              </div>
+              <p class="jwtx-stats-line" data-token-stats>0 characters · 0 / 3 segments</p>
+              <div class="jwtx-colored" data-colored><span class="c-empty">The color-coded token will appear here…</span></div>
+              <div class="jwtx-message message-box hidden" role="status" aria-live="polite" data-message></div>
+            </div>
+
+            <!-- Ad: one 300x250 (see .jw-ad-zone CSS). -->
+            <div class="jw-ad-zone">
+              <div class="ta-inline-ad" data-unit="inline"></div>
+            </div>
+
+            <div class="jw-box jw-box--out">
+              <p class="jw-box-h"><i aria-hidden="true"><b></b><b></b><b></b></i>Decoded</p>
+              <div class="jwtx-insights" data-insights hidden>
+                <div><b data-insight-alg>—</b><span>Algorithm</span></div>
+                <div><b data-insight-size>—</b><span>Token size</span></div>
+                <div><b data-insight-segments>—</b><span>Segments</span></div>
+                <div><b data-insight-claims>—</b><span>Claims</span></div>
+                <div><b data-insight-expiry>—</b><span>Expiration</span></div>
+                <div><b data-insight-verify>—</b><span>Verification</span></div>
+              </div>
+              <div class="jwtx-part">
+                <div class="jwtx-part-head h">
+                  <span>HEADER · algorithm &amp; type</span>
+                  <div class="jwtx-part-head-actions">
+                    <button class="jwtx-mini-btn" type="button" data-copy-header>Copy</button>
+                    <button class="jwtx-mini-btn" type="button" data-download-header>⬇</button>
+                  </div>
+                </div>
+                <pre class="jwtx-pre" data-header>—</pre>
+              </div>
+              <div class="jwtx-part">
+                <div class="jwtx-part-head p">
+                  <span>PAYLOAD · claims / data</span>
+                  <div class="jwtx-part-head-actions">
+                    <button class="jwtx-mini-btn" type="button" data-copy-payload>Copy</button>
+                    <button class="jwtx-mini-btn" type="button" data-download-payload>⬇</button>
+                  </div>
+                </div>
+                <pre class="jwtx-pre" data-payload>—</pre>
+              </div>
+
+              <div data-claims-wrap hidden>
+                <h3 style="margin:.9rem 0 .3rem;font-size:.92rem;">📋 Claims</h3>
+                <div style="overflow-x:auto">
+                  <table class="jwtx-claims-table">
+                    <thead><tr><th>Claim</th><th>Type</th><th>Value</th></tr></thead>
+                    <tbody data-claims></tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="jwtx-security" data-security-panel hidden>
+                <div class="jwtx-security-head">
+                  <span class="jwtx-security-title">🛡️ Security analysis</span>
+                  <div class="jwtx-score-ring" data-score-ring style="--score:100;--score-color:#16a34a;"><b data-score-value>100</b></div>
+                </div>
+                <ul class="jwtx-security-list" data-security-list></ul>
+                <p class="jwtx-note">Heuristic analysis for awareness, not a formal security audit — always follow your framework's JWT best practices.</p>
+              </div>
+            </div>
+
+            <div class="jw-box jw-box--ver">
+              <div class="jwtx-verify">
+                <h3 style="margin:0 0 .7rem;font-size:.95rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;">✅ Verify signature <span class="jwtx-badge" data-alg-badge style="background:var(--surface-strong);border:1px solid var(--border);color:var(--text-muted)">alg: —</span></h3>
+                <label data-secret-label for="jwt-secret">Secret (for HS256/384/512)</label>
+                <textarea id="jwt-secret" data-secret placeholder="your-256-bit-secret" autocomplete="off" spellcheck="false" rows="1"></textarea>
+                <label style="margin-top:.7rem;font-weight:600;font-size:.84rem;display:flex;align-items:center;gap:.4rem;"><input type="checkbox" data-secret-b64 style="width:auto" />Secret is base64url encoded</label>
+                <div class="jwtx-verify-status">
+                  <span>Status:</span>
+                  <span class="jwtx-pill idle" data-verify-status>Enter a secret or public key to verify</span>
+                </div>
+                <p class="jwtx-verify-hint" data-verify-hint>For RSA/ECDSA tokens (RS/PS/ES), paste a PEM public key instead of a secret.</p>
+                <p class="jwtx-note">Decoding needs no key at all — anyone can read a JWT's header and payload. Verification is the separate, cryptographic step that confirms the token wasn't tampered with.</p>
+              </div>
+              <p class="jwtx-note">💡 Tip: drag &amp; drop a <code>.txt</code>/<code>.json</code> file containing a token anywhere on the input box, or paste with Ctrl/Cmd+V. Everything above updates live as you type — nothing is ever uploaded.</p>
+            </div>
+          </div>
+
+          <div class="jw-after">
+            <p class="jwtx-lead">
+              Paste a JSON Web Token to instantly decode its header and payload, inspect every claim, run an automated
+              security analysis, and verify HS/RS/PS/ES signatures — entirely in your browser. Nothing is ever uploaded.
+            </p>
+            <div class="jwtx-badges" aria-label="Trust signals">
+              <span>🔒 Browser-based</span>
+              <span>🚫 No upload, ever</span>
+              <span>🔑 Real Web Crypto verification</span>
+              <span>🛡️ Automated security analysis</span>
+              <span>🆓 Free forever</span>
+              <span>📱 Mobile friendly</span>
+            </div>
+          </div>
+
+          <!-- NEW SECTION -->
+          <section class="jwtx-section" aria-labelledby="jw-score-h">
+            <h2 id="jw-score-h">How the Security Score Is Worked Out</h2>
+            <p class="jwtx-sub">Every token starts at 100. Each check below takes its points off, and the score never drops below 0. These are the exact checks the analysis runs.</p>
+            <table class="jw-score">
+              <thead><tr><th scope="col">Check</th><th scope="col">Severity</th><th scope="col">Points</th></tr></thead>
+              <tbody>
+                <tr><td data-label="Check">The algorithm is <code>none</code> — the token is not signed at all</td><td data-label="Severity"><span class="jw-sev crit">Critical</span></td><td data-label="Points">−60</td></tr>
+                <tr><td data-label="Check">No signature segment</td><td data-label="Severity"><span class="jw-sev crit">Critical</span></td><td data-label="Points">−40</td></tr>
+                <tr><td data-label="Check">The signature check fails with the secret or key you entered</td><td data-label="Severity"><span class="jw-sev crit">Critical</span></td><td data-label="Points">−30</td></tr>
+                <tr><td data-label="Check">The HMAC secret you entered is under 16 characters (HS256/384/512)</td><td data-label="Severity"><span class="jw-sev warn">Warning</span></td><td data-label="Points">−20</td></tr>
+                <tr><td data-label="Check">No expiry (<code>exp</code>) claim</td><td data-label="Severity"><span class="jw-sev warn">Warning</span></td><td data-label="Points">−15</td></tr>
+                <tr><td data-label="Check">A payload key that looks sensitive — password, ssn, credit_card, cvv, pin, secret, private_key… (up to three, each)</td><td data-label="Severity"><span class="jw-sev warn">Warning</span></td><td data-label="Points">−15</td></tr>
+                <tr><td data-label="Check">More than 30 days between <code>iat</code> and <code>exp</code></td><td data-label="Severity"><span class="jw-sev warn">Warning</span></td><td data-label="Points">−10</td></tr>
+                <tr><td data-label="Check">No issued-at (<code>iat</code>) claim</td><td data-label="Severity"><span class="jw-sev info">Info</span></td><td data-label="Points">−5</td></tr>
+                <tr><td data-label="Check">Already expired, or <code>nbf</code> still in the future</td><td data-label="Severity"><span class="jw-sev info">Info</span></td><td data-label="Points">0</td></tr>
+              </tbody>
+            </table>
+            <ul class="jw-bands" aria-label="Score colours">
+              <li class="g">85–100 green</li>
+              <li class="a">60–84 amber</li>
+              <li class="r">0–59 red</li>
+            </ul>
+            <p class="jwtx-sub" style="margin-top:1rem">Try it: <strong>Load sample token</strong> also fills in its secret, so it arrives verified and scores 85 — signed, but with no <code>exp</code>. Replace the secret with a wrong five-character one and it drops to 35: −15 for no expiry, −20 for the short secret, −30 for the failed check. A correct signature earns nothing; it only avoids losing 30.</p>
+          </section>
+
+          <!-- FEATURES -->
+          <section class="jwtx-section" aria-labelledby="jwtx-features-h">
+            <h2 id="jwtx-features-h">Why this is the best JWT debugger online</h2>
+            <p class="jwtx-sub">Built for real authentication debugging, not just a pretty-print demo.</p>
+            <div class="jwtx-grid-3">
+              <div class="jwtx-tile"><span class="ic">🔒</span><h3>100% private</h3><p>Your token, secrets and keys are decoded and verified entirely in your browser — never uploaded, logged, or stored.</p></div>
+              <div class="jwtx-tile"><span class="ic">🔑</span><h3>Real cryptographic verification</h3><p>Uses the browser's native Web Crypto API for genuine HS/RS/PS/ES signature checks — not a visual simulation.</p></div>
+              <div class="jwtx-tile"><span class="ic">🛡️</span><h3>Automated security analysis</h3><p>Flags the "none" algorithm, missing expiration, very long lifetimes, weak secrets and possible sensitive data in the payload.</p></div>
+              <div class="jwtx-tile"><span class="ic">📊</span><h3>Token insights dashboard</h3><p>Algorithm, size, segment count, claim count, expiration status and a heuristic security score at a glance.</p></div>
+              <div class="jwtx-tile"><span class="ic">📋</span><h3>Full claims breakdown</h3><p>Every registered claim (iss, sub, aud, exp, nbf, iat, jti) gets a human-readable date and countdown, plus any custom claims.</p></div>
+              <div class="jwtx-tile"><span class="ic">📱</span><h3>Mobile-first &amp; accessible</h3><p>Large touch targets, a sticky decode bar, dark mode and full keyboard/screen-reader support out of the box.</p></div>
+            </div>
+          </section>
+
+          <!-- STEPS -->
+          <section class="jwtx-section" aria-labelledby="jwtx-steps-h">
+            <h2 id="jwtx-steps-h">How to decode and verify a JWT in 4 steps</h2>
+            <p class="jwtx-sub">No install, no account — go from a raw token to a full inspection in seconds.</p>
+            <div class="jwtx-steps">
+              <div class="jwtx-step"><h3>Paste your token</h3><p>Paste, type, drag &amp; drop a file, or load the sample JWT.</p></div>
+              <div class="jwtx-step"><h3>Review the decode</h3><p>Header, payload, claims, insights and security analysis all update instantly.</p></div>
+              <div class="jwtx-step"><h3>Verify the signature</h3><p>Enter the secret (HS) or paste a PEM public key (RS/PS/ES) to confirm authenticity.</p></div>
+              <div class="jwtx-step"><h3>Copy or export</h3><p>Copy or download the decoded header and payload as JSON for use elsewhere.</p></div>
+            </div>
+          </section>
+
+          <!-- COMPARISON -->
+          <section class="jwtx-section" aria-labelledby="jwtx-compare-h">
+            <h2 id="jwtx-compare-h">JWT compared to other approaches</h2>
+            <p class="jwtx-sub">Context for choosing the right authentication or token strategy.</p>
+
+            <div class="jwtx-compare-block">
+              <h3>JWT vs. session-based authentication</h3>
+              <div class="jwtx-compare-wrap"><table class="jwtx-compare">
+                <thead><tr><th>Aspect</th><th>JWT (stateless)</th><th>Server sessions (stateful)</th></tr></thead>
+                <tbody>
+                  <tr><td>Where state lives</td><td>Entirely inside the token itself</td><td>In server-side storage (memory, Redis, DB)</td></tr>
+                  <tr><td>Revocation</td><td>Hard — valid until it expires, unless you add a blocklist</td><td>Easy — delete the session server-side</td></tr>
+                  <tr><td>Scales across servers</td><td>Naturally — any server can verify it</td><td>Needs shared/centralized session storage</td></tr>
+                  <tr><td>Payload visibility</td><td>Readable by anyone who has the token</td><td>Opaque session ID only</td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="jwtx-compare-block">
+              <h3>HS256 vs. RS256</h3>
+              <div class="jwtx-compare-wrap"><table class="jwtx-compare">
+                <thead><tr><th>Aspect</th><th>HS256 (symmetric)</th><th>RS256 (asymmetric)</th></tr></thead>
+                <tbody>
+                  <tr><td>Keys</td><td>One shared secret signs and verifies</td><td>Private key signs, public key verifies</td></tr>
+                  <tr><td>Best for</td><td>A single trusted backend issuing and checking its own tokens</td><td>Multiple services verifying tokens from one central issuer</td></tr>
+                  <tr><td>Key exposure risk</td><td>Anyone with the secret can forge tokens</td><td>Public key can be shared freely without forgery risk</td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="jwtx-compare-block">
+              <h3>JWT vs. OAuth 2.0</h3>
+              <div class="jwtx-compare-wrap"><table class="jwtx-compare">
+                <thead><tr><th>Aspect</th><th>JWT</th><th>OAuth 2.0</th></tr></thead>
+                <tbody>
+                  <tr><td>What it is</td><td>A token format</td><td>An authorization framework/protocol</td></tr>
+                  <tr><td>Relationship</td><td>Often used as the access/ID token format inside OAuth flows</td><td>Defines how tokens (JWT or opaque) are issued and exchanged</td></tr>
+                  <tr><td>Can exist without the other?</td><td>Yes — JWTs are used outside OAuth too</td><td>Yes — OAuth can issue opaque (non-JWT) tokens</td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="jwtx-compare-block">
+              <h3>JWT vs. SAML</h3>
+              <div class="jwtx-compare-wrap"><table class="jwtx-compare">
+                <thead><tr><th>Aspect</th><th>JWT</th><th>SAML</th></tr></thead>
+                <tbody>
+                  <tr><td>Format</td><td>Compact JSON, base64url-encoded</td><td>Verbose XML</td></tr>
+                  <tr><td>Typical use</td><td>APIs, mobile apps, modern SPAs</td><td>Enterprise single sign-on (SSO)</td></tr>
+                  <tr><td>Size</td><td>Small — fits in headers/URLs easily</td><td>Large — usually posted as a form body</td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="jwtx-compare-block">
+              <h3>Browser tool vs. CLI / JWT.io</h3>
+              <div class="jwtx-compare-wrap"><table class="jwtx-compare">
+                <thead><tr><th>Aspect</th><th>ToolAdda (this page)</th><th>Typical online decoder</th></tr></thead>
+                <tbody>
+                  <tr><td>Security analysis</td><td>Built-in heuristic score &amp; warnings</td><td>Usually decode-only</td></tr>
+                  <tr><td>Token insights dashboard</td><td>Yes — size, claims, expiry, verification at a glance</td><td>Rarely included</td></tr>
+                  <tr><td>Data handling</td><td>100% client-side, no network calls with your token</td><td>Varies by tool — always check</td></tr>
+                </tbody>
+              </table></div>
+            </div>
+          </section>
+
+          <!-- ARTICLE -->
+          <section class="jwtx-section jwtx-article" aria-labelledby="jwtx-about-h">
+            <h2 id="jwtx-about-h" style="margin-top:0">The complete guide to JSON Web Tokens</h2>
+            <div class="jwtx-toc" aria-label="Table of contents">
+              <a href="#jwtx-what-is">What is JWT?</a>
+              <a href="#jwtx-structure">Structure</a>
+              <a href="#jwtx-header">Header</a>
+              <a href="#jwtx-payload">Payload</a>
+              <a href="#jwtx-signature">Signature</a>
+              <a href="#jwtx-vs-session">JWT vs. sessions</a>
+              <a href="#jwtx-b64url">Base64URL</a>
+              <a href="#jwtx-algorithms">Algorithms</a>
+              <a href="#jwtx-hs-vs-rs">HS256 vs. RS256</a>
+              <a href="#jwtx-verify-h">Verification</a>
+              <a href="#jwtx-security-h">Security</a>
+              <a href="#jwtx-exp">Expiration claims</a>
+              <a href="#jwtx-refresh">Refresh tokens</a>
+              <a href="#jwtx-oauth">OAuth &amp; OIDC</a>
+              <a href="#jwtx-api-auth">API authentication</a>
+              <a href="#jwtx-mistakes">Common mistakes</a>
+              <a href="#jwtx-debugging">Debugging JWTs</a>
+              <a href="#jwtx-best-practices">Best practices</a>
+              <a href="#jwtx-troubleshoot">Troubleshooting</a>
+            </div>
+
+            <h2 id="jwtx-what-is">What is a JWT?</h2>
+            <p>A JSON Web Token (JWT, pronounced "jot") is an open standard (<a href="https://www.rfc-editor.org/rfc/rfc7519" rel="noopener nofollow">RFC 7519</a>) for representing a set of claims — small pieces of information about a user or session — as a compact, URL-safe string that can be verified and trusted because it's digitally signed. Instead of a server having to look up a session in a database on every request, a JWT carries its own data and proof of authenticity, which the receiving server can check on its own using math rather than a database round-trip. This makes JWTs a natural fit for stateless APIs, single-page apps, mobile clients, and systems split across many services.</p>
+
+            <h2 id="jwtx-structure">JWT structure: three parts, two dots</h2>
+            <p>Every JWT has the shape <code>header.payload.signature</code> — three base64url-encoded segments joined by periods. Splitting a token on its dots and decoding each segment is exactly what this tool's decoder does the instant you paste a token, with no key required for that first step.</p>
+
+            <h2 id="jwtx-header">The header, explained</h2>
+            <p>The header is a small JSON object describing the token itself — most importantly <code>alg</code> (the signing algorithm, like <code>HS256</code> or <code>RS256</code>) and <code>typ</code> (almost always <code>"JWT"</code>). Some tokens also include a <code>kid</code> (key ID) so the verifier knows which of several possible keys to use. The header is what tells a verifier <em>how</em> to check the signature — which is also exactly why a verifier must never blindly trust the <code>alg</code> value from an untrusted token (see the "none" algorithm attack under Security below).</p>
+
+            <h2 id="jwtx-payload">The payload, explained</h2>
+            <p>The payload is where the actual claims live — the data the token is asserting, such as who the user is, what they're allowed to do, and when the token expires. Claims come in three flavours: <strong>registered claims</strong> (standardized names with defined meaning, like <code>exp</code> and <code>sub</code>), <strong>public claims</strong> (custom names meant to be collision-resistant and ideally registered in the IANA JWT registry or namespaced with a URI), and <strong>private claims</strong> (custom names agreed upon between the parties using them, like <code>role</code> or <code>tenant_id</code>). This tool's claims table automatically separates registered claims — with human-readable dates and expiry countdowns — from everything else.</p>
+
+            <h2 id="jwtx-signature">The signature, explained</h2>
+            <p>The signature is computed by taking the encoded header and payload, joining them with a dot, and running that string through a cryptographic signing algorithm (HMAC for symmetric algorithms, or RSA/ECDSA private-key signing for asymmetric ones) using a secret or private key. Anyone can decode the header and payload without any key — but only someone who recomputes this exact signature with the correct secret or key can prove the token is authentic and unmodified. That recomputation and comparison is precisely what this tool's Verify panel does.</p>
+
+            <h2 id="jwtx-vs-session">JWT vs. session-based authentication</h2>
+            <p>Traditional session authentication issues a random session ID, stores the actual user data server-side (in memory, Redis, or a database), and looks it up on every request. JWTs flip this: the token itself carries the claims, so any server holding the right verification key can validate it without a shared datastore — which is why JWTs scale so naturally across multiple stateless API servers or microservices. The trade-off is revocation: a session can be deleted server-side instantly, while a JWT remains valid until it expires unless you build additional infrastructure (a token blocklist, short expirations plus refresh tokens, or key rotation) to revoke it early.</p>
+
+            <h2 id="jwtx-b64url">Base64URL encoding</h2>
+            <p>JWTs use Base64URL rather than standard Base64 — it replaces the <code>+</code> and <code>/</code> characters (which have special meaning in URLs) with <code>-</code> and <code>_</code>, and drops the trailing <code>=</code> padding, making the result safe to embed directly in URLs, cookies, and HTTP headers without escaping. Critically, Base64URL is <em>encoding</em>, not <em>encryption</em> — decoding requires no secret at all, which is why this tool (and any JWT decoder) can show you the header and payload of any token instantly, valid or not.</p>
+
+            <h2 id="jwtx-algorithms">JWT signing algorithms</h2>
+            <p>The <code>alg</code> header claim determines how a token is signed and verified. This tool supports verification for the algorithm families actually in common use: <strong>HS256/384/512</strong> (HMAC with SHA-256/384/512 — symmetric, one shared secret), <strong>RS256/384/512</strong> (RSASSA-PKCS1-v1.5 with SHA-256/384/512 — asymmetric, RSA key pair), <strong>PS256/384/512</strong> (RSA-PSS — a more modern, provably-secure RSA padding scheme), and <strong>ES256/384</strong> (ECDSA over the P-256/P-384 curves — asymmetric, smaller keys and signatures than RSA). A token declaring <code>alg: "none"</code> is explicitly unsigned and must never be accepted by a real verifier — this tool flags it immediately as a critical security issue.</p>
+
+            <h2 id="jwtx-hs-vs-rs">HS256 vs. RS256: which should you use?</h2>
+            <p>HS256 is simplest when a single backend both issues and verifies its own tokens — one secret does both jobs, but that secret must stay confidential everywhere it's used, and anyone who has it can forge valid tokens. RS256 (or ES256) separates signing from verification: a private key signs tokens on one trusted issuer, while any number of other services can verify using only the corresponding public key, which is safe to distribute freely since it can't be used to create new valid signatures. This is why RS256/ES256 are the standard choice for OAuth/OIDC identity providers and any system where multiple independent services need to verify tokens they didn't issue themselves.</p>
+
+            <h2 id="jwtx-verify-h">How signature verification actually works</h2>
+            <p>Verification recomputes the exact same signing operation the issuer performed — hashing the header-and-payload string with the algorithm named in the header, using the secret (HMAC) or private key (RSA/ECDSA signing on the issuer's side, public key checking on the verifier's side) — and compares the result to the signature segment of the token. If they match, the token's header and payload have not been altered since signing, and (for asymmetric algorithms) came from someone holding the private key. If they don't match — wrong key, wrong algorithm, or tampered content — verification fails, which is exactly the "Invalid signature" result you'll see in the Verify panel.</p>
+
+            <h2 id="jwtx-security-h">JWT security fundamentals</h2>
+            <p>The single most important fact about JWTs: <strong>the header and payload are encoded, not encrypted</strong>. Anyone who intercepts a token — a browser extension, a proxy log, a curious user with dev tools open — can read every claim inside it without any key. Never place passwords, full credit card numbers, or other genuinely secret data in a JWT payload. Separately, verifiers must be coded defensively: never trust the <code>alg</code> header from an incoming token to decide how to verify it (the classic "alg confusion" and "none algorithm" attacks exploit servers that do this), always check <code>exp</code> server-side even though most libraries do this automatically, and prefer asymmetric algorithms (RS/ES) whenever multiple services need to verify tokens they didn't issue.</p>
+
+            <h2 id="jwtx-exp">Expiration and other time-based claims</h2>
+            <p><code>exp</code> (expiration time) and <code>nbf</code> (not before) are Unix timestamps — whole seconds since January 1, 1970 UTC — that define the window during which a token should be accepted. <code>iat</code> (issued at) records when the token was created and is often used to compute a token's total intended lifetime (<code>exp − iat</code>). This tool converts all three to readable local dates plus a human "in 2 hours" / "3 days ago" countdown, and flags tokens with no <code>exp</code> at all — such tokens never expire by design, which is rarely what you actually want.</p>
+
+            <h2 id="jwtx-refresh">Refresh tokens</h2>
+            <p>Because a compromised long-lived JWT is hard to revoke, most real systems issue short-lived access tokens (minutes to a couple of hours) alongside a separate, longer-lived <strong>refresh token</strong> that's used only to obtain a new access token from the auth server — never sent directly to APIs. This limits how long a stolen access token remains useful, while refresh tokens themselves can be revoked server-side (since redeeming one requires a round-trip to the issuer) even though the access tokens they produce cannot be individually revoked before they expire.</p>
+
+            <h2 id="jwtx-oauth">JWT, OAuth 2.0 and OpenID Connect</h2>
+            <p>JWT is a token <em>format</em>; OAuth 2.0 is an authorization <em>protocol</em> for how a user grants an application limited access to their data; OpenID Connect (OIDC) is an identity layer built on top of OAuth 2.0 specifically for authentication. In a typical OIDC flow, the identity provider issues a JWT "ID token" (proving who the user is) and often a JWT or opaque "access token" (proving what the app is allowed to do) — this tool is a natural companion for inspecting exactly those tokens while building or debugging a login flow.</p>
+
+            <h2 id="jwtx-api-auth">API authentication with JWT</h2>
+            <p>A typical JWT-secured API flow: the client authenticates once (username/password, OAuth, etc.) and receives a signed JWT; the client then sends that token on every subsequent request, almost always in the <code>Authorization: Bearer &lt;token&gt;</code> HTTP header; the API verifies the signature and checks claims like <code>exp</code>, <code>aud</code> (is this token meant for me?) and <code>iss</code> (did I actually issue or trust this token's issuer?) before trusting any of the claims inside to make an authorization decision.</p>
+
+            <h2 id="jwtx-mistakes">Common JWT mistakes</h2>
+            <ul>
+              <li><strong>Storing sensitive data in the payload</strong> — passwords, full card numbers, or private personal data have no business inside a JWT, since anyone can decode it.</li>
+              <li><strong>Trusting the client-supplied <code>alg</code> header</strong> without pinning the expected algorithm server-side, opening the door to algorithm-confusion attacks.</li>
+              <li><strong>No expiration claim</strong>, or an expiration so far in the future it's effectively permanent.</li>
+              <li><strong>Using HS256 with a weak, short, or guessable secret</strong> — HMAC secrets should be long, random, and generated with a proper tool, not a memorable phrase.</li>
+              <li><strong>Storing JWTs in <code>localStorage</code></strong> in a way that's readable by any injected script (XSS), instead of an <code>HttpOnly</code> cookie where practical.</li>
+              <li><strong>Never rotating signing keys</strong>, which turns any eventual key leak into an indefinite compromise.</li>
+            </ul>
+
+            <h2 id="jwtx-debugging">Debugging JWTs in practice</h2>
+            <p>Most real-world JWT bugs fall into a handful of buckets this tool is built to surface immediately: a token that looks fine but fails verification (usually the wrong secret/key, or a mismatched algorithm between issuer and verifier); a token rejected as expired sooner than expected (check both <code>exp</code> and your server's clock — clock drift between services is a classic culprit); claims missing that your application expects (compare the payload against what your issuing code is supposed to set); and malformed tokens from a copy-paste error (missing a segment, extra whitespace, or truncation) — the decoder reports exactly which segment failed to parse rather than a generic failure.</p>
+
+            <h2 id="jwtx-best-practices">JWT best practices checklist</h2>
+            <ul>
+              <li>Always set a short, sensible <code>exp</code> — minutes to a few hours for access tokens, not days or "never."</li>
+              <li>Prefer RS256/ES256 over HS256 whenever more than one service needs to verify tokens.</li>
+              <li>Pin the expected algorithm(s) in verifier code — never derive verification behaviour from the token's own header.</li>
+              <li>Never store secrets, passwords, or highly sensitive personal data in the payload.</li>
+              <li>Use refresh tokens for long-lived sessions instead of long-lived access tokens.</li>
+              <li>Validate <code>aud</code> and <code>iss</code>, not just the signature — a validly signed token from the wrong issuer or meant for a different audience should still be rejected.</li>
+              <li>Rotate signing keys periodically and support multiple valid keys via <code>kid</code> during rotation windows.</li>
+            </ul>
+
+            <h2 id="jwtx-troubleshoot">Troubleshooting common errors</h2>
+            <ul>
+              <li><strong>"This does not look like a JWT"</strong> — check for missing dots, extra whitespace/newlines, or that you copied the complete token including all three segments.</li>
+              <li><strong>"Invalid signature"</strong> — double-check you're using the exact secret/key the token was actually signed with, and that the algorithm matches (HS secrets and RS/ES public keys are not interchangeable).</li>
+              <li><strong>"Invalid header/payload — could not decode"</strong> — the base64url segment itself is corrupted, often from a copy-paste that dropped characters or added line breaks.</li>
+              <li><strong>Token "expired" immediately after being issued</strong> — check your server's clock is correctly synced (NTP), and confirm <code>exp</code> is in seconds, not milliseconds (a very common off-by-1000 bug).</li>
+            </ul>
+
+            <h2>Summary</h2>
+            <p>A JWT is a signed, self-contained bundle of claims — readable by anyone, but only trustworthy once its signature is verified against the correct key. This tool decodes instantly with no key needed, runs a genuine cryptographic verification when you provide one, and layers on the claim analysis and security warnings a real debugging session actually needs. Paste a token above to get started.</p>
+          </section>
+
+          <!-- RELATED TOOLS -->
+          <section class="jwtx-section" aria-labelledby="jwtx-related-h">
+            <h2 id="jwtx-related-h">Related developer tools</h2>
+            <p class="jwtx-sub">Other browser-based tools that pair well with a JWT / authentication workflow.</p>
+            <div class="jwtx-related-grid">
+              <article class="jwtx-related-card"><h3>🛠️ JWT Encoder</h3><p>Build and sign a new JWT with HS256, RS256 or ES256 — the companion tool to this debugger.</p><a href="jwt-encoder.html">Open tool →</a></article>
+              <article class="jwtx-related-card"><h3>🧾 JSON Formatter</h3><p>Format, validate and beautify JSON — handy for cleaning up decoded claims.</p><a href="developer-tools/json-formatter.html">Open tool →</a></article>
+              <article class="jwtx-related-card"><h3>🔑 SSH Key Generator</h3><p>Generate Ed25519/RSA/ECDSA key pairs in-browser — useful context for asymmetric JWT keys.</p><a href="developer-tools/ssh-key-generator.html">Open tool →</a></article>
+              <article class="jwtx-related-card"><h3>🔤 Base64 Encoder/Decoder</h3><p>Encode or decode raw Base64 text — useful for inspecting a token segment by hand.</p><a href="text-tools/base64-encoder-decoder.html">Open tool →</a></article>
+              <article class="jwtx-related-card"><h3>🔐 Password Generator</h3><p>Generate a long, random HMAC secret for signing HS256/384/512 tokens.</p><a href="password-generator.html">Open tool →</a></article>
+              <article class="jwtx-related-card"><h3>🧬 UUID Generator</h3><p>Generate a UUID to use as a token's <code>jti</code> (JWT ID) claim.</p><a href="uuid-generator.html">Open tool →</a></article>
+            </div>
+          </section>
+
+          <!-- FAQ -->
+          <section class="jwtx-section" aria-labelledby="jwtx-faq-h">
+            <h2 id="jwtx-faq-h">Frequently asked questions</h2>
+            <p class="jwtx-sub">Everything developers usually ask before debugging their first JWT.</p>
+            <div class="jwtx-faq">
+              <details><summary>What is a JWT?</summary><p>A JSON Web Token (JWT) is a compact, URL-safe token made of three base64url parts separated by dots: header, payload, and signature. It is widely used for authentication and passing claims between services.</p></details>
+              <details><summary>How does JWT decoding work?</summary><p>A JWT's header and payload are split on the dots and base64url-decoded into readable JSON. No key or secret is needed to decode a token — only to verify its signature.</p></details>
+              <details><summary>Is decoding the same as verification?</summary><p>No. Decoding just reads the base64url-encoded header and payload, which anyone can do. Verification cryptographically checks the signature against a secret or public key to confirm the token has not been tampered with.</p></details>
+              <details><summary>Is my token uploaded anywhere?</summary><p>No. Decoding and signature verification both run entirely in your browser using the Web Crypto API. Your token, secret, and keys are never sent to any server.</p></details>
+              <details><summary>How do I verify a JWT?</summary><p>Enter the shared secret for HMAC algorithms (HS256/384/512), or paste a PEM public key for RSA and ECDSA algorithms (RS, PS, ES). The tool recomputes the signature and shows whether it matches.</p></details>
+              <details><summary>What is HS256?</summary><p>HS256 is HMAC using SHA-256 — a symmetric algorithm where the same secret both signs and verifies the token. Both the issuer and verifier must keep that secret private.</p></details>
+              <details><summary>What is RS256?</summary><p>RS256 is RSA signature with SHA-256 — an asymmetric algorithm where a private key signs the token and a separate public key verifies it, so the verifier never needs the private key.</p></details>
+              <details><summary>Why is my token expired?</summary><p>The token's exp (expiration) claim is a Unix timestamp in the past. Once exp has passed, a correctly implemented server should reject the token even if the signature is valid.</p></details>
+              <details><summary>What does exp mean?</summary><p>exp is the expiration time claim — a Unix timestamp (seconds since 1970) after which the token must no longer be accepted.</p></details>
+              <details><summary>What does nbf mean?</summary><p>nbf (not before) is a Unix timestamp before which the token must not be accepted, useful for issuing tokens that only become valid at a future time.</p></details>
+              <details><summary>Can I verify RSA signatures?</summary><p>Yes. RS256/384/512 and PS256/384/512 (RSA-PSS) are both supported — paste the PEM-encoded public key to verify.</p></details>
+              <details><summary>Can I use PEM keys?</summary><p>Yes, paste a standard PEM-formatted public key (starting with -----BEGIN PUBLIC KEY-----) for RSA or ECDSA algorithms.</p></details>
+              <details><summary>Is this tool free?</summary><p>Yes, completely free with no sign-up, no watermark and no usage limits.</p></details>
+              <details><summary>Does it work offline?</summary><p>Once the page has loaded, decoding and verification both work without an internet connection since everything runs locally.</p></details>
+              <details><summary>Can I decode malformed JWTs?</summary><p>The tool will attempt to decode each segment independently and clearly reports which part (header or payload) failed to parse, rather than failing silently.</p></details>
+              <details><summary>What happens if verification fails?</summary><p>You'll see a clear invalid-signature status. Common causes are a wrong secret/key, a token that was edited after signing, or mismatching the algorithm the token actually uses.</p></details>
+              <details><summary>Can I export the payload JSON?</summary><p>Yes, both the header and payload can be copied to your clipboard or downloaded as .json files individually.</p></details>
+              <details><summary>Is it browser-based?</summary><p>Yes, 100%. There is no backend — parsing, decoding and cryptographic verification all happen with JavaScript running locally on your device.</p></details>
+              <details><summary>Can beginners use this tool?</summary><p>Yes. Load the sample token to see a working example, and every claim, warning and status is explained in plain language.</p></details>
+              <details><summary>Does it support ES256?</summary><p>Yes, ES256 and ES384 (ECDSA) are supported for verification using a PEM public key.</p></details>
+              <details><summary>What are registered claims?</summary><p>Registered claims are the standard, predefined JWT payload fields — iss, sub, aud, exp, nbf, iat and jti — recognized and given special handling by this tool and by JWT libraries generally.</p></details>
+              <details><summary>How secure is JWT?</summary><p>A JWT is only as secure as its signature and how the verifier checks it. The header and payload are merely encoded, not encrypted, so nothing secret should ever be stored in one, and the alg field must never be trusted blindly by a verifier.</p></details>
+              <details><summary>What is Base64URL?</summary><p>Base64URL is a variant of Base64 encoding that replaces + and / with - and _ and omits padding, making the output safe to use directly inside URLs and HTTP headers.</p></details>
+              <details><summary>Are my secrets stored anywhere?</summary><p>No. Secrets and keys you enter for verification stay in your browser's memory for the current session only and are never saved, logged, or transmitted.</p></details>
+              <details><summary>What browsers are supported?</summary><p>Any modern browser with Web Crypto API support — recent Chrome, Edge, Firefox and Safari all work, on both desktop and mobile.</p></details>
+              <details><summary>Can I generate a new JWT instead of decoding one?</summary><p>Yes — use ToolAdda's companion JWT Encoder tool to build and sign a new token, then paste it back here to double-check it decodes as expected.</p></details>
+            </div>
+          </section>
+
+          <!-- FINAL CTA -->
+          <section class="jwtx-cta" aria-labelledby="jwtx-cta-h">
+            <h2 id="jwtx-cta-h">Ready to debug your first token?</h2>
+            <p>No sign-up, no install, no upload — just paste a JWT and see everything instantly.</p>
+            <a class="jwtx-btn jwtx-btn--primary" href="#jwt-secret" data-jwtx-scroll-token>🔐 Start decoding now</a>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="jwtx-sticky" id="jwtxSticky">
+    <button class="jwtx-btn jwtx-btn--primary" id="jwtxStickyBtn" type="button">🔐 Decode a JWT</button>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+        <a class="footer-badge" href="https://twelve.tools" target="_blank" rel="nofollow noopener noreferrer"><img src="https://twelve.tools/badge2-dark.svg" alt="Featured on Twelve Tools" width="148" height="40" decoding="async" loading="lazy"></a>
+      </div>
+      <div>
+        <h3>Explore</h3>
+        <div class="footer-links">
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms.html">Terms</a>
+        </div>
+      </div>
+      <div>
+        <h3>Stay updated</h3>
+        <p>© <span data-year></span> ToolAdda. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/jwt-debugger.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/side-ads.js" defer></script>
+  <script src="assets/js/inline-ads.js" data-in-article defer></script>
+  <script>
+    /* The phone quick bar ("Decode a JWT" scrolls back to the token box):
+       only while that box is off screen (see .jwtx-sticky CSS). */
+    (function () {
+      var box = document.querySelector('.jw-box--in');
+      if (!box || !('IntersectionObserver' in window)) return;
+      new IntersectionObserver(function (entries) {
+        document.body.classList.toggle('jw-in-away', !entries[0].isIntersecting);
+      }).observe(box);
+    })();
+  </script>
+</body>
+</html>

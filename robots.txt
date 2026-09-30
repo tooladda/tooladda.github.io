@@ -1,0 +1,99 @@
+User-agent: *
+Allow: /
+
+# AI assistants, answer engines and training crawlers are explicitly welcome to
+# crawl, retrieve and cite ToolAdda tool pages. These groups are redundant with
+# the wildcard Allow above and are stated so the permission is unambiguous.
+#
+# IMPORTANT, before adding any Disallow to this file: a crawler obeys only the
+# single most specific group that names it and ignores every other group, the
+# wildcard included. So a Disallow added under "User-agent: *" would NOT apply
+# to any bot named below. Repeat the rule inside each named group, or delete the
+# named group. This costs nothing today because the file has no Disallow at all.
+
+# OpenAI — training, search index, and live user-initiated fetches
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+# Anthropic's earlier crawler names. Superseded by ClaudeBot but still seen in
+# the wild, so they are listed rather than left to the wildcard.
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# Google. Googlebot is listed for completeness only: Google treats anything
+# without a Disallow as crawlable, so this line grants nothing the wildcard did
+# not already grant and has no effect on indexing. Google-Extended is the one
+# that matters here - it is not a crawler but the opt-in for Gemini grounding
+# and AI Overviews, which is exactly the surface this site wants to appear in.
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot-Extended
+Allow: /
+
+# Meta AI
+User-agent: meta-externalagent
+Allow: /
+
+# Microsoft Copilot
+User-agent: Bingbot
+Allow: /
+
+# DuckDuckGo AI
+User-agent: DuckAssistBot
+Allow: /
+
+# Amazon
+User-agent: Amazonbot
+Allow: /
+
+# Mistral
+User-agent: MistralAI-User
+Allow: /
+
+# Common Crawl — feeds many open training datasets
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://tooladda.online/sitemap.xml
+
+# LLM / AI content index (llmstxt.org convention):
+#   https://tooladda.online/llms.txt       - curated index, one line per tool
+#   https://tooladda.online/llms-full.txt  - same pages with every feature list,
+#                                            how-to and FAQ expanded inline
+#   https://tooladda.online/llms/*.txt     - llms-full.txt split into one file per
+#                                            category, listed in llms.txt
+#
+# AI usage policy (training, citation, crawl rate):
+#   https://tooladda.online/ai.txt             - Spawning ai.txt syntax
+#   https://tooladda.online/.well-known/ai.txt - IETF draft key-value syntax

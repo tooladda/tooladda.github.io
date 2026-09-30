@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+<meta name="description" content="Free epoch / Unix timestamp converter online. Auto-detects seconds vs milliseconds vs microseconds, converts to any timezone, batch-converts whole logs, and covers FILETIME, .NET Ticks, Excel serial dates, Julian Day, and GPS time. Works offline." />
+<title>Epoch / Unix Timestamp Converter — Free Online | ToolAdda</title>
+<link rel="stylesheet" href="assets/css/style.css" />
+<link rel="manifest" href="epoch-converter-manifest.json" />
+<style>
+  .ep-shell{position:relative;padding:2rem 0 3rem;background:radial-gradient(circle at 8% 12%,rgba(79,70,229,.16),transparent 28%),radial-gradient(circle at 92% 6%,rgba(124,58,237,.14),transparent 24%),radial-gradient(circle at 50% 100%,rgba(34,197,94,.08),transparent 40%),linear-gradient(135deg,#eef2ff 0%,#f8fafc 45%,#f5f3ff 100%);overflow:hidden}
+  [data-theme="dark"] .ep-shell{background:radial-gradient(circle at 8% 12%,rgba(79,70,229,.22),transparent 30%),radial-gradient(circle at 92% 6%,rgba(124,58,237,.18),transparent 26%),linear-gradient(135deg,#0f172a 0%,#111827 50%,#0b1220 100%)}
+  .ep-card{max-width:1280px;margin:0 auto;padding:clamp(1.1rem,2.5vw,1.75rem);border-radius:28px;border:1px solid rgba(148,163,184,.22);background:rgba(255,255,255,.84);backdrop-filter:blur(24px);box-shadow:0 24px 90px rgba(15,23,42,.12)}
+  [data-theme="dark"] .ep-card{background:rgba(15,23,42,.82);border-color:rgba(148,163,184,.18)}
+  .ep-badge{display:inline-flex;padding:.32rem .7rem;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.55rem;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff}
+  .ep-title{margin:0 0 .5rem;font-size:clamp(1.75rem,4vw,2.35rem);font-weight:900;line-height:1.15;background:linear-gradient(135deg,#1f2937,#4f46e5 55%,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}
+  [data-theme="dark"] .ep-title{background:linear-gradient(135deg,#f8fafc,#a5b4fc 55%,#c4b5fd);-webkit-background-clip:text;background-clip:text}
+  .ep-lead{margin:0 0 1rem;color:var(--text-muted);line-height:1.65;max-width:72ch;font-size:clamp(.92rem,1.8vw,1rem)}
+  .ep-feature-strip{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1rem}
+  .ep-feature-pill{font-size:.76rem;font-weight:700;padding:.35rem .7rem;border-radius:999px;border:1px solid var(--border);background:var(--surface-strong);color:var(--text-muted)}
+  .ep-privacy-banner{display:flex;align-items:center;gap:.55rem;font-weight:700;color:#166534;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.22);border-radius:999px;padding:.55rem .95rem;margin-bottom:.75rem;font-size:.88rem;width:fit-content;max-width:100%;flex-wrap:wrap}
+  [data-theme="dark"] .ep-privacy-banner{color:#86efac}
+  .ep-degraded-banner{display:none;font-size:.84rem;color:#92400e;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.28);border-radius:16px;padding:.85rem 1rem;margin-bottom:.75rem;line-height:1.55}
+  .ep-degraded-banner.is-shown{display:block}
+  [data-theme="dark"] .ep-degraded-banner{color:#fcd34d;background:rgba(245,158,11,.08)}
+
+  .ep-tabs{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:1.15rem;padding:.35rem;border-radius:999px;background:var(--surface-strong);border:1px solid var(--border);width:fit-content;max-width:100%}
+  .ep-tab{border:none;background:transparent;color:var(--text-muted);border-radius:999px;padding:.55rem 1.05rem;cursor:pointer;font-weight:700;font-size:.86rem;font-family:inherit;transition:color .2s,background .2s,box-shadow .2s,transform .15s}
+  .ep-tab:hover{color:var(--text);background:rgba(79,70,229,.08)}
+  .ep-tab.is-active{background:linear-gradient(135deg,var(--accent),#7c3aed);color:#fff;box-shadow:0 4px 14px rgba(79,70,229,.35)}
+  .ep-panel{display:none;animation:epFadeIn .28s ease}
+  .ep-panel.is-active{display:block}
+  @keyframes epFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .ep-input-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.55rem}
+  .ep-input-row input[type="text"],.ep-input-row input[type="number"],.ep-input-row input[type="datetime-local"]{flex:1;min-width:220px;border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:12px;padding:.7rem .9rem;font-family:ui-monospace,'Courier New',monospace;font-size:1.02rem;transition:border-color .2s,box-shadow .2s}
+  .ep-input-row input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .ep-unit-select{border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:12px;padding:.6rem .8rem;font-weight:700;font-family:inherit;transition:border-color .2s,box-shadow .2s}
+  .ep-unit-select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .ep-detect-note{font-size:.84rem;color:var(--text-muted);margin-bottom:.6rem;padding:.45rem .65rem;border-radius:10px;background:var(--surface);border:1px solid var(--border);font-family:ui-monospace,monospace}
+  .ep-warning-box{font-size:.86rem;background:rgba(245,158,11,.1);color:#92400e;border:1px solid rgba(245,158,11,.28);border-radius:14px;padding:.85rem 1rem;margin-bottom:.7rem;display:none;line-height:1.55}
+  .ep-warning-box.is-shown{display:block}
+  [data-theme="dark"] .ep-warning-box{color:#fcd34d;background:rgba(245,158,11,.08)}
+  .ep-warning-box button{margin-left:.6rem;border:none;background:var(--accent);color:#fff;border-radius:8px;padding:.25rem .65rem;cursor:pointer;font-size:.78rem;font-weight:700}
+  .ep-error-box{font-size:.86rem;background:rgba(239,68,68,.08);color:#991b1b;border:1px solid rgba(239,68,68,.22);border-radius:14px;padding:.85rem 1rem;margin-bottom:.7rem;display:none;line-height:1.55}
+  .ep-error-box.is-shown{display:block}
+  [data-theme="dark"] .ep-error-box{color:#fca5a5;background:rgba(239,68,68,.12)}
+
+  .ep-result-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.65rem;margin:.85rem 0}
+  .ep-result-card{border:1px solid var(--border);border-radius:14px;padding:.7rem .85rem;background:linear-gradient(145deg,var(--surface-strong),var(--surface));display:flex;justify-content:space-between;align-items:center;gap:.5rem;transition:transform .15s,box-shadow .15s,border-color .2s}
+  .ep-result-card:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(79,70,229,.08);border-color:rgba(79,70,229,.25)}
+  .ep-result-card .txt{overflow:hidden;min-width:0}
+  .ep-result-card .lbl{font-size:.68rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;letter-spacing:.04em}
+  .ep-result-card .val{font-family:ui-monospace,'Courier New',monospace;font-size:.92rem;word-break:break-all;margin-top:.15rem}
+  .ep-result-card button{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:8px;padding:.35rem .55rem;cursor:pointer;font-size:.85rem;flex-shrink:0;transition:background .2s,border-color .2s}
+  .ep-result-card button:hover{border-color:var(--accent);background:var(--accent-soft)}
+
+  .ep-tz-row{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.65rem;align-items:center;padding:.65rem .75rem;border-radius:16px;border:1px solid var(--border);background:var(--surface)}
+  .ep-tz-row select,.ep-tz-row input{border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:10px;padding:.45rem .65rem;font-family:inherit;font-size:.86rem}
+  .ep-tz-quick{border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:999px;padding:.35rem .75rem;cursor:pointer;font-size:.78rem;font-weight:600;font-family:inherit;transition:background .2s,border-color .2s,color .2s}
+  .ep-tz-quick:hover{border-color:var(--accent)}
+  .ep-tz-quick.is-active{background:linear-gradient(135deg,var(--accent),#7c3aed);color:#fff;border-color:transparent;box-shadow:0 2px 8px rgba(79,70,229,.3)}
+  .ep-pinned-list{display:flex;flex-direction:column;gap:.45rem;margin-top:.65rem}
+  .ep-pinned-item{border:1px solid var(--border);border-radius:12px;padding:.55rem .75rem;display:flex;justify-content:space-between;align-items:center;font-family:ui-monospace,monospace;font-size:.86rem;background:var(--surface-strong);gap:.5rem;flex-wrap:wrap}
+  .ep-pinned-item button{border:none;background:transparent;color:var(--text-muted);cursor:pointer;font-size:1rem;padding:.2rem .4rem;border-radius:6px}
+  .ep-pinned-item button:hover{background:rgba(239,68,68,.1);color:#ef4444}
+  .ep-dst-flag{font-size:.72rem;padding:.12rem .5rem;border-radius:999px;background:rgba(59,130,246,.15);color:#1d4ed8;font-weight:700}
+  [data-theme="dark"] .ep-dst-flag{color:#93c5fd}
+  .ep-ambiguous-box{font-size:.85rem;background:rgba(59,130,246,.08);color:#1d4ed8;border:1px solid rgba(59,130,246,.22);border-radius:14px;padding:.85rem 1rem;margin:.6rem 0;line-height:1.55}
+  [data-theme="dark"] .ep-ambiguous-box{color:#93c5fd;background:rgba(59,130,246,.12)}
+  .ep-ambiguous-box button{margin:.3rem .4rem 0 0;border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:10px;padding:.35rem .75rem;cursor:pointer;font-weight:600;font-family:inherit;transition:border-color .2s,background .2s}
+  .ep-ambiguous-box button:hover{border-color:var(--accent);background:var(--accent-soft)}
+
+  .ep-live-display{text-align:center;padding:1.75rem 1rem;margin:.5rem 0;border-radius:22px;border:1px solid var(--border);background:radial-gradient(circle at 50% 0%,rgba(79,70,229,.08),transparent 55%),var(--surface)}
+  .ep-live-num{font-size:clamp(2.2rem,6vw,3.6rem);font-weight:900;font-family:ui-monospace,'Courier New',monospace;line-height:1.1;background:linear-gradient(135deg,var(--accent),#16a34a);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .ep-live-sub{font-size:1rem;color:var(--text-muted);font-family:ui-monospace,'Courier New',monospace}
+  .ep-progress-track{height:10px;border-radius:999px;background:var(--surface-strong);border:1px solid var(--border);overflow:hidden;margin:.35rem 0}
+  .ep-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),#16a34a);transition:width .2s linear;border-radius:999px}
+  .ep-milestone-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.65rem;margin-top:.85rem}
+  .ep-milestone-card{border:1px solid var(--border);border-radius:16px;padding:.85rem 1rem;background:var(--surface-strong);transition:transform .15s,box-shadow .15s}
+  .ep-milestone-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(79,70,229,.08)}
+  .ep-milestone-card .val{font-weight:800;font-family:ui-monospace,monospace;font-size:.95rem}
+  .ep-milestone-card .cd{font-size:.8rem;color:var(--text-muted);margin-top:.25rem;line-height:1.45}
+
+  .ep-batch-textarea{width:100%;min-height:180px;border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:14px;padding:.85rem;font-family:ui-monospace,monospace;font-size:.88rem;resize:vertical;transition:border-color .2s,box-shadow .2s}
+  .ep-batch-textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .ep-batch-table{width:100%;border-collapse:collapse;font-size:.84rem;margin-top:.7rem;border-radius:14px;overflow:hidden;border:1px solid var(--border)}
+  .ep-batch-table th,.ep-batch-table td{border-bottom:1px solid var(--border);padding:.5rem .7rem;text-align:left;font-family:ui-monospace,monospace}
+  .ep-batch-table th{color:var(--text-muted);font-size:.72rem;text-transform:uppercase;background:var(--surface-strong)}
+  .ep-batch-table tr.is-failed td{color:#ef4444}
+
+  .ep-arith-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .ep-arith-grid>div{padding:1rem;border-radius:20px;border:1px solid var(--border);background:var(--surface)}
+  @media (max-width:700px){.ep-arith-grid{grid-template-columns:1fr}}
+
+  .ep-snippets{margin-top:.85rem}
+  .ep-snippet-toggle{border:1px dashed var(--border);background:var(--surface-strong);color:var(--text);border-radius:12px;padding:.65rem .9rem;font-weight:700;cursor:pointer;width:100%;text-align:left;font-family:inherit;font-size:.88rem;transition:border-color .2s,background .2s}
+  .ep-snippet-toggle:hover{border-color:var(--accent);background:var(--accent-soft)}
+  .ep-snippet-body{display:none;margin-top:.6rem}
+  .ep-snippet-body.is-open{display:block;animation:epFadeIn .25s ease}
+  .ep-snippet-card{border:1px solid var(--border);border-radius:14px;margin-bottom:.5rem;overflow:hidden}
+  .ep-snippet-card .hdr{display:flex;justify-content:space-between;align-items:center;padding:.45rem .75rem;background:var(--surface-strong);font-weight:700;font-size:.8rem}
+  .ep-snippet-card pre{margin:0;padding:.75rem .9rem;background:#0f172a;color:#e2e8f0;overflow-x:auto;font-size:.82rem}
+  .ep-snippet-card button{border:none;background:var(--accent);color:#fff;border-radius:8px;padding:.25rem .6rem;cursor:pointer;font-size:.76rem;font-weight:700}
+
+  .ep-recent-list{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}
+  .ep-recent-chip{border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:999px;padding:.3rem .75rem;cursor:pointer;font-size:.78rem;font-family:ui-monospace,monospace;font-weight:600;transition:border-color .2s,background .2s}
+  .ep-recent-chip:hover{border-color:var(--accent);background:var(--accent-soft)}
+
+  .ep-card .primary-btn,.ep-card .secondary-btn{border-radius:12px;font-weight:700;transition:transform .15s,box-shadow .15s}
+  .ep-card .primary-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(79,70,229,.3)}
+
+  .ep-faq-section,.ep-seo{max-width:1280px;margin:1.5rem auto 0;padding:clamp(1.1rem,2.5vw,1.75rem);border-radius:24px;border:1px solid var(--border);background:rgba(255,255,255,.85)}
+  [data-theme="dark"] .ep-faq-section,[data-theme="dark"] .ep-seo{background:rgba(15,23,42,.75)}
+  .ep-faq-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem;margin-top:.85rem}
+  .ep-faq-grid details{padding:.85rem;border-radius:14px;border:1px solid var(--border);background:var(--surface-strong);transition:border-color .2s}
+  .ep-faq-grid details[open]{border-color:rgba(79,70,229,.35)}
+  .ep-faq-grid summary{cursor:pointer;font-weight:700;line-height:1.4}
+  .ep-faq-grid p{margin:.55rem 0 0;color:var(--text-muted);line-height:1.6;font-size:.92rem}
+  .ep-seo h2{margin:0 0 .75rem;font-size:clamp(1.25rem,3vw,1.6rem)}
+  .ep-seo h3{margin:1.25rem 0 .5rem;font-size:1rem;font-weight:800}
+  .ep-seo p,.ep-seo li{color:var(--text-muted);line-height:1.7;font-size:.92rem}
+  .ep-seo ul,.ep-seo ol{padding-left:1.25rem;margin:.5rem 0 0}
+  .ep-seo li{margin-bottom:.35rem}
+  .ep-feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.65rem;margin:1rem 0}
+  .ep-feature-chip{padding:.75rem .9rem;border-radius:14px;border:1px solid var(--border);background:var(--surface-strong);font-size:.86rem;line-height:1.5}
+  .ep-feature-chip strong{display:block;color:var(--text);margin-bottom:.2rem;font-size:.88rem}
+  .ep-related{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+  .ep-related a{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .85rem;border-radius:999px;border:1px solid var(--border);background:var(--surface-strong);color:var(--text);font-size:.84rem;font-weight:600;text-decoration:none;transition:border-color .2s,background .2s}
+  .ep-related a:hover{border-color:var(--accent);background:var(--accent-soft)}
+
+  @media(max-width:640px){
+    .ep-faq-grid{grid-template-columns:1fr}
+    .ep-privacy-banner{border-radius:14px}
+    .ep-tabs{width:100%;border-radius:16px}
+    .ep-tab{flex:1;text-align:center;padding:.5rem .55rem;font-size:.78rem}
+  }
+</style>
+
+<meta name="theme-color" content="#4f46e5" />
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+<meta name="author" content="ToolAdda" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="X-Content-Type-Options" content="nosniff" />
+<link rel="canonical" href="https://tooladda.online/epoch-converter.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+<link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+<meta property="og:title" content="Epoch / Unix Timestamp Converter — Free Online | ToolAdda" />
+<meta property="og:description" content="Auto-detects seconds/ms/µs/ns, converts to any timezone, batch-converts whole logs, and covers FILETIME, .NET Ticks, Excel serial dates, Julian Day, and GPS time." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://tooladda.online/epoch-converter.html" />
+<meta property="og:site_name" content="ToolAdda" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:image" content="https://tooladda.online/assets/images/og/epoch-converter.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Epoch / Unix Timestamp Converter — Free Online — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="Epoch / Unix Timestamp Converter — Free Online — free online tool on ToolAdda, runs in your browser with no sign-up." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Epoch / Unix Timestamp Converter — Free Online | ToolAdda" />
+<meta name="twitter:description" content="Auto-detect seconds/ms/µs/ns, convert to any IANA timezone with DST, batch-convert logs, FILETIME, .NET Ticks, Excel serial — free, offline PWA." />
+<meta name="twitter:image" content="https://tooladda.online/assets/images/og/epoch-converter.jpg" />
+
+<script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://tooladda.online/#website",
+      "name": "ToolAdda",
+      "alternateName": [
+        "Tool Adda",
+        "Tools Adda",
+        "ToolsAdda",
+        "Tooladda",
+        "ToolAdda.online"
+      ],
+      "url": "https://tooladda.online/",
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "alternateName": [
+        "Tool Adda",
+        "Tools Adda",
+        "ToolsAdda",
+        "Tooladda",
+        "ToolAdda.online"
+      ],
+      "url": "https://tooladda.online/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tooladda.online/assets/images/logo.svg"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/epoch-converter.html#webpage",
+      "url": "https://tooladda.online/epoch-converter.html",
+      "name": "Epoch / Unix Timestamp Converter — Free Online | ToolAdda",
+      "description": "Convert Unix/epoch timestamps to human-readable dates and back. Auto-detects seconds, milliseconds, microseconds, and nanoseconds; supports any IANA timezone with DST, batch log conversion, date arithmetic, and developer formats like FILETIME and .NET Ticks.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://tooladda.online/epoch-converter.html#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://tooladda.online/epoch-converter.html#softwareapplication"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://tooladda.online/epoch-converter.html#softwareapplication",
+      "name": "Epoch / Unix Timestamp Converter",
+      "url": "https://tooladda.online/epoch-converter.html",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "description": "Free online Unix epoch timestamp converter with automatic unit detection, IANA timezone conversion with daylight saving time handling, batch log annotation, date arithmetic, live clock, and support for FILETIME, .NET Ticks, Excel serial dates, Julian Day, and GPS time.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Auto-detect seconds / milliseconds / microseconds / nanoseconds",
+        "Any IANA timezone with real DST handling",
+        "Batch timestamp and log conversion",
+        "Live Unix clock with freeze and copy",
+        "Date → timestamp with natural language parsing",
+        "Date arithmetic and duration converter",
+        "FILETIME, .NET Ticks, Excel serial, Julian Day, GPS time",
+        "Developer code snippets in 12 languages",
+        "Pinned timezone comparisons",
+        "Offline-capable PWA — nothing uploaded"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tooladda.online/epoch-converter.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Epoch Converter"
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to convert a Unix timestamp to a readable date",
+      "description": "Use ToolAdda's free epoch converter to turn a Unix timestamp into a human-readable date in any timezone, entirely in your browser.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Paste your timestamp",
+          "text": "Open the Timestamp → Date tab and paste your Unix timestamp. Leave unit set to Auto-detect — the tool reads digit count to distinguish seconds (10 digits) from milliseconds (13 digits)."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Pick a timezone",
+          "text": "Click a quick timezone chip (Local, UTC, Kolkata, New York, etc.) or search any IANA timezone. Pin zones you compare often."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Read the results",
+          "text": "View UTC, ISO 8601, SQL DATETIME, relative time, and local time with DST indicator. Click the copy button on any result card."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Batch convert logs",
+          "text": "Switch to the Batch tab to convert a column of timestamps or annotate an entire log file in place, then export CSV or copy TSV."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Convert date to timestamp",
+          "text": "Use the Date → Timestamp tab with the datetime picker or natural language input like \"27/07/2026 2:30pm\" to get seconds and milliseconds."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a Unix timestamp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A Unix (epoch) timestamp is the number of seconds (or milliseconds, in many APIs) elapsed since 00:00:00 UTC on 1 January 1970, not counting leap seconds. It's a compact, timezone-independent way to represent a single instant in time."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Seconds or milliseconds - how do I tell?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Count the digits. A current-era timestamp in seconds has 10 digits (1753632000); in milliseconds it has 13 (1753632000000). This tool auto-detects the unit from digit count and shows exactly what it detected, so a wrong guess is obvious immediately."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the Year 2038 problem?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Many older systems store Unix time as a signed 32-bit integer, which overflows at 2,147,483,647 seconds - 03:14:07 UTC on 19 January 2038. After that instant those systems wrap to a negative number and read it as a date in 1901. 64-bit systems aren't affected, but plenty of embedded/legacy systems still are."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does my converted time look an hour off?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Almost always daylight saving time - the same UTC instant maps to a different local offset depending on the date because clocks shift on DST transition dates. Check the DST indicator next to your selected timezone."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this tool upload my timestamps?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. All conversion runs 100% in your browser. Timestamps, dates, and log files never leave your device. The tool also works offline as a Progressive Web App once cached."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What formats besides Unix does it support?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Windows FILETIME, .NET Ticks, Mac/Apple absolute time, Excel serial dates, Julian Date, Modified Julian Date, GPS time, and Unix hex - all synchronized to the same instant in the Other Formats tab."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I batch-convert a server log?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The Batch tab accepts a column of timestamps, converts dates to timestamps, or annotates an entire log snippet by appending human-readable dates next to each detected timestamp."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I convert a date to a timestamp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use the Date → Timestamp tab with the datetime picker or type natural language like \"next friday 3pm\". Select the timezone the date is in, then click Convert to get seconds, milliseconds, and ISO 8601 output."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/epoch-converter.html#webpage",
+      "url": "https://tooladda.online/epoch-converter.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-27",
+      "dateModified": "2026-07-29",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header">
+  <div class="container navbar">
+    <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+    <nav class="nav-links" aria-label="Primary"><a href="/">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy</a></nav>
+    <div class="nav-actions">
+      <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+        <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+          <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+          <path d="M3.1 16.9h10.8" />
+          <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+        </svg>
+        <span class="ta-donate-label">Buy me a coffee</span>
+      </a>
+      <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+      <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+  <div class="ep-shell">
+    <aside class="ta-support" aria-label="Support ToolAdda">
+      <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+      <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+      <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+        <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+        <span class="ta-donate-label">Buy me a coffee</span>
+      </a>
+    </aside>
+
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>›</span><a href="/">Developer Tools</a><span>›</span><span>Epoch Converter</span></nav>
+      <div class="content-card ep-card">
+        <span class="ep-badge">🕐 Developer Tools · Offline PWA</span>
+        <h1 class="section-title ep-title">Epoch / Unix Timestamp Converter</h1>
+        <p class="ep-lead">Convert Unix timestamps to dates and back — with automatic seconds/milliseconds/microseconds/nanoseconds detection, any-timezone conversion with real DST handling, batch log processing, live clock, and a dozen developer time formats you actually run into.</p>
+        <div class="ep-feature-strip" aria-hidden="true">
+          <span class="ep-feature-pill">Auto s / ms / µs / ns</span>
+          <span class="ep-feature-pill">Any IANA timezone</span>
+          <span class="ep-feature-pill">Batch &amp; log annotate</span>
+          <span class="ep-feature-pill">FILETIME · .NET · Excel</span>
+          <span class="ep-feature-pill">12 code snippets</span>
+        </div>
+        <div class="ep-privacy-banner">🔒 Runs entirely in your browser and works offline — nothing is ever uploaded.</div>
+        <div class="ep-degraded-banner" data-degraded-banner>⚠️ The timezone library didn't load (no internet connection?) — running in a reduced mode with UTC and your local timezone only. Everything else still works.</div>
+
+        <div class="ep-tabs" role="tablist">
+          <button type="button" class="ep-tab is-active" data-ep-tab="ts2date">🔢 Timestamp → Date</button>
+          <button type="button" class="ep-tab" data-ep-tab="date2ts">📅 Date → Timestamp</button>
+          <button type="button" class="ep-tab" data-ep-tab="live">⏱️ Live Now</button>
+          <button type="button" class="ep-tab" data-ep-tab="batch">📋 Batch</button>
+          <button type="button" class="ep-tab" data-ep-tab="arithmetic">➕ Date Arithmetic</button>
+          <button type="button" class="ep-tab" data-ep-tab="other">🗂️ Other Formats</button>
+        </div>
+
+        <!-- ================= TAB 1: TIMESTAMP -> DATE ================= -->
+        <div class="ep-panel is-active" data-ep-panel="ts2date">
+          <div class="ep-input-row">
+            <input type="text" data-ts-input placeholder="Paste a timestamp, e.g. 1753632000" autocomplete="off" spellcheck="false" />
+            <select class="ep-unit-select" data-ts-unit>
+              <option value="auto" selected>Auto-detect</option>
+              <option value="seconds">Seconds</option>
+              <option value="milliseconds">Milliseconds</option>
+              <option value="microseconds">Microseconds</option>
+              <option value="nanoseconds">Nanoseconds</option>
+            </select>
+          </div>
+          <p class="ep-detect-note" data-ts-detect-note>&nbsp;</p>
+          <div class="ep-warning-box" data-ts-warning></div>
+          <div class="ep-error-box" data-ts-error></div>
+
+          <div class="ep-tz-row">
+            <span style="font-size:0.82rem;color:var(--text-muted);align-self:center;">Convert to:</span>
+            <button type="button" class="ep-tz-quick is-active" data-tz-quick="local">Local</button>
+            <button type="button" class="ep-tz-quick" data-tz-quick="UTC">UTC</button>
+            <button type="button" class="ep-tz-quick" data-tz-quick="Asia/Kolkata">Kolkata</button>
+            <button type="button" class="ep-tz-quick" data-tz-quick="America/New_York">New York</button>
+            <button type="button" class="ep-tz-quick" data-tz-quick="Europe/London">London</button>
+            <button type="button" class="ep-tz-quick" data-tz-quick="Asia/Tokyo">Tokyo</button>
+            <button type="button" class="ep-tz-quick" data-tz-quick="America/Los_Angeles">Los Angeles</button>
+            <button type="button" class="ep-tz-quick" data-tz-quick="Australia/Sydney">Sydney</button>
+            <input type="text" list="ep-tz-list" placeholder="Search any IANA timezone..." data-tz-search style="min-width:220px;" />
+            <datalist id="ep-tz-list"></datalist>
+            <button type="button" class="secondary-btn" data-tz-pin>📌 Pin this zone</button>
+          </div>
+
+          <div class="ep-result-grid" data-ts-results></div>
+
+          <div class="ep-pinned-list" data-pinned-list></div>
+
+          <div class="ep-snippets">
+            <button type="button" class="ep-snippet-toggle" data-snippet-toggle>💻 Developer code snippets ▾</button>
+            <div class="ep-snippet-body" data-snippet-body></div>
+          </div>
+
+          <div style="margin-top:0.8rem;">
+            <p class="tag">Recent conversions</p>
+            <div class="ep-recent-list" data-recent-list></div>
+          </div>
+        </div>
+
+        <!-- ================= TAB 2: DATE -> TIMESTAMP ================= -->
+        <div class="ep-panel" data-ep-panel="date2ts">
+          <div class="ep-input-row">
+            <input type="datetime-local" data-date-picker step="1" />
+            <input type="text" data-date-freetext placeholder='Or type: "27/07/2026 2:30pm", "next friday 3pm", "2026-07-27T14:30+05:30"...' style="flex:2;" />
+          </div>
+          <div class="ep-tz-row">
+            <span style="font-size:0.82rem;color:var(--text-muted);align-self:center;">This time is in:</span>
+            <select data-date-tz style="min-width:220px;"></select>
+            <label style="display:flex;align-items:center;gap:0.3rem;font-size:0.8rem;"><input type="checkbox" data-date-format-pref /> Prefer DD/MM (not MM/DD) for ambiguous dates</label>
+          </div>
+          <div class="ep-ambiguous-box" data-date-ambiguous></div>
+          <div class="ep-error-box" data-date-error></div>
+          <button type="button" class="primary-btn" data-date-convert>Convert to timestamp</button>
+
+          <div class="ep-result-grid" data-date-results></div>
+        </div>
+
+        <!-- ================= TAB 3: LIVE ================= -->
+        <div class="ep-panel" data-ep-panel="live">
+          <div class="ep-live-display">
+            <div class="ep-live-num" data-live-seconds>0</div>
+            <div class="ep-live-sub">seconds since epoch</div>
+            <div class="ep-live-sub" data-live-ms style="margin-top:0.4rem;">0 ms</div>
+            <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:0.8rem;">
+              <button type="button" class="secondary-btn" data-live-freeze>⏸️ Freeze</button>
+              <button type="button" class="secondary-btn" data-live-copy-s>📋 Copy seconds</button>
+              <button type="button" class="secondary-btn" data-live-copy-ms>📋 Copy ms</button>
+            </div>
+          </div>
+          <div class="ep-result-grid" data-live-tz-grid></div>
+          <div>
+            <p class="stg-hint" style="font-size:0.8rem;color:var(--text-muted);">Current second progress</p>
+            <div class="ep-progress-track"><div class="ep-progress-fill" data-live-sec-progress></div></div>
+            <p class="stg-hint" style="font-size:0.8rem;color:var(--text-muted);">Current minute progress</p>
+            <div class="ep-progress-track"><div class="ep-progress-fill" data-live-min-progress></div></div>
+          </div>
+          <div class="ep-milestone-grid" data-milestone-grid></div>
+        </div>
+
+        <!-- ================= TAB 4: BATCH ================= -->
+        <div class="ep-panel" data-ep-panel="batch">
+          <div class="ep-tz-row">
+            <button type="button" class="ep-tz-quick is-active" data-batch-mode="ts2date">Timestamps → Dates</button>
+            <button type="button" class="ep-tz-quick" data-batch-mode="date2ts">Dates → Timestamps</button>
+            <button type="button" class="ep-tz-quick" data-batch-mode="annotate">Annotate log in place</button>
+          </div>
+          <textarea class="ep-batch-textarea" data-batch-input placeholder="Paste a column of timestamps, dates, or a whole log snippet..."></textarea>
+          <div class="ep-tz-row">
+            <select data-batch-tz style="min-width:200px;"></select>
+            <button type="button" class="primary-btn" data-batch-run>Convert</button>
+            <button type="button" class="secondary-btn" data-batch-csv>⬇️ CSV</button>
+            <button type="button" class="secondary-btn" data-batch-tsv>📋 Copy as TSV</button>
+          </div>
+          <p class="ep-detect-note" data-batch-summary>&nbsp;</p>
+          <div style="overflow-x:auto;"><table class="ep-batch-table" data-batch-table></table></div>
+          <pre class="ep-snippet-card" data-batch-annotated style="display:none;padding:0.8rem;white-space:pre-wrap;"></pre>
+        </div>
+
+        <!-- ================= TAB 5: ARITHMETIC ================= -->
+        <div class="ep-panel" data-ep-panel="arithmetic">
+          <div class="ep-arith-grid">
+            <div>
+              <p class="tag">Difference between two instants</p>
+              <div class="ep-input-row"><input type="datetime-local" step="1" data-diff-a /></div>
+              <div class="ep-input-row"><input type="datetime-local" step="1" data-diff-b /></div>
+              <button type="button" class="primary-btn" data-diff-compute>Compute difference</button>
+              <div class="ep-result-grid" data-diff-results></div>
+            </div>
+            <div>
+              <p class="tag">Add / subtract from a date</p>
+              <div class="ep-input-row"><input type="datetime-local" step="1" data-addsub-base /></div>
+              <div class="ep-input-row">
+                <input type="number" value="1" data-addsub-amount style="max-width:100px;" />
+                <select data-addsub-unit><option value="seconds">seconds</option><option value="minutes">minutes</option><option value="hours">hours</option><option value="days" selected>days</option><option value="weeks">weeks</option><option value="months">months</option><option value="years">years</option></select>
+                <select data-addsub-sign><option value="1">Add</option><option value="-1">Subtract</option></select>
+              </div>
+              <button type="button" class="primary-btn" data-addsub-compute>Calculate</button>
+              <div class="ep-result-grid" data-addsub-results></div>
+            </div>
+          </div>
+          <p class="tag" style="margin-top:1rem;">Duration converter</p>
+          <div class="ep-input-row">
+            <input type="text" placeholder='e.g. "1h 30m 20s" or a number of seconds' data-duration-input />
+            <button type="button" class="secondary-btn" data-duration-convert>Convert</button>
+          </div>
+          <div class="ep-result-grid" data-duration-results></div>
+        </div>
+
+        <!-- ================= TAB 6: OTHER FORMATS ================= -->
+        <div class="ep-panel" data-ep-panel="other">
+          <p class="pdf-helper-text">Enter a value in any field — the rest update automatically, all referring to the same instant.</p>
+          <div class="ep-result-grid" data-other-formats></div>
+        </div>
+
+        </div>
+
+
+        <section class="ep-seo" aria-labelledby="ep-about-title">
+          <h2 id="ep-about-title">Free Online Unix Epoch Timestamp Converter</h2>
+          <p>A <strong>Unix timestamp</strong> (also called <strong>epoch time</strong>) counts seconds since 1 January 1970 00:00:00 UTC. APIs, databases, log files, and JWT tokens all use it — but the same instant might appear as 10-digit seconds, 13-digit milliseconds, or buried inside a server log. ToolAdda's converter auto-detects the unit, shows every format developers need, and converts to any IANA timezone with proper daylight saving time handling — all client-side.</p>
+
+          <h3>What makes this converter different</h3>
+          <div class="ep-feature-grid">
+            <div class="ep-feature-chip"><strong>🔢 Smart unit detection</strong>Counts digits to distinguish seconds, ms, µs, and ns — warns if the year looks implausible and suggests a better unit.</div>
+            <div class="ep-feature-chip"><strong>🌍 Real timezone math</strong>Luxon-powered IANA zones with DST indicators, pinned comparisons, and ambiguous/nonexistent local time handling.</div>
+            <div class="ep-feature-chip"><strong>📋 Batch &amp; log annotate</strong>Paste a column of timestamps or an entire log — convert in bulk or append readable dates inline.</div>
+            <div class="ep-feature-chip"><strong>⏱️ Live Unix clock</strong>Watch seconds tick, freeze the clock, copy seconds or ms, and track milestones like the Year 2038 problem.</div>
+            <div class="ep-feature-chip"><strong>🗂️ Developer formats</strong>FILETIME, .NET Ticks, Excel serial, Julian Day, GPS time, Mac absolute time, and Unix hex.</div>
+            <div class="ep-feature-chip"><strong>💻 Code snippets</strong>One-click copy for JavaScript, Python, Java, C#, Go, Rust, SQL, Bash, and more.</div>
+          </div>
+
+          <h3>How to convert a Unix timestamp to a date</h3>
+          <ol>
+            <li>Open <strong>Timestamp → Date</strong> and paste your value (e.g. <code>1753632000</code>). Keep <strong>Auto-detect</strong> selected.</li>
+            <li>Click a timezone chip or search any IANA zone. Pin zones you compare often.</li>
+            <li>Read UTC, ISO 8601, SQL, relative time, and local time with DST status. Copy any result with one click.</li>
+            <li>For logs: switch to <strong>Batch</strong> → paste lines → export CSV or annotate the log in place.</li>
+            <li>To go the other way: use <strong>Date → Timestamp</strong> with the picker or natural language like <code>27/07/2026 2:30pm</code>.</li>
+          </ol>
+
+          <h3>Related developer tools</h3>
+          <div class="ep-related">
+            <a href="jwt-debugger.html">JWT Debugger</a>
+            <a href="jwt-encoder.html">JWT Encoder</a>
+            <a href="password-strength-checker.html">Password Strength Checker</a>
+            <a href="unit-converter.html">Unit Converter</a>
+            <a href="whatsapp-chat-analyzer.html">WhatsApp Chat Analyzer</a>
+            <a href="online-notepad.html">Online Notepad</a>
+          </div>
+        </section>
+
+        <section class="ep-faq-section faq-section" aria-labelledby="ep-faq-title">
+          <h2 class="section-title" id="ep-faq-title">Frequently asked questions</h2>
+          <div class="ep-faq-grid">
+            <details class="faq-item"><summary><strong>What is a Unix timestamp?</strong></summary><p>A Unix (epoch) timestamp is the number of seconds (or milliseconds, in many APIs) elapsed since 00:00:00 UTC on 1 January 1970, not counting leap seconds. It's a compact, timezone-independent way to represent a single instant in time.</p></details>
+            <details class="faq-item"><summary><strong>Seconds or milliseconds — how do I tell?</strong></summary><p>Count the digits. A current-era timestamp in seconds has 10 digits (1753632000); in milliseconds it has 13 (1753632000000). This tool auto-detects the unit from digit count and shows exactly what it detected, so a wrong guess is obvious immediately.</p></details>
+            <details class="faq-item"><summary><strong>What is the Year 2038 problem?</strong></summary><p>Many older systems store Unix time as a signed 32-bit integer, which overflows at 2,147,483,647 seconds — 03:14:07 UTC on 19 January 2038. After that instant those systems wrap to a negative number and read it as a date in 1901. 64-bit systems aren't affected, but plenty of embedded/legacy systems still are.</p></details>
+            <details class="faq-item"><summary><strong>Why does my converted time look an hour off?</strong></summary><p>Almost always daylight saving time — the same UTC instant maps to a different local offset depending on the date because clocks shift on DST transition dates. Check the DST indicator next to your selected timezone.</p></details>
+            <details class="faq-item"><summary><strong>Does this upload my data?</strong></summary><p>No. All conversion runs 100% in your browser. Timestamps, dates, and log files never leave your device. Works offline once cached as a PWA.</p></details>
+            <details class="faq-item"><summary><strong>What formats besides Unix does it support?</strong></summary><p>Windows FILETIME, .NET Ticks, Mac/Apple absolute time, Excel serial dates, Julian Date, Modified Julian Date, GPS time, and Unix hex — all synchronized to the same instant in the Other Formats tab.</p></details>
+            <details class="faq-item"><summary><strong>Does this tool upload my timestamps?</strong></summary><p>No. All conversion runs 100% in your browser. Timestamps, dates, and log files never leave your device. The tool also works offline as a Progressive Web App once cached.</p></details>
+            <details class="faq-item"><summary><strong>Can I batch-convert a server log?</strong></summary><p>Yes. The Batch tab accepts a column of timestamps, converts dates to timestamps, or annotates an entire log snippet by appending human-readable dates next to each detected timestamp.</p></details>
+            <details class="faq-item"><summary><strong>How do I convert a date to a timestamp?</strong></summary><p>Use the Date → Timestamp tab with the datetime picker or type natural language like "next friday 3pm". Select the timezone the date is in, then click Convert to get seconds, milliseconds, and ISO 8601 output.</p></details>
+          </div>
+        </section>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a><p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p></div>
+    <div><h3>Explore</h3><div class="footer-links"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms</a></div></div>
+    <div><h3>Related</h3><div class="footer-links"><a href="jwt-debugger.html">JWT Debugger</a><a href="unit-converter.html">Unit Converter</a><a href="password-strength-checker.html">Password Checker</a></div></div>
+    <div><h3>Stay updated</h3><p>© <span data-year></span> ToolAdda. All rights reserved.</p></div>
+  </div>
+</footer>
+
+<script src="assets/js/app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/3.4.4/luxon.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ============================================================
+     PURE LOGIC (verified independently in Node before transplant)
+     ============================================================ */
+  function cleanNumericInput(raw) { return String(raw).trim().replace(/^["']|["']$/g, '').replace(/,/g, '').trim(); }
+  function digitCount(cleanedStr) { return cleanedStr.replace(/^-/, '').split('.')[0].length; }
+  function detectUnit(cleanedStr) {
+    if (!/^-?\d+(\.\d+)?$/.test(cleanedStr)) return null;
+    var digits = digitCount(cleanedStr);
+    if (digits <= 10) return 'seconds'; if (digits <= 13) return 'milliseconds'; if (digits <= 16) return 'microseconds'; return 'nanoseconds';
+  }
+  function toUnixMsBigInt(cleanedStr, unit) {
+    var isFloat = cleanedStr.indexOf('.') !== -1;
+    if (unit === 'nanoseconds' || (!isFloat && digitCount(cleanedStr) >= 16)) {
+      var bi = BigInt(cleanedStr.split('.')[0]);
+      if (unit === 'seconds') return bi * 1000n;
+      if (unit === 'milliseconds') return bi;
+      if (unit === 'microseconds') return bi / 1000n;
+      return bi / 1000000n;
+    }
+    var num = parseFloat(cleanedStr);
+    if (unit === 'seconds') return num * 1000;
+    if (unit === 'milliseconds') return num;
+    if (unit === 'microseconds') return num / 1000;
+    return num / 1000000;
+  }
+  function msToPlausibleYear(ms) { var msNum = typeof ms === 'bigint' ? Number(ms) : ms; return new Date(msNum).getUTCFullYear(); }
+  function isPlausibleYear(year) { return year >= 1600 && year <= 2400; }
+  function suggestBetterUnit(cleanedStr, detectedUnit) {
+    var order = ['seconds', 'milliseconds', 'microseconds', 'nanoseconds'];
+    var currentMs = toUnixMsBigInt(cleanedStr, detectedUnit);
+    var currentYear = msToPlausibleYear(currentMs);
+    if (isPlausibleYear(currentYear)) return null;
+    for (var i = 0; i < order.length; i++) {
+      if (order[i] === detectedUnit) continue;
+      var altMs = toUnixMsBigInt(cleanedStr, order[i]);
+      var altYear = msToPlausibleYear(altMs);
+      if (isPlausibleYear(altYear)) return { unit: order[i], year: altYear, ms: altMs };
+    }
+    return null;
+  }
+  function pad(n, len) { return String(n).padStart(len || 2, '0'); }
+  function toSqlDateTime(ms) { var d = new Date(typeof ms === 'bigint' ? Number(ms) : ms); return d.getUTCFullYear() + '-' + pad(d.getUTCMonth() + 1) + '-' + pad(d.getUTCDate()) + ' ' + pad(d.getUTCHours()) + ':' + pad(d.getUTCMinutes()) + ':' + pad(d.getUTCSeconds()); }
+  function dayOfYear(d) { var start = Date.UTC(d.getUTCFullYear(), 0, 1); return Math.floor((Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) - start) / 86400000) + 1; }
+  function isoWeekNumber(d) {
+    var date = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+    var dayNum = date.getUTCDay() || 7; date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+    var yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+    return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+  }
+  function quarterOf(d) { return Math.floor(d.getUTCMonth() / 3) + 1; }
+  function isLeapYear(year) { return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0; }
+  function formatRelativeTime(deltaSeconds) {
+    var abs = Math.abs(deltaSeconds), future = deltaSeconds < 0;
+    var units = [{ s: 31536000, name: 'year' }, { s: 2592000, name: 'month' }, { s: 604800, name: 'week' }, { s: 86400, name: 'day' }, { s: 3600, name: 'hour' }, { s: 60, name: 'minute' }, { s: 1, name: 'second' }];
+    if (abs < 5) return 'just now';
+    for (var i = 0; i < units.length; i++) { if (abs >= units[i].s) { var val = Math.floor(abs / units[i].s); var label = val + ' ' + units[i].name + (val === 1 ? '' : 's'); return future ? 'in ' + label : label + ' ago'; } }
+    return 'just now';
+  }
+  var FILETIME_DIFF_100NS = 116444736000000000n, DOTNET_TICKS_DIFF = 621355968000000000n, MAC_EPOCH_DIFF_SECONDS = 978307200, EXCEL_EPOCH_DAYS = 25569, GPS_EPOCH_DIFF_SECONDS = 315964800, GPS_LEAP_SECONDS = 18, JD_AT_UNIX_EPOCH = 2440587.5;
+  function unixMsToFiletime(ms) { return BigInt(Math.round(ms)) * 10000n + FILETIME_DIFF_100NS; }
+  function filetimeToUnixMs(filetime) { return Number((BigInt(filetime) - FILETIME_DIFF_100NS) / 10000n); }
+  function unixMsToDotnetTicks(ms) { return BigInt(Math.round(ms)) * 10000n + DOTNET_TICKS_DIFF; }
+  function dotnetTicksToUnixMs(ticks) { return Number((BigInt(ticks) - DOTNET_TICKS_DIFF) / 10000n); }
+  function unixMsToMacTime(ms) { return ms / 1000 - MAC_EPOCH_DIFF_SECONDS; }
+  function macTimeToUnixMs(mac) { return (mac + MAC_EPOCH_DIFF_SECONDS) * 1000; }
+  function unixMsToExcelSerial(ms) { return ms / 86400000 + EXCEL_EPOCH_DAYS; }
+  function excelSerialToUnixMs(serial) { return (serial - EXCEL_EPOCH_DAYS) * 86400000; }
+  function unixMsToGpsSeconds(ms) { return ms / 1000 - GPS_EPOCH_DIFF_SECONDS + GPS_LEAP_SECONDS; }
+  function gpsSecondsToUnixMs(gps) { return (gps - GPS_LEAP_SECONDS + GPS_EPOCH_DIFF_SECONDS) * 1000; }
+  function unixMsToJulianDate(ms) { return JD_AT_UNIX_EPOCH + ms / 86400000; }
+  function julianDateToUnixMs(jd) { return (jd - JD_AT_UNIX_EPOCH) * 86400000; }
+  function unixMsToModifiedJulianDate(ms) { return unixMsToJulianDate(ms) - 2400000.5; }
+  function unixSecondsToHex(sec) { return (sec < 0 ? '-' : '') + Math.abs(Math.trunc(sec)).toString(16); }
+  function hexToUnixSeconds(hex) { return parseInt(hex, 16); }
+  function detectDateAmbiguity(str) {
+    var m = /^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/.exec(str.trim());
+    if (!m) return null;
+    var a = parseInt(m[1], 10), b = parseInt(m[2], 10), year = parseInt(m[3], 10);
+    var aCouldBeMonth = a >= 1 && a <= 12, bCouldBeMonth = b >= 1 && b <= 12, aCouldBeDay = a >= 1 && a <= 31, bCouldBeDay = b >= 1 && b <= 31;
+    if (a > 12 && bCouldBeMonth) return { ambiguous: false, interpretation: 'DMY', day: a, month: b, year: year };
+    if (b > 12 && aCouldBeMonth) return { ambiguous: false, interpretation: 'MDY', day: b, month: a, year: year };
+    if (aCouldBeMonth && bCouldBeDay && aCouldBeDay && bCouldBeMonth) return { ambiguous: true, dmy: { day: a, month: b, year: year }, mdy: { day: b, month: a, year: year } };
+    return null;
+  }
+  function parseDurationString(str) {
+    var re = /(\d+(?:\.\d+)?)\s*(y|year|years|mo|month|months|w|week|weeks|d|day|days|h|hour|hours|m|min|minute|minutes|s|sec|second|seconds)/gi;
+    var totalSeconds = 0, matched = false, m;
+    var unitSeconds = { y: 31536000, mo: 2592000, w: 604800, d: 86400, h: 3600, m: 60, s: 1 };
+    function normalizeUnit(u) { u = u.toLowerCase(); if (/^y/.test(u)) return 'y'; if (/^mo/.test(u)) return 'mo'; if (/^w/.test(u)) return 'w'; if (/^d/.test(u)) return 'd'; if (/^h/.test(u)) return 'h'; if (/^mi|^m$/.test(u)) return 'm'; if (/^s/.test(u)) return 's'; return null; }
+    while ((m = re.exec(str))) { var unit = normalizeUnit(m[2]); if (!unit) continue; totalSeconds += parseFloat(m[1]) * unitSeconds[unit]; matched = true; }
+    return matched ? totalSeconds : null;
+  }
+  function formatDurationShort(totalSeconds) {
+    var neg = totalSeconds < 0; var s = Math.abs(Math.round(totalSeconds));
+    var units = [['d', 86400], ['h', 3600], ['m', 60], ['s', 1]]; var parts = [];
+    units.forEach(function (u) { var val = Math.floor(s / u[1]); if (val > 0) { parts.push(val + u[0]); s -= val * u[1]; } });
+    if (!parts.length) parts.push('0s');
+    return (neg ? '-' : '') + parts.join(' ');
+  }
+  function formatDurationLong(totalSeconds) {
+    var neg = totalSeconds < 0; var s = Math.abs(Math.round(totalSeconds));
+    var units = [['year', 31536000], ['month', 2592000], ['day', 86400], ['hour', 3600], ['minute', 60], ['second', 1]]; var parts = [];
+    units.forEach(function (u) { var val = Math.floor(s / u[1]); if (val > 0) { parts.push(val + ' ' + u[0] + (val === 1 ? '' : 's')); s -= val * u[1]; } });
+    if (!parts.length) return '0 seconds';
+    return (neg ? '-' : '') + parts.slice(0, 3).join(', ');
+  }
+  function addCalendarMonthsToComponents(components, months) {
+    var totalMonths = (components.month - 1) + months;
+    var targetYear = components.year + Math.floor(totalMonths / 12);
+    var targetMonth = ((totalMonths % 12) + 12) % 12;
+    var daysInTargetMonth = new Date(targetYear, targetMonth + 1, 0).getDate();
+    var clampedDay = Math.min(components.day, daysInTargetMonth), wasClamped = clampedDay !== components.day;
+    return { components: { year: targetYear, month: targetMonth + 1, day: clampedDay, hour: components.hour || 0, minute: components.minute || 0, second: components.second || 0 }, wasClamped: wasClamped, clampedTo: clampedDay };
+  }
+  function addCalendarYearsToComponents(components, years) { return addCalendarMonthsToComponents(components, years * 12); }
+  function extractTimestampsFromText(text) {
+    var re = /\b(1[5-9]\d{8}|1[5-9]\d{11}|1[5-9]\d{14}|1[5-9]\d{17})\b/g; var results = []; var m;
+    while ((m = re.exec(text))) results.push({ match: m[0], index: m.index });
+    return results;
+  }
+  function annotateLogWithDates(text, formatFn) {
+    return text.replace(/\b(1[5-9]\d{8}|1[5-9]\d{11}|1[5-9]\d{14}|1[5-9]\d{17})\b/g, function (m) {
+      var unit = detectUnit(m); var ms = toUnixMsBigInt(m, unit); var human = formatFn(typeof ms === 'bigint' ? Number(ms) : ms);
+      return m + ' [' + human + ']';
+    });
+  }
+
+  /* ---- timezone-dependent (Luxon) ---- */
+  function zonedInfoFromMs(DateTime, ms, zone) {
+    var dt = DateTime.fromMillis(ms, { zone: zone });
+    if (!dt.isValid) return null;
+    return { iso: dt.toISO(), offsetMinutes: dt.offset, offsetName: dt.offsetNameShort, isInDST: dt.isInDST, zoneName: dt.zoneName, weekday: dt.weekdayLong, formatted: dt.toFormat('cccc, d LLLL yyyy, h:mm a') };
+  }
+  function checkLocalTimeAmbiguity(DateTime, components, zone) {
+    var dt = DateTime.fromObject(components, { zone: zone });
+    if (!dt.isValid) return { kind: 'invalid', reason: dt.invalidReason };
+    var matches = dt.year === components.year && dt.month === components.month && dt.day === components.day && dt.hour === components.hour && dt.minute === (components.minute || 0);
+    if (!matches) return { kind: 'nonexistent', resolved: dt };
+    var altInstant = dt.plus({ hours: 1 }); var altSameZone = altInstant.setZone(zone);
+    if (altSameZone.hour === dt.hour && altSameZone.minute === dt.minute && altSameZone.day === dt.day && altInstant.toMillis() !== dt.toMillis()) return { kind: 'ambiguous', earlier: dt, later: altInstant };
+    return { kind: 'normal', resolved: dt };
+  }
+  function addInZone(DateTime, ms, zone, unit, amount) { var dt = DateTime.fromMillis(ms, { zone: zone }); var out = {}; out[unit] = amount; return dt.plus(out).toMillis(); }
+  function diffHuman(DateTime, msA, msB) {
+    var a = DateTime.fromMillis(Math.min(msA, msB)), b = DateTime.fromMillis(Math.max(msA, msB));
+    var diff = b.diff(a, ['years', 'months', 'days', 'hours', 'minutes', 'seconds']).toObject();
+    var parts = [];
+    if (diff.years) parts.push(Math.floor(diff.years) + ' year' + (Math.floor(diff.years) === 1 ? '' : 's'));
+    if (diff.months) parts.push(Math.floor(diff.months) + ' month' + (Math.floor(diff.months) === 1 ? '' : 's'));
+    if (diff.days) parts.push(Math.floor(diff.days) + ' day' + (Math.floor(diff.days) === 1 ? '' : 's'));
+    if (!parts.length) { if (diff.hours) parts.push(Math.floor(diff.hours) + ' hour' + (Math.floor(diff.hours) === 1 ? '' : 's')); if (diff.minutes) parts.push(Math.floor(diff.minutes) + ' minute' + (Math.floor(diff.minutes) === 1 ? '' : 's')); }
+    return parts.length ? parts.join(', ') : 'less than a minute';
+  }
+
+  if (typeof document === 'undefined' || !document.getElementById) {
+    if (typeof module !== 'undefined') module.exports = { cleanNumericInput, digitCount, detectUnit, toUnixMsBigInt, msToPlausibleYear, isPlausibleYear, suggestBetterUnit, pad, toSqlDateTime, dayOfYear, isoWeekNumber, quarterOf, isLeapYear, formatRelativeTime, unixMsToFiletime, filetimeToUnixMs, unixMsToDotnetTicks, dotnetTicksToUnixMs, unixMsToMacTime, macTimeToUnixMs, unixMsToExcelSerial, excelSerialToUnixMs, unixMsToGpsSeconds, gpsSecondsToUnixMs, unixMsToJulianDate, julianDateToUnixMs, unixMsToModifiedJulianDate, unixSecondsToHex, hexToUnixSeconds, detectDateAmbiguity, parseDurationString, formatDurationShort, formatDurationLong, addCalendarMonthsToComponents, addCalendarYearsToComponents, extractTimestampsFromText, annotateLogWithDates, zonedInfoFromMs, checkLocalTimeAmbiguity, addInZone, diffHuman };
+    return;
+  }
+
+  /* ================= DOM wiring ================= */
+  var LS = { get: function (k, d) { try { var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+  var DateTime = window.luxon ? window.luxon.DateTime : null;
+  if (!DateTime) document.querySelector('[data-degraded-banner]').classList.add('is-shown');
+  var localZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+
+  var state = {
+    pinnedZones: LS.get('ep-pinned-zones', []),
+    preferDMY: LS.get('ep-prefer-dmy', false),
+    recent: LS.get('ep-recent', []),
+    liveFrozen: false, liveFrozenMs: null,
+    currentTsMs: null
+  };
+
+  function escapeHtml(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function copyToClipboard(text) { navigator.clipboard.writeText(text).then(function () { showToast('Copied.'); }).catch(function () {}); }
+  function showToast(message) {
+    var el = document.createElement('div');
+    el.style.cssText = 'position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);background:var(--surface-strong);border:1px solid var(--border);border-radius:10px;padding:0.5rem 1rem;box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:2000;font-size:0.85rem;color:var(--text);';
+    el.textContent = message; document.body.appendChild(el); setTimeout(function () { el.remove(); }, 1800);
+  }
+  function resultCard(label, value, container) {
+    var card = document.createElement('div'); card.className = 'ep-result-card';
+    card.innerHTML = '<div class="txt"><div class="lbl">' + escapeHtml(label) + '</div><div class="val">' + escapeHtml(String(value)) + '</div></div><button type="button">📋</button>';
+    card.querySelector('button').addEventListener('click', function () { copyToClipboard(String(value)); });
+    container.appendChild(card);
+  }
+
+  var COMMON_ZONES = ['UTC', 'Asia/Kolkata', 'Asia/Kathmandu', 'America/New_York', 'America/Los_Angeles', 'America/Chicago', 'Europe/London', 'Europe/Paris', 'Europe/Berlin', 'Asia/Tokyo', 'Asia/Shanghai', 'Asia/Singapore', 'Asia/Dubai', 'Australia/Sydney', 'Pacific/Auckland', 'Pacific/Chatham', 'America/Sao_Paulo', 'Africa/Cairo', 'Africa/Johannesburg'];
+  function populateTzDatalist() {
+    var dl = document.getElementById('ep-tz-list');
+    var zones = (Intl.supportedValuesOf ? Intl.supportedValuesOf('timeZone') : COMMON_ZONES);
+    dl.innerHTML = zones.map(function (z) { return '<option value="' + z + '">'; }).join('');
+  }
+  function populateTzSelect(selectEl) {
+    var zones = (Intl.supportedValuesOf ? Intl.supportedValuesOf('timeZone') : COMMON_ZONES);
+    selectEl.innerHTML = zones.map(function (z) { return '<option value="' + z + '"' + (z === localZone ? ' selected' : '') + '>' + z + '</option>'; }).join('');
+  }
+  populateTzDatalist();
+
+  /* ================= TAB 1: Timestamp -> Date ================= */
+  var tsInput = document.querySelector('[data-ts-input]');
+  var tsUnitSelect = document.querySelector('[data-ts-unit]');
+  var activeZone = 'local';
+
+  function getEffectiveZone() { return activeZone === 'local' ? localZone : activeZone; }
+
+  function runTs2Date() {
+    var raw = tsInput.value;
+    var errorBox = document.querySelector('[data-ts-error]'), warningBox = document.querySelector('[data-ts-warning]');
+    errorBox.classList.remove('is-shown'); warningBox.classList.remove('is-shown');
+    document.querySelector('[data-ts-results]').innerHTML = '';
+    document.querySelector('[data-ts-detect-note]').textContent = ' ';
+    if (!raw.trim()) return;
+    var cleaned = cleanNumericInput(raw);
+    var unitChoice = tsUnitSelect.value;
+    var unit = unitChoice === 'auto' ? detectUnit(cleaned) : unitChoice;
+    if (!unit) { errorBox.classList.add('is-shown'); errorBox.textContent = 'That doesn\'t look like a valid number. Paste a plain integer timestamp.'; return; }
+    var msVal;
+    try { msVal = toUnixMsBigInt(cleaned, unit); } catch (e) { errorBox.classList.add('is-shown'); errorBox.textContent = 'Could not parse that value: ' + e.message; return; }
+    var msNum = typeof msVal === 'bigint' ? Number(msVal) : msVal;
+    if (!isFinite(msNum)) { errorBox.classList.add('is-shown'); errorBox.textContent = 'That value is out of range.'; return; }
+
+    var yearForDisplay = msToPlausibleYear(msVal);
+    document.querySelector('[data-ts-detect-note]').textContent = 'Detected: ' + unit + ' → ' + new Date(msNum).toUTCString();
+
+    if (unitChoice === 'auto') {
+      var suggestion = suggestBetterUnit(cleaned, unit);
+      if (suggestion) {
+        warningBox.classList.add('is-shown');
+        warningBox.innerHTML = 'This looks like it might actually be <strong>' + suggestion.unit + '</strong> — interpreting as ' + unit + ' gives the implausible year ' + yearForDisplay + '. <button type="button" data-fix-unit="' + suggestion.unit + '">Use ' + suggestion.unit + ' instead</button>';
+        warningBox.querySelector('[data-fix-unit]').addEventListener('click', function () { tsUnitSelect.value = suggestion.unit; runTs2Date(); });
+      }
+    }
+
+    state.currentTsMs = msNum;
+    renderTsResults(msNum);
+    pushRecent(cleaned, unit);
+    renderSnippets(msNum);
+  }
+  function renderTsResults(msNum) {
+    var grid = document.querySelector('[data-ts-results]'); grid.innerHTML = '';
+    var d = new Date(msNum);
+    resultCard('UTC / GMT', d.toUTCString(), grid);
+    resultCard('ISO 8601', d.toISOString(), grid);
+    resultCard('SQL DATETIME', toSqlDateTime(msNum), grid);
+    resultCard('Day of week', d.toLocaleDateString('en-US', { weekday: 'long', timeZone: 'UTC' }), grid);
+    resultCard('Day of year', dayOfYear(d), grid);
+    resultCard('ISO week number', isoWeekNumber(d), grid);
+    resultCard('Quarter', 'Q' + quarterOf(d), grid);
+    resultCard('Leap year?', isLeapYear(d.getUTCFullYear()) ? 'Yes' : 'No', grid);
+    var relEl = document.createElement('div'); relEl.className = 'ep-result-card';
+    relEl.innerHTML = '<div class="txt"><div class="lbl">Relative</div><div class="val" data-relative-live>' + formatRelativeTime((Date.now() - msNum) / 1000) + '</div></div>';
+    grid.appendChild(relEl);
+
+    var zone = getEffectiveZone();
+    if (DateTime) {
+      var info = zonedInfoFromMs(DateTime, msNum, zone);
+      if (info) {
+        resultCard('Local (' + zone + ')', info.iso, grid);
+        resultCard('ISO 8601 with offset', info.iso, grid);
+        resultCard('Human readable', info.formatted + ' (' + info.offsetName + ')', grid);
+        var dstEl = document.createElement('div'); dstEl.className = 'ep-result-card';
+        dstEl.innerHTML = '<div class="txt"><div class="lbl">DST in effect?</div><div class="val">' + (info.isInDST ? 'Yes' : 'No') + ' <span class="ep-dst-flag">' + info.offsetName + '</span></div></div>';
+        grid.appendChild(dstEl);
+      }
+    } else {
+      resultCard('Local (' + localZone + ', degraded mode)', d.toString(), grid);
+    }
+    renderPinned(msNum);
+    updateUrlParam('t', Math.round(msNum / 1000));
+  }
+  clearInterval(window.__epRelInterval);
+  window.__epRelInterval = setInterval(function () {
+    if (state.currentTsMs == null) return;
+    var el = document.querySelector('[data-relative-live]');
+    if (el) el.textContent = formatRelativeTime((Date.now() - state.currentTsMs) / 1000);
+  }, 1000);
+
+  tsInput.addEventListener('input', runTs2Date);
+  tsUnitSelect.addEventListener('change', runTs2Date);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Enter' && document.activeElement === tsInput) runTs2Date(); });
+  document.addEventListener('paste', function (e) {
+    if (document.activeElement === tsInput || document.activeElement.tagName === 'BODY') {
+      var text = (e.clipboardData || window.clipboardData).getData('text');
+      if (/^\s*-?\d[\d,.\s]*\s*$/.test(text) && document.querySelector('[data-ep-panel="ts2date"]').classList.contains('is-active')) {
+        e.preventDefault();
+        tsInput.value = text; runTs2Date();
+      }
+    }
+  });
+
+  Array.from(document.querySelectorAll('[data-tz-quick]')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      activeZone = btn.getAttribute('data-tz-quick');
+      Array.from(document.querySelectorAll('[data-tz-quick]')).forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+      runTs2Date();
+    });
+  });
+  document.querySelector('[data-tz-search]').addEventListener('change', function (e) {
+    if (e.target.value) { activeZone = e.target.value; Array.from(document.querySelectorAll('[data-tz-quick]')).forEach(function (b) { b.classList.remove('is-active'); }); runTs2Date(); }
+  });
+  document.querySelector('[data-tz-pin]').addEventListener('click', function () {
+    var zone = getEffectiveZone();
+    if (state.pinnedZones.indexOf(zone) === -1) { state.pinnedZones.push(zone); LS.set('ep-pinned-zones', state.pinnedZones); renderPinned(state.currentTsMs); }
+  });
+  function renderPinned(msNum) {
+    var list = document.querySelector('[data-pinned-list]'); list.innerHTML = '';
+    if (msNum == null || !DateTime) return;
+    state.pinnedZones.forEach(function (zone) {
+      var info = zonedInfoFromMs(DateTime, msNum, zone); if (!info) return;
+      var row = document.createElement('div'); row.className = 'ep-pinned-item';
+      row.innerHTML = '<span>' + escapeHtml(zone) + '</span><span>' + escapeHtml(info.formatted) + ' (' + info.offsetName + ')</span><button type="button" data-unpin="' + escapeHtml(zone) + '">✕</button>';
+      row.querySelector('[data-unpin]').addEventListener('click', function () { state.pinnedZones = state.pinnedZones.filter(function (z) { return z !== zone; }); LS.set('ep-pinned-zones', state.pinnedZones); renderPinned(msNum); });
+      list.appendChild(row);
+    });
+  }
+
+  function pushRecent(value, unit) {
+    state.recent = [value].concat(state.recent.filter(function (v) { return v !== value; })).slice(0, 10);
+    LS.set('ep-recent', state.recent);
+    renderRecent();
+  }
+  function renderRecent() {
+    var list = document.querySelector('[data-recent-list]'); list.innerHTML = '';
+    state.recent.forEach(function (v) {
+      var chip = document.createElement('button'); chip.type = 'button'; chip.className = 'ep-recent-chip'; chip.textContent = v;
+      chip.addEventListener('click', function () { tsInput.value = v; runTs2Date(); });
+      list.appendChild(chip);
+    });
+  }
+  renderRecent();
+
+  /* ---- developer snippets ---- */
+  document.querySelector('[data-snippet-toggle]').addEventListener('click', function () {
+    var body = document.querySelector('[data-snippet-body]'); var open = body.classList.toggle('is-open');
+    this.textContent = open ? '💻 Developer code snippets ▴' : '💻 Developer code snippets ▾';
+  });
+  function renderSnippets(msNum) {
+    var sec = Math.floor(msNum / 1000);
+    var snippets = [
+      { lang: 'JavaScript', code: 'new Date(' + sec + ' * 1000)' },
+      { lang: 'Python', code: 'import datetime\ndatetime.datetime.fromtimestamp(' + sec + ', tz=datetime.timezone.utc)' },
+      { lang: 'PHP', code: 'date("Y-m-d H:i:s", ' + sec + ');' },
+      { lang: 'Java', code: 'Instant.ofEpochSecond(' + sec + 'L)' },
+      { lang: 'C#', code: 'DateTimeOffset.FromUnixTimeSeconds(' + sec + 'L)' },
+      { lang: 'Go', code: 'time.Unix(' + sec + ', 0)' },
+      { lang: 'Ruby', code: 'Time.at(' + sec + ')' },
+      { lang: 'Rust', code: 'std::time::UNIX_EPOCH + std::time::Duration::from_secs(' + sec + ')' },
+      { lang: 'SQL (MySQL)', code: 'FROM_UNIXTIME(' + sec + ')' },
+      { lang: 'SQL (Postgres)', code: "TO_TIMESTAMP(" + sec + ")" },
+      { lang: 'Bash', code: 'date -u -d @' + sec + " '+%Y-%m-%d %H:%M:%S'" },
+      { lang: 'Excel formula', code: '=(' + sec + '/86400)+DATE(1970,1,1)' }
+    ];
+    var body = document.querySelector('[data-snippet-body]'); body.innerHTML = '';
+    snippets.forEach(function (s) {
+      var card = document.createElement('div'); card.className = 'ep-snippet-card';
+      card.innerHTML = '<div class="hdr"><span>' + s.lang + '</span><button type="button">📋 Copy</button></div><pre>' + escapeHtml(s.code) + '</pre>';
+      card.querySelector('button').addEventListener('click', function () { copyToClipboard(s.code); });
+      body.appendChild(card);
+    });
+  }
+
+  function updateUrlParam(key, value) {
+    var url = new URL(location.href); url.searchParams.set(key, value);
+    Array.from(url.searchParams.keys()).forEach(function (k) { if (k !== key && k !== 'tz') url.searchParams.delete(k); });
+    history.replaceState(null, '', url.toString());
+  }
+
+  /* ================= TAB 2: Date -> Timestamp ================= */
+  populateTzSelect(document.querySelector('[data-date-tz]'));
+  document.querySelector('[data-date-format-pref]').checked = state.preferDMY;
+  document.querySelector('[data-date-format-pref]').addEventListener('change', function (e) { state.preferDMY = e.target.checked; LS.set('ep-prefer-dmy', state.preferDMY); });
+
+  function runDate2Ts() {
+    var errorBox = document.querySelector('[data-date-error]'), ambBox = document.querySelector('[data-date-ambiguous]');
+    errorBox.classList.remove('is-shown'); ambBox.style.display = 'none';
+    document.querySelector('[data-date-results]').innerHTML = '';
+    var zone = document.querySelector('[data-date-tz]').value || localZone;
+    var freetext = document.querySelector('[data-date-freetext]').value.trim();
+    var picker = document.querySelector('[data-date-picker]').value;
+
+    var components = null;
+    if (freetext) {
+      var amb = detectDateAmbiguity(freetext);
+      if (amb && amb.ambiguous) {
+        ambBox.style.display = 'block';
+        ambBox.innerHTML = '"' + escapeHtml(freetext) + '" is ambiguous. <button type="button" data-amb-pick="dmy">' + amb.dmy.day + '/' + amb.dmy.month + '/' + amb.dmy.year + ' (DD/MM)</button><button type="button" data-amb-pick="mdy">' + amb.mdy.month + '/' + amb.mdy.day + '/' + amb.mdy.year + ' (MM/DD)</button>';
+        ambBox.querySelectorAll('[data-amb-pick]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var pick = btn.getAttribute('data-amb-pick') === 'dmy' ? amb.dmy : amb.mdy;
+            finishDate2Ts({ year: pick.year, month: pick.month, day: pick.day, hour: 0, minute: 0 }, zone);
+          });
+        });
+        return;
+      }
+      if (amb && !amb.ambiguous) { components = { year: amb.year, month: amb.month, day: amb.day, hour: 0, minute: 0 }; }
+      else {
+        var native = new Date(freetext);
+        if (isNaN(native.getTime())) { errorBox.classList.add('is-shown'); errorBox.textContent = 'Could not understand that date. Try the picker, or a format like "2026-07-27 14:30" or "27 Jul 2026 2:30 PM".'; return; }
+        components = { year: native.getFullYear(), month: native.getMonth() + 1, day: native.getDate(), hour: native.getHours(), minute: native.getMinutes(), second: native.getSeconds() };
+      }
+    } else if (picker) {
+      var parts = picker.split(/[-T:]/).map(Number);
+      components = { year: parts[0], month: parts[1], day: parts[2], hour: parts[3] || 0, minute: parts[4] || 0, second: parts[5] || 0 };
+    } else { errorBox.classList.add('is-shown'); errorBox.textContent = 'Pick a date/time or type one.'; return; }
+
+    finishDate2Ts(components, zone);
+  }
+  function finishDate2Ts(components, zone) {
+    var ambBox = document.querySelector('[data-date-ambiguous]'); ambBox.style.display = 'none';
+    var msNum;
+    if (DateTime) {
+      var check = checkLocalTimeAmbiguity(DateTime, components, zone);
+      if (check.kind === 'nonexistent') {
+        ambBox.style.display = 'block';
+        ambBox.textContent = 'That local time does not exist in ' + zone + ' (daylight saving spring-forward gap). Showing the nearest valid equivalent: ' + check.resolved.toFormat('cccc, d LLLL yyyy, h:mm a ZZZZ') + '.';
+        msNum = check.resolved.toMillis();
+      } else if (check.kind === 'ambiguous') {
+        ambBox.style.display = 'block';
+        ambBox.innerHTML = 'That local time occurs twice in ' + zone + ' (daylight saving fall-back). Pick one: <button type="button" data-pick-earlier>' + check.earlier.toFormat('h:mm a ZZZZ') + ' (earlier)</button><button type="button" data-pick-later>' + check.later.toFormat('h:mm a ZZZZ') + ' (later)</button>';
+        ambBox.querySelector('[data-pick-earlier]').addEventListener('click', function () { renderDate2TsResults(check.earlier.toMillis()); });
+        ambBox.querySelector('[data-pick-later]').addEventListener('click', function () { renderDate2TsResults(check.later.toMillis()); });
+        return;
+      } else { msNum = check.resolved.toMillis(); }
+    } else {
+      msNum = Date.UTC(components.year, components.month - 1, components.day, components.hour, components.minute, components.second || 0);
+    }
+    renderDate2TsResults(msNum);
+  }
+  function renderDate2TsResults(msNum) {
+    var grid = document.querySelector('[data-date-results]'); grid.innerHTML = '';
+    resultCard('Seconds', Math.floor(msNum / 1000), grid);
+    resultCard('Milliseconds', msNum, grid);
+    resultCard('Microseconds', (BigInt(Math.round(msNum)) * 1000n).toString(), grid);
+    resultCard('Nanoseconds', (BigInt(Math.round(msNum)) * 1000000n).toString(), grid);
+    resultCard('ISO 8601 (UTC)', new Date(msNum).toISOString(), grid);
+    resultCard('UTC / GMT', new Date(msNum).toUTCString(), grid);
+    resultCard('SQL DATETIME (UTC)', toSqlDateTime(msNum), grid);
+    state.currentTsMs = msNum;
+  }
+  document.querySelector('[data-date-convert]').addEventListener('click', runDate2Ts);
+  document.querySelector('[data-date-freetext]').addEventListener('keydown', function (e) { if (e.key === 'Enter') runDate2Ts(); });
+
+  /* ================= TAB 3: Live ================= */
+  var liveInterval = null;
+  function tickLive() {
+    var ms = state.liveFrozen ? state.liveFrozenMs : Date.now();
+    document.querySelector('[data-live-seconds]').textContent = Math.floor(ms / 1000).toLocaleString();
+    document.querySelector('[data-live-ms]').textContent = ms.toLocaleString() + ' ms';
+    document.querySelector('[data-live-sec-progress]').style.width = ((ms % 1000) / 10) + '%';
+    document.querySelector('[data-live-min-progress]').style.width = (((ms / 1000) % 60) / 60 * 100) + '%';
+    var grid = document.querySelector('[data-live-tz-grid]'); grid.innerHTML = '';
+    resultCard('Local (' + localZone + ')', new Date(ms).toString(), grid);
+    resultCard('UTC', new Date(ms).toUTCString(), grid);
+    if (DateTime) state.pinnedZones.forEach(function (zone) { var info = zonedInfoFromMs(DateTime, ms, zone); if (info) resultCard(zone, info.formatted, grid); });
+  }
+  document.querySelector('[data-live-freeze]').addEventListener('click', function () {
+    state.liveFrozen = !state.liveFrozen; state.liveFrozenMs = Date.now();
+    this.textContent = state.liveFrozen ? '▶️ Resume' : '⏸️ Freeze';
+  });
+  document.querySelector('[data-live-copy-s]').addEventListener('click', function () { copyToClipboard(String(Math.floor((state.liveFrozen ? state.liveFrozenMs : Date.now()) / 1000))); });
+  document.querySelector('[data-live-copy-ms]').addEventListener('click', function () { copyToClipboard(String(state.liveFrozen ? state.liveFrozenMs : Date.now())); });
+  function renderMilestones() {
+    var grid = document.querySelector('[data-milestone-grid]'); grid.innerHTML = '';
+    var milestones = [
+      { label: '1,800,000,000', sec: 1800000000 },
+      { label: '2,000,000,000', sec: 2000000000 },
+      { label: 'Year 2038 problem (32-bit overflow)', sec: 2147483647 }
+    ];
+    var now = Date.now() / 1000;
+    milestones.forEach(function (m) {
+      var card = document.createElement('div'); card.className = 'ep-milestone-card';
+      var remaining = m.sec - now;
+      card.innerHTML = '<div class="val">' + m.label + '</div><div class="cd">' + new Date(m.sec * 1000).toUTCString() + '</div><div class="cd">' + (remaining > 0 ? formatDurationLong(remaining) + ' remaining' : 'passed ' + formatDurationLong(-remaining) + ' ago') + '</div>';
+      grid.appendChild(card);
+    });
+  }
+  liveInterval = setInterval(tickLive, 100);
+  tickLive(); renderMilestones();
+
+  /* ================= TAB 4: Batch ================= */
+  var batchMode = 'ts2date';
+  Array.from(document.querySelectorAll('[data-batch-mode]')).forEach(function (btn) {
+    btn.addEventListener('click', function () { batchMode = btn.getAttribute('data-batch-mode'); Array.from(document.querySelectorAll('[data-batch-mode]')).forEach(function (b) { b.classList.toggle('is-active', b === btn); }); });
+  });
+  populateTzSelect(document.querySelector('[data-batch-tz]'));
+  var lastBatchRows = [];
+  document.querySelector('[data-batch-run]').addEventListener('click', function () {
+    var text = document.querySelector('[data-batch-input]').value;
+    var zone = document.querySelector('[data-batch-tz]').value || 'UTC';
+    var table = document.querySelector('[data-batch-table]');
+    var annotatedBox = document.querySelector('[data-batch-annotated]');
+    annotatedBox.style.display = 'none';
+    if (batchMode === 'annotate') {
+      var annotated = annotateLogWithDates(text, function (ms) { return DateTime ? zonedInfoFromMs(DateTime, ms, zone).formatted : new Date(ms).toUTCString(); });
+      annotatedBox.style.display = 'block'; annotatedBox.textContent = annotated;
+      table.innerHTML = ''; document.querySelector('[data-batch-summary]').textContent = 'Log annotated in place.';
+      return;
+    }
+    var lines = text.split('\n').map(function (l) { return l.trim(); }).filter(Boolean);
+    var rows = [];
+    if (batchMode === 'ts2date') {
+      lines.forEach(function (line) {
+        var cleaned = cleanNumericInput(line);
+        var unit = detectUnit(cleaned);
+        if (!unit) { rows.push({ original: line, ok: false, reason: 'not a recognizable number' }); return; }
+        try {
+          var ms = toUnixMsBigInt(cleaned, unit); var msNum = typeof ms === 'bigint' ? Number(ms) : ms;
+          var date = DateTime ? zonedInfoFromMs(DateTime, msNum, zone).formatted : new Date(msNum).toUTCString();
+          rows.push({ original: line, ok: true, unit: unit, result: date });
+        } catch (e) { rows.push({ original: line, ok: false, reason: e.message }); }
+      });
+    } else {
+      lines.forEach(function (line) {
+        var native = new Date(line);
+        if (isNaN(native.getTime())) { rows.push({ original: line, ok: false, reason: 'could not parse as a date' }); return; }
+        rows.push({ original: line, ok: true, unit: 'seconds', result: Math.floor(native.getTime() / 1000) });
+      });
+    }
+    lastBatchRows = rows;
+    var failedCount = rows.filter(function (r) { return !r.ok; }).length;
+    document.querySelector('[data-batch-summary]').textContent = rows.length + ' rows processed, ' + failedCount + ' failed.';
+    table.innerHTML = '<tr><th>Original</th><th>Detected unit</th><th>Result</th></tr>' + rows.map(function (r) {
+      return '<tr' + (r.ok ? '' : ' class="is-failed"') + '><td>' + escapeHtml(r.original) + '</td><td>' + (r.ok ? r.unit : '—') + '</td><td>' + (r.ok ? escapeHtml(String(r.result)) : 'FAILED: ' + escapeHtml(r.reason)) + '</td></tr>';
+    }).join('');
+  });
+  document.querySelector('[data-batch-csv]').addEventListener('click', function () {
+    if (!lastBatchRows.length) return;
+    var csv = 'original,unit,result\n' + lastBatchRows.map(function (r) { return '"' + r.original.replace(/"/g, '""') + '","' + (r.ok ? r.unit : '') + '","' + (r.ok ? r.result : 'FAILED: ' + r.reason) + '"'; }).join('\n');
+    var blob = new Blob([csv], { type: 'text/csv' }); var url = URL.createObjectURL(blob);
+    var a = document.createElement('a'); a.href = url; a.download = 'batch-timestamps.csv'; a.click(); URL.revokeObjectURL(url);
+  });
+  document.querySelector('[data-batch-tsv]').addEventListener('click', function () {
+    if (!lastBatchRows.length) return;
+    var tsv = lastBatchRows.map(function (r) { return r.original + '\t' + (r.ok ? r.unit : '') + '\t' + (r.ok ? r.result : 'FAILED'); }).join('\n');
+    copyToClipboard(tsv);
+  });
+
+  /* ================= TAB 5: Arithmetic ================= */
+  document.querySelector('[data-diff-compute]').addEventListener('click', function () {
+    var a = new Date(document.querySelector('[data-diff-a]').value), b = new Date(document.querySelector('[data-diff-b]').value);
+    var grid = document.querySelector('[data-diff-results]'); grid.innerHTML = '';
+    if (isNaN(a) || isNaN(b)) { resultCard('Error', 'Pick both dates', grid); return; }
+    var deltaSec = Math.abs(b - a) / 1000;
+    resultCard('Seconds', Math.round(deltaSec), grid);
+    resultCard('Minutes', (deltaSec / 60).toFixed(2), grid);
+    resultCard('Hours', (deltaSec / 3600).toFixed(2), grid);
+    resultCard('Days', (deltaSec / 86400).toFixed(2), grid);
+    resultCard('Weeks', (deltaSec / 604800).toFixed(2), grid);
+    if (DateTime) resultCard('Combined', diffHuman(DateTime, a.getTime(), b.getTime()), grid);
+    else resultCard('Combined (approx)', formatDurationLong(deltaSec), grid);
+  });
+  function parseDatetimeLocalComponents(str) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?$/.exec(str || '');
+    if (!m) return null;
+    return { year: +m[1], month: +m[2], day: +m[3], hour: +m[4], minute: +m[5], second: +(m[6] || 0) };
+  }
+  document.querySelector('[data-addsub-compute]').addEventListener('click', function () {
+    var components = parseDatetimeLocalComponents(document.querySelector('[data-addsub-base]').value);
+    var amount = parseFloat(document.querySelector('[data-addsub-amount]').value) || 0;
+    var unit = document.querySelector('[data-addsub-unit]').value;
+    var sign = parseInt(document.querySelector('[data-addsub-sign]').value, 10);
+    var grid = document.querySelector('[data-addsub-results]'); grid.innerHTML = '';
+    if (!components) { resultCard('Error', 'Pick a base date', grid); return; }
+    var resultComponents, note = '';
+    if (unit === 'months' || unit === 'years') {
+      var fn = unit === 'months' ? addCalendarMonthsToComponents : addCalendarYearsToComponents;
+      var r = fn(components, sign * amount);
+      resultComponents = r.components;
+      if (r.wasClamped) note = ' (day clamped to ' + r.clampedTo + ' — the target month is shorter)';
+    } else {
+      var msPerUnit = { seconds: 1000, minutes: 60000, hours: 3600000, days: 86400000, weeks: 604800000 }[unit];
+      var baseDate = new Date(components.year, components.month - 1, components.day, components.hour, components.minute, components.second);
+      var resultDate0 = new Date(baseDate.getTime() + sign * amount * msPerUnit);
+      resultComponents = { year: resultDate0.getFullYear(), month: resultDate0.getMonth() + 1, day: resultDate0.getDate(), hour: resultDate0.getHours(), minute: resultDate0.getMinutes(), second: resultDate0.getSeconds() };
+    }
+    // components are treated as local wall-clock time (matching the datetime-local picker's meaning),
+    // converted to an instant exactly once here — never round-tripped through UTC extraction, so the
+    // displayed calendar result can never silently drift by a day due to timezone offset.
+    var resultDateObj = new Date(resultComponents.year, resultComponents.month - 1, resultComponents.day, resultComponents.hour, resultComponents.minute, resultComponents.second);
+    var formatted = resultComponents.year + '-' + pad(resultComponents.month) + '-' + pad(resultComponents.day) + ' ' + pad(resultComponents.hour) + ':' + pad(resultComponents.minute) + ':' + pad(resultComponents.second);
+    resultCard('Result', formatted + note, grid);
+    resultCard('ISO 8601 (UTC)', resultDateObj.toISOString(), grid);
+    resultCard('Unix seconds', Math.floor(resultDateObj.getTime() / 1000), grid);
+  });
+  document.querySelector('[data-duration-convert]').addEventListener('click', function () {
+    var raw = document.querySelector('[data-duration-input]').value.trim();
+    var grid = document.querySelector('[data-duration-results]'); grid.innerHTML = '';
+    var seconds = /^-?\d+(\.\d+)?$/.test(raw) ? parseFloat(raw) : parseDurationString(raw);
+    if (seconds == null) { resultCard('Error', 'Could not parse that duration', grid); return; }
+    resultCard('Seconds', seconds, grid);
+    resultCard('Minutes', (seconds / 60).toFixed(2), grid);
+    resultCard('Hours', (seconds / 3600).toFixed(2), grid);
+    resultCard('Days', (seconds / 86400).toFixed(2), grid);
+    resultCard('Short form', formatDurationShort(seconds), grid);
+    resultCard('Long form', formatDurationLong(seconds), grid);
+  });
+
+  /* ================= TAB 6: Other formats ================= */
+  function renderOtherFormats() {
+    var grid = document.querySelector('[data-other-formats]'); grid.innerHTML = '';
+    var msNum = state.currentTsMs != null ? state.currentTsMs : Date.now();
+    resultCard('Unix seconds', Math.floor(msNum / 1000), grid);
+    resultCard('Unix milliseconds', msNum, grid);
+    resultCard('Unix hex', unixSecondsToHex(Math.floor(msNum / 1000)), grid);
+    resultCard('Windows FILETIME', unixMsToFiletime(msNum).toString(), grid);
+    resultCard('.NET Ticks', unixMsToDotnetTicks(msNum).toString(), grid);
+    resultCard('Mac/Apple absolute time', unixMsToMacTime(msNum).toFixed(3), grid);
+    resultCard('Excel serial date', unixMsToExcelSerial(msNum).toFixed(6), grid);
+    resultCard('Julian Date', unixMsToJulianDate(msNum).toFixed(6), grid);
+    resultCard('Modified Julian Date', unixMsToModifiedJulianDate(msNum).toFixed(6), grid);
+    resultCard('GPS time (seconds)', unixMsToGpsSeconds(msNum).toFixed(3), grid);
+    var note = document.createElement('p'); note.className = 'stg-hint'; note.style.cssText = 'font-size:0.8rem;color:var(--text-muted);grid-column:1/-1;';
+    note.textContent = 'Notes: Unix time ignores leap seconds entirely (23:59:60 cannot be represented). GPS time excludes leap seconds too and is currently 18 seconds ahead of UTC (as of the last leap second, 31 Dec 2016) — a future leap second would change this. Excel\'s day-numbering incorrectly treats 1900 as a leap year; this converter uses the standard modern conversion, which is exact for all dates from 1 March 1900 onward.';
+    grid.appendChild(note);
+  }
+
+  /* ================= Tabs ================= */
+  Array.from(document.querySelectorAll('[data-ep-tab]')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      Array.from(document.querySelectorAll('[data-ep-tab]')).forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+      var mode = btn.getAttribute('data-ep-tab');
+      Array.from(document.querySelectorAll('[data-ep-panel]')).forEach(function (p) { p.classList.toggle('is-active', p.getAttribute('data-ep-panel') === mode); });
+      if (mode === 'other') renderOtherFormats();
+    });
+  });
+
+  /* ================= URL deep-linking on load ================= */
+  (function initFromUrl() {
+    var params = new URLSearchParams(location.search);
+    if (params.has('t')) { tsInput.value = params.get('t'); runTs2Date(); }
+    else if (params.has('d')) {
+      document.querySelector('[data-date-freetext]').value = params.get('d');
+      if (params.has('tz')) document.querySelector('[data-date-tz]').value = params.get('tz');
+      document.querySelector('[data-ep-tab][data-ep-tab="date2ts"]').click();
+      runDate2Ts();
+    }
+  })();
+
+  /* ================= PWA ================= */
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/epoch-converter-sw.js', { scope: '/epoch-converter.html' }).catch(function (err) { console.error('SW registration failed:', err); });
+  }
+})();
+</script>
+  <script src="assets/js/side-ads.js" defer></script>
+  <script src="assets/js/inline-ads.js" data-in-article defer></script>
+</body>
+</html>

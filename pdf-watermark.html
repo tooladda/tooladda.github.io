@@ -1,0 +1,2382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+  <meta name="description" content="Watermark PDF online free — add text, image, or logo watermarks with live preview, opacity, rotation, tiling, and page selection. 100% in your browser, no upload, no registration." />
+  <title>Watermark PDF Online Free — Add Text or Logo Watermark | ToolAdda</title>
+  <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preload" href="assets/css/style.css" as="style" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    /* Watermark PDF — "the stamp and the security paper".
+       A watermark is the oldest anti-copying mark there is: the faint pattern
+       in a cheque or a banknote, and the rubber stamp that says CONFIDENTIAL.
+       The cover is a sheet of security paper — fine guilloche lines — with a
+       tilted stamp pressed into it behind the headline. The one action colour
+       is the blue of stamp ink; stamp red only ever appears on the stamp. */
+    body.wm-page {
+      --wm-desk: #f1f3f7;
+      --wm-card: #ffffff;
+      --wm-well: #f6f8fb;
+      --wm-paper: #eef3fa;
+      --wm-line: rgba(17, 28, 51, .12);
+      --wm-line-2: rgba(17, 28, 51, .22);
+      --wm-ink: #111c33;
+      --wm-ink-2: #33415c;
+      --wm-mute: #5a6680;
+      --wm-blue: #1d4ed8;
+      --wm-blue-hover: #1e40af;
+      --wm-blue-ink: #ffffff;
+      --wm-blue-text: #1d4ed8;
+      --wm-blue-soft: rgba(29, 78, 216, .08);
+      --wm-blue-ring: rgba(29, 78, 216, .32);
+      --wm-stamp: #c2302b;
+      --wm-guilloche: rgba(29, 78, 216, .09);
+      --wm-good: #15803d;
+      --wm-good-soft: rgba(21, 128, 61, .1);
+      --wm-warn: #92610a;
+      --wm-warn-soft: rgba(146, 97, 10, .1);
+      --wm-bad: #b91c1c;
+      --wm-bad-soft: rgba(185, 28, 28, .08);
+      --wm-shadow: 0 1px 0 rgba(17, 28, 51, .04), 0 18px 40px -26px rgba(17, 28, 51, .42);
+      --accent: var(--wm-blue-text);
+      --accent-soft: var(--wm-blue-soft);
+      background: var(--wm-desk);
+    }
+    [data-theme="dark"] body.wm-page {
+      --wm-desk: #0b0f18;
+      --wm-card: #131a28;
+      --wm-well: #0f1522;
+      --wm-paper: #121c30;
+      --wm-line: rgba(232, 237, 247, .1);
+      --wm-line-2: rgba(232, 237, 247, .2);
+      --wm-ink: #e8edf7;
+      --wm-ink-2: #c5cee0;
+      --wm-mute: #94a0b8;
+      --wm-blue: #60a5fa;
+      --wm-blue-hover: #93c5fd;
+      --wm-blue-ink: #07142e;
+      --wm-blue-text: #93c5fd;
+      --wm-blue-soft: rgba(96, 165, 250, .12);
+      --wm-blue-ring: rgba(96, 165, 250, .42);
+      --wm-stamp: #f87171;
+      --wm-guilloche: rgba(147, 197, 253, .08);
+      --wm-good: #4ade80;
+      --wm-good-soft: rgba(74, 222, 128, .1);
+      --wm-warn: #e0b054;
+      --wm-warn-soft: rgba(224, 176, 84, .12);
+      --wm-bad: #fca5a5;
+      --wm-bad-soft: rgba(252, 165, 165, .1);
+      --wm-shadow: 0 1px 0 rgba(0, 0, 0, .4), 0 20px 44px -26px rgba(0, 0, 0, .9);
+    }
+    body.wm-page .hidden { display: none !important; }
+    #wm-tool, .wm-result { scroll-margin-top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+
+    .wm-shell { padding: .6rem 0 3rem; }
+    .wm-page .breadcrumb { margin: .35rem 0 .9rem; font-size: .86rem; }
+    .wm-page .breadcrumb a { color: var(--wm-blue-text); font-weight: 700; }
+
+    /* ---------- buttons ---------- */
+    .wm-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .45rem;
+      min-height: 2.75rem; padding: .6rem 1.1rem; border-radius: 10px; border: 1px solid transparent;
+      font: inherit; font-size: .92rem; font-weight: 800; line-height: 1.2; text-decoration: none; cursor: pointer;
+      transition: background-color .15s, border-color .15s, color .15s, transform .1s;
+    }
+    .wm-btn svg { width: 18px; height: 18px; flex: none; }
+    .wm-btn:active:not(:disabled) { transform: translateY(1px); }
+    .wm-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .wm-btn--primary { background: var(--wm-blue); color: var(--wm-blue-ink); border-color: var(--wm-blue); box-shadow: 0 1px 0 rgba(0, 0, 0, .12); }
+    .wm-btn--primary:hover:not(:disabled) { background: var(--wm-blue-hover); border-color: var(--wm-blue-hover); color: var(--wm-blue-ink); }
+    .wm-btn--ghost { background: var(--wm-card); color: var(--wm-ink); border-color: var(--wm-line-2); }
+    .wm-btn--ghost:hover:not(:disabled) { border-color: var(--wm-blue); color: var(--wm-blue-text); }
+    .wm-btn--sm { min-height: 2.25rem; padding: .35rem .75rem; font-size: .82rem; border-radius: 8px; }
+    .wm-page :focus-visible { outline: 3px solid var(--wm-blue-ring); outline-offset: 2px; }
+
+    /* ---------- top: cover, tool, ad ----------
+       Under 980px a single column: cover, tool, ad, then the lead and extras.
+       From 980px the cover and lead sit beside the empty tool. Once a PDF is
+       loaded the editor needs the full width, so the tool spans both columns
+       — its top edge does not move — and the cover follows the ad. */
+    .wm-top { display: grid; gap: 1rem; align-items: start; grid-template-areas: "cover" "tool" "ad" "intro" "extras"; }
+    .wm-top > * { min-width: 0; }
+    .wm-cover { grid-area: cover; }
+    .wm-intro { grid-area: intro; }
+    .wm-tool-card { grid-area: tool; }
+    .wm-ad-zone { grid-area: ad; }
+    .wm-extras { grid-area: extras; }
+    @media (min-width: 980px) {
+      .wm-top {
+        grid-template-columns: minmax(0, .86fr) minmax(0, 1.3fr);
+        grid-template-rows: auto 1fr auto auto;
+        grid-template-areas: "cover tool" "intro tool" "ad ad" "extras extras";
+        column-gap: 1.25rem;
+      }
+      .wm-top.is-editing { grid-template-rows: auto auto auto auto; grid-template-areas: "tool tool" "ad ad" "cover intro" "extras extras"; }
+      /* six chips in the narrow column read better as two rows of three */
+      .wm-top:not(.is-editing) .wm-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    /* ---------- cover: security paper with a stamp pressed into it ---------- */
+    .wm-cover {
+      position: relative; overflow: hidden; padding: 1.6rem 1.35rem 1.4rem; border-radius: 14px;
+      background:
+        repeating-radial-gradient(circle at 110% -20%, transparent 0 9px, var(--wm-guilloche) 9px 10px),
+        repeating-radial-gradient(circle at -10% 120%, transparent 0 11px, var(--wm-guilloche) 11px 12px),
+        var(--wm-paper);
+      border: 1px solid var(--wm-line); box-shadow: var(--wm-shadow);
+    }
+    /* the stamp sits behind the headline, the way a watermark sits behind text */
+    .wm-stamp {
+      position: absolute; right: .4rem; top: 38%; padding: .35rem .8rem; border: 3px double var(--wm-stamp); border-radius: 6px;
+      color: var(--wm-stamp); font: 900 1.45rem/1 "Courier New", Courier, monospace; letter-spacing: .12em;
+      transform: rotate(-14deg); opacity: .16; pointer-events: none; user-select: none;
+    }
+    .wm-badge {
+      position: relative; display: inline-flex; align-items: center; gap: .35rem; margin: 0 0 .7rem; padding: .28rem .6rem; border-radius: 6px;
+      background: var(--wm-blue); color: var(--wm-blue-ink); font-size: .72rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase;
+    }
+    .wm-title { position: relative; margin: 0 0 .85rem; color: var(--wm-ink); font-size: clamp(1.5rem, 1rem + 2vw, 2.1rem); font-weight: 900; line-height: 1.12; letter-spacing: -.02em; text-wrap: balance; }
+    @media (min-width: 980px) { .wm-title { font-size: clamp(1.6rem, .9rem + 1.2vw, 2rem); } }
+    .wm-privacy-banner {
+      position: relative; display: inline-flex; align-items: flex-start; gap: .45rem; margin: 0; padding: .45rem .75rem; border-radius: 9px;
+      background: #e5f3ea; border: 1px solid rgba(21, 128, 61, .25); color: var(--wm-good); font-size: .84rem; font-weight: 700; line-height: 1.4;
+    }
+    [data-theme="dark"] .wm-privacy-banner { background: #10261a; }
+
+    .wm-intro { display: grid; gap: .8rem; padding: .15rem .2rem 0; }
+    .wm-lead { margin: 0; padding-left: .85rem; border-left: 3px solid var(--wm-blue); color: var(--wm-ink-2); font-size: .96rem; line-height: 1.68; }
+    .wm-honest-note { margin: 0; padding: .8rem 1rem; border-radius: 10px; background: var(--wm-warn-soft); border-left: 3px solid var(--wm-warn); color: var(--wm-ink-2); font-size: .86rem; line-height: 1.6; }
+    .wm-honest-note strong { color: var(--wm-warn); }
+    .wm-honest-note a, .wm-seo p a, .wm-seo li a { color: var(--wm-blue-text); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+
+    .wm-extras { display: grid; gap: .8rem; }
+    .wm-extras-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .7rem; }
+    .wm-trust-row { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .wm-trust-pill { padding: .32rem .62rem; border-radius: 8px; background: var(--wm-card); border: 1px solid var(--wm-line); color: var(--wm-ink-2); font-size: .78rem; font-weight: 700; }
+    .wm-hero-cta { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .wm-badges { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .5rem; }
+    .wm-badge-card { padding: .7rem .5rem; border-radius: 10px; background: var(--wm-card); border: 1px solid var(--wm-line); text-align: center; font-size: .78rem; font-weight: 800; line-height: 1.35; color: var(--wm-ink-2); }
+    .wm-badge-card span { display: block; margin-bottom: .2rem; font-size: 1.2rem; }
+
+    /* ---------- tool card ---------- */
+    .wm-tool-card {
+      position: relative; padding: 1.1rem; border-radius: 14px; background: var(--wm-card);
+      border: 1px solid var(--wm-line); border-top: 4px solid var(--wm-blue); box-shadow: var(--wm-shadow);
+      outline: 2px dashed transparent; outline-offset: 4px; transition: outline-color .15s;
+    }
+    .wm-tool-card.is-file-over { outline-color: var(--wm-blue); }
+    .wm-steps { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .3rem; margin: 0 0 .95rem; padding: 0; list-style: none; }
+    .wm-steps li {
+      display: flex; align-items: center; justify-content: center; gap: .35rem; min-width: 0; padding: .38rem .3rem; border-radius: 8px;
+      background: var(--wm-well); border: 1px solid var(--wm-line); color: var(--wm-mute);
+      font-size: .68rem; font-weight: 850; letter-spacing: .03em; text-transform: uppercase; text-align: center; line-height: 1.2;
+    }
+    .wm-steps li span { display: inline-grid; place-items: center; flex: none; width: 1.2rem; height: 1.2rem; border-radius: 50%; background: var(--wm-line); color: var(--wm-ink-2); font-size: .64rem; }
+    .wm-steps li.is-active { background: var(--wm-blue-soft); border-color: var(--wm-blue-ring); color: var(--wm-ink); }
+    .wm-steps li.is-active span { background: var(--wm-blue); color: var(--wm-blue-ink); }
+    .wm-steps li.is-done { color: var(--wm-good); }
+    .wm-steps li.is-done span { background: var(--wm-good); color: var(--wm-card); }
+
+    .wm-upload-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; margin: 0 0 .85rem; }
+    .wm-upload-head .tag { margin: 0; padding: 0; border: 0; background: none; font-size: .74rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--wm-blue-text); }
+    .wm-upload-head .pdf-helper-text { margin: .15rem 0 0; font-size: .86rem; line-height: 1.45; color: var(--wm-mute); }
+    .wm-drop-zone {
+      display: grid; justify-items: center; gap: .3rem; padding: 1.35rem 1rem 1.25rem; text-align: center; cursor: pointer;
+      border: 2px dashed var(--wm-line-2); border-radius: 12px; background: var(--wm-well); transition: border-color .15s, background-color .15s;
+    }
+    .wm-drop-zone:hover, .wm-drop-zone.active { border-color: var(--wm-blue); background: var(--wm-blue-soft); }
+    .wm-drop-art { width: 110px; height: 88px; margin-bottom: .1rem; }
+    .wm-drop-art .sheet { fill: var(--wm-card); stroke: var(--wm-ink); stroke-width: 1.6; stroke-linejoin: round; }
+    .wm-drop-art .ln { stroke: var(--wm-line-2); stroke-width: 2.6; stroke-linecap: round; }
+    .wm-drop-art .mark { fill: none; stroke: var(--wm-stamp); stroke-width: 2; opacity: .75; }
+    .wm-drop-art .mark-t { fill: var(--wm-stamp); opacity: .75; font: 900 8px/1 "Courier New", monospace; letter-spacing: .08em; }
+    .wm-drop-art .stamp { animation: wm-stamp 3s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+    @keyframes wm-stamp { 0%, 60%, 100% { transform: translateY(0); } 75% { transform: translateY(4px); } }
+    .wm-drop-zone .wm-drop-title { margin: .1rem 0 0; font-size: 1.08rem; font-weight: 900; color: var(--wm-ink); }
+    .wm-drop-sub { margin: 0; font-size: .88rem; color: var(--wm-mute); }
+    .wm-drop-zone .wm-btn { margin-top: .6rem; min-width: 12rem; }
+
+    .wm-message { margin-top: .75rem; padding: .6rem .8rem; border-radius: 10px; font-size: .88rem; font-weight: 700; line-height: 1.45; }
+    .wm-message.success { background: var(--wm-good-soft); color: var(--wm-good); }
+    .wm-message.error { background: var(--wm-bad-soft); color: var(--wm-bad); }
+    .wm-loader {
+      display: flex; align-items: center; gap: .55rem; margin-top: .75rem; padding: .6rem .8rem; border-radius: 10px;
+      background: var(--wm-blue-soft); border: 1px solid var(--wm-blue-ring); color: var(--wm-ink); font-size: .86rem; font-weight: 700;
+    }
+    .wm-loader::before { content: ""; flex: none; width: 1rem; height: 1rem; border: 2px solid var(--wm-blue); border-top-color: transparent; border-radius: 50%; animation: wm-spin .7s linear infinite; }
+    @keyframes wm-spin { to { transform: rotate(360deg); } }
+
+    /* ---------- editor ---------- */
+    .wm-editor-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem; margin-bottom: .9rem; padding: .65rem .8rem; border-radius: 10px; background: var(--wm-well); border: 1px solid var(--wm-line); }
+    .wm-editor-bar [data-file-summary] { min-width: 0; font-size: .88rem; font-weight: 700; color: var(--wm-ink-2); overflow-wrap: anywhere; }
+    .wm-tab-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .4rem; margin-bottom: .9rem; }
+    .wm-tab-btn {
+      min-height: 2.6rem; padding: .45rem .6rem; border-radius: 9px; border: 2px solid var(--wm-line); background: var(--wm-card); color: var(--wm-ink);
+      font: inherit; font-size: .86rem; font-weight: 800; cursor: pointer; transition: border-color .15s, background-color .15s;
+    }
+    .wm-tab-btn:hover { border-color: var(--wm-line-2); }
+    .wm-tab-btn.is-active { border-color: var(--wm-blue); background: var(--wm-blue-soft); color: var(--wm-ink); }
+    .wm-tab-panel { display: none; }
+    .wm-tab-panel.is-active { display: block; }
+
+    .wm-layout { display: grid; grid-template-columns: minmax(280px, 380px) minmax(0, 1fr); gap: 1.1rem; align-items: start; }
+    .wm-controls {
+      display: flex; flex-direction: column; max-height: calc(100vh - 120px); overflow-y: auto; padding: .95rem; border-radius: 12px;
+      background: var(--wm-well); border: 1px solid var(--wm-line); scrollbar-width: thin;
+    }
+    .wm-field { display: flex; flex-direction: column; gap: .3rem; margin-bottom: .75rem; min-width: 0; }
+    .wm-field label { font-size: .8rem; font-weight: 800; color: var(--wm-ink-2); }
+    .wm-field select, .wm-field input[type="number"], .wm-field input[type="text"], .wm-field input[type="file"], .wm-field textarea {
+      width: 100%; min-height: 2.6rem; box-sizing: border-box; padding: .5rem .7rem; border: 1px solid var(--wm-line-2); border-radius: 9px;
+      background: var(--wm-card); color: var(--wm-ink); font: inherit; font-size: 16px;
+    }
+    .wm-field input[type="file"] { font-size: .86rem; }
+    .wm-field textarea { resize: vertical; }
+    .wm-field select:focus, .wm-field input:focus, .wm-field textarea:focus { outline: none; border-color: var(--wm-blue); box-shadow: 0 0 0 3px var(--wm-blue-ring); }
+    .wm-field input[type="color"] { width: 100%; height: 2.6rem; padding: .2rem; border-radius: 9px; border: 1px solid var(--wm-line-2); background: var(--wm-card); cursor: pointer; }
+    .wm-field input[type="range"] { width: 100%; accent-color: var(--wm-blue); }
+    .wm-field label span { color: var(--wm-blue-text); font-variant-numeric: tabular-nums; }
+    .wm-inline-row { display: flex; gap: .6rem; }
+    .wm-inline-row > * { flex: 1; min-width: 0; }
+    .wm-group-title { margin: 1rem 0 .6rem; padding-top: .8rem; border-top: 1px solid var(--wm-line); font-size: .72rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--wm-blue-text); }
+    .wm-tab-panel .wm-group-title, .wm-controls > .wm-group-title:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+    .wm-hint { margin: -.25rem 0 .75rem; font-size: .77rem; line-height: 1.5; color: var(--wm-mute); }
+    .wm-preset-row { display: flex; flex-wrap: wrap; gap: .3rem; margin-bottom: .7rem; }
+    .wm-preset-row button {
+      min-height: 2rem; padding: .25rem .6rem; border-radius: 7px; border: 1px solid var(--wm-line-2); background: var(--wm-card); color: var(--wm-ink);
+      font: inherit; font-size: .74rem; font-weight: 800; letter-spacing: .02em; cursor: pointer;
+    }
+    .wm-preset-row button:hover { border-color: var(--wm-blue); color: var(--wm-blue-text); }
+    .wm-preset-row button[aria-pressed="true"] { border-color: var(--wm-blue); background: var(--wm-blue-soft); color: var(--wm-blue-text); }
+    .wm-toggle-row { display: flex; align-items: flex-start; gap: .5rem; margin-bottom: .6rem; font-size: .85rem; font-weight: 700; line-height: 1.4; color: var(--wm-ink-2); cursor: pointer; }
+    .wm-toggle-row input { flex: none; width: 17px; height: 17px; margin-top: .1rem; accent-color: var(--wm-blue); }
+    .wm-warning { margin: .3rem 0 .7rem; padding: .55rem .75rem; border-radius: 9px; background: var(--wm-bad-soft); color: var(--wm-bad); font-size: .8rem; font-weight: 700; line-height: 1.45; }
+    .wm-grid9 { display: grid; grid-template-columns: repeat(3, 1fr); gap: .35rem; max-width: 150px; margin-bottom: .75rem; padding: .4rem; border-radius: 10px; background: var(--wm-card); border: 1px solid var(--wm-line); }
+    .wm-grid9 button { position: relative; aspect-ratio: 1; border: 1px solid var(--wm-line); border-radius: 6px; background: var(--wm-well); cursor: pointer; }
+    .wm-grid9 button::after { content: ""; position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; border-radius: 50%; background: var(--wm-line-2); transform: translate(-50%, -50%); }
+    .wm-grid9 button:hover { border-color: var(--wm-blue); }
+    .wm-grid9 button.is-active { background: var(--wm-blue); border-color: var(--wm-blue); }
+    .wm-grid9 button.is-active::after { background: var(--wm-blue-ink); }
+
+    .wm-thumb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: .45rem; min-height: 96px; max-height: 300px; margin-bottom: .6rem; padding: .45rem; overflow-y: auto; border-radius: 10px; background: var(--wm-card); border: 1px solid var(--wm-line); }
+    .wm-thumb { position: relative; display: block; min-height: 80px; padding: 0; overflow: hidden; border: 2px solid var(--wm-blue-ring); border-radius: 7px; background: var(--wm-well); cursor: pointer; font: inherit; aspect-ratio: 3 / 4; }
+    .wm-thumb img { display: block; width: 100%; height: 100%; object-fit: contain; background: #fff; }
+    .wm-thumb.is-excluded { border-color: var(--wm-line); opacity: .38; filter: grayscale(.5); }
+    .wm-thumb.is-loading::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--wm-line), var(--wm-card), var(--wm-line)); background-size: 200% 100%; animation: wm-shimmer 1.1s linear infinite; }
+    @keyframes wm-shimmer { to { background-position: -200% 0; } }
+    .wm-thumb .num { position: absolute; right: 3px; bottom: 3px; padding: 0 5px; border-radius: 5px; background: rgba(17, 28, 51, .75); color: #fff; font-size: .64rem; font-weight: 800; }
+    .wm-thumb.is-excluded .num::after { content: " \2715"; }
+
+    .wm-stage-col { position: sticky; top: calc(var(--header-overlap, 5.5rem) + .3rem); display: flex; flex-direction: column; align-items: stretch; gap: .7rem; padding: .9rem; border-radius: 12px; background: var(--wm-well); border: 1px solid var(--wm-line); }
+    .wm-stage-label { display: flex; align-items: center; justify-content: space-between; font-size: .72rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--wm-mute); }
+    .wm-stage-label [data-preview-label] { font-size: .86rem; letter-spacing: 0; text-transform: none; color: var(--wm-ink); }
+    .wm-canvas-wrap { position: relative; align-self: center; width: 100%; overflow: hidden; border-radius: 6px; border: 1px solid var(--wm-line); background: #fff; box-shadow: 0 16px 34px -18px rgba(17, 28, 51, .45); }
+    .wm-canvas-wrap canvas[data-preview-canvas] { display: block; width: 100%; height: auto; background: #fff; touch-action: none; }
+    .wm-canvas-wrap canvas[data-overlay-canvas] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; touch-action: none; }
+    .wm-canvas-wrap.is-draggable canvas[data-overlay-canvas] { cursor: move; }
+    .wm-preview-controls { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem; }
+
+    .wm-progress-wrap { display: none; margin: .8rem 0 .3rem; }
+    .wm-progress-wrap.is-active { display: block; }
+    .wm-progress-track { height: 10px; overflow: hidden; border-radius: 99px; background: var(--wm-card); border: 1px solid var(--wm-line); }
+    .wm-progress-fill { width: 0; height: 100%; border-radius: 99px; background: var(--wm-blue); transition: width .15s ease; }
+    .wm-progress-text { margin: .35rem 0 0; font-size: .8rem; font-weight: 700; color: var(--wm-mute); }
+    .wm-actions { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: .8rem; }
+    .wm-actions > .wm-btn--primary { flex: 1 1 100%; min-height: 3rem; font-size: 1rem; }
+    .wm-size-note { margin: .45rem 0 0; font-size: .8rem; line-height: 1.45; color: var(--wm-mute); }
+
+    .wm-result { margin-top: 1rem; padding: 1rem; border-radius: 12px; background: var(--wm-card); border: 1px solid var(--wm-line); border-left: 4px solid var(--wm-good); }
+    .wm-result-head { display: flex; align-items: center; gap: .7rem; }
+    .wm-result-icon { display: grid; place-items: center; flex: none; width: 42px; height: 42px; border-radius: 10px; background: var(--wm-good-soft); color: var(--wm-good); }
+    .wm-result-icon svg { width: 22px; height: 22px; }
+    .wm-result-title { margin: 0; font-size: 1.02rem; font-weight: 900; color: var(--wm-ink); }
+    .wm-result-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .4rem; margin: .8rem 0; }
+    .wm-result-stat { min-width: 0; padding: .45rem .55rem; border-radius: 8px; background: var(--wm-well); border: 1px solid var(--wm-line); }
+    .wm-result-stat .val { display: block; font-size: .9rem; font-weight: 900; color: var(--wm-ink); overflow-wrap: anywhere; }
+    .wm-result-stat .lbl { font-size: .62rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--wm-mute); }
+    .wm-result .wm-actions { margin-top: 0; }
+    .wm-result .wm-actions .wm-btn { flex: 1 1 10rem; }
+
+    /* ---------- ad slot straight after the tool ----------
+       inline-ads.js shows .ta-lb-ad (728x90) from 900px and .ta-inline-ad
+       (300x250) below 1000px; hiding the 300x250 from 900px leaves exactly one
+       ad at every width, and a display:none slot never loads its iframe. */
+    @media (min-width: 900px) { body.wm-page .wm-ad-zone .ta-inline-ad { display: none !important; } }
+    @media (max-width: 340px) { .wm-ad-zone { margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); } }
+
+    /* ---------- use cases, features, guide, FAQ ---------- */
+    .wm-use-grid, .wm-features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; margin-top: 1.5rem; }
+    .wm-use-card, .wm-feature { padding: 1rem; border-radius: 12px; background: var(--wm-card); border: 1px solid var(--wm-line); }
+    .wm-use-card { border-top: 3px solid var(--wm-blue); }
+    .wm-use-card strong { display: block; margin-bottom: .3rem; color: var(--wm-ink); }
+    .wm-use-card p, .wm-feature p { margin: 0; font-size: .87rem; line-height: 1.55; color: var(--wm-mute); }
+    .wm-feature .ic { display: inline-grid; place-items: center; width: 2.3rem; height: 2.3rem; margin-bottom: .45rem; border-radius: 9px; background: var(--wm-blue-soft); font-size: 1.15rem; }
+    .wm-feature h3 { margin: 0 0 .3rem; font-size: .95rem; color: var(--wm-ink); }
+    .wm-seo { margin-top: 1.5rem; padding: clamp(1.1rem, 3vw, 2rem); border-radius: 14px; background: var(--wm-card); border: 1px solid var(--wm-line); box-shadow: var(--wm-shadow); }
+    .wm-seo h2 { position: relative; margin: 2rem 0 .75rem; padding-bottom: .5rem; font-size: clamp(1.22rem, 2.5vw, 1.55rem); line-height: 1.25; color: var(--wm-ink); }
+    .wm-seo h2:first-child { margin-top: 0; }
+    /* an inked underline under each section title */
+    .wm-seo h2::after { content: ""; position: absolute; left: 0; bottom: 0; width: 3rem; height: 4px; border-radius: 2px; background: var(--wm-blue); opacity: .85; }
+    .wm-seo h3 { margin: 1.3rem 0 .5rem; font-size: 1.05rem; color: var(--wm-ink); }
+    .wm-seo p, .wm-seo li { font-size: .95rem; line-height: 1.75; color: var(--wm-ink-2); }
+    .wm-seo strong { color: var(--wm-ink); }
+    .wm-seo ul, .wm-seo ol { margin: .5rem 0 .8rem; padding-left: 1.25rem; }
+    .wm-seo li { margin-bottom: .3rem; }
+    .wm-seo code { padding: .08rem .35rem; border-radius: 5px; background: var(--wm-well); border: 1px solid var(--wm-line); font-size: .86em; }
+    .wm-seo-table { width: 100%; margin: .8rem 0 1rem; border-collapse: collapse; font-size: .88rem; }
+    .wm-seo-table th, .wm-seo-table td { padding: .55rem .7rem; border: 1px solid var(--wm-line); text-align: left; vertical-align: top; color: var(--wm-ink-2); }
+    .wm-seo-table th { background: var(--wm-well); color: var(--wm-ink); font-weight: 800; }
+    .wm-compare { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem; margin: 1rem 0; }
+    .wm-compare-card { padding: 1rem; border-radius: 10px; background: var(--wm-well); border: 1px solid var(--wm-line); }
+    .wm-compare-card strong { display: block; margin-bottom: .35rem; color: var(--wm-ink); }
+    .wm-compare-card p { margin: 0; font-size: .87rem !important; line-height: 1.55 !important; }
+    .wm-faq { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; align-items: start; }
+    .wm-faq .faq-item { padding: 0; border-radius: 10px; background: var(--wm-well); border: 1px solid var(--wm-line); box-shadow: none; transform: none; }
+    .wm-faq .faq-item:hover { border-color: var(--wm-line-2); box-shadow: none; transform: none; }
+    .wm-faq summary { position: relative; padding: .8rem 2.2rem .8rem .95rem; list-style: none; cursor: pointer; font-weight: 800; line-height: 1.4; color: var(--wm-ink); }
+    .wm-faq summary::-webkit-details-marker { display: none; }
+    .wm-faq summary::after { content: "+"; position: absolute; right: .95rem; top: .75rem; font-weight: 900; color: var(--wm-blue-text); }
+    .wm-faq details[open] summary::after { content: "\2212"; }
+    .wm-faq details p { margin: 0; padding: 0 .95rem .9rem; font-size: .9rem; line-height: 1.65; }
+
+    /* Related tools (shared markup) in this page's palette. The shared single
+       column is `1fr`, whose minimum is the card's min-content; on a 320px
+       phone that is wider than the section and scrolls the page sideways. */
+    .wm-page .related-tools-section { background: var(--wm-card); border-color: var(--wm-line); border-radius: 14px; box-shadow: var(--wm-shadow); }
+    .wm-page .related-tools-eyebrow { color: var(--wm-blue-text); }
+    .wm-page .related-tools-title { color: var(--wm-ink); }
+    .wm-page .related-tools-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: .6rem; }
+    .wm-page .related-tool-card { min-width: 0; background: var(--wm-well); border-color: var(--wm-line); box-shadow: none; color: var(--wm-ink); }
+    .wm-page .related-tool-card:hover, .wm-page .related-tool-card:focus-visible { border-color: var(--wm-blue); }
+    .wm-page .related-tool-card > div:last-child { min-width: 0; }
+
+    .wm-final-cta { position: relative; overflow: hidden; margin-top: 1.75rem; padding: 1.7rem 1.25rem; border-radius: 14px; text-align: center; background: repeating-radial-gradient(circle at 50% 140%, transparent 0 11px, var(--wm-guilloche) 11px 12px), var(--wm-paper); border: 1px solid var(--wm-line); }
+    .wm-final-cta .wm-btn { min-height: 3rem; padding-inline: 1.6rem; font-size: 1rem; }
+
+    /* ---------- phone sticky bar ---------- */
+    .wm-sticky-cta {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; padding: .55rem .75rem calc(.55rem + env(safe-area-inset-bottom));
+      background: var(--wm-card); border-top: 1px solid var(--wm-line-2); box-shadow: 0 -14px 30px -20px rgba(0, 0, 0, .45);
+      transform: translateY(110%); visibility: hidden; transition: transform .2s ease, visibility 0s linear .2s;
+    }
+    .wm-sticky-cta.is-visible { transform: none; visibility: visible; transition: transform .2s ease; }
+    .wm-sticky-cta .wm-btn { width: 100%; min-height: 3rem; font-size: 1rem; }
+    body.wm-page.wm-sticky-on { padding-bottom: calc(4.6rem + env(safe-area-inset-bottom)); }
+    @media (min-width: 769px) { .wm-sticky-cta { display: none !important; } }
+
+    /* ---------- smaller screens ---------- */
+    @media (max-width: 979px) { .wm-extras-row { justify-content: flex-start; } }
+    @media (max-width: 960px) {
+      .wm-layout { grid-template-columns: 1fr; }
+      .wm-controls { max-height: none; overflow: visible; }
+      .wm-stage-col { position: static; order: -1; }
+    }
+    @media (max-width: 860px) { .wm-badges { grid-template-columns: repeat(3, minmax(0, 1fr)); } .wm-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 760px) { .wm-use-grid, .wm-features, .wm-compare, .wm-faq { grid-template-columns: 1fr; } }
+    /* Phones: each row becomes a small card, headers move into data-label */
+    @media (max-width: 600px) {
+      .wm-seo-table, .wm-seo-table tbody, .wm-seo-table tr, .wm-seo-table td { display: block; width: 100%; }
+      .wm-seo-table { border: 0; }
+      .wm-seo-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+      .wm-seo-table tr { margin-bottom: .55rem; padding: .6rem .8rem; border: 1px solid var(--wm-line); border-radius: 12px; background: var(--wm-card); }
+      .wm-seo-table td { border: 0; padding: .14rem 0; }
+      .wm-seo-table td:first-child { margin-bottom: .2rem; color: var(--wm-ink); font-weight: 800; }
+      .wm-seo-table td[data-label]::before { content: attr(data-label) ": "; color: var(--wm-ink); font-weight: 700; }
+    }
+    @media (max-width: 559px) {
+      /* 10px gutters: a 320px phone then has the 300px its ads need */
+      body.wm-page .wm-wrap, body.wm-page .ta-support { width: calc(100% - 20px); }
+      .wm-page .breadcrumb { display: none; }
+      .wm-cover { padding: 1.4rem 1.05rem 1.2rem; border-radius: 12px; }
+      .wm-stamp { font-size: 1.15rem; top: 36%; }
+      .wm-tool-card { padding: .85rem; }
+      .wm-upload-head .wm-btn { display: none; }
+      .wm-steps { gap: .25rem; }
+      .wm-steps li { gap: .25rem; padding: .3rem .15rem; font-size: .6rem; letter-spacing: .02em; }
+      .wm-steps li span { width: 1.05rem; height: 1.05rem; font-size: .58rem; }
+      .wm-drop-zone .wm-btn { width: 100%; }
+      .wm-tab-btn { font-size: .76rem; padding: .4rem .3rem; }
+      .wm-inline-row { flex-direction: column; gap: 0; }
+      .wm-controls { padding: .75rem; }
+      .wm-stage-col { padding: .6rem; }
+      .wm-result-stats { grid-template-columns: 1fr; }
+      .wm-hero-cta .wm-btn { flex: 1 1 100%; }
+      .wm-lead { font-size: .92rem; }
+      .wm-page .related-tools-section { padding: 1rem .85rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      body.wm-page *, body.wm-page *::before, body.wm-page *::after { animation: none !important; transition: none !important; }
+    }
+    @media print { .wm-sticky-cta, .wm-ad-zone { display: none !important; } }
+  </style>
+  <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 29, 78, 216; }
+      [data-theme="dark"] { --pca: 96, 165, 250; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 96, 165, 250; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+
+  <meta name="theme-color" content="#1d4ed8" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="author" content="ToolAdda" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+  <link rel="canonical" href="https://tooladda.online/pdf-watermark.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+  <meta property="og:title" content="Watermark PDF Online Free — Add Text or Logo Watermark | ToolAdda" />
+  <meta property="og:description" content="Add text, image, or logo watermarks to PDF with live preview, tiling, opacity, and page selection. Private browser tool — no upload." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tooladda.online/pdf-watermark.html" />
+  <meta property="og:site_name" content="ToolAdda" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:image" content="https://tooladda.online/assets/images/og/pdf-watermark.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Watermark PDF Online Free — Add Text or Logo Watermark — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="Watermark PDF Online Free — Add Text or Logo Watermark — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Watermark PDF Free — Text &amp; Logo | ToolAdda" />
+  <meta name="twitter:description" content="Add watermark to PDF online — live preview, diagonal tiling, page selection. No upload." />
+  <meta name="twitter:image" content="https://tooladda.online/assets/images/og/pdf-watermark.jpg" />
+
+  <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://tooladda.online/#website",
+      "name": "ToolAdda",
+      "alternateName": [
+        "Tool Adda",
+        "Tools Adda",
+        "ToolsAdda",
+        "Tooladda",
+        "ToolAdda.online"
+      ],
+      "url": "https://tooladda.online/",
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "alternateName": [
+        "Tool Adda",
+        "Tools Adda",
+        "ToolsAdda",
+        "Tooladda",
+        "ToolAdda.online"
+      ],
+      "url": "https://tooladda.online/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tooladda.online/assets/images/logo.svg"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/pdf-watermark.html#webpage",
+      "url": "https://tooladda.online/pdf-watermark.html",
+      "name": "Watermark PDF Online Free — Add Text or Logo Watermark | ToolAdda",
+      "description": "Free PDF watermark tool with text, image, and logo watermarks, live preview, tiling, opacity, rotation, page selection, and client-side processing.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://tooladda.online/pdf-watermark.html#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://tooladda.online/pdf-watermark.html#softwareapplication"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://tooladda.online/pdf-watermark.html#softwareapplication",
+      "name": "PDF Watermark Tool",
+      "alternateName": [
+        "Add Watermark to PDF",
+        "Watermark PDF"
+      ],
+      "url": "https://tooladda.online/pdf-watermark.html",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "description": "Add text, image, or logo watermarks to PDF files with live preview, tiling, diagonal repeat, opacity, rotation, page selection, and CONFIDENTIAL/DRAFT presets.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Text watermark with presets",
+        "Image and logo watermark",
+        "Live page preview",
+        "Tiled diagonal repeat",
+        "9-point position grid",
+        "Free drag positioning",
+        "Opacity and rotation controls",
+        "Apply to all or selected pages",
+        "Page thumbnails with exclude",
+        "Behind or front layer",
+        "Flatten to image option",
+        "100% client-side — no upload",
+        "No registration required"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tooladda.online/pdf-watermark.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "PDF Watermark"
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to add a watermark to a PDF online",
+      "totalTime": "PT2M",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Upload your PDF",
+          "text": "Select or drag-drop a PDF. The file stays in your browser — nothing is uploaded."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Configure watermark",
+          "text": "Choose text or image watermark, set text, font, opacity, rotation, and tiled or single mode."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Preview live",
+          "text": "See the watermark on each page in the live preview. Select which pages to apply it to."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Download watermarked PDF",
+          "text": "Click Download to save the watermarked PDF. Original text remains selectable by default."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I add a watermark to a PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Upload your PDF, choose text or image watermark, customize opacity and position in the live preview, then click Apply Watermark & Download."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I add a text watermark?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - use presets or custom text with font, color, size, opacity, and rotation controls."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I add an image watermark to PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — upload a PNG or JPG logo, adjust scale, opacity, rotation, and position on the Image Watermark tab."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I add a logo to PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - use the Logo Watermark tab; PNG preserves transparency."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this PDF watermark tool free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - free with no signup and no watermark on your output file."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I add watermark to selected pages?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - odd/even/first/last/custom range plus click thumbnails to exclude pages."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I adjust opacity?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - separate opacity sliders for text and image watermarks."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I add a diagonal watermark to PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — set rotation to -45° or 45° and enable tiled mode for a diagonal repeat pattern across the page."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need Adobe Acrobat?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No - works in Chrome, Firefox, Safari, and Edge."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will PDF quality change after watermarking?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "By default, quality is preserved — watermarks are vector content and original text stays selectable. Flatten-to-image increases file size and removes selectability."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I watermark PDF on mobile?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - upload, preview, apply, and download on phones and tablets."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my PDF secure when watermarking?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — all processing happens locally in your browser. Your PDF never uploads to a server."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are files deleted automatically?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nothing stored on servers. Close the tab to clear memory."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I watermark scanned PDFs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - watermarks draw on top of or behind page images."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I remove a watermark later?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Standard watermarks become part of PDF content and can be removed with editing tools — they are visual deterrents, not encryption. Use flatten-to-image for harder removal at the cost of selectability."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can the watermark be removed easily?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A standard watermark is part of the PDF content and can be removed by someone with the right tools. Use flatten-to-image for a harder-to-remove result."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will my PDF text stay selectable?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes by default — watermarks use vector drawing without rasterizing pages unless you enable flatten-to-image."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use a different watermark on the first page?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Tick \"Use different (simpler) text on the first page\" and type the first-page text — for example ORIGINAL on a contract cover while the inner pages carry the full CONFIDENTIAL tiling."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I add page numbers or today's date as a watermark?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Type placeholders into the watermark text: {page} and {total} for page numbers, {date} and {time} for when you applied it, and {filename} for the file name. \"Page {page} of {total}\" gives every page its own number."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why doesn't my watermark show when I choose \"Behind page content\"?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Many PDFs, especially scans and exported slides, paint a solid white rectangle over the whole page. A watermark placed behind the content sits under that rectangle and is hidden. Switch Layer order to \"On top of page content\" and lower the opacity instead."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/pdf-watermark.html#webpage",
+      "url": "https://tooladda.online/pdf-watermark.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-27",
+      "dateModified": "2026-09-16",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="wm-page">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+      <nav class="nav-links" aria-label="Primary"><a href="/">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy</a></nav>
+      <div class="nav-actions">
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+            <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+            <path d="M3.1 16.9h10.8" />
+            <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+          </svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+        <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <div class="wm-shell">
+      <aside class="ta-support" aria-label="Support ToolAdda">
+        <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+        <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+      </aside>
+
+      <div class="container wm-wrap">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">›</span>
+          <a href="/">PDF Tools</a><span aria-hidden="true">›</span>
+          <span aria-current="page">Watermark PDF</span>
+        </nav>
+
+        <!-- One grid (.wm-top) places these. Under 980px: cover, tool, ad, then
+             the lead and the extras. From 980px the cover and lead sit beside
+             the empty tool; once a PDF is loaded the editor takes the full
+             width (.is-editing). The ad always comes straight after the tool. -->
+        <div class="wm-top" data-wm-top>
+          <header class="wm-cover">
+            <span class="wm-stamp" aria-hidden="true">CONFIDENTIAL</span>
+            <p class="wm-badge">💧 Watermark PDF</p>
+            <h1 class="wm-title">Watermark PDF Online — Add Text or Logo Free</h1>
+            <div class="wm-privacy-banner">🔒 Your PDF never leaves your device — 100% client-side watermarking</div>
+          </header>
+
+          <div class="wm-intro">
+            <p class="wm-lead">Add text, image, or logo watermarks to any PDF with live preview, diagonal tiling, opacity control, and page selection. Everything runs in your browser — no upload, no registration, original text stays selectable.</p>
+            <div class="wm-honest-note">⚠️ <strong>Honest note:</strong> a standard watermark is a visual deterrent — it can be removed with editing tools. For harder-to-remove results, use flatten-to-image below or combine with <a href="pdf-password-protector.html">Protect PDF</a> for password security.</div>
+          </div>
+
+          <article class="wm-tool-card" id="wm-tool" data-pdf-watermark-page aria-label="PDF watermark tool">
+            <ol class="wm-steps" aria-label="Watermark steps">
+              <li class="is-active" data-wm-step aria-current="step"><span>1</span> Upload</li>
+              <li data-wm-step><span>2</span> Choose type</li>
+              <li data-wm-step><span>3</span> Customize</li>
+              <li data-wm-step><span>4</span> Preview</li>
+              <li data-wm-step><span>5</span> Apply</li>
+              <li data-wm-step><span>6</span> Download</li>
+            </ol>
+
+            <div data-pre-upload>
+              <div class="wm-upload-head">
+                <div>
+                  <p class="tag">Step 1 — Upload PDF</p>
+                  <p class="pdf-helper-text">Drag &amp; drop or browse. Multiple PDFs get the same watermark (downloaded as ZIP).</p>
+                </div>
+                <button class="wm-btn wm-btn--ghost" type="button" data-file-picker><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Choose PDF(s)</button>
+              </div>
+              <input type="file" accept="application/pdf,.pdf" multiple hidden data-file-input aria-label="Choose PDF files to watermark" />
+              <!-- A group, not a role="button": it holds a real button, which a
+                   button role would flatten for screen readers. Clicking any
+                   empty part of it still opens the picker. -->
+              <div class="wm-drop-zone pdf-drop-zone" data-drop-zone role="group" aria-label="Drag and drop PDF files here">
+                <svg class="wm-drop-art" viewBox="0 0 110 88" aria-hidden="true" focusable="false"><path class="sheet" d="M28 14h40l14 14v54H28z"/><path class="sheet" d="M68 14v14h14"/><path class="ln" d="M36 36h36M36 44h40M36 52h30M36 60h38M36 68h26"/><g class="stamp"><rect class="mark" x="34" y="40" width="44" height="16" rx="2" transform="rotate(-14 56 48)"/><text class="mark-t" x="56" y="51" text-anchor="middle" transform="rotate(-14 56 48)">DRAFT</text></g></svg>
+                <p class="wm-drop-title">Drag &amp; drop PDF files here</p>
+                <p class="wm-drop-sub">Text, logo, or image watermarks · Live preview · No upload</p>
+                <button class="wm-btn wm-btn--primary pdf-drop-zone-browse" type="button" data-file-picker><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>Browse PDFs</button>
+              </div>
+            </div>
+
+            <div class="hidden" data-editor-root>
+              <div class="wm-editor-bar">
+                <div data-file-summary></div>
+                <button class="wm-btn wm-btn--ghost wm-btn--sm" type="button" data-reset-btn><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>Start over</button>
+              </div>
+
+              <div class="wm-tab-row" role="tablist" aria-label="Watermark type">
+                <button type="button" class="wm-tab-btn is-active" data-wm-tab="text" role="tab" aria-selected="true">🔤 Text Watermark</button>
+                <button type="button" class="wm-tab-btn" data-wm-tab="image" role="tab" aria-selected="false">🖼️ Image Watermark</button>
+                <button type="button" class="wm-tab-btn" data-wm-tab="logo" role="tab" aria-selected="false">🏷️ Logo Watermark</button>
+              </div>
+
+              <div class="wm-layout">
+                <div class="wm-controls">
+                  <!-- TEXT TAB -->
+                  <div class="wm-tab-panel is-active" data-wm-tab-panel="text">
+                    <p class="wm-group-title">Text watermark</p>
+                    <div class="wm-preset-row" data-text-presets></div>
+                    <div class="wm-field"><label for="wmText">Watermark text</label><textarea id="wmText" rows="2">CONFIDENTIAL</textarea></div>
+                    <p class="wm-hint">Placeholders: {page}, {total}, {date}, {time}, {filename} — e.g. "Page {page} of {total}"</p>
+                    <div class="wm-warning hidden" data-nonwinansi-warning></div>
+
+                    <div class="wm-inline-row">
+                      <div class="wm-field"><label for="wmFont">Font</label><select id="wmFont">
+                        <option value="Helvetica">Helvetica</option><option value="HelveticaBold" selected>Helvetica Bold</option><option value="HelveticaOblique">Helvetica Italic</option>
+                        <option value="TimesRoman">Times Roman</option><option value="TimesRomanBold">Times Bold</option><option value="TimesRomanItalic">Times Italic</option>
+                        <option value="Courier">Courier</option><option value="CourierBold">Courier Bold</option>
+                        <option value="custom">Custom font (.ttf/.otf)…</option>
+                      </select></div>
+                      <div class="wm-field hidden" data-custom-font-field><label for="wmCustomFont">Upload font</label><input type="file" id="wmCustomFont" accept=".ttf,.otf" /></div>
+                    </div>
+
+                    <div class="wm-inline-row">
+                      <div class="wm-field"><label for="wmFontSize">Font size</label><input type="number" id="wmFontSize" min="4" max="400" value="48" /></div>
+                      <div class="wm-field"><label for="wmColor">Colour</label><input type="color" id="wmColor" value="#ff0000" /></div>
+                    </div>
+                    <div class="wm-toggle-row"><input type="checkbox" id="wmAutoFit" /><label for="wmAutoFit">Auto-fit font size to page width</label></div>
+
+                    <div class="wm-field"><label for="wmOpacity">Opacity <span id="wmOpacityVal">50</span>%</label><input type="range" id="wmOpacity" min="0" max="100" value="50" /></div>
+                    <div class="wm-field"><label for="wmRotation">Rotation <span id="wmRotationVal">-45</span>°</label><input type="range" id="wmRotation" min="-90" max="90" value="-45" /></div>
+                    <div class="wm-preset-row"><button type="button" data-rot="0">0°</button><button type="button" data-rot="45">45°</button><button type="button" data-rot="-45">-45° (diagonal)</button><button type="button" data-rot="90">90°</button></div>
+
+                    <div class="wm-field"><label for="wmStyle">Style</label><select id="wmStyle"><option value="fill" selected>Fill only</option><option value="outline">Outline / stroke only</option><option value="both">Fill + outline</option></select></div>
+                    <div class="wm-field hidden" data-stroke-width-field><label for="wmStrokeWidth">Stroke width</label><input type="number" id="wmStrokeWidth" min="0.5" max="10" step="0.5" value="1.5" /></div>
+                  </div>
+
+                  <!-- IMAGE TAB -->
+                  <div class="wm-tab-panel" data-wm-tab-panel="image">
+                    <p class="wm-group-title">Image / logo watermark</p>
+                    <div class="wm-field"><label for="wmImageFile">Logo or stamp image (PNG or JPG)</label><input type="file" id="wmImageFile" accept="image/png,image/jpeg" aria-describedby="wmImageHint" /></div>
+                    <p class="wm-hint" id="wmImageHint">PNG preserves transparency — ideal for brand logos. Use white-background removal for JPG logos.</p>
+                    <div class="wm-field"><label for="wmImageScale">Scale (% of page width) <span id="wmImageScaleVal">25</span>%</label><input type="range" id="wmImageScale" min="2" max="100" value="25" /></div>
+                    <div class="wm-field"><label for="wmImageOpacity">Opacity <span id="wmImageOpacityVal">50</span>%</label><input type="range" id="wmImageOpacity" min="0" max="100" value="50" /></div>
+                    <div class="wm-field"><label for="wmImageRotation">Rotation <span id="wmImageRotationVal">0</span>°</label><input type="range" id="wmImageRotation" min="-90" max="90" value="0" /></div>
+                    <div class="wm-toggle-row"><input type="checkbox" id="wmRemoveWhiteBg" /><label for="wmRemoveWhiteBg">Auto-remove white background (JPG logos)</label></div>
+                    <div class="wm-field hidden" data-whitebg-tolerance-field><label for="wmWhiteBgTolerance">Sensitivity</label><input type="range" id="wmWhiteBgTolerance" min="0" max="80" value="25" /></div>
+                    <p class="wm-warning hidden" data-large-image-warning></p>
+                  </div>
+
+                  <p class="wm-group-title">Position</p>
+                  <div class="wm-grid9" data-position-grid role="group" aria-label="Position on the page">
+                    <button type="button" data-pos="top-left" title="Top left" aria-label="Top left"></button><button type="button" data-pos="top-center" title="Top center" aria-label="Top center"></button><button type="button" data-pos="top-right" title="Top right" aria-label="Top right"></button>
+                    <button type="button" data-pos="center-left" title="Center left" aria-label="Center left"></button><button type="button" data-pos="center" class="is-active" title="Center" aria-label="Center" aria-pressed="true"></button><button type="button" data-pos="center-right" title="Center right" aria-label="Center right"></button>
+                    <button type="button" data-pos="bottom-left" title="Bottom left" aria-label="Bottom left"></button><button type="button" data-pos="bottom-center" title="Bottom center" aria-label="Bottom center"></button><button type="button" data-pos="bottom-right" title="Bottom right" aria-label="Bottom right"></button>
+                  </div>
+                  <div class="wm-toggle-row"><input type="checkbox" id="wmFreePosition" /><label for="wmFreePosition">Free positioning (drag on preview)</label></div>
+                  <div class="wm-inline-row">
+                    <div class="wm-field"><label for="wmOffsetX">X (pt)</label><input type="number" id="wmOffsetX" value="0" /></div>
+                    <div class="wm-field"><label for="wmOffsetY">Y (pt)</label><input type="number" id="wmOffsetY" value="0" /></div>
+                    <div class="wm-field"><label for="wmMargin">Margin (pt)</label><input type="number" id="wmMargin" value="36" min="0" /></div>
+                  </div>
+
+                  <div class="wm-toggle-row"><input type="checkbox" id="wmTiled" /><label for="wmTiled">Tiled / repeated across whole page</label></div>
+                  <div class="wm-inline-row hidden" data-tile-fields>
+                    <div class="wm-field"><label for="wmTileSpacingX">Spacing X (pt)</label><input type="number" id="wmTileSpacingX" value="40" min="0" /></div>
+                    <div class="wm-field"><label for="wmTileSpacingY">Spacing Y (pt)</label><input type="number" id="wmTileSpacingY" value="60" min="0" /></div>
+                  </div>
+                  <div class="wm-toggle-row hidden" data-stagger-row><input type="checkbox" id="wmStagger" /><label for="wmStagger">Stagger alternate rows (brick pattern)</label></div>
+
+                  <div class="wm-field"><label for="wmLayer">Layer order</label><select id="wmLayer"><option value="front" selected>On top of page content</option><option value="behind">Behind page content</option></select></div>
+                  <p class="wm-hint">"Behind" won't be visible on pages with an opaque background rectangle covering the whole page — this is a common source of confusion.</p>
+                  <div class="wm-inline-row">
+                    <div class="wm-toggle-row"><input type="checkbox" id="wmFlipH" /><label for="wmFlipH">Flip horizontal</label></div>
+                    <div class="wm-toggle-row"><input type="checkbox" id="wmFlipV" /><label for="wmFlipV">Flip vertical</label></div>
+                  </div>
+
+                  <p class="wm-group-title">Pages</p>
+                  <div class="wm-field"><label for="wmPageMode">Apply to</label><select id="wmPageMode"><option value="all" selected>All pages</option><option value="odd">Odd pages only</option><option value="even">Even pages only</option><option value="first">First page only</option><option value="last">Last page only</option><option value="custom">Custom range</option></select></div>
+                  <div class="wm-field hidden" data-custom-range-field><label for="wmCustomRange">Custom range</label><input type="text" id="wmCustomRange" placeholder="e.g. 1-5, 8, 12-" /></div>
+                  <p class="wm-warning hidden" data-range-warning></p>
+                  <div class="wm-toggle-row"><input type="checkbox" id="wmFirstPageDifferent" /><label for="wmFirstPageDifferent">Use different (simpler) text on the first page</label></div>
+                  <div class="wm-field hidden" data-first-page-text-field><label for="wmFirstPageText">First-page text</label><input type="text" id="wmFirstPageText" placeholder="e.g. ORIGINAL" /></div>
+                  <p class="wm-hint">Click a thumbnail below to exclude/include that page individually.</p>
+                  <div class="wm-thumb-grid" data-page-thumbs role="group" aria-label="Pages to watermark"></div>
+
+                  <p class="wm-group-title">Output</p>
+                  <div class="wm-toggle-row"><input type="checkbox" id="wmFlatten" /><label for="wmFlatten">Flatten to images (harder to remove, but text becomes unselectable and file size increases)</label></div>
+
+                  <div class="wm-progress-wrap" data-progress-wrap>
+                    <div class="wm-progress-track"><div class="wm-progress-fill" data-progress-fill></div></div>
+                    <p class="wm-progress-text" data-progress-text>Preparing…</p>
+                  </div>
+                  <div class="wm-actions">
+                    <button class="wm-btn wm-btn--primary" type="button" data-apply-btn aria-describedby="wmApplyHint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Apply Watermark &amp; Download</button>
+                  </div>
+                  <p class="wm-size-note" id="wmApplyHint" data-size-note></p>
+
+                  <div class="wm-result hidden" data-result-panel role="status" aria-live="polite">
+                    <div class="wm-result-head">
+                      <span class="wm-result-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20 6 9 17l-5-5"/></svg></span>
+                      <p class="wm-result-title">PDF watermarked successfully</p>
+                    </div>
+                    <div class="wm-result-stats">
+                      <div class="wm-result-stat"><span class="val" data-result-filename>document-watermarked.pdf</span><span class="lbl">File name</span></div>
+                      <div class="wm-result-stat"><span class="val" data-result-filesize>—</span><span class="lbl">Size</span></div>
+                      <div class="wm-result-stat"><span class="val" data-result-pagecount>—</span><span class="lbl">Pages</span></div>
+                    </div>
+                    <div class="wm-actions">
+                      <a class="wm-btn wm-btn--primary hidden" href="#" data-download-link role="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Download again</a>
+                      <button class="wm-btn wm-btn--ghost" type="button" data-watermark-another>Watermark another PDF</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="wm-stage-col">
+                  <div class="wm-stage-label"><span>Live preview</span><span data-preview-label>Page 1</span></div>
+                  <div class="wm-canvas-wrap"><canvas data-preview-canvas aria-label="Live PDF watermark preview"></canvas><canvas data-overlay-canvas aria-hidden="true"></canvas></div>
+                  <div class="wm-preview-controls">
+                    <button type="button" class="wm-btn wm-btn--ghost wm-btn--sm" data-preview-prev aria-label="Previous page">‹ Prev</button>
+                    <button type="button" class="wm-btn wm-btn--ghost wm-btn--sm" data-preview-next aria-label="Next page">Next ›</button>
+                    <button type="button" class="wm-btn wm-btn--ghost wm-btn--sm" data-preview-toggle-before aria-pressed="false">Show original</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="wm-message hidden" role="status" aria-live="polite" data-message></div>
+            <div class="wm-loader hidden" data-loader>Reading PDF…</div>
+          </article>
+
+          <!-- Ads: 728x90 from 900px, 300x250 below it (see .wm-ad-zone CSS).
+               Straight after the tool, never before or inside it. -->
+          <div class="wm-ad-zone">
+            <div class="ta-lb-ad"></div>
+            <div class="ta-inline-ad"></div>
+          </div>
+
+          <div class="wm-extras">
+            <div class="wm-extras-row">
+              <div class="wm-trust-row" role="group" aria-label="Highlights">
+                <span class="wm-trust-pill">Live preview</span>
+                <span class="wm-trust-pill">Text &amp; logo</span>
+                <span class="wm-trust-pill">Page selection</span>
+                <span class="wm-trust-pill">Diagonal tile</span>
+                <span class="wm-trust-pill">Free</span>
+                <span class="wm-trust-pill">No quality loss</span>
+              </div>
+              <div class="wm-hero-cta">
+                <a class="wm-btn wm-btn--primary" href="#wm-tool">Upload PDF</a>
+                <a class="wm-btn wm-btn--ghost" href="pdf-password-protector.html">Protect PDF →</a>
+              </div>
+            </div>
+            <div class="wm-badges" role="group" aria-label="Trust badges">
+              <div class="wm-badge-card"><span>🔒</span>No upload</div>
+              <div class="wm-badge-card"><span>🛡️</span>Privacy-first</div>
+              <div class="wm-badge-card"><span>⚡</span>Fast local</div>
+              <div class="wm-badge-card"><span>📱</span>Mobile OK</div>
+              <div class="wm-badge-card"><span>✨</span>Quality kept</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wm-use-grid">
+          <div class="wm-use-card"><strong>Confidential docs</strong><p>Stamp CONFIDENTIAL or INTERNAL USE ONLY on contracts, board packs, and HR files before sharing.</p></div>
+          <div class="wm-use-card"><strong>Brand protection</strong><p>Add your company logo watermark to marketing PDFs, ebooks, and whitepapers to deter unauthorized redistribution.</p></div>
+          <div class="wm-use-card"><strong>Draft review</strong><p>Mark DRAFT or SAMPLE on pre-release documents so reviewers know the content is not final.</p></div>
+        </div>
+
+        <div class="wm-features" aria-label="Key features">
+          <div class="wm-feature"><div class="ic" aria-hidden="true">🖼️</div><h3>Live page preview</h3><p>See exactly how your watermark looks on each page before applying — toggle before/after instantly.</p></div>
+          <div class="wm-feature"><div class="ic" aria-hidden="true">🔤</div><h3>Text &amp; logo stamps</h3><p>CONFIDENTIAL presets, custom text with placeholders, or upload PNG/JPG logos with transparency.</p></div>
+          <div class="wm-feature"><div class="ic" aria-hidden="true">📐</div><h3>Full control</h3><p>Opacity, rotation, 9-point grid, drag positioning, diagonal tiling, and per-page selection.</p></div>
+        </div>
+
+
+        <section class="wm-seo" aria-labelledby="wm-seo-main">
+          <h2 id="wm-seo-main">What is a PDF Watermark?</h2>
+          <p>A <strong>PDF watermark</strong> is a semi-transparent text label or image overlay placed on PDF pages to indicate status, ownership, or confidentiality. Common examples include <strong>CONFIDENTIAL</strong>, <strong>DRAFT</strong>, <strong>SAMPLE</strong>, company logos, copyright notices, and page-number stamps. Watermarks appear visually on the document while the underlying content remains readable — making them essential for legal workflows, brand protection, and document control.</p>
+          <p>Unlike password protection, a watermark does not encrypt the file. It is a visible deterrent that signals intent: this document is not for public distribution, is not yet approved, or belongs to a specific organization. When you <strong>add watermark to PDF</strong> files before emailing, printing, or uploading to a portal, recipients immediately understand how to treat the content.</p>
+
+          <h2>How to Add Watermark to PDF Online</h2>
+          <ol>
+            <li><strong>Upload your PDF</strong> — drag and drop or browse. Files stay on your device; nothing uploads to a server.</li>
+            <li><strong>Choose watermark type</strong> — Text Watermark for stamps like CONFIDENTIAL, Image Watermark for custom graphics, or Logo Watermark for brand marks.</li>
+            <li><strong>Customize</strong> — set text, font, color, opacity, rotation, position (9-point grid or free drag), and tiled diagonal repeat if needed.</li>
+            <li><strong>Preview live</strong> — navigate pages, toggle before/after, and click thumbnails to exclude specific pages.</li>
+            <li><strong>Apply &amp; download</strong> — click Apply Watermark &amp; Download. Your watermarked PDF saves instantly with original text still selectable.</li>
+          </ol>
+
+          <h2>Add Text Watermark to PDF</h2>
+          <p>Text watermarks are the fastest way to stamp status labels. ToolAdda includes one-click presets: <strong>CONFIDENTIAL</strong>, <strong>DRAFT</strong>, <strong>SAMPLE</strong>, <strong>COPY</strong>, <strong>DO NOT COPY</strong>, <strong>ORIGINAL</strong>, <strong>PAID</strong>, <strong>APPROVED</strong>, and <strong>INTERNAL USE ONLY</strong>. Customize font (Helvetica, Times, Courier, or upload custom .ttf/.otf), size, color, opacity, rotation, fill/outline style, and auto-fit width.</p>
+          <p>Dynamic placeholders expand per page: <code>{page}</code>, <code>{total}</code>, <code>{date}</code>, <code>{time}</code>, and <code>{filename}</code>. Example: <em>Page {page} of {total} — CONFIDENTIAL</em> produces unique stamps on every page. Enable tiled mode with -45° rotation for classic diagonal repeat patterns used by law firms and financial institutions.</p>
+
+          <h2>Add Image or Logo Watermark to PDF</h2>
+          <p>Upload a PNG or JPG to stamp your brand logo, certification badge, or custom graphic. PNG preserves transparency — ideal for logos on white backgrounds. JPG logos can use auto white-background removal. Scale as a percentage of page width, adjust opacity for subtle branding, rotate, and position with the same 9-point grid or drag controls as text watermarks.</p>
+          <p>Logo watermarks protect ebooks, whitepapers, and marketing PDFs from unauthorized redistribution. A semi-transparent centered logo discourages screenshot reuse while keeping content readable. For stronger brand presence, place a small logo in the bottom-right corner on every page using the margin and position controls.</p>
+
+          <h2>Why Watermark PDF Files?</h2>
+          <ul>
+            <li><strong>Confidentiality</strong> — signal that content is restricted before accidental forwarding.</li>
+            <li><strong>Status tracking</strong> — DRAFT vs APPROVED prevents confusion in review cycles.</li>
+            <li><strong>Copyright</strong> — display © notices and ownership claims on digital assets.</li>
+            <li><strong>Brand identity</strong> — reinforce company logo on client-facing documents.</li>
+            <li><strong>Leak deterrence</strong> — recipient name or date stamps discourage unauthorized sharing.</li>
+          </ul>
+
+          <h2>Protect PDF Documents with Watermarks</h2>
+          <p>Watermarks complement — but do not replace — true document security. For password-protected files, use <a href="pdf-password-protector.html">Protect PDF</a> after watermarking. For documents that must resist casual watermark removal, enable flatten-to-image which rasterizes each page (text becomes unselectable and file size increases). Honest disclosure: determined editors can remove standard vector watermarks; watermarks are visual deterrents, not encryption.</p>
+
+          <h2>Branding and Copyright Protection</h2>
+          <p>Publishers watermark preview chapters with SAMPLE. Agencies stamp client deliverables with agency logos. Photographers embed copyright text on portfolio PDFs. Consultants add firm branding to proposal templates. ToolAdda's behind-layer option places watermarks under page content when the page background allows — useful for subtle letterhead-style branding without obscuring body text.</p>
+
+          <h2>Confidential Document Watermarks</h2>
+          <p>Legal, healthcare, and finance teams routinely stamp CONFIDENTIAL or PRIVILEGED on contracts, medical summaries, and audit reports. Apply to all pages with diagonal tiling so no section can be cropped out cleanly. Use odd-pages-only for duplex print workflows, or custom ranges like <em>1-3, 8, 12-</em> for exhibits. Click page thumbnails to exclude cover pages that should remain clean.</p>
+
+          <h2>Business Use Cases</h2>
+          <p><strong>Sales</strong> — watermark quotes as DRAFT until approved. <strong>HR</strong> — stamp INTERNAL on policy drafts. <strong>Finance</strong> — mark preliminary reports SAMPLE before board review. <strong>Real estate</strong> — add brokerage logo to property brochures. <strong>Education</strong> — stamp practice exams DO NOT DISTRIBUTE. <strong>Design</strong> — protect mockup PDFs sent for client feedback.</p>
+
+          <h2>Legal and Office Use Cases</h2>
+          <p>Law firms tile CONFIDENTIAL diagonally on discovery packets. Courts accept watermarked filings when status must be visible. Notaries stamp COPY on certified duplicates. Government offices mark OFFICIAL USE ONLY on internal memos. Paralegals combine watermarking with <a href="pdf-merge.html">Merge PDF</a> and <a href="pdf-split.html">Split PDF</a> for complete document prep workflows.</p>
+
+          <h2>Watermark PDF Without Adobe</h2>
+          <p>Adobe Acrobat's watermark feature requires a paid subscription. ToolAdda provides comparable control — text and image watermarks, opacity, rotation, tiling, page selection, live preview — free in any browser. No installation, no account, no upload queue. Process sensitive files locally when cloud tools are blocked by IT policy.</p>
+
+          <h2>Mobile PDF Watermarking</h2>
+          <p>Upload PDFs from iOS or Android file pickers, adjust sliders, preview on your phone screen, and download the watermarked result. Sticky Apply button on mobile keeps the primary action accessible. For large multi-hundred-page files, desktop browsers process faster — but typical business documents watermark in seconds on modern phones.</p>
+
+          <h2>Privacy and Security</h2>
+          <p>ToolAdda watermarking is 100% client-side. PDF bytes never traverse the network during processing. HTTPS protects the page load; your document content stays in browser memory until you close the tab. No server storage, no account database, no third-party analytics on file contents. Preferred for NDAs, medical records, and financial statements when cloud watermark tools are unacceptable.</p>
+
+          <h2>Why Choose Our PDF Watermark Tool?</h2>
+          <div class="wm-compare" aria-label="Competitor comparison">
+            <div class="wm-compare-card"><strong>vs iLovePDF / Smallpdf</strong><p>No mandatory upload. Live preview with before/after toggle, page thumbnails, drag positioning, behind-layer mode, and flatten option — free without daily caps or paywalls on download.</p></div>
+            <div class="wm-compare-card"><strong>vs Adobe Acrobat</strong><p>No subscription. Instant browser watermarking with CONFIDENTIAL presets, placeholder text, custom fonts, and tiled diagonal repeat.</p></div>
+            <div class="wm-compare-card"><strong>vs PDF2Go / Sejda / PDF24</strong><p>Privacy-first local processing, richer page selection, honest security guidance, and cleaner UX without ad walls blocking your download.</p></div>
+          </div>
+          <p>Chain with <a href="pdf-compress.html">Compress PDF</a>, <a href="flatten-pdf.html">Flatten PDF</a>, <a href="pdf-merge.html">Merge PDF</a>, <a href="pdf-rotate.html">Rotate PDF</a>, and <a href="images-to-pdf.html">Images to PDF</a> for complete document workflows.</p>
+
+          <h2>Add Transparent Watermark to PDF</h2>
+          <p>Opacity control lets you create subtle transparent watermarks that do not obstruct reading. Set text opacity to 15–30% for background-style stamps, or 50–70% for clear CONFIDENTIAL labels. Image logos at 20% opacity provide brand presence without dominating the page. Combine low opacity with behind-layer placement for letterhead-style effects on documents with white margins.</p>
+
+          <h2>Diagonal and Repeated Watermark Patterns</h2>
+          <p>Tiled mode repeats your watermark across the entire page in a grid — essential for leak deterrence because cropping one corner cannot remove all instances. Enable stagger for brick-pattern offsets on alternate rows. Adjust spacing X and Y to control density: tight spacing for maximum coverage, wide spacing for lighter visual weight. The -45° diagonal preset matches industry-standard confidential document styling used by legal and financial firms worldwide.</p>
+
+          <h2>Stamp PDF with Dynamic Templates</h2>
+          <p>Beyond static CONFIDENTIAL labels, build dynamic stamps with placeholders. A template like <em>{filename} — {date} — Page {page}/{total}</em> creates audit trails showing which file version was watermarked and when. First-page-different mode lets you use a simpler ORIGINAL stamp on page 1 while inner pages carry full confidential tiling — common for contract cover sheets.</p>
+
+          <h2>Recommended Watermark Settings</h2>
+          <p>Good watermarks are readable without getting in the way. These starting points cover the most common jobs — adjust the opacity while watching the live preview until the page text is still easy to read.</p>
+          <table class="wm-seo-table">
+            <thead><tr><th scope="col">Purpose</th><th scope="col">Watermark</th><th scope="col">Opacity</th><th scope="col">Rotation</th><th scope="col">Layout</th></tr></thead>
+            <tbody>
+              <tr><td>Confidential contracts and reports</td><td data-label="Watermark">CONFIDENTIAL</td><td data-label="Opacity">20–30%</td><td data-label="Rotation">-45°</td><td data-label="Layout">Tiled, stagger on</td></tr>
+              <tr><td>Drafts sent for review</td><td data-label="Watermark">DRAFT</td><td data-label="Opacity">35–50%</td><td data-label="Rotation">-45°</td><td data-label="Layout">Single, centre</td></tr>
+              <tr><td>Brand logo on marketing PDFs</td><td data-label="Watermark">PNG logo</td><td data-label="Opacity">15–25%</td><td data-label="Rotation">0°</td><td data-label="Layout">Single, bottom-right</td></tr>
+              <tr><td>Invoices that have been settled</td><td data-label="Watermark">PAID</td><td data-label="Opacity">60–70%</td><td data-label="Rotation">0°</td><td data-label="Layout">Single, top-right</td></tr>
+              <tr><td>Exam papers and handouts</td><td data-label="Watermark">DO NOT COPY</td><td data-label="Opacity">20%</td><td data-label="Rotation">-45°</td><td data-label="Layout">Tiled</td></tr>
+              <tr><td>Numbered review copies</td><td data-label="Watermark">Page {page} of {total}</td><td data-label="Opacity">60%</td><td data-label="Rotation">0°</td><td data-label="Layout">Single, bottom-center</td></tr>
+            </tbody>
+          </table>
+          <p>Tiled patterns protect best against cropping, a single centred stamp is the least intrusive, and a small corner logo is the usual choice for branding. Whatever you pick, the thumbnails let you leave a cover page or a signature page clean.</p>
+
+          <h2>Advanced Watermark Features</h2>
+          <ul>
+            <li>Batch watermark multiple PDFs with identical settings (ZIP download)</li>
+            <li>Custom font upload for non-Latin scripts and brand typefaces</li>
+            <li>Free-position drag on live preview canvas</li>
+            <li>Flip horizontal/vertical for mirrored stamp effects</li>
+            <li>Outline-only text style for hollow watermark letters</li>
+            <li>Auto-fit font size to 80% page width</li>
+            <li>Flatten-to-image for harder-to-remove watermarks</li>
+          </ul>
+          <p>Future enhancements on our roadmap include saved watermark presets, cloud import, and one-click confidential/draft/approved stamp templates. The current tool already exceeds most free competitors in customization depth while remaining lightweight and mobile-friendly.</p>
+
+          <h2 id="wm-faq">Watermark PDF — Frequently Asked Questions</h2>
+          <div class="wm-faq">
+            <details class="faq-item"><summary>How do I add a watermark to a PDF?</summary><p>Upload your PDF, choose text or image watermark, customize in the live preview, then click Apply Watermark &amp; Download.</p></details>
+            <details class="faq-item"><summary>Can I add a text watermark?</summary><p>Yes — use presets or custom text with font, color, size, opacity, and rotation controls.</p></details>
+            <details class="faq-item"><summary>Can I add an image watermark?</summary><p>Yes — upload PNG or JPG on the Image Watermark tab.</p></details>
+            <details class="faq-item"><summary>Can I add a logo to PDF?</summary><p>Yes — use the Logo Watermark tab; PNG preserves transparency.</p></details>
+            <details class="faq-item"><summary>Is this PDF watermark tool free?</summary><p>Yes — free with no signup and no watermark on your output file.</p></details>
+            <details class="faq-item"><summary>Can I add watermark to selected pages?</summary><p>Yes — odd/even/first/last/custom range plus click thumbnails to exclude pages.</p></details>
+            <details class="faq-item"><summary>Can I adjust opacity?</summary><p>Yes — separate opacity sliders for text and image watermarks.</p></details>
+            <details class="faq-item"><summary>Can I add a diagonal watermark?</summary><p>Yes — set -45° rotation and enable tiled repeat mode.</p></details>
+            <details class="faq-item"><summary>Do I need Adobe Acrobat?</summary><p>No — works in Chrome, Firefox, Safari, and Edge.</p></details>
+            <details class="faq-item"><summary>Will PDF quality change?</summary><p>Not by default — vector watermarks preserve quality. Flatten-to-image increases size.</p></details>
+            <details class="faq-item"><summary>Can I watermark PDF on mobile?</summary><p>Yes — upload, preview, apply, and download on phones and tablets.</p></details>
+            <details class="faq-item"><summary>Is my PDF secure?</summary><p>100% in-browser — no server upload.</p></details>
+            <details class="faq-item"><summary>Are files deleted automatically?</summary><p>Nothing stored on servers. Close the tab to clear memory.</p></details>
+            <details class="faq-item"><summary>Can I watermark scanned PDFs?</summary><p>Yes — watermarks draw on top of or behind page images.</p></details>
+            <details class="faq-item"><summary>Can I remove the watermark later?</summary><p>Standard watermarks can be removed with editing tools — use flatten-to-image for harder removal.</p></details>
+            <details class="faq-item"><summary>Will text stay selectable?</summary><p>Yes by default unless you enable flatten-to-image.</p></details>
+            <details class="faq-item"><summary>Can the watermark be removed easily?</summary><p>A standard watermark is part of the PDF content and can be removed by someone with the right tools. Use flatten-to-image for a harder-to-remove result.</p></details>
+            <details class="faq-item"><summary>Can I watermark multiple PDFs at once?</summary><p>Yes — upload multiple files; same settings apply; multiple outputs download as ZIP.</p></details>
+            <details class="faq-item"><summary>Can I use a different watermark on the first page?</summary><p>Yes. Tick "Use different (simpler) text on the first page" and type the first-page text — for example ORIGINAL on a contract cover while the inner pages carry the full CONFIDENTIAL tiling.</p></details>
+            <details class="faq-item"><summary>Can I add page numbers or today's date as a watermark?</summary><p>Yes. Type placeholders into the watermark text: {page} and {total} for page numbers, {date} and {time} for when you applied it, and {filename} for the file name. "Page {page} of {total}" gives every page its own number.</p></details>
+            <details class="faq-item"><summary>Why doesn't my watermark show when I choose "Behind page content"?</summary><p>Many PDFs, especially scans and exported slides, paint a solid white rectangle over the whole page. A watermark placed behind the content sits under that rectangle and is hidden. Switch Layer order to "On top of page content" and lower the opacity instead.</p></details>
+          </div>
+        </section>
+
+        <aside class="related-tools-section" style="margin-top:2rem" aria-label="Related tools">
+          <div class="related-tools-section__header">
+            <div><p class="related-tools-eyebrow">Related tools</p><h2 class="related-tools-title">More PDF tools</h2></div>
+          </div>
+          <div class="related-tools-grid">
+            <a class="related-tool-card" href="pdf-password-protector.html"><div class="related-tool-icon">🔒</div><div><strong>Protect PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Add password</span></div></a>
+            <a class="related-tool-card" href="pdf-compress.html"><div class="related-tool-icon">🗜️</div><div><strong>Compress PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Reduce size</span></div></a>
+            <a class="related-tool-card" href="pdf-merge.html"><div class="related-tool-icon">📄</div><div><strong>Merge PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Combine files</span></div></a>
+            <a class="related-tool-card" href="pdf-split.html"><div class="related-tool-icon">✂️</div><div><strong>Split PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Separate pages</span></div></a>
+            <a class="related-tool-card" href="pdf-rotate.html"><div class="related-tool-icon">🔄</div><div><strong>Rotate PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Fix orientation</span></div></a>
+            <a class="related-tool-card" href="flatten-pdf.html"><div class="related-tool-icon">📋</div><div><strong>Flatten PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Flatten forms</span></div></a>
+            <a class="related-tool-card" href="images-to-pdf.html"><div class="related-tool-icon">🖼️</div><div><strong>Images to PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Photos to PDF</span></div></a>
+            <a class="related-tool-card" href="pdf-password-remover.html"><div class="related-tool-icon">🔓</div><div><strong>Unlock PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Remove password</span></div></a>
+          </div>
+        </aside>
+
+        <div class="wm-final-cta">
+          <a class="wm-btn wm-btn--primary" href="#wm-tool">Watermark PDF now</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Phone-only bar. The script shows it only while the control it stands in
+       for (the drop zone, Apply, or Download) is off screen. -->
+  <div class="wm-sticky-cta" aria-hidden="true">
+    <button type="button" class="wm-btn wm-btn--primary" data-sticky-watermark-cta tabindex="-1">Upload PDF</button>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a><p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p></div>
+      <div><h3>Explore</h3><div class="footer-links"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms</a></div></div>
+      <div><h3>Stay updated</h3><p>© <span data-year></span> ToolAdda. All rights reserved.</p>
+                    <a href="https://uno.directory" target="_blank" rel="nofollow noopener">
+          <img src="https://uno.directory/uno-directory.svg" alt="Listed on Uno Directory" width="120" height="30" />
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fontkit/2.0.2/fontkit.umd.min.js"></script>
+  <script src="assets/js/jszip.min.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var PDFJS_VERSION = '4.2.67';
+      var pdfjsLibPromise = null;
+      function loadPdfJs() {
+        if (!pdfjsLibPromise) {
+          pdfjsLibPromise = import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VERSION + '/pdf.min.mjs').then(function (module) {
+            var lib = module.default || module;
+            if (lib.GlobalWorkerOptions) lib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VERSION + '/pdf.worker.min.mjs';
+            return lib;
+          }).catch(function (err) {
+            // A failed import used to be cached for the life of the tab.
+            pdfjsLibPromise = null;
+            throw err;
+          });
+        }
+        return pdfjsLibPromise;
+      }
+
+      // ================= Pure logic (tested against real pdf-lib in Node) =================
+      function applyPlaceholders(template, ctx) {
+        var pad2 = function (n) { return String(n).padStart(2, '0'); };
+        var d = ctx.date || new Date();
+        var dateStr = d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+        var timeStr = pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+        return template.replace(/\{page\}/g, ctx.page).replace(/\{total\}/g, ctx.total).replace(/\{date\}/g, dateStr).replace(/\{time\}/g, timeStr).replace(/\{filename\}/g, ctx.filename || '');
+      }
+      var WINANSI_EXTRA = new Set([0x20AC, 0x201A, 0x0192, 0x201E, 0x2026, 0x2020, 0x2021, 0x02C6, 0x2030, 0x0160, 0x2039, 0x0152, 0x017D, 0x2018, 0x2019, 0x201C, 0x201D, 0x2022, 0x2013, 0x2014, 0x02DC, 0x2122, 0x0161, 0x203A, 0x0153, 0x017E, 0x0178]);
+      function isWinAnsiChar(codePoint) { if (codePoint <= 0xFF) return !(codePoint >= 0x80 && codePoint <= 0x9F); return WINANSI_EXTRA.has(codePoint); }
+      function findNonWinAnsiChars(text) {
+        var bad = [];
+        Array.from(text).forEach(function (ch) { var cp = ch.codePointAt(0); if (!isWinAnsiChar(cp)) bad.push(ch); });
+        return Array.from(new Set(bad));
+      }
+      function parsePageRange(input, maxPages) {
+        var result = new Set(); var errors = [];
+        (input || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean).forEach(function (part) {
+          var trailingMatch = /^(\d+)\s*-\s*$/.exec(part), rangeMatch = /^(\d+)\s*-\s*(\d+)$/.exec(part), singleMatch = /^(\d+)$/.exec(part);
+          if (trailingMatch) { var start = parseInt(trailingMatch[1], 10); if (start >= 1 && start <= maxPages) for (var i = start; i <= maxPages; i++) result.add(i); else errors.push(part); }
+          else if (rangeMatch) { var a = parseInt(rangeMatch[1], 10), b = parseInt(rangeMatch[2], 10); if (a > b) { var t = a; a = b; b = t; } if (a >= 1 && b <= maxPages) for (var j = a; j <= b; j++) result.add(j); else errors.push(part); }
+          else if (singleMatch) { var n = parseInt(singleMatch[1], 10); if (n >= 1 && n <= maxPages) result.add(n); else errors.push(part); }
+          else errors.push(part);
+        });
+        return { pages: Array.from(result).sort(function (a, b) { return a - b; }), errors: errors };
+      }
+      function applyPageSelectionMode(mode, totalPages, customRange) {
+        var all = []; for (var i = 1; i <= totalPages; i++) all.push(i);
+        if (mode === 'odd') return all.filter(function (p) { return p % 2 === 1; });
+        if (mode === 'even') return all.filter(function (p) { return p % 2 === 0; });
+        if (mode === 'first') return [1];
+        if (mode === 'last') return [totalPages];
+        if (mode === 'custom') return parsePageRange(customRange, totalPages).pages;
+        return all;
+      }
+      function computeGridPosition(pageW, pageH, boxW, boxH, position, marginPt) {
+        var x, y;
+        if (position.includes('left')) x = marginPt; else if (position.includes('right')) x = pageW - boxW - marginPt; else x = (pageW - boxW) / 2;
+        if (position.includes('top')) y = pageH - boxH - marginPt; else if (position.includes('bottom')) y = marginPt; else y = (pageH - boxH) / 2;
+        return { x: x, y: y };
+      }
+      function computeTileGrid(pageW, pageH, tileW, tileH, spacingXPt, spacingYPt, staggerOffset) {
+        var stepX = tileW + spacingXPt, stepY = tileH + spacingYPt;
+        var cols = Math.max(1, Math.ceil(pageW / stepX) + 1), rows = Math.max(1, Math.ceil(pageH / stepY) + 1);
+        var tiles = [];
+        for (var row = 0; row < rows; row++) {
+          var rowOffset = (staggerOffset && row % 2 === 1) ? stepX / 2 : 0;
+          for (var col = -1; col < cols; col++) {
+            var x = col * stepX + rowOffset, y = row * stepY;
+            if (x + tileW >= 0 && x <= pageW && y + tileH >= 0 && y <= pageH) tiles.push({ x: x, y: y });
+          }
+        }
+        return tiles;
+      }
+      function canvasToPdfPoint(canvasX, canvasY, canvasW, canvasH, pageW, pageH) {
+        var scaleX = pageW / canvasW, scaleY = pageH / canvasH;
+        return { x: canvasX * scaleX, y: pageH - canvasY * scaleY };
+      }
+      /* The transform that puts a box's centre at (cx, cy), turned by `deg`
+         about that centre and mirrored by sx/sy. As a PDF `cm` matrix. The live
+         preview turns the watermark about its centre; pdf-lib's own `rotate`
+         option turns it about its bottom-left corner instead, so a rotated
+         watermark used to land well away from where the preview showed it. */
+      function centredTransform(cx, cy, deg, sx, sy) {
+        var r = deg * Math.PI / 180, c = Math.cos(r), s = Math.sin(r);
+        return [c * sx, s * sx, -s * sy, c * sy, cx, cy];
+      }
+
+      if (typeof document === 'undefined' || !document.getElementById) {
+        if (typeof module !== 'undefined') module.exports = { applyPlaceholders, isWinAnsiChar, findNonWinAnsiChars, parsePageRange, applyPageSelectionMode, computeGridPosition, computeTileGrid, canvasToPdfPoint, centredTransform };
+        return;
+      }
+      var tool = document.querySelector('[data-pdf-watermark-page]');
+      if (!tool) return;
+
+      // ================= DOM wiring =================
+      function $(id) { return document.getElementById(id); }
+      function formatBytes(n) { if (n < 1024) return n + ' B'; if (n < 1024 * 1024) return (n / 1024).toFixed(1) + ' KB'; return (n / (1024 * 1024)).toFixed(2) + ' MB'; }
+      function baseName(name) { return name.replace(/\.pdf$/i, ''); }
+      function hexToRgb01(hex) { var r = parseInt(hex.slice(1, 3), 16) / 255, g = parseInt(hex.slice(3, 5), 16) / 255, b = parseInt(hex.slice(5, 7), 16) / 255; return { r: r, g: g, b: b }; }
+      function yieldToUI() { return new Promise(function (r) { setTimeout(r, 0); }); }
+
+      var topGrid = document.querySelector('[data-wm-top]');
+      var preUpload = tool.querySelector('[data-pre-upload]');
+      var editorRoot = tool.querySelector('[data-editor-root]');
+      var messageBox = tool.querySelector('[data-message]');
+      var loader = tool.querySelector('[data-loader]');
+      var stepItems = Array.from(tool.querySelectorAll('[data-wm-step]'));
+      var applyBtn = tool.querySelector('[data-apply-btn]');
+      var resultPanel = tool.querySelector('[data-result-panel]');
+      var downloadLink = tool.querySelector('[data-download-link]');
+      var stickyCta = document.querySelector('[data-sticky-watermark-cta]');
+      var stickyBar = stickyCta ? stickyCta.closest('.wm-sticky-cta') : null;
+      var phoneQuery = window.matchMedia('(max-width: 768px)');
+      var busy = false;
+      var phase = 'upload'; // upload | edit | result
+      var resultBlobUrl = '';
+      var inView = { tool: true, apply: false, download: false };
+
+      /* The message box used to live inside the upload step, which is hidden
+         once a PDF is open — so every later message ("upload an image first",
+         "watermark applied", preview errors) went into an invisible box. It now
+         sits under the whole tool. */
+      function showMessage(text, type) { messageBox.textContent = text; messageBox.classList.remove('hidden', 'success', 'error'); messageBox.classList.add(type === 'error' ? 'error' : 'success'); messageBox.setAttribute('role', type === 'error' ? 'alert' : 'status'); }
+      function clearMessage() { messageBox.textContent = ''; messageBox.classList.add('hidden'); }
+
+      function setPhase(next) {
+        phase = next;
+        var active = next === 'upload' ? [0] : next === 'edit' ? [1, 2, 3] : [5];
+        stepItems.forEach(function (li, i) {
+          var done = next === 'edit' ? i === 0 : next === 'result' ? i < 5 || i === 5 : false;
+          li.classList.toggle('is-done', done);
+          li.classList.toggle('is-active', active.indexOf(i) !== -1);
+          if (i === active[0]) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
+        });
+        updateSticky();
+      }
+
+      /* Phone bottom bar: upload while the drop zone is off screen, apply while
+         the Apply button is (it sits at the end of a long column of controls),
+         then download again once the result's own button is off screen. */
+      function updateSticky() {
+        if (!stickyCta || !stickyBar) return;
+        var label = 'Upload PDF', show = !inView.tool;
+        if (phase === 'edit') { label = 'Apply watermark'; show = !inView.apply; }
+        else if (phase === 'result') { label = 'Download watermarked PDF'; show = !inView.download; }
+        show = show && phoneQuery.matches && !busy;
+        if (stickyCta.textContent !== label) stickyCta.textContent = label;
+        stickyBar.classList.toggle('is-visible', show);
+        stickyBar.setAttribute('aria-hidden', show ? 'false' : 'true');
+        stickyCta.tabIndex = show ? 0 : -1;
+        var was = document.body.classList.contains('wm-sticky-on');
+        document.body.classList.toggle('wm-sticky-on', show);
+        // app.js re-measures the back-to-top button's clearance on scroll.
+        if (was !== show) window.dispatchEvent(new Event('scroll'));
+      }
+
+      function setBusy(on, text) {
+        busy = on;
+        loader.classList.toggle('hidden', !on);
+        if (text) loader.textContent = text;
+        applyBtn.disabled = on;
+        pickers.forEach(function (b) { b.disabled = on; });
+        tool.querySelectorAll('[data-wm-tab]').forEach(function (b) { b.disabled = on; });
+        updateSticky();
+      }
+
+      var fileInput = tool.querySelector('[data-file-input]');
+      var pickers = Array.from(tool.querySelectorAll('[data-file-picker]'));
+      var dropZone = tool.querySelector('[data-drop-zone]');
+      function openPicker() { fileInput.click(); }
+      pickers.forEach(function (b) { b.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); openPicker(); }); });
+      dropZone.addEventListener('click', function (e) { if (!e.target.closest('button')) openPicker(); });
+      fileInput.addEventListener('change', function (e) { handleFiles(e.target.files); e.target.value = ''; });
+
+      /* PDFs can be dropped anywhere on the tool, including onto the editor
+         once the drop zone is gone; a PDF dropped anywhere else on the page is
+         swallowed rather than left to the browser, which would navigate away
+         to show it and lose the work in progress. */
+      function carriesFiles(e) { return !!(e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types || [], 'Files') !== -1); }
+      var dragDepth = 0;
+      tool.addEventListener('dragenter', function (e) { if (!carriesFiles(e)) return; e.preventDefault(); dragDepth++; tool.classList.add('is-file-over'); dropZone.classList.add('active'); });
+      tool.addEventListener('dragover', function (e) { if (!carriesFiles(e)) return; e.preventDefault(); e.dataTransfer.dropEffect = 'copy'; });
+      tool.addEventListener('dragleave', function (e) { if (!carriesFiles(e)) return; dragDepth = Math.max(0, dragDepth - 1); if (!dragDepth) { tool.classList.remove('is-file-over'); dropZone.classList.remove('active'); } });
+      tool.addEventListener('drop', function (e) {
+        if (!carriesFiles(e)) return;
+        e.preventDefault(); dragDepth = 0; tool.classList.remove('is-file-over'); dropZone.classList.remove('active');
+        // A logo dropped on the editor goes to the image watermark, a PDF to the batch.
+        var files = Array.from(e.dataTransfer.files || []);
+        var image = files.find(function (f) { return /^image\/(png|jpeg)$/.test(f.type); });
+        if (image && !files.some(isPdfFile) && phase !== 'upload') { loadWatermarkImage(image); selectTab('image'); return; }
+        handleFiles(files);
+      });
+      ['dragover', 'drop'].forEach(function (type) {
+        window.addEventListener(type, function (e) { if (carriesFiles(e) && !tool.contains(e.target)) e.preventDefault(); });
+      });
+
+      var state = {
+        files: [], // { file, bytes, name, pageCount, excludedPages:Set, pdfjs:Promise }
+        activeFileIdx: 0,
+        activeTab: 'text',
+        currentPreviewPage: 1,
+        showingBefore: false,
+        customFontBytes: null,
+        customFontName: '',
+        customFontFamily: '',
+        imageBytes: null,
+        imageInfo: null,
+        rawImageElement: null,
+        processedImageBytes: null,
+        freePosition: false,
+        position: 'center',
+        lastView: null, // { pdfW, pdfH, boxW, boxH } from the last preview, for dragging
+      };
+
+      function isPdfFile(f) { return f && (f.type === 'application/pdf' || /\.pdf$/i.test(f.name)); }
+
+      /* pdf.js parses each PDF once and the parsed document is reused. The
+         preview used to read and parse the whole file again on every slider
+         step — and on every pointer move while dragging — without ever
+         releasing the old copies. */
+      function getPdfjsDoc(entry) {
+        if (!entry.pdfjs) {
+          entry.pdfjs = loadPdfJs().then(function (lib) {
+            return lib.getDocument({ data: entry.bytes.slice(0), isEvalSupported: false, useWorkerFetch: false }).promise;
+          }).catch(function (err) { entry.pdfjs = null; throw err; });
+        }
+        return entry.pdfjs;
+      }
+      function releaseEntry(entry) {
+        if (entry.pdfjs) entry.pdfjs.then(function (d) { d.destroy(); }).catch(function () {});
+        entry.pdfjs = null;
+      }
+
+      async function handleFiles(fileList) {
+        if (busy) return;
+        var files = Array.from(fileList || []).filter(isPdfFile);
+        if (!files.length) { showMessage('Please choose valid PDF files.', 'error'); return; }
+        setBusy(true, 'Reading PDF…');
+        clearMessage();
+        var added = [], problems = [];
+        for (var i = 0; i < files.length; i++) {
+          try {
+            var bytes = new Uint8Array(await files[i].arrayBuffer());
+            var doc = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption: true });
+            // pdf-lib can open an encrypted file but not write one back: the
+            // result was a PDF whose pages came out blank or scrambled.
+            if (doc.isEncrypted) { problems.push('"' + files[i].name + '" is password-protected — unlock it first with Unlock PDF (pdf-password-remover.html), then watermark it'); continue; }
+            var count = doc.getPageCount();
+            if (!count) { problems.push('"' + files[i].name + '" has no pages'); continue; }
+            added.push({ file: files[i], bytes: bytes, name: files[i].name, pageCount: count, excludedPages: new Set(), pdfjs: null });
+          } catch (err) {
+            problems.push('Could not open "' + files[i].name + '" — it may be damaged, or not really a PDF');
+          }
+        }
+        setBusy(false);
+        if (!added.length) { showMessage(problems.join('. ') + '.', 'error'); return; }
+        var first = !state.files.length;
+        state.files = state.files.concat(added);
+        invalidateResult();
+        preUpload.classList.add('hidden');
+        editorRoot.classList.remove('hidden');
+        if (topGrid) topGrid.classList.add('is-editing');
+        tool.querySelector('[data-file-summary]').textContent = state.files.length + ' file(s): ' + state.files.map(function (f) { return f.name + ' (' + f.pageCount + 'p)'; }).join(', ');
+        if (first) {
+          state.currentPreviewPage = 1;
+          buildPageThumbs();
+          tool.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+        }
+        renderPreview();
+        setPhase('edit');
+        if (problems.length) showMessage(problems.join('. ') + '.', 'error');
+        else if (!first) showMessage(added.length + ' more PDF' + (added.length === 1 ? '' : 's') + ' added — the same watermark is applied to every file and they download as a ZIP.', 'success');
+      }
+
+      /* Start over without reloading the page: the settings stay as they were,
+         which is what someone stamping a second batch wants. */
+      function resetTool() {
+        if (busy) return;
+        state.files.forEach(releaseEntry);
+        state.files = [];
+        state.currentPreviewPage = 1;
+        state.lastView = null;
+        invalidateResult();
+        editorRoot.classList.add('hidden');
+        preUpload.classList.remove('hidden');
+        if (topGrid) topGrid.classList.remove('is-editing');
+        tool.querySelector('[data-page-thumbs]').innerHTML = '';
+        clearMessage();
+        setPhase('upload');
+        tool.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      tool.querySelector('[data-reset-btn]').addEventListener('click', resetTool);
+
+      /* A result belongs to the settings that made it. */
+      function invalidateResult() {
+        if (resultBlobUrl) { URL.revokeObjectURL(resultBlobUrl); resultBlobUrl = ''; }
+        if (resultPanel) resultPanel.classList.add('hidden');
+        if (downloadLink) { downloadLink.classList.add('hidden'); downloadLink.removeAttribute('href'); }
+        tool.querySelector('[data-size-note]').textContent = '';
+        if (phase === 'result') setPhase('edit');
+      }
+
+      // ================= Tabs =================
+      var wmTabButtons = Array.from(tool.querySelectorAll('[data-wm-tab]'));
+      function selectTab(tab) {
+        var btn = wmTabButtons.find(function (b) { return b.dataset.wmTab === tab; });
+        state.activeTab = tab === 'logo' ? 'image' : tab;
+        wmTabButtons.forEach(function (b) { b.classList.toggle('is-active', b === btn); b.setAttribute('aria-selected', b === btn ? 'true' : 'false'); });
+        Array.from(tool.querySelectorAll('[data-wm-tab-panel]')).forEach(function (p) { p.classList.toggle('is-active', p.dataset.wmTabPanel === state.activeTab); });
+        invalidateResult();
+        renderPreview();
+      }
+      wmTabButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          selectTab(btn.dataset.wmTab);
+          if (btn.dataset.wmTab === 'logo') { var imgInput = $('wmImageFile'); if (imgInput) imgInput.focus(); }
+        });
+      });
+
+      // ================= Text watermark controls =================
+      var TEXT_PRESETS = ['CONFIDENTIAL', 'DRAFT', 'SAMPLE', 'COPY', 'DO NOT COPY', 'ORIGINAL', 'PAID', 'APPROVED', 'INTERNAL USE ONLY'];
+      var presetRow = tool.querySelector('[data-text-presets]');
+      function syncPresetPressed() {
+        Array.from(presetRow.children).forEach(function (b) { b.setAttribute('aria-pressed', b.textContent === $('wmText').value ? 'true' : 'false'); });
+      }
+      TEXT_PRESETS.forEach(function (p) {
+        var btn = document.createElement('button'); btn.type = 'button'; btn.textContent = p;
+        btn.addEventListener('click', function () { $('wmText').value = p; syncPresetPressed(); invalidateResult(); renderPreview(); });
+        presetRow.appendChild(btn);
+      });
+      syncPresetPressed();
+
+      $('wmFont').addEventListener('change', function () {
+        tool.querySelector('[data-custom-font-field]').classList.toggle('hidden', $('wmFont').value !== 'custom');
+        renderPreview();
+      });
+      /* The uploaded font is also registered with the page, so the live
+         preview draws in it instead of in Arial. */
+      $('wmCustomFont').addEventListener('change', async function (e) {
+        var file = e.target.files[0]; if (!file) return;
+        var bytes = await file.arrayBuffer();
+        try {
+          var family = 'WmCustomFont' + Date.now();
+          var face = new FontFace(family, bytes.slice(0));
+          await face.load();
+          document.fonts.add(face);
+          state.customFontFamily = family;
+        } catch (err) {
+          showMessage('That font file could not be read. Upload a .ttf or .otf font.', 'error');
+          return;
+        }
+        state.customFontBytes = bytes;
+        state.customFontName = file.name;
+        invalidateResult();
+        renderPreview();
+      });
+
+      Array.from(tool.querySelectorAll('[data-rot]')).forEach(function (btn) {
+        btn.addEventListener('click', function () { $('wmRotation').value = btn.dataset.rot; $('wmRotationVal').textContent = btn.dataset.rot; invalidateResult(); renderPreview(); });
+      });
+      $('wmStyle').addEventListener('change', function () { tool.querySelector('[data-stroke-width-field]').classList.toggle('hidden', $('wmStyle').value === 'fill'); renderPreview(); });
+
+      function updateNonWinAnsiWarning() {
+        var text = $('wmText').value + ($('wmFirstPageDifferent').checked ? $('wmFirstPageText').value : '');
+        var bad = findNonWinAnsiChars(text.replace(/\{[a-z]+\}/g, ''));
+        var box = tool.querySelector('[data-nonwinansi-warning]');
+        var usingCustomFont = $('wmFont').value === 'custom' && state.customFontBytes;
+        if (bad.length && !usingCustomFont) {
+          box.classList.remove('hidden');
+          box.textContent = '⚠️ This text contains characters (' + bad.slice(0, 6).join(' ') + ') that standard fonts cannot render. Upload a custom .ttf/.otf font above that supports this script, or the watermark will fail to generate.';
+        } else box.classList.add('hidden');
+      }
+      $('wmText').addEventListener('input', function () { syncPresetPressed(); updateNonWinAnsiWarning(); });
+
+      // ================= Image watermark controls =================
+      // Image bytes are read AND the preview <img> is built inside this single
+      // sequential flow, so the preview never draws from stale or empty bytes.
+      var lastImageUrl = null;
+      async function loadWatermarkImage(file) {
+        state.imageBytes = await file.arrayBuffer();
+        state.imageInfo = { type: file.type, size: file.size, name: file.name };
+        state.processedImageBytes = null;
+        var warn = tool.querySelector('[data-large-image-warning]');
+        if (file.size > 2 * 1024 * 1024) { warn.classList.remove('hidden'); warn.textContent = '⚠️ This image is ' + formatBytes(file.size) + ' — large logos will noticeably inflate your output PDF size. Consider using a smaller image.'; }
+        else warn.classList.add('hidden');
+
+        if (lastImageUrl) URL.revokeObjectURL(lastImageUrl);
+        var blob = new Blob([state.imageBytes], { type: file.type });
+        lastImageUrl = URL.createObjectURL(blob);
+        var img = new Image();
+        img.onload = function () { state.rawImageElement = img; invalidateResult(); updateImagePreviewSource(); };
+        img.onerror = function () { state.imageBytes = null; showMessage('Could not load that image — it may be corrupt or an unsupported format.', 'error'); };
+        img.src = lastImageUrl;
+      }
+      $('wmImageFile').addEventListener('change', function (e) { var file = e.target.files[0]; if (file) loadWatermarkImage(file); });
+
+      // Turns near-white pixels transparent so a JPG logo's white canvas doesn't paint an
+      // opaque white box over the page. Runs on an offscreen canvas; only PNG can carry the
+      // resulting alpha channel, so the processed output is always PNG regardless of source type.
+      function removeWhiteBackground(imgEl, tolerance) {
+        return new Promise(function (resolve, reject) {
+          try {
+            var maxDim = 1600;
+            var scale = Math.min(1, maxDim / Math.max(imgEl.naturalWidth, imgEl.naturalHeight));
+            var w = Math.max(1, Math.round(imgEl.naturalWidth * scale));
+            var h = Math.max(1, Math.round(imgEl.naturalHeight * scale));
+            var canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(imgEl, 0, 0, w, h);
+            var imageData = ctx.getImageData(0, 0, w, h);
+            var data = imageData.data;
+            var threshold = Math.round((tolerance / 80) * 255);
+            for (var i = 0; i < data.length; i += 4) {
+              var deficit = Math.max(255 - data[i], 255 - data[i + 1], 255 - data[i + 2]);
+              if (deficit <= threshold) data[i + 3] = 0;
+            }
+            ctx.putImageData(imageData, 0, 0);
+            canvas.toBlob(function (blob) {
+              if (!blob) { reject(new Error('Could not process image.')); return; }
+              resolve(blob);
+            }, 'image/png');
+          } catch (err) { reject(err); }
+        });
+      }
+
+      var lastProcessedImageUrl = null;
+      var whiteBgProcessToken = 0;
+      var previewImgElement = null;
+      async function updateImagePreviewSource() {
+        if (!state.rawImageElement) return;
+        var checked = $('wmRemoveWhiteBg').checked;
+        var tolerance = parseInt($('wmWhiteBgTolerance').value, 10) || 0;
+        var myToken = ++whiteBgProcessToken;
+
+        if (!checked) {
+          state.processedImageBytes = null;
+          previewImgElement = state.rawImageElement;
+          renderPreview();
+          return;
+        }
+
+        try {
+          var blob = await removeWhiteBackground(state.rawImageElement, tolerance);
+          if (myToken !== whiteBgProcessToken) return; // superseded by a newer toggle/slider change
+          state.processedImageBytes = new Uint8Array(await blob.arrayBuffer());
+          if (lastProcessedImageUrl) URL.revokeObjectURL(lastProcessedImageUrl);
+          lastProcessedImageUrl = URL.createObjectURL(blob);
+          var img = new Image();
+          img.onload = function () { if (myToken === whiteBgProcessToken) { previewImgElement = img; renderPreview(); } };
+          img.src = lastProcessedImageUrl;
+        } catch (err) {
+          console.error('White background removal failed:', err);
+          state.processedImageBytes = null;
+          previewImgElement = state.rawImageElement;
+          renderPreview();
+        }
+      }
+
+      $('wmRemoveWhiteBg').addEventListener('change', function () {
+        tool.querySelector('[data-whitebg-tolerance-field]').classList.toggle('hidden', !$('wmRemoveWhiteBg').checked);
+        updateImagePreviewSource();
+      });
+      $('wmWhiteBgTolerance').addEventListener('input', function () { if ($('wmRemoveWhiteBg').checked) updateImagePreviewSource(); });
+
+      // ================= Position / tiling controls =================
+      Array.from(tool.querySelectorAll('[data-pos]')).forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          state.position = btn.dataset.pos;
+          Array.from(tool.querySelectorAll('[data-pos]')).forEach(function (b) { b.classList.toggle('is-active', b === btn); b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+          state.freePosition = false; $('wmFreePosition').checked = false;
+          syncDragCursor();
+          invalidateResult();
+          renderPreview();
+        });
+      });
+      function syncDragCursor() { tool.querySelector('.wm-canvas-wrap').classList.toggle('is-draggable', state.freePosition); }
+      $('wmFreePosition').addEventListener('change', function () { state.freePosition = $('wmFreePosition').checked; syncDragCursor(); });
+      $('wmTiled').addEventListener('change', function () {
+        var tiled = $('wmTiled').checked;
+        tool.querySelector('[data-tile-fields]').classList.toggle('hidden', !tiled);
+        tool.querySelector('[data-stagger-row]').classList.toggle('hidden', !tiled);
+      });
+      $('wmPageMode').addEventListener('change', function () { tool.querySelector('[data-custom-range-field]').classList.toggle('hidden', $('wmPageMode').value !== 'custom'); });
+      $('wmFirstPageDifferent').addEventListener('change', function () { tool.querySelector('[data-first-page-text-field]').classList.toggle('hidden', !$('wmFirstPageDifferent').checked); updateNonWinAnsiWarning(); });
+
+      /* Every control redraws the preview and withdraws a result made with the
+         old settings. Checkboxes were missing from this list, so flipping,
+         staggering or auto-fit changed nothing on screen until something else
+         was touched. */
+      var previewDebounceTimer = null;
+      function scheduleRenderPreview() { clearTimeout(previewDebounceTimer); previewDebounceTimer = setTimeout(renderPreview, 60); }
+      Array.from(tool.querySelectorAll('.wm-controls input, .wm-controls select, .wm-controls textarea')).forEach(function (el) {
+        if (el.type === 'file') return;
+        el.addEventListener(el.type === 'checkbox' ? 'change' : 'input', function () {
+          var span = document.getElementById(el.id + 'Val');
+          if (span) span.textContent = el.value;
+          invalidateResult();
+          scheduleRenderPreview();
+        });
+        if (el.tagName === 'SELECT') el.addEventListener('change', function () { invalidateResult(); scheduleRenderPreview(); });
+      });
+
+      function updateRangeWarning(entry) {
+        var box = tool.querySelector('[data-range-warning]');
+        if ($('wmPageMode').value !== 'custom' || !entry) { box.classList.add('hidden'); return; }
+        var parsed = parsePageRange($('wmCustomRange').value, entry.pageCount);
+        if (parsed.errors.length) {
+          box.classList.remove('hidden');
+          box.textContent = 'Ignored: ' + parsed.errors.join(', ') + ' — this PDF has pages 1–' + entry.pageCount + '.';
+        } else box.classList.add('hidden');
+      }
+
+      // ================= Page thumbnails (per-page exclude) =================
+      async function buildPageThumbs() {
+        var grid = tool.querySelector('[data-page-thumbs]');
+        if (!grid) return;
+        grid.innerHTML = '';
+        var entry = state.files[state.activeFileIdx];
+        if (!entry) return;
+
+        var renderTargets = [];
+        for (var p = 1; p <= entry.pageCount; p++) {
+          (function (pageNum) {
+            // A button, so pages can be excluded from the keyboard too.
+            var thumb = document.createElement('button');
+            thumb.type = 'button';
+            thumb.className = 'wm-thumb is-loading';
+            thumb.setAttribute('aria-pressed', 'true');
+            thumb.setAttribute('aria-label', 'Page ' + pageNum + ' — watermark');
+            var numEl = document.createElement('span');
+            numEl.className = 'num';
+            numEl.textContent = String(pageNum);
+            thumb.appendChild(numEl);
+            thumb.addEventListener('click', function () {
+              if (entry.excludedPages.has(pageNum)) entry.excludedPages.delete(pageNum);
+              else entry.excludedPages.add(pageNum);
+              var off = entry.excludedPages.has(pageNum);
+              thumb.classList.toggle('is-excluded', off);
+              thumb.setAttribute('aria-pressed', off ? 'false' : 'true');
+              thumb.setAttribute('aria-label', 'Page ' + pageNum + (off ? ' — excluded' : ' — watermark'));
+              invalidateResult();
+              renderPreview();
+            });
+            grid.appendChild(thumb);
+            renderTargets.push({ pageNum: pageNum, thumb: thumb });
+          })(p);
+        }
+
+        try {
+          var pdfDoc = await getPdfjsDoc(entry);
+          for (var i = 0; i < renderTargets.length; i++) {
+            if (state.files[state.activeFileIdx] !== entry) return; // the tool was reset meanwhile
+            var target = renderTargets[i];
+            var page = await pdfDoc.getPage(target.pageNum);
+            var baseViewport = page.getViewport({ scale: 1 });
+            var viewport = page.getViewport({ scale: 160 / baseViewport.width });
+            target.thumb.style.aspectRatio = viewport.width + ' / ' + viewport.height;
+            var canvas = document.createElement('canvas');
+            canvas.width = Math.round(viewport.width);
+            canvas.height = Math.round(viewport.height);
+            await page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport }).promise;
+            var img = document.createElement('img');
+            img.src = canvas.toDataURL('image/jpeg', 0.82);
+            img.alt = '';
+            target.thumb.insertBefore(img, target.thumb.firstChild);
+            target.thumb.classList.remove('is-loading');
+            if (i % 4 === 3) await yieldToUI();
+          }
+        } catch (err) {
+          console.error('Thumbnail render failed:', err);
+          renderTargets.forEach(function (target) { target.thumb.classList.remove('is-loading'); });
+          showMessage('Page thumbnails could not be rendered. You can still use page range options above.', 'error');
+        }
+      }
+
+      // ================= Live preview =================
+      var previewCanvas = tool.querySelector('[data-preview-canvas]');
+      var overlayCanvas = tool.querySelector('[data-overlay-canvas]');
+      var pctx = previewCanvas.getContext('2d');
+      var octx = overlayCanvas.getContext('2d');
+
+      function getWmConfig() {
+        return {
+          text: $('wmText').value,
+          font: $('wmFont').value,
+          fontSize: parseFloat($('wmFontSize').value) || 48,
+          autoFit: $('wmAutoFit').checked,
+          color: hexToRgb01($('wmColor').value),
+          opacity: parseInt($('wmOpacity').value, 10) / 100,
+          rotation: parseFloat($('wmRotation').value) || 0,
+          style: $('wmStyle').value,
+          strokeWidth: parseFloat($('wmStrokeWidth').value) || 1.5,
+          imageScale: parseInt($('wmImageScale').value, 10) / 100,
+          imageOpacity: parseInt($('wmImageOpacity').value, 10) / 100,
+          imageRotation: parseFloat($('wmImageRotation').value) || 0,
+          removeWhiteBg: $('wmRemoveWhiteBg').checked,
+          whiteBgTolerance: parseInt($('wmWhiteBgTolerance').value, 10),
+          margin: parseFloat($('wmMargin').value) || 0,
+          offsetX: parseFloat($('wmOffsetX').value) || 0,
+          offsetY: parseFloat($('wmOffsetY').value) || 0,
+          tiled: $('wmTiled').checked,
+          spacingX: parseFloat($('wmTileSpacingX').value) || 40,
+          spacingY: parseFloat($('wmTileSpacingY').value) || 60,
+          stagger: $('wmStagger').checked,
+          layer: $('wmLayer').value,
+          flipH: $('wmFlipH').checked,
+          flipV: $('wmFlipV').checked,
+          pageMode: $('wmPageMode').value,
+          customRange: $('wmCustomRange').value,
+          firstPageDifferent: $('wmFirstPageDifferent').checked,
+          firstPageText: $('wmFirstPageText').value,
+          flatten: $('wmFlatten').checked
+        };
+      }
+
+      /* Ascender/descender of the standard PDF fonts (per 1000 units, from their
+         AFM files), so the preview sizes and centres the text box exactly as
+         pdf-lib will. */
+      var FONT_METRICS = { Helvetica: [718, -207], Times: [683, -217], Courier: [629, -157] };
+      function fontMetrics(fontChoice) {
+        var key = /^Times/.test(fontChoice) ? 'Times' : /^Courier/.test(fontChoice) ? 'Courier' : 'Helvetica';
+        var m = FONT_METRICS[key];
+        return { asc: m[0] / 1000, height: (m[0] - m[1]) / 1000 };
+      }
+
+      /* The preview draws in the family the PDF will use (it was always Arial),
+         in italic where the font is italic, and in the uploaded font when one
+         is chosen. */
+      function previewFont(fontChoice, px) {
+        var family = /^Times/.test(fontChoice) ? '"Times New Roman", Times, serif'
+          : /^Courier/.test(fontChoice) ? '"Courier New", Courier, monospace'
+          : 'Helvetica, Arial, sans-serif';
+        if (fontChoice === 'custom' && state.customFontFamily) family = '"' + state.customFontFamily + '", ' + family;
+        return (/(Oblique|Italic)/.test(fontChoice) ? 'italic ' : '') + (/Bold/.test(fontChoice) ? 'bold ' : '') + px + 'px ' + family;
+      }
+
+      // pdf.js throws if page.render() is called again on a canvas that already has a render
+      // in flight — which happens constantly here since almost every control re-triggers
+      // renderPreview(). Track the in-flight render task and cancel it before starting a new
+      // one, and use a generation counter so a slow, superseded call can't draw a stale overlay.
+      var currentRenderTask = null;
+      var previewRenderGeneration = 0;
+      async function renderPreview() {
+        var myGeneration = ++previewRenderGeneration;
+        try {
+          await renderPreviewInner(myGeneration);
+        } catch (err) {
+          if (err && err.name === 'RenderingCancelledException') return;
+          console.error('Preview render failed:', err);
+          showMessage('Live preview failed to load (' + (err.message || 'unknown error') + '). Your PDF is unaffected — try Apply & Download, or reload the page.', 'error');
+        }
+      }
+      async function renderPreviewInner(myGeneration) {
+        updateNonWinAnsiWarning();
+        var entry = state.files[state.activeFileIdx];
+        updateRangeWarning(entry);
+        if (!entry) return;
+        var pdfDoc = await getPdfjsDoc(entry);
+        if (myGeneration !== previewRenderGeneration) return;
+        var pageNum = Math.min(state.currentPreviewPage, entry.pageCount);
+        var page = await pdfDoc.getPage(pageNum);
+        var base = page.getViewport({ scale: 1 });
+        // Rendered at the displayed size times the screen density, so the
+        // preview stays sharp on phones and high-DPI laptops.
+        var cssW = previewCanvas.parentElement.clientWidth || 560;
+        var scale = Math.max(0.5, Math.min(3, (cssW * Math.min(2, window.devicePixelRatio || 1)) / base.width));
+        var viewport = page.getViewport({ scale: scale });
+        if (currentRenderTask) { try { currentRenderTask.cancel(); } catch (e) {} }
+        if (myGeneration !== previewRenderGeneration) return;
+        previewCanvas.width = overlayCanvas.width = Math.round(viewport.width);
+        previewCanvas.height = overlayCanvas.height = Math.round(viewport.height);
+        currentRenderTask = page.render({ canvasContext: pctx, viewport: viewport });
+        await currentRenderTask.promise;
+        currentRenderTask = null;
+        if (myGeneration !== previewRenderGeneration) return;
+
+        tool.querySelector('[data-preview-label]').textContent = 'Page ' + pageNum + ' of ' + entry.pageCount;
+        tool.querySelector('[data-preview-prev]').disabled = pageNum <= 1;
+        tool.querySelector('[data-preview-next]').disabled = pageNum >= entry.pageCount;
+
+        octx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+        // Width/height as the viewer sees the page, so rotated pages map correctly.
+        var pdfW = base.width, pdfH = base.height;
+        state.lastView = { pdfW: pdfW, pdfH: pdfH, boxW: 0, boxH: 0 };
+        if (state.showingBefore) return;
+
+        var cfg = getWmConfig();
+        var selected = applyPageSelectionMode(cfg.pageMode, entry.pageCount, cfg.customRange);
+        if (!selected.includes(pageNum) || entry.excludedPages.has(pageNum)) return;
+
+        var canvasW = overlayCanvas.width, canvasH = overlayCanvas.height;
+        var s2p = pdfW / canvasW; // canvas px → pdf pt
+
+        octx.save();
+        octx.globalAlpha = state.activeTab === 'text' ? cfg.opacity : cfg.imageOpacity;
+
+        if (state.activeTab === 'text') {
+          var textToShow = (cfg.firstPageDifferent && pageNum === 1 && cfg.firstPageText) ? cfg.firstPageText : applyPlaceholders(cfg.text, { page: pageNum, total: entry.pageCount, filename: baseName(entry.name) });
+          var fontSize = cfg.fontSize;
+          if (cfg.autoFit && textToShow) {
+            // Same rule as the PDF: the text fills 80% of the page width.
+            octx.font = previewFont(cfg.font, 100);
+            var w100 = octx.measureText(textToShow).width * s2p / 100;
+            if (w100 > 0) fontSize = (pdfW * 0.8) / w100;
+          }
+          octx.font = previewFont(cfg.font, fontSize / s2p);
+          octx.fillStyle = 'rgb(' + Math.round(cfg.color.r * 255) + ',' + Math.round(cfg.color.g * 255) + ',' + Math.round(cfg.color.b * 255) + ')';
+          octx.strokeStyle = octx.fillStyle;
+          octx.lineWidth = cfg.strokeWidth / s2p;
+          var fm = fontMetrics(cfg.font);
+          var boxWc = octx.measureText(textToShow).width, boxHc = fm.height * fontSize / s2p;
+          var boxWpdf = boxWc * s2p, boxHpdf = boxHc * s2p;
+          state.lastView.boxW = boxWpdf; state.lastView.boxH = boxHpdf;
+          var boxes = cfg.tiled ? computeTileGrid(pdfW, pdfH, boxWpdf, boxHpdf, cfg.spacingX, cfg.spacingY, cfg.stagger)
+            : [state.freePosition ? { x: cfg.offsetX, y: cfg.offsetY } : computeGridPosition(pdfW, pdfH, boxWpdf, boxHpdf, state.position, cfg.margin)];
+          boxes.forEach(function (b) {
+            drawCentredOnCanvas(b.x + boxWpdf / 2, b.y + boxHpdf / 2, cfg.rotation, cfg, pdfW, pdfH, function () {
+              // Baseline where pdf-lib puts it: the glyph box centred on the origin.
+              var baseline = (fm.asc - fm.height / 2) * fontSize / s2p;
+              octx.textBaseline = 'alphabetic'; octx.textAlign = 'center';
+              if (cfg.style !== 'outline') octx.fillText(textToShow, 0, baseline);
+              if (cfg.style !== 'fill') octx.strokeText(textToShow, 0, baseline);
+            });
+          });
+        } else if (previewImgElement) {
+          var imgAspect = previewImgElement.height / previewImgElement.width;
+          var boxWpdf2 = pdfW * cfg.imageScale, boxHpdf2 = boxWpdf2 * imgAspect;
+          var boxWc2 = boxWpdf2 / s2p, boxHc2 = boxHpdf2 / s2p;
+          state.lastView.boxW = boxWpdf2; state.lastView.boxH = boxHpdf2;
+          var boxes2 = cfg.tiled ? computeTileGrid(pdfW, pdfH, boxWpdf2, boxHpdf2, cfg.spacingX, cfg.spacingY, cfg.stagger)
+            : [state.freePosition ? { x: cfg.offsetX, y: cfg.offsetY } : computeGridPosition(pdfW, pdfH, boxWpdf2, boxHpdf2, state.position, cfg.margin)];
+          boxes2.forEach(function (b) {
+            drawCentredOnCanvas(b.x + boxWpdf2 / 2, b.y + boxHpdf2 / 2, cfg.imageRotation, cfg, pdfW, pdfH, function () {
+              octx.drawImage(previewImgElement, -boxWc2 / 2, -boxHc2 / 2, boxWc2, boxHc2);
+            });
+          });
+        }
+        octx.restore();
+      }
+
+      // Canvas y runs down and PDF y runs up, so the same counter-clockwise
+      // turn is a negative angle here.
+      function drawCentredOnCanvas(cxPdf, cyPdf, deg, cfg, pdfW, pdfH, draw) {
+        var cx = (cxPdf / pdfW) * overlayCanvas.width, cy = overlayCanvas.height - (cyPdf / pdfH) * overlayCanvas.height;
+        octx.save();
+        octx.translate(cx, cy);
+        octx.rotate(-deg * Math.PI / 180);
+        octx.scale(cfg.flipH ? -1 : 1, cfg.flipV ? -1 : 1);
+        draw();
+        octx.restore();
+      }
+
+      // ---- free-position drag on overlay ----
+      // The pointer carries the watermark's centre. Uses the page size from
+      // the last preview instead of re-reading the PDF on every pointer move.
+      var dragging = false;
+      function dragTo(e) {
+        var v = state.lastView; if (!v) return;
+        var rect = overlayCanvas.getBoundingClientRect();
+        var cx = (e.clientX - rect.left) * (overlayCanvas.width / rect.width);
+        var cy = (e.clientY - rect.top) * (overlayCanvas.height / rect.height);
+        var pt = canvasToPdfPoint(cx, cy, overlayCanvas.width, overlayCanvas.height, v.pdfW, v.pdfH);
+        $('wmOffsetX').value = Math.round(pt.x - v.boxW / 2); $('wmOffsetY').value = Math.round(pt.y - v.boxH / 2);
+        invalidateResult();
+        scheduleRenderPreview();
+      }
+      overlayCanvas.addEventListener('pointerdown', function (e) { if (state.freePosition) { dragging = true; overlayCanvas.setPointerCapture(e.pointerId); dragTo(e); } });
+      overlayCanvas.addEventListener('pointermove', function (e) { if (dragging) dragTo(e); });
+      overlayCanvas.addEventListener('pointerup', function () { dragging = false; });
+      overlayCanvas.addEventListener('pointercancel', function () { dragging = false; });
+
+      tool.querySelector('[data-preview-prev]').addEventListener('click', function () { if (state.currentPreviewPage > 1) { state.currentPreviewPage--; renderPreview(); } });
+      tool.querySelector('[data-preview-next]').addEventListener('click', function () { var e = state.files[state.activeFileIdx]; if (e && state.currentPreviewPage < e.pageCount) { state.currentPreviewPage++; renderPreview(); } });
+      tool.querySelector('[data-preview-toggle-before]').addEventListener('click', function (e) {
+        state.showingBefore = !state.showingBefore;
+        var btn = e.currentTarget;
+        btn.textContent = state.showingBefore ? 'Show watermarked (after)' : 'Show original (before)';
+        btn.setAttribute('aria-pressed', state.showingBefore ? 'true' : 'false');
+        renderPreview();
+      });
+      var resizeTimer = null;
+      window.addEventListener('resize', function () { clearTimeout(resizeTimer); resizeTimer = setTimeout(function () { if (state.files.length) renderPreview(); }, 200); });
+
+      // ================= Apply watermark via pdf-lib =================
+      var progressWrap = tool.querySelector('[data-progress-wrap]'), progressFill = tool.querySelector('[data-progress-fill]'), progressText = tool.querySelector('[data-progress-text]');
+
+      async function embedFontForDoc(pdfDoc, cfg) {
+        if (cfg.fontChoice === 'custom' && state.customFontBytes) {
+          pdfDoc.registerFontkit(fontkit);
+          return pdfDoc.embedFont(state.customFontBytes);
+        }
+        return pdfDoc.embedFont(PDFLib.StandardFonts[cfg.fontChoice] || PDFLib.StandardFonts.Helvetica);
+      }
+
+      /* Draws inside q … Q with a matrix that puts the watermark's centre where
+         it belongs, turned about that centre and mirrored if asked — the same
+         geometry the preview uses. Flip used to be preview-only. */
+      function withCentredTransform(page, cx, cy, deg, flipH, flipV, draw) {
+        var m = centredTransform(cx, cy, deg, flipH ? -1 : 1, flipV ? -1 : 1);
+        page.pushOperators(PDFLib.pushGraphicsState(), PDFLib.concatTransformationMatrix(m[0], m[1], m[2], m[3], m[4], m[5]));
+        draw();
+        page.pushOperators(PDFLib.popGraphicsState());
+      }
+
+      /* Outline styles set the text rendering mode, the stroke colour and
+         width, and a stroke opacity: pdf-lib's drawText only fills, so
+         "Outline" and "Fill + outline" used to come out as plain solid text. */
+      function strokeOperators(page, cfg) {
+        var mode = cfg.style === 'outline' ? PDFLib.TextRenderingMode.Outline : PDFLib.TextRenderingMode.FillAndOutline;
+        var gs = page.node.newExtGState('WmGS', page.doc.context.obj({ Type: 'ExtGState', CA: cfg.opacity }));
+        return [
+          PDFLib.setGraphicsState(gs),
+          PDFLib.setTextRenderingMode(mode),
+          PDFLib.setLineWidth(cfg.strokeWidth),
+          PDFLib.setStrokingRgbColor(cfg.color.r, cfg.color.g, cfg.color.b),
+        ];
+      }
+
+      async function watermarkOnePdf(entry, cfg) {
+        /* A fresh copy for every Apply. Drawing straight onto the document that
+           was loaded at upload meant the second Apply produced the FIRST
+           watermark again (the page kept its cached content), so changing the
+           text and applying again quietly downloaded the old stamp. */
+        var pdfDoc = await PDFLib.PDFDocument.load(entry.bytes.slice(0));
+        var selected = applyPageSelectionMode(cfg.pageMode, entry.pageCount, cfg.customRange).filter(function (p) { return !entry.excludedPages.has(p); });
+        var font = state.activeTab === 'text' ? await embedFontForDoc(pdfDoc, { fontChoice: cfg.font }) : null;
+        var embeddedImage = null;
+        if (state.activeTab === 'image' && state.imageBytes) {
+          if (cfg.removeWhiteBg && state.processedImageBytes) {
+            embeddedImage = await pdfDoc.embedPng(state.processedImageBytes);
+          } else {
+            var isPng = state.imageInfo.type === 'image/png';
+            embeddedImage = isPng ? await pdfDoc.embedPng(state.imageBytes) : await pdfDoc.embedJpg(state.imageBytes);
+          }
+        }
+
+        for (var i = 0; i < selected.length; i++) {
+          var pageNum = selected[i];
+          var pageIndex = pageNum - 1;
+          var originalPage = pdfDoc.getPage(pageIndex);
+          var pdfW = originalPage.getWidth(), pdfH = originalPage.getHeight();
+          progressText.textContent = 'Watermarking page ' + (i + 1) + ' of ' + selected.length + ' (' + entry.name + ')';
+          progressFill.style.width = Math.round(((i + 1) / selected.length) * 100) + '%';
+
+          // "Behind" mode: a normal page.drawText/drawImage call always appends to the END of
+          // the content stream, which paints ON TOP of everything already there — pdf-lib has
+          // no built-in way to prepend. Instead, snapshot the original page as a vector Form
+          // XObject (embedPage), draw the watermark first on a fresh page, then composite the
+          // embedded original on top via drawPage — the original text stays genuinely
+          // selectable (real Tj operators), not rasterized.
+          var page = originalPage;
+          var embeddedOriginalForBehind = null;
+          if (cfg.layer === 'behind') {
+            embeddedOriginalForBehind = await pdfDoc.embedPage(originalPage);
+            // embedPage captures content against the page's RAW (unrotated) MediaBox and doesn't
+            // carry /Rotate — so a landscape page stored as a rotated portrait MediaBox loses its
+            // rotation on the fresh page unless it is copied over explicitly.
+            var originalRotation = originalPage.getRotation();
+            page = pdfDoc.insertPage(pageIndex, [pdfW, pdfH]);
+            page.setRotation(originalRotation);
+          }
+
+          if (state.activeTab === 'text') {
+            var textToShow = (cfg.firstPageDifferent && pageNum === 1 && cfg.firstPageText) ? cfg.firstPageText : applyPlaceholders(cfg.text, { page: pageNum, total: entry.pageCount, filename: baseName(entry.name) });
+            var fontSize = cfg.fontSize;
+            if (cfg.autoFit) {
+              var targetW = pdfW * 0.8;
+              var lo = 1, hi = 500;
+              for (var b = 0; b < 25; b++) { var mid = (lo + hi) / 2; if (font.widthOfTextAtSize(textToShow, mid) > targetW) hi = mid; else lo = mid; }
+              fontSize = lo;
+            }
+            var textW = font.widthOfTextAtSize(textToShow, fontSize);
+            var textH = font.heightAtSize(fontSize);
+            var ascent = font.heightAtSize(fontSize, { descender: false });
+            var color = PDFLib.rgb(cfg.color.r, cfg.color.g, cfg.color.b);
+            var stroked = cfg.style === 'outline' || cfg.style === 'both';
+            var strokeOps = stroked ? strokeOperators(page, cfg) : null;
+            var placeText = function (bx, by) {
+              withCentredTransform(page, bx + textW / 2, by + textH / 2, cfg.rotation, cfg.flipH, cfg.flipV, function () {
+                if (strokeOps) page.pushOperators.apply(page, strokeOps);
+                // Baseline placed so the glyphs' box is centred on the origin.
+                page.drawText(textToShow, { x: -textW / 2, y: -(ascent - textH / 2), size: fontSize, font: font, color: color, opacity: cfg.opacity });
+              });
+            };
+            var boxes = cfg.tiled ? computeTileGrid(pdfW, pdfH, textW, textH, cfg.spacingX, cfg.spacingY, cfg.stagger)
+              : [state.freePosition ? { x: cfg.offsetX, y: cfg.offsetY } : computeGridPosition(pdfW, pdfH, textW, textH, state.position, cfg.margin)];
+            boxes.forEach(function (t) { placeText(t.x, t.y); });
+          } else if (embeddedImage) {
+            var scaleDims = embeddedImage.scale(1);
+            var boxW = pdfW * cfg.imageScale, boxH = boxW * (scaleDims.height / scaleDims.width);
+            var placeImage = function (bx, by) {
+              withCentredTransform(page, bx + boxW / 2, by + boxH / 2, cfg.imageRotation, cfg.flipH, cfg.flipV, function () {
+                page.drawImage(embeddedImage, { x: -boxW / 2, y: -boxH / 2, width: boxW, height: boxH, opacity: cfg.imageOpacity });
+              });
+            };
+            var boxes2 = cfg.tiled ? computeTileGrid(pdfW, pdfH, boxW, boxH, cfg.spacingX, cfg.spacingY, cfg.stagger)
+              : [state.freePosition ? { x: cfg.offsetX, y: cfg.offsetY } : computeGridPosition(pdfW, pdfH, boxW, boxH, state.position, cfg.margin)];
+            boxes2.forEach(function (t) { placeImage(t.x, t.y); });
+          }
+
+          if (cfg.layer === 'behind') {
+            page.drawPage(embeddedOriginalForBehind, { x: 0, y: 0, width: pdfW, height: pdfH });
+            pdfDoc.removePage(pageIndex + 1); // remove the old original page, now shifted down by the insert
+          }
+          await yieldToUI();
+        }
+
+        if (cfg.flatten) {
+          progressText.textContent = 'Flattening pages to images (' + entry.name + ')…';
+          var lib = await loadPdfJs();
+          var srcBytes = await pdfDoc.save();
+          var srcDoc = await lib.getDocument({ data: srcBytes, isEvalSupported: false }).promise;
+          var flatDoc = await PDFLib.PDFDocument.create();
+          try {
+            for (var fp = 1; fp <= srcDoc.numPages; fp++) {
+              var srcPage = await srcDoc.getPage(fp);
+              // srcPage.view is the RAW (unrotated) MediaBox, but getViewport() applies /Rotate;
+              // use the rotation-aware viewport for both the page box and the image box.
+              var vp1 = srcPage.getViewport({ scale: 1 });
+              var vp = srcPage.getViewport({ scale: 2 });
+              var c = document.createElement('canvas'); c.width = vp.width; c.height = vp.height;
+              await srcPage.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+              var jpgBytes = await new Promise(function (resolve) { c.toBlob(function (b) { b.arrayBuffer().then(resolve); }, 'image/jpeg', 0.9); });
+              c.width = 0; c.height = 0;
+              var img2 = await flatDoc.embedJpg(jpgBytes);
+              var newPage = flatDoc.addPage([vp1.width, vp1.height]);
+              newPage.drawImage(img2, { x: 0, y: 0, width: vp1.width, height: vp1.height });
+              await yieldToUI();
+            }
+          } finally {
+            srcDoc.destroy();
+          }
+          return flatDoc;
+        }
+        return pdfDoc;
+      }
+
+      function saveBlob(url, name) {
+        var a = document.createElement('a'); a.href = url; a.download = name;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      }
+
+      applyBtn.addEventListener('click', async function () {
+        if (busy) return;
+        if (!state.files.length) { showMessage('Upload a PDF first.', 'error'); return; }
+        var cfg = getWmConfig();
+        if (state.activeTab === 'text') {
+          if (!cfg.text.trim() && !(cfg.firstPageDifferent && cfg.firstPageText.trim())) { showMessage('Type the watermark text first, or pick one of the presets.', 'error'); return; }
+          var bad = findNonWinAnsiChars((cfg.text + (cfg.firstPageDifferent ? cfg.firstPageText : '')).replace(/\{[a-z]+\}/g, ''));
+          if (bad.length && !(cfg.font === 'custom' && state.customFontBytes)) { showMessage('Please upload a custom font that supports these characters, or change the text.', 'error'); return; }
+        }
+        if (state.activeTab === 'image' && !state.imageBytes) { showMessage('Please upload an image or logo first.', 'error'); return; }
+        var nothing = state.files.every(function (entry) {
+          return !applyPageSelectionMode(cfg.pageMode, entry.pageCount, cfg.customRange).some(function (p) { return !entry.excludedPages.has(p); });
+        });
+        if (nothing) { showMessage('No pages are selected — check the page range and the excluded thumbnails.', 'error'); return; }
+
+        // Recompute fresh in case "remove white background" changed and Apply was clicked
+        // before the async preview processing caught up.
+        if (state.activeTab === 'image' && cfg.removeWhiteBg && state.rawImageElement) {
+          try {
+            var freshBlob = await removeWhiteBackground(state.rawImageElement, cfg.whiteBgTolerance);
+            state.processedImageBytes = new Uint8Array(await freshBlob.arrayBuffer());
+          } catch (err) {
+            console.error('White background removal failed:', err);
+            state.processedImageBytes = null;
+          }
+        }
+
+        var resultFileName = tool.querySelector('[data-result-filename]');
+        var resultFileSize = tool.querySelector('[data-result-filesize]');
+        var resultPageCount = tool.querySelector('[data-result-pagecount]');
+        invalidateResult();
+        clearMessage();
+        setBusy(true, 'Applying watermark…');
+        progressWrap.classList.add('is-active');
+        try {
+          var outputs = [];
+          for (var i = 0; i < state.files.length; i++) {
+            var entry = state.files[i];
+            var resultDoc = await watermarkOnePdf(entry, cfg);
+            var bytes = await resultDoc.save();
+            outputs.push({ name: baseName(entry.name) + '-watermarked.pdf', bytes: bytes, originalSize: entry.file.size, pageCount: entry.pageCount });
+          }
+          var downloadName;
+          if (outputs.length === 1) {
+            resultBlobUrl = URL.createObjectURL(new Blob([outputs[0].bytes], { type: 'application/pdf' }));
+            downloadName = outputs[0].name;
+            resultFileName.textContent = outputs[0].name;
+            resultFileSize.textContent = formatBytes(outputs[0].bytes.length);
+            resultPageCount.textContent = outputs[0].pageCount + ' page' + (outputs[0].pageCount === 1 ? '' : 's');
+            tool.querySelector('[data-size-note]').textContent = 'Original: ' + formatBytes(outputs[0].originalSize) + ' → Watermarked: ' + formatBytes(outputs[0].bytes.length);
+          } else {
+            // Two uploads can share a name; the second would overwrite the first inside the ZIP.
+            var used = {};
+            var zip = new JSZip();
+            outputs.forEach(function (o) {
+              var n = o.name, k = 1;
+              while (used[n]) { n = o.name.replace(/\.pdf$/i, '') + '-' + (k++) + '.pdf'; }
+              used[n] = true;
+              zip.file(n, o.bytes);
+            });
+            var zipBlob = await zip.generateAsync({ type: 'blob' });
+            resultBlobUrl = URL.createObjectURL(zipBlob);
+            downloadName = 'watermarked-pdfs.zip';
+            resultFileName.textContent = downloadName;
+            resultFileSize.textContent = formatBytes(zipBlob.size);
+            resultPageCount.textContent = outputs.length + ' files';
+            tool.querySelector('[data-size-note]').textContent = outputs.length + ' files watermarked and zipped.';
+          }
+          downloadLink.href = resultBlobUrl;
+          downloadLink.download = downloadName;
+          downloadLink.classList.remove('hidden');
+          saveBlob(resultBlobUrl, downloadName);
+          resultPanel.classList.remove('hidden');
+          setPhase('result');
+          resultPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          showMessage('Watermark applied successfully!', 'success');
+        } catch (err) {
+          console.error(err);
+          showMessage('Something went wrong: ' + (err.message || 'unknown error') + '. If this PDF is encrypted with owner-password restrictions, editing may not be possible.', 'error');
+        } finally {
+          setBusy(false);
+          window.setTimeout(function () { progressWrap.classList.remove('is-active'); }, 800);
+        }
+      });
+
+      downloadLink.addEventListener('click', function (e) { e.preventDefault(); if (resultBlobUrl) saveBlob(resultBlobUrl, downloadLink.download); });
+      var watermarkAnotherBtn = tool.querySelector('[data-watermark-another]');
+      if (watermarkAnotherBtn) watermarkAnotherBtn.addEventListener('click', resetTool);
+
+      if (stickyCta) {
+        stickyCta.addEventListener('click', function () {
+          if (busy) return;
+          if (phase === 'edit') { applyBtn.click(); return; }
+          if (phase === 'result') { if (resultBlobUrl) saveBlob(resultBlobUrl, downloadLink.download); return; }
+          tool.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          openPicker();
+        });
+      }
+      // "Upload PDF" / "Watermark PDF now" links: bring the tool up, and with no file yet open the picker.
+      Array.from(document.querySelectorAll('a[href="#wm-tool"]')).forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          tool.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (!state.files.length && !busy) openPicker();
+        });
+      });
+
+      if ('IntersectionObserver' in window) {
+        var watch = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.target === tool) inView.tool = entry.isIntersecting;
+            else if (entry.target === applyBtn) inView.apply = entry.isIntersecting;
+            else if (entry.target === downloadLink) inView.download = entry.isIntersecting;
+          });
+          updateSticky();
+        });
+        watch.observe(tool); watch.observe(applyBtn); watch.observe(downloadLink);
+      } else {
+        inView.tool = false;
+      }
+      if (phoneQuery.addEventListener) phoneQuery.addEventListener('change', updateSticky);
+      window.addEventListener('pagehide', function () { state.files.forEach(releaseEntry); });
+      setPhase('upload');
+    })();
+  </script>
+  <script src="assets/js/side-ads.js" defer></script>
+  <script src="assets/js/inline-ads.js" data-in-article defer></script>
+</body>
+</html>

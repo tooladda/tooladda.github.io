@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+    <meta name="description" content="Convert JSON to YAML instantly with this free online converter. Validate, format, preview and copy clean YAML directly in your browser." />
+    <title>JSON to YAML Converter — Convert JSON Online | ToolAdda</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <meta name="theme-color" content="#c2410c" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="ToolAdda" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <link rel="canonical" href="https://tooladda.online/developer-tools/json-to-yaml.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+    <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta property="og:title" content="JSON to YAML Converter — Convert JSON Online | ToolAdda" />
+    <meta property="og:description" content="Convert JSON to YAML instantly: validation with line numbers, formatting, syntax highlighting, reverse YAML to JSON, copy and download. Free, in your browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tooladda.online/developer-tools/json-to-yaml.html" />
+    <meta property="og:site_name" content="ToolAdda" />
+    <meta property="og:image" content="https://tooladda.online/assets/images/og/developer-tools-json-to-yaml.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content="JSON to YAML Converter — free developer tool on ToolAdda, runs in your browser with no sign-up." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JSON to YAML Converter — Convert JSON Online | ToolAdda" />
+    <meta name="twitter:description" content="Convert JSON to YAML instantly: validation with line numbers, formatting, syntax highlighting, reverse YAML to JSON, copy and download. Free, in your browser." />
+    <meta name="twitter:image" content="https://tooladda.online/assets/images/og/developer-tools-json-to-yaml.jpg" />
+    <meta name="twitter:image:alt" content="JSON to YAML Converter — free developer tool on ToolAdda, runs in your browser with no sign-up." />
+
+    <style id="jy-styles">
+      /* ============================================================
+         JSON to YAML — page-scoped design system.
+
+         The subject is a transformation between two notations, so the
+         page gives each side its own hue inside one theme: amber for
+         JSON, cyan for YAML, over a warm graphite console with a burnt
+         orange accent. Deliberately not the site indigo, nor the lime
+         of the SIP tool, the teal of the RD calculator or the fuchsia
+         of the shadow generator.
+
+         Both editors are dark in either theme. Code is where a
+         developer expects a dark surface, and pinning it removes an
+         entire class of syntax-colour contrast problems.
+         ============================================================ */
+
+      .jy-page {
+        --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+        --r-sm: 8px;
+        --r-md: 12px;
+        --r-lg: 18px;
+
+        --app-bg: #f8f6f3;
+        --surface: #ffffff;
+        --surface-raised: #fbf9f6;
+        --surface-hover: #f1ebe4;
+        --text-primary: #1c1714;
+        --text-secondary: #4d443c;
+        --muted: #7d7167;
+        --border: rgba(28, 23, 20, .12);
+        --border-strong: rgba(28, 23, 20, .22);
+
+        --accent: #c2410c;
+        --accent-deep: #9a3412;
+        --accent-soft: rgba(194, 65, 12, .10);
+
+        --json-accent: #b45309;
+        --json-soft: rgba(180, 83, 9, .12);
+        --yaml-accent: #0e7490;
+        --yaml-soft: rgba(14, 116, 144, .12);
+
+        --code-bg: #17130f;
+        --code-text: #ece4dc;
+        --code-key: #fbbf24;
+        --code-str: #86efac;
+        --code-num: #7dd3fc;
+        --code-lit: #f0abfc;
+        --code-comment: #8a7f74;
+
+        --success: #15803d;
+        --warning: #92610a;
+        --warning-soft: rgba(146, 97, 10, .12);
+        --danger: #b3261e;
+        --danger-soft: rgba(179, 38, 30, .10);
+        --focus: #c2410c;
+
+        --panel-shadow: 0 1px 2px rgba(28, 23, 20, .05), 0 14px 38px rgba(28, 23, 20, .08);
+
+        color: var(--text-primary);
+        background: radial-gradient(circle at 12% 0%, rgba(194, 65, 12, .08), transparent 420px), var(--app-bg);
+        padding-bottom: 3rem;
+      }
+
+      [data-theme="dark"] .jy-page {
+        --app-bg: #12100e;
+        --surface: #1b1815;
+        --surface-raised: #221e1a;
+        --surface-hover: #2c2721;
+        --text-primary: #f4efe9;
+        --text-secondary: #cbbfb3;
+        --muted: #9a8d80;
+        --border: rgba(244, 239, 233, .13);
+        --border-strong: rgba(244, 239, 233, .24);
+        --accent: #fb923c;
+        --accent-deep: #fdba74;
+        --accent-soft: rgba(251, 146, 60, .14);
+        --json-accent: #fbbf24;
+        --json-soft: rgba(251, 191, 36, .13);
+        --yaml-accent: #67e8f9;
+        --yaml-soft: rgba(103, 232, 249, .13);
+        --success: #6ee7a0;
+        --warning: #e0b054;
+        --warning-soft: rgba(224, 176, 84, .13);
+        --danger: #fca5a5;
+        --danger-soft: rgba(252, 165, 165, .12);
+        --focus: #fb923c;
+        --panel-shadow: 0 16px 46px rgba(0, 0, 0, .55);
+        background: radial-gradient(circle at 12% 0%, rgba(251, 146, 60, .10), transparent 420px), var(--app-bg);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) .jy-page {
+          --app-bg: #12100e; --surface: #1b1815; --surface-raised: #221e1a; --surface-hover: #2c2721;
+          --text-primary: #f4efe9; --text-secondary: #cbbfb3; --muted: #9a8d80;
+          --border: rgba(244, 239, 233, .13); --border-strong: rgba(244, 239, 233, .24);
+          --accent: #fb923c; --accent-deep: #fdba74; --accent-soft: rgba(251, 146, 60, .14);
+          --json-accent: #fbbf24; --json-soft: rgba(251, 191, 36, .13);
+          --yaml-accent: #67e8f9; --yaml-soft: rgba(103, 232, 249, .13);
+          --success: #6ee7a0; --warning: #e0b054; --warning-soft: rgba(224, 176, 84, .13);
+          --danger: #fca5a5; --danger-soft: rgba(252, 165, 165, .12); --focus: #fb923c;
+          --panel-shadow: 0 16px 46px rgba(0, 0, 0, .55);
+          background: radial-gradient(circle at 12% 0%, rgba(251, 146, 60, .10), transparent 420px), var(--app-bg);
+        }
+      }
+
+      .jy-page :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 5px; }
+      .jy-page [hidden] { display: none !important; }
+      /* 1180px: isse side banner ads (side-ads.js) gutters me fit ho jate hain. */
+      .jy-wrap { max-width: 1180px; margin: 0 auto; padding: 0 1rem; }
+      .jy-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+      /* ---------- breadcrumb + hero ---------- */
+      .jy-crumb { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; padding: 1rem 0 .2rem; font-size: .85rem; color: var(--muted); }
+      .jy-crumb a { color: var(--accent); font-weight: 600; text-decoration: none; }
+      .jy-crumb a:hover { text-decoration: underline; }
+      .jy-crumb span[aria-hidden] { opacity: .5; }
+
+      .jy-hero { padding: 1rem 0 1.3rem; }
+      .jy-eyebrow {
+        display: inline-flex; align-items: center; gap: .4rem;
+        font-family: var(--mono); font-size: .69rem; font-weight: 700;
+        letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+        padding: .3rem .62rem; border-radius: 999px;
+        background: var(--accent-soft); border: 1px solid var(--accent-soft);
+      }
+      .jy-h1 { margin: .7rem 0 .45rem; font-size: clamp(1.9rem, 4.6vw, 2.8rem); font-weight: 800; letter-spacing: -.024em; line-height: 1.08; }
+      .jy-lede { margin: 0; max-width: 68ch; color: var(--text-secondary); font-size: 1.02rem; line-height: 1.65; }
+      .jy-trust { display: flex; flex-wrap: wrap; gap: .4rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+      .jy-trust li { font-size: .78rem; font-weight: 600; color: var(--text-secondary); padding: .3rem .62rem; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); }
+
+      /* ---------- console ---------- */
+      .jy-console {
+        border: 1px solid var(--border-strong); border-radius: var(--r-lg);
+        background: var(--surface); overflow: hidden; box-shadow: var(--panel-shadow);
+      }
+      .jy-bar {
+        display: flex; align-items: center; justify-content: space-between; gap: .6rem 1rem; flex-wrap: wrap;
+        padding: .6rem 1rem; background: var(--surface-raised); border-bottom: 1px solid var(--border);
+      }
+      .jy-modes { display: inline-flex; padding: 3px; gap: 3px; border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--surface); }
+      .jy-mode {
+        font: inherit; font-size: .82rem; font-weight: 700; cursor: pointer;
+        min-height: 38px; padding: .3rem .8rem; border-radius: var(--r-sm);
+        border: none; background: none; color: var(--muted);
+      }
+      .jy-mode.is-on { background: var(--accent); color: #fff; }
+      [data-theme="dark"] .jy-mode.is-on { color: #17130f; }
+      .jy-privacy {
+        display: inline-flex; align-items: center; gap: .32rem;
+        font-size: .72rem; font-weight: 650; color: var(--success);
+        background: var(--accent-soft); border: 1px solid var(--accent-soft);
+        padding: .24rem .55rem; border-radius: 999px;
+      }
+
+      /* ---------- panes ---------- */
+      .jy-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+      @media (max-width: 900px) { .jy-grid { grid-template-columns: 1fr; } }
+      .jy-pane { min-width: 0; display: flex; flex-direction: column; }
+      .jy-pane--in { border-right: 1px solid var(--border); }
+      @media (max-width: 900px) { .jy-pane--in { border-right: none; border-bottom: 1px solid var(--border); } }
+
+      .jy-panehead {
+        display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+        flex-wrap: wrap; padding: .6rem .8rem; border-bottom: 1px solid var(--border);
+        background: var(--surface-raised);
+      }
+      .jy-panetitle { display: inline-flex; align-items: center; gap: .45rem; font-size: .74rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+      .jy-badge { font-family: var(--mono); font-size: .64rem; font-weight: 800; letter-spacing: .1em; padding: .16rem .42rem; border-radius: 5px; }
+      .jy-badge--json { background: var(--json-soft); color: var(--json-accent); border: 1px solid var(--json-soft); }
+      .jy-badge--yaml { background: var(--yaml-soft); color: var(--yaml-accent); border: 1px solid var(--yaml-soft); }
+      .jy-paneactions { display: flex; flex-wrap: wrap; gap: .25rem; }
+
+      /* Both editors are dark in either theme — code belongs on a dark
+         surface and pinning it keeps the token colours stable. */
+      .jy-editor { position: relative; display: flex; background: var(--code-bg); min-height: 320px; }
+      @media (min-width: 901px) { .jy-editor { height: clamp(360px, 48vh, 560px); } }
+      @media (max-width: 900px) { .jy-editor { height: clamp(300px, 42vh, 420px); } }
+
+      .jy-gutter {
+        flex: none; padding: .8rem .5rem .8rem .8rem; margin: 0;
+        font-family: var(--mono); font-size: .82rem; line-height: 1.6;
+        color: rgba(236, 228, 220, .3); text-align: right; white-space: pre;
+        user-select: none; overflow: hidden; border-right: 1px solid rgba(236, 228, 220, .09);
+      }
+      .jy-input, .jy-out {
+        flex: 1 1 auto; min-width: 0; margin: 0;
+        padding: .8rem .9rem; border: 0; outline: none; resize: none;
+        font-family: var(--mono); font-size: .82rem; line-height: 1.6;
+        background: transparent; color: var(--code-text);
+        overflow: auto; white-space: pre; tab-size: 2;
+      }
+      .jy-input::placeholder { color: rgba(236, 228, 220, .35); }
+      .jy-input[aria-invalid="true"] { box-shadow: inset 3px 0 0 var(--danger); }
+      .jy-placeholder { color: rgba(236, 228, 220, .35); }
+
+      .tok-key { color: var(--code-key); }
+      .tok-str { color: var(--code-str); }
+      .tok-num { color: var(--code-num); }
+      .tok-lit { color: var(--code-lit); }
+      .tok-comment { color: var(--code-comment); font-style: italic; }
+      .tok-dash { color: var(--accent); }
+
+      .jy-panefoot {
+        display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+        flex-wrap: wrap; padding: .5rem .8rem; border-top: 1px solid var(--border);
+        background: var(--surface-raised); font-size: .74rem; color: var(--muted);
+        font-family: var(--mono);
+      }
+
+      /* ---------- controls ---------- */
+      .jy-actionbar {
+        display: flex; flex-wrap: wrap; align-items: center; gap: .6rem;
+        padding: .8rem 1rem; border-top: 1px solid var(--border); background: var(--surface-raised);
+      }
+      .jy-btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: .35rem;
+        font: inherit; font-weight: 650; cursor: pointer; text-decoration: none;
+        min-height: 44px; padding: .5rem .9rem; border-radius: var(--r-md);
+        border: 1px solid transparent; color: inherit; background: none;
+        transition: background .15s, border-color .15s, color .15s;
+      }
+      .jy-btn:disabled { opacity: .45; cursor: not-allowed; }
+      .jy-btn--accent { background: var(--accent); color: #fff; font-weight: 750; min-height: 48px; padding: .6rem 1.4rem; }
+      .jy-btn--accent:hover { background: var(--accent-deep); }
+      [data-theme="dark"] .jy-btn--accent { color: #17130f; }
+      .jy-btn--ghost { background: var(--surface); color: var(--text-secondary); border-color: var(--border-strong); }
+      .jy-btn--ghost:hover { background: var(--surface-hover); color: var(--text-primary); }
+      .jy-btn--sm { min-height: 36px; padding: .28rem .6rem; font-size: .78rem; border-radius: var(--r-sm); font-weight: 600; }
+
+      .jy-status {
+        display: inline-flex; align-items: center; gap: .4rem; margin-left: auto;
+        font-size: .8rem; font-weight: 650; padding: .35rem .7rem; border-radius: 999px;
+        border: 1px solid var(--border); background: var(--surface); color: var(--muted);
+      }
+      /* State is carried by an icon and a word, never by colour alone. */
+      .jy-status::before { content: "•"; font-size: 1rem; line-height: 1; }
+      .jy-status[data-state="ok"] { color: var(--success); border-color: var(--success); }
+      .jy-status[data-state="ok"]::before { content: "✓"; }
+      .jy-status[data-state="error"] { color: var(--danger); border-color: var(--danger); background: var(--danger-soft); }
+      .jy-status[data-state="error"]::before { content: "✕"; }
+      .jy-status[data-state="working"]::before { content: "⋯"; }
+
+      .jy-toggle { display: inline-flex; align-items: center; gap: .45rem; font-size: .82rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; min-height: 44px; }
+      .jy-toggle input { width: 18px; height: 18px; accent-color: var(--accent); }
+      .jy-select {
+        font: inherit; font-size: .82rem; font-weight: 600; min-height: 40px;
+        padding: .3rem .5rem; border-radius: var(--r-sm);
+        border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-primary);
+      }
+
+      .jy-error {
+        margin: 0; padding: .75rem 1rem; border-top: 1px solid var(--danger);
+        background: var(--danger-soft); color: var(--danger); font-size: .86rem; line-height: 1.6;
+      }
+      .jy-error__excerpt {
+        margin: .5rem 0 0; padding: .5rem .6rem; border-radius: var(--r-sm);
+        background: var(--code-bg); color: var(--code-text);
+        font-family: var(--mono); font-size: .78rem; overflow-x: auto; white-space: pre;
+      }
+
+      .jy-examples { display: flex; flex-wrap: wrap; gap: .3rem; padding: .8rem 1rem; border-top: 1px solid var(--border); }
+      .jy-chip {
+        font: inherit; font-size: .78rem; font-weight: 650; cursor: pointer;
+        min-height: 36px; padding: .3rem .68rem; border-radius: 999px;
+        border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-secondary);
+      }
+      .jy-chip:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+      .jy-editor.is-dragging { box-shadow: inset 0 0 0 2px var(--accent); }
+
+      /* ---------- content ---------- */
+      .jy-section { margin-top: 2.4rem; }
+      .jy-h2 { margin: 0 0 .45rem; font-size: clamp(1.32rem, 2.6vw, 1.72rem); font-weight: 760; letter-spacing: -.016em; line-height: 1.22; }
+      .jy-h3 { margin: 1.6rem 0 .4rem; font-size: 1.06rem; font-weight: 720; }
+      .jy-sub { margin: 0 0 1rem; color: var(--text-secondary); max-width: 74ch; line-height: 1.65; }
+      .jy-section p, .jy-section li { color: var(--text-secondary); line-height: 1.72; }
+      .jy-section > p, .jy-section > ul, .jy-section > ol { max-width: 74ch; }
+      .jy-section > p { margin: 0 0 .85rem; }
+      .jy-section > ul, .jy-section > ol { margin: 0 0 .95rem; padding-left: 1.15rem; }
+      .jy-section li { margin-bottom: .35rem; }
+      .jy-section strong { color: var(--text-primary); font-weight: 700; }
+      .jy-section a { color: var(--accent); font-weight: 600; }
+      .jy-section code { font-family: var(--mono); font-size: .87em; padding: .1rem .32rem; border-radius: 4px; background: var(--surface-hover); border: 1px solid var(--border); color: var(--text-primary); }
+
+      .jy-snippet {
+        margin: 0; padding: .8rem .9rem; border-radius: var(--r-md);
+        background: var(--code-bg); color: var(--code-text);
+        font-family: var(--mono); font-size: .82rem; line-height: 1.65;
+        overflow-x: auto; white-space: pre;
+      }
+      .jy-pair { display: grid; gap: .6rem; grid-template-columns: minmax(0, 1fr); margin: 0 0 1rem; }
+      @media (min-width: 700px) { .jy-pair { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+      .jy-pair figure { margin: 0; min-width: 0; }
+      .jy-pair figcaption { font-family: var(--mono); font-size: .66rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .3rem; }
+
+      .jy-callout { padding: .8rem .9rem; border-radius: var(--r-md); font-size: .86rem; line-height: 1.65; background: var(--warning-soft); border: 1px solid var(--warning-soft); color: var(--text-secondary); }
+      .jy-callout strong { color: var(--warning); }
+
+      .jy-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(238px, 100%), 1fr)); gap: .7rem; }
+      .jy-card { min-width: 0; padding: .95rem; border-radius: var(--r-md); border: 1px solid var(--border); background: var(--surface); }
+      .jy-card h3 { margin: 0 0 .35rem; font-size: .98rem; font-weight: 750; }
+      .jy-card p, .jy-card li { margin: 0; font-size: .85rem; line-height: 1.62; color: var(--text-secondary); }
+      .jy-card ul { margin: 0; padding-left: 1.05rem; }
+      .jy-card li { margin-bottom: .28rem; }
+      .jy-card--json { border-top: 3px solid var(--json-accent); }
+      .jy-card--yaml { border-top: 3px solid var(--yaml-accent); }
+
+      .jy-faq { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: .55rem; align-items: start; }
+      .jy-faq details { border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); }
+      .jy-faq summary { cursor: pointer; padding: .8rem .9rem; min-height: 44px; font-weight: 660; font-size: .93rem; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: .6rem; }
+      .jy-faq summary::-webkit-details-marker { display: none; }
+      .jy-faq summary::after { content: "+"; font-family: var(--mono); color: var(--muted); }
+      .jy-faq details[open] summary::after { content: "−"; }
+      .jy-faq p { margin: 0; padding: 0 .9rem .85rem; font-size: .87rem; line-height: 1.65; color: var(--text-secondary); }
+
+      .jy-related { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(228px, 100%), 1fr)); gap: .6rem; }
+      .jy-related a { display: block; padding: .85rem .9rem; border-radius: var(--r-md); border: 1px solid var(--border); background: var(--surface); text-decoration: none; color: inherit; }
+      .jy-related a:hover { border-color: var(--accent); background: var(--accent-soft); }
+      .jy-related strong { display: block; font-size: .93rem; margin-bottom: .18rem; color: var(--text-primary); }
+      .jy-related span { font-size: .8rem; color: var(--muted); line-height: 1.5; }
+
+      .jy-disclaimer { margin-top: 2rem; padding: .85rem 1rem; border-radius: var(--r-md); border: 1px solid var(--border); background: var(--surface-raised); font-size: .82rem; line-height: 1.65; color: var(--muted); }
+
+      @media (prefers-reduced-motion: reduce) {
+        .jy-page *, .jy-page *::before, .jy-page *::after {
+          transition-duration: .01ms !important; animation-duration: .01ms !important;
+        }
+      }
+
+      /* ============================================================
+         Indentation. YAML is JSON with the punctuation taken away and
+         the structure carried by indentation instead, so the page is
+         drawn in indent guides: faint vertical rules like an editor's,
+         a cover that shows one document in both notations, and the
+         two sides' own hues (amber JSON, cyan YAML) kept from above.
+         Burnt orange stays the accent. This block sets the layout and
+         the frame; the rules above still style the editors.
+         ============================================================ */
+      body.jy-body { background: #f6f3ee; }
+      [data-theme="dark"] body.jy-body { background: #100e0c; }
+      .jy-page {
+        --jy-guide: rgba(28, 23, 20, .045);
+        background:
+          repeating-linear-gradient(90deg, var(--jy-guide) 0 1px, transparent 1px 28px) 0 0 / 100% 100% no-repeat,
+          radial-gradient(circle at 12% 0%, rgba(194, 65, 12, .07), transparent 420px), var(--app-bg);
+      }
+      [data-theme="dark"] .jy-page {
+        --jy-guide: rgba(244, 239, 233, .03);
+        background:
+          repeating-linear-gradient(90deg, var(--jy-guide) 0 1px, transparent 1px 28px) 0 0 / 100% 100% no-repeat,
+          radial-gradient(circle at 12% 0%, rgba(251, 146, 60, .08), transparent 420px), var(--app-bg);
+      }
+      .jy-shell { padding: .6rem 0 3rem; }
+      .container.jy-main { width: min(1120px, calc(100% - 2rem)); padding: 0; }
+      /* compact pane heads: the title and all its buttons on one line */
+      .jy-page .jy-top .jy-panehead { gap: .35rem .5rem; padding: .5rem .65rem; }
+      .jy-page .jy-top .jy-paneactions { gap: .2rem; }
+      .jy-page .jy-top .jy-panehead .jy-btn--sm { min-height: 32px; padding: .2rem .5rem; font-size: .74rem; }
+      .jy-page .jy-crumb { padding: .35rem 0 .9rem; }
+      .jy-page [data-jy-root] { scroll-margin-top: calc(var(--header-overlap, 5.5rem) + .75rem); }
+
+      /* ---------- top: the tool grid ----------
+         Under 700px one column: mode bar, input, the ad, output, then
+         convert and examples. 700-999px: the 300x250 sits beside the bar
+         and input. From 1000px: input | output | ad. The ad is never above
+         the tool, and nothing else lives inside the grid. */
+      .jy-top { display: grid; gap: .9rem; align-items: start; grid-template-areas: "bar" "in" "ad" "out" "ctl"; }
+      .jy-top > * { min-width: 0; }
+      .jy-top > .jy-bar { grid-area: bar; }
+      .jy-top > .jy-box--in { grid-area: in; }
+      .jy-top > .jy-box--out { grid-area: out; }
+      .jy-top > .jy-box--ctl { grid-area: ctl; }
+      .jy-ad-zone { grid-area: ad; }
+      @media (min-width: 700px) {
+        .jy-top { grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "bar ad" "in ad" "out out" "ctl ctl"; column-gap: 1.1rem; }
+      }
+      @media (min-width: 1000px) {
+        .jy-top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 300px; grid-template-areas: "bar bar ad" "in out ad" "ctl ctl ad"; }
+        /* sticky only here, where the ad column runs the grid's full height */
+        .jy-ad-zone { position: sticky; top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+      }
+      /* One 300x250 at every width: inline-ads.js only shows .ta-inline-ad
+         below 1000px, so it is forced on here; data-unit="inline" sizes it. */
+      body.jy-body .jy-ad-zone { text-align: center; }
+      body.jy-body .jy-ad-zone .ta-inline-ad { display: block !important; margin: 0 auto !important; }
+      @media (max-width: 340px) { .jy-ad-zone { margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); } }
+
+      /* the four boxes of the console */
+      .jy-page .jy-top > .jy-bar, .jy-page .jy-box {
+        border: 1px solid var(--border-strong); border-radius: var(--r-lg); background: var(--surface); box-shadow: var(--panel-shadow); overflow: hidden;
+      }
+      .jy-page .jy-top > .jy-bar { border-bottom: 1px solid var(--border-strong); background: var(--surface-raised); }
+            .jy-page .jy-box--in { border-top: 4px solid var(--json-accent); }
+      .jy-page .jy-box--out { border-top: 4px solid var(--yaml-accent); }
+      .jy-page .jy-pane--in { border-right: 0; border-bottom: 0; }
+      .jy-page .jy-box--ctl .jy-actionbar { border-top: 0; }
+      .jy-page .jy-box--ctl .jy-error { border-top: 0; border-bottom: 1px solid var(--danger); }
+      /* the editors get the same indent guides as the page, in light ink */
+      .jy-page .jy-editor { background: repeating-linear-gradient(90deg, rgba(236, 228, 220, .045) 0 1px, transparent 1px 2ch) 3.2rem 0 / 100% 100% no-repeat, var(--code-bg); }
+      @media (min-width: 1000px) { .jy-page .jy-editor { height: clamp(320px, 44vh, 520px); } }
+      .jy-page .jy-mode.is-on { box-shadow: 0 6px 14px -8px var(--accent); }
+      /* the reused .jy-btn--accent hover keeps a light label on the deeper fill */
+      .jy-page .jy-btn--accent:hover { background: var(--accent-deep); color: #fff; }
+      [data-theme="dark"] .jy-page .jy-btn--accent:hover { color: #17130f; }
+
+      /* ---------- cover ---------- */
+      .jy-cover {
+        position: relative; overflow: hidden; display: grid; gap: 1rem 1.6rem; align-items: center; margin: 0 0 .9rem;
+        padding: 1.1rem 1.3rem 1.15rem; border-radius: var(--r-lg); border: 1px solid var(--border-strong); background: var(--surface); box-shadow: var(--panel-shadow);
+      }
+      .jy-cover::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: linear-gradient(180deg, var(--json-accent), var(--accent), var(--yaml-accent)); }
+      @media (min-width: 900px) { .jy-cover { grid-template-columns: minmax(0, 1fr) auto; } }
+      .jy-page .jy-cover .jy-h1 { margin: .55rem 0 0; font-size: clamp(1.9rem, 1.2rem + 2.4vw, 2.75rem); }
+      .jy-t1, .jy-t3 { font-family: var(--mono); letter-spacing: -.04em; }
+      .jy-t1 { color: var(--json-accent); }
+      .jy-t3 { color: var(--yaml-accent); }
+      .jy-t2 { color: var(--muted); font-weight: 600; }
+      .jy-cover-note { margin: .45rem 0 0; color: var(--muted); font-size: .92rem; }
+      /* one document in both notations; every line is data-t (decoration) */
+      .jy-xform { display: grid; grid-template-columns: auto auto auto; align-items: center; gap: .7rem; }
+      .jy-xpane { min-width: 150px; padding: .55rem .7rem; border-radius: 10px; background: #17130f; font: 600 .74rem/1.55 var(--mono); box-shadow: 0 10px 20px -14px rgba(0, 0, 0, .8); }
+      .jy-xpane b { display: block; font-weight: 600; white-space: pre; color: #ece4dc; }
+      .jy-xpane b::before { content: attr(data-t); }
+      .jy-xpane--json { border-top: 3px solid #f59e0b; }
+      .jy-xpane--json b.p { color: rgba(236, 228, 220, .35); }
+      .jy-xpane--yaml { border-top: 3px solid #22d3ee; }
+      .jy-xpane b.k { color: #fbbf24; }
+      .jy-xarrow { font: 800 1.2rem/1 var(--mono); color: var(--accent); }
+      .jy-xarrow::before { content: attr(data-t); }
+
+      /* ---------- below the tool ---------- */
+      .jy-intro { display: grid; gap: .8rem 1.5rem; margin-top: 1.3rem; align-items: center; }
+      @media (min-width: 900px) { .jy-intro { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); } }
+      .jy-page .jy-intro .jy-lede { max-width: none; padding-left: .85rem; border-left: 3px solid var(--accent); }
+      .jy-page .jy-intro .jy-trust { margin: 0; }
+      .jy-page .jy-section { padding: clamp(1.05rem, 2.6vw, 1.6rem); border-radius: var(--r-lg); border: 1px solid var(--border); background: var(--surface); box-shadow: var(--panel-shadow); }
+      /* each title gets an indent marker: two guides and a dash, like a
+         YAML sequence item */
+      .jy-page .jy-h2 { display: flex; align-items: baseline; gap: .55rem; }
+      .jy-page .jy-h2::before { content: ""; flex: none; width: 22px; height: .72em; background: linear-gradient(var(--border-strong), var(--border-strong)) 0 0 / 1px 100% no-repeat, linear-gradient(var(--border-strong), var(--border-strong)) 7px 0 / 1px 100% no-repeat, linear-gradient(var(--accent), var(--accent)) 12px 60% / 10px 3px no-repeat; }
+      .jy-quote-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+      .jy-quote-wrap { overflow: hidden; border-radius: var(--r-md); border: 1px solid var(--border); margin: 0 0 1rem; }
+      .jy-quote-table th, .jy-quote-table td { padding: .55rem .75rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+      .jy-quote-table th { background: var(--surface-raised); color: var(--text-primary); font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+      .jy-quote-table tbody tr:last-child td { border-bottom: 0; }
+      .jy-quote-table td:first-child, .jy-quote-table td:last-child { font-family: var(--mono); font-size: .84rem; color: var(--text-primary); white-space: nowrap; }
+
+      /* ---------- smaller screens ---------- */
+      @media (max-width: 899px) { .jy-cover .jy-xform { display: none; } .jy-cover-note { display: none; } }
+      @media (max-width: 699px) {
+        /* phones: headline only in the cover and a shorter input editor,
+           so the ad after the input reaches the first screen; the output
+           and the controls follow */
+        .jy-cover { padding: .75rem .95rem .8rem 1.2rem; }
+        .jy-page .jy-cover .jy-eyebrow { display: none; }
+        .jy-page .jy-cover .jy-h1 { margin: 0; display: grid; grid-template-columns: auto auto auto; justify-content: start; align-items: baseline; column-gap: .35rem; font-size: clamp(1.9rem, 9.5vw, 2.4rem); }
+        .jy-t4 { grid-column: 1 / -1; font-size: .6em; color: var(--text-secondary); }
+        .jy-t2 { font-size: .6em; }
+        .jy-page .jy-top { row-gap: .75rem; }
+        .jy-page .jy-box--in .jy-editor { height: 150px; min-height: 0; }
+        .jy-page .jy-top [data-jy-input-label], .jy-page .jy-top [data-jy-output-label] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+        .jy-page .jy-top .jy-panehead { flex-wrap: nowrap; }
+        .jy-page .jy-top .jy-panehead .jy-btn--sm { padding: .2rem .42rem; }
+        .jy-page .jy-box--out .jy-editor { height: 260px; min-height: 0; }
+        .jy-page .jy-box--in .jy-panefoot > span:last-child { display: none; }
+        .jy-page .jy-top > .jy-bar { padding: .45rem .55rem; }
+        .jy-page .jy-top > .jy-bar .jy-privacy { display: none; }
+        .jy-page .jy-modes { width: 100%; }
+        .jy-page .jy-mode { flex: 1 1 0; }
+      }
+      @media (max-width: 559px) {
+        /* 10px gutters: a 320px phone then has the 300px its ads need */
+        body.jy-body .container.jy-main, body.jy-body .ta-support { width: calc(100% - 20px); }
+        .jy-page .jy-crumb { display: none; }
+        .jy-page .jy-actionbar .jy-btn--accent { flex: 1 1 100%; }
+        .jy-page .jy-status { margin-left: 0; }
+      }
+      @media (max-width: 640px) {
+        .jy-quote-table, .jy-quote-table tbody, .jy-quote-table tr, .jy-quote-table td { display: block; width: 100%; }
+        .jy-quote-wrap { overflow: visible; border: 0; }
+        .jy-quote-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+        .jy-quote-table tr { margin-bottom: .5rem; padding: .55rem .8rem; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-raised); }
+        .jy-quote-table td { padding: .12rem 0; border: 0; white-space: normal !important; }
+        .jy-quote-table td[data-label]::before { content: attr(data-label) ": "; color: var(--text-primary); font-weight: 700; font-family: system-ui, sans-serif; }
+      }
+    </style>
+
+    <script type="application/ld+json" data-tooladda-page-schema="true">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        { "@type": "WebSite", "@id": "https://tooladda.online/#website", "name": "ToolAdda", "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"], "url": "https://tooladda.online/", "inLanguage": "en", "publisher": { "@id": "https://tooladda.online/#organization" } },
+        { "@type": "Organization", "@id": "https://tooladda.online/#organization", "name": "ToolAdda", "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"], "url": "https://tooladda.online/", "logo": { "@type": "ImageObject", "url": "https://tooladda.online/assets/images/logo.svg" } },
+        {
+          "@type": "WebPage",
+          "@id": "https://tooladda.online/developer-tools/json-to-yaml.html#webpage",
+          "url": "https://tooladda.online/developer-tools/json-to-yaml.html",
+          "name": "JSON to YAML Converter — Convert JSON Online",
+          "description": "Convert JSON to YAML instantly with validation, formatting, syntax highlighting and one-click copy. Runs entirely in the browser.",
+          "inLanguage": "en",
+          "isPartOf": { "@id": "https://tooladda.online/#website" },
+          "breadcrumb": { "@id": "https://tooladda.online/developer-tools/json-to-yaml.html#breadcrumb" },
+          "mainEntity": { "@id": "https://tooladda.online/developer-tools/json-to-yaml.html#app" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://tooladda.online/developer-tools/json-to-yaml.html#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://tooladda.online/" },
+            { "@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://tooladda.online/#developer" },
+            { "@type": "ListItem", "position": 3, "name": "JSON to YAML Converter" }
+          ]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://tooladda.online/developer-tools/json-to-yaml.html#app",
+          "name": "JSON to YAML Converter",
+          "url": "https://tooladda.online/developer-tools/json-to-yaml.html",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Any modern web browser",
+          "description": "Convert JSON to YAML and YAML back to JSON, with validation that reports the line and column of a syntax error, selectable indentation, syntax highlighting, copy and download.",
+          "inLanguage": "en",
+          "isAccessibleForFree": true,
+          "featureList": [
+            "JSON to YAML conversion with correct nesting, sequences and quoting",
+            "Reverse YAML to JSON mode",
+            "JSON validation reporting line and column",
+            "Format and minify JSON",
+            "Two or four space indentation",
+            "Syntax highlighting for both notations",
+            "Copy, download and drag-and-drop a file",
+            "Runs entirely in the browser with no upload"
+          ],
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+          "publisher": { "@id": "https://tooladda.online/#organization" }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://tooladda.online/developer-tools/json-to-yaml.html#faq",
+          "isPartOf": { "@id": "https://tooladda.online/developer-tools/json-to-yaml.html#webpage" },
+          "mainEntity": [
+            { "@type": "Question", "name": "What is JSON?", "acceptedAnswer": { "@type": "Answer", "text": "JSON (JavaScript Object Notation) is a text format for structured data built from objects, arrays, strings, numbers, booleans and null. Its syntax is strict — braces, brackets, quoted keys and commas are all required — which makes it easy for machines to parse unambiguously and is why almost every web API speaks it." } },
+            { "@type": "Question", "name": "What is YAML?", "acceptedAnswer": { "@type": "Answer", "text": "YAML is a data serialisation format designed to be read and written by people. It expresses the same structures as JSON but uses indentation instead of braces and dashes instead of brackets, and it supports comments. That readability is why configuration files for CI systems, container tooling and Kubernetes are usually written in YAML." } },
+            { "@type": "Question", "name": "What is a JSON to YAML converter?", "acceptedAnswer": { "@type": "Answer", "text": "It is a tool that parses JSON into a data structure and re-serialises that same structure as YAML. Nothing is added or removed — only the notation changes. This converter runs the whole process in your browser, so the data never leaves your machine." } },
+            { "@type": "Question", "name": "How do I convert JSON to YAML?", "acceptedAnswer": { "@type": "Answer", "text": "Paste or drop your JSON into the left editor. It is validated and converted as you type, and the YAML appears on the right. If the JSON has a syntax error the tool reports the line and column instead of producing output. When the result looks right, use Copy YAML or Download." } },
+            { "@type": "Question", "name": "Is JSON to YAML conversion lossless?", "acceptedAnswer": { "@type": "Answer", "text": "The data structure is preserved exactly: every object, array, string, number, boolean and null comes back identical if you convert the YAML back to JSON. What is not preserved is formatting — whitespace, key order in some parsers, and JSON has no equivalent for YAML-only features such as comments, anchors and multiple documents in one file." } },
+            { "@type": "Question", "name": "Can JSON arrays be converted to YAML?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. A JSON array becomes a YAML sequence: each element is written on its own line prefixed with a dash and indented under its key. Arrays of objects are supported too — the first key of each object sits on the same line as its dash and the rest align beneath it." } },
+            { "@type": "Question", "name": "Can nested JSON be converted to YAML?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, to any depth. Each level of nesting becomes one more level of indentation, and the hierarchy is preserved exactly. Objects inside arrays inside objects all convert correctly." } },
+            { "@type": "Question", "name": "How are JSON booleans represented in YAML?", "acceptedAnswer": { "@type": "Answer", "text": "A JSON boolean becomes an unquoted YAML true or false. A JSON string that happens to contain the text \"true\" is different data, so it is written quoted — otherwise it would be read back as a boolean and the type would silently change." } },
+            { "@type": "Question", "name": "How is JSON null represented in YAML?", "acceptedAnswer": { "@type": "Answer", "text": "As the unquoted word null. YAML also accepts ~ and an empty value for null, but null is the clearest and is what this converter emits. A JSON string containing the text \"null\" is quoted so it stays a string." } },
+            { "@type": "Question", "name": "Can JSON numbers be converted to YAML?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, and they are written unquoted so they stay numbers. Note that JSON.parse in every browser reads numbers as IEEE 754 doubles, so an integer larger than 9,007,199,254,740,991 loses precision before this or any other browser-based converter sees it. Keep very large identifiers as strings in your JSON." } },
+            { "@type": "Question", "name": "Does this tool validate JSON?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Validation runs on every change and on demand via the Validate button. When the JSON is malformed the tool reports the reason with the line and column, and shows the offending line with a caret under the position, rather than only saying \"invalid\"." } },
+            { "@type": "Question", "name": "Can I convert large JSON files?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Conversion is linear in the size of the document and a file with tens of thousands of records converts in well under a second. Live conversion is debounced, and the pause lengthens automatically for very large input so typing never blocks. Dropped files are capped at 5 MB." } },
+            { "@type": "Question", "name": "Can I download the generated YAML?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The Download button saves exactly what is shown in the output pane as converted.yaml, generated in the browser with a Blob. Nothing is uploaded to produce it." } },
+            { "@type": "Question", "name": "Can I copy YAML directly?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, with the Copy button or with Ctrl+Shift+C (Cmd+Shift+C on a Mac). There is a fallback for browsers that block the asynchronous clipboard API, and the button reports whether the copy actually succeeded." } },
+            { "@type": "Question", "name": "Can I format JSON before converting?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Format re-indents the JSON in place using your chosen indentation, and Minify strips all optional whitespace. Both re-parse the document first, so neither can change what the JSON means." } },
+            { "@type": "Question", "name": "Can I convert JSON to YAML for Kubernetes?", "acceptedAnswer": { "@type": "Answer", "text": "You can convert the notation, and Kubernetes accepts both JSON and YAML manifests. But converting arbitrary JSON does not produce a valid manifest: the document still needs the fields Kubernetes requires, such as apiVersion, kind, metadata and spec, with values that match the resource schema. The converter changes syntax, not structure." } },
+            { "@type": "Question", "name": "Is YAML better than JSON?", "acceptedAnswer": { "@type": "Answer", "text": "Neither is better in general. YAML is easier for a person to read and edit and supports comments, which is why configuration lives there. JSON is stricter and unambiguous, which is why data interchange lives there. Choose by audience: humans editing by hand, or machines exchanging data." } },
+            { "@type": "Question", "name": "What is the difference between JSON and YAML?", "acceptedAnswer": { "@type": "Answer", "text": "JSON marks structure with braces, brackets and commas; YAML marks it with indentation and dashes. YAML supports comments, anchors and multiple documents in one file, and has looser typing rules where unquoted values are inferred. JSON is a subset of YAML 1.2, so any valid JSON is also valid YAML." } },
+            { "@type": "Question", "name": "Does YAML use indentation?", "acceptedAnswer": { "@type": "Answer", "text": "Yes — indentation defines structure, so it is significant rather than cosmetic. Use spaces only; tab characters are not permitted for indentation in YAML. This converter emits two spaces per level by default and can emit four." } },
+            { "@type": "Question", "name": "Can this tool convert YAML back to JSON?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Switch the mode to YAML to JSON at the top of the workspace. It uses a real block parser that understands anchors, block scalars and flow collections — not pattern matching — and your current output is carried across as the new input so you can round-trip in one click." } },
+            { "@type": "Question", "name": "Is this JSON to YAML converter free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. It is free, needs no sign-up or email address, and has no conversion limit." } },
+            { "@type": "Question", "name": "Does the tool upload my JSON?", "acceptedAnswer": { "@type": "Answer", "text": "No. Parsing and conversion happen entirely in your browser and no network request is made with your data. This matters because JSON pasted into a converter often contains API responses, tokens or configuration that should not leave the machine." } },
+            { "@type": "Question", "name": "Can I use this tool offline?", "acceptedAnswer": { "@type": "Answer", "text": "Once the page has loaded, conversion needs no network at all, so an already-open tab keeps working without a connection. Loading the page fresh does require the network." } },
+            { "@type": "Question", "name": "How are special characters handled?", "acceptedAnswer": { "@type": "Answer", "text": "Strings are written unquoted only when they cannot be misread. Anything containing a colon followed by a space, a space followed by a hash, a leading indicator character, a leading or trailing space, or a newline is emitted as a double-quoted scalar with the escapes YAML defines." } },
+            { "@type": "Question", "name": "How are strings containing YAML-reserved characters handled?", "acceptedAnswer": { "@type": "Answer", "text": "They are quoted. Characters such as - ? : , [ ] { } # & * ! | > ' \" % @ and backtick change the meaning of a line when they appear first, so any string starting with one is quoted, as is any key containing a colon — which would otherwise split into two mappings." } },
+            { "@type": "Question", "name": "Does Unicode survive the conversion?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Devanagari, Chinese, Japanese, Arabic, accented Latin and emoji are all written through unchanged and unescaped, because YAML files are UTF-8 and those characters need no special treatment." } },
+            { "@type": "Question", "name": "What happens to duplicate keys?", "acceptedAnswer": { "@type": "Answer", "text": "JSON.parse keeps the last occurrence of a duplicated key and discards the earlier ones, so the converter never sees them. This happens before conversion and is a property of JSON parsing rather than of this tool." } },
+            { "@type": "Question", "name": "Why does my string appear in quotes in the YAML?", "acceptedAnswer": { "@type": "Answer", "text": "Because without them it would be read back as a different type. A string of \"123\", \"true\", \"null\", \"on\" or \"2024-01-01\" written plain would return as a number, a boolean, a null, a boolean again and a date. The quotes are what keep the data identical." } },
+            { "@type": "Question", "name": "Does the converter preserve key order?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Keys are emitted in the order JSON.parse produced them, which for ordinary string keys is the order they appeared in your document. Be aware that JavaScript hoists integer-like keys to the front during parsing, before the converter runs." } },
+            { "@type": "Question", "name": "Can I drag a JSON file into the editor?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Drop a file onto the input editor and it is read locally with the FileReader API and converted. Files over 5 MB are refused with a message rather than being allowed to freeze the tab." } }
+          ]
+        }
+      ]
+    }
+    </script>
+      <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 194, 65, 12; }
+      [data-theme="dark"] { --pca: 251, 146, 60; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 251, 146, 60; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/developer-tools/json-to-yaml.html#webpage",
+      "url": "https://tooladda.online/developer-tools/json-to-yaml.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-16",
+      "dateModified": "2026-09-22",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+  <body class="jy-body">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="container navbar">
+        <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../privacy-policy.html">Privacy</a>
+        </nav>
+        <div class="nav-actions"><a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee"><svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg><span class="ta-donate-label">Buy me a coffee</span></a><button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button><button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button></div>
+      </div>
+    </header>
+
+    <main id="main-content" class="jy-page">
+      <div class="jy-shell">
+      <aside class="ta-support" aria-label="Support ToolAdda">
+        <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+          <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+          <path d="M3.1 16.9h10.8" />
+          <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+        </svg>
+        <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+            <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+            <path d="M3.1 16.9h10.8" />
+            <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+          </svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+      </aside>
+
+      <div class="container jy-main">
+        <nav class="jy-crumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">/</span><a href="/#developer">Developer Tools</a><span aria-hidden="true">/</span><span>JSON to YAML Converter</span>
+        </nav>
+
+        <header class="jy-cover">
+          <div>
+            <span class="jy-eyebrow">Developer Tool</span>
+            <h1 class="jy-h1"><span class="jy-t1">JSON</span> <span class="jy-t2">to</span> <span class="jy-t3">YAML</span> <span class="jy-t4">Converter</span></h1>
+            <p class="jy-cover-note">Same data, less punctuation — structure carried by indentation.</p>
+          </div>
+          <div class="jy-xform" aria-hidden="true">
+            <div class="jy-xpane jy-xpane--json"><b class="p" data-t="{"></b><b data-t="  &quot;name&quot;: &quot;John&quot;,"></b><b data-t="  &quot;age&quot;: 30,"></b><b data-t="  &quot;langs&quot;: ["></b><b data-t="    &quot;js&quot;, &quot;py&quot;"></b><b class="p" data-t="  ]"></b><b class="p" data-t="}"></b></div>
+            <span class="jy-xarrow" data-t="→"></span>
+            <div class="jy-xpane jy-xpane--yaml"><b class="k" data-t="name: John"></b><b class="k" data-t="age: 30"></b><b class="k" data-t="langs:"></b><b data-t="  - js"></b><b data-t="  - py"></b></div>
+          </div>
+        </header>
+
+        <!-- One grid (.jy-top) is the converter and the script's root
+             ([data-jy-root]). Under 700px: mode bar, input, ad, output,
+             controls. 700-999px: the ad sits beside the bar and input. From
+             1000px: input | output | ad. Nothing else lives inside the grid,
+             so the sticky ad can never ride over the page. -->
+        <div class="jy-top" data-jy-root aria-label="JSON to YAML converter" role="region">
+          <div class="jy-bar">
+            <div class="jy-modes" role="group" aria-label="Conversion direction">
+              <button type="button" class="jy-mode is-on" data-jy-mode="json-to-yaml" aria-pressed="true">JSON → YAML</button>
+              <button type="button" class="jy-mode" data-jy-mode="yaml-to-json" aria-pressed="false">YAML → JSON</button>
+            </div>
+            <span class="jy-privacy">🔒 Processed in your browser — never uploaded</span>
+          </div>
+
+          <section class="jy-box jy-box--in" aria-label="Input">
+              <div class="jy-pane jy-pane--in">
+                <div class="jy-panehead">
+                  <span class="jy-panetitle">
+                    <span class="jy-badge jy-badge--json" data-jy-input-lang>JSON</span>
+                    <span data-jy-input-label>JSON input</span>
+                  </span>
+                  <span class="jy-paneactions">
+                    <button type="button" class="jy-btn jy-btn--ghost jy-btn--sm" data-jy-paste>Paste</button>
+                    <button type="button" class="jy-btn jy-btn--ghost jy-btn--sm" data-jy-format>Format</button>
+                    <button type="button" class="jy-btn jy-btn--ghost jy-btn--sm" data-jy-minify>Minify</button>
+                    <button type="button" class="jy-btn jy-btn--ghost jy-btn--sm" data-jy-copy-input>Copy</button>
+                    <button type="button" class="jy-btn jy-btn--ghost jy-btn--sm" data-jy-clear-input>Clear</button>
+                  </span>
+                </div>
+                <div class="jy-editor" data-jy-drop>
+                  <pre class="jy-gutter" data-jy-gutter aria-hidden="true">1</pre>
+                  <textarea class="jy-input" id="jyInput" spellcheck="false" autocomplete="off"
+                            autocapitalize="off" autocorrect="off" wrap="off"
+                            aria-label="JSON input"
+                            placeholder="Paste JSON here, or drop a .json file…"></textarea>
+                </div>
+                <div class="jy-panefoot">
+                  <span data-jy-input-stats>0 lines · 0 chars</span>
+                  <span>Tab indents · Esc frees Tab · Ctrl+Enter converts</span>
+                </div>
+              </div>
+          </section>
+
+          <!-- Ad: one 300x250 (see .jy-ad-zone CSS) — beside the tool from
+               700px, straight after the input below that. -->
+          <div class="jy-ad-zone">
+            <div class="ta-inline-ad" data-unit="inline"></div>
+          </div>
+
+          <section class="jy-box jy-box--out" aria-label="Output">
+              <div class="jy-pane">
+                <div class="jy-panehead">
+                  <span class="jy-panetitle">
+                    <span class="jy-badge jy-badge--yaml" data-jy-output-lang>YAML</span>
+                    <span data-jy-output-label>YAML output</span>
+                  </span>
+                  <span class="jy-paneactions">
+                    <button type="button" class="jy-btn jy-btn--ghost jy-btn--sm" data-jy-copy-output>Copy</button>
+                    <button type="button" class="jy-btn jy-btn--ghost jy-btn--sm" data-jy-download-output>Download .yaml</button>
+                    <button type="button" class="jy-btn jy-btn--ghost jy-btn--sm" data-jy-clear-output>Clear</button>
+                  </span>
+                </div>
+                <div class="jy-editor">
+                  <pre class="jy-out" data-jy-output tabindex="0" role="region" aria-label="Converted output"><span class="jy-placeholder">YAML output will appear here.</span></pre>
+                </div>
+                <div class="jy-panefoot">
+                  <span data-jy-output-stats>0 lines · 0 chars</span>
+                </div>
+              </div>
+          </section>
+
+          <div class="jy-box jy-box--ctl">
+            <p class="jy-error" data-jy-error role="alert" hidden></p>
+
+            <div class="jy-actionbar">
+              <button type="button" class="jy-btn jy-btn--accent" data-jy-convert>Convert to YAML</button>
+              <button type="button" class="jy-btn jy-btn--ghost" data-jy-validate>Validate JSON</button>
+
+              <label class="jy-toggle">
+                <input type="checkbox" id="jyLive" checked />
+                <span>Live convert</span>
+              </label>
+
+              <label class="jy-toggle" for="jyIndent">
+                <span>Indent</span>
+                <select class="jy-select" id="jyIndent">
+                  <option value="2">2 spaces</option>
+                  <option value="4">4 spaces</option>
+                </select>
+              </label>
+
+              <span class="jy-status" data-jy-status data-state="ready">Ready</span>
+            </div>
+
+            <div class="jy-examples" data-jy-examples role="group" aria-label="Example documents"></div>
+
+            <p class="jy-sr" role="status" aria-live="polite" data-jy-announce></p>
+          </div>
+        </div>
+
+        <div class="jy-intro">
+          <p class="jy-lede">Convert JSON to clean, readable YAML instantly with validation, formatting, syntax highlighting and one-click copy.</p>
+          <ul class="jy-trust">
+            <li>Free</li>
+            <li>Instant conversion</li>
+            <li>No signup</li>
+            <li>Browser-based</li>
+            <li>Copy instantly</li>
+          </ul>
+        </div>
+
+        <!-- ============ HOW IT WORKS ============ -->
+        <section class="jy-section" aria-labelledby="jy-how-heading">
+          <h2 class="jy-h2" id="jy-how-heading">How JSON to YAML conversion works</h2>
+          <p class="jy-sub">Not a find-and-replace. The document is parsed into real data, and that data is written out again in the other notation.</p>
+          <ol>
+            <li><strong>Parse.</strong> The JSON text is read with <code>JSON.parse</code>, which either produces a JavaScript value or throws with the position of the first syntax error.</li>
+            <li><strong>Validate.</strong> If it throws, the byte offset is converted to a line and column and reported. No output is produced — a failed conversion must never leave something copyable in the output pane.</li>
+            <li><strong>Walk.</strong> The resulting value is walked once. Objects become YAML mappings, arrays become sequences, and each level adds one step of indentation.</li>
+            <li><strong>Serialise safely.</strong> Every scalar is checked before it is written. Anything that YAML would read back as a different type, or that starts with an indicator character, is emitted as a double-quoted string.</li>
+            <li><strong>Emit.</strong> The lines are joined into the finished document, which is what you see, copy and download.</li>
+          </ol>
+          <p>The reverse direction runs the same pipeline backwards: a real block parser reads the YAML into a data structure, and <code>JSON.stringify</code> writes it out. Both directions share one data model, so a document can make the round trip without drifting.</p>
+        </section>
+
+        <!-- ============ EXAMPLES ============ -->
+        <section class="jy-section" aria-labelledby="jy-examples-heading">
+          <h2 class="jy-h2" id="jy-examples-heading">JSON to YAML conversion examples</h2>
+          <p class="jy-sub">Exactly what this converter produces for each shape.</p>
+
+          <h3 class="jy-h3">Basic object</h3>
+          <div class="jy-pair">
+            <figure><figcaption>JSON</figcaption><pre class="jy-snippet">{
+  "name": "John",
+  "age": 30,
+  "active": true
+}</pre></figure>
+            <figure><figcaption>YAML</figcaption><pre class="jy-snippet">name: John
+age: 30
+active: true</pre></figure>
+          </div>
+
+          <h3 class="jy-h3">Arrays become sequences</h3>
+          <div class="jy-pair">
+            <figure><figcaption>JSON</figcaption><pre class="jy-snippet">{
+  "languages": [
+    "JavaScript",
+    "Python",
+    "PHP"
+  ]
+}</pre></figure>
+            <figure><figcaption>YAML</figcaption><pre class="jy-snippet">languages:
+  - JavaScript
+  - Python
+  - PHP</pre></figure>
+          </div>
+
+          <h3 class="jy-h3">Nested objects become nested mappings</h3>
+          <div class="jy-pair">
+            <figure><figcaption>JSON</figcaption><pre class="jy-snippet">{
+  "server": {
+    "host": "localhost",
+    "port": 8080
+  }
+}</pre></figure>
+            <figure><figcaption>YAML</figcaption><pre class="jy-snippet">server:
+  host: localhost
+  port: 8080</pre></figure>
+          </div>
+
+          <h3 class="jy-h3">Arrays of objects</h3>
+          <div class="jy-pair">
+            <figure><figcaption>JSON</figcaption><pre class="jy-snippet">{
+  "users": [
+    { "id": 1, "name": "John" },
+    { "id": 2, "name": "Jane" }
+  ]
+}</pre></figure>
+            <figure><figcaption>YAML</figcaption><pre class="jy-snippet">users:
+  - id: 1
+    name: John
+  - id: 2
+    name: Jane</pre></figure>
+          </div>
+
+          <h3 class="jy-h3">Values that must be quoted</h3>
+          <div class="jy-pair">
+            <figure><figcaption>JSON</figcaption><pre class="jy-snippet">{
+  "version": "123",
+  "enabled": "true",
+  "released": "2024-01-01",
+  "note": "key: value # test"
+}</pre></figure>
+            <figure><figcaption>YAML</figcaption><pre class="jy-snippet">version: "123"
+enabled: "true"
+released: "2024-01-01"
+note: "key: value # test"</pre></figure>
+          </div>
+          <div class="jy-callout"><strong>The quotes are not decoration.</strong> Written plain, those four values would come back as the number 123, the boolean true, a date and a broken mapping. Quoting is what makes the conversion lossless.</div>
+        </section>
+
+        <!-- ============ JSON VS YAML ============ -->
+        <!-- ============ QUOTING (new) ============ -->
+        <section class="jy-section" aria-labelledby="jy-quote-heading">
+          <h2 class="jy-h2" id="jy-quote-heading">Strings this converter quotes, and why</h2>
+          <p class="jy-sub">Most YAML parsers still follow YAML 1.1, which guesses a value's type from how it looks. A JSON string that happens to look like a boolean, a number or a date would change type on the way back, so this page wraps it in quotes. Ordinary text such as <code>Norway</code> or <code>hello world</code> stays plain.</p>
+          <div class="jy-quote-wrap">
+            <table class="jy-quote-table">
+              <thead><tr><th scope="col">JSON string</th><th scope="col">Written plain, YAML 1.1 reads it as</th><th scope="col">What you get</th></tr></thead>
+              <tbody>
+                <tr><td>"NO"</td><td data-label="Plain, it becomes">the boolean false — the well-known "Norway problem" for country codes</td><td data-label="Written as">"NO"</td></tr>
+                <tr><td>"on"</td><td data-label="Plain, it becomes">the boolean true</td><td data-label="Written as">"on"</td></tr>
+                <tr><td>"0755"</td><td data-label="Plain, it becomes">the octal number 493 — file permissions quietly change</td><td data-label="Written as">"0755"</td></tr>
+                <tr><td>"3.10"</td><td data-label="Plain, it becomes">the number 3.1 — a version number loses its zero</td><td data-label="Written as">"3.10"</td></tr>
+                <tr><td>"22:30"</td><td data-label="Plain, it becomes">the number 1350, read as base 60</td><td data-label="Written as">"22:30"</td></tr>
+                <tr><td>"2024-01-01"</td><td data-label="Plain, it becomes">a date object rather than text</td><td data-label="Written as">"2024-01-01"</td></tr>
+                <tr><td>""</td><td data-label="Plain, it becomes">null — an empty value</td><td data-label="Written as">""</td></tr>
+                <tr><td>"#general"</td><td data-label="Plain, it becomes">a comment, so the value disappears</td><td data-label="Written as">"#general"</td></tr>
+                <tr><td>"price: 5"</td><td data-label="Plain, it becomes">a second mapping on one line, which most parsers reject</td><td data-label="Written as">"price: 5"</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>The quotes are ordinary JSON-style double quotes, so any escapes inside the string survive unchanged. YAML 1.2 dropped several of these rules, but widely used libraries such as PyYAML still read documents the 1.1 way, and quoting keeps the file safe for both.</p>
+        </section>
+        <section class="jy-section" aria-labelledby="jy-vs-heading">
+          <h2 class="jy-h2" id="jy-vs-heading">JSON vs YAML</h2>
+          <div class="jy-cards">
+            <article class="jy-card jy-card--json">
+              <h3>JSON</h3>
+              <ul>
+                <li>Strict, unambiguous syntax</li>
+                <li>Braces, brackets and commas mark structure</li>
+                <li>All keys and strings are quoted</li>
+                <li>No comments</li>
+                <li>The default for web APIs and data interchange</li>
+              </ul>
+            </article>
+            <article class="jy-card jy-card--yaml">
+              <h3>YAML</h3>
+              <ul>
+                <li>Indentation marks structure; dashes mark lists</li>
+                <li>Quotes optional where unambiguous</li>
+                <li>Supports comments, anchors and multiple documents</li>
+                <li>Whitespace is significant — spaces only, never tabs</li>
+                <li>The default for configuration files</li>
+              </ul>
+            </article>
+          </div>
+          <p style="margin-top:.9rem">Any valid JSON is also valid YAML, because JSON is a subset of YAML 1.2. The reverse is not true: a YAML file using comments, anchors or several documents has no JSON equivalent. That asymmetry is the one thing to keep in mind when moving between them.</p>
+        </section>
+
+        <!-- ============ ARTICLE ============ -->
+        <section class="jy-section" aria-labelledby="jy-guide-heading">
+          <h2 class="jy-h2" id="jy-guide-heading">Working with JSON and YAML</h2>
+
+          <h3 class="jy-h3">What is JSON?</h3>
+          <p>JSON — JavaScript Object Notation — is a text format for structured data. It has six value types: object, array, string, number, boolean and null, and that is the entire vocabulary. There are no dates, no comments, no references and no integers distinct from floats.</p>
+          <p>Its defining quality is strictness. Keys must be double-quoted, commas must separate members and must not trail, and there is exactly one way to write any given document's structure. That rigidity is a feature: a JSON parser needs no configuration, has no dialect to negotiate and cannot interpret the same bytes two ways. It is why JSON became the default for web APIs, log lines and anything machines exchange without a human in the loop.</p>
+          <p>The same rigidity is what makes JSON tiring to write by hand. Every quote, brace and comma is mandatory, a single trailing comma invalidates the file, and there is nowhere to leave a note explaining why a setting is what it is.</p>
+
+          <h3 class="jy-h3">What is YAML?</h3>
+          <p>YAML expresses the same data model but optimises for the person reading it. Structure comes from indentation rather than braces, list items are marked with a dash, quotes are optional wherever the value is unambiguous, and comments are allowed anywhere.</p>
+          <p>It also goes further than JSON in places. Anchors and aliases let one part of a document refer to another rather than repeating it. Block scalars carry multi-line text without escape sequences. A single file can hold several documents separated by <code>---</code>. None of those have a JSON equivalent, which is worth remembering before treating the two as interchangeable.</p>
+          <p>The cost of that flexibility is that YAML has more rules about what an unquoted value means, and indentation errors are easy to make and easy to miss. Tabs are not permitted for indentation at all — a detail that has cost most people at least one confusing afternoon.</p>
+
+          <h3 class="jy-h3">What is a JSON to YAML converter?</h3>
+          <p>A converter parses one notation into a data structure and writes that structure out in the other. Nothing is added, removed or reinterpreted; only the surface syntax changes.</p>
+          <p>That sounds simple enough to do with string manipulation, and that is exactly the trap. A converter built on pattern matching handles a flat object of scalars and falls apart at the first array, because a sequence has to move onto its own lines and be indented relative to the key it belongs to. Getting that wrong produces output that looks approximately right and does not parse.</p>
+          <p>The harder half of the job is quoting. YAML infers the type of an unquoted scalar, so a JSON string of <code>"123"</code> written plain comes back as a number, and a string of <code>"true"</code> comes back as a boolean. A correct converter checks every scalar against the set of values YAML would reinterpret and quotes the ones that need it — nothing more, so the output stays readable.</p>
+
+          <h3 class="jy-h3">JSON objects and YAML mappings</h3>
+          <p>A JSON object becomes a YAML mapping. Each key sits at the current indentation followed by a colon and a space, then its value. Where the value is itself an object or an array, the key line ends after the colon and the child is written on the following lines, indented one step further.</p>
+          <p>Keys need the same care as values. A key containing a colon and a space would split into two mappings if written plain, so it is quoted. So is a key that is empty, that looks numeric, or that starts with an indicator character. This is a common source of subtly corrupted output in weaker converters, because keys are easy to assume are safe.</p>
+
+          <h3 class="jy-h3">JSON arrays and YAML lists</h3>
+          <p>A JSON array becomes a YAML sequence: one item per line, each prefixed with <code>- </code>. Under a key, the sequence is indented one step below that key.</p>
+          <p>Arrays of objects are where the layout gets interesting. The first key of each object goes on the same line as its dash, and the object's remaining keys align underneath that first key — two columns to the right of the dash, regardless of the indentation setting. Getting that offset wrong is the single most common bug in hand-written emitters, because the dash is always two characters wide even when the indent step is four.</p>
+          <p>Empty arrays and empty objects are written in flow style on the key line, as <code>[]</code> and <code>{}</code>. There is no block form for an empty collection, and leaving the key with nothing after it would make it null instead.</p>
+
+          <h3 class="jy-h3">JSON data types in YAML</h3>
+          <p>Numbers, booleans and null are written unquoted so they stay what they are. Strings are written plain when they are unambiguous and double-quoted when they are not.</p>
+          <p>The list of values YAML would reinterpret is longer than most people expect. Beyond the obvious <code>true</code>, <code>false</code> and <code>null</code>, YAML 1.1 also reads <code>yes</code>, <code>no</code>, <code>on</code>, <code>off</code>, <code>y</code> and <code>n</code> as booleans; <code>~</code> as null; hexadecimal, octal and binary literals as numbers; <code>1:30</code> as a sexagesimal number; and anything shaped like <code>2024-01-01</code> as a timestamp. A string equal to any of those is quoted here.</p>
+          <p>One limit is worth stating plainly because no browser-based tool can avoid it. <code>JSON.parse</code> reads every number as a double-precision float, so an integer beyond 9,007,199,254,740,991 has already lost precision before any converter sees it. If your data contains large identifiers, keep them as strings in the JSON.</p>
+
+          <h3 class="jy-h3">Nested JSON to YAML</h3>
+          <p>Nesting depth is not a special case — each level simply adds one indentation step. Objects inside arrays inside objects convert correctly to any depth the browser's stack allows.</p>
+          <p>What changes with depth is readability, and this is where YAML earns its place. A five-level JSON document ends in a wall of closing braces that tells you nothing about which level you are looking at. The same document in YAML shows its shape at a glance, which is precisely why deployment configuration is written this way.</p>
+
+          <h3 class="jy-h3">JSON to YAML for Kubernetes</h3>
+          <p>Kubernetes accepts both JSON and YAML manifests — the API server treats them as the same thing — but almost everything written by hand or checked into a repository is YAML, because manifests are long, nested and benefit from comments.</p>
+          <p>It is worth being precise about what conversion does and does not give you. Converting a JSON document to YAML changes the notation only. It does not make the result a valid manifest. A Kubernetes resource still needs <code>apiVersion</code>, <code>kind</code> and <code>metadata</code>, plus a <code>spec</code> whose shape matches that particular resource's schema. If those fields are absent or wrong, the manifest is rejected regardless of how it is formatted.</p>
+          <p>Where conversion genuinely helps is turning something you already have into something readable: the JSON that <code>kubectl get -o json</code> printed, a manifest generated by a tool, or a Helm-rendered resource you want to inspect and edit. Convert it, remove the runtime fields the cluster added, and you have a starting point for a manifest you can maintain.</p>
+
+          <h3 class="jy-h3">JSON to YAML for DevOps</h3>
+          <p>Most of the configuration surface of a modern deployment pipeline is YAML. CI systems describe jobs and steps in it, container orchestration describes services and volumes in it, and infrastructure tooling frequently reads it. Working in that world means moving between the JSON that tools emit and the YAML that people maintain.</p>
+          <p>The common flows are the same everywhere. An API returns JSON that needs to become a config file. A tool exports its state as JSON and you want to read it. You are translating a configuration from one system to another and the two speak different notations. In each case what you need is a faithful structural conversion followed by human editing — not an automatic translation, because the field names and required shape belong to the target system, not to the notation.</p>
+          <p>One habit is worth forming: keep the JSON as the source of truth when a machine generates it, and keep the YAML as the source of truth when a person maintains it. Converting in both directions repeatedly, with hand edits at both ends, is how configuration quietly diverges.</p>
+
+          <h3 class="jy-h3">JSON to YAML for configuration files</h3>
+          <p>Configuration is where YAML's readability pays for its looser rules. Comments alone justify it: a setting whose value is not obvious can carry the reason next to it, which a JSON config physically cannot.</p>
+          <p>Two cautions apply when a converted document becomes a config file. First, unquoted values are inferred, so a version string such as <code>1.20</code> becomes the number 1.2 and loses its trailing zero — this converter quotes such values, but a hand edit afterwards can reintroduce the problem. Second, country codes are the classic trap: <code>NO</code> for Norway is read as the boolean false by YAML 1.1 parsers unless quoted.</p>
+
+          <h3 class="jy-h3">How to validate JSON before conversion</h3>
+          <p>Validation here is not a separate step you can forget — the document is parsed on every change, and conversion only happens when the parse succeeds. When it fails, the reason is reported with the line and column, and the offending line is shown with a caret under the exact position.</p>
+          <p>The errors worth knowing by sight are few. A trailing comma before a closing brace or bracket is the most common and is legal in JavaScript, which is why it slips through. Single quotes are not valid JSON — only double quotes are. Unquoted keys are equally invalid, however familiar they look from JavaScript object literals. And an unclosed brace or bracket usually reports at the very end of the document rather than where the problem started, so when the position looks wrong, count your brackets.</p>
+          <p>Notably, the output pane is not cleared when validation fails. Replacing a good result with an error message invites copying the error as if it were data, which is what the previous version of this page did.</p>
+
+          <h3 class="jy-h3">Common JSON to YAML conversion problems</h3>
+          <ul>
+            <li><strong>Sequences inlined after their key.</strong> <code>items: - one</code> on one line is not valid YAML; the list has to start on the next line, indented.</li>
+            <li><strong>Array members misaligned.</strong> In an array of objects the keys after the first must align with the first, two columns right of the dash — not at the parent's indentation.</li>
+            <li><strong>Type-lookalike strings left unquoted.</strong> The single most damaging error, because the output parses cleanly and simply contains different data.</li>
+            <li><strong>Keys written raw.</strong> A key containing <code>: </code> silently becomes a nested mapping.</li>
+            <li><strong>Empty collections given a block.</strong> A key with nothing after it is null, not an empty object.</li>
+            <li><strong>Tabs used for indentation.</strong> Illegal in YAML, and the resulting error message rarely says so clearly.</li>
+            <li><strong>Very large integers.</strong> Already imprecise after <code>JSON.parse</code>; keep them as strings.</li>
+          </ul>
+
+          <h3 class="jy-h3">YAML formatting and indentation</h3>
+          <p>Two spaces per level is the near-universal convention and the default here; four is available and equally valid. What matters is that the file is internally consistent, because indentation is structure and a mixed file is ambiguous to read even when it parses.</p>
+          <p>The dash of a sequence item is itself part of the indentation. Whether the sequence is indented under its key or kept at the same level as it are both legal, and parsers accept either; this converter always indents, which reads more clearly at depth.</p>
+
+          <h3 class="jy-h3">Online versus local conversion tools</h3>
+          <p>The real question about an online converter is where the data goes. Many send the document to a server to process it, which for a config file containing an endpoint, a token or an internal hostname is a genuine disclosure — the sort that happens without anyone deciding to do it.</p>
+          <p>This tool does everything in the page. The parse, the conversion and the download all run in JavaScript on your machine, and no request carries your data anywhere. Once the page has loaded you can disconnect entirely and it keeps working.</p>
+          <p>A local CLI is still the right answer for scripting, for files too large for a browser tab, and for anything that must run in CI. A browser tool is the right answer for the far more common case: you have a document in front of you, you want to see it in the other notation, and you want it now.</p>
+        </section>
+
+        <!-- ============ FAQ ============ -->
+        <section class="jy-section" aria-labelledby="jy-faq-heading">
+          <h2 class="jy-h2" id="jy-faq-heading">Frequently asked questions</h2>
+          <div class="jy-faq" data-jy-faq>
+            <details><summary>What is JSON?</summary><p>JSON (JavaScript Object Notation) is a text format for structured data built from objects, arrays, strings, numbers, booleans and null. Its syntax is strict — braces, brackets, quoted keys and commas are all required — which makes it easy for machines to parse unambiguously and is why almost every web API speaks it.</p></details>
+            <details><summary>What is YAML?</summary><p>YAML is a data serialisation format designed to be read and written by people. It expresses the same structures as JSON but uses indentation instead of braces and dashes instead of brackets, and it supports comments. That readability is why configuration files for CI systems, container tooling and Kubernetes are usually written in YAML.</p></details>
+            <details><summary>What is a JSON to YAML converter?</summary><p>It is a tool that parses JSON into a data structure and re-serialises that same structure as YAML. Nothing is added or removed — only the notation changes. This converter runs the whole process in your browser, so the data never leaves your machine.</p></details>
+            <details><summary>How do I convert JSON to YAML?</summary><p>Paste or drop your JSON into the left editor. It is validated and converted as you type, and the YAML appears on the right. If the JSON has a syntax error the tool reports the line and column instead of producing output. When the result looks right, use Copy YAML or Download.</p></details>
+            <details><summary>Is JSON to YAML conversion lossless?</summary><p>The data structure is preserved exactly: every object, array, string, number, boolean and null comes back identical if you convert the YAML back to JSON. What is not preserved is formatting — whitespace, key order in some parsers, and JSON has no equivalent for YAML-only features such as comments, anchors and multiple documents in one file.</p></details>
+            <details><summary>Can JSON arrays be converted to YAML?</summary><p>Yes. A JSON array becomes a YAML sequence: each element is written on its own line prefixed with a dash and indented under its key. Arrays of objects are supported too — the first key of each object sits on the same line as its dash and the rest align beneath it.</p></details>
+            <details><summary>Can nested JSON be converted to YAML?</summary><p>Yes, to any depth. Each level of nesting becomes one more level of indentation, and the hierarchy is preserved exactly. Objects inside arrays inside objects all convert correctly.</p></details>
+            <details><summary>How are JSON booleans represented in YAML?</summary><p>A JSON boolean becomes an unquoted YAML true or false. A JSON string that happens to contain the text "true" is different data, so it is written quoted — otherwise it would be read back as a boolean and the type would silently change.</p></details>
+            <details><summary>How is JSON null represented in YAML?</summary><p>As the unquoted word null. YAML also accepts ~ and an empty value for null, but null is the clearest and is what this converter emits. A JSON string containing the text "null" is quoted so it stays a string.</p></details>
+            <details><summary>Can JSON numbers be converted to YAML?</summary><p>Yes, and they are written unquoted so they stay numbers. Note that JSON.parse in every browser reads numbers as IEEE 754 doubles, so an integer larger than 9,007,199,254,740,991 loses precision before this or any other browser-based converter sees it. Keep very large identifiers as strings in your JSON.</p></details>
+            <details><summary>Does this tool validate JSON?</summary><p>Yes. Validation runs on every change and on demand via the Validate button. When the JSON is malformed the tool reports the reason with the line and column, and shows the offending line with a caret under the position, rather than only saying "invalid".</p></details>
+            <details><summary>Can I convert large JSON files?</summary><p>Yes. Conversion is linear in the size of the document and a file with tens of thousands of records converts in well under a second. Live conversion is debounced, and the pause lengthens automatically for very large input so typing never blocks. Dropped files are capped at 5 MB.</p></details>
+            <details><summary>Can I download the generated YAML?</summary><p>Yes. The Download button saves exactly what is shown in the output pane as converted.yaml, generated in the browser with a Blob. Nothing is uploaded to produce it.</p></details>
+            <details><summary>Can I copy YAML directly?</summary><p>Yes, with the Copy button or with Ctrl+Shift+C (Cmd+Shift+C on a Mac). There is a fallback for browsers that block the asynchronous clipboard API, and the button reports whether the copy actually succeeded.</p></details>
+            <details><summary>Can I format JSON before converting?</summary><p>Yes. Format re-indents the JSON in place using your chosen indentation, and Minify strips all optional whitespace. Both re-parse the document first, so neither can change what the JSON means.</p></details>
+            <details><summary>Can I convert JSON to YAML for Kubernetes?</summary><p>You can convert the notation, and Kubernetes accepts both JSON and YAML manifests. But converting arbitrary JSON does not produce a valid manifest: the document still needs the fields Kubernetes requires, such as apiVersion, kind, metadata and spec, with values that match the resource schema. The converter changes syntax, not structure.</p></details>
+            <details><summary>Is YAML better than JSON?</summary><p>Neither is better in general. YAML is easier for a person to read and edit and supports comments, which is why configuration lives there. JSON is stricter and unambiguous, which is why data interchange lives there. Choose by audience: humans editing by hand, or machines exchanging data.</p></details>
+            <details><summary>What is the difference between JSON and YAML?</summary><p>JSON marks structure with braces, brackets and commas; YAML marks it with indentation and dashes. YAML supports comments, anchors and multiple documents in one file, and has looser typing rules where unquoted values are inferred. JSON is a subset of YAML 1.2, so any valid JSON is also valid YAML.</p></details>
+            <details><summary>Does YAML use indentation?</summary><p>Yes — indentation defines structure, so it is significant rather than cosmetic. Use spaces only; tab characters are not permitted for indentation in YAML. This converter emits two spaces per level by default and can emit four.</p></details>
+            <details><summary>Can this tool convert YAML back to JSON?</summary><p>Yes. Switch the mode to YAML to JSON at the top of the workspace. It uses a real block parser that understands anchors, block scalars and flow collections — not pattern matching — and your current output is carried across as the new input so you can round-trip in one click.</p></details>
+            <details><summary>Is this JSON to YAML converter free?</summary><p>Yes. It is free, needs no sign-up or email address, and has no conversion limit.</p></details>
+            <details><summary>Does the tool upload my JSON?</summary><p>No. Parsing and conversion happen entirely in your browser and no network request is made with your data. This matters because JSON pasted into a converter often contains API responses, tokens or configuration that should not leave the machine.</p></details>
+            <details><summary>Can I use this tool offline?</summary><p>Once the page has loaded, conversion needs no network at all, so an already-open tab keeps working without a connection. Loading the page fresh does require the network.</p></details>
+            <details><summary>How are special characters handled?</summary><p>Strings are written unquoted only when they cannot be misread. Anything containing a colon followed by a space, a space followed by a hash, a leading indicator character, a leading or trailing space, or a newline is emitted as a double-quoted scalar with the escapes YAML defines.</p></details>
+            <details><summary>How are strings containing YAML-reserved characters handled?</summary><p>They are quoted. Characters such as - ? : , [ ] { } # &amp; * ! | &gt; ' " % @ and backtick change the meaning of a line when they appear first, so any string starting with one is quoted, as is any key containing a colon — which would otherwise split into two mappings.</p></details>
+            <details><summary>Does Unicode survive the conversion?</summary><p>Yes. Devanagari, Chinese, Japanese, Arabic, accented Latin and emoji are all written through unchanged and unescaped, because YAML files are UTF-8 and those characters need no special treatment.</p></details>
+            <details><summary>What happens to duplicate keys?</summary><p>JSON.parse keeps the last occurrence of a duplicated key and discards the earlier ones, so the converter never sees them. This happens before conversion and is a property of JSON parsing rather than of this tool.</p></details>
+            <details><summary>Why does my string appear in quotes in the YAML?</summary><p>Because without them it would be read back as a different type. A string of "123", "true", "null", "on" or "2024-01-01" written plain would return as a number, a boolean, a null, a boolean again and a date. The quotes are what keep the data identical.</p></details>
+            <details><summary>Does the converter preserve key order?</summary><p>Yes. Keys are emitted in the order JSON.parse produced them, which for ordinary string keys is the order they appeared in your document. Be aware that JavaScript hoists integer-like keys to the front during parsing, before the converter runs.</p></details>
+            <details><summary>Can I drag a JSON file into the editor?</summary><p>Yes. Drop a file onto the input editor and it is read locally with the FileReader API and converted. Files over 5 MB are refused with a message rather than being allowed to freeze the tab.</p></details>
+          </div>
+        </section>
+
+        <!-- ============ RELATED ============ -->
+        <section class="jy-section" aria-labelledby="jy-related-heading">
+          <h2 class="jy-h2" id="jy-related-heading">Related developer tools</h2>
+          <p class="jy-sub">Other ToolAdda converters and formatters that run entirely in your browser.</p>
+          <div class="jy-related">
+            <a href="yaml-to-xml.html"><strong>YAML to XML Converter</strong><span>Turn YAML documents into structured XML.</span></a>
+            <a href="json-formatter.html"><strong>JSON Formatter &amp; Validator</strong><span>Format, validate and inspect JSON payloads.</span></a>
+            <a href="json-to-typescript.html"><strong>JSON to TypeScript</strong><span>Generate interfaces, types and enums from JSON.</span></a>
+            <a href="../json-to-xml-converter.html"><strong>JSON to XML Converter</strong><span>Convert JSON documents into XML.</span></a>
+            <a href="../xml-to-json-converter.html"><strong>XML to JSON Converter</strong><span>Parse XML back into clean JSON.</span></a>
+            <a href="../json-to-csv-converter.html"><strong>JSON to CSV Converter</strong><span>Flatten JSON arrays into spreadsheet rows.</span></a>
+            <a href="../csv-to-json-converter.html"><strong>CSV to JSON Converter</strong><span>Turn delimited data into JSON objects.</span></a>
+            <a href="../text-tools/base64-encoder-decoder.html"><strong>Base64 Encoder &amp; Decoder</strong><span>Encode and decode text, JSON and files.</span></a>
+          </div>
+        </section>
+
+        <p class="jy-disclaimer">
+          This converter runs entirely in your browser. Your JSON is parsed and converted locally with no network request, nothing is logged, and the document is gone when you close the tab. Conversion preserves the data structure exactly; YAML-only features such as comments, anchors and multi-document files have no JSON equivalent and cannot survive a round trip.
+        </p>
+      </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+          <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links"><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../privacy-policy.html">Privacy</a><a href="../terms.html">Terms</a></div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/yaml-to-xml.js"></script>
+    <script src="../assets/js/json-to-yaml.js"></script>
+    <script src="../assets/js/side-ads.js" defer></script>
+    <script src="../assets/js/inline-ads.js" data-in-article defer></script>
+  </body>
+</html>

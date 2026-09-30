@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+    <title>Dofollow &amp; Nofollow Link Checker | ToolAdda</title>
+    <meta name="description" content="Free dofollow and nofollow link checker. Analyse a page's links to find nofollow, sponsored, UGC, internal and external links with a full SEO link report." />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="css/dofollow-nofollow-link-checker.css" />
+    <meta name="theme-color" content="#1f6f5c" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <link rel="canonical" href="https://tooladda.online/cyber-tools/dofollow-nofollow-link-checker.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+    <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ToolAdda" />
+    <meta property="og:title" content="Dofollow &amp; Nofollow Link Checker" />
+    <meta property="og:description" content="Analyse webpage links and identify nofollow, sponsored, UGC, internal and external links with detailed SEO insights." />
+    <meta property="og:url" content="https://tooladda.online/cyber-tools/dofollow-nofollow-link-checker.html" />
+    <meta property="og:image" content="https://tooladda.online/assets/images/og/cyber-tools-dofollow-nofollow-link-checker.jpg" />
+    <meta property="og:image:secure_url" content="https://tooladda.online/assets/images/og/cyber-tools-dofollow-nofollow-link-checker.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content="Dofollow and Nofollow Link Checker — free SEO tool on ToolAdda, runs in your browser with no sign-up." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Dofollow &amp; Nofollow Link Checker" />
+    <meta name="twitter:description" content="Analyse webpage links and identify nofollow, sponsored, UGC, internal and external links with detailed SEO insights." />
+    <meta name="twitter:image" content="https://tooladda.online/assets/images/og/cyber-tools-dofollow-nofollow-link-checker.jpg" />
+
+    <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://tooladda.online/cyber-tools/dofollow-nofollow-link-checker.html#app",
+      "name": "Dofollow & Nofollow Link Checker",
+      "url": "https://tooladda.online/cyber-tools/dofollow-nofollow-link-checker.html",
+      "applicationCategory": "DeveloperApplication",
+      "applicationSubCategory": "SEO Tool",
+      "operatingSystem": "Any modern web browser",
+      "browserRequirements": "Requires JavaScript",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Browser-based link auditor that parses a page's anchors, reads the rel attribute exactly as a browser does, and reports nofollow, sponsored, UGC, internal and external links with anchor text and domain analysis.",
+      "featureList": [
+        "Parses rel on ASCII whitespace exactly as browsers do",
+        "Detects nofollow, sponsored and ugc, including combinations",
+        "Flags comma-separated rel values that browsers ignore",
+        "Flags inert rel=dofollow, which is not a defined value",
+        "Internal and external classification with an optional subdomain rule",
+        "Link type detection for pages, images, files, anchors, mail and tel",
+        "Anchor text analysis for empty, generic and image-only links",
+        "External domain breakdown",
+        "Sortable, filterable and paginated link table",
+        "Per-link detail inspector with highlighted source HTML",
+        "CSV and JSON export plus a copyable summary",
+        "HTML paste and file upload analysis that runs entirely in the browser"
+      ],
+      "publisher": { "@type": "Organization", "name": "ToolAdda", "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"], "url": "https://tooladda.online/" }
+    },
+    {
+      "@type": "HowTo",
+      "@id": "https://tooladda.online/cyber-tools/dofollow-nofollow-link-checker.html#howto",
+      "name": "How to check whether a link is nofollow",
+      "description": "Find out whether a link on a webpage carries a nofollow, sponsored or ugc relationship by reading its rel attribute.",
+      "totalTime": "PT2M",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Get the page HTML",
+          "text": "Open the page and view its source, then copy the HTML. You can also try the URL box, which works only when the target site allows cross-origin requests."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paste the HTML into the checker",
+          "text": "Switch to the Paste HTML tab and paste the source. Add the page URL as well so relative links can be resolved and classified as internal or external."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Read the rel column",
+          "text": "Each link's rel attribute is listed. A link showing nofollow, sponsored or ugc carries a directive that restricts crawling or link attribution."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Filter to what you need",
+          "text": "Use the relationship filter to show only nofollow, sponsored or ugc links, or the location filter to separate internal links from external ones."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Export the audit",
+          "text": "Download the report as CSV or JSON, or copy the summary, to keep a record of the link profile for the page."
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tooladda.online/cyber-tools/dofollow-nofollow-link-checker.html#breadcrumb",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://tooladda.online/" },
+        { "@type": "ListItem", "position": 2, "name": "SEO Tools", "item": "https://tooladda.online/website-seo-checker.html" },
+        { "@type": "ListItem", "position": 3, "name": "Dofollow & Nofollow Link Checker", "item": "https://tooladda.online/cyber-tools/dofollow-nofollow-link-checker.html" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://tooladda.online/cyber-tools/dofollow-nofollow-link-checker.html#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a dofollow link?",
+          "acceptedAnswer": { "@type": "Answer", "text": "It is the everyday name for an ordinary link that carries no nofollow, sponsored or ugc value in its rel attribute. Links behave this way by default, so a dofollow link is simply a link that has not been marked with one of those directives." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a dofollow attribute in HTML?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. There is no rel=\"dofollow\" in any HTML specification and search engines do not act on it. Writing it is harmless but does nothing, because a link is already followable unless you add nofollow, sponsored or ugc. This checker flags rel=\"dofollow\" as inert when it finds it." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a nofollow link?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A link whose rel attribute contains the value nofollow. It tells search engines not to pass ranking credit through that link. It was introduced in 2005 to fight comment spam and is now treated by Google as a hint rather than a strict instruction." }
+        },
+        {
+          "@type": "Question",
+          "name": "What does rel=\"nofollow\" mean?",
+          "acceptedAnswer": { "@type": "Answer", "text": "It marks a link that the page does not vouch for. Google has treated it as a hint since March 2020, which means the link may still be crawled and considered, but ranking credit is generally not passed. It does not stop a user clicking the link or a browser following it." }
+        },
+        {
+          "@type": "Question",
+          "name": "What does rel=\"sponsored\" mean?",
+          "acceptedAnswer": { "@type": "Answer", "text": "It marks a link that exists because of advertising, sponsorship or another paid arrangement. Google introduced it in 2019 as the specific label for paid links, and using it is the recommended way to disclose them rather than relying on nofollow alone." }
+        },
+        {
+          "@type": "Question",
+          "name": "What does rel=\"ugc\" mean?",
+          "acceptedAnswer": { "@type": "Answer", "text": "UGC stands for user-generated content. It marks links that visitors added rather than the site owner, typically in comments and forum posts, so search engines can tell them apart from links the publisher chose." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can one link have multiple rel values?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. The rel attribute is a space-separated list, so rel=\"nofollow sponsored\" and rel=\"ugc nofollow\" are both valid and both apply. This checker reports such links as Multiple and lists every token it found." }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I check if a link is nofollow?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Look at the link's rel attribute in the page source. Paste the page HTML into this checker and the rel column shows the exact value for every link, or filter the table to show only links carrying nofollow." }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I check if a backlink is dofollow?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Open the page that links to you, copy its HTML into this tool, then search the table for your own domain. If the rel column is empty or contains none of nofollow, sponsored or ugc, the link passes credit normally." }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I find all nofollow links on a page?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Analyse the page, then set the relationship filter to nofollow. The table will show only those links, and the summary at the top gives the count. You can export the filtered profile as CSV or JSON." }
+        },
+        {
+          "@type": "Question",
+          "name": "Are nofollow links useful?",
+          "acceptedAnswer": { "@type": "Answer", "text": "They still send visitors, build awareness and can lead to other coverage, and they are the correct label for paid or untrusted links. Whether they contribute to rankings is not something any external tool can measure, so this page reports what the markup says rather than guessing at effects." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between dofollow and nofollow?",
+          "acceptedAnswer": { "@type": "Answer", "text": "The difference is one attribute value. A nofollow link carries rel=\"nofollow\"; a so-called dofollow link simply does not. There is no positive marker to add, only a restricting one to leave off." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I analyse HTML directly instead of a URL?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes, and this is the mode that always works. Paste the page source or upload an HTML file, and the parsing happens entirely inside your browser. Adding the page URL alongside it lets the tool resolve relative links and split internal from external." }
+        },
+        {
+          "@type": "Question",
+          "name": "Why can't some URLs be fetched?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A browser may only read another site's content when that site sends CORS headers permitting it, and most do not. The tool therefore retries through public CORS relay services, but those are refused too by bot protection, sign-in walls and firewalls, and they rate-limit. When every route fails the tool says so and points you to the HTML paste mode, which works on any page you can open yourself." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can this tool check external links?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Every link whose host differs from the analysed page's host is marked External, and the domain table groups them by site with counts of normal, nofollow, sponsored and UGC links for each one." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can this tool check internal links?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Links to the same host are marked Internal, including relative links once you supply the page URL. A setting lets you decide whether subdomains such as blog.example.com count as internal." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can it check for broken links?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Not reliably, and it will not pretend otherwise. A browser cannot see the status code of most cross-origin requests, so a failed request is indistinguishable from a real 404. Reporting those as broken would be wrong, so the tool reports link markup and leaves status checking to a server-side crawler." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is anchor text?",
+          "acceptedAnswer": { "@type": "Answer", "text": "The visible, clickable text of a link. It gives readers and search engines a description of the destination, which is why specific wording is more useful than \"click here\". When a link contains only an image, the image's alt text does the same job." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is an internal link?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A link from one page to another page on the same site. Internal links help visitors move around, show search engines how pages relate, and spread crawl attention across a site." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is an external link?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A link pointing to a different website. Linking out to sources is normal and useful; the rel attribute is how you signal when an outbound link is paid, user-submitted or otherwise not an endorsement." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I export the link report?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Download every link as CSV for a spreadsheet, export the complete analysis as JSON, or copy a short text summary. The CSV escapes any cell that a spreadsheet might otherwise treat as a formula." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data sent anywhere?",
+          "acceptedAnswer": { "@type": "Answer", "text": "HTML you paste or upload is parsed in your browser and is not uploaded to ToolAdda. If you use the URL box, your browser contacts that website directly, exactly as it would if you visited the page, so that site can see the request." }
+        }
+      ]
+    }
+  ]
+}
+    </script>
+      <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 31, 111, 92; }
+      [data-theme="dark"] { --pca: 132, 176, 165; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 132, 176, 165; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/cyber-tools/dofollow-nofollow-link-checker.html#webpage",
+      "url": "https://tooladda.online/cyber-tools/dofollow-nofollow-link-checker.html",
+      "inLanguage": "en",
+      "datePublished": "2026-08-24",
+      "dateModified": "2026-08-28",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+
+  <body class="dnl-page">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="container navbar">
+        <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../privacy-policy.html">Privacy</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+              <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+              <path d="M3.1 16.9h10.8" />
+              <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+            </svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+          <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+          <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <div class="container">
+        <aside class="ta-support" aria-label="Support ToolAdda">
+          <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+        </aside>
+
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">›</span><a href="../website-seo-checker.html">SEO Tools</a><span aria-hidden="true">›</span><span>Dofollow &amp; Nofollow Link Checker</span>
+        </nav>
+
+        <div class="dnl-hero">
+          <p class="dnl-eyebrow">Free · No sign-up · Runs in your browser</p>
+          <h1><em>Dofollow &amp; Nofollow</em> Link Checker</h1>
+          <p class="dnl-hero-sub">Analyse webpage links and identify nofollow, sponsored, UGC, internal and external links with detailed SEO insights. Every classification comes from reading the <code>rel</code> attribute exactly the way a browser does.</p>
+          <ul class="dnl-trust">
+            <li>Free to use</li>
+            <li>No signup</li>
+            <li>Fast analysis</li>
+            <li>SEO-focused</li>
+            <li>Detailed link report</li>
+          </ul>
+        </div>
+
+        <!-- ------------------------------------------------- analyser -->
+        <section class="dnl-card" aria-labelledby="dnlInputH">
+          <div class="dnl-card-head"><h2 id="dnlInputH">Analyse a page</h2></div>
+          <div class="dnl-card-body">
+
+            <div class="dnl-tabs" role="tablist" aria-label="Input method">
+              <button type="button" class="dnl-tab" id="dnlTabUrl" role="tab" aria-selected="true" aria-controls="dnlPanelUrl">Check a URL</button>
+              <button type="button" class="dnl-tab" id="dnlTabHtml" role="tab" aria-selected="false" aria-controls="dnlPanelHtml">Paste HTML</button>
+            </div>
+
+            <div id="dnlPanelUrl" role="tabpanel" aria-labelledby="dnlTabUrl">
+              <div class="dnl-field">
+                <label for="dnlUrl">Page URL</label>
+                <input type="url" id="dnlUrl" placeholder="https://example.com/page" autocomplete="url" spellcheck="false" />
+              </div>
+              <div class="dnl-btnrow">
+                <button type="button" class="dnl-btn dnl-btn-primary" id="dnlFetch">Check links</button>
+                <button type="button" class="dnl-btn" id="dnlExample">Try an example</button>
+              </div>
+              <p class="dnl-hint"><strong>How this works:</strong> your browser requests the page directly first. Most sites refuse that, because they send no CORS headers, so the request is then retried through public CORS relay services — which means the URL you check is visible to those third parties, and pages behind a login or bot protection will still fail. When every route fails the tool says exactly that and you can use “Paste HTML” instead, which never leaves your browser. A refused request is never reported as “no links found”.</p>
+            </div>
+
+            <div id="dnlPanelHtml" role="tabpanel" aria-labelledby="dnlTabHtml" hidden>
+              <div class="dnl-field">
+                <label for="dnlHtml">Page HTML</label>
+                <textarea id="dnlHtml" placeholder="Paste your webpage HTML here" spellcheck="false"></textarea>
+                <p class="dnl-hint">Best for pages that cannot be fetched directly because of browser security restrictions. Open the page, press Ctrl+U (or Cmd+Option+U) to view source, then copy and paste it here. This mode runs entirely in your browser.</p>
+              </div>
+              <div class="dnl-field">
+                <label for="dnlBaseUrl">Page URL (optional, for internal vs external)</label>
+                <input type="url" id="dnlBaseUrl" placeholder="https://example.com/page" autocomplete="url" spellcheck="false" />
+                <p class="dnl-hint">Without this, relative links cannot be resolved and no link can be classified as internal or external.</p>
+              </div>
+              <div class="dnl-btnrow">
+                <button type="button" class="dnl-btn dnl-btn-primary" id="dnlAnalyse">Analyse HTML</button>
+                <label class="dnl-btn" for="dnlFile">Upload HTML file</label>
+                <input type="file" id="dnlFile" accept=".html,.htm,text/html" class="dnl-sr" />
+              </div>
+            </div>
+
+            <div class="dnl-btnrow" style="margin-top:.9rem">
+              <label class="dnl-toggle" for="dnlSubdomains">
+                <input type="checkbox" id="dnlSubdomains" /> Treat subdomains as internal
+              </label>
+            </div>
+
+            <p class="dnl-notice" id="dnlNotice" role="status" aria-live="polite" hidden></p>
+          </div>
+        </section>
+
+        <!-- ------------------------------------------------- results -->
+        <div id="dnlResults" hidden>
+
+          <section class="dnl-card" aria-labelledby="dnlSummaryH">
+            <div class="dnl-card-head">
+              <h2 id="dnlSummaryH">Link summary</h2>
+              <span class="dnl-spacer"></span>
+              <button type="button" class="dnl-btn dnl-btn-sm" id="dnlCopySummary">Copy summary</button>
+              <button type="button" class="dnl-btn dnl-btn-sm" id="dnlDownloadCsv">CSV</button>
+              <button type="button" class="dnl-btn dnl-btn-sm" id="dnlDownloadJson">JSON</button>
+              <button type="button" class="dnl-btn dnl-btn-sm" id="dnlPrint">Print</button>
+            </div>
+            <div class="dnl-card-body">
+              <div class="dnl-metrics" id="dnlMetrics"></div>
+
+              <div class="dnl-dist">
+                <p class="dnl-dist-label"><span>Follow status distribution</span></p>
+                <div id="dnlDistFollow"></div>
+              </div>
+              <div class="dnl-dist">
+                <p class="dnl-dist-label"><span>Internal vs external</span></p>
+                <div id="dnlDistLocation"></div>
+              </div>
+              <p class="dnl-hint">These proportions describe this page only. There is no correct ratio — the right mix depends entirely on what the page is for.</p>
+              <p class="dnl-hint" id="dnlToast" role="status" aria-live="polite" hidden></p>
+            </div>
+          </section>
+
+          <div class="dnl-work">
+            <!-- filters -->
+            <section class="dnl-card" aria-labelledby="dnlFiltersH">
+              <div class="dnl-card-head"><h2 id="dnlFiltersH">Filters</h2></div>
+              <div class="dnl-card-body">
+                <div class="dnl-filters">
+                  <div>
+                    <label class="dnl-filter-title" for="dnlSearch">Search</label>
+                    <input type="search" id="dnlSearch" placeholder="Anchor text or URL" />
+                  </div>
+                  <div>
+                    <label class="dnl-filter-title" for="dnlFilterFollow">Follow status</label>
+                    <select id="dnlFilterFollow">
+                      <option value="all">All</option>
+                      <option value="normal">Dofollow</option>
+                      <option value="restricted">Restricted</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="dnl-filter-title" for="dnlFilterRel">Relationship</label>
+                    <select id="dnlFilterRel">
+                      <option value="all">All</option>
+                      <option value="none">None</option>
+                      <option value="nofollow">Nofollow</option>
+                      <option value="sponsored">Sponsored</option>
+                      <option value="ugc">UGC</option>
+                      <option value="multiple">Multiple</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="dnl-filter-title" for="dnlFilterLocation">Location</label>
+                    <select id="dnlFilterLocation">
+                      <option value="all">All</option>
+                      <option value="internal">Internal</option>
+                      <option value="external">External</option>
+                      <option value="not-applicable">Not applicable</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="dnl-filter-title" for="dnlFilterType">Link type</label>
+                    <select id="dnlFilterType">
+                      <option value="all">All</option>
+                      <option value="page">Page</option>
+                      <option value="image">Image</option>
+                      <option value="file">File</option>
+                      <option value="anchor">Anchor</option>
+                      <option value="mail">Mail</option>
+                      <option value="phone">Phone</option>
+                      <option value="script">Script</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="dnl-filter-title" for="dnlFilterFlag">Anchor notes</label>
+                    <select id="dnlFilterFlag">
+                      <option value="all">All</option>
+                      <option value="empty">Empty anchor</option>
+                      <option value="generic">Generic anchor</option>
+                      <option value="image-without-alt">Image without alt</option>
+                      <option value="image-alt-only">Image alt only</option>
+                      <option value="url-as-text">URL as text</option>
+                    </select>
+                  </div>
+                  <button type="button" class="dnl-btn dnl-btn-sm" id="dnlClearFilters">Clear filters</button>
+                </div>
+              </div>
+            </section>
+
+            <!-- table -->
+            <section class="dnl-card" aria-labelledby="dnlTableH">
+              <div class="dnl-card-head">
+                <h2 id="dnlTableH">Links</h2>
+                <span class="dnl-spacer"></span>
+                <label class="dnl-sr" for="dnlPerPage">Rows per page</label>
+                <select id="dnlPerPage" class="dnl-btn dnl-btn-sm">
+                  <option value="25" selected>25 per page</option>
+                  <option value="50">50 per page</option>
+                  <option value="100">100 per page</option>
+                </select>
+              </div>
+              <div class="dnl-card-body">
+                <div class="dnl-tablewrap">
+                  <table class="dnl-table">
+                    <caption class="dnl-sr">Every link found on the analysed page, with its rel attribute and classification</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col"><button type="button" class="dnl-sort" data-dnl-sort="index">#</button></th>
+                        <th scope="col"><button type="button" class="dnl-sort" data-dnl-sort="anchor">Anchor text</button></th>
+                        <th scope="col"><button type="button" class="dnl-sort" data-dnl-sort="url">URL</button></th>
+                        <th scope="col"><button type="button" class="dnl-sort" data-dnl-sort="status">Status</button></th>
+                        <th scope="col"><button type="button" class="dnl-sort" data-dnl-sort="rel">Rel</button></th>
+                        <th scope="col"><button type="button" class="dnl-sort" data-dnl-sort="type">Type</button></th>
+                        <th scope="col"><button type="button" class="dnl-sort" data-dnl-sort="location">Location</button></th>
+                        <th scope="col">Notes</th>
+                        <th scope="col">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="dnlTableBody"></tbody>
+                  </table>
+                </div>
+                <p class="dnl-empty" id="dnlTableEmpty" hidden>No links match the current filters.</p>
+                <div class="dnl-pager">
+                  <button type="button" class="dnl-btn dnl-btn-sm" id="dnlPrev">‹ Previous</button>
+                  <button type="button" class="dnl-btn dnl-btn-sm" id="dnlNext">Next ›</button>
+                  <span class="dnl-pager-info" id="dnlPagerInfo" aria-live="polite"></span>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <section class="dnl-card" aria-labelledby="dnlDomainsH">
+            <div class="dnl-card-head"><h2 id="dnlDomainsH">External domains</h2></div>
+            <div class="dnl-card-body">
+              <div class="dnl-tablewrap">
+                <table class="dnl-table" style="min-width:0">
+                  <caption class="dnl-sr">Outbound links grouped by destination domain</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Domain</th><th scope="col">Links</th><th scope="col">Dofollow</th>
+                      <th scope="col">Nofollow</th><th scope="col">Sponsored</th><th scope="col">UGC</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dnlDomainsBody"></tbody>
+                </table>
+              </div>
+              <p class="dnl-empty" id="dnlDomainsEmpty" hidden>No external links were found, or no page URL was supplied to compare against.</p>
+            </div>
+          </section>
+
+          <section class="dnl-card" aria-labelledby="dnlRepeatH">
+            <div class="dnl-card-head"><h2 id="dnlRepeatH">Repeated anchor text</h2></div>
+            <div class="dnl-card-body">
+              <div class="dnl-tablewrap">
+                <table class="dnl-table" style="min-width:0">
+                  <caption class="dnl-sr">Anchor text used by more than one link</caption>
+                  <thead><tr><th scope="col">Anchor text</th><th scope="col">Uses</th><th scope="col">Distinct destinations</th></tr></thead>
+                  <tbody id="dnlRepeatBody"></tbody>
+                </table>
+              </div>
+              <p class="dnl-empty" id="dnlRepeatEmpty" hidden>No anchor text is repeated on this page.</p>
+              <p class="dnl-hint">Repetition is normal — navigation and footers reuse the same wording deliberately. It only matters when the same text points at different destinations.</p>
+            </div>
+          </section>
+
+          <section class="dnl-card" aria-labelledby="dnlInsightsH">
+            <div class="dnl-card-head"><h2 id="dnlInsightsH">SEO insights</h2></div>
+            <div class="dnl-card-body">
+              <ul class="dnl-insights" id="dnlInsights"></ul>
+              <p class="dnl-hint">These are factual observations about the markup on this page. They are not ranking predictions, and nothing here describes a penalty.</p>
+            </div>
+          </section>
+        </div>
+
+        <dialog class="dnl-dialog" id="dnlDialog" aria-labelledby="dnlDialogH">
+          <div class="dnl-dialog-head">
+            <h2 id="dnlDialogH">Link details</h2>
+            <span class="dnl-spacer"></span>
+            <button type="button" class="dnl-btn dnl-btn-sm" id="dnlDialogClose">Close</button>
+          </div>
+          <div class="dnl-dialog-body" id="dnlDialogBody"></div>
+        </dialog>
+
+        <p class="dnl-note dnl-block">
+          <strong>What this tool can and cannot do.</strong> It reads link markup, which it does exactly and completely.
+          It does not run JavaScript, so links a page builds after load are not seen. It cannot reliably verify HTTP
+          status codes, because a browser is blocked from reading most cross-origin responses — and a blocked request
+          looks identical to a genuine 404, so reporting those as broken links would be wrong.
+        </p>
+
+        <!-- ================================================ content -->
+        <div class="dnl-block">
+
+          <section class="dnl-block" aria-labelledby="dnl-dofollow-h">
+            <h2 id="dnl-dofollow-h">What is a dofollow link?</h2>
+            <p>A "dofollow" link is an ordinary link — one that carries no instruction telling search engines to hold back. The term is useful shorthand, but it describes an <em>absence</em> rather than something added to the markup.</p>
+            <p>This trips people up constantly, so it is worth stating plainly: <strong>there is no <code>rel="dofollow"</code> in HTML.</strong> It appears in no specification, and search engines do not act on it. Writing it does no harm, but it achieves nothing either, because a link is already followable by default. This checker flags it as inert whenever it finds one.</p>
+            <p>A plain link like <code>&lt;a href="/pricing"&gt;Pricing&lt;/a&gt;</code> is what people mean by dofollow. To change that behaviour you <em>add</em> a restricting value; you never add a permitting one.</p>
+          </section>
+
+          <section class="dnl-block" aria-labelledby="dnl-nofollow-h">
+            <h2 id="dnl-nofollow-h">What is a nofollow link, and what does rel="nofollow" mean?</h2>
+            <p>A nofollow link carries <code>nofollow</code> in its rel attribute:</p>
+            <p><code>&lt;a href="https://example.com" rel="nofollow"&gt;Example&lt;/a&gt;</code></p>
+            <p>Google and Yahoo introduced it in 2005, aimed squarely at comment spam. If links posted by strangers carried no ranking benefit, the incentive to spam them would fall away.</p>
+            <p>Two details are commonly misstated:</p>
+            <ul>
+              <li><strong>It does not stop crawling.</strong> Nofollow is about ranking credit, not access. If you need a page kept out of search results, that is a job for a <code>noindex</code> meta tag; if you need it kept out of a crawl, that is robots.txt. Nofollow does neither.</li>
+              <li><strong>It has been a hint since March 2020.</strong> Google announced it would treat nofollow as a signal to consider rather than a strict directive. In practice, credit is generally not passed — but the guarantee people used to rely on is gone.</li>
+            </ul>
+            <p>None of this affects visitors. A nofollow link is clicked, followed and rendered exactly like any other.</p>
+          </section>
+
+          <section class="dnl-block" aria-labelledby="dnl-sponsored-h">
+            <h2 id="dnl-sponsored-h">What are sponsored and UGC links?</h2>
+            <p>In September 2019 Google added two more values so publishers could say <em>why</em> a link is not an endorsement, rather than lumping every case under nofollow.</p>
+            <h3>rel="sponsored"</h3>
+            <p>For links that exist because of advertising, sponsorship or any other paid arrangement — banner ads, affiliate links, paid placements, sponsored posts. Disclosing paid links this way is the recommended approach, and it is more precise than nofollow because it states the reason.</p>
+            <h3>rel="ugc"</h3>
+            <p>For user-generated content: links added by visitors rather than the publisher. Comments, forum posts, reviews, wiki edits. It lets search engines distinguish what your readers linked to from what you linked to.</p>
+            <h3>Combining values</h3>
+            <p>The rel attribute is a space-separated list, so values combine freely:</p>
+            <ul>
+              <li><code>rel="nofollow sponsored"</code> — a paid link, with nofollow kept for older crawlers.</li>
+              <li><code>rel="ugc nofollow"</code> — a comment link, same reasoning.</li>
+              <li><code>rel="sponsored ugc"</code> — a paid placement inside user content.</li>
+            </ul>
+            <p>This tool reports any link with more than one restricting value as <em>Multiple</em> and lists every token it found.</p>
+          </section>
+
+          <section class="dnl-block" aria-labelledby="dnl-vs-h">
+            <h2 id="dnl-vs-h">Dofollow vs nofollow at a glance</h2>
+            <div class="dnl-tablewrap">
+              <table class="dnl-table" style="min-width:0">
+                <thead><tr><th scope="col">Property</th><th scope="col">Dofollow (the default)</th><th scope="col">Nofollow</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row">Markup</th><td>No rel value needed</td><td>rel="nofollow"</td></tr>
+                  <tr><th scope="row">Is it a real attribute value?</th><td>No — it is the default</td><td>Yes</td></tr>
+                  <tr><th scope="row">Passes ranking credit</th><td>Normally yes</td><td>Generally no (a hint since 2020)</td></tr>
+                  <tr><th scope="row">Can be crawled</th><td>Yes</td><td>Yes — nofollow is not a crawl block</td></tr>
+                  <tr><th scope="row">Works for visitors</th><td>Yes</td><td>Yes, identically</td></tr>
+                  <tr><th scope="row">Typical use</th><td>Editorial links you stand behind</td><td>Untrusted, paid or user-submitted links</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="dnl-block" aria-labelledby="dnl-check-h">
+            <h2 id="dnl-check-h">How to check whether a link is nofollow</h2>
+            <h3>By hand</h3>
+            <p>Right-click the link and choose Inspect. The highlighted <code>&lt;a&gt;</code> element shows its attributes; look for <code>rel</code>. If it is missing, or contains none of nofollow, sponsored or ugc, the link is normal.</p>
+            <h3>Across a whole page</h3>
+            <p>Inspecting one link at a time does not scale past a handful. Open the page, press Ctrl+U (Cmd+Option+U on a Mac) to view source, copy it, and paste it into the checker above. Every link is then listed with its exact rel value, and you can filter to just the nofollow ones.</p>
+            <h3>Checking a backlink</h3>
+            <p>To find out whether a site's link to you passes credit, analyse <em>their</em> page and search the table for your domain. The rel column answers the question directly.</p>
+          </section>
+
+          <section class="dnl-block" aria-labelledby="dnl-engine-h">
+            <h2 id="dnl-engine-h">How this checker reads the rel attribute</h2>
+            <p>Link classification looks trivial and is full of traps. Three decisions here are worth explaining, because they are where other tools tend to get it wrong.</p>
+            <h3>rel splits on spaces, never on commas</h3>
+            <p>The HTML specification defines rel as a space-separated token list, and every browser implements exactly that. So <code>rel="nofollow,sponsored"</code> is a <em>single</em> token — the string "nofollow,sponsored" — which matches nothing. The link is treated as normal by every crawler that reads it.</p>
+            <p>A tool that helpfully split on commas would report that link as nofollow, contradicting what search engines actually see. This checker follows the browser exactly and instead flags the comma as a likely authoring mistake. Being lenient in the parser would mean being wrong in the report.</p>
+            <h3>"Dofollow" is a nickname, not an attribute</h3>
+            <p>The status column says <em>Dofollow</em>, which is the everyday name for a link that carries no nofollow, sponsored or ugc token — the state every link is in by default. It is a description of the link, not a claim that the page contains a dofollow attribute, because no such attribute exists. Where a page really does write <code>rel="dofollow"</code>, the link is flagged <em>inert</em> as well.</p>
+            <h3>A failed request is not a broken link</h3>
+            <p>Browsers cannot read the status of most cross-origin responses. A CORS refusal, a firewall, bot protection, a sign-in wall and a genuine 404 all surface as the same failure. Calling any of those "broken" would be a guess dressed as a finding, so this tool audits markup and leaves status verification to server-side crawlers that can actually see the response.</p>
+          </section>
+
+          <section class="dnl-block" aria-labelledby="dnl-internal-h">
+            <h2 id="dnl-internal-h">Internal vs external links</h2>
+            <p>An internal link points to another page on the same site; an external link points somewhere else. The checker compares each link's host with the page URL you supply — which is why supplying it matters. Without it, relative links like <code>/about</code> cannot be resolved and nothing can be classified.</p>
+            <p>Several details are handled explicitly:</p>
+            <ul>
+              <li><strong>www and non-www</strong> are treated as the same site.</li>
+              <li><strong>http and https</strong> do not affect the classification.</li>
+              <li><strong>Relative, root-relative and protocol-relative</strong> URLs are all resolved against the page URL.</li>
+              <li><strong>Subdomains</strong> count as external by default, since <code>blog.example.com</code> is a distinct host. The toggle above changes this when you consider them part of one property.</li>
+              <li><strong>mailto:, tel: and on-page anchors</strong> are neither internal nor external, and are reported as not applicable rather than being forced into one bucket.</li>
+            </ul>
+            <p>Internal links help readers move around and show search engines how your pages relate. External links to good sources are a normal part of useful writing — the rel attribute exists precisely so you can link out while signalling when something is paid or user-submitted.</p>
+          </section>
+
+          <section class="dnl-block" aria-labelledby="dnl-anchor-h">
+            <h2 id="dnl-anchor-h">Why anchor text matters</h2>
+            <p>Anchor text is the visible, clickable words of a link. It tells a reader where they are about to go, and it gives search engines a short description of the destination. "Download the 2026 pricing guide" does that work; "click here" does not.</p>
+            <p>The checker flags several patterns as worth a look — never as errors:</p>
+            <ul>
+              <li><strong>Empty anchors</strong> — a link with no text and no image alt has no accessible name at all. A screen reader announces only the URL.</li>
+              <li><strong>Generic anchors</strong> — "click here", "read more", "learn more". Perfectly readable in context, but they describe nothing on their own.</li>
+              <li><strong>Image-only links</strong> — fine when the image has descriptive alt text, which then acts as the anchor text. Without alt, the link is unusable for anyone not seeing the image.</li>
+              <li><strong>A bare URL as the text</strong> — technically fine, but a sentence describes the destination better than "https://example.com/a/b/c".</li>
+            </ul>
+            <p>Repeated anchor text is listed separately and is deliberately <em>not</em> flagged as a problem. Navigation and footers repeat wording on purpose. It only deserves attention when the same words point at different destinations, which is confusing rather than harmful.</p>
+          </section>
+
+          <section class="dnl-block" aria-labelledby="dnl-audit-h">
+            <h2 id="dnl-audit-h">How to audit outbound links</h2>
+            <p>A periodic outbound-link review is quick and catches real problems. A workable routine:</p>
+            <ol>
+              <li><strong>Group by domain.</strong> The external domains table shows who you link to most. Surprises here are the point — an old widget or a compromised plugin can add links you never wrote.</li>
+              <li><strong>Check paid links are labelled.</strong> Affiliate links, sponsored posts and ad placements should carry <code>rel="sponsored"</code>. Filter the table by relationship to see what is labelled and what is not.</li>
+              <li><strong>Check user-generated areas.</strong> Comment and forum links should carry <code>rel="ugc"</code>, ideally applied automatically by the platform rather than by hand.</li>
+              <li><strong>Look for the comma mistake.</strong> The insights panel calls out rel attributes containing commas, which are silently ignored by every browser.</li>
+              <li><strong>Fix empty anchors.</strong> These are accessibility problems first and SEO problems second, and they are usually a two-minute fix.</li>
+              <li><strong>Keep a record.</strong> Export the CSV, so the next audit can be a comparison rather than a fresh start.</li>
+            </ol>
+          </section>
+
+          <section class="dnl-block" aria-labelledby="dnl-mistakes-h">
+            <h2 id="dnl-mistakes-h">Common link attribute mistakes</h2>
+            <ol>
+              <li><strong>Writing <code>rel="dofollow"</code>.</strong> Inert. Links are followable by default; there is nothing to add.</li>
+              <li><strong>Comma-separating rel values.</strong> <code>rel="nofollow,ugc"</code> is one unrecognised token. Use spaces.</li>
+              <li><strong>Expecting nofollow to hide a page.</strong> It affects ranking credit, not indexing or crawling. Use noindex or robots.txt for those.</li>
+              <li><strong>Nofollowing your own internal links.</strong> The old "PageRank sculpting" tactic stopped working long ago and now mostly gets in the way.</li>
+              <li><strong>Leaving affiliate links unlabelled.</strong> Paid links should be marked sponsored — this is a disclosure matter as much as an SEO one.</li>
+              <li><strong>Adding rel to the wrong element.</strong> The value belongs on the <code>&lt;a&gt;</code> tag, not on a wrapping div or the image inside.</li>
+              <li><strong>Misspelling the value.</strong> <code>rel="no-follow"</code> and <code>rel="nofollw"</code> do nothing. This checker lists unrecognised tokens so typos surface.</li>
+              <li><strong>Using target="_blank" without noopener.</strong> Not an SEO issue, but modern browsers now imply it — worth knowing when auditing older markup.</li>
+            </ol>
+          </section>
+
+          <section class="dnl-block" aria-labelledby="dnl-limits-h">
+            <h2 id="dnl-limits-h">Technical limitations you should know about</h2>
+            <p>Being explicit about what a browser-based tool cannot do is more useful than pretending otherwise.</p>
+            <ul>
+              <li><strong>CORS and the same-origin policy.</strong> A browser may only read another site's content when that site sends headers permitting it. Most do not — that is a security boundary, not a bug, and it is why fetching falls back to a relay rather than failing outright.</li>
+              <li><strong>Relays, not our own server.</strong> ToolAdda is a static site with no backend, so a refused direct request is retried through public CORS relay services. They are third parties that see the URL, they rate-limit, and they cannot get past a login — which is why the HTML paste mode exists and stays the private route.</li>
+              <li><strong>JavaScript-rendered links are invisible.</strong> The parser reads the HTML you give it and does not execute scripts. Links injected by a framework after load will not appear unless you copy the rendered DOM instead of the source.</li>
+              <li><strong>Authentication and bot protection.</strong> Pages behind a login, or behind Cloudflare-style challenges, cannot be fetched from a browser tab.</li>
+              <li><strong>HTTP status verification.</strong> Not offered, because it cannot be done honestly from a browser for cross-origin links.</li>
+              <li><strong>robots.txt.</strong> A crawler should respect it. This tool is not a crawler — it analyses one document you hand it — but any future crawling feature would need to.</li>
+            </ul>
+          </section>
+
+          <section class="dnl-block" aria-labelledby="dnl-privacy-h">
+            <h2 id="dnl-privacy-h">Privacy</h2>
+            <p>HTML you paste or upload is parsed by JavaScript on this page and is not uploaded to ToolAdda.</p>
+            <p>The URL box is different, and worth being precise about. Your browser first requests that page <em>directly</em>, exactly as if you had visited it: the website sees the request and your IP address, the same as any normal visit. If it refuses — which most sites do — the URL is then sent to a public CORS relay service (codetabs, AllOrigins or corsproxy.io) that fetches the page on your behalf, so that third party sees the URL you are checking and their own privacy terms apply, not ours. ToolAdda still has no server in the middle and never receives the URL. If you would rather nothing left your browser at all, use “Paste HTML”.</p>
+          </section>
+
+          <section class="dnl-block" aria-labelledby="dnl-faq-h">
+            <h2 id="dnl-faq-h">Frequently asked questions</h2>
+            <div class="dnl-faqs">
+              <details class="faq-item"><summary><strong>What is a dofollow link?</strong></summary><p>It is the everyday name for an ordinary link that carries no nofollow, sponsored or ugc value in its rel attribute. Links behave this way by default, so a dofollow link is simply a link that has not been marked with one of those directives.</p></details>
+              <details class="faq-item"><summary><strong>Is there a dofollow attribute in HTML?</strong></summary><p>No. There is no rel="dofollow" in any HTML specification and search engines do not act on it. Writing it is harmless but does nothing, because a link is already followable unless you add nofollow, sponsored or ugc. This checker flags rel="dofollow" as inert when it finds it.</p></details>
+              <details class="faq-item"><summary><strong>What is a nofollow link?</strong></summary><p>A link whose rel attribute contains the value nofollow. It tells search engines not to pass ranking credit through that link. It was introduced in 2005 to fight comment spam and is now treated by Google as a hint rather than a strict instruction.</p></details>
+              <details class="faq-item"><summary><strong>What does rel="nofollow" mean?</strong></summary><p>It marks a link that the page does not vouch for. Google has treated it as a hint since March 2020, which means the link may still be crawled and considered, but ranking credit is generally not passed. It does not stop a user clicking the link or a browser following it.</p></details>
+              <details class="faq-item"><summary><strong>What does rel="sponsored" mean?</strong></summary><p>It marks a link that exists because of advertising, sponsorship or another paid arrangement. Google introduced it in 2019 as the specific label for paid links, and using it is the recommended way to disclose them rather than relying on nofollow alone.</p></details>
+              <details class="faq-item"><summary><strong>What does rel="ugc" mean?</strong></summary><p>UGC stands for user-generated content. It marks links that visitors added rather than the site owner, typically in comments and forum posts, so search engines can tell them apart from links the publisher chose.</p></details>
+              <details class="faq-item"><summary><strong>Can one link have multiple rel values?</strong></summary><p>Yes. The rel attribute is a space-separated list, so rel="nofollow sponsored" and rel="ugc nofollow" are both valid and both apply. This checker reports such links as Multiple and lists every token it found.</p></details>
+              <details class="faq-item"><summary><strong>How can I check if a link is nofollow?</strong></summary><p>Look at the link's rel attribute in the page source. Paste the page HTML into this checker and the rel column shows the exact value for every link, or filter the table to show only links carrying nofollow.</p></details>
+              <details class="faq-item"><summary><strong>How do I check if a backlink is dofollow?</strong></summary><p>Open the page that links to you, copy its HTML into this tool, then search the table for your own domain. If the rel column is empty or contains none of nofollow, sponsored or ugc, the link passes credit normally.</p></details>
+              <details class="faq-item"><summary><strong>How can I find all nofollow links on a page?</strong></summary><p>Analyse the page, then set the relationship filter to nofollow. The table will show only those links, and the summary at the top gives the count. You can export the filtered profile as CSV or JSON.</p></details>
+              <details class="faq-item"><summary><strong>Are nofollow links useful?</strong></summary><p>They still send visitors, build awareness and can lead to other coverage, and they are the correct label for paid or untrusted links. Whether they contribute to rankings is not something any external tool can measure, so this page reports what the markup says rather than guessing at effects.</p></details>
+              <details class="faq-item"><summary><strong>What is the difference between dofollow and nofollow?</strong></summary><p>The difference is one attribute value. A nofollow link carries rel="nofollow"; a so-called dofollow link simply does not. There is no positive marker to add, only a restricting one to leave off.</p></details>
+              <details class="faq-item"><summary><strong>Can I analyse HTML directly instead of a URL?</strong></summary><p>Yes, and this is the mode that always works. Paste the page source or upload an HTML file, and the parsing happens entirely inside your browser. Adding the page URL alongside it lets the tool resolve relative links and split internal from external.</p></details>
+              <details class="faq-item"><summary><strong>Why can't some URLs be fetched?</strong></summary><p>A browser may only read another site's content when that site sends CORS headers permitting it, and most do not. The tool therefore retries through public CORS relay services, but those are refused too by bot protection, sign-in walls and firewalls, and they rate-limit. When every route fails the tool says so and points you to the HTML paste mode, which works on any page you can open yourself.</p></details>
+              <details class="faq-item"><summary><strong>Can this tool check external links?</strong></summary><p>Yes. Every link whose host differs from the analysed page's host is marked External, and the domain table groups them by site with counts of normal, nofollow, sponsored and UGC links for each one.</p></details>
+              <details class="faq-item"><summary><strong>Can this tool check internal links?</strong></summary><p>Yes. Links to the same host are marked Internal, including relative links once you supply the page URL. A setting lets you decide whether subdomains such as blog.example.com count as internal.</p></details>
+              <details class="faq-item"><summary><strong>Can it check for broken links?</strong></summary><p>Not reliably, and it will not pretend otherwise. A browser cannot see the status code of most cross-origin requests, so a failed request is indistinguishable from a real 404. Reporting those as broken would be wrong, so the tool reports link markup and leaves status checking to a server-side crawler.</p></details>
+              <details class="faq-item"><summary><strong>What is anchor text?</strong></summary><p>The visible, clickable text of a link. It gives readers and search engines a description of the destination, which is why specific wording is more useful than "click here". When a link contains only an image, the image's alt text does the same job.</p></details>
+              <details class="faq-item"><summary><strong>What is an internal link?</strong></summary><p>A link from one page to another page on the same site. Internal links help visitors move around, show search engines how pages relate, and spread crawl attention across a site.</p></details>
+              <details class="faq-item"><summary><strong>What is an external link?</strong></summary><p>A link pointing to a different website. Linking out to sources is normal and useful; the rel attribute is how you signal when an outbound link is paid, user-submitted or otherwise not an endorsement.</p></details>
+              <details class="faq-item"><summary><strong>Can I export the link report?</strong></summary><p>Yes. Download every link as CSV for a spreadsheet, export the complete analysis as JSON, or copy a short text summary. The CSV escapes any cell that a spreadsheet might otherwise treat as a formula.</p></details>
+              <details class="faq-item"><summary><strong>Is my data sent anywhere?</strong></summary><p>HTML you paste or upload is parsed in your browser and is not uploaded to ToolAdda. If you use the URL box, your browser contacts that website directly, exactly as it would if you visited the page, so that site can see the request.</p></details>
+            </div>
+          </section>
+
+          <section class="dnl-block" aria-labelledby="dnl-related-h">
+            <h2 id="dnl-related-h">Related SEO tools</h2>
+            <p>A link audit is one part of a technical review. The <a href="../website-seo-checker.html">Website SEO Checker</a> covers on-page factors, the <a href="../sitemap-generator.html">Sitemap Generator</a> builds the XML file that tells crawlers which pages to visit, and the <a href="../robots-txt-generator.html">Robots.txt Generator</a> handles what they may crawl — which is genuinely different from what nofollow does.</p>
+            <p>For the URLs themselves, the <a href="../url-encoder-decoder.html">URL Encoder / Decoder</a> deals with escaping, the <a href="../utm-builder.html">UTM Builder</a> adds campaign tracking to outbound links, and the <a href="../url-shortener.html">URL Shortener</a> creates shareable links. The <a href="../dns-lookup.html">DNS Lookup</a> and <a href="../ssl-checker.html">SSL Checker</a> cover the infrastructure behind the domains you link to.</p>
+          </section>
+
+          <section class="dnl-block" aria-labelledby="dnl-roadmap-h">
+            <h2 id="dnl-roadmap-h">What this tool does, and what would need a server</h2>
+            <p><strong>Available now:</strong> full anchor extraction; spec-accurate rel parsing with nofollow, sponsored and ugc detection including combinations; comma-mistake and inert-dofollow flagging; internal and external classification with an optional subdomain rule; link type detection; anchor text analysis; external domain breakdown; repeated anchor listing; a sortable, filterable, paginated table; a per-link inspector with highlighted source; CSV, JSON and summary export; and best-effort URL fetching, direct where the target site permits it and via public CORS relays otherwise.</p>
+            <p><strong>Would require a backend, and is not implemented:</strong> HTTP status and redirect-chain verification, whole-site crawling, backlink discovery, competitor link analysis, link monitoring over time, scheduled audits, bulk URL checking and an API. Each of those needs a server that can make requests without the browser's cross-origin restrictions. Listing them here is a roadmap, not a description of this page.</p>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+          <p>ToolAdda — premium utility tools for modern workflows.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links"><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../privacy-policy.html">Privacy</a><a href="../terms.html">Terms</a></div>
+        </div>
+      </div>
+    </footer>
+
+    <noscript>
+      <p style="max-width:40rem;margin:2rem auto;padding:1rem;border:1px solid #ccc;border-radius:8px;">
+        This link checker needs JavaScript. To check a link by hand, view the page source and look at the anchor's
+        rel attribute: a link carrying nofollow, sponsored or ugc restricts how search engines treat it, while a link
+        with no rel value is followed normally. There is no rel="dofollow" — links are followable by default.
+      </p>
+    </noscript>
+
+    <script src="../assets/js/app.js" defer></script>
+    <script src="../assets/js/link-audit-engine.js" defer></script>
+    <script src="js/dofollow-nofollow-link-checker.js" defer></script>
+    <script src="../assets/js/side-ads.js" defer></script>
+    <script src="../assets/js/inline-ads.js" data-in-article defer></script>
+  </body>
+</html>

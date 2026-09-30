@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+    <meta name="description" content="Free RD calculator to estimate recurring deposit maturity amount, total deposits and interest. Enter your monthly deposit, tenure and rate." />
+    <title>RD Calculator — Recurring Deposit Maturity Amount | ToolAdda</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <meta name="theme-color" content="#0f766e" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="ToolAdda" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <link rel="canonical" href="https://tooladda.online/calculators/rd-calculator.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+    <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta property="og:title" content="RD Calculator — Recurring Deposit Maturity Amount | ToolAdda" />
+    <meta property="og:description" content="Free RD calculator to estimate recurring deposit maturity amount, total deposits and interest. Enter your monthly deposit, tenure and rate." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tooladda.online/calculators/rd-calculator.html" />
+    <meta property="og:site_name" content="ToolAdda" />
+    <meta property="og:image" content="https://tooladda.online/assets/images/og/calculators-rd-calculator.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content="RD Calculator — free recurring deposit maturity calculator on ToolAdda, runs in your browser with no sign-up." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="RD Calculator — Recurring Deposit Maturity Amount | ToolAdda" />
+    <meta name="twitter:description" content="Free RD calculator to estimate recurring deposit maturity amount, total deposits and interest. Enter your monthly deposit, tenure and rate." />
+    <meta name="twitter:image" content="https://tooladda.online/assets/images/og/calculators-rd-calculator.jpg" />
+    <meta name="twitter:image:alt" content="RD Calculator — free recurring deposit maturity calculator on ToolAdda, runs in your browser with no sign-up." />
+
+  <style id="rd-styles">
+    /* ============================================================
+       RD Calculator — page-scoped design system.
+
+       Built on the same console layout as the SIP calculator so the
+       two tools feel like one family: a fixed-width input rail, a
+       results column that leads with one dominant number, and a
+       full-width breakdown below.
+
+       The hues are RD's own. The story here is deposits versus
+       interest, so a steady slate carries the money you put in and a
+       brass tone carries what the bank adds. Teal is the page accent.
+       Chart, split bar, legend and table all reuse that same pair,
+       and every one of them states the figures in text as well, so
+       nothing depends on telling two colours apart.
+       ============================================================ */
+
+    .rd-page {
+      --rd-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+      --rd-r-sm: 8px;
+      --rd-r-md: 12px;
+      --rd-r-lg: 18px;
+
+      --app-bg: #eff6f5;
+      --surface: #ffffff;
+      --surface-raised: #f4faf9;
+      --surface-hover: #e2efed;
+      --text-primary: #0b2b28;
+      --text-secondary: #3a5450;
+      --muted: #64837f;
+      --border: rgba(11, 43, 40, .12);
+      --border-strong: rgba(11, 43, 40, .21);
+
+      --accent: #0f766e;
+      --accent-deep: #115e59;
+      --accent-soft: rgba(15, 118, 110, .10);
+
+      --deposit: #566b82;
+      --deposit-soft: rgba(86, 107, 130, .14);
+      --interest: #b45309;
+      --interest-soft: rgba(180, 83, 9, .13);
+      --maturity: #115e59;
+
+      --positive: #15803d;
+      --warning: #8a6206;
+      --warning-soft: rgba(138, 98, 6, .13);
+      --danger: #b3261e;
+      --danger-soft: rgba(179, 38, 30, .11);
+      --focus: #0f766e;
+
+      --rd-shadow: 0 1px 2px rgba(11, 43, 40, .05), 0 14px 38px rgba(11, 43, 40, .08);
+
+      color: var(--text-primary);
+      background: linear-gradient(180deg, rgba(15, 118, 110, .07), transparent 320px), var(--app-bg);
+      padding-bottom: 3rem;
+    }
+
+    [data-theme="dark"] .rd-page {
+      --app-bg: #06100f;
+      --surface: #0e1b1a;
+      --surface-raised: #142524;
+      --surface-hover: #1c332f;
+      --text-primary: #e6f4f2;
+      --text-secondary: #b3cbc7;
+      --muted: #85a5a0;
+      --border: rgba(230, 244, 242, .13);
+      --border-strong: rgba(230, 244, 242, .23);
+
+      --accent: #2dd4bf;
+      --accent-deep: #5eead4;
+      --accent-soft: rgba(45, 212, 191, .14);
+
+      --deposit: #9bb2c9;
+      --deposit-soft: rgba(155, 178, 201, .15);
+      --interest: #fbbf24;
+      --interest-soft: rgba(251, 191, 36, .15);
+      --maturity: #5eead4;
+
+      --positive: #6ee7a0;
+      --warning: #e0b054;
+      --warning-soft: rgba(224, 176, 84, .14);
+      --danger: #ef8a7f;
+      --danger-soft: rgba(239, 138, 127, .13);
+      --focus: #2dd4bf;
+
+      --rd-shadow: 0 16px 46px rgba(0, 0, 0, .5);
+
+      background: linear-gradient(180deg, rgba(45, 212, 191, .08), transparent 320px), var(--app-bg);
+    }
+
+    /* Follow the OS until the visitor uses the site's own toggle. */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .rd-page {
+        --app-bg: #06100f;
+        --surface: #0e1b1a;
+        --surface-raised: #142524;
+        --surface-hover: #1c332f;
+        --text-primary: #e6f4f2;
+        --text-secondary: #b3cbc7;
+        --muted: #85a5a0;
+        --border: rgba(230, 244, 242, .13);
+        --border-strong: rgba(230, 244, 242, .23);
+        --accent: #2dd4bf;
+        --accent-deep: #5eead4;
+        --accent-soft: rgba(45, 212, 191, .14);
+        --deposit: #9bb2c9;
+        --deposit-soft: rgba(155, 178, 201, .15);
+        --interest: #fbbf24;
+        --interest-soft: rgba(251, 191, 36, .15);
+        --maturity: #5eead4;
+        --positive: #6ee7a0;
+        --warning: #e0b054;
+        --warning-soft: rgba(224, 176, 84, .14);
+        --danger: #ef8a7f;
+        --danger-soft: rgba(239, 138, 127, .13);
+        --focus: #2dd4bf;
+        --rd-shadow: 0 16px 46px rgba(0, 0, 0, .5);
+        background: linear-gradient(180deg, rgba(45, 212, 191, .08), transparent 320px), var(--app-bg);
+      }
+    }
+
+    /* The previous build set outline:none on every input, which
+       removes the focus ring outright — a WCAG 2.4.7 failure. */
+    .rd-page :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 5px; }
+    .rd-page [hidden] { display: none !important; }
+    .rd-wrap { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    .rd-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+    /* ---------- breadcrumb + hero ---------- */
+    .rd-crumb { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; padding: 1rem 0 .2rem; font-size: .85rem; color: var(--muted); }
+    .rd-crumb a { color: var(--accent); font-weight: 600; text-decoration: none; }
+    .rd-crumb a:hover { text-decoration: underline; }
+    .rd-crumb span[aria-hidden] { opacity: .5; }
+
+    .rd-hero { padding: 1.05rem 0 1.35rem; }
+    .rd-eyebrow {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-family: var(--rd-mono); font-size: .69rem; font-weight: 700;
+      letter-spacing: .15em; text-transform: uppercase; color: var(--accent);
+      padding: .3rem .62rem; border-radius: 999px;
+      background: var(--accent-soft); border: 1px solid var(--accent-soft);
+    }
+    .rd-h1 { margin: .7rem 0 .45rem; font-size: clamp(1.9rem, 4.6vw, 2.8rem); font-weight: 800; letter-spacing: -.023em; line-height: 1.08; }
+    .rd-lede { margin: 0; max-width: 66ch; color: var(--text-secondary); font-size: 1.02rem; line-height: 1.65; }
+    .rd-trust { display: flex; flex-wrap: wrap; gap: .4rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+    .rd-trust li { font-size: .78rem; font-weight: 600; color: var(--text-secondary); padding: .3rem .62rem; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); }
+
+    /* ---------- controls ---------- */
+    .rd-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+      font: inherit; font-weight: 650; line-height: 1.15; cursor: pointer; text-decoration: none;
+      min-height: 44px; padding: .64rem 1.05rem; border-radius: var(--rd-r-md);
+      border: 1px solid transparent; color: inherit; background: none;
+      transition: background .15s, border-color .15s, color .15s, transform .1s;
+    }
+    .rd-btn:active { transform: translateY(1px); }
+    .rd-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+    .rd-btn--accent { background: var(--accent); color: #fff; }
+    .rd-btn--accent:hover:not(:disabled) { background: var(--accent-deep); }
+    [data-theme="dark"] .rd-btn--accent { color: #06100f; }
+    .rd-btn--ghost { background: var(--surface); color: var(--text-secondary); border-color: var(--border-strong); }
+    .rd-btn--ghost:hover:not(:disabled) { background: var(--surface-hover); color: var(--text-primary); }
+    .rd-btn--hero { min-height: 54px; font-size: 1.04rem; font-weight: 750; width: 100%; }
+    .rd-btn--sm { min-height: 40px; padding: .42rem .8rem; font-size: .85rem; border-radius: var(--rd-r-sm); }
+
+    .rd-label { display: block; font-size: .71rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); margin-bottom: .42rem; }
+    .rd-hint { margin: .4rem 0 0; font-size: .8rem; line-height: 1.55; color: var(--muted); }
+
+    .rd-input, .rd-select {
+      width: 100%; box-sizing: border-box; font: inherit;
+      color: var(--text-primary); background: var(--surface-raised);
+      border: 1.5px solid var(--border-strong); border-radius: var(--rd-r-md);
+      padding: .7rem .8rem; min-height: 50px;
+      font-family: var(--rd-mono); font-size: 1.15rem; font-weight: 700;
+    }
+    .rd-select { font-size: .95rem; }
+    /* Pointer focus gets the soft ring. Keyboard focus additionally
+       keeps a real outline: this rule sits after `.rd-page
+       :focus-visible` at equal specificity, so without the second
+       declaration the `outline: none` here would silently win and
+       strip the keyboard focus indicator off every field. */
+    .rd-input:focus, .rd-select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+    .rd-input:focus-visible, .rd-select:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+    .rd-input[aria-invalid="true"] { border-color: var(--danger); }
+    .rd-input--prefix { padding-left: 2rem; }
+    .rd-input--suffix { padding-right: 2.4rem; }
+    .rd-input::-webkit-outer-spin-button, .rd-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .rd-input { -moz-appearance: textfield; appearance: textfield; }
+
+    .rd-field { position: relative; }
+    .rd-field__unit { position: absolute; top: 50%; transform: translateY(-50%); font-weight: 700; color: var(--muted); pointer-events: none; font-family: var(--rd-mono); }
+    .rd-field__unit--pre { left: .75rem; }
+    .rd-field__unit--post { right: .9rem; }
+
+    .rd-duo { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+    .rd-duo label { display: block; }
+    .rd-duo .rd-label { font-size: .66rem; }
+
+    .rd-page input[type="range"] {
+      -webkit-appearance: none; appearance: none; width: 100%; height: 28px; background: none; cursor: pointer; margin: .15rem 0 0;
+    }
+    .rd-page input[type="range"]::-webkit-slider-runnable-track { height: 5px; border-radius: 999px; background: var(--border-strong); }
+    .rd-page input[type="range"]::-moz-range-track { height: 5px; border-radius: 999px; background: var(--border-strong); }
+    .rd-page input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none; margin-top: -7px;
+      width: 19px; height: 19px; border-radius: 50%;
+      background: var(--accent); border: 2px solid var(--surface); box-shadow: 0 1px 4px rgba(0,0,0,.35);
+    }
+    .rd-page input[type="range"]::-moz-range-thumb {
+      width: 19px; height: 19px; border-radius: 50%; border: 2px solid var(--surface);
+      background: var(--accent); box-shadow: 0 1px 4px rgba(0,0,0,.35);
+    }
+
+    .rd-modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap: .35rem; }
+    .rd-mode {
+      display: grid; gap: .1rem; text-align: left; font: inherit; cursor: pointer; min-height: 48px;
+      padding: .5rem .7rem; border-radius: var(--rd-r-sm);
+      border: 1px solid var(--border); background: var(--surface); color: var(--text-secondary);
+      transition: border-color .15s, background .15s, color .15s;
+    }
+    .rd-mode:hover { background: var(--surface-hover); border-color: var(--accent); }
+    .rd-mode.is-on { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+    .rd-mode__title { font-weight: 700; font-size: .86rem; }
+    .rd-mode__q { font-size: .72rem; color: var(--muted); }
+    .rd-mode.is-on .rd-mode__q { color: var(--accent); opacity: .85; }
+
+    .rd-chiprow { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .45rem; }
+    .rd-chip {
+      font: inherit; font-size: .78rem; font-weight: 650; cursor: pointer;
+      padding: .32rem .65rem; min-height: 34px; border-radius: 999px;
+      border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-secondary);
+      transition: border-color .15s, background .15s, color .15s;
+    }
+    .rd-chip:hover { background: var(--surface-hover); color: var(--text-primary); border-color: var(--accent); }
+    .rd-chip.is-on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+    .rd-check { display: flex; align-items: center; gap: .55rem; font-size: .86rem; color: var(--text-secondary); cursor: pointer; padding: .3rem 0; min-height: 44px; }
+    .rd-check input { width: 18px; height: 18px; flex: none; accent-color: var(--accent); }
+
+    /* ---------- console ---------- */
+    .rd-console {
+      border: 1px solid var(--border-strong); border-radius: var(--rd-r-lg);
+      background: var(--surface); overflow: hidden; box-shadow: var(--rd-shadow);
+    }
+    .rd-console__bar {
+      display: flex; align-items: center; justify-content: space-between; gap: .5rem 1rem; flex-wrap: wrap;
+      padding: .6rem 1rem; background: var(--surface-raised); border-bottom: 1px solid var(--border);
+    }
+    .rd-console__title { margin: 0; font-family: var(--rd-mono); font-size: .68rem; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; color: var(--text-secondary); }
+    .rd-console__privacy {
+      display: inline-flex; align-items: center; gap: .32rem; white-space: nowrap;
+      font-size: .72rem; font-weight: 650; color: var(--positive);
+      background: var(--accent-soft); border: 1px solid var(--accent-soft);
+      padding: .24rem .55rem; border-radius: 999px;
+    }
+    .rd-modebar { padding: .8rem 1rem; border-bottom: 1px solid var(--border); background: var(--surface-raised); }
+
+    .rd-grid { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); }
+    @media (max-width: 940px) { .rd-grid { grid-template-columns: 1fr; } }
+    .rd-col { min-width: 0; padding: 1.1rem; }
+    .rd-col--in { border-right: 1px solid var(--border); }
+    @media (max-width: 940px) { .rd-col--in { border-right: none; border-bottom: 1px solid var(--border); } }
+    .rd-col--full { grid-column: 1 / -1; border-top: 1px solid var(--border); padding: 1.1rem; }
+    .rd-block + .rd-block { margin-top: 1rem; }
+
+    .rd-error {
+      margin-bottom: .9rem; padding: .75rem .85rem; border-radius: var(--rd-r-md);
+      border: 1px solid var(--danger); background: var(--danger-soft); color: var(--danger);
+      font-size: .88rem; line-height: 1.6;
+    }
+
+    /* ---------- headline ---------- */
+    .rd-headline {
+      padding: 1rem 1.1rem; border-radius: var(--rd-r-md);
+      background: var(--accent-soft); border: 1px solid var(--accent-soft);
+    }
+    .rd-headline__label { display: block; font-size: .71rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); margin-bottom: .2rem; }
+    .rd-headline__value {
+      display: block; font-family: var(--rd-mono); font-weight: 800; color: var(--maturity);
+      font-size: clamp(2rem, 6vw, 3rem); line-height: 1.03; letter-spacing: -.03em; overflow-wrap: anywhere;
+    }
+    .rd-headline__compact { display: block; margin-top: .05rem; font-size: .88rem; font-weight: 650; color: var(--accent); }
+    .rd-headline__assumption { display: block; margin-top: .4rem; font-size: .8rem; line-height: 1.55; color: var(--text-secondary); }
+    .rd-headline--target { background: var(--interest-soft); border-color: var(--interest-soft); }
+    .rd-headline--target .rd-headline__value { color: var(--interest); }
+
+    /* ---------- split ---------- */
+    .rd-splitbar { display: flex; height: 20px; border-radius: 999px; overflow: hidden; background: var(--surface-hover); border: 1px solid var(--border); margin: .9rem 0 .5rem; }
+    .rd-splitbar__seg { display: block; height: 100%; }
+    .rd-splitbar__seg--deposit { background: var(--deposit); }
+    .rd-splitbar__seg--interest {
+      background: var(--interest);
+      /* A texture as well as a hue, so the bands stay distinguishable
+         without relying on colour vision. */
+      background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.3) 0 4px, transparent 4px 8px);
+    }
+    .rd-legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr)); gap: .4rem; margin: 0; }
+    .rd-legend__item { padding: .5rem .65rem; border-radius: var(--rd-r-sm); background: var(--surface-raised); border: 1px solid var(--border); border-left-width: 3px; }
+    .rd-legend__item dt { font-size: .7rem; font-weight: 700; color: var(--muted); }
+    .rd-legend__item dd { margin: .1rem 0 0; font-family: var(--rd-mono); font-size: .98rem; font-weight: 750; display: flex; align-items: baseline; gap: .4rem; flex-wrap: wrap; }
+    .rd-legend__item dd span { font-size: .74rem; font-weight: 600; color: var(--muted); }
+    .rd-legend__item--deposit { border-left-color: var(--deposit); }
+    .rd-legend__item--deposit dd { color: var(--deposit); }
+    .rd-legend__item--interest { border-left-color: var(--interest); }
+    .rd-legend__item--interest dd { color: var(--interest); }
+
+    /* ---------- stats ---------- */
+    .rd-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr)); gap: .45rem; margin: .9rem 0 0; }
+    .rd-stat { min-width: 0; padding: .58rem .7rem; border-radius: var(--rd-r-sm); background: var(--surface-raised); border: 1px solid var(--border); }
+    .rd-stat dt { font-size: .67rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+    .rd-stat dd { margin: .15rem 0 0; font-family: var(--rd-mono); font-size: 1rem; font-weight: 750; color: var(--text-primary); overflow-wrap: anywhere; }
+    .rd-stat--deposit { border-left: 3px solid var(--deposit); }
+    .rd-stat--deposit dd { color: var(--deposit); }
+    .rd-stat--interest { border-left: 3px solid var(--interest); }
+    .rd-stat--interest dd { color: var(--interest); }
+    .rd-stat__hint { margin: .15rem 0 0; font-size: .69rem; line-height: 1.45; color: var(--muted); }
+
+    /* ---------- chart ---------- */
+    .rd-chartbox { margin-top: 1rem; padding: .85rem; border-radius: var(--rd-r-md); border: 1px solid var(--border); background: var(--surface-raised); }
+    .rd-chart { width: 100%; height: 210px; display: block; overflow: visible; }
+    .rd-chart__area--value { fill: var(--interest-soft); }
+    .rd-chart__grid { stroke: var(--border); stroke-width: 1; }
+    .rd-chart__line { stroke-width: 2.5; fill: none; vector-effect: non-scaling-stroke; }
+    .rd-chart__line--value { stroke: var(--interest); }
+    .rd-chart__line--deposit { stroke: var(--deposit); stroke-dasharray: 5 4; }
+    .rd-chart__dot { fill: var(--interest); }
+    .rd-chart__label { font-size: 10px; fill: var(--muted); font-family: var(--rd-mono); }
+    .rd-chart__key { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin-top: .4rem; font-size: .8rem; color: var(--text-secondary); }
+    .rd-chart__key span { display: inline-flex; align-items: center; gap: .35rem; }
+    .rd-swatch { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+    .rd-swatch--deposit { background: var(--deposit); }
+    .rd-swatch--interest { background: var(--interest); }
+    .rd-chartcaption { margin: .5rem 0 0; font-size: .83rem; line-height: 1.6; color: var(--text-secondary); }
+
+    /* ---------- tables ---------- */
+    /* The scroll container is the table wrapper, never the page — a
+       horizontally scrolling document on a 320px phone is the most
+       common mobile defect on calculator pages. */
+    .rd-tablewrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--rd-r-md); margin-top: .5rem; }
+    .rd-tablewrap--tall { max-height: 420px; overflow-y: auto; }
+    .rd-table { width: 100%; border-collapse: collapse; min-width: 520px; font-size: .86rem; background: var(--surface); }
+    .rd-table caption { caption-side: top; text-align: left; padding: .6rem .7rem; font-size: .8rem; color: var(--muted); background: var(--surface-raised); border-bottom: 1px solid var(--border); }
+    .rd-table th, .rd-table td { padding: .5rem .7rem; text-align: right; border-bottom: 1px solid var(--border); }
+    .rd-table th[scope="col"] { position: sticky; top: 0; font-size: .66rem; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); background: var(--surface-raised); }
+    .rd-table th[scope="col"]:first-child, .rd-table th[scope="row"] { text-align: left; }
+    .rd-table th[scope="row"] { font-weight: 620; color: var(--text-primary); }
+    .rd-table td { font-family: var(--rd-mono); color: var(--text-secondary); }
+    .rd-table tbody tr:last-child th, .rd-table tbody tr:last-child td { border-bottom: none; }
+    .rd-table__final { background: var(--accent-soft); }
+    .rd-table__final th, .rd-table__final td { font-weight: 800; color: var(--text-primary); }
+
+    .rd-note { margin: .6rem 0 0; padding: .7rem .8rem; border-radius: var(--rd-r-md); font-size: .84rem; line-height: 1.65; background: var(--warning-soft); border: 1px solid var(--warning-soft); color: var(--text-secondary); }
+    .rd-note strong { color: var(--text-primary); }
+
+    .rd-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem; margin-top: .9rem; }
+
+    .rd-details { border: 1px solid var(--border); border-radius: var(--rd-r-md); background: var(--surface); margin-top: .9rem; }
+    .rd-details > summary {
+      list-style: none; cursor: pointer; padding: .72rem .85rem; min-height: 44px;
+      display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+      font-weight: 700; font-size: .89rem;
+    }
+    .rd-details > summary::-webkit-details-marker { display: none; }
+    .rd-details > summary::after { content: "+"; font-family: var(--rd-mono); font-size: 1.05rem; color: var(--muted); }
+    .rd-details[open] > summary::after { content: "−"; }
+    .rd-details[open] > summary { border-bottom: 1px solid var(--border); }
+    .rd-details__body { padding: .85rem; }
+
+    .rd-history { list-style: none; margin: .6rem 0 0; padding: 0; display: grid; gap: .3rem; }
+    .rd-history__item {
+      display: flex; justify-content: space-between; gap: .75rem; align-items: baseline;
+      min-height: 40px; padding: .45rem .7rem; border-radius: var(--rd-r-sm);
+      border: 1px solid var(--border); background: var(--surface-raised); color: var(--text-secondary); font-size: .83rem;
+    }
+    .rd-history__value { font-family: var(--rd-mono); font-weight: 750; color: var(--maturity); }
+
+    /* Timeline — three moments in the life of the deposit. */
+    .rd-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); gap: .5rem; margin: .5rem 0 0; padding: 0; list-style: none; }
+    .rd-step { padding: .65rem .75rem; border-radius: var(--rd-r-sm); background: var(--surface-raised); border: 1px solid var(--border); border-top: 3px solid var(--deposit); }
+    .rd-step--final { border-top-color: var(--interest); }
+    .rd-step__when { display: block; font-size: .67rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+    .rd-step__value { display: block; margin: .15rem 0 0; font-family: var(--rd-mono); font-size: 1rem; font-weight: 750; color: var(--text-primary); }
+    .rd-step__note { display: block; margin-top: .15rem; font-size: .75rem; line-height: 1.45; color: var(--muted); }
+
+    /* Breakdown — the audit trail behind the headline. */
+    .rd-breakdown { margin: 0; display: grid; gap: 0; }
+    .rd-breakdown__row { display: flex; justify-content: space-between; gap: 1rem; padding: .5rem 0; border-bottom: 1px dashed var(--border); }
+    .rd-breakdown__row dt { font-size: .85rem; color: var(--text-secondary); }
+    .rd-breakdown__row dd { margin: 0; font-family: var(--rd-mono); font-weight: 700; color: var(--text-primary); text-align: right; font-size: .88rem; }
+    .rd-breakdown__row--total { border-bottom: none; border-top: 2px solid var(--accent); margin-top: .3rem; padding-top: .65rem; }
+    .rd-breakdown__row--total dd { color: var(--maturity); font-size: 1.05rem; }
+
+    /* ---------- content ---------- */
+    .rd-section { margin-top: 2.4rem; }
+    .rd-h2 { margin: 0 0 .45rem; font-size: clamp(1.32rem, 2.6vw, 1.72rem); font-weight: 760; letter-spacing: -.016em; line-height: 1.22; }
+    .rd-h3 { margin: 1.6rem 0 .4rem; font-size: 1.06rem; font-weight: 720; }
+    .rd-sub { margin: 0 0 1rem; color: var(--text-secondary); max-width: 74ch; line-height: 1.65; }
+    /* Body copy across the article. Scoped to the section rather than
+       to a wrapper class so the measure applies to running text only —
+       putting a 74ch cap on the section itself would also squeeze the
+       card grids inside it down to a single narrow column. */
+    .rd-section p, .rd-section li { color: var(--text-secondary); line-height: 1.72; }
+    .rd-section > p, .rd-section > ul, .rd-section > ol { max-width: 74ch; }
+    .rd-section > p { margin: 0 0 .85rem; }
+    .rd-section > ul, .rd-section > ol { margin: 0 0 .95rem; padding-left: 1.15rem; }
+    .rd-section li { margin-bottom: .35rem; }
+    .rd-section strong { color: var(--text-primary); font-weight: 700; }
+    .rd-section a { color: var(--accent); font-weight: 600; }
+    .rd-section pre { max-width: 74ch; }
+
+    .rd-formula {
+      font-family: var(--rd-mono); font-size: .9rem; line-height: 1.9;
+      padding: .85rem 1rem; margin: 0 0 1rem; border-radius: var(--rd-r-md);
+      background: var(--surface-raised); border: 1px solid var(--border);
+      border-left: 3px solid var(--accent); color: var(--text-primary); overflow-x: auto;
+      white-space: pre-wrap;
+    }
+    .rd-formula b { color: var(--accent); font-weight: 700; }
+
+    .rd-callout { padding: .8rem .9rem; border-radius: var(--rd-r-md); font-size: .86rem; line-height: 1.65; background: var(--warning-soft); border: 1px solid var(--warning-soft); color: var(--text-secondary); }
+    .rd-callout strong { color: var(--warning); }
+
+    .rd-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(238px, 100%), 1fr)); gap: .7rem; }
+    .rd-card { min-width: 0; padding: .95rem; border-radius: var(--rd-r-md); border: 1px solid var(--border); background: var(--surface); }
+    .rd-card h3 { margin: 0 0 .35rem; font-size: .98rem; font-weight: 750; }
+    .rd-card p, .rd-card li { margin: 0; font-size: .85rem; line-height: 1.62; color: var(--text-secondary); }
+    .rd-card ul { margin: 0; padding-left: 1.05rem; }
+    .rd-card li { margin-bottom: .28rem; }
+    .rd-card--dep { border-top: 3px solid var(--deposit); }
+    .rd-card--int { border-top: 3px solid var(--interest); }
+
+    /* Worked examples, rendered from the engine. */
+    .rd-eg { min-width: 0; padding: .95rem; border-radius: var(--rd-r-md); border: 1px solid var(--border); background: var(--surface); border-top: 3px solid var(--accent); }
+    .rd-eg h3 { margin: 0 0 .5rem; font-size: .95rem; font-weight: 750; }
+    .rd-eg dl { margin: 0; display: grid; gap: .28rem; }
+    .rd-eg dl > div { display: flex; justify-content: space-between; gap: .6rem; align-items: baseline; }
+    .rd-eg dt { font-size: .8rem; color: var(--text-secondary); }
+    .rd-eg dd { margin: 0; font-family: var(--rd-mono); font-size: .9rem; font-weight: 720; color: var(--text-primary); }
+    .rd-eg .is-total { padding-top: .35rem; border-top: 1px solid var(--border); }
+    .rd-eg .is-total dd { color: var(--maturity); font-size: 1rem; font-weight: 800; }
+    .rd-eg__note { margin: .5rem 0 0; font-size: .74rem; color: var(--muted); }
+
+    .rd-faq { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: .55rem; align-items: start; }
+    .rd-faq details { border: 1px solid var(--border); border-radius: var(--rd-r-md); background: var(--surface); }
+    .rd-faq summary { cursor: pointer; padding: .8rem .9rem; min-height: 44px; font-weight: 660; font-size: .93rem; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: .6rem; }
+    .rd-faq summary::-webkit-details-marker { display: none; }
+    .rd-faq summary::after { content: "+"; font-family: var(--rd-mono); color: var(--muted); }
+    .rd-faq details[open] summary::after { content: "−"; }
+    .rd-faq p { margin: 0; padding: 0 .9rem .85rem; font-size: .87rem; line-height: 1.65; color: var(--text-secondary); }
+
+    .rd-related { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(228px, 100%), 1fr)); gap: .6rem; }
+    .rd-related a { display: block; padding: .85rem .9rem; border-radius: var(--rd-r-md); border: 1px solid var(--border); background: var(--surface); text-decoration: none; color: inherit; transition: border-color .15s, background .15s; }
+    .rd-related a:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .rd-related strong { display: block; font-size: .93rem; margin-bottom: .18rem; }
+    .rd-related span { font-size: .8rem; color: var(--muted); line-height: 1.5; }
+
+    .rd-disclaimer { margin-top: 2rem; padding: .85rem 1rem; border-radius: var(--rd-r-md); border: 1px solid var(--border); background: var(--surface-raised); font-size: .82rem; line-height: 1.65; color: var(--muted); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .rd-page *, .rd-page *::before, .rd-page *::after {
+        transition-duration: .01ms !important; animation-duration: .01ms !important;
+      }
+    }
+
+    @media print {
+      .site-header, .site-footer, .skip-link, .rd-crumb, .rd-trust,
+      .rd-console__privacy, .rd-col--in, .rd-modebar, .rd-actions,
+      .rd-section, .rd-details, .rd-eyebrow { display: none !important; }
+      .rd-page { background: #fff !important; color: #000 !important; padding: 0; }
+      .rd-page * { color: #000 !important; box-shadow: none !important; }
+      .rd-console { border: 1px solid #000; }
+      .rd-grid { display: block; }
+      .rd-headline, .rd-table__final { background: #f2f2f2 !important; }
+      .rd-h1 { font-size: 1.5rem; margin: 0 0 .3rem; }
+      .rd-lede { font-size: .85rem; }
+      .rd-table { font-size: .74rem; }
+      .rd-tablewrap, .rd-tablewrap--tall { overflow: visible !important; max-height: none !important; }
+      .rd-splitbar__seg--deposit { background: #777 !important; }
+      .rd-splitbar__seg--interest { background: #ccc !important; }
+      .rd-print-stamp, .rd-print-disclaimer { display: block !important; font-size: .75rem; margin-top: .6rem; line-height: 1.5; }
+      .rd-print-disclaimer { border-top: 1px solid #999; padding-top: .5rem; }
+      a[href]::after { content: ""; }
+    }
+    .rd-print-stamp, .rd-print-disclaimer { display: none; }
+    /* =====================================================================
+       2026-09 redesign: "passbook". A recurring deposit is a row of monthly
+       entries in a passbook, so the page is one: guilloche security paper for
+       the ground (the curved line-work on cheques and passbooks), a teal
+       leather cover with gold lettering, and an open page of twelve deposit
+       stamps ending in a red MATURITY stamp. The teal accent stays (it
+       matches the OG card); slate and brass keep their deposit / interest
+       meaning. The calculator is one grid with the ad in its own column.
+       ===================================================================== */
+    .rd-page { --rp-guil: rgba(15, 118, 110, .055); --rp-leather: #0d4f49; --rp-leather-2: #083733; --rp-gold: #d8b25a; --rp-paper: #fbf8ef; --rp-stamp: #b42318; }
+    [data-theme="dark"] .rd-page { --rp-guil: rgba(45, 212, 191, .04); --rp-leather: #0b3f3a; --rp-leather-2: #052825; --rp-paper: #efe9d8; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .rd-page { --rp-guil: rgba(45, 212, 191, .04); --rp-leather: #0b3f3a; --rp-leather-2: #052825; --rp-paper: #efe9d8; } }
+    /* the ground: guilloche - two families of fine rings crossing */
+    .rp-page .rd-page { background:
+      repeating-radial-gradient(circle at 0 0, transparent 0 17px, var(--rp-guil) 17px 18px),
+      repeating-radial-gradient(circle at 100% 0, transparent 0 17px, var(--rp-guil) 17px 18px),
+      linear-gradient(180deg, rgba(15, 118, 110, .07), transparent 320px), var(--app-bg); background-attachment: fixed, fixed, scroll, scroll; }
+    body.rp-page a.ta-donate, body.rp-page a.ta-donate:hover { color: #14213d !important; }
+
+    /* side ad rails from 1280px: style.css squeezes .rd-wrap only from 1331px */
+    @media (min-width: 1280px) {
+      body.rp-page .rd-wrap { max-width: min(1200px, calc(100% - 356px)); }
+      body.rp-page :is(.container, .ta-support):not(.rd-wrap) { max-width: min(1120px, calc(100% - 356px)); }
+      /* .ta-support sits inside .rd-wrap, so both squeezes (this one and
+         style.css's from 1331px) capped it twice; the wrap already leaves
+         the gutters */
+      body.rp-page:not(.no-side-ad-squeeze) .rd-wrap > .ta-support:not(.rd-wrap) { max-width: none; }
+    }
+    @media (min-width: 1280px) and (max-width: 1490px) { body.rp-page .brand-tagline { display: none; } }
+
+    /* ---------- cover: the passbook ---------- */
+    .rp-cover { position: relative; display: grid; gap: 1.2rem 2rem; align-items: center; margin: .6rem 0 1rem; padding: 1.2rem 1.8rem; border-radius: 14px 22px 22px 14px; color: #f3ecd6;
+      background: radial-gradient(420px 220px at 15% 0%, rgba(255, 255, 255, .1), transparent 70%), repeating-linear-gradient(45deg, rgba(255, 255, 255, .025) 0 2px, transparent 2px 5px), linear-gradient(160deg, var(--rp-leather), var(--rp-leather-2));
+      box-shadow: inset 10px 0 0 rgba(0, 0, 0, .18), inset 0 0 0 1px rgba(216, 178, 90, .35), 0 18px 40px -22px rgba(8, 55, 51, .7); }
+    /* stitching round the cover */
+    .rp-cover::before { content: ""; position: absolute; inset: 8px 10px 8px 18px; border: 1.5px dashed rgba(216, 178, 90, .45); border-radius: 10px 16px 16px 10px; pointer-events: none; }
+    @media (min-width: 900px) { .rp-cover { grid-template-columns: minmax(0, 1fr) 290px; } }
+    .rp-cover > * { position: relative; }
+    .rp-page .rp-cover .rd-eyebrow { color: var(--rp-gold); background: rgba(216, 178, 90, .12); border-color: rgba(216, 178, 90, .35); }
+    .rp-title { margin: .5rem 0 0; line-height: 1; }
+    .rp-t1 { display: block; font: 800 clamp(2.9rem, 1.9rem + 3.6vw, 4.3rem)/.95 Georgia, "Times New Roman", serif; letter-spacing: .02em;
+      color: var(--rp-gold); text-shadow: 0 1px 0 rgba(0, 0, 0, .35), 0 0 18px rgba(216, 178, 90, .25); }
+    .rp-t2 { display: block; margin-top: .2rem; font: 700 clamp(1.4rem, 1rem + 1.6vw, 2rem)/1.1 Georgia, serif; letter-spacing: .12em; text-transform: uppercase; color: #f3ecd6; }
+
+    /* the open page: twelve monthly entries, the last stamped MATURITY (decorative) */
+    .rp-book { padding: .8rem .85rem .9rem; border-radius: 6px; background: repeating-linear-gradient(180deg, transparent 0 21px, rgba(15, 118, 110, .12) 21px 22px), var(--rp-paper);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, .4); transform: rotate(1.5deg); color: #2b3a38; }
+    .rp-book-h { display: flex; justify-content: space-between; margin: 0 0 .55rem; font: 700 .64rem/1 ui-monospace, Consolas, monospace; letter-spacing: .12em; text-transform: uppercase; color: #0f766e; }
+    .rp-stamps { display: grid; grid-template-columns: repeat(4, 1fr); gap: .45rem; }
+    .rp-stamps i { position: relative; display: flex; align-items: flex-end; justify-content: flex-start; padding: .18rem .25rem; aspect-ratio: 1.25; border: 1px dashed rgba(15, 118, 110, .45); border-radius: 4px;
+      font: 700 .5rem/1 ui-monospace, Consolas, monospace; font-style: normal; letter-spacing: .06em; color: #5b6d6a; }
+    .rp-stamps i::before { content: "₹"; position: absolute; left: 50%; top: 42%; width: 1.45rem; height: 1.45rem; border: 2px solid rgba(15, 118, 110, .7); border-radius: 50%;
+      display: grid; place-items: center; font-size: .78rem; color: rgba(15, 118, 110, .85); transform: translate(-50%, -50%) rotate(var(--r, -12deg)); background: rgba(255, 255, 255, .4); }
+    .rp-stamps i.last::before { content: "MATURITY"; width: auto; height: auto; padding: .15rem .3rem; border-radius: 3px; border-color: var(--rp-stamp); color: var(--rp-stamp);
+      font-size: .5rem; letter-spacing: .08em; transform: translate(-50%, -50%) rotate(-14deg); }
+
+    /* ---------- the calculator grid (same order as the SIP page) ---------- */
+    .rp-cq { container: rpcq / inline-size; }
+    .rp-page .rd-console.rp-work { display: grid; overflow: visible; align-items: start; grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: "bar" "core" "ad" "modes" "out" "more" "full"; }
+    .rp-work > .rp-bar { grid-area: bar; border-radius: var(--rd-r-lg) var(--rd-r-lg) 0 0; }
+    .rp-work > .rp-modes { grid-area: modes; }
+    .rp-work > .rp-core { grid-area: core; }
+    .rp-work > .rp-ad-zone { grid-area: ad; min-width: 0; padding: .9rem 1rem; }
+    .rp-work > .rp-out { grid-area: out; }
+    .rp-work > .rp-more { grid-area: more; padding-top: .9rem; }
+    .rp-work > .rp-full { grid-area: full; }
+    .rp-page .rp-work > .rd-col--in { border-right: 0; }
+    .rp-work > .rp-core, .rp-work > .rp-out, .rp-work > .rp-more { border-bottom: 1px solid var(--border); }
+    .rp-page .rp-core > .rd-block[hidden]:first-child + .rd-block { margin-top: 0; }
+    @media (min-width: 700px) {
+      .rp-page .rd-console.rp-work { grid-template-columns: minmax(0, 1fr) 300px; grid-template-rows: auto auto auto auto auto 1fr;
+        grid-template-areas: "bar bar" "modes ad" "core ad" "out ad" "more ad" "full ad"; }
+      .rp-work > .rp-ad-zone { align-self: stretch; padding: 1rem; border-left: 1px solid var(--border); }
+      .rp-work > .rp-ad-zone > .ta-inline-ad { position: sticky; top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+    }
+    @container rpcq (min-width: 1060px) {
+      .rp-page .rp-cq > .rd-console.rp-work { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr) 300px; grid-template-rows: auto auto auto 1fr auto;
+        grid-template-areas: "bar bar bar" "modes modes ad" "core out ad" "more out ad" "full full ad"; }
+      .rp-work > .rp-core, .rp-work > .rp-more { border-right: 1px solid var(--border); }
+      .rp-work > .rp-out { border-bottom: 0; align-self: stretch; }
+      .rp-work > .rp-more { border-bottom: 0; align-self: stretch; }
+      .rp-work > .rp-full { border-top: 1px solid var(--border); }
+    }
+    body.rp-page .rp-ad-zone { text-align: center; }
+    body.rp-page .rp-ad-zone .ta-inline-ad { display: block !important; margin: 0 auto !important; }
+    .rp-page .rp-work { scroll-margin-top: calc(var(--header-overlap, 5.5rem) + .75rem); }
+
+    /* passbook details: the headline as a stamped balance line */
+    .rp-page .rd-mode.is-on { box-shadow: inset 0 -3px 0 var(--accent); }
+    .rp-page .rd-headline { border-left: 5px solid var(--accent); }
+    .rp-page .rd-console__title { color: var(--accent); }
+
+    /* ---------- below the tool ---------- */
+    .rp-after { display: grid; gap: .8rem 1.6rem; align-items: center; margin: 1rem 0 0; padding: 1.05rem 1.25rem; border-radius: var(--rd-r-lg);
+      border: 1px solid var(--border-strong); background: var(--surface); }
+    @media (min-width: 900px) { .rp-after { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); } }
+    .rp-page .rp-after .rd-trust { margin: 0; }
+
+    /* ---------- new section: where the interest comes from ---------- */
+    .rp-inst th[scope="row"] { font-weight: 800; white-space: nowrap; }
+    .rp-inst td.bar { width: 34%; }
+    .rp-inst .rp-meter { display: block; height: .7rem; width: var(--w); min-width: 3px; border-radius: 999px; background: var(--interest); }
+    @media (max-width: 720px) {
+      .rp-instwrap { border: 0 !important; overflow: visible !important; background: none !important; }
+      .rp-inst, .rp-inst tbody, .rp-inst tr { display: block; }
+      .rp-inst { min-width: 0 !important; }
+      .rp-inst caption { display: block; margin: 0 0 .6rem; padding: 0; text-align: left; }
+      .rp-inst thead { display: none; }
+      .rp-inst tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .15rem .7rem; margin-bottom: .55rem; padding: .65rem .8rem;
+        border: 1px solid var(--border-strong); border-radius: var(--rd-r-md); background: var(--surface); }
+      .rp-inst th, .rp-inst td { display: block; padding: .2rem 0; border: 0; text-align: left; }
+      .rp-inst th[scope="row"] { grid-column: 1 / -1; font-size: 1rem; }
+      .rp-inst td.bar { grid-column: 1 / -1; width: auto; }
+      .rp-inst td:not(.bar)::before { content: attr(data-label); display: block; font-size: .68rem; font-weight: 700; color: var(--muted); }
+    }
+
+    @media print { .rp-page .rp-ad-zone, .rp-page .rp-after, .rp-page .rp-book { display: none !important; } }
+
+    /* ---------- phones ---------- */
+    @media (max-width: 899px) { .rp-book { display: none; } }
+    @media (max-width: 699px) {
+      .rp-page .rd-crumb, .rp-page .rp-cover .rd-eyebrow { display: none; }
+      .rp-cover { margin-top: .9rem; padding: 1rem 1.2rem 1rem 1.5rem; }
+      .rp-title { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 .6rem; }
+      .rp-t1 { display: inline; font-size: clamp(2.6rem, 12.5vw, 3.3rem); }
+      .rp-t2 { display: inline; font-size: clamp(1.15rem, 5.4vw, 1.5rem); }
+      .rp-work > .rp-bar { display: none; }
+      .rp-page .rp-work > .rd-modebar { padding: .6rem .7rem; border-top: 1px solid var(--border); }
+      .rp-page .rp-work > .rp-core { border-radius: var(--rd-r-lg) var(--rd-r-lg) 0 0; padding: .85rem .85rem .9rem; }
+      .rp-page .rp-work .rd-modebar > .rd-label { display: none; }
+      .rp-page .rd-modes { display: flex; gap: .35rem; }
+      .rp-page .rd-mode { flex: 1 1 0; min-height: 40px; padding: .4rem .7rem; }
+      .rp-page .rd-mode__q { display: none; }
+      .rp-page .rp-core .rd-block + .rd-block { margin-top: .7rem; }
+      /* the period's group label stays for screen readers; Years / Months say it */
+      .rp-page .rp-core #rd-tenure-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+      .rp-page .rp-work > .rp-ad-zone { padding-top: .6rem; }
+      .rp-page .rp-core .rd-input { min-height: 44px; padding-top: .5rem; padding-bottom: .5rem; font-size: 1.05rem; }
+      .rp-page .rp-core .rd-label { margin-bottom: .3rem; font-size: .64rem; letter-spacing: .05em; }
+      .rp-page .rp-core input[type="range"] { height: 24px; }
+      /* quick-pick chips repeat the sliders; the rate note is about those chips */
+      .rp-page .rp-core .rd-chiprow, .rp-page .rp-core .rd-block:has(#rdRate) > .rd-hint { display: none; }
+      .rp-page .rp-core [data-rd-tenure-hint] { font-size: .72rem; margin-top: .25rem; }
+      .rp-page .rp-after { padding: 1rem .95rem; }
+    }
+  </style>
+
+
+    <script type="application/ld+json" data-tooladda-page-schema="true">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://tooladda.online/#website",
+          "name": "ToolAdda",
+          "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+          "url": "https://tooladda.online/",
+          "inLanguage": "en",
+          "publisher": { "@id": "https://tooladda.online/#organization" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://tooladda.online/#organization",
+          "name": "ToolAdda",
+          "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+          "url": "https://tooladda.online/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://tooladda.online/assets/images/logo.svg"
+          }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://tooladda.online/calculators/rd-calculator.html#webpage",
+          "url": "https://tooladda.online/calculators/rd-calculator.html",
+          "name": "RD Calculator — Recurring Deposit Maturity & Interest",
+          "description": "Free RD calculator to work out recurring deposit maturity amount, total deposits and estimated interest.",
+          "inLanguage": "en",
+          "isPartOf": { "@id": "https://tooladda.online/#website" },
+          "breadcrumb": { "@id": "https://tooladda.online/calculators/rd-calculator.html#breadcrumb" },
+          "mainEntity": { "@id": "https://tooladda.online/calculators/rd-calculator.html#app" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://tooladda.online/calculators/rd-calculator.html#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://tooladda.online/" },
+            { "@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://tooladda.online/#calculators" },
+            { "@type": "ListItem", "position": 3, "name": "RD Calculator" }
+          ]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://tooladda.online/calculators/rd-calculator.html#app",
+          "name": "RD Calculator",
+          "url": "https://tooladda.online/calculators/rd-calculator.html",
+          "applicationCategory": "FinanceApplication",
+          "operatingSystem": "Any modern web browser",
+          "description": "Calculate recurring deposit maturity amount, total deposits and estimated interest using a quarterly-compounding RD model. Includes a target mode that solves for the monthly deposit needed to reach a savings goal.",
+          "inLanguage": "en",
+          "isAccessibleForFree": true,
+          "featureList": [
+            "Estimated RD maturity amount",
+            "Total deposits and estimated interest",
+            "Year-wise and month-wise breakdown",
+            "Target mode: required monthly deposit for a savings goal",
+            "Selectable compounding frequency",
+            "Runs entirely in the browser"
+          ],
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+          "publisher": { "@id": "https://tooladda.online/#organization" }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://tooladda.online/calculators/rd-calculator.html#faq",
+          "isPartOf": { "@id": "https://tooladda.online/calculators/rd-calculator.html#webpage" },
+          "mainEntity": [
+            { "@type": "Question", "name": "What is a recurring deposit (RD)?", "acceptedAnswer": { "@type": "Answer", "text": "A recurring deposit is a bank or post office savings product where you deposit a fixed amount every month for a fixed tenure at a fixed interest rate agreed at the time of opening. At the end of the tenure you receive your deposits plus the interest accumulated on them." } },
+            { "@type": "Question", "name": "What is an RD calculator?", "acceptedAnswer": { "@type": "Answer", "text": "An RD calculator estimates what a recurring deposit will be worth at maturity. You enter the monthly deposit, the tenure and the annual interest rate, and it returns the total you will have deposited, the estimated interest and the estimated maturity amount." } },
+            { "@type": "Question", "name": "How is RD interest calculated?", "acceptedAnswer": { "@type": "Answer", "text": "Each monthly instalment earns interest only for the time it actually stays in the account. The first instalment earns interest for the full tenure, the last for roughly one month. Indian banks normally compound this quarterly, so the total is the sum of every instalment grown for its own remaining period." } },
+            { "@type": "Question", "name": "What is the RD maturity formula?", "acceptedAnswer": { "@type": "Answer", "text": "The commonly published form is M = R × [(1 + i)^n − 1] ÷ [1 − (1 + i)^(−1/3)], where R is the monthly instalment, i is the quarterly interest rate (annual rate ÷ 4 ÷ 100) and n is the number of quarters. This calculator uses an equivalent series that also works for tenures that are not whole quarters." } },
+            { "@type": "Question", "name": "How much will a ₹5,000 monthly RD become in 5 years?", "acceptedAnswer": { "@type": "Answer", "text": "At an assumed 7% annual rate with quarterly compounding, ₹5,000 a month for 5 years means ₹3,00,000 deposited and an estimated maturity of about ₹3,59,664, of which roughly ₹59,664 is interest. Change the rate in the calculator to match your bank's actual offer." } },
+            { "@type": "Question", "name": "How much will a ₹10,000 monthly RD become in 5 years?", "acceptedAnswer": { "@type": "Answer", "text": "At an assumed 7% annual rate with quarterly compounding, ₹10,000 a month for 5 years means ₹6,00,000 deposited and an estimated maturity of about ₹7,19,328. Because the formula is linear in the instalment, this is exactly double the ₹5,000 result." } },
+            { "@type": "Question", "name": "How much will a ₹20,000 monthly RD become in 5 years?", "acceptedAnswer": { "@type": "Answer", "text": "At an assumed 7% annual rate with quarterly compounding, ₹20,000 a month for 5 years means ₹12,00,000 deposited and an estimated maturity of about ₹14,38,656." } },
+            { "@type": "Question", "name": "Is RD interest compounded?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Interest already credited to a recurring deposit starts earning interest itself. Most Indian banks compound recurring deposit interest quarterly, which is why the maturity value is higher than simple interest on the same deposits." } },
+            { "@type": "Question", "name": "How often is RD interest compounded?", "acceptedAnswer": { "@type": "Answer", "text": "Quarterly is the usual convention for recurring deposits at Indian banks. This calculator defaults to quarterly and lets you switch to monthly, half-yearly or annual compounding if your product uses a different basis." } },
+            { "@type": "Question", "name": "What is the difference between an RD and an FD?", "acceptedAnswer": { "@type": "Answer", "text": "A recurring deposit takes a fixed amount every month over the tenure, so it suits saving out of monthly income. A fixed deposit takes one lump sum at the start, so the whole amount earns interest for the full period. For the same rate and tenure, a lump sum earns more interest than the same total paid in monthly instalments, because the money is invested for longer." } },
+            { "@type": "Question", "name": "What is the difference between an RD and a SIP?", "acceptedAnswer": { "@type": "Answer", "text": "An RD is a deposit product where the interest rate is set by the bank when you open it. A SIP is a way of investing regularly in mutual funds, where returns are market-linked and not fixed. An RD gives a contractual rate; a SIP carries market risk and its outcome is not known in advance." } },
+            { "@type": "Question", "name": "Is RD interest taxable?", "acceptedAnswer": { "@type": "Answer", "text": "Interest earned on a recurring deposit is generally treated as taxable income in India and is added to your total income for the year. The rate that applies depends on your own tax situation. This calculator shows gross figures before any tax; consult a qualified tax adviser for your circumstances." } },
+            { "@type": "Question", "name": "Is there TDS on RD interest?", "acceptedAnswer": { "@type": "Answer", "text": "Banks may deduct tax at source on recurring deposit interest once it crosses the applicable threshold for the year. Thresholds, rates and exemption forms are set by tax rules that change from time to time, so check the current position with your bank or a tax adviser." } },
+            { "@type": "Question", "name": "What happens if I miss an RD instalment?", "acceptedAnswer": { "@type": "Answer", "text": "The consequences depend on the bank and the product. Many banks charge a penalty for a missed or delayed instalment, and repeated defaults can lead to the account being closed early. A missed instalment also means less money in the account earning interest, so the maturity value falls. Check your own bank's terms." } },
+            { "@type": "Question", "name": "Can I close an RD before maturity?", "acceptedAnswer": { "@type": "Answer", "text": "Most recurring deposits allow premature closure, but the interest paid is usually recalculated at a lower rate and a penalty may apply. The amount you receive can therefore be noticeably less than the maturity figure shown here. This calculator projects the full-tenure outcome only." } },
+            { "@type": "Question", "name": "Does this calculator handle a 0% interest rate?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. At 0% the maturity amount is simply the monthly deposit multiplied by the number of instalments, and the interest shown is zero. The calculation branches explicitly for this case rather than dividing by zero." } },
+            { "@type": "Question", "name": "Can I calculate an RD for 10 years?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The tenure accepts anything from one month up to 30 years, entered as years plus months. Note that many banks cap recurring deposit tenures at 10 years, so check what your bank actually offers before planning around a longer term." } },
+            { "@type": "Question", "name": "Can I work out the monthly deposit needed for a target amount?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Switch to Target mode, enter the amount you want at maturity along with the tenure and rate, and the calculator solves the same RD formula backwards for the required monthly deposit. It rounds up to the nearest rupee so the projection reaches the goal rather than falling just short." } },
+            { "@type": "Question", "name": "Is the maturity amount guaranteed?", "acceptedAnswer": { "@type": "Answer", "text": "No. Every figure here is an estimate based on the rate you typed and a standard quarterly-compounding model. Your bank's contracted rate, its rounding rules, the exact deposit dates and any tax deducted will all move the real number. Treat the output as an illustration, not a promise." } },
+            { "@type": "Question", "name": "Why does my bank's RD maturity differ from this calculator?", "acceptedAnswer": { "@type": "Answer", "text": "Banks vary in how they round intermediate interest, which day of the month they treat the instalment as received, and how they handle part periods and holidays. Those small differences accumulate over a long tenure. A gap of a few hundred rupees on a multi-year RD is normal; a large gap usually means the rate or tenure entered does not match the actual product." } },
+            { "@type": "Question", "name": "Can I calculate a senior citizen RD?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, by entering the rate that applies. Banks commonly offer senior citizens a higher rate on deposits, but the size of that difference varies by bank and by product, so this calculator does not assume one. Enter the actual rate your bank quotes." } },
+            { "@type": "Question", "name": "Does the calculator use quarterly compounding?", "acceptedAnswer": { "@type": "Answer", "text": "By default, yes, because that is the usual convention for recurring deposits at Indian banks. The compounding frequency is shown next to every result and you can change it to monthly, half-yearly or annual if your product differs." } },
+            { "@type": "Question", "name": "Are my figures sent anywhere?", "acceptedAnswer": { "@type": "Answer", "text": "No. The whole calculation runs in your browser. Nothing you type is uploaded, and the optional recent-calculations list is stored only in your own browser's local storage until you clear it." } },
+            { "@type": "Question", "name": "Is this RD calculator free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. It is free, needs no sign-up, no email address and no app install, and there is no limit on how many calculations you can run." } },
+            { "@type": "Question", "name": "Does the calculator show the amount after tax?", "acceptedAnswer": { "@type": "Answer", "text": "No. It shows gross maturity and gross interest only. Because the tax on recurring deposit interest depends on your total income and current tax rules, showing an after-tax figure would be misleading without knowing your circumstances." } },
+            { "@type": "Question", "name": "What is the minimum tenure and deposit I can enter?", "acceptedAnswer": { "@type": "Answer", "text": "The calculator accepts a monthly deposit from ₹100 up to ₹1 crore and a tenure from one month up to 30 years. Real bank products usually have narrower limits, typically a minimum of six months and ₹100 to ₹500 a month, so check what your bank allows." } }
+          ]
+        }
+      ]
+    }
+    </script>
+      <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 15, 118, 110; }
+      [data-theme="dark"] { --pca: 45, 212, 191; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 45, 212, 191; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/calculators/rd-calculator.html#webpage",
+      "url": "https://tooladda.online/calculators/rd-calculator.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-15",
+      "dateModified": "2026-09-22",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="rp-page">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="container navbar">
+        <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../privacy-policy.html">Privacy</a>
+        </nav>
+        <div class="nav-actions"><a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee"><svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg><span class="ta-donate-label">Buy me a coffee</span></a><button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button><button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button></div>
+      </div>
+    </header>
+
+        <main id="main-content" class="rd-page">
+      <div class="rd-wrap">
+        <aside class="ta-support" aria-label="Support ToolAdda">
+          <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+        </aside>
+
+
+        <nav class="rd-crumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">/</span><a href="/#calculators">Calculators</a><span aria-hidden="true">/</span><span>RD Calculator</span>
+        </nav>
+
+        <!-- Cover: a teal leather passbook - the headline in gold on the left;
+             from 900px an open page of twelve monthly deposit stamps ending in
+             a MATURITY stamp (decorative). -->
+        <header class="rp-cover">
+          <div>
+            <span class="rd-eyebrow">Savings Calculator</span>
+            <h1 class="rd-h1 rp-title"><span class="rp-t1">RD</span> <span class="rp-t2">Calculator</span></h1>
+          </div>
+          <div class="rp-book" aria-hidden="true">
+            <p class="rp-book-h"><span>Recurring deposit</span><span>₹5,000 / month</span></p>
+            <div class="rp-stamps"><i style="--r:-12deg">JAN</i><i style="--r:8deg">FEB</i><i style="--r:-18deg">MAR</i><i style="--r:4deg">APR</i><i style="--r:-8deg">MAY</i><i style="--r:14deg">JUN</i><i style="--r:-4deg">JUL</i><i style="--r:10deg">AUG</i><i style="--r:-16deg">SEP</i><i style="--r:6deg">OCT</i><i style="--r:-10deg">NOV</i><i class="last">DEC</i></div>
+          </div>
+        </header>
+
+        <!-- The console ([data-rd-root], the script's root) is one grid
+             (.rp-work): bar, mode picker, the core inputs, the ad, the results,
+             the rest of the inputs and the breakdown. On phones the ad follows
+             the core inputs; from 700px it has its own column - never above the
+             tool. Every control is found by its id or data- hook inside the root. -->
+        <div class="rp-cq">
+        <section class="rd-console rp-work" data-rd-root aria-label="RD calculator">
+          <div class="rd-console__bar rp-bar">
+            <p class="rd-console__title">RD Calculator</p>
+            <span class="rd-console__privacy">🔒 Calculated in your browser</span>
+          </div>
+
+          <div class="rd-modebar rp-modes">
+            <span class="rd-label" id="rd-mode-label">What do you want to work out?</span>
+            <div class="rd-modes" role="group" aria-labelledby="rd-mode-label">
+              <button type="button" class="rd-mode is-on" data-rd-mode="standard" aria-pressed="true">
+                <span class="rd-mode__title">Regular RD</span>
+                <span class="rd-mode__q">What will it mature to?</span>
+              </button>
+              <button type="button" class="rd-mode" data-rd-mode="target" aria-pressed="false">
+                <span class="rd-mode__title">Target RD</span>
+                <span class="rd-mode__q">What do I need to deposit?</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- the core inputs: deposit (or target), period, rate -->
+          <div class="rd-col rd-col--in rp-core">
+            <div class="rd-block" data-rd-target-fields hidden>
+              <label class="rd-label" for="rdTarget">Target maturity amount</label>
+              <div class="rd-field" data-rd-field="target">
+                <span class="rd-field__unit rd-field__unit--pre" aria-hidden="true">₹</span>
+                <input class="rd-input rd-input--prefix" id="rdTarget" type="text" inputmode="decimal"
+                       autocomplete="off" value="500000" />
+              </div>
+              <div class="rd-chiprow" data-rd-preset="target"></div>
+              <p class="rd-hint">The amount you want in hand when the deposit matures.</p>
+            </div>
+
+            <div class="rd-block" data-rd-standard-fields>
+              <label class="rd-label" for="rdDeposit">Monthly deposit</label>
+              <div class="rd-field" data-rd-field="deposit">
+                <span class="rd-field__unit rd-field__unit--pre" aria-hidden="true">₹</span>
+                <input class="rd-input rd-input--prefix" id="rdDeposit" type="text" inputmode="decimal"
+                       autocomplete="off" value="5000" />
+              </div>
+              <input type="range" id="rdDepositRange" min="100" max="1000000" step="100" value="5000"
+                     aria-label="Monthly deposit slider" />
+              <div class="rd-chiprow" data-rd-preset="deposit"></div>
+            </div>
+
+            <div class="rd-block" data-rd-field="years">
+              <span class="rd-label" id="rd-tenure-label">Investment period</span>
+              <div class="rd-duo">
+                <label>
+                  <span class="rd-label" for="rdYears">Years</span>
+                  <input class="rd-input" id="rdYears" type="text" inputmode="numeric" autocomplete="off" value="5"
+                         aria-describedby="rd-tenure-label" />
+                </label>
+                <label>
+                  <span class="rd-label" for="rdMonths">Months</span>
+                  <input class="rd-input" id="rdMonths" type="text" inputmode="numeric" autocomplete="off" value="0"
+                         aria-describedby="rd-tenure-label" />
+                </label>
+              </div>
+              <p class="rd-hint" data-rd-tenure-hint></p>
+              <div class="rd-chiprow" data-rd-preset="tenure"></div>
+            </div>
+
+            <div class="rd-block">
+              <label class="rd-label" for="rdRate">Annual interest rate</label>
+              <div class="rd-field" data-rd-field="rate">
+                <input class="rd-input rd-input--suffix" id="rdRate" type="text" inputmode="decimal"
+                       autocomplete="off" value="7" />
+                <span class="rd-field__unit rd-field__unit--post" aria-hidden="true">%</span>
+              </div>
+              <input type="range" id="rdRateRange" min="0" max="15" step="0.05" value="7"
+                     aria-label="Annual interest rate slider" />
+              <div class="rd-chiprow" data-rd-preset="rate"></div>
+              <p class="rd-hint">Enter the annual interest rate applicable to your RD. The presets are illustrative examples, not rates quoted by any bank.</p>
+            </div>
+          </div>
+
+          <!-- Ad: one 300x250 (see .rp-ad-zone). -->
+          <div class="rp-ad-zone">
+            <div class="ta-inline-ad" data-unit="inline"></div>
+          </div>
+
+          <!-- results -->
+          <div class="rd-col rp-out">
+            <p class="rd-error" data-rd-error role="alert" hidden></p>
+
+            <div data-rd-results>
+              <div class="rd-headline" data-rd-headline-box>
+                <span class="rd-headline__label" data-rd-headline-label>Estimated maturity amount</span>
+                <span class="rd-headline__value" data-rd-maturity>—</span>
+                <span class="rd-headline__compact" data-rd-maturity-compact></span>
+                <span class="rd-headline__assumption" data-rd-maturity-note></span>
+              </div>
+
+              <div data-rd-split></div>
+              <dl class="rd-stats" data-rd-stats></dl>
+
+              <div class="rd-chartbox">
+                <span class="rd-label">RD growth over time</span>
+                <div data-rd-chart></div>
+                <div class="rd-chart__key" data-rd-chart-key></div>
+                <p class="rd-chartcaption" data-rd-chart-caption></p>
+              </div>
+
+              <p class="rd-print-stamp" data-rd-print-stamp></p>
+
+              <div class="rd-actions">
+                <button type="button" class="rd-btn rd-btn--ghost rd-btn--sm" id="rdCopy" disabled>Copy summary</button>
+                <button type="button" class="rd-btn rd-btn--ghost rd-btn--sm" id="rdShare" disabled>Share</button>
+                <button type="button" class="rd-btn rd-btn--ghost rd-btn--sm" id="rdPrint" disabled>Print</button>
+              </div>
+            </div>
+
+            <p class="rd-sr" role="status" aria-live="polite" data-rd-announce></p>
+          </div>
+
+          <!-- the rest of the inputs: compounding, calculate / reset -->
+          <div class="rd-col rp-more">
+            <div class="rd-block">
+              <label class="rd-label" for="rdFrequency">Compounding</label>
+              <select class="rd-select" id="rdFrequency" data-rd-field="frequency">
+                <option value="quarterly">Quarterly — the Indian norm</option>
+                <option value="monthly">Monthly</option>
+                <option value="half-yearly">Half-yearly</option>
+                <option value="annually">Annually</option>
+              </select>
+              <p class="rd-hint">Most Indian bank RDs compound quarterly. Change this only if your product states otherwise.</p>
+            </div>
+
+            <div class="rd-block">
+              <button type="button" class="rd-btn rd-btn--accent rd-btn--hero" id="rdCalculate">Calculate RD</button>
+              <button type="button" class="rd-btn rd-btn--ghost rd-btn--sm" style="margin-top:.4rem;width:100%" id="rdReset">Reset calculator</button>
+            </div>
+          </div>
+
+          <!-- breakdown -->
+          <div class="rd-col rd-col--full rp-full">
+            <span class="rd-label">How the balance builds</span>
+            <ol class="rd-steps" data-rd-timeline></ol>
+
+            <div style="margin-top:1.2rem">
+              <span class="rd-label">Year-wise RD breakdown</span>
+              <div class="rd-tablewrap">
+                <table class="rd-table">
+                  <caption data-rd-year-caption></caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Year</th>
+                      <th scope="col">Total deposited</th>
+                      <th scope="col">Interest earned</th>
+                      <th scope="col">Estimated value</th>
+                    </tr>
+                  </thead>
+                  <tbody data-rd-year-body></tbody>
+                </table>
+              </div>
+              <button type="button" class="rd-btn rd-btn--ghost rd-btn--sm" style="margin-top:.5rem"
+                      data-rd-year-toggle aria-expanded="false" hidden></button>
+            </div>
+
+            <details class="rd-details" data-rd-month-details>
+              <summary data-rd-month-toggle>Monthly deposit schedule</summary>
+              <div class="rd-details__body">
+                <div class="rd-tablewrap rd-tablewrap--tall">
+                  <table class="rd-table">
+                    <caption>Every instalment, the interest it attracts that month and the running balance.</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Month</th>
+                        <th scope="col">Deposit</th>
+                        <th scope="col">Interest</th>
+                        <th scope="col">Deposited so far</th>
+                        <th scope="col">Balance</th>
+                      </tr>
+                    </thead>
+                    <tbody data-rd-month-body></tbody>
+                  </table>
+                </div>
+              </div>
+            </details>
+
+            <details class="rd-details">
+              <summary>How your RD is calculated</summary>
+              <div class="rd-details__body">
+                <dl class="rd-breakdown" data-rd-breakdown></dl>
+                <p class="rd-note">Interest is estimated using a quarterly-compounding RD model by default, with each instalment earning interest only for the months it actually stays in the account. Actual maturity values may differ slightly between institutions.</p>
+              </div>
+            </details>
+
+            <details class="rd-details">
+              <summary>Recent calculations</summary>
+              <div class="rd-details__body">
+                <label class="rd-check">
+                  <input type="checkbox" id="rdHistoryToggle" />
+                  <span>Remember my recent calculations in this browser</span>
+                </label>
+                <p class="rd-hint">Off by default. When enabled, calculations you press Calculate on are saved to your own browser only — never uploaded. Turning it off and clearing deletes them immediately.</p>
+                <div data-rd-history-panel hidden>
+                  <ul class="rd-history" data-rd-history-list></ul>
+                  <button type="button" class="rd-btn rd-btn--ghost rd-btn--sm" style="margin-top:.5rem" data-rd-history-clear>Clear history</button>
+                </div>
+              </div>
+            </details>
+
+            <p class="rd-print-disclaimer">
+              Illustrative calculation produced by the ToolAdda RD Calculator. RD interest rates and terms vary by bank and product. This calculator provides an estimate based on the interest rate, deposit amount and tenure entered by you, before any tax.
+            </p>
+          </div>
+        </section>
+        </div>
+
+        <div class="rp-after">
+          <p class="rd-lede">Calculate your recurring deposit maturity amount, total deposits and estimated interest instantly.</p>
+          <ul class="rd-trust">
+            <li>Free</li>
+            <li>Instant calculation</li>
+            <li>No signup</li>
+            <li>Runs in your browser</li>
+            <li>Mobile friendly</li>
+          </ul>
+        </div>
+
+
+<!-- ============ FORMULA ============ -->
+        <section class="rd-section" aria-labelledby="rd-formula-heading">
+          <h2 class="rd-h2" id="rd-formula-heading">RD calculator formula</h2>
+          <p>Recurring deposit maturity is not a single lump sum growing for one period. Each instalment enters the account at a different time and earns interest only for the months it is actually there. The first instalment earns interest for the full tenure; the last earns it for about a month.</p>
+
+          <p>Writing <strong>R</strong> for the monthly instalment, <strong>i</strong> for the periodic interest rate (the annual rate divided by the number of compounding periods a year) and <strong>f</strong> for how many times a year interest compounds, one month of growth is a factor of:</p>
+
+          <pre class="rd-formula">k = (1 + i) ^ (f / 12)</pre>
+
+          <p>An instalment paid in month <em>m</em> of an <em>N</em>-month tenure sits in the account for <em>N − m + 1</em> months, so the maturity value is the sum of every instalment grown for its own remaining period:</p>
+
+          <pre class="rd-formula">M = R × ( k¹ + k² + k³ + … + k^N )
+  = R × k × (k^N − 1) ÷ (k − 1)</pre>
+
+          <p>For the standard Indian case of quarterly compounding (<em>f</em> = 4), this is algebraically the same expression as the RD formula banks publish:</p>
+
+          <pre class="rd-formula">M = R × [ (1 + i)^n − 1 ] ÷ [ 1 − (1 + i)^(−1/3) ]
+
+where  i = annual rate ÷ 4 ÷ 100
+       n = number of quarters = tenure in months ÷ 3</pre>
+
+          <p>Substituting <em>k</em> = (1 + i)<sup>1/3</sup> collapses the two into one another. This page uses the series form because it is defined for every tenure — including 7 months or 25 months, which are not whole quarters and where the published closed form has no meaning. The two agree to within a rounding error wherever both apply, and the test suite for this calculator asserts exactly that.</p>
+
+          <p>The remaining two figures follow directly:</p>
+
+          <pre class="rd-formula">Total deposits   = R × N
+Interest earned  = M − (R × N)</pre>
+
+          <p>When the interest rate is zero, <em>k</em> is exactly 1 and the sum reduces to <em>R × N</em> — your deposits back, no interest. The calculator branches explicitly for that case rather than dividing by a value that has just become zero, which is why a 0% rate returns a clean figure instead of an error.</p>
+
+          <p class="rd-callout">This is the model, not a promise. The convention used is shown next to every result so you always know which basis produced the number.</p>
+        </section>
+
+        <!-- ============ EXAMPLES ============ -->
+        <section class="rd-section" aria-labelledby="rd-examples-heading">
+          <h2 class="rd-h2" id="rd-examples-heading">Common RD examples</h2>
+          <p class="rd-sub">Worked at an illustrative 7% a year with quarterly compounding. These are generated by the same engine as the calculator above, so they can never drift out of step with it.</p>
+          <div class="rd-cards" data-rd-examples></div>
+          <p class="rd-disclaimer">7% is used here purely as a round illustrative figure. It is not a quoted rate from any bank. Enter the rate your own bank offers to get a figure that means something for you.</p>
+        </section>
+
+        <!-- NEW SECTION -->
+        <section class="rd-section" aria-labelledby="rd-where-heading">
+          <h2 class="rd-h2" id="rd-where-heading">Where an RD's interest comes from</h2>
+          <p>The calculator's default — ₹5,000 a month for five years at 7%, compounded quarterly — matures at ₹3,59,664, of which ₹59,664 is interest. The sixty instalments do not earn that interest equally: each one earns only for the months it stays in the account.</p>
+          <div class="rd-tablewrap rp-instwrap">
+            <table class="rd-table rp-inst">
+              <caption>What single ₹5,000 instalments grow to by maturity (₹5,000 a month, 5 years, 7%, quarterly)</caption>
+              <thead>
+                <tr><th scope="col">Instalment</th><th scope="col">Paid in</th><th scope="col">Months in the account</th><th scope="col">Grows to</th><th scope="col">Interest it earns</th><th scope="col"><span class="rd-sr">Share of the largest</span></th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">No. 1</th><td data-label="Paid in">month 1</td><td data-label="Months in the account">60</td><td data-label="Grows to">₹7,074</td><td data-label="Interest it earns">₹2,074</td><td class="bar"><span class="rp-meter" style="--w:100%"></span></td></tr>
+                <tr><th scope="row">No. 12</th><td data-label="Paid in">month 12</td><td data-label="Months in the account">49</td><td data-label="Grows to">₹6,638</td><td data-label="Interest it earns">₹1,638</td><td class="bar"><span class="rp-meter" style="--w:79%"></span></td></tr>
+                <tr><th scope="row">No. 24</th><td data-label="Paid in">month 24</td><td data-label="Months in the account">37</td><td data-label="Grows to">₹6,193</td><td data-label="Interest it earns">₹1,193</td><td class="bar"><span class="rp-meter" style="--w:57.5%"></span></td></tr>
+                <tr><th scope="row">No. 36</th><td data-label="Paid in">month 36</td><td data-label="Months in the account">25</td><td data-label="Grows to">₹5,778</td><td data-label="Interest it earns">₹778</td><td class="bar"><span class="rp-meter" style="--w:37.5%"></span></td></tr>
+                <tr><th scope="row">No. 48</th><td data-label="Paid in">month 48</td><td data-label="Months in the account">13</td><td data-label="Grows to">₹5,390</td><td data-label="Interest it earns">₹390</td><td class="bar"><span class="rp-meter" style="--w:18.8%"></span></td></tr>
+                <tr><th scope="row">No. 60</th><td data-label="Paid in">month 60</td><td data-label="Months in the account">1</td><td data-label="Grows to">₹5,029</td><td data-label="Interest it earns">₹29</td><td class="bar"><span class="rp-meter" style="--w:1.4%"></span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <ul>
+            <li><strong>The first instalment earns about 70 times what the last one does</strong> — ₹2,074 against ₹29 — because it sits in the account for 60 months and the last for one.</li>
+            <li><strong>Half of all the interest comes from the first 17 instalments.</strong> The first year's twelve deposits earn 37% of it; the last year's earn under 4%.</li>
+            <li><strong>So tenure matters more than it looks.</strong> Each extra year adds instalments that earn little themselves but lets every earlier one keep compounding. The figures come from this page's own engine; summed over all sixty instalments they come to exactly the ₹59,664 above.</li>
+          </ul>
+        </section>
+
+        <!-- ============ ARTICLE ============ -->
+        <section class="rd-section" aria-labelledby="rd-guide-heading">
+          <h2 class="rd-h2" id="rd-guide-heading">Understanding recurring deposits</h2>
+
+          <h3 class="rd-h3">What is a recurring deposit?</h3>
+          <p>A recurring deposit is a savings product offered by banks, small finance banks, co-operative banks and the post office in which you commit to depositing a fixed sum every month for a fixed period. In exchange the institution fixes an interest rate at the time you open the account, and that rate applies for the whole tenure regardless of what happens to rates afterwards.</p>
+          <p>The appeal is structural rather than mathematical. Most people do not have a large lump sum sitting idle, but almost everyone has a monthly surplus, however modest. A recurring deposit converts that surplus into a disciplined commitment: the instalment is usually collected by standing instruction from your savings account on a set date, so the saving happens before the money can be spent on something else. Tenures typically run from six months to ten years, and minimum instalments at most banks start somewhere between ₹100 and ₹500.</p>
+          <p>Because the rate is contractual, you know at the outset roughly what you will receive, subject to tax and to the bank's rounding conventions. That certainty is the whole point of the product, and it is what distinguishes a recurring deposit from a market-linked investment where the outcome is genuinely unknown until you get there.</p>
+
+          <h3 class="rd-h3">What is an RD calculator?</h3>
+          <p>An RD calculator answers one question: if I put this much away every month, for this long, at this rate, what will I have at the end? It takes three inputs — the monthly deposit, the tenure and the annual interest rate — and returns three figures: the total you will have deposited out of your own pocket, the interest that accumulates on those deposits, and the maturity amount you receive when the term ends.</p>
+          <p>That sounds simple enough to do on paper, and for a single instalment it is. What makes it awkward by hand is that every instalment has a different holding period, and interest compounds on top of interest already credited. A five-year RD has sixty instalments each growing for a different length of time. Doing that arithmetic by hand sixty times, then again when you want to compare two tenures, is where the calculator earns its place.</p>
+          <p>This particular calculator adds a few things beyond the headline number: a year-by-year table so you can see when the interest starts to matter, a full month-by-month schedule, a growth chart, and a reverse mode that solves for the instalment you would need in order to hit a specific savings goal.</p>
+
+          <h3 class="rd-h3">How does an RD calculator work?</h3>
+          <p>Internally it walks the account forward one month at a time. It starts at zero, adds your instalment, applies one month's worth of growth, and repeats. After the final month the balance is the maturity amount. Subtracting the money you put in gives the interest.</p>
+          <p>Running it as a month-by-month walk rather than a single formula has a practical benefit: it produces the intermediate figures as a side effect. The value at the end of year three is simply the balance after month thirty-six — no separate calculation and therefore no way for the table to disagree with the headline. Every panel on this page reads from one result object produced by one function, which is a deliberate design decision. Calculators that recompute the same quantity in three places eventually show three different answers.</p>
+
+          <h3 class="rd-h3">RD interest calculation</h3>
+          <p>The single most common misunderstanding about recurring deposits is to treat the total deposited as though it earned interest for the whole tenure. It does not, and the difference is large.</p>
+          <p>Consider ₹5,000 a month for five years. You deposit ₹3,00,000 in total. If that entire ₹3,00,000 earned 7% for five years, you would be looking at well over a lakh in interest. The actual estimated interest is closer to ₹59,664 — a little over half. The reason is that the average rupee in a recurring deposit is only invested for roughly half the tenure. Your first instalment gets the full five years; your last gets one month; the average across all sixty sits near thirty months.</p>
+          <p>This is also why comparing a recurring deposit to a fixed deposit at the same headline rate is misleading if you only look at the interest earned. The fixed deposit earns more, but only because the money went in earlier. Judged as a rate of return on the money actually committed at each point in time, the two are the same product with a different payment schedule.</p>
+
+          <h3 class="rd-h3">How to calculate RD maturity amount</h3>
+          <p>If you want to sanity-check the calculator by hand, work in these steps:</p>
+          <ol>
+            <li>Convert the tenure to a number of instalments. Five years is 60 monthly instalments.</li>
+            <li>Find the periodic rate. At 7% a year with quarterly compounding, the quarterly rate is 7 ÷ 4 = 1.75%, or 0.0175.</li>
+            <li>Find the one-month growth factor: k = 1.0175<sup>4/12</sup> = 1.0175<sup>1/3</sup> ≈ 1.005800.</li>
+            <li>Sum the growth of each instalment: k + k² + … + k⁶⁰ ≈ 71.93.</li>
+            <li>Multiply by the instalment: ₹5,000 × 71.93 ≈ ₹3,59,664.</li>
+          </ol>
+          <p>Step four is the one that is tedious by hand, but it is a plain geometric series, so the shortcut k × (k<sup>N</sup> − 1) ÷ (k − 1) gets there in one line. Anyone reproducing this in a spreadsheet can lay the sixty terms out in a column and sum them, which is a useful exercise precisely because it makes visible how little the final instalments contribute.</p>
+
+          <h3 class="rd-h3">Monthly RD example</h3>
+          <p>Take a saver putting ₹10,000 a month into a five-year recurring deposit at an assumed 7%. Total deposits come to ₹6,00,000 and the estimated maturity is about ₹7,19,328, so roughly ₹1,19,328 is interest.</p>
+          <p>What the year-wise table shows is that the interest is heavily back-loaded. In year one there is very little balance to earn anything, so the interest is small. By year five the account is carrying most of its eventual balance for the whole twelve months, so that year alone contributes far more interest than year one did. This is worth internalising before shortening a tenure: cutting a five-year RD to three years does not remove two-fifths of the interest, it removes the most productive years.</p>
+
+          <h3 class="rd-h3">RD vs FD</h3>
+          <div class="rd-cards">
+            <article class="rd-card rd-card--dep">
+              <h3>Recurring deposit</h3>
+              <ul>
+                <li>A fixed amount goes in every month across the tenure.</li>
+                <li>Suits saving out of regular monthly income.</li>
+                <li>Each instalment earns interest only for its own remaining period.</li>
+                <li>Maturity depends on the instalment, the tenure and the applicable rate.</li>
+              </ul>
+            </article>
+            <article class="rd-card rd-card--int">
+              <h3>Fixed deposit</h3>
+              <ul>
+                <li>Usually a single lump sum placed at the start.</li>
+                <li>Suits money you already have and do not need for a while.</li>
+                <li>The full principal earns interest for the entire period.</li>
+                <li>Maturity depends on the deposit, the tenure and the applicable rate.</li>
+              </ul>
+            </article>
+          </div>
+          <p>Neither is universally better; they solve different problems. If you have ₹3,00,000 today, a fixed deposit puts all of it to work immediately. If you will have ₹3,00,000 only after saving ₹5,000 a month for five years, a recurring deposit is the instrument that matches your actual cash flow. Comparing their headline maturity figures without noting that difference is comparing two things that were never alternatives. You can run the lump-sum side of that comparison on our <a href="fd-calculator.html">FD calculator</a>.</p>
+
+          <h3 class="rd-h3">RD vs SIP</h3>
+          <div class="rd-cards">
+            <article class="rd-card rd-card--dep">
+              <h3>Recurring deposit</h3>
+              <ul>
+                <li>A deposit product from a bank or the post office.</li>
+                <li>The interest rate is specified by the institution when you open it.</li>
+                <li>No exposure to equity market movement.</li>
+                <li>The outcome is known in advance, subject to tax and the bank's terms.</li>
+              </ul>
+            </article>
+            <article class="rd-card rd-card--int">
+              <h3>SIP</h3>
+              <ul>
+                <li>A method of investing regularly, most often in mutual funds.</li>
+                <li>Returns are market-linked and are not fixed or guaranteed.</li>
+                <li>Value can fall as well as rise, including below the amount invested.</li>
+                <li>The outcome is not known in advance at any point.</li>
+              </ul>
+            </article>
+          </div>
+          <p>The two look similar because both take a fixed sum monthly, and that surface resemblance causes a lot of confusion. The difference is what happens to the money afterwards. A recurring deposit is a loan to a bank at an agreed rate. A SIP buys units in a fund whose value moves with the market. Any comparison of the two that presents a SIP's assumed return alongside an RD's contracted rate as though they were the same kind of number is misleading, because one is a promise and the other is an assumption. If you want to model the market-linked side, use the <a href="sip-calculator.html">SIP calculator</a> — and read its output as a projection, not a maturity value.</p>
+          <p>This page does not offer a view on which you should choose. That depends on your time horizon, your tolerance for seeing a balance fall, and what the money is for — none of which a calculator knows.</p>
+
+          <h3 class="rd-h3">RD interest and compounding</h3>
+          <p>Compounding frequency is the number of times a year the accumulated interest is added to the balance and starts earning interest itself. Indian banks conventionally compound recurring deposit interest quarterly, which is why this calculator defaults to quarterly.</p>
+          <p>The effect of frequency is real but modest. On ₹5,000 a month for five years at 7%, moving from annual to quarterly compounding adds a little under ₹1,700 to the maturity value; moving from quarterly to monthly adds a few hundred more. It is worth getting right for accuracy, but it is not where the big money is. Tenure and rate dominate: an extra year, or an extra half a percent, moves the outcome far more than the compounding basis does.</p>
+          <p>The selector on the calculator exists because not every product follows the quarterly convention, and because seeing the difference for yourself is more convincing than being told it is small. What the calculator will not do is silently mix conventions — whichever basis you pick is applied consistently and is displayed alongside every result.</p>
+
+          <h3 class="rd-h3">What happens if an RD instalment is missed?</h3>
+          <p>The rules are set by the bank, not by any universal standard, so the only reliable answer is the one in your own account terms. That said, the general shape is consistent across most institutions.</p>
+          <p>A missed or late instalment usually attracts a penalty, often charged per month of delay and scaled to the instalment size. Repeated defaults — commonly six consecutive missed instalments, though this varies — can cause the bank to close the account early and pay interest at a reduced rate. Separately from any penalty, a missed instalment simply means less money in the account earning interest, so the maturity value falls by more than the instalment itself.</p>
+          <p>This calculator models a schedule where every instalment is paid on time. It does not attempt to project the effect of a default, because doing so would require encoding one particular bank's penalty structure and presenting it as though it were general.</p>
+
+          <h3 class="rd-h3">What happens if an RD is closed early?</h3>
+          <p>Most recurring deposits permit premature closure, but on terms that are deliberately unattractive. Typically the interest is recalculated at the rate that would have applied to the period the deposit actually ran, rather than the rate you contracted for, and a penalty of some fraction of a percent is often applied on top.</p>
+          <p>The practical consequence is that the amount you receive on early closure can be well below both the maturity figure and your naive expectation. On a long tenure closed near the start, it is possible to receive little more than your deposits back.</p>
+          <p>The figure this page produces is the full-tenure outcome. It is not a prediction of premature-closure proceeds, and it should not be used as one. If early access is a realistic possibility, that is worth factoring into the choice of tenure at the outset rather than discovering it later.</p>
+
+          <h3 class="rd-h3">RD interest and tax</h3>
+          <p>Interest earned on a recurring deposit is generally treated as taxable income in India and added to your total income for the year, taxed at whatever rate applies to you. Banks may also deduct tax at source once the interest paid crosses the applicable threshold, and there are forms that can be submitted where your total income falls below the taxable limit.</p>
+          <p>Thresholds, rates and the forms themselves are set by tax rules that change from time to time, and the effect on any individual depends on their total income from all sources. For those reasons this page states the position in general terms only and does not compute a tax figure.</p>
+          <p>The maturity and interest amounts shown by the calculator are gross — before any tax. There is deliberately no "after tax" figure, because producing one would require assumptions about your circumstances that the tool has no way to know, and a wrong after-tax number is worse than no after-tax number. For income tax planning more broadly, see the <a href="manual-tax-calculator.html">income tax calculator</a>, and treat this paragraph as general information rather than advice about your own position.</p>
+
+          <h3 class="rd-h3">How to calculate the monthly RD for a target amount</h3>
+          <p>The more useful question is often the reverse of the default one: not "what will ₹5,000 a month become?" but "I need ₹5,00,000 in five years — what do I have to put away?"</p>
+          <p>Because the maturity value is directly proportional to the instalment, the reverse is straightforward. Work out what a ₹1 monthly instalment would grow to over the tenure at the given rate, then divide the target by that figure. At 7% over five years, ₹1 a month grows to about ₹71.93, so a ₹5,00,000 target needs about ₹6,951 a month.</p>
+          <p>The Target RD mode on this page does exactly that, using the same series as the forward calculation rather than a separate formula, and rounds the answer up to the nearest rupee so that the projection reaches the goal rather than landing just under it. Switching back to the standard mode with that instalment reproduces the target, which is the check worth doing on any reverse calculator you use.</p>
+
+          <h3 class="rd-h3">Common RD calculation mistakes</h3>
+          <ul>
+            <li><strong>Treating the total deposited as the invested amount.</strong> As above, the average rupee is invested for about half the tenure, not all of it. This is the error behind most "why is the interest so low?" surprises.</li>
+            <li><strong>Applying a SIP formula to a recurring deposit.</strong> The two schedules look alike but the compounding conventions differ, and a monthly-compounded annuity formula will overstate a quarterly-compounded RD.</li>
+            <li><strong>Mixing compounding bases.</strong> Dividing the annual rate by twelve and then compounding quarterly, or vice versa, produces a number that corresponds to no real product.</li>
+            <li><strong>Assuming a headline rate applies to your tenure.</strong> Deposit rates vary by tenure bracket, sometimes sharply, and the advertised rate is often for one specific band.</li>
+            <li><strong>Forgetting tax.</strong> The maturity figure is gross. For a taxpayer in a higher bracket the post-tax outcome is materially different.</li>
+            <li><strong>Comparing gross RD interest with post-tax returns elsewhere.</strong> If you are comparing products, compare like with like.</li>
+            <li><strong>Planning around a tenure the bank does not offer.</strong> Many banks cap recurring deposits at ten years; this calculator allows thirty because the arithmetic is well defined, not because such a product is common.</li>
+          </ul>
+        </section>
+
+        <!-- ============ FAQ ============ -->
+        <section class="rd-section" aria-labelledby="rd-faq-heading">
+          <h2 class="rd-h2" id="rd-faq-heading">Frequently asked questions</h2>
+          <div class="rd-faq">
+            <details><summary>What is a recurring deposit (RD)?</summary><p>A recurring deposit is a bank or post office savings product where you deposit a fixed amount every month for a fixed tenure at a fixed interest rate agreed at the time of opening. At the end of the tenure you receive your deposits plus the interest accumulated on them.</p></details>
+            <details><summary>What is an RD calculator?</summary><p>An RD calculator estimates what a recurring deposit will be worth at maturity. You enter the monthly deposit, the tenure and the annual interest rate, and it returns the total you will have deposited, the estimated interest and the estimated maturity amount.</p></details>
+            <details><summary>How is RD interest calculated?</summary><p>Each monthly instalment earns interest only for the time it actually stays in the account. The first instalment earns interest for the full tenure, the last for roughly one month. Indian banks normally compound this quarterly, so the total is the sum of every instalment grown for its own remaining period.</p></details>
+            <details><summary>What is the RD maturity formula?</summary><p>The commonly published form is M = R × [(1 + i)^n − 1] ÷ [1 − (1 + i)^(−1/3)], where R is the monthly instalment, i is the quarterly interest rate (annual rate ÷ 4 ÷ 100) and n is the number of quarters. This calculator uses an equivalent series that also works for tenures that are not whole quarters.</p></details>
+            <details><summary>How much will a ₹5,000 monthly RD become in 5 years?</summary><p>At an assumed 7% annual rate with quarterly compounding, ₹5,000 a month for 5 years means ₹3,00,000 deposited and an estimated maturity of about ₹3,59,664, of which roughly ₹59,664 is interest. Change the rate in the calculator to match your bank's actual offer.</p></details>
+            <details><summary>How much will a ₹10,000 monthly RD become in 5 years?</summary><p>At an assumed 7% annual rate with quarterly compounding, ₹10,000 a month for 5 years means ₹6,00,000 deposited and an estimated maturity of about ₹7,19,328. Because the formula is linear in the instalment, this is exactly double the ₹5,000 result.</p></details>
+            <details><summary>How much will a ₹20,000 monthly RD become in 5 years?</summary><p>At an assumed 7% annual rate with quarterly compounding, ₹20,000 a month for 5 years means ₹12,00,000 deposited and an estimated maturity of about ₹14,38,656.</p></details>
+            <details><summary>Is RD interest compounded?</summary><p>Yes. Interest already credited to a recurring deposit starts earning interest itself. Most Indian banks compound recurring deposit interest quarterly, which is why the maturity value is higher than simple interest on the same deposits.</p></details>
+            <details><summary>How often is RD interest compounded?</summary><p>Quarterly is the usual convention for recurring deposits at Indian banks. This calculator defaults to quarterly and lets you switch to monthly, half-yearly or annual compounding if your product uses a different basis.</p></details>
+            <details><summary>What is the difference between an RD and an FD?</summary><p>A recurring deposit takes a fixed amount every month over the tenure, so it suits saving out of monthly income. A fixed deposit takes one lump sum at the start, so the whole amount earns interest for the full period. For the same rate and tenure, a lump sum earns more interest than the same total paid in monthly instalments, because the money is invested for longer.</p></details>
+            <details><summary>What is the difference between an RD and a SIP?</summary><p>An RD is a deposit product where the interest rate is set by the bank when you open it. A SIP is a way of investing regularly in mutual funds, where returns are market-linked and not fixed. An RD gives a contractual rate; a SIP carries market risk and its outcome is not known in advance.</p></details>
+            <details><summary>Is RD interest taxable?</summary><p>Interest earned on a recurring deposit is generally treated as taxable income in India and is added to your total income for the year. The rate that applies depends on your own tax situation. This calculator shows gross figures before any tax; consult a qualified tax adviser for your circumstances.</p></details>
+            <details><summary>Is there TDS on RD interest?</summary><p>Banks may deduct tax at source on recurring deposit interest once it crosses the applicable threshold for the year. Thresholds, rates and exemption forms are set by tax rules that change from time to time, so check the current position with your bank or a tax adviser.</p></details>
+            <details><summary>What happens if I miss an RD instalment?</summary><p>The consequences depend on the bank and the product. Many banks charge a penalty for a missed or delayed instalment, and repeated defaults can lead to the account being closed early. A missed instalment also means less money in the account earning interest, so the maturity value falls. Check your own bank's terms.</p></details>
+            <details><summary>Can I close an RD before maturity?</summary><p>Most recurring deposits allow premature closure, but the interest paid is usually recalculated at a lower rate and a penalty may apply. The amount you receive can therefore be noticeably less than the maturity figure shown here. This calculator projects the full-tenure outcome only.</p></details>
+            <details><summary>Does this calculator handle a 0% interest rate?</summary><p>Yes. At 0% the maturity amount is simply the monthly deposit multiplied by the number of instalments, and the interest shown is zero. The calculation branches explicitly for this case rather than dividing by zero.</p></details>
+            <details><summary>Can I calculate an RD for 10 years?</summary><p>Yes. The tenure accepts anything from one month up to 30 years, entered as years plus months. Note that many banks cap recurring deposit tenures at 10 years, so check what your bank actually offers before planning around a longer term.</p></details>
+            <details><summary>Can I work out the monthly deposit needed for a target amount?</summary><p>Yes. Switch to Target mode, enter the amount you want at maturity along with the tenure and rate, and the calculator solves the same RD formula backwards for the required monthly deposit. It rounds up to the nearest rupee so the projection reaches the goal rather than falling just short.</p></details>
+            <details><summary>Is the maturity amount guaranteed?</summary><p>No. Every figure here is an estimate based on the rate you typed and a standard quarterly-compounding model. Your bank's contracted rate, its rounding rules, the exact deposit dates and any tax deducted will all move the real number. Treat the output as an illustration, not a promise.</p></details>
+            <details><summary>Why does my bank's RD maturity differ from this calculator?</summary><p>Banks vary in how they round intermediate interest, which day of the month they treat the instalment as received, and how they handle part periods and holidays. Those small differences accumulate over a long tenure. A gap of a few hundred rupees on a multi-year RD is normal; a large gap usually means the rate or tenure entered does not match the actual product.</p></details>
+            <details><summary>Can I calculate a senior citizen RD?</summary><p>Yes, by entering the rate that applies. Banks commonly offer senior citizens a higher rate on deposits, but the size of that difference varies by bank and by product, so this calculator does not assume one. Enter the actual rate your bank quotes.</p></details>
+            <details><summary>Does the calculator use quarterly compounding?</summary><p>By default, yes, because that is the usual convention for recurring deposits at Indian banks. The compounding frequency is shown next to every result and you can change it to monthly, half-yearly or annual if your product differs.</p></details>
+            <details><summary>Are my figures sent anywhere?</summary><p>No. The whole calculation runs in your browser. Nothing you type is uploaded, and the optional recent-calculations list is stored only in your own browser's local storage until you clear it.</p></details>
+            <details><summary>Is this RD calculator free?</summary><p>Yes. It is free, needs no sign-up, no email address and no app install, and there is no limit on how many calculations you can run.</p></details>
+            <details><summary>Does the calculator show the amount after tax?</summary><p>No. It shows gross maturity and gross interest only. Because the tax on recurring deposit interest depends on your total income and current tax rules, showing an after-tax figure would be misleading without knowing your circumstances.</p></details>
+            <details><summary>What is the minimum tenure and deposit I can enter?</summary><p>The calculator accepts a monthly deposit from ₹100 up to ₹1 crore and a tenure from one month up to 30 years. Real bank products usually have narrower limits, typically a minimum of six months and ₹100 to ₹500 a month, so check what your bank allows.</p></details>
+          </div>
+        </section>
+
+                <!-- ============ RELATED TOOLS ============ -->
+        <section class="rd-section" aria-labelledby="rd-tools-heading">
+          <h2 class="rd-h2" id="rd-tools-heading">Related financial calculators</h2>
+          <p class="rd-sub">Other ToolAdda calculators that pair naturally with a recurring deposit plan.</p>
+          <div class="rd-related">
+            <a href="fd-calculator.html"><strong>FD Calculator</strong><span>Maturity and interest on a lump-sum fixed deposit.</span></a>
+            <a href="sip-calculator.html"><strong>SIP Calculator</strong><span>Project a market-linked monthly mutual fund investment.</span></a>
+            <a href="ppf-calculator.html"><strong>PPF Calculator</strong><span>Public Provident Fund maturity over the 15-year term.</span></a>
+            <a href="emi-calculator.html"><strong>EMI Calculator</strong><span>Loan EMI, amortisation and prepayment impact.</span></a>
+            <a href="loan-calculator.html"><strong>Loan Calculator</strong><span>EMI, total interest and the overall cost of a loan.</span></a>
+            <a href="home-loan-calculator.html"><strong>Home Loan Calculator</strong><span>Work out home loan EMI and total repayment.</span></a>
+            <a href="manual-tax-calculator.html"><strong>Income Tax Calculator</strong><span>Compare tax under the old and new regimes.</span></a>
+            <a href="percentage-calculator.html"><strong>Percentage Calculator</strong><span>Percentage change, increase, decrease and discounts.</span></a>
+          </div>
+        </section>
+
+        <p class="rd-disclaimer">
+          ToolAdda's RD Calculator is an educational tool, not financial advice. Recurring deposit rates, minimum instalments, tenure limits, penalty rules and premature-closure terms are set by each bank and change over time. Figures shown are gross, before any tax. Confirm the actual terms with your bank before committing to a deposit.
+        </p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+          <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links"><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../privacy-policy.html">Privacy</a><a href="../terms.html">Terms</a></div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/rd-calculator.js"></script>
+    <script src="../assets/js/side-ads.js" defer></script>
+    <script src="../assets/js/inline-ads.js" data-in-article defer></script>
+  </body>
+</html>

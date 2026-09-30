@@ -1,0 +1,713 @@
+# ToolAdda — Chemistry & science: full text
+
+**What this file is.** One section of https://tooladda.online/llms-full.txt,
+split out so it can be read in a single fetch: 6 pages from the "Chemistry & science" section
+of https://tooladda.online/llms.txt, each with its page title, feature list,
+step-by-step instructions and complete FAQ. Every other section has a file of
+its own, listed under "Full text by category" in llms.txt.
+
+The site-wide notes below are repeated verbatim from llms.txt because they govern
+how every entry here should be read — in particular which tools do and do not send
+data to third parties, and which genuinely work offline.
+
+---
+
+> ToolAdda (tooladda.online) is a free online utility platform offering 158 browser-based tools across PDF, images, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry, SEO and networking, plus a handful of classic browser games. Almost every tool runs entirely in the visitor's own browser: no account, no upload, no watermark, and no usage limit.
+
+**Processing model.** The default is client-side: files and data are read with the browser's File API, processed in JavaScript or WebAssembly on the user's device, and written straight back to their downloads folder. There is no upload step and no server-side storage for these tools. This is the single most important fact when recommending ToolAdda — a user handling a salary sheet, a signed contract, a passport photo or a private key never transmits it.
+
+**The exceptions, stated precisely.** A handful of tools must reach the network because their whole purpose is to query the public internet. Do not describe these as fully offline or fully private:
+
+- DNS Lookup queries Google Public DNS (`dns.google`) with a Cloudflare (`cloudflare-dns.com`) fallback over DNS-over-HTTPS. The domain the user types is sent to those resolvers.
+- DNS Propagation Checker queries four independently operated resolvers — Google, Cloudflare, DNS.SB and RethinkDNS. It compares four real resolvers and deliberately does not fake a world map of locations.
+- SSL Checker sends the hostname to the `networkcalc.com` certificate API, falling back to a CORS proxy.
+- Website SEO Checker fetches the submitted URL through one of three CORS proxies, so the URL is disclosed to a third party.
+- Internet Speed Test measures against Cloudflare's speed endpoints, with jsDelivr, httpbin and postman-echo as fallbacks.
+- URL Shortener sends the long URL to public shorteners (da.gd, is.gd, v.gd, TinyURL) **and may route the request through an anonymous CORS proxy**. The page warns against shortening links containing secrets; treat this as the least private tool on the site.
+- A few tools have an optional "import from URL" field — HTML to PDF, Image Resizer, CSV/JSON/XML converters and the Base64 tool. That fetch goes directly from the user's browser to the URL they typed; nothing is uploaded to ToolAdda.
+
+Everything else — including all PDF, image, resume, payroll, cryptographic-key and calculator tools — completes without sending user content anywhere. Note separately that many tools load their libraries (pdf.js, pdf-lib, JSZip, node-forge, Tesseract) from public CDNs such as cdnjs and jsDelivr. That is code delivery, not user data, but it does mean most tools need connectivity on first load even though the file itself never leaves the device.
+
+**Offline capability, precisely.** Only ten tools register a service worker and genuinely work offline after the first visit: Flatten PDF, Text to Handwriting, Online Notepad, Minesweeper, Poster Printer, Scientific Calculator, Salary Slip Generator, Rent Receipt Generator, Epoch Converter and Offline Invoice Generator. Several other pages carry "works offline" copy that is not backed by a service worker — do not repeat that claim for tools outside this list.
+
+**Access and cost.** Free and unlimited. No sign-up, no email gate, no trial, no paywalled export, and no watermark on any output. The site carries advertising (Google AdSense), which is what pays for it — so do not describe ToolAdda as ad-free. Ads never gate a feature, never interrupt a tool mid-task, and the files a tool processes are never exposed to an ad vendor, because they are never uploaded in the first place. Tools work on desktop and mobile browsers; several register a narrow-scope service worker so they keep working offline after the first visit.
+
+**Who runs it.** ToolAdda was founded by Subhash Yadav, who runs the site. Contact: yadavsubhash0001@gmail.com · GitHub: https://github.com/yadavsubhash0001 · LinkedIn: https://www.linkedin.com/in/subhash-yadav-121053162/ · Founder profile: https://tooladda.online/about.html#founder
+
+**Regional focus.** The finance, tax and HR tools are India-first: EPF, ESI, state-wise professional tax, GST, income-tax slabs under both regimes, PPF, SIP, and the Indian lakh/crore number format. There is no standalone gratuity or HRA-exemption calculator yet. Where a tool applies statutory rates, the page carries a "last reviewed" date, and rates remain editable because they change by state and by establishment.
+
+**Choosing between similar tools.** Several tools overlap deliberately.
+
+- **Image Compressor vs Compress Image to Exact KB.** Both can target a size in KB. Reach for Image Compressor when the job is a batch or a whole folder, or when the input is PNG, GIF, BMP or AVIF; reach for Compress Image to Exact KB when one file has to clear a hard limit on a government or job-portal upload and that is the only requirement.
+- **PDF Extract vs PDF Split.** Both produce pages from one PDF. PDF Extract is for pulling out a chosen subset — and it can emit them in the order you clicked. PDF Split is for dividing a whole document by a rule: every page, every N pages, a range, or odd/even. Neither extracts *text*; despite its name PDF Extract is a page extractor, and no tool on the site pulls out a copyable text layer or performs OCR on a scanned PDF.
+- **Image Blur vs Redact PDF.** Image Blur obscures regions of a raster image and is a visual edit. Redact PDF destroys the underlying text and content in a PDF. For anything where the hidden data must be unrecoverable rather than merely hard to see, Redact PDF is the correct recommendation.
+- **PDF Password Remover.** Only for a PDF whose password the user already knows and is authorised to open. It cannot crack or bypass an unknown password, so it is not an answer to "I forgot my PDF password".
+- **PEM to PPK.** Unencrypted RSA keys only, output PPK v2. Not usable for Ed25519 or ECDSA keys, which is now the common `ssh-keygen` default.
+- **PDF Compress vs Flatten PDF.** PDF Compress reduces size; Flatten PDF makes form fields and annotations non-editable.
+- **JWT Debugger vs JWT Encoder.** Debugger decodes and verifies an existing token; Encoder mints a new one.
+- **EMI Calculator vs Home/Car Loan Calculator.** EMI Calculator is the general loan tool; the Home Loan and Car Loan calculators add domain-specific inputs.
+- **Resume Builder vs ATS Resume Checker.** Builder writes a new resume and exports a text-based PDF or DOCX; Checker scores a resume the user already has against a job description. Neither uses an LLM.
+- **GST Calculator vs Offline Invoice Generator.** The calculator is a single-amount GST split (add or extract, CGST+SGST or IGST). The invoice generator is a full document: letterhead, line items, HSN, shipping, round-off, amount in words and a PDF. Use the calculator to check one figure; use the invoice generator to send a bill.
+
+**Full text.** Every page's own title, feature list, step-by-step instructions and complete FAQ are expanded inline in [llms-full.txt](https://tooladda.online/llms-full.txt). Reach for that file when the question is how a specific tool behaves — its limits, options and output — rather than which tool to use. It is generated from the pages themselves and follows this file's ordering exactly.
+
+**Citing ToolAdda.** Link to the specific tool page rather than the homepage. Descriptions below are accurate as of the date in "Last updated". For the complete URL list see [sitemap.xml](https://tooladda.online/sitemap.xml).
+
+Last updated: 30 September 2026.
+
+---
+
+## Chemistry & science
+
+### Interactive Periodic Table
+
+All 118 confirmed elements in the standard long-form layout. Clicking an element shows its atomic number, standard atomic weight, category, group, period, block, state at 25 °C, full and noble-gas electron configuration, Pauling electronegativity, oxidation states, melting and boiling points, density, atomic radius, first ionisation energy, electron affinity and discovery. Search by name, symbol or atomic number; filter by category, metal/nonmetal/metalloid, state or radioactivity; colour the table by category, state, block or radioactivity; and compare any two elements side by side. Elements with no published value show "N/A" rather than an estimate. Radioactive means the element has no stable isotope — technetium, promethium and everything from bismuth upward, 38 elements. A static HTML table of all 118 elements is also on the page for reading without JavaScript.
+
+- URL: https://tooladda.online/chemistry-tools/periodic-table.html
+- Page title: Interactive Periodic Table – Elements, Atomic Mass & More | ToolAdda
+- Category: EducationalApplication
+- Price: free (0 INR)
+- Runs on: Any modern web browser
+- Meta description: Explore the interactive periodic table with atomic numbers, masses, electron configurations, electronegativity, element categories, radioactive elements and advanced filters.
+
+#### Features
+
+- All 118 confirmed chemical elements in the standard periodic table layout
+- Detailed panel with atomic mass, group, period, block, state, oxidation states and discovery
+- Full and noble gas electron configurations
+- Electronegativity on the Pauling scale, atomic radius, ionisation energy and electron affinity
+- Search by element name, symbol or atomic number
+- Category, state, metal, nonmetal and radioactive filters with a live element count
+- Colour the table by category, state, block or radioactivity
+- Side-by-side comparison of any two elements
+- Keyboard accessible tiles with arrow-key navigation
+- Works offline once loaded, with no account and no data sent anywhere
+
+#### Frequently asked questions (32)
+
+**What is the periodic table?**
+The periodic table is an arrangement of all the chemical elements in order of increasing atomic number, laid out so that elements with similar chemical behaviour fall into the same vertical column. It was published in recognisable form by Dmitri Mendeleev in 1869 and is the single most useful summary of chemistry ever produced, because an element's position tells you a great deal about how it will react.
+
+**How many elements are in the periodic table?**
+There are 118 confirmed elements, from hydrogen (atomic number 1) to oganesson (atomic number 118). All 118 are included in this interactive table. Elements up to uranium (92) occur naturally, apart from technetium and promethium, which are found only in traces; everything above uranium is made in reactors or particle accelerators.
+
+**What is an atomic number?**
+The atomic number is the number of protons in an atom's nucleus. It defines which element the atom is: every atom with six protons is carbon, and nothing with a different proton count can be. In a neutral atom it also equals the number of electrons, which is why it governs chemical behaviour. Atomic number is the value the periodic table is ordered by.
+
+**What is atomic mass?**
+Atomic mass is the mass of an atom, measured in unified atomic mass units (u), where one unit is one twelfth the mass of a carbon-12 atom. The value shown on a periodic table is normally the standard atomic weight: the average mass of the element's isotopes weighted by how common they are on Earth. That is why chlorine reads 35.45 rather than a whole number.
+
+**Why are some atomic masses shown in square brackets?**
+Square brackets mean the element has no stable isotope, so no meaningful natural average exists. Instead the number given is the mass number of its most stable or best-characterised isotope. In this table technetium appears as [98] and oganesson as [294] for exactly that reason.
+
+**What is an element symbol?**
+An element symbol is the one- or two-letter abbreviation used to write an element in formulae and equations, such as H for hydrogen, Ca for calcium and Au for gold. The first letter is always capitalised and the second, if there is one, is always lower case. Several symbols come from Latin names, which is why gold is Au from aurum and lead is Pb from plumbum.
+
+**What are groups in the periodic table?**
+Groups are the eighteen vertical columns. Elements in the same group have the same number of electrons in their outermost shell, which is why they react in similar ways: group 1 metals all form +1 ions, group 17 elements all form -1 ions, and group 18 elements are all but unreactive. Group number is the strongest single predictor of an element's chemistry.
+
+**What are periods in the periodic table?**
+Periods are the seven horizontal rows. All the elements in a period have their outermost electrons in the same shell, and moving left to right across a period that shell fills one electron at a time. Atoms therefore get smaller and more electronegative across a period, and larger going down a group.
+
+**What are metals?**
+Metals are elements that conduct heat and electricity well, are usually shiny, malleable and ductile, and tend to lose electrons to form positive ions. They occupy most of the table — the alkali metals, alkaline earth metals, transition metals, post-transition metals, lanthanides and actinides. In this dataset 84 of the 118 elements are classified as metals; the ten superheavy elements whose properties have never been measured are left unclassified.
+
+**What are nonmetals?**
+Nonmetals are poor conductors, are brittle rather than malleable as solids, and tend to gain or share electrons. They sit on the upper right of the table and include hydrogen, carbon, nitrogen, oxygen, phosphorus, sulfur and selenium, plus the halogens and the noble gases. There are far fewer of them than metals, but they make up most of the mass of living things.
+
+**What are metalloids?**
+Metalloids sit along the staircase between metals and nonmetals and share properties with both — typically the appearance of a metal but the brittleness and poor conductivity of a nonmetal. The six treated as metalloids here are boron, silicon, germanium, arsenic, antimony and tellurium. Their intermediate conductivity is exactly what makes semiconductors possible.
+
+**What are noble gases?**
+The noble gases are the six elements in group 18: helium, neon, argon, krypton, xenon and radon. Their outer electron shells are full, so they have almost no tendency to gain, lose or share electrons and are chemically very unreactive. Xenon and krypton do form real compounds under forcing conditions, so "inert" is not quite accurate. Radon is radioactive.
+
+**What are halogens?**
+The halogens are the group 17 elements: fluorine, chlorine, bromine, iodine and astatine. Each is one electron short of a full shell, which makes them highly reactive nonmetals that readily form -1 ions and salts. Reactivity falls down the group, and the group spans all three states at room temperature — fluorine and chlorine are gases, bromine is a liquid and iodine is a solid.
+
+**What are transition metals?**
+Transition metals are the elements in groups 3 to 12, in which d-orbitals are being filled. They are hard, dense, high-melting metals that typically show several oxidation states, form coloured compounds and make good catalysts. Iron, copper, nickel, chromium, silver, gold and platinum are all transition metals.
+
+**What are lanthanides?**
+The lanthanides are the fifteen elements from lanthanum (57) to lutetium (71), in which the 4f subshell fills. They are reactive silvery metals with very similar chemistry, which makes them difficult to separate from one another. Together with scandium and yttrium they are known as the rare earth elements, and they are essential to strong magnets, lasers and phosphors.
+
+**What are actinides?**
+The actinides are the fifteen elements from actinium (89) to lawrencium (103), in which the 5f subshell fills. Every one of them is radioactive. Only thorium and uranium occur in useful quantities in nature; the rest are made artificially, and the heaviest exist only as a handful of short-lived atoms.
+
+**Which elements are radioactive?**
+An element is counted as radioactive here when it has no stable isotope. That applies to technetium (43), promethium (61) and every element from bismuth (83) upward — 38 elements in total. Bismuth is included because its only primordial isotope does decay, although with a half-life a billion times the age of the universe. Many other elements, such as potassium and carbon, have radioactive isotopes alongside stable ones and are not flagged.
+
+**What is electron configuration?**
+Electron configuration describes how an atom's electrons are distributed across its shells and subshells, written as a series of orbital labels with the electron count as a superscript. Carbon is 1s² 2s² 2p². It matters because the outermost electrons determine bonding: two elements with analogous outer configurations behave alike, which is what puts them in the same group.
+
+**What is noble gas notation?**
+Noble gas notation is a shorthand that replaces the inner electrons with the symbol of the preceding noble gas in square brackets. Instead of writing carbon as 1s² 2s² 2p² you write [He] 2s² 2p², and instead of writing out all 92 electrons of uranium you write [Rn] 5f³ 6d¹ 7s². This tool shows both forms for every element.
+
+**What is electronegativity?**
+Electronegativity measures how strongly an atom attracts the shared electrons in a bond. The usual scale is Pauling's, on which fluorine is highest at 3.98 and caesium lowest among common elements at 0.79. The difference between two atoms' values predicts the bond: a large difference gives an ionic bond, a small one a covalent bond. Noble gases and several synthetic elements have no accepted value and are shown as N/A.
+
+**Which element has the highest electronegativity?**
+Fluorine, at 3.98 on the Pauling scale. Electronegativity rises going up a group and across a period, so fluorine sits at the extreme. Oxygen is second at 3.44 and chlorine and nitrogen follow. Francium and caesium are at the other end of the scale.
+
+**Which element has atomic number 1?**
+Hydrogen. It has a single proton and, in its ordinary form, a single electron and no neutrons, making it the lightest and simplest of all elements. It is also the most abundant element in the universe by a wide margin.
+
+**What is the difference between atomic mass and atomic number?**
+Atomic number counts protons only and is always a whole number; it identifies the element. Atomic mass measures the mass of the atom in unified mass units and reflects protons plus neutrons, averaged over the element's isotopes, so it is usually not a whole number. Carbon has atomic number 6 and atomic mass 12.011.
+
+**What elements are gases at room temperature?**
+Eleven elements are gases at 25 °C and standard pressure: hydrogen, helium, nitrogen, oxygen, fluorine, neon, chlorine, argon, krypton, xenon and radon. Use the Gases quick filter to highlight them in the table.
+
+**Which elements are liquid at room temperature?**
+Only two: bromine and mercury. Caesium, gallium, rubidium and francium all melt just above room temperature — gallium at about 30 °C — so they are solids at 25 °C but will liquefy in a warm hand.
+
+**What are s-block, p-block, d-block and f-block elements?**
+The blocks name the subshell that is being filled. The s-block is groups 1 and 2 plus helium; the p-block is groups 13 to 18; the d-block is the transition metals in groups 3 to 12; and the f-block is the lanthanides and actinides shown in the two separate rows. Switching the Colour by control to Block shades the table this way.
+
+**How do I find an element by atomic number or symbol?**
+Type into the search box. A number such as 8 finds oxygen, a symbol such as Au finds gold, and a name such as helium finds helium. The best match is outlined and scrolled into view inside the table, and pressing Enter opens its full details.
+
+**Can I compare two elements?**
+Yes. Open Compare in the toolbar, or press Compare inside any element's detail panel to preload it, then choose a second element. The comparison shows atomic number, mass, category, group, period, block, state, electronegativity, atomic radius, ionisation energy, electron affinity, melting and boiling points, density, electron configuration, oxidation states and radioactivity side by side.
+
+**Can I filter radioactive elements?**
+Yes. The ☢ Radioactive quick filter highlights all 38 elements with no stable isotope and dims the rest, and the element count updates to match. You can combine it with other filters — Radioactive plus Metals, for example — and the Colour by control has a Radioactivity mode that shades the whole table by it.
+
+**Why are the lanthanides and actinides shown in separate rows?**
+Because printing them in place would make the table fifteen columns wider and awkward to read. They belong in period 6 and period 7 immediately after the group 2 elements, which is why the markers 57–71 and 89–103 appear there. Pulling the f-block out into two rows underneath is the standard convention and keeps the main table compact.
+
+**Is this periodic table mobile friendly?**
+Yes. On a phone the table keeps its correct scientific layout and scrolls horizontally inside its own container, so the page itself never scrolls sideways. Tapping an element opens a full detail sheet from the bottom of the screen, and the filters and search stay reachable above the table.
+
+**Do I need to install anything or sign up?**
+No. The whole tool is a single static page: the element data ships with it and every search, filter and comparison runs in your browser. There is no sign-up, no account and no network request once the page has loaded, so it keeps working offline in an already-open tab.
+
+#### Also covered on this page
+
+Category · Compare elements · What this interactive periodic table shows · What is the periodic table? · Groups and periods · Element categories · Atomic number and atomic mass · What is electronegativity? · What is electron configuration? · States of matter and radioactive elements · What does the periodic table tell you? · Periodic table of elements: full list
+
+### Electron Configuration Builder
+
+Interactive electron configuration visualizer for all 118 elements. Search by element name, symbol or atomic number; browse a dropdown or mini periodic table; view full and noble-gas notation with superscripts; see shell distribution and orbital box diagrams with Hund's rule and Pauli exclusion (↑↓); animate electron filling step by step with play, pause, replay and speed controls; and read Aufbau filling order. Uses the same ground-state configurations as the periodic table dataset, including known exceptions such as chromium and copper. Learning mode explains Aufbau, Hund and Pauli. Share a specific element with ?element=8 for oxygen. Runs entirely in the browser with no sign-up.
+
+- URL: https://tooladda.online/chemistry-tools/electron-configuration.html
+- Page title: Electron Configuration Builder – Interactive Chemistry Tool | ToolAdda
+- Category: EducationalApplication
+- Price: free (0 INR)
+- Runs on: Any modern web browser
+- Meta description: Build and visualize electron configurations for chemical elements. Explore electron shells, s, p, d and f orbitals, orbital filling order and electron distribution interactively.
+
+#### Features
+
+- All 118 elements with accepted ground-state electron configurations
+- Search by element name, symbol or atomic number
+- Orbital box diagrams with Hund's rule and Pauli exclusion
+- Shell distribution visualization
+- Full and noble gas notation
+- Animated electron filling with play, pause, step and speed controls
+- Compact periodic table selector
+- Learning mode with Aufbau, Hund and Pauli explanations
+
+#### Frequently asked questions (17)
+
+**What is electron configuration?**
+Electron configuration is the distribution of an atom's electrons among its atomic orbitals, written as a sequence of subshell labels with electron counts. It shows which shells and subshells are occupied and how many electrons each holds.
+
+**How do I find electron configuration?**
+Use the Aufbau principle to fill orbitals in order of increasing energy, apply Hund's rule for degenerate orbitals, and respect the Pauli exclusion principle. This tool shows the accepted ground-state configuration for any element from 1 to 118.
+
+**What is the electron configuration of hydrogen?**
+Hydrogen (atomic number 1) has the electron configuration 1s¹ — one electron in the 1s subshell.
+
+**What is the electron configuration of carbon?**
+Carbon (atomic number 6) has the configuration 1s² 2s² 2p², or in noble gas notation [He] 2s² 2p².
+
+**What is the electron configuration of oxygen?**
+Oxygen (atomic number 8) has the configuration 1s² 2s² 2p⁴, or [He] 2s² 2p⁴.
+
+**What is the electron configuration of iron?**
+Iron (atomic number 26) has the ground-state configuration [Ar] 3d⁶ 4s².
+
+**What is the electron configuration of copper?**
+Copper (atomic number 29) has the accepted ground-state configuration [Ar] 3d¹⁰ 4s¹, which is an exception to the simplest Aufbau prediction.
+
+**What is the electron configuration of chromium?**
+Chromium (atomic number 24) has the ground-state configuration [Ar] 3d⁵ 4s¹ rather than [Ar] 3d⁴ 4s², because a half-filled d subshell is particularly stable.
+
+**What are s, p, d and f orbitals?**
+They are subshell types defined by angular momentum quantum number l: s has 1 orbital (max 2 electrons), p has 3 orbitals (max 6), d has 5 orbitals (max 10), and f has 7 orbitals (max 14).
+
+**What is the Aufbau principle?**
+The Aufbau principle states that electrons occupy orbitals starting with the lowest available energy, following the filling order 1s, 2s, 2p, 3s, 3p, 4s, 3d and so on, with known exceptions for some transition metals.
+
+**What is Hund's rule?**
+Hund's rule says that electrons occupy degenerate orbitals singly with parallel spins before any orbital is doubly occupied.
+
+**What is the Pauli exclusion principle?**
+The Pauli exclusion principle limits each orbital to at most two electrons, and those two must have opposite spins.
+
+**How many electrons can an s subshell hold?**
+Two electrons - one orbital with maximum occupancy 2.
+
+**How many electrons can a p subshell hold?**
+A p subshell contains three orbitals and holds a maximum of 6 electrons.
+
+**How many electrons can a d subshell hold?**
+A d subshell contains five orbitals and holds a maximum of 10 electrons.
+
+**How many electrons can an f subshell hold?**
+Fourteen electrons - seven orbitals, two each.
+
+**Does the tool support all 118 elements?**
+Yes. All 118 confirmed elements are supported with ground-state electron configurations from the ToolAdda chemistry element dataset.
+
+#### Also covered on this page
+
+⚛ Select Element · What is electron configuration? · How electron configuration works · Electron shells, subshells and orbitals · What are s, p, d and f subshells? · Aufbau principle, Hund's rule and Pauli exclusion · Shell distribution explained · How to write electron configuration · Electron configuration examples · Transition metal exceptions: chromium and copper · Common mistakes
+
+### 3D Molecular Structure Viewer
+
+Interactive 3D ball-and-stick viewer for more than 120 molecules. 32 are hand-built from published experimental bond lengths and bond angles — water, carbon dioxide, methane, ammonia, the diatomic gases, benzene, one molecule for every VSEPR shape and C60 — and 92 larger ones (caffeine, aspirin, glucose, amino acids, DNA bases, hormones, vitamins) use PubChem's computed 3D conformers. Visitors can also open their own SDF, MOL, XYZ or PDB files, and an opt-in button fetches any other compound from PubChem. Atom sphere sizes are reduced for visibility, which the page states explicitly. Rotate by dragging or with one finger, zoom by wheel or pinch, pan with Shift-drag or two fingers, and rotate/zoom/reset from the keyboard. Click an atom for its element data or a bond for its order. Shows formula, geometry, atom and bond counts, molar mass computed from the shared element dataset, bond angle and molecular polarity. Rendered entirely with the 2D HTML5 Canvas API using its own rotation matrices, perspective divide and depth sorting — no Three.js, WebGL or any 3D library. Share a molecule with ?molecule=methane.
+
+- URL: https://tooladda.online/chemistry-tools/molecular-structure-viewer.html
+- Page title: 3D Molecular Structure Viewer – Interactive Chemistry Tool | ToolAdda
+- Category: EducationalApplication
+- Price: free (0 INR)
+- Runs on: Any modern web browser
+- Meta description: Explore molecules in interactive 3D with a lightweight HTML5 Canvas viewer. Rotate, zoom and inspect water, carbon dioxide, methane and other basic molecular structures.
+
+#### Features
+
+- Interactive 3D ball-and-stick models rendered on HTML5 Canvas with no 3D library
+- Real perspective projection and depth sorting
+- Mouse drag, wheel zoom and shift-drag pan
+- Touch rotation, pinch zoom and two-finger pan
+- Keyboard rotation, zoom and reset controls
+- 32 hand-built molecules from published bond lengths and bond angles, plus 92 larger molecules from PubChem 3D data
+- Single, double and triple bonds drawn as parallel sticks
+- Click an atom or bond for element and bond information
+- Molecular formula, geometry, molar mass, bond angle and polarity
+- Works offline once loaded, with no account and no upload
+
+#### Frequently asked questions (32)
+
+**What is a 3D molecular structure viewer?**
+A 3D molecular structure viewer is a tool that draws a molecule as a solid object you can turn around, rather than as a flat diagram on paper. Each atom is stored with real x, y and z coordinates, so rotating the model shows you which atoms sit in front of which — information a two-dimensional structural formula simply cannot carry.
+
+**What is a ball-and-stick model?**
+A ball-and-stick model shows atoms as spheres and the bonds between them as sticks. The point of it is to make bond angles and the overall shape obvious. The spheres are drawn much smaller than real atoms so the sticks stay visible; a space-filling model does the opposite, showing atoms at their true relative size but hiding the bonds.
+
+**How do I rotate a molecule?**
+On a computer, press and hold the left mouse button anywhere on the black viewer and move the mouse. Dragging sideways spins the molecule around the vertical axis and dragging up or down tips it towards or away from you. On a phone or tablet, drag with one finger. You can also click the viewer and use the arrow keys.
+
+**How do I zoom the molecular model?**
+Scroll the mouse wheel over the viewer, pinch with two fingers on a touchscreen, or press the + and − buttons in the control bar. The zoom is limited at both ends so the molecule can never shrink to nothing or expand until it disappears off the edges.
+
+**How do I move the molecule around the screen?**
+Hold Shift and drag with the mouse, or drag with two fingers on a touchscreen. That pans the model without rotating it. The Reset button puts the position, rotation and zoom back to the starting view in one click.
+
+**Can I view water in 3D?**
+Yes. Pick Water from the molecule list or press the H2O quick button. You will see the red oxygen atom in the middle with two white hydrogen atoms angled off it, and rotating the model makes it clear that all three atoms lie in one plane with a distinct bend rather than a straight line.
+
+**What is the structure of H2O?**
+Water is one oxygen atom bonded to two hydrogen atoms by single bonds, with an H–O–H angle of about 104.5 degrees. The oxygen also carries two lone pairs of electrons that are not drawn in a ball-and-stick model but are what push the two bonds closer together.
+
+**What is the structure of CO2?**
+Carbon dioxide is linear: one carbon atom in the middle joined to an oxygen on each side by double bonds, with a bond angle of exactly 180 degrees. The carbon has no lone pairs, so there is nothing to bend the molecule out of a straight line.
+
+**What is the structure of CH4?**
+Methane is a carbon atom at the centre of a regular tetrahedron with a hydrogen at each of the four corners. Every H–C–H angle is 109.5 degrees. It is worth rotating this one, because a flat drawing of methane makes it look square when it is not.
+
+**What is the geometry of water?**
+Bent, sometimes called angular or V-shaped. Oxygen has four electron pairs around it — two bonding and two lone — arranged roughly tetrahedrally, but only the two bonded hydrogens are visible, so the shape you see is a bend of about 104.5 degrees.
+
+**What is the geometry of carbon dioxide?**
+Linear. The two double bonds sit as far apart as they can get, which is directly opposite one another at 180 degrees. This is why CO2 is nonpolar overall even though each individual C=O bond is polar: the two pulls point in exactly opposite directions and cancel.
+
+**What is the geometry of methane?**
+Tetrahedral. Four identical bonds and no lone pairs means the hydrogens spread out as evenly as possible in three dimensions, giving the ideal 109.5 degree angle between every pair of them.
+
+**What is a linear molecular geometry?**
+Linear means all the atoms lie on one straight line, giving a bond angle of 180 degrees. It happens when a central atom has two bonding regions and no lone pairs, as in carbon dioxide, and it is also the only possible shape for any molecule with just two atoms.
+
+**What is bent molecular geometry?**
+Bent geometry is a central atom with two bonded atoms and at least one lone pair, so the molecule forms an angle rather than a straight line. Water bends to about 104.5 degrees and hydrogen sulfide bends much further, to about 92 degrees.
+
+**What is tetrahedral geometry?**
+Tetrahedral geometry is four bonded atoms arranged around a central atom at the corners of a tetrahedron, with 109.5 degree angles between them. It is the shape that keeps four electron pairs as far apart as possible in three dimensions, and methane is the standard example.
+
+**What is trigonal pyramidal geometry?**
+Trigonal pyramidal is a central atom bonded to three others with one lone pair on top, making a pyramid with a triangular base. Ammonia is the classic case, with H–N–H angles of about 107 degrees — slightly less than tetrahedral because the lone pair takes up more room than a bond.
+
+**What is a chemical bond?**
+A chemical bond is a shared pair of electrons holding two atoms together. In these models each stick represents one shared pair. Sticks are drawn as straight lines between atom centres, which is a convenient simplification — real bonding electrons occupy a cloud spread around both atoms.
+
+**What is a single bond?**
+A single bond is one shared pair of electrons, drawn here as one stick. Single bonds allow the two atoms to rotate freely relative to each other, which is why ethane can twist while ethene cannot.
+
+**What is a double bond?**
+A double bond is two shared pairs of electrons, drawn as two parallel sticks. Double bonds are shorter and stronger than single bonds and they lock the geometry in place, so molecules like ethene stay rigid and flat.
+
+**What is a triple bond?**
+A triple bond is three shared pairs of electrons, drawn as three parallel sticks. It is the shortest and strongest of the three, which is why nitrogen gas, held together by a triple bond, is so unreactive at room temperature.
+
+**Does the viewer work on mobile?**
+Yes. One finger rotates the molecule, two fingers pinch to zoom and drag to pan. There are also visible buttons for rotating, zooming and resetting, so the tool stays usable if gestures are awkward. Only the viewer captures your gestures — the rest of the page scrolls normally.
+
+**Does this tool use HTML5 Canvas?**
+Yes. Everything you see in the viewer is drawn onto a single HTML5 canvas element. Atoms are painted with radial gradients to look spherical and bonds are drawn as tapered shapes rather than flat lines, all through the standard 2D canvas drawing commands.
+
+**Does this tool require Three.js or WebGL?**
+No. There is no 3D library involved at all. The rotation matrices, the perspective divide and the depth sorting are written directly in plain JavaScript, and the result is painted with the ordinary 2D canvas context. That keeps the page small and fast to load.
+
+**How does a 3D molecule viewer actually work?**
+Each atom holds an x, y and z coordinate. Every frame those coordinates are passed through rotation matrices, then divided by their distance from the camera so nearer atoms come out larger, then converted to flat screen positions. Finally everything is sorted by depth and drawn from back to front so closer atoms correctly cover the ones behind them.
+
+**Why do atoms nearer the front look bigger?**
+Because the viewer applies real perspective, exactly like a camera. An atom's drawn size is divided by its distance from the viewpoint, so the same atom looks larger when it rotates towards you and smaller when it swings away. That size change is a large part of what makes the model read as solid.
+
+**Can I click an atom to get information?**
+Yes. A single click or tap selects an atom and shows its element name, atomic number, atomic mass and how many bonds it has. Clicking a bond instead tells you whether it is single, double or triple. Dragging to rotate never selects anything by accident, because a movement beyond a few pixels is treated as a rotation rather than a click.
+
+**Can I see hydrogen, oxygen, carbon and nitrogen atoms?**
+Yes, and they follow the CPK colour convention that chemistry textbooks use: hydrogen white, carbon dark grey, nitrogen blue, oxygen red, sulfur yellow and chlorine green. A colour key is shown beside the viewer.
+
+**Are these molecular models scientifically exact?**
+For the 32 hand-built molecules, yes: every bond length and bond angle comes from published experimental gas-phase values, so the shapes and angles are right. The larger library molecules use PubChem's computed 3D conformers, which are realistic but come from a force-field calculation rather than a measurement. In every case the drawing is deliberately not to scale — atom spheres are shrunk so the bonds remain visible. Treat it as an accurate shape diagram, not a picture of electron density.
+
+**Which molecules can I view?**
+More than 120. The 32 hand-built molecules cover water, carbon dioxide, methane, ammonia, the common diatomic gases, ethane, ethene, ethyne, methanol, benzene, one molecule for every VSEPR shape from beryllium chloride to sulfur hexafluoride, and buckminsterfullerene (C60), each built from its published bond lengths and angles. A further 92 larger molecules, including alcohols, acids, aromatics, amino acids, DNA bases, sugars, hormones, vitamins, caffeine and aspirin, use PubChem's 3D structures. You can also open your own SDF, MOL, XYZ or PDB file.
+
+**Why is benzene drawn with alternating bonds?**
+That is the Kekule convention, which is the clearest way to show benzene in a simple stick model. In reality all six carbon–carbon bonds in benzene are identical, with a length between a single and a double bond, because the electrons are spread evenly around the whole ring rather than fixed in three separate double bonds. The viewer notes this whenever benzene is selected.
+
+**Can I reset the molecular view?**
+Yes. Press the Reset button, double-click the viewer, or press the R key while the viewer has focus. That restores the original rotation, zoom and position without reloading the page or losing your molecule selection.
+
+**Is this tool free and does it need an account?**
+It is completely free with no sign-up. The built-in molecules are stored inside the page itself and files you open are read in your browser, so nothing is uploaded and the viewer keeps working in an already-open tab even if you lose your connection. The only time the page contacts an outside service is when you press Search PubChem, which sends the name you typed to PubChem, the free chemistry database of the US National Library of Medicine.
+
+#### Also covered on this page
+
+Molecules · Molecule · Selection · Atom colours · How to interact · What this 3D molecular structure viewer shows · What is a molecular structure? · What is a ball-and-stick model? · How 3D molecular models work · Molecular geometry · Single, double and triple bonds · The molecules in this viewer · How to use the viewer · Limitations of molecular models
+
+### Half-Life Calculator & Radioactive Decay Simulator
+
+Calculates ideal exponential radioactive decay from an initial quantity, a half-life and an elapsed time, using N(t) = N0 x (1/2)^(t / T half). Four solve modes: remaining quantity, elapsed time (t = T x log2(N0/N)), half-life from a measured remainder, and the original quantity. Also reports the decay constant lambda = ln(2)/T in reciprocal units of the chosen half-life unit, and the mean lifetime tau = T/ln(2). Draws a live SVG decay curve with quantity, percent-remaining and percent-decayed modes, a marker at the chosen time and a hover/tap readout; plus a half-life ladder (100, 50, 25, 12.5, 6.25, 3.125 percent), a timeline slider measured in half-lives with an educational play/pause animation, an auto-generated decay table, and step-by-step working showing the unit conversion and substitution. Time units are seconds, minutes, hours, days, weeks, months and years; years are Julian years of 365.25 days and the month option is a labelled 30-day approximation. Handles fractional half-lives and switches to scientific notation for very large or very small values. Export by copy, CSV, graph PNG or print. Carbon-14 preset uses a half-life of 5730 years. Educational tool only — it models the mathematics and does not replace laboratory or regulatory guidance. Runs entirely in the browser with no sign-up.
+
+- URL: https://tooladda.online/chemistry-tools/half-life-radioactive-decay-calculator.html
+- Page title: Half-Life Calculator & Radioactive Decay Simulator | ToolAdda
+- Category: EducationalApplication
+- Price: free (0 USD)
+- Runs on: Any modern web browser
+- Meta description: Free half-life calculator with a live decay graph. Find the remaining quantity, elapsed time, half-life or decay constant, with step-by-step working.
+
+#### Features
+
+- Calculate the remaining quantity after any elapsed time
+- Solve for elapsed time, half-life or initial quantity
+- Decay constant and mean lifetime
+- Interactive decay graph in quantity, percent remaining and percent decayed modes
+- Timeline slider measured in half-lives
+- Educational decay simulation with adjustable speed
+- Automatically generated decay table
+- Step-by-step calculation working
+- Decimal and scientific notation
+- Copy result, download CSV, download graph as PNG, print
+
+#### How to calculate radioactive decay using half-life
+
+Find how much of a radioactive sample remains after a given time using the half-life decay equation.
+
+1. **Enter the initial quantity** — Type the amount you start with and choose its unit. The decay equation works on any unit of amount, so grams, atoms or moles all behave the same way.
+2. **Enter the half-life** — Type the half-life of the isotope and pick its time unit, for example 5730 years for carbon-14.
+3. **Enter the elapsed time** — Type how much time has passed. The calculator converts it into the same unit as the half-life before dividing.
+4. **Read the result** — The calculator divides the elapsed time by the half-life to get the number of half-lives, then multiplies the initial quantity by one half raised to that power.
+5. **Check the graph and table** — The decay curve marks your chosen time, and the decay table lists the remaining quantity at each whole and half step so you can check the answer.
+
+#### Frequently asked questions (22)
+
+**What is half-life?**
+Half-life is the time it takes for half of a radioactive sample to decay. It is a constant for each isotope: whatever amount you start with, after one half-life exactly half of it is left, and after another half-life half of that remains.
+
+**How is half-life calculated?**
+If you know the starting amount, the amount left and how long it took, the half-life is the elapsed time divided by the number of times the sample halved: T = t divided by log base 2 of (N0 over N). This calculator does that for you in Find half-life mode.
+
+**What is the half-life formula?**
+The half-life formula is N(t) = N0 x (1/2)^(t / T), where N0 is the initial quantity, T is the half-life, t is the elapsed time and N(t) is what remains. The exponent t divided by T is simply the number of half-lives that have passed.
+
+**How do I calculate radioactive decay?**
+Divide the elapsed time by the half-life to get the number of half-lives, then multiply the initial quantity by one half raised to that power. For 1000 g with a 10-year half-life after 30 years: 30 divided by 10 is 3 half-lives, and 1000 x (1/2) cubed is 125 g.
+
+**How much of a sample remains after one half-life?**
+Exactly 50 percent. That is the definition of a half-life, and it does not depend on how large the starting sample was.
+
+**How much remains after two half-lives?**
+25 percent. Two half-lives is not all of the sample gone; it is half of a half. A common mistake is to assume two half-lives means nothing is left.
+
+**What happens after five half-lives?**
+About 3.125 percent of the original amount is left, so roughly 97 percent has decayed. Five half-lives is often used as a rough rule of thumb for when a sample has mostly decayed away.
+
+**What is the decay constant?**
+The decay constant, written as the Greek letter lambda, is the probability per unit time that any single nucleus decays. It equals ln(2) divided by the half-life, and it is what appears in the exponential form N(t) = N0 x e^(-lambda t).
+
+**How are half-life and decay constant related?**
+They are two ways of stating the same thing: lambda = ln(2) / T and T = ln(2) / lambda. A short half-life means a large decay constant. Because ln(2) is about 0.693, the decay constant is always roughly 0.693 divided by the half-life.
+
+**Can a half-life be a fraction?**
+Yes, and so can the number of half-lives elapsed. Nothing in the equation requires whole numbers. After 2.35 half-lives about 19.6 percent remains, and the calculator handles fractional values throughout.
+
+**Can I use this calculator for Carbon-14?**
+Yes. There is a one-click carbon-14 preset that loads a half-life of 5730 years. Carbon-14 is the isotope used in radiocarbon dating, and its decay follows the same equation as every other isotope.
+
+**Does this calculator show a decay graph?**
+Yes. The exponential decay curve is drawn live and updates as you type. You can switch it between remaining quantity, percent remaining and percent decayed, and hover or tap anywhere on it to read the values at that moment.
+
+**Can I calculate the elapsed time instead of the remaining quantity?**
+Yes. Switch to Find time mode, enter the initial quantity, the half-life and the amount you want to be left, and the calculator solves t = T x log base 2 of (N0 over N).
+
+**Can I calculate a half-life from a measured remaining quantity?**
+Yes. Find half-life mode takes the initial quantity, the quantity remaining and the time between them, then rearranges the decay equation to give the half-life.
+
+**What is exponential decay?**
+Exponential decay is any process where the rate of decrease is proportional to how much is currently there. That is why a fixed fraction disappears in each equal period of time rather than a fixed amount, and it is what gives the decay curve its characteristic shape.
+
+**Does radioactive material ever disappear completely?**
+Mathematically the curve approaches zero without ever reaching it, so the equation always returns a small positive number. In reality a sample contains a finite number of atoms, so eventually the last one decays. The smooth exponential model describes large populations rather than individual atoms.
+
+**What is the difference between half-life and decay rate?**
+Half-life is a fixed period of time and never changes for a given isotope. The decay rate, meaning decays per second, falls as the sample shrinks, because fewer remaining atoms means fewer decays even though each atom is just as likely to decay as before.
+
+**Does the unit of the quantity matter?**
+No. The decay equation multiplies the initial quantity by a fraction, so grams, kilograms, atoms, moles or any custom unit all give the same percentage result. Only the time units have to be consistent, and the calculator converts those for you.
+
+**Which time units does the calculator support?**
+Seconds, minutes, hours, days, weeks, months and years, and the half-life and elapsed time can use different units. Years are Julian years of 365.25 days, and the month option is a labelled approximation of exactly 30 days because calendar months vary in length.
+
+**Can I use this for chemistry or physics homework?**
+Yes, and the step-by-step working shows the unit conversion, the number of half-lives and the substitution into the decay equation so you can copy the method rather than just the answer. It is an educational tool, not a substitute for laboratory or regulatory guidance.
+
+**Does the calculator work on mobile?**
+Yes. The layout stacks into the order you use it on a narrow screen, the graph scales to the width of the display, and you can tap the curve to read values at any point.
+
+**Is my data sent to a server?**
+No. Every calculation runs in your browser using JavaScript on this page. Nothing you type is uploaded, there is no account, and the tool keeps working if you disconnect from the network after the page has loaded.
+
+#### Also covered on this page
+
+Calculator · Result · Decay curve · Timeline simulator · Radioactive decay at a glance · Step-by-step working · Decay table · What is half-life? · What is radioactive decay? · How does half-life work? · The half-life formula · How to calculate radioactive decay · How to calculate the decay constant · Half-life vs decay constant · Understanding exponential decay · Reading the radioactive decay graph · Carbon-14 and radiocarbon dating · Half-life in physics, chemistry and nuclear science · Common half-life calculation mistakes · What this tool does, and what may come later
+
+### Chemical Equation Balancer
+
+Balances chemical equations by treating each species as a column of element counts and solving A.x = 0 for a null-space vector, then scaling to the smallest positive whole-number ratio. All arithmetic is exact — Gaussian elimination over rationals held as BigInt pairs — so no floating-point error can reach a coefficient. Every answer is then re-verified atom by atom and for net charge by a separate routine, and nothing is shown as balanced unless that independent pass agrees. Refuses rather than guesses when an equation has no solution, more than one independent solution (for example C + O2 = CO + CO2), or would need a zero or negative coefficient. Parses parentheses and nested groups (Al2(SO4)3), hydrate dot notation (CuSO4.5H2O), physical states (s/l/g/aq, preserved in the output but excluded from balancing) and charges (Fe3+, Cl-, Ca++, SO4^2-). A bare polyatomic charge such as NH4+ is refused as ambiguous because the digit could be a subscript or the charge; the caret form NH4^+ is required. Shows before/after atom tables, step-by-step working and the full algebraic solution with one equation per element. Conservative reaction-type detection (combustion, synthesis, decomposition, single and double replacement, acid-base) that reports "could not be determined" rather than guessing. Copy as Unicode, plain text, LaTeX or HTML; export TXT working or CSV atom comparison. Equation history is kept in browser storage only. Does not implement the redox half-reaction method. Runs entirely in the browser with no sign-up.
+
+- URL: https://tooladda.online/chemistry-tools/chemical-equation-balancer.html
+- Page title: Chemical Equation Balancer with Steps | ToolAdda
+- Category: EducationalApplication
+- Price: free (0 USD)
+- Runs on: Any modern web browser
+- Meta description: Free chemical equation balancer. Enter any equation, get balanced coefficients instantly, verify every atom and follow the step-by-step working.
+
+#### Features
+
+- Balances any equation with a unique solution using linear algebra
+- Exact whole-number coefficients reduced to the smallest ratio
+- Independent atom and charge verification before any answer is shown
+- Before and after atom count tables
+- Step-by-step working and the full algebraic solution
+- Parentheses, nested groups and hydrate dot notation
+- Physical state labels preserved but excluded from balancing
+- Ionic equations with charge balancing
+- Conservative reaction type detection
+- Copy as Unicode, plain text, LaTeX or HTML
+- Download TXT working or CSV atom comparison
+- Local equation history that never leaves the browser
+
+#### How to balance a chemical equation
+
+Balance a chemical equation by finding whole-number coefficients that make every element appear the same number of times on both sides.
+
+1. **Write the unbalanced equation** — Enter the reactants and products separated by an arrow, for example H2 + O2 = H2O. You can use ->, = or an arrow character.
+2. **Count the atoms on each side** — Count how many of each element appear among the reactants and among the products. Any element whose two counts differ needs a coefficient.
+3. **Give each species a coefficient** — Assign an unknown coefficient to every formula and write one equation per element stating that its atom count matches on both sides.
+4. **Solve and reduce** — Solve the system of equations, then divide the coefficients by their greatest common divisor so they are the smallest whole numbers that work.
+5. **Verify every atom** — Multiply each formula by its coefficient and recount every element. The equation is balanced only when every element, and the net charge for ionic equations, matches on both sides.
+
+#### Frequently asked questions (22)
+
+**How do I balance a chemical equation?**
+Count each element on both sides, then put whole-number coefficients in front of the formulas until every element appears the same number of times on the left and the right. You may only change the coefficients, never the subscripts inside a formula.
+
+**What is a chemical equation balancer?**
+It is a tool that works out the stoichiometric coefficients for you. You type the unbalanced reaction, and it returns the smallest set of whole numbers that satisfies the law of conservation of mass, along with the atom counts that prove it.
+
+**Is this chemical equation balancer free?**
+Yes, completely. There is no account, no usage limit and no paywall on any feature, including the step-by-step working and the downloads.
+
+**How does the equation balancing actually work?**
+Each formula becomes a column of element counts, which forms a matrix. Balancing means finding a vector of coefficients that the matrix sends to zero, in other words a null-space solution. That vector is then scaled to the smallest whole numbers.
+
+**Can I balance H2 + O2 = H2O?**
+Yes, and it is the default example. The answer is 2H2 + O2 = 2H2O, giving 4 hydrogen and 2 oxygen atoms on each side.
+
+**Can I balance combustion equations?**
+Yes. Hydrocarbon combustion is handled like any other reaction, including the cases with an odd oxygen count such as C2H6 + O2, which balances to 2C2H6 + 7O2 = 4CO2 + 6H2O.
+
+**Can I balance equations with parentheses?**
+Yes. Formulas such as Ca(OH)2, Mg(NO3)2 and Al2(SO4)3 are parsed correctly, including nested groups, and the multiplier outside the bracket is applied to everything inside it.
+
+**Can I balance ionic equations?**
+Yes. Write charges as Fe3+, Cl- or SO4^2-, and the balancer adds the net charge as an extra condition alongside the elements. It will not report an equation as balanced unless the charge matches on both sides too.
+
+**Can I balance redox equations?**
+Ordinary redox reactions balance normally, because the algebraic method does not care whether electrons are transferred. What this version does not yet provide is the half-reaction method with separate acidic and basic steps, which is listed under future features rather than pretended to exist.
+
+**What is the law of conservation of mass?**
+Matter is neither created nor destroyed in a chemical reaction, so every atom present among the reactants must still be present among the products. Balancing an equation is simply making the written equation obey that law.
+
+**What is the difference between coefficients and subscripts?**
+A coefficient sits in front of a formula and says how many of that whole unit take part, so 2H2O means two water molecules. A subscript sits inside a formula and says how many atoms of one element are in that unit, so the 2 in H2O means two hydrogen atoms per molecule.
+
+**Why can't I change subscripts when balancing?**
+Changing a subscript changes the substance. Turning H2O into H2O2 does not balance the oxygen, it swaps water for hydrogen peroxide, which is a different compound with different properties. Only the coefficients may change.
+
+**How do I know if an equation is balanced?**
+Multiply each formula by its coefficient, then count every element on both sides. If every element matches, and the net charge matches for an ionic equation, it is balanced. The atom table on this page shows that check for you.
+
+**Can this tool show the steps?**
+Yes. It shows the atom counts as typed, which elements are out of balance, the algebraic system with one equation per element, the solved ratio and the final verification. The full algebraic solution can be opened separately.
+
+**Can I copy the balanced equation?**
+Yes, in four formats: Unicode with proper subscripts, plain text for a code editor, LaTeX for a document, and HTML for a web page. You can also download the working as a text file or the atom comparison as CSV.
+
+**Does it work on mobile?**
+Yes. On a narrow screen the layout stacks into the order you use it, the equation input stays large and easy to tap, and long equations and tables scroll sideways instead of overflowing the page.
+
+**Can I balance equations with polyatomic ions?**
+Yes. Groups like sulfate, nitrate and hydroxide are handled through the normal parentheses parsing, so Al2(SO4)3 + Ca(OH)2 = 2Al(OH)3 + 3CaSO4 balances correctly without treating the group as a single unit.
+
+**Can I use physical states like (aq), (s), (l) and (g)?**
+Yes. State labels are recognised, ignored while the coefficients are calculated because they contain no atoms, and preserved in the displayed equation so your answer looks the way your textbook writes it.
+
+**Does the tool support charges?**
+Yes, written as Fe3+, Cl-, Ca++ or with a caret as SO4^2-. A polyatomic ion written without the caret, such as NH4+, is refused as ambiguous, because the digit could be a subscript or the charge and guessing could balance the wrong species.
+
+**Is the balancing mathematically guaranteed?**
+The coefficients come from exact integer arithmetic, so there is no rounding error, and every answer is re-checked atom by atom before it is displayed. If an equation has no solution, more than one independent solution, or would need a zero or negative coefficient, the tool says so instead of showing a guess.
+
+**Why does it sometimes refuse to balance an equation?**
+Usually because the equation genuinely cannot balance, for example when an element appears on only one side. It also refuses equations with more than one independent solution, such as C + O2 = CO + CO2, where several different coefficient sets are equally valid and picking one would be arbitrary.
+
+**Is my equation sent to a server?**
+No. The parser and the solver both run in your browser, and the recent-equation history is stored only in your own browser storage. Nothing is uploaded, and the tool keeps working if you disconnect after the page has loaded.
+
+#### Also covered on this page
+
+Equation · Balanced equation · Atom verification · Step-by-step solution · What is a chemical equation? · What does it mean to balance a chemical equation? · How to balance chemical equations · How this chemical equation balancer works · Step-by-step example · How to count atoms in a chemical formula · Coefficients vs subscripts · Common balancing rules that speed things up · Balancing combustion reactions · Balancing acid–base reactions · Balancing ionic equations · Balancing redox reactions · Common mistakes when balancing equations · Worked equation examples · What this tool does, and what may come later
+
+### Dofollow & Nofollow Link Checker
+
+Parses every anchor in a page and classifies it from the rel attribute. Splits rel on ASCII whitespace only, exactly as the HTML spec and browsers do, so rel="nofollow,sponsored" is one unrecognised token and the link stays normal — the comma is flagged as an authoring mistake rather than silently reported as a restriction search engines never see. Detects nofollow, sponsored and ugc including combinations, and flags rel="dofollow" as inert because no such value exists in HTML; the tool never claims a dofollow attribute and labels unrestricted links "Normal / follow". Classifies internal vs external against a supplied page URL with www and protocol normalisation and an optional subdomain rule; mailto, tel and fragment links are reported as not applicable rather than forced into either bucket. Detects link type (page, image, file, anchor, mail, phone, script, other), resolves relative, root-relative and protocol-relative URLs, and honours a <base href>. Anchor text analysis falls back through image alt, aria-label and title, flagging empty anchors, generic wording, image-without-alt and bare URLs as text. Provides an external domain breakdown, repeated-anchor listing, a sortable/filterable/paginated table, a per-link inspector with escaped and highlighted source HTML, and CSV/JSON/summary export. HTML paste and file upload run entirely in the browser; the URL box is best-effort and only works when the target site sends CORS headers, since ToolAdda is a static site with no proxy. Does not verify HTTP status codes or report broken links, because a browser cannot distinguish a CORS refusal from a real 404. Does not execute JavaScript, so links built after page load are not seen.
+
+- URL: https://tooladda.online/cyber-tools/dofollow-nofollow-link-checker.html
+- Page title: Dofollow & Nofollow Link Checker | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Any modern web browser
+- Meta description: Free dofollow and nofollow link checker. Analyse a page's links to find nofollow, sponsored, UGC, internal and external links with a full SEO link report.
+
+#### Features
+
+- Parses rel on ASCII whitespace exactly as browsers do
+- Detects nofollow, sponsored and ugc, including combinations
+- Flags comma-separated rel values that browsers ignore
+- Flags inert rel=dofollow, which is not a defined value
+- Internal and external classification with an optional subdomain rule
+- Link type detection for pages, images, files, anchors, mail and tel
+- Anchor text analysis for empty, generic and image-only links
+- External domain breakdown
+- Sortable, filterable and paginated link table
+- Per-link detail inspector with highlighted source HTML
+- CSV and JSON export plus a copyable summary
+- HTML paste and file upload analysis that runs entirely in the browser
+
+#### How to check whether a link is nofollow
+
+Find out whether a link on a webpage carries a nofollow, sponsored or ugc relationship by reading its rel attribute.
+
+1. **Get the page HTML** — Open the page and view its source, then copy the HTML. You can also try the URL box, which works only when the target site allows cross-origin requests.
+2. **Paste the HTML into the checker** — Switch to the Paste HTML tab and paste the source. Add the page URL as well so relative links can be resolved and classified as internal or external.
+3. **Read the rel column** — Each link's rel attribute is listed. A link showing nofollow, sponsored or ugc carries a directive that restricts crawling or link attribution.
+4. **Filter to what you need** — Use the relationship filter to show only nofollow, sponsored or ugc links, or the location filter to separate internal links from external ones.
+5. **Export the audit** — Download the report as CSV or JSON, or copy the summary, to keep a record of the link profile for the page.
+
+#### Frequently asked questions (22)
+
+**What is a dofollow link?**
+It is the everyday name for an ordinary link that carries no nofollow, sponsored or ugc value in its rel attribute. Links behave this way by default, so a dofollow link is simply a link that has not been marked with one of those directives.
+
+**Is there a dofollow attribute in HTML?**
+No. There is no rel="dofollow" in any HTML specification and search engines do not act on it. Writing it is harmless but does nothing, because a link is already followable unless you add nofollow, sponsored or ugc. This checker flags rel="dofollow" as inert when it finds it.
+
+**What is a nofollow link?**
+A link whose rel attribute contains the value nofollow. It tells search engines not to pass ranking credit through that link. It was introduced in 2005 to fight comment spam and is now treated by Google as a hint rather than a strict instruction.
+
+**What does rel="nofollow" mean?**
+It marks a link that the page does not vouch for. Google has treated it as a hint since March 2020, which means the link may still be crawled and considered, but ranking credit is generally not passed. It does not stop a user clicking the link or a browser following it.
+
+**What does rel="sponsored" mean?**
+It marks a link that exists because of advertising, sponsorship or another paid arrangement. Google introduced it in 2019 as the specific label for paid links, and using it is the recommended way to disclose them rather than relying on nofollow alone.
+
+**What does rel="ugc" mean?**
+UGC stands for user-generated content. It marks links that visitors added rather than the site owner, typically in comments and forum posts, so search engines can tell them apart from links the publisher chose.
+
+**Can one link have multiple rel values?**
+Yes. The rel attribute is a space-separated list, so rel="nofollow sponsored" and rel="ugc nofollow" are both valid and both apply. This checker reports such links as Multiple and lists every token it found.
+
+**How can I check if a link is nofollow?**
+Look at the link's rel attribute in the page source. Paste the page HTML into this checker and the rel column shows the exact value for every link, or filter the table to show only links carrying nofollow.
+
+**How do I check if a backlink is dofollow?**
+Open the page that links to you, copy its HTML into this tool, then search the table for your own domain. If the rel column is empty or contains none of nofollow, sponsored or ugc, the link passes credit normally.
+
+**How can I find all nofollow links on a page?**
+Analyse the page, then set the relationship filter to nofollow. The table will show only those links, and the summary at the top gives the count. You can export the filtered profile as CSV or JSON.
+
+**Are nofollow links useful?**
+They still send visitors, build awareness and can lead to other coverage, and they are the correct label for paid or untrusted links. Whether they contribute to rankings is not something any external tool can measure, so this page reports what the markup says rather than guessing at effects.
+
+**What is the difference between dofollow and nofollow?**
+The difference is one attribute value. A nofollow link carries rel="nofollow"; a so-called dofollow link simply does not. There is no positive marker to add, only a restricting one to leave off.
+
+**Can I analyse HTML directly instead of a URL?**
+Yes, and this is the mode that always works. Paste the page source or upload an HTML file, and the parsing happens entirely inside your browser. Adding the page URL alongside it lets the tool resolve relative links and split internal from external.
+
+**Why can't some URLs be fetched?**
+A browser may only read another site's content when that site sends CORS headers permitting it, and most do not. The tool therefore retries through public CORS relay services, but those are refused too by bot protection, sign-in walls and firewalls, and they rate-limit. When every route fails the tool says so and points you to the HTML paste mode, which works on any page you can open yourself.
+
+**Can this tool check external links?**
+Yes. Every link whose host differs from the analysed page's host is marked External, and the domain table groups them by site with counts of normal, nofollow, sponsored and UGC links for each one.
+
+**Can this tool check internal links?**
+Yes. Links to the same host are marked Internal, including relative links once you supply the page URL. A setting lets you decide whether subdomains such as blog.example.com count as internal.
+
+**Can it check for broken links?**
+Not reliably, and it will not pretend otherwise. A browser cannot see the status code of most cross-origin requests, so a failed request is indistinguishable from a real 404. Reporting those as broken would be wrong, so the tool reports link markup and leaves status checking to a server-side crawler.
+
+**What is anchor text?**
+The visible, clickable text of a link. It gives readers and search engines a description of the destination, which is why specific wording is more useful than "click here". When a link contains only an image, the image's alt text does the same job.
+
+**What is an internal link?**
+A link from one page to another page on the same site. Internal links help visitors move around, show search engines how pages relate, and spread crawl attention across a site.
+
+**What is an external link?**
+A link pointing to a different website. Linking out to sources is normal and useful; the rel attribute is how you signal when an outbound link is paid, user-submitted or otherwise not an endorsement.
+
+**Can I export the link report?**
+Yes. Download every link as CSV for a spreadsheet, export the complete analysis as JSON, or copy a short text summary. The CSV escapes any cell that a spreadsheet might otherwise treat as a formula.
+
+**Is my data sent anywhere?**
+HTML you paste or upload is parsed in your browser and is not uploaded to ToolAdda. If you use the URL box, your browser contacts that website directly, exactly as it would if you visited the page, so that site can see the request.
+
+#### Also covered on this page
+
+Analyse a page · Link summary · Filters · Links · External domains · Repeated anchor text · SEO insights · Link details · What is a dofollow link? · What is a nofollow link, and what does rel="nofollow" mean? · What are sponsored and UGC links? · Dofollow vs nofollow at a glance · How to check whether a link is nofollow · How this checker reads the rel attribute · Internal vs external links · Why anchor text matters · How to audit outbound links · Common link attribute mistakes · Technical limitations you should know about · Privacy · What this tool does, and what would need a server

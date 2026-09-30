@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+    <title>3D Molecular Structure Viewer – Interactive Chemistry Tool | ToolAdda</title>
+    <meta name="description" content="Explore molecules in interactive 3D with a lightweight HTML5 Canvas viewer. Rotate, zoom and inspect water, carbon dioxide, methane and other basic molecular structures." />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="css/molecular-structure-viewer.css" />
+    <meta name="theme-color" content="#0d9488" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="ToolAdda" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <link rel="canonical" href="https://tooladda.online/chemistry-tools/molecular-structure-viewer.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+    <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta property="og:title" content="3D Molecular Structure Viewer – Interactive Chemistry Tool | ToolAdda" />
+    <meta property="og:description" content="Rotate, zoom and inspect ball-and-stick models of more than 120 molecules in real 3D. Built on plain HTML5 Canvas — no 3D library, no sign-up, runs entirely in your browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tooladda.online/chemistry-tools/molecular-structure-viewer.html" />
+    <meta property="og:site_name" content="ToolAdda" />
+    <meta property="og:image" content="https://tooladda.online/assets/images/og/chemistry-tools-molecular-structure-viewer.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content="3D Molecular Structure Viewer — free interactive chemistry tool on ToolAdda." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="3D Molecular Structure Viewer – Interactive Chemistry Tool" />
+    <meta name="twitter:description" content="Rotate, zoom and inspect ball-and-stick models of more than 120 molecules in real 3D, drawn on plain HTML5 Canvas." />
+    <meta name="twitter:image" content="https://tooladda.online/assets/images/og/chemistry-tools-molecular-structure-viewer.jpg" />
+    <meta name="twitter:image:alt" content="3D Molecular Structure Viewer — free interactive chemistry tool on ToolAdda." />
+
+    <script type="application/ld+json" data-tooladda-page-schema="true">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://tooladda.online/#website",
+          "name": "ToolAdda",
+          "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+          "url": "https://tooladda.online/",
+          "inLanguage": "en",
+          "publisher": { "@id": "https://tooladda.online/#organization" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://tooladda.online/#organization",
+          "name": "ToolAdda",
+          "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+          "url": "https://tooladda.online/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://tooladda.online/assets/images/logo.svg"
+          }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://tooladda.online/chemistry-tools/molecular-structure-viewer.html#webpage",
+          "url": "https://tooladda.online/chemistry-tools/molecular-structure-viewer.html",
+          "name": "3D Molecular Structure Viewer – Interactive Chemistry Tool",
+          "description": "An interactive 3D ball-and-stick molecular structure viewer built on HTML5 Canvas, covering more than 120 molecules, from hand-built shapes with published bond lengths and bond angles to larger PubChem 3D structures.",
+          "inLanguage": "en",
+          "isPartOf": { "@id": "https://tooladda.online/#website" },
+          "breadcrumb": { "@id": "https://tooladda.online/chemistry-tools/molecular-structure-viewer.html#breadcrumb" },
+          "about": { "@type": "Thing", "name": "Molecular structure and molecular geometry" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://tooladda.online/chemistry-tools/molecular-structure-viewer.html#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://tooladda.online/" },
+            { "@type": "ListItem", "position": 2, "name": "Chemistry Tools", "item": "https://tooladda.online/chemistry-tools/periodic-table.html" },
+            { "@type": "ListItem", "position": 3, "name": "3D Molecular Structure Viewer" }
+          ]
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://tooladda.online/chemistry-tools/molecular-structure-viewer.html#app",
+          "name": "3D Molecular Structure Viewer",
+          "url": "https://tooladda.online/chemistry-tools/molecular-structure-viewer.html",
+          "applicationCategory": "EducationalApplication",
+          "operatingSystem": "Any modern web browser",
+          "description": "Explore basic molecules in interactive 3D using lightweight HTML5 Canvas. Rotate, zoom and inspect ball-and-stick molecular structures directly in your browser.",
+          "inLanguage": "en",
+          "isAccessibleForFree": true,
+          "browserRequirements": "Requires JavaScript and HTML5 Canvas support.",
+          "featureList": [
+            "Interactive 3D ball-and-stick models rendered on HTML5 Canvas with no 3D library",
+            "Real perspective projection and depth sorting",
+            "Mouse drag, wheel zoom and shift-drag pan",
+            "Touch rotation, pinch zoom and two-finger pan",
+            "Keyboard rotation, zoom and reset controls",
+            "32 hand-built molecules from published bond lengths and bond angles, plus 92 larger molecules from PubChem 3D data",
+            "Single, double and triple bonds drawn as parallel sticks",
+            "Click an atom or bond for element and bond information",
+            "Molecular formula, geometry, molar mass, bond angle and polarity",
+            "Works offline once loaded, with no account and no upload"
+          ],
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+          "publisher": { "@id": "https://tooladda.online/#organization" }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://tooladda.online/chemistry-tools/molecular-structure-viewer.html#faq",
+          "isPartOf": { "@id": "https://tooladda.online/chemistry-tools/molecular-structure-viewer.html#webpage" },
+          "mainEntity": [
+            { "@type": "Question", "name": "What is a 3D molecular structure viewer?", "acceptedAnswer": { "@type": "Answer", "text": "A 3D molecular structure viewer is a tool that draws a molecule as a solid object you can turn around, rather than as a flat diagram on paper. Each atom is stored with real x, y and z coordinates, so rotating the model shows you which atoms sit in front of which — information a two-dimensional structural formula simply cannot carry." } },
+            { "@type": "Question", "name": "What is a ball-and-stick model?", "acceptedAnswer": { "@type": "Answer", "text": "A ball-and-stick model shows atoms as spheres and the bonds between them as sticks. The point of it is to make bond angles and the overall shape obvious. The spheres are drawn much smaller than real atoms so the sticks stay visible; a space-filling model does the opposite, showing atoms at their true relative size but hiding the bonds." } },
+            { "@type": "Question", "name": "How do I rotate a molecule?", "acceptedAnswer": { "@type": "Answer", "text": "On a computer, press and hold the left mouse button anywhere on the black viewer and move the mouse. Dragging sideways spins the molecule around the vertical axis and dragging up or down tips it towards or away from you. On a phone or tablet, drag with one finger. You can also click the viewer and use the arrow keys." } },
+            { "@type": "Question", "name": "How do I zoom the molecular model?", "acceptedAnswer": { "@type": "Answer", "text": "Scroll the mouse wheel over the viewer, pinch with two fingers on a touchscreen, or press the + and − buttons in the control bar. The zoom is limited at both ends so the molecule can never shrink to nothing or expand until it disappears off the edges." } },
+            { "@type": "Question", "name": "How do I move the molecule around the screen?", "acceptedAnswer": { "@type": "Answer", "text": "Hold Shift and drag with the mouse, or drag with two fingers on a touchscreen. That pans the model without rotating it. The Reset button puts the position, rotation and zoom back to the starting view in one click." } },
+            { "@type": "Question", "name": "Can I view water in 3D?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Pick Water from the molecule list or press the H2O quick button. You will see the red oxygen atom in the middle with two white hydrogen atoms angled off it, and rotating the model makes it clear that all three atoms lie in one plane with a distinct bend rather than a straight line." } },
+            { "@type": "Question", "name": "What is the structure of H2O?", "acceptedAnswer": { "@type": "Answer", "text": "Water is one oxygen atom bonded to two hydrogen atoms by single bonds, with an H–O–H angle of about 104.5 degrees. The oxygen also carries two lone pairs of electrons that are not drawn in a ball-and-stick model but are what push the two bonds closer together." } },
+            { "@type": "Question", "name": "What is the structure of CO2?", "acceptedAnswer": { "@type": "Answer", "text": "Carbon dioxide is linear: one carbon atom in the middle joined to an oxygen on each side by double bonds, with a bond angle of exactly 180 degrees. The carbon has no lone pairs, so there is nothing to bend the molecule out of a straight line." } },
+            { "@type": "Question", "name": "What is the structure of CH4?", "acceptedAnswer": { "@type": "Answer", "text": "Methane is a carbon atom at the centre of a regular tetrahedron with a hydrogen at each of the four corners. Every H–C–H angle is 109.5 degrees. It is worth rotating this one, because a flat drawing of methane makes it look square when it is not." } },
+            { "@type": "Question", "name": "What is the geometry of water?", "acceptedAnswer": { "@type": "Answer", "text": "Bent, sometimes called angular or V-shaped. Oxygen has four electron pairs around it — two bonding and two lone — arranged roughly tetrahedrally, but only the two bonded hydrogens are visible, so the shape you see is a bend of about 104.5 degrees." } },
+            { "@type": "Question", "name": "What is the geometry of carbon dioxide?", "acceptedAnswer": { "@type": "Answer", "text": "Linear. The two double bonds sit as far apart as they can get, which is directly opposite one another at 180 degrees. This is why CO2 is nonpolar overall even though each individual C=O bond is polar: the two pulls point in exactly opposite directions and cancel." } },
+            { "@type": "Question", "name": "What is the geometry of methane?", "acceptedAnswer": { "@type": "Answer", "text": "Tetrahedral. Four identical bonds and no lone pairs means the hydrogens spread out as evenly as possible in three dimensions, giving the ideal 109.5 degree angle between every pair of them." } },
+            { "@type": "Question", "name": "What is a linear molecular geometry?", "acceptedAnswer": { "@type": "Answer", "text": "Linear means all the atoms lie on one straight line, giving a bond angle of 180 degrees. It happens when a central atom has two bonding regions and no lone pairs, as in carbon dioxide, and it is also the only possible shape for any molecule with just two atoms." } },
+            { "@type": "Question", "name": "What is bent molecular geometry?", "acceptedAnswer": { "@type": "Answer", "text": "Bent geometry is a central atom with two bonded atoms and at least one lone pair, so the molecule forms an angle rather than a straight line. Water bends to about 104.5 degrees and hydrogen sulfide bends much further, to about 92 degrees." } },
+            { "@type": "Question", "name": "What is tetrahedral geometry?", "acceptedAnswer": { "@type": "Answer", "text": "Tetrahedral geometry is four bonded atoms arranged around a central atom at the corners of a tetrahedron, with 109.5 degree angles between them. It is the shape that keeps four electron pairs as far apart as possible in three dimensions, and methane is the standard example." } },
+            { "@type": "Question", "name": "What is trigonal pyramidal geometry?", "acceptedAnswer": { "@type": "Answer", "text": "Trigonal pyramidal is a central atom bonded to three others with one lone pair on top, making a pyramid with a triangular base. Ammonia is the classic case, with H–N–H angles of about 107 degrees — slightly less than tetrahedral because the lone pair takes up more room than a bond." } },
+            { "@type": "Question", "name": "What is a chemical bond?", "acceptedAnswer": { "@type": "Answer", "text": "A chemical bond is a shared pair of electrons holding two atoms together. In these models each stick represents one shared pair. Sticks are drawn as straight lines between atom centres, which is a convenient simplification — real bonding electrons occupy a cloud spread around both atoms." } },
+            { "@type": "Question", "name": "What is a single bond?", "acceptedAnswer": { "@type": "Answer", "text": "A single bond is one shared pair of electrons, drawn here as one stick. Single bonds allow the two atoms to rotate freely relative to each other, which is why ethane can twist while ethene cannot." } },
+            { "@type": "Question", "name": "What is a double bond?", "acceptedAnswer": { "@type": "Answer", "text": "A double bond is two shared pairs of electrons, drawn as two parallel sticks. Double bonds are shorter and stronger than single bonds and they lock the geometry in place, so molecules like ethene stay rigid and flat." } },
+            { "@type": "Question", "name": "What is a triple bond?", "acceptedAnswer": { "@type": "Answer", "text": "A triple bond is three shared pairs of electrons, drawn as three parallel sticks. It is the shortest and strongest of the three, which is why nitrogen gas, held together by a triple bond, is so unreactive at room temperature." } },
+            { "@type": "Question", "name": "Does the viewer work on mobile?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. One finger rotates the molecule, two fingers pinch to zoom and drag to pan. There are also visible buttons for rotating, zooming and resetting, so the tool stays usable if gestures are awkward. Only the viewer captures your gestures — the rest of the page scrolls normally." } },
+            { "@type": "Question", "name": "Does this tool use HTML5 Canvas?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Everything you see in the viewer is drawn onto a single HTML5 canvas element. Atoms are painted with radial gradients to look spherical and bonds are drawn as tapered shapes rather than flat lines, all through the standard 2D canvas drawing commands." } },
+            { "@type": "Question", "name": "Does this tool require Three.js or WebGL?", "acceptedAnswer": { "@type": "Answer", "text": "No. There is no 3D library involved at all. The rotation matrices, the perspective divide and the depth sorting are written directly in plain JavaScript, and the result is painted with the ordinary 2D canvas context. That keeps the page small and fast to load." } },
+            { "@type": "Question", "name": "How does a 3D molecule viewer actually work?", "acceptedAnswer": { "@type": "Answer", "text": "Each atom holds an x, y and z coordinate. Every frame those coordinates are passed through rotation matrices, then divided by their distance from the camera so nearer atoms come out larger, then converted to flat screen positions. Finally everything is sorted by depth and drawn from back to front so closer atoms correctly cover the ones behind them." } },
+            { "@type": "Question", "name": "Why do atoms nearer the front look bigger?", "acceptedAnswer": { "@type": "Answer", "text": "Because the viewer applies real perspective, exactly like a camera. An atom's drawn size is divided by its distance from the viewpoint, so the same atom looks larger when it rotates towards you and smaller when it swings away. That size change is a large part of what makes the model read as solid." } },
+            { "@type": "Question", "name": "Can I click an atom to get information?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. A single click or tap selects an atom and shows its element name, atomic number, atomic mass and how many bonds it has. Clicking a bond instead tells you whether it is single, double or triple. Dragging to rotate never selects anything by accident, because a movement beyond a few pixels is treated as a rotation rather than a click." } },
+            { "@type": "Question", "name": "Can I see hydrogen, oxygen, carbon and nitrogen atoms?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, and they follow the CPK colour convention that chemistry textbooks use: hydrogen white, carbon dark grey, nitrogen blue, oxygen red, sulfur yellow and chlorine green. A colour key is shown beside the viewer." } },
+            { "@type": "Question", "name": "Are these molecular models scientifically exact?", "acceptedAnswer": { "@type": "Answer", "text": "For the 32 hand-built molecules, yes: every bond length and bond angle comes from published experimental gas-phase values, so the shapes and angles are right. The larger library molecules use PubChem's computed 3D conformers, which are realistic but come from a force-field calculation rather than a measurement. In every case the drawing is deliberately not to scale — atom spheres are shrunk so the bonds remain visible. Treat it as an accurate shape diagram, not a picture of electron density." } },
+            { "@type": "Question", "name": "Which molecules can I view?", "acceptedAnswer": { "@type": "Answer", "text": "More than 120. The 32 hand-built molecules cover water, carbon dioxide, methane, ammonia, the common diatomic gases, ethane, ethene, ethyne, methanol, benzene, one molecule for every VSEPR shape from beryllium chloride to sulfur hexafluoride, and buckminsterfullerene (C60), each built from its published bond lengths and angles. A further 92 larger molecules, including alcohols, acids, aromatics, amino acids, DNA bases, sugars, hormones, vitamins, caffeine and aspirin, use PubChem's 3D structures. You can also open your own SDF, MOL, XYZ or PDB file." } },
+            { "@type": "Question", "name": "Why is benzene drawn with alternating bonds?", "acceptedAnswer": { "@type": "Answer", "text": "That is the Kekule convention, which is the clearest way to show benzene in a simple stick model. In reality all six carbon–carbon bonds in benzene are identical, with a length between a single and a double bond, because the electrons are spread evenly around the whole ring rather than fixed in three separate double bonds. The viewer notes this whenever benzene is selected." } },
+            { "@type": "Question", "name": "Can I reset the molecular view?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Press the Reset button, double-click the viewer, or press the R key while the viewer has focus. That restores the original rotation, zoom and position without reloading the page or losing your molecule selection." } },
+            { "@type": "Question", "name": "Is this tool free and does it need an account?", "acceptedAnswer": { "@type": "Answer", "text": "It is completely free with no sign-up. The built-in molecules are stored inside the page itself and files you open are read in your browser, so nothing is uploaded and the viewer keeps working in an already-open tab even if you lose your connection. The only time the page contacts an outside service is when you press Search PubChem, which sends the name you typed to PubChem, the free chemistry database of the US National Library of Medicine." } }
+          ]
+        }
+      ]
+    }
+    </script>
+      <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 13, 148, 136; }
+      [data-theme="dark"] { --pca: 13, 148, 136; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 13, 148, 136; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/chemistry-tools/molecular-structure-viewer.html#webpage",
+      "url": "https://tooladda.online/chemistry-tools/molecular-structure-viewer.html",
+      "inLanguage": "en",
+      "datePublished": "2026-08-13",
+      "dateModified": "2026-09-23",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="container navbar">
+        <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../privacy-policy.html">Privacy</a>
+        </nav>
+        <div class="nav-actions"><a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee"><svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg><span class="ta-donate-label">Buy me a coffee</span></a><button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button><button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button></div>
+      </div>
+    </header>
+
+    <main id="main-content" class="msv-page">
+      <div class="msv-wrap">
+        <aside class="ta-support" aria-label="Support ToolAdda">
+          <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+        </aside>
+
+
+        <nav class="msv-crumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">/</span>
+          <a href="periodic-table.html">Chemistry Tools</a><span aria-hidden="true">/</span>
+          <span>3D Molecular Structure Viewer</span>
+        </nav>
+
+        <!-- ================= HERO ================= -->
+        <div class="msv-hero">
+          <span class="msv-eyebrow">Chemistry Tool</span>
+          <h1 class="msv-h1">3D Molecular Structure Viewer</h1>
+          <p class="msv-lede">Explore molecules in interactive 3D. Rotate, zoom and inspect lightweight ball-and-stick models of common chemical compounds directly in your browser.</p>
+          <ul class="msv-badges">
+            <li>Interactive 3D</li>
+            <li>HTML5 Canvas</li>
+            <li>No Heavy Libraries</li>
+            <li>Rotate &amp; Zoom</li>
+            <li>Chemistry Learning Tool</li>
+          </ul>
+        </div>
+
+        <!-- ================= THE TOOL ================= -->
+        <div class="msv-app" id="msv-app" data-tab="library">
+
+          <!-- mobile only: switch between the two side panels -->
+          <div class="msv-tabs" role="tablist" aria-label="Viewer panels">
+            <button type="button" role="tab" id="msv-tab-library" aria-controls="msv-lib" aria-selected="true" data-tab="library">Molecules</button>
+            <button type="button" role="tab" id="msv-tab-details" aria-controls="msv-inspect" aria-selected="false" data-tab="details">Details</button>
+          </div>
+
+          <!-- ---- left: molecule library ---- -->
+          <section class="msv-panel msv-lib" id="msv-lib" aria-label="Choose a molecule">
+            <div class="msv-panel__top">
+              <div class="msv-panel__title">
+                <h2 class="msv-card__head">Molecules</h2>
+                <span class="msv-count" id="msv-count"></span>
+              </div>
+              <div class="msv-search">
+                <svg class="msv-search__icon" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <label class="msv-sr" for="msv-search">Search molecules by name, formula or geometry</label>
+                <input type="search" id="msv-search" placeholder="Search — caffeine, CH4, octahedral…" autocomplete="off" spellcheck="false" />
+              </div>
+              <div class="msv-filters" id="msv-filters" role="group" aria-label="Filter molecules by group"></div>
+              <div class="msv-quick" id="msv-quick" role="group" aria-label="Popular molecules">
+                <button type="button" data-molecule="water" aria-pressed="false">H<sub>2</sub>O</button>
+                <button type="button" data-molecule="carbon-dioxide" aria-pressed="false">CO<sub>2</sub></button>
+                <button type="button" data-molecule="methane" aria-pressed="false">CH<sub>4</sub></button>
+                <button type="button" data-molecule="ammonia" aria-pressed="false">NH<sub>3</sub></button>
+                <button type="button" data-molecule="sulfur-hexafluoride" aria-pressed="false">SF<sub>6</sub></button>
+                <button type="button" data-molecule="benzene" aria-pressed="false">C<sub>6</sub>H<sub>6</sub></button>
+                <button type="button" data-molecule="caffeine" aria-pressed="false">Caffeine</button>
+                <button type="button" data-molecule="buckminsterfullerene" aria-pressed="false">C<sub>60</sub></button>
+              </div>
+            </div>
+
+            <div class="msv-list" id="msv-list" aria-live="off"></div>
+
+            <div class="msv-online" id="msv-online" hidden>
+              <button type="button" class="msv-btn msv-btn--primary msv-btn--block" id="msv-pubchem">
+                <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M2.5 10h15M10 2.5c2.2 2.3 2.2 12.7 0 15M10 2.5c-2.2 2.3-2.2 12.7 0 15" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                <span id="msv-pubchem-label">Search PubChem</span>
+              </button>
+              <p class="msv-online__note">Only when you press this: the text you typed is sent to <strong>PubChem</strong>, the free chemistry database of the US National Library of Medicine, and the 3D structure is saved in this browser.</p>
+              <p class="msv-online__status" id="msv-pubchem-status" role="status" aria-live="polite"></p>
+            </div>
+
+            <div class="msv-import">
+              <div class="msv-import__row">
+                <button type="button" class="msv-btn msv-btn--sm" id="msv-open-file">
+                  <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M3 6.5V16h14V8.5H9.5L7.8 6.5H3z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+                  Open file
+                </button>
+                <button type="button" class="msv-btn msv-btn--sm" id="msv-paste-toggle" aria-expanded="false" aria-controls="msv-paste">Paste</button>
+                <input type="file" id="msv-file" class="msv-sr" tabindex="-1" accept=".sdf,.sd,.mol,.xyz,.pdb,.ent" aria-label="Choose a molecule file" />
+              </div>
+              <p class="msv-import__hint">SDF, MOL, XYZ or PDB — or drop a file on the viewer. Files never leave your device.</p>
+              <div class="msv-paste" id="msv-paste" hidden>
+                <label class="msv-sr" for="msv-paste-text">Paste molecule file contents</label>
+                <textarea id="msv-paste-text" rows="6" spellcheck="false" placeholder="Paste the contents of an SDF, MOL, XYZ or PDB file…&#10;&#10;3&#10;water&#10;O  0.000  0.000  0.000&#10;H  0.958  0.000  0.000&#10;H -0.240  0.927  0.000"></textarea>
+                <button type="button" class="msv-btn msv-btn--sm msv-btn--primary" id="msv-paste-load">Show in 3D</button>
+              </div>
+              <p class="msv-import__error" id="msv-import-error" role="alert" hidden></p>
+            </div>
+          </section>
+
+          <!-- ---- centre: 3D stage ---- -->
+          <section class="msv-stage" id="msv-stage" aria-label="3D molecule viewer">
+            <!-- overlays are positioned against this, not the whole stage, so
+                 they never collide with the toolbar below -->
+            <div class="msv-viewport">
+              <div class="msv-stage__grid" aria-hidden="true"></div>
+
+              <div class="msv-stage__tag" aria-hidden="true">
+                <span class="msv-stage__formula" id="msv-stage-formula">H<sub>2</sub>O</span>
+                <span class="msv-stage__name" id="msv-stage-name">Water</span>
+              </div>
+              <span class="msv-stage__source" id="msv-stage-source" aria-hidden="true"></span>
+
+              <canvas id="msv-canvas" class="msv-canvas" tabindex="0"
+                      role="img" aria-describedby="msv-canvas-desc"
+                      aria-label="Interactive 3D molecular model. Drag to rotate, scroll to zoom."></canvas>
+
+              <p class="msv-stage__hint" id="msv-stage-hint" aria-hidden="true">Drag to rotate · Wheel to zoom · Shift + drag to pan</p>
+              <p class="msv-stage__measure" id="msv-measure-hint" aria-hidden="true" hidden></p>
+              <div class="msv-stage__drop" id="msv-drop" hidden><span>Drop an SDF, MOL, XYZ or PDB file</span></div>
+              <p class="msv-stage__error" id="msv-error" hidden></p>
+            </div>
+
+            <div class="msv-toolbar" role="group" aria-label="Viewer controls">
+              <button type="button" class="msv-btn msv-btn--sm" id="msv-reset" aria-label="Reset molecular view" title="Reset view (R)">↺ <span class="msv-toolbar__label">Reset</span></button>
+              <button type="button" class="msv-btn msv-btn--sm" id="msv-auto" aria-pressed="false" aria-label="Toggle auto rotation" title="Auto rotate (A)">▶ <span class="msv-toolbar__label">Auto</span></button>
+              <span class="msv-toolbar__sep" aria-hidden="true"></span>
+              <button type="button" class="msv-btn msv-btn--sm" id="msv-labels" aria-pressed="true" aria-label="Toggle atom labels" title="Atom labels (L)">A<span class="msv-toolbar__label"> Labels</span></button>
+              <button type="button" class="msv-btn msv-btn--sm" id="msv-hydrogens" aria-pressed="true" aria-label="Show hydrogen atoms" title="Hydrogen atoms (H)">H</button>
+              <button type="button" class="msv-btn msv-btn--sm" id="msv-measure" aria-pressed="false" aria-label="Measure distances and angles" title="Measure (M)">
+                <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M3 14.5 14.5 3 17 5.5 5.5 17z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M6.5 11l1.5 1.5M9 8.5l1.5 1.5M11.5 6l1.5 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                <span class="msv-toolbar__label msv-toolbar__label--keep">Measure</span>
+              </button>
+              <label class="msv-sr" for="msv-style">Model style</label>
+              <select class="msv-select" id="msv-style" title="Model style">
+                <option value="ball" selected>Ball &amp; stick</option>
+                <option value="space">Space-filling</option>
+                <option value="stick">Sticks</option>
+              </select>
+              <span class="msv-toolbar__spacer"></span>
+              <button type="button" class="msv-btn msv-btn--sm msv-btn--icon" id="msv-rot-left" aria-label="Rotate left" title="Rotate left">◀</button>
+              <button type="button" class="msv-btn msv-btn--sm msv-btn--icon" id="msv-rot-right" aria-label="Rotate right" title="Rotate right">▶</button>
+              <button type="button" class="msv-btn msv-btn--sm msv-btn--icon" id="msv-zoom-out" aria-label="Zoom out" title="Zoom out (−)">−</button>
+              <button type="button" class="msv-btn msv-btn--sm msv-btn--icon" id="msv-zoom-in" aria-label="Zoom in" title="Zoom in (+)">＋</button>
+              <button type="button" class="msv-btn msv-btn--sm msv-btn--icon" id="msv-fullscreen" aria-label="Full screen" aria-pressed="false" title="Full screen (F)" hidden>
+                <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M3 8V3h5M12 3h5v5M17 12v5h-5M8 17H3v-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <details class="msv-menu" id="msv-menu">
+                <summary class="msv-btn msv-btn--sm msv-btn--icon" aria-label="More options" title="More options">⋯</summary>
+                <div class="msv-menu__panel">
+                  <label class="msv-menu__field">Auto-rotation speed
+                    <select class="msv-select" id="msv-speed">
+                      <option value="slow">Slow</option>
+                      <option value="normal" selected>Normal</option>
+                      <option value="fast">Fast</option>
+                    </select>
+                  </label>
+                  <p class="msv-menu__head">Download</p>
+                  <button type="button" data-export="png">Image (PNG)</button>
+                  <button type="button" data-export="xyz">Coordinates (XYZ)</button>
+                  <button type="button" data-export="mol">Structure (MOL)</button>
+                  <p class="msv-menu__head">Share</p>
+                  <button type="button" data-export="link">Copy link to this molecule</button>
+                </div>
+              </details>
+            </div>
+          </section>
+
+          <!-- ---- right: details ---- -->
+          <aside class="msv-panel msv-inspect" id="msv-inspect" aria-label="Molecule details">
+            <section class="msv-card" aria-labelledby="msv-info-head">
+              <h2 class="msv-card__head" id="msv-info-head">Molecule</h2>
+              <div class="msv-card__body">
+                <div id="msv-info"></div>
+                <div id="msv-about"></div>
+              </div>
+            </section>
+
+            <section class="msv-card" aria-labelledby="msv-sel-head">
+              <h2 class="msv-card__head" id="msv-sel-head">Selection</h2>
+              <div class="msv-card__body" id="msv-atom-info"></div>
+            </section>
+
+            <section class="msv-card" aria-labelledby="msv-legend-head">
+              <h2 class="msv-card__head" id="msv-legend-head">Atom colours</h2>
+              <div class="msv-card__body">
+                <div class="msv-legend" id="msv-legend"></div>
+              </div>
+            </section>
+
+            <details class="msv-card msv-help">
+              <summary><h2 class="msv-card__head">How to interact</h2></summary>
+              <div class="msv-card__body">
+                <ul class="msv-keys">
+                  <li><span>Rotate</span> <span><kbd>Drag</kbd> / <kbd>1 finger</kbd></span></li>
+                  <li><span>Zoom</span> <span><kbd>Wheel</kbd> / <kbd>Pinch</kbd></span></li>
+                  <li><span>Pan</span> <span><kbd>Shift</kbd>+<kbd>Drag</kbd> / <kbd>2 fingers</kbd></span></li>
+                  <li><span>Rotate (keys)</span> <span><kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd></span></li>
+                  <li><span>Zoom (keys)</span> <span><kbd>+</kbd> <kbd>−</kbd></span></li>
+                  <li><span>Reset</span> <span><kbd>R</kbd> / <kbd>Double-click</kbd></span></li>
+                  <li><span>Auto rotate</span> <span><kbd>A</kbd></span></li>
+                  <li><span>Labels · Hydrogens</span> <span><kbd>L</kbd> <kbd>H</kbd></span></li>
+                  <li><span>Measure · Full screen</span> <span><kbd>M</kbd> <kbd>F</kbd></span></li>
+                  <li><span>Clear selection</span> <span><kbd>Esc</kbd></span></li>
+                </ul>
+              </div>
+            </details>
+          </aside>
+        </div>
+
+        <div class="ta-lb-ad"></div>
+
+        <p class="msv-sr" id="msv-canvas-desc"></p>
+        <p class="msv-sr" id="msv-live" role="status" aria-live="polite"></p>
+
+        <!-- ================= EDUCATIONAL CONTENT ================= -->
+        <div class="msv-content">
+
+          <section>
+            <h2>What this 3D molecular structure viewer shows</h2>
+            <p>
+              This viewer draws more than 120 molecules as interactive ball-and-stick models you can turn
+              around in real three dimensions. The 32 hand-built molecules carry x, y and z coordinates built from
+              published experimental bond lengths and bond angles, so the shape you rotate is the shape the
+              molecule actually has — not an artistic impression. The 92 larger molecules in the library use
+              PubChem's computed 3D structures, and you can open your own structure files as well.
+            </p>
+            <p>
+              The rendering is deliberately lightweight. There is no Three.js, no WebGL framework and no
+              external library of any kind: rotation matrices, the perspective divide and depth sorting are
+              plain JavaScript, and the result is painted onto a single HTML5 canvas. That keeps the page
+              small enough to load instantly and to keep working offline once opened.
+            </p>
+
+            <h3>What you can do with it</h3>
+            <ul>
+              <li><strong>Rotate</strong> with a mouse drag, one finger on a touchscreen, or the arrow keys.</li>
+              <li><strong>Zoom</strong> with the scroll wheel, a two-finger pinch, or the + and − buttons.</li>
+              <li><strong>Pan</strong> with Shift + drag or a two-finger drag.</li>
+              <li><strong>Inspect</strong> by clicking an atom for its element data, or a bond for its type.</li>
+              <li><strong>Compare</strong> shapes by switching molecules — the camera resets and refits automatically.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>What is a molecular structure?</h2>
+            <div class="msv-answer">
+              <p>A molecular structure is the arrangement of atoms in a molecule in three-dimensional space: which atoms are bonded to which, how far apart they sit, and at what angles those bonds meet.</p>
+            </div>
+            <p>
+              A structural formula written on paper tells you the connections but flattens everything into two
+              dimensions. That is often enough for simple molecules, but it hides the information that
+              determines how a substance actually behaves. Water's bend, not its formula, is why ice floats and
+              why water dissolves salt. Methane's tetrahedral shape, not its four C–H bonds, is why it is
+              nonpolar. Shape is chemistry.
+            </p>
+            <p>
+              Two numbers describe a structure completely once you know the connections. The <strong>bond
+              length</strong> is the distance between two bonded nuclei, usually quoted in angstroms, where one
+              angstrom is one ten-billionth of a metre. The <strong>bond angle</strong> is the angle formed at
+              an atom between two of its bonds. Every molecule in this viewer is generated from exactly those
+              two published quantities.
+            </p>
+          </section>
+
+          <section>
+            <h2>What is a ball-and-stick model?</h2>
+            <div class="msv-answer">
+              <p>A ball-and-stick model represents atoms as spheres and bonds as sticks joining them. It is designed to make bond angles and overall shape easy to see, at the cost of drawing atoms much smaller than they really are.</p>
+            </div>
+            <p>
+              The trade-off is deliberate. If the spheres were drawn at true relative size they would swell
+              until they touched and overlapped, hiding the bonds completely — that is a <strong>space-filling
+              model</strong>, which shows how much room a molecule occupies but tells you almost nothing about
+              its bond angles. A third style, the <strong>wireframe</strong> or line model, drops the spheres
+              entirely and is useful for very large structures such as proteins where individual atoms would be
+              indistinguishable anyway.
+            </p>
+            <p>
+              Ball-and-stick sits in the middle and is the right choice for teaching small molecules, which is
+              why it is what almost every chemistry textbook uses for water, methane and ammonia.
+            </p>
+          </section>
+
+          <section>
+            <h2>How 3D molecular models work</h2>
+            <p>
+              It is worth understanding what the viewer is doing, because the same handful of ideas power every
+              3D graphics program ever written.
+            </p>
+            <h3>1. Coordinates</h3>
+            <p>
+              Each atom is stored as three numbers. The molecule is then shifted so its centre of geometry sits
+              at the origin, which is what stops it drifting off-screen when it spins.
+            </p>
+            <h3>2. Rotation</h3>
+            <p>
+              Dragging the mouse changes two angles. Every atom's coordinates are passed through a rotation
+              about the horizontal axis and then a rotation about the vertical axis, always in the same order —
+              order matters in 3D rotation, and swapping it is what makes home-made viewers flip unexpectedly.
+            </p>
+            <h3>3. Perspective</h3>
+            <p>
+              A rotated atom is then divided by its distance from the viewpoint. Atoms nearer the front come
+              out larger and atoms further back come out smaller, exactly as a camera lens behaves. Without
+              this step the model looks like a flat cut-out no matter how smoothly it turns.
+            </p>
+            <h3>4. Depth sorting</h3>
+            <p>
+              Finally everything — atoms and every individual stick — is sorted by depth and painted from the
+              furthest to the nearest. This is the painter's algorithm, and it is what makes a front atom
+              properly hide the bond running behind it. Drawing in list order instead produces the tell-tale
+              glitch where a rear atom sits on top of a front one.
+            </p>
+          </section>
+
+          <section>
+            <h2>Molecular geometry</h2>
+            <div class="msv-answer">
+              <p>Molecular geometry is the three-dimensional shape formed by the atoms of a molecule. It is predicted by VSEPR theory: electron pairs around a central atom repel one another and settle as far apart as they can get.</p>
+            </div>
+            <p>
+              The crucial subtlety is that lone pairs count. They take up space and push bonds around, yet they
+              are invisible in a ball-and-stick model. That is why water is bent rather than linear and why
+              ammonia is a pyramid rather than a flat triangle — in both cases the shape you see is what is left
+              after the invisible lone pairs have done their work.
+            </p>
+
+            <div class="msv-tablewrap">
+              <table class="msv-geo">
+                <caption class="msv-sr">Molecular geometry of the molecules in this viewer</caption>
+                <thead>
+                  <tr><th scope="col">Molecule</th><th scope="col">Formula</th><th scope="col">Geometry</th><th scope="col">Bond angle</th><th scope="col">Polarity</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Water</td><td>H<sub>2</sub>O</td><td>Bent</td><td>104.5°</td><td>Polar</td></tr>
+                  <tr><td>Carbon dioxide</td><td>CO<sub>2</sub></td><td>Linear</td><td>180°</td><td>Nonpolar</td></tr>
+                  <tr><td>Methane</td><td>CH<sub>4</sub></td><td>Tetrahedral</td><td>109.5°</td><td>Nonpolar</td></tr>
+                  <tr><td>Ammonia</td><td>NH<sub>3</sub></td><td>Trigonal pyramidal</td><td>106.7°</td><td>Polar</td></tr>
+                  <tr><td>Hydrogen sulfide</td><td>H<sub>2</sub>S</td><td>Bent</td><td>92.1°</td><td>Polar</td></tr>
+                  <tr><td>Sulfur dioxide</td><td>SO<sub>2</sub></td><td>Bent</td><td>119.3°</td><td>Polar</td></tr>
+                  <tr><td>Ethene</td><td>C<sub>2</sub>H<sub>4</sub></td><td>Trigonal planar centres</td><td>121.3°</td><td>Nonpolar</td></tr>
+                  <tr><td>Ethyne</td><td>C<sub>2</sub>H<sub>2</sub></td><td>Linear</td><td>180°</td><td>Nonpolar</td></tr>
+                  <tr><td>Benzene</td><td>C<sub>6</sub>H<sub>6</sub></td><td>Planar hexagonal ring</td><td>120°</td><td>Nonpolar</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Linear geometry</h3>
+            <p>
+              All atoms on one straight line, 180 degrees apart. It arises when a central atom has two bonding
+              regions and no lone pairs, as in carbon dioxide, and it is the only possible arrangement for a
+              two-atom molecule such as hydrogen, oxygen or nitrogen. Linear symmetry is also why CO<sub>2</sub>
+              is nonpolar despite having two polar bonds: equal pulls in opposite directions cancel exactly.
+            </p>
+
+            <h3>Bent geometry</h3>
+            <p>
+              A central atom with two bonded neighbours and one or more lone pairs. Water bends to 104.5
+              degrees; hydrogen sulfide, whose larger sulfur atom holds its lone pairs further out, bends much
+              further to about 92 degrees. Because a bent molecule is not symmetrical, its bond dipoles do not
+              cancel — which is precisely why water is such a good solvent.
+            </p>
+
+            <h3>Tetrahedral geometry</h3>
+            <p>
+              Four bonds spreading to the corners of a tetrahedron at 109.5 degrees. This is the most important
+              shape in organic chemistry, because every saturated carbon adopts it. Rotate the methane model
+              and you will see why a flat drawing misleads: no two hydrogens are ever at 90 degrees to one
+              another, even though a square-looking sketch suggests they are.
+            </p>
+
+            <h3>Trigonal pyramidal geometry</h3>
+            <p>
+              Three bonds and one lone pair, forming a pyramid on a triangular base. Ammonia's H–N–H angles are
+              about 106.7 degrees, a little tighter than tetrahedral because a lone pair spreads out more than a
+              bonding pair and squeezes the bonds together.
+            </p>
+          </section>
+
+          <section>
+            <h2>Single, double and triple bonds</h2>
+            <div class="msv-answer">
+              <p>A single bond shares one pair of electrons, a double bond shares two and a triple bond shares three. Each extra shared pair makes the bond shorter and stronger.</p>
+            </div>
+            <p>
+              In this viewer a single bond is drawn as one stick, a double as two parallel sticks and a triple
+              as three. The extra sticks are offset in true three-dimensional space rather than in the flat
+              plane of the screen, so they stay correctly parallel as you rotate the molecule.
+            </p>
+            <p>
+              The carbon–carbon series makes the length trend easy to see. Rotate through ethane, ethene and
+              ethyne and watch the two carbons pull closer together: 1.535 angstroms for the single bond in
+              ethane, 1.339 for the double bond in ethene and 1.203 for the triple bond in ethyne.
+            </p>
+            <p>
+              Multiple bonds also lock geometry in place. The single bond in ethane lets its two ends spin
+              freely, which is why the staggered arrangement shown here is only the most comfortable of many.
+              The double bond in ethene allows no such rotation, which is why all six of its atoms are pinned
+              into one flat plane.
+            </p>
+          </section>
+
+          <section>
+            <h2>The molecules in this viewer</h2>
+
+            <h3>Water — H<sub>2</sub>O</h3>
+            <p>
+              Oxygen at the centre with two hydrogens at 104.5 degrees. The oxygen also carries two lone pairs,
+              which is what pushes the bonds in from the tetrahedral 109.5 degrees. The resulting asymmetry
+              gives water its dipole, its unusually high boiling point and its ability to dissolve ionic solids.
+            </p>
+
+            <h3>Carbon dioxide — CO<sub>2</sub></h3>
+            <p>
+              A carbon atom flanked by two oxygens at exactly 180 degrees, joined by double bonds. Rotating the
+              model shows there is nothing to see from any angle other than a straight line — a good visual
+              demonstration of why the molecule has no net dipole.
+            </p>
+
+            <h3>Methane — CH<sub>4</sub></h3>
+            <p>
+              The textbook tetrahedron. Four hydrogens at the corners, carbon in the middle, every angle 109.5
+              degrees. Worth rotating slowly, because it is the shape most often misdrawn on paper.
+            </p>
+
+            <h3>Ammonia — NH<sub>3</sub></h3>
+            <p>
+              Three hydrogens forming a triangular base beneath the nitrogen, with the lone pair occupying the
+              space above. Tip the model to look down the axis and the pyramid becomes obvious.
+            </p>
+
+            <h3>Hydrogen, oxygen and nitrogen — H<sub>2</sub>, O<sub>2</sub>, N<sub>2</sub></h3>
+            <p>
+              The three diatomic gases show the bond-order progression in its simplest form: a single bond in
+              hydrogen, a double in oxygen and a triple in nitrogen. Nitrogen's triple bond is among the
+              strongest in chemistry, which is why the gas that makes up most of the air is so reluctant to
+              react.
+            </p>
+
+            <h3>Benzene — C<sub>6</sub>H<sub>6</sub></h3>
+            <p>
+              A flat regular hexagon of carbons, each carrying one hydrogen. It is drawn with alternating
+              single and double bonds because that is the clearest way to show it in a stick model, but the
+              real molecule has six identical bonds with the electrons shared right around the ring. The viewer
+              flags this whenever benzene is selected.
+            </p>
+          </section>
+
+          <section>
+            <h2>How to use the viewer</h2>
+            <p>Pick a molecule from the list or a quick button, then explore it:</p>
+            <ul>
+              <li><strong>Desktop:</strong> drag to rotate, scroll to zoom, Shift + drag to pan, double-click to reset.</li>
+              <li><strong>Touch:</strong> one finger to rotate, pinch with two to zoom, drag with two to pan.</li>
+              <li><strong>Keyboard:</strong> click the viewer once to focus it, then arrow keys to rotate, + and − to zoom, R to reset and A for auto-rotation.</li>
+              <li><strong>Inspect:</strong> a click without dragging selects an atom or bond and fills the Selection panel.</li>
+            </ul>
+            <p>
+              Auto-rotation pauses by itself the moment you start dragging and resumes when you let go, so it
+              never fights you for control. If your operating system is set to reduce motion, auto-rotation
+              stays off and everything else keeps working normally.
+            </p>
+          </section>
+
+          <section>
+            <h2>Limitations of molecular models</h2>
+            <p>
+              Every model is a simplification, and knowing where the simplification lies is part of using one
+              properly.
+            </p>
+            <ul>
+              <li><strong>Atoms are not solid spheres.</strong> An atom is a nucleus surrounded by a fuzzy electron cloud with no hard edge. The sphere is a convenient stand-in.</li>
+              <li><strong>Bonds are not sticks.</strong> A bond is a region of shared electron density, not a rod. Sticks show connectivity and direction only.</li>
+              <li><strong>The spheres are not to scale.</strong> They are drawn small so the bonds stay visible. Real atoms are much larger relative to their bond lengths.</li>
+              <li><strong>Lone pairs are invisible.</strong> They shape the molecule but do not appear, which is why bent and pyramidal shapes can look arbitrary until you know they are there.</li>
+              <li><strong>Molecules are not rigid.</strong> Real bonds stretch, bend and rotate constantly. These models show one representative equilibrium geometry.</li>
+            </ul>
+            <p class="msv-disclaimer">
+              <strong>Scientific note.</strong> The viewer uses simplified ball-and-stick models for educational
+              visualisation. For the hand-built molecules, bond lengths and bond angles are taken from published
+              experimental gas-phase values and are reproduced faithfully; library molecules use PubChem's computed
+              conformers. In both cases atom sphere sizes and the relative proportion of sphere
+              to bond are adjusted for visibility and should not be interpreted as exact electron-density or
+              molecular-scale representations.
+            </p>
+          </section>
+
+          <!-- ================= FAQ ================= -->
+          <section class="msv-faq">
+            <h2>Frequently asked questions</h2>
+            <details>
+              <summary>What is a 3D molecular structure viewer?</summary>
+              <p>A 3D molecular structure viewer is a tool that draws a molecule as a solid object you can turn around, rather than as a flat diagram on paper. Each atom is stored with real x, y and z coordinates, so rotating the model shows you which atoms sit in front of which — information a two-dimensional structural formula simply cannot carry.</p>
+            </details>
+            <details>
+              <summary>What is a ball-and-stick model?</summary>
+              <p>A ball-and-stick model shows atoms as spheres and the bonds between them as sticks. The point of it is to make bond angles and the overall shape obvious. The spheres are drawn much smaller than real atoms so the sticks stay visible; a space-filling model does the opposite, showing atoms at their true relative size but hiding the bonds.</p>
+            </details>
+            <details>
+              <summary>How do I rotate a molecule?</summary>
+              <p>On a computer, press and hold the left mouse button anywhere on the black viewer and move the mouse. Dragging sideways spins the molecule around the vertical axis and dragging up or down tips it towards or away from you. On a phone or tablet, drag with one finger. You can also click the viewer and use the arrow keys.</p>
+            </details>
+            <details>
+              <summary>How do I zoom the molecular model?</summary>
+              <p>Scroll the mouse wheel over the viewer, pinch with two fingers on a touchscreen, or press the + and − buttons in the control bar. The zoom is limited at both ends so the molecule can never shrink to nothing or expand until it disappears off the edges.</p>
+            </details>
+            <details>
+              <summary>How do I move the molecule around the screen?</summary>
+              <p>Hold Shift and drag with the mouse, or drag with two fingers on a touchscreen. That pans the model without rotating it. The Reset button puts the position, rotation and zoom back to the starting view in one click.</p>
+            </details>
+            <details>
+              <summary>Can I view water in 3D?</summary>
+              <p>Yes. Pick Water from the molecule list or press the H2O quick button. You will see the red oxygen atom in the middle with two white hydrogen atoms angled off it, and rotating the model makes it clear that all three atoms lie in one plane with a distinct bend rather than a straight line.</p>
+            </details>
+            <details>
+              <summary>What is the structure of H2O?</summary>
+              <p>Water is one oxygen atom bonded to two hydrogen atoms by single bonds, with an H–O–H angle of about 104.5 degrees. The oxygen also carries two lone pairs of electrons that are not drawn in a ball-and-stick model but are what push the two bonds closer together.</p>
+            </details>
+            <details>
+              <summary>What is the structure of CO2?</summary>
+              <p>Carbon dioxide is linear: one carbon atom in the middle joined to an oxygen on each side by double bonds, with a bond angle of exactly 180 degrees. The carbon has no lone pairs, so there is nothing to bend the molecule out of a straight line.</p>
+            </details>
+            <details>
+              <summary>What is the structure of CH4?</summary>
+              <p>Methane is a carbon atom at the centre of a regular tetrahedron with a hydrogen at each of the four corners. Every H–C–H angle is 109.5 degrees. It is worth rotating this one, because a flat drawing of methane makes it look square when it is not.</p>
+            </details>
+            <details>
+              <summary>What is the geometry of water?</summary>
+              <p>Bent, sometimes called angular or V-shaped. Oxygen has four electron pairs around it — two bonding and two lone — arranged roughly tetrahedrally, but only the two bonded hydrogens are visible, so the shape you see is a bend of about 104.5 degrees.</p>
+            </details>
+            <details>
+              <summary>What is the geometry of carbon dioxide?</summary>
+              <p>Linear. The two double bonds sit as far apart as they can get, which is directly opposite one another at 180 degrees. This is why CO2 is nonpolar overall even though each individual C=O bond is polar: the two pulls point in exactly opposite directions and cancel.</p>
+            </details>
+            <details>
+              <summary>What is the geometry of methane?</summary>
+              <p>Tetrahedral. Four identical bonds and no lone pairs means the hydrogens spread out as evenly as possible in three dimensions, giving the ideal 109.5 degree angle between every pair of them.</p>
+            </details>
+            <details>
+              <summary>What is a linear molecular geometry?</summary>
+              <p>Linear means all the atoms lie on one straight line, giving a bond angle of 180 degrees. It happens when a central atom has two bonding regions and no lone pairs, as in carbon dioxide, and it is also the only possible shape for any molecule with just two atoms.</p>
+            </details>
+            <details>
+              <summary>What is bent molecular geometry?</summary>
+              <p>Bent geometry is a central atom with two bonded atoms and at least one lone pair, so the molecule forms an angle rather than a straight line. Water bends to about 104.5 degrees and hydrogen sulfide bends much further, to about 92 degrees.</p>
+            </details>
+            <details>
+              <summary>What is tetrahedral geometry?</summary>
+              <p>Tetrahedral geometry is four bonded atoms arranged around a central atom at the corners of a tetrahedron, with 109.5 degree angles between them. It is the shape that keeps four electron pairs as far apart as possible in three dimensions, and methane is the standard example.</p>
+            </details>
+            <details>
+              <summary>What is trigonal pyramidal geometry?</summary>
+              <p>Trigonal pyramidal is a central atom bonded to three others with one lone pair on top, making a pyramid with a triangular base. Ammonia is the classic case, with H–N–H angles of about 107 degrees — slightly less than tetrahedral because the lone pair takes up more room than a bond.</p>
+            </details>
+            <details>
+              <summary>What is a chemical bond?</summary>
+              <p>A chemical bond is a shared pair of electrons holding two atoms together. In these models each stick represents one shared pair. Sticks are drawn as straight lines between atom centres, which is a convenient simplification — real bonding electrons occupy a cloud spread around both atoms.</p>
+            </details>
+            <details>
+              <summary>What is a single bond?</summary>
+              <p>A single bond is one shared pair of electrons, drawn here as one stick. Single bonds allow the two atoms to rotate freely relative to each other, which is why ethane can twist while ethene cannot.</p>
+            </details>
+            <details>
+              <summary>What is a double bond?</summary>
+              <p>A double bond is two shared pairs of electrons, drawn as two parallel sticks. Double bonds are shorter and stronger than single bonds and they lock the geometry in place, so molecules like ethene stay rigid and flat.</p>
+            </details>
+            <details>
+              <summary>What is a triple bond?</summary>
+              <p>A triple bond is three shared pairs of electrons, drawn as three parallel sticks. It is the shortest and strongest of the three, which is why nitrogen gas, held together by a triple bond, is so unreactive at room temperature.</p>
+            </details>
+            <details>
+              <summary>Does the viewer work on mobile?</summary>
+              <p>Yes. One finger rotates the molecule, two fingers pinch to zoom and drag to pan. There are also visible buttons for rotating, zooming and resetting, so the tool stays usable if gestures are awkward. Only the viewer captures your gestures — the rest of the page scrolls normally.</p>
+            </details>
+            <details>
+              <summary>Does this tool use HTML5 Canvas?</summary>
+              <p>Yes. Everything you see in the viewer is drawn onto a single HTML5 canvas element. Atoms are painted with radial gradients to look spherical and bonds are drawn as tapered shapes rather than flat lines, all through the standard 2D canvas drawing commands.</p>
+            </details>
+            <details>
+              <summary>Does this tool require Three.js or WebGL?</summary>
+              <p>No. There is no 3D library involved at all. The rotation matrices, the perspective divide and the depth sorting are written directly in plain JavaScript, and the result is painted with the ordinary 2D canvas context. That keeps the page small and fast to load.</p>
+            </details>
+            <details>
+              <summary>How does a 3D molecule viewer actually work?</summary>
+              <p>Each atom holds an x, y and z coordinate. Every frame those coordinates are passed through rotation matrices, then divided by their distance from the camera so nearer atoms come out larger, then converted to flat screen positions. Finally everything is sorted by depth and drawn from back to front so closer atoms correctly cover the ones behind them.</p>
+            </details>
+            <details>
+              <summary>Why do atoms nearer the front look bigger?</summary>
+              <p>Because the viewer applies real perspective, exactly like a camera. An atom's drawn size is divided by its distance from the viewpoint, so the same atom looks larger when it rotates towards you and smaller when it swings away. That size change is a large part of what makes the model read as solid.</p>
+            </details>
+            <details>
+              <summary>Can I click an atom to get information?</summary>
+              <p>Yes. A single click or tap selects an atom and shows its element name, atomic number, atomic mass and how many bonds it has. Clicking a bond instead tells you whether it is single, double or triple. Dragging to rotate never selects anything by accident, because a movement beyond a few pixels is treated as a rotation rather than a click.</p>
+            </details>
+            <details>
+              <summary>Can I see hydrogen, oxygen, carbon and nitrogen atoms?</summary>
+              <p>Yes, and they follow the CPK colour convention that chemistry textbooks use: hydrogen white, carbon dark grey, nitrogen blue, oxygen red, sulfur yellow and chlorine green. A colour key is shown beside the viewer.</p>
+            </details>
+            <details>
+              <summary>Are these molecular models scientifically exact?</summary>
+              <p>For the 32 hand-built molecules, yes: every bond length and bond angle comes from published experimental gas-phase values, so the shapes and angles are right. The larger library molecules use PubChem's computed 3D conformers, which are realistic but come from a force-field calculation rather than a measurement. In every case the drawing is deliberately not to scale — atom spheres are shrunk so the bonds remain visible. Treat it as an accurate shape diagram, not a picture of electron density.</p>
+            </details>
+            <details>
+              <summary>Which molecules can I view?</summary>
+              <p>More than 120. The 32 hand-built molecules cover water, carbon dioxide, methane, ammonia, the common diatomic gases, ethane, ethene, ethyne, methanol, benzene, one molecule for every VSEPR shape from beryllium chloride to sulfur hexafluoride, and buckminsterfullerene (C60), each built from its published bond lengths and angles. A further 92 larger molecules, including alcohols, acids, aromatics, amino acids, DNA bases, sugars, hormones, vitamins, caffeine and aspirin, use PubChem's 3D structures. You can also open your own SDF, MOL, XYZ or PDB file.</p>
+            </details>
+            <details>
+              <summary>Why is benzene drawn with alternating bonds?</summary>
+              <p>That is the Kekule convention, which is the clearest way to show benzene in a simple stick model. In reality all six carbon–carbon bonds in benzene are identical, with a length between a single and a double bond, because the electrons are spread evenly around the whole ring rather than fixed in three separate double bonds. The viewer notes this whenever benzene is selected.</p>
+            </details>
+            <details>
+              <summary>Can I reset the molecular view?</summary>
+              <p>Yes. Press the Reset button, double-click the viewer, or press the R key while the viewer has focus. That restores the original rotation, zoom and position without reloading the page or losing your molecule selection.</p>
+            </details>
+            <details>
+              <summary>Is this tool free and does it need an account?</summary>
+              <p>It is completely free with no sign-up. The built-in molecules are stored inside the page itself and files you open are read in your browser, so nothing is uploaded and the viewer keeps working in an already-open tab even if you lose your connection. The only time the page contacts an outside service is when you press Search PubChem, which sends the name you typed to PubChem, the free chemistry database of the US National Library of Medicine.</p>
+            </details>
+          </section>
+
+          <!-- ================= RELATED ================= -->
+          <section>
+            <h2>More chemistry tools</h2>
+            <p>Other tools in the ToolAdda chemistry section, all free and running entirely in your browser.</p>
+            <div class="msv-related">
+              <a href="periodic-table.html">
+                <b>Interactive Periodic Table</b>
+                <span>Explore all 118 elements with atomic mass, electron configuration and electronegativity.</span>
+              </a>
+              <a href="electron-configuration.html">
+                <b>Electron Configuration Builder</b>
+                <span>Build electron configurations and see how s, p, d and f orbitals fill.</span>
+              </a>
+              <a href="chemical-equation-balancer.html">
+                <b>Chemical Equation Balancer</b>
+                <span>Balance any equation with exact coefficients, atom verification and step-by-step working.</span>
+              </a>
+              <a href="half-life-radioactive-decay-calculator.html">
+                <b>Half-Life &amp; Decay Calculator</b>
+                <span>Radioactive decay, remaining quantity, decay constant and a live exponential curve.</span>
+              </a>
+              <a href="../scientific-calculator.html">
+                <b>Scientific Calculator</b>
+                <span>Logarithms, exponents and trigonometry for working through chemistry problems.</span>
+              </a>
+              <a href="../unit-converter.html">
+                <b>Unit Converter</b>
+                <span>Convert mass, volume, temperature and pressure units between systems.</span>
+              </a>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+          <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links"><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../privacy-policy.html">Privacy</a><a href="../terms.html">Terms</a></div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../assets/js/app.js"></script>
+    <script src="data/elements.js"></script>
+    <script src="data/molecules.js"></script>
+    <script src="data/molecule-library.js"></script>
+    <script src="js/molecule-formats.js"></script>
+    <script src="js/molecular-structure-viewer.js"></script>
+    <script src="../assets/js/inline-ads.js" data-in-article defer></script>
+  <script src="../assets/js/side-ads.js" defer></script>
+  </body>
+</html>

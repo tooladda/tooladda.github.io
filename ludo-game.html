@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+    <meta name="description" content="Play Ludo online free — a 3D-dice board game with animated tokens, captures, safe zones, 2–4 players and optional CPU opponents. In your browser, no signup." />
+    <meta property="og:title" content="Ludo Game — 3D Dice, 2–4 Players | ToolAdda" />
+    <meta property="og:description" content="Play classic Ludo with a 3D animated dice, token captures, safe zones, and optional CPU opponents. Free and in-browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tooladda.online/ludo-game.html" />
+    <meta property="og:site_name" content="ToolAdda" />
+    <meta property="og:image" content="https://tooladda.online/assets/images/og/ludo-game.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Ludo Game — 3D Dice, 2–4 Players, Free Online — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="Ludo Game — 3D Dice, 2–4 Players, Free Online — free online tool on ToolAdda, runs in your browser with no sign-up." />
+    <meta name="theme-color" content="#4f46e5" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="ToolAdda" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <link rel="canonical" href="https://tooladda.online/ludo-game.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Ludo Game — 3D Dice, 2–4 Players | ToolAdda" />
+    <meta name="twitter:description" content="Play classic Ludo with a 3D animated dice, captures and CPU opponents. Free and in-browser." />
+    <meta name="twitter:image" content="https://tooladda.online/assets/images/og/ludo-game.jpg" />
+    <script type="application/ld+json" data-tooladda-page-schema="true">
+      {
+        "@context": "https://schema.org",
+        "@type": "VideoGame",
+        "name": "Ludo Game",
+        "alternateName": "Ludo — 3D Dice Board Game",
+        "description": "Play classic Ludo online free with a 3D dice, animated tokens, captures, safe zones, 2–4 players and optional CPU opponents. Runs in your browser, no download or signup.",
+        "url": "https://tooladda.online/ludo-game.html",
+        "image": "https://tooladda.online/assets/images/logo.svg",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Any (web browser)",
+        "genre": ["Board game", "Dice game", "Strategy"],
+        "gamePlatform": "Web browser",
+        "playMode": ["SinglePlayer", "CoOp"],
+        "inLanguage": "en",
+        "numberOfPlayers": { "@type": "QuantitativeValue", "minValue": 2, "maxValue": 4 },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
+        "author": { "@type": "Organization", "name": "ToolAdda" },
+        "publisher": { "@type": "Organization", "name": "ToolAdda", "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"], "url": "https://tooladda.online/", "logo": "https://tooladda.online/assets/images/logo.svg" }
+      }
+    </script>
+    <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://tooladda.online/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Ludo"
+    }
+  ]
+}
+  </script>
+    <script type="application/ld+json">
+{
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How many players can play?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Two, three or four, all on the same device taking turns. Four is the traditional game; two is the most tactical because there are fewer tokens on the board and captures become deliberate rather than accidental."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I get a token out of the yard?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Roll a six. A token can only leave its yard on a six, which is why the opening can feel slow. Rolling a six also earns you another roll, so a good opening often releases two tokens at once."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens when I land on another player's token?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Their token is sent back to its yard and has to roll a six to start again. Capturing costs an opponent their entire journey so far, which is usually worth far more than the squares you would have gained by moving elsewhere."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are safe squares?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Marked squares where a token cannot be captured. Parking on one is the safest way to hold position when you have no good move, particularly when an opponent is close behind."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need an exact roll to get home?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. You cannot overshoot the home square, so the last few steps often need a specific number. That is why games so often end with a token stuck one or two squares short."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Ludo a game of luck or skill?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Mostly luck, but not entirely. The dice are out of your control, but every roll gives you a choice of which token to move, and that choice decides most close games. Spreading tokens out and prioritising captures are the two decisions that matter most."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the best Ludo strategy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Spread your tokens rather than bunching them, so a bad roll never leaves you without a useful move. Check which opponents are within six squares before committing. Take a capture when one is available. And do not waste rolls pushing a token that is already nearly home."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does a six give another turn?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is what keeps the game moving. Without it, players who could not roll a six would sit out entirely. The extra roll rewards the same number that releases tokens, so a six is always good news twice over."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I play Ludo against the computer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This version is designed for people playing together on one device. For a game against a computer opponent, try Tic Tac Toe, where the hardest setting has solved the game completely."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where did Ludo come from?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is a simplified descendant of Pachisi, an Indian cross-and-circle game documented since at least the sixteenth century and played on cloth with cowrie shells instead of dice. The modern version was patented in England in 1896 as Ludo, Latin for \"I play\"."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Ludo the same as Parcheesi?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "They are close relatives rather than the same game. Parcheesi in the United States, Mensch argere Dich nicht in Germany and Parques in Colombia are all descendants of Pachisi, each with small rule differences around safe squares and capturing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the game work on a phone?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The board scales to the screen and the tokens stay large enough to tap accurately. Passing one phone around is the natural way to play a turn-based game like this."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my game saved if I close the tab?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The game runs in the page you have open. Closing or refreshing the tab starts a new game, so finish a game in one sitting."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Completely. No sign-up, no download and no paid tier."
+      }
+    }
+  ],
+  "@context": "https://schema.org"
+}
+</script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to play Ludo",
+        "description": "Race all four of your tokens from the yard to the centre before your opponents.",
+        "step": [
+          { "@type": "HowToStep", "position": 1, "name": "Roll a 6 to start", "text": "Roll a 6 to move a token out of your yard onto its coloured start cell." },
+          { "@type": "HowToStep", "position": 2, "name": "Race around the board", "text": "Move your tokens clockwise around the ring track according to each dice roll." },
+          { "@type": "HowToStep", "position": 3, "name": "Capture opponents", "text": "Land exactly on an opponent to send their token home, unless they are on a safe cell." },
+          { "@type": "HowToStep", "position": 4, "name": "Reach the centre", "text": "Turn into your coloured home lane and land exactly on the centre to finish a token. First to bring all four home wins." }
+        ]
+      }
+    </script>
+    <title>Ludo Game — 3D Dice, 2–4 Players, Free Online | ToolAdda</title>
+    <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <style>
+      .ludo-container { display: grid; gap: 1.4rem; }
+      .ludo-header { display: grid; gap: 0.6rem; }
+      .ludo-shell { display: grid; grid-template-columns: 1.6fr 1fr; gap: 1.2rem; align-items: start; }
+      @media (max-width: 980px) {
+        .ludo-shell { grid-template-columns: 1fr; }
+      }
+
+      /* board panel — tighter padding so board gets more room */
+      .ludo-panel.content-card { padding: 0.85rem; }
+      @media (max-width: 640px) { .ludo-panel.content-card { padding: 0.55rem; } }
+
+      /* ---- Board ---- */
+      .board-stage { perspective: 1400px; position: relative; }
+      .board-wrap { position: relative; width: 100%; max-width: 620px; margin: 0 auto; aspect-ratio: 1;
+        transform-style: preserve-3d; transition: transform 0.5s ease; }
+      .board-stage.tilt .board-wrap { transform: rotateX(24deg) rotateZ(0deg); }
+      .ludo-board {
+        display: grid; grid-template-columns: repeat(15, 1fr); grid-template-rows: repeat(15, 1fr);
+        width: 100%; height: 100%; border-radius: 14px; overflow: hidden;
+        background: #f8fafc; box-shadow: 0 30px 60px -25px rgba(0,0,0,0.55), 0 0 0 3px rgba(15,23,42,0.08);
+      }
+      [data-theme="dark"] .ludo-board { background: #0b1220; box-shadow: 0 30px 60px -25px rgba(0,0,0,0.8), 0 0 0 3px rgba(148,163,184,0.12); }
+      .lc { border: 1px solid rgba(15,23,42,0.06); }
+      [data-theme="dark"] .lc { border-color: rgba(148,163,184,0.08); }
+      .lc.track { background: #ffffff; }
+      [data-theme="dark"] .lc.track { background: #111c30; }
+      .lc.safe { background: #e2e8f0; }
+      [data-theme="dark"] .lc.safe { background: #1b2942; }
+      .lc.safe::after { content: "★"; display: grid; place-items: center; height: 100%; color: #94a3b8; font-size: 0.7rem; }
+      .lc.yard-0 { background: #f7b6b6; } .lc.yard-1 { background: #a9dcb6; }
+      .lc.yard-2 { background: #ecd591; } .lc.yard-3 { background: #a9c4ef; }
+      [data-theme="dark"] .lc.yard-0 { background: #4a1616; } [data-theme="dark"] .lc.yard-1 { background: #123a20; }
+      [data-theme="dark"] .lc.yard-2 { background: #40370a; } [data-theme="dark"] .lc.yard-3 { background: #142a52; }
+      .lc.start-0, .lc.lane-0 { background: #c62828 !important; }
+      .lc.start-1, .lc.lane-1 { background: #2f7d32 !important; }
+      .lc.start-2, .lc.lane-2 { background: #b8860b !important; }
+      .lc.start-3, .lc.lane-3 { background: #1d4ed8 !important; }
+      .lc.center { background:
+          conic-gradient(from 45deg, #c62828 0deg 90deg, #2f7d32 90deg 180deg, #1d4ed8 180deg 270deg, #b8860b 270deg 360deg); }
+      /* yard token slots: white circles inside the coloured base */
+      .lc.slot { position: relative; }
+      .lc.slot::after { content: ""; position: absolute; inset: 12%; border-radius: 50%;
+        background: rgba(255,255,255,0.92); box-shadow: inset 0 0 4px rgba(0,0,0,0.25); }
+      [data-theme="dark"] .lc.slot::after { background: rgba(226,232,240,0.85); }
+      /* entry arrows on the coloured start cells */
+      .lc.start-0::before, .lc.start-1::before, .lc.start-2::before, .lc.start-3::before {
+        content: "➜"; position: absolute; inset: 0; display: grid; place-items: center; color: #fff;
+        font-size: 0.8rem; text-shadow: 0 1px 1px rgba(0,0,0,0.4); }
+      .lc.start-1::before { transform: rotate(90deg); }
+      .lc.start-2::before { transform: rotate(180deg); }
+      .lc.start-3::before { transform: rotate(-90deg); }
+      .lc { position: relative; }
+
+      /* smoother token hop while walking */
+      .token.hopping { animation: hop 0.2s ease; }
+      @keyframes hop {
+        0% { transform: translate(-50%,-50%) scale(1); }
+        45% { transform: translate(-50%,-78%) scale(1.2); }
+        100% { transform: translate(-50%,-50%) scale(1); }
+      }
+      .board-stage.tilt .token.hopping { animation: hop3d 0.2s ease; }
+      @keyframes hop3d {
+        0% { transform: translate(-50%,-50%) translateZ(16px) scale(1); }
+        45% { transform: translate(-50%,-80%) translateZ(34px) scale(1.2); }
+        100% { transform: translate(-50%,-50%) translateZ(16px) scale(1); }
+      }
+
+      /* ---- Tokens ---- */
+      .token-layer { position: absolute; inset: 0; transform-style: preserve-3d; }
+      .token {
+        position: absolute; width: 4.6%; height: 4.6%; border-radius: 50%; padding: 0;
+        transform: translate(-50%, -50%);
+        background:
+          radial-gradient(circle at 34% 26%, rgba(255,255,255,0.95), rgba(255,255,255,0.18) 24%, transparent 44%),
+          radial-gradient(circle at 50% 118%, rgba(0,0,0,0.55), transparent 60%),
+          radial-gradient(circle at 50% 44%, var(--tc), rgba(0,0,0,0.42));
+        box-shadow: 0 5px 8px rgba(0,0,0,0.5), inset 0 -3px 5px rgba(0,0,0,0.45), inset 0 3px 4px rgba(255,255,255,0.55);
+        border: 2px solid rgba(255,255,255,0.92); cursor: default;
+        transition: left 0.16s linear, top 0.16s linear, transform 0.2s ease, box-shadow 0.2s ease;
+        display: grid; place-items: center; z-index: 3;
+      }
+      .token::after { content: ""; position: absolute; top: 15%; left: 22%; width: 36%; height: 26%; border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.95), rgba(255,255,255,0) 72%); pointer-events: none; }
+      .board-stage.tilt .token { transform: translate(-50%, -50%) translateZ(16px); }
+      .token .tk-count { font-size: 0.62rem; font-weight: 800; color: #fff; text-shadow: 0 1px 1px rgba(0,0,0,0.6); }
+      .token.movable { cursor: pointer; animation: tokpulse 1s ease-in-out infinite; z-index: 5; box-shadow: 0 0 0 3px rgba(255,255,255,0.9), 0 0 12px 3px var(--tc), 0 3px 5px rgba(0,0,0,0.4); }
+      @keyframes tokpulse { 0%,100% { transform: translate(-50%,-50%) scale(1);} 50% { transform: translate(-50%,-50%) scale(1.16);} }
+      .board-stage.tilt .token.movable { animation: tokpulse3d 1s ease-in-out infinite; }
+      @keyframes tokpulse3d { 0%,100% { transform: translate(-50%,-50%) translateZ(16px) scale(1);} 50% { transform: translate(-50%,-50%) translateZ(26px) scale(1.16);} }
+
+      /* ---- Controls / panels ---- */
+      .ludo-panel { display: grid; gap: 1rem; }
+      .status-card { padding: 1rem 1.1rem; border-radius: var(--radius-lg); background: var(--surface); border: 1px solid var(--border); }
+      .status-card h3 { margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+      .setup-row { display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: center; }
+      .setup-row select { padding: 0.55rem 0.7rem; border-radius: 10px; border: 1px solid var(--border); background: var(--surface-strong); color: var(--text); font: inherit; }
+      .setup-row label { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; }
+      .btn-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); gap: 0.55rem; }
+      .btn-row button { width: 100%; justify-content: center; }
+
+      /* player progress */
+      .player-scores { display: grid; gap: 0.55rem; }
+      .player-score {
+        display: flex; align-items: center; gap: 0.65rem;
+        padding: 0.55rem 0.7rem; border-radius: 12px;
+        background: var(--surface-strong); border: 1px solid var(--border);
+        font-size: 0.88rem; transition: box-shadow 0.2s ease, border-color 0.2s ease;
+      }
+      .player-score.active { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(79,70,229,0.15); }
+      .player-score-dot { width: 0.75rem; height: 0.75rem; border-radius: 50%; flex-shrink: 0; }
+      .player-score-name { font-weight: 700; flex: 1; min-width: 0; }
+      .player-score-pips { display: inline-flex; gap: 0.25rem; }
+      .player-score-pip {
+        width: 0.55rem; height: 0.55rem; border-radius: 50%;
+        background: var(--border); transition: background 0.2s ease;
+      }
+      .player-score-pip.done { background: currentColor; }
+
+      .dice-area { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
+      .dice-scene { width: 74px; height: 74px; perspective: 300px; flex: 0 0 auto; filter: drop-shadow(0 12px 9px rgba(0,0,0,0.45)); }
+      .dice-cube { position: relative; width: 74px; height: 74px; transform-style: preserve-3d; transition: transform 0.55s cubic-bezier(0.2,0.8,0.3,1); cursor: pointer;
+        transform: rotateX(0deg) rotateY(0deg); }
+      .dice-cube.rolling { animation: tumble 1s cubic-bezier(0.2,0.75,0.25,1); }
+      @keyframes tumble {
+        0% { transform: rotateX(0) rotateY(0) scale(1); }
+        30% { transform: rotateX(300deg) rotateY(420deg) scale(1.12); }
+        100% { transform: rotateX(1080deg) rotateY(1440deg) scale(1); }
+      }
+      .face { position: absolute; width: 74px; height: 74px; border-radius: 14px; background: linear-gradient(145deg,#ffffff 28%, var(--dice-col, #e2e8f0));
+        border: 2px solid rgba(255,255,255,0.8); box-shadow: inset 0 0 12px rgba(0,0,0,0.14), inset 3px 3px 6px rgba(255,255,255,0.65), inset -3px -3px 6px rgba(0,0,0,0.18);
+        display: grid; grid-template-columns: repeat(3,1fr); grid-template-rows: repeat(3,1fr); padding: 9px; gap: 2px; }
+      .face .pip { width: 12px; height: 12px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #64748b, #0f172a); align-self: center; justify-self: center; }
+      .face .c1 { grid-area: 1/1; } .face .c2 { grid-area: 1/2; } .face .c3 { grid-area: 1/3; }
+      .face .c4 { grid-area: 2/1; } .face .c5 { grid-area: 2/2; } .face .c6 { grid-area: 2/3; }
+      .face .c7 { grid-area: 3/1; } .face .c8 { grid-area: 3/2; } .face .c9 { grid-area: 3/3; }
+      .f-front { transform: translateZ(37px); }
+      .f-back { transform: rotateY(180deg) translateZ(37px); filter: brightness(0.72); }
+      .f-right { transform: rotateY(90deg) translateZ(37px); filter: brightness(0.86); }
+      .f-left { transform: rotateY(-90deg) translateZ(37px); filter: brightness(0.8); }
+      .f-top { transform: rotateX(90deg) translateZ(37px); filter: brightness(1.16); }
+      .f-bottom { transform: rotateX(-90deg) translateZ(37px); filter: brightness(0.66); }
+      .dice-value { font-size: 1.05rem; font-weight: 800; color: var(--text-muted); }
+
+      .turn-badge { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 1.25rem; font-weight: 800; }
+      .turn-dot { width: 1rem; height: 1rem; border-radius: 50%; box-shadow: 0 0 0 3px rgba(255,255,255,0.5); }
+      .ludo-msg { min-height: 1.4rem; font-weight: 600; color: var(--accent-strong); }
+      .history-panel { max-height: 240px; overflow-y: auto; }
+      .history-panel ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.4rem; }
+      .history-panel li { font-size: 0.9rem; color: var(--text-muted); }
+      .legend { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.85rem; }
+      .legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+      .legend i { width: 0.85rem; height: 0.85rem; border-radius: 50%; display: inline-block; }
+
+      /* dice in the centre of the board */
+      .dice-holder { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 20;
+        display: grid; justify-items: center; gap: 6px; pointer-events: none; }
+      .dice-holder .dice-scene { pointer-events: auto; }
+      .dice-tap-hint { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase;
+        color: #fff; background: rgba(15,23,42,0.55); padding: 2px 8px; border-radius: 999px; }
+      @media (max-width: 520px) { .dice-scene, .dice-cube, .face { width: 58px; height: 58px; }
+        .f-front{transform:translateZ(29px)} .f-back{transform:rotateY(180deg) translateZ(29px)}
+        .f-right{transform:rotateY(90deg) translateZ(29px)} .f-left{transform:rotateY(-90deg) translateZ(29px)}
+        .f-top{transform:rotateX(90deg) translateZ(29px)} .f-bottom{transform:rotateX(-90deg) translateZ(29px)}
+        .face .pip{width:9px;height:9px} }
+
+      /* fullscreen — board + compact HUD */
+      .ludo-panel.ludo-fs { position: fixed; inset: 0; z-index: 4000; margin: 0; padding: 12px; overflow: hidden;
+        background: var(--bg); display: grid; grid-template-rows: 1fr auto; place-items: center; gap: 10px; border-radius: 0; }
+      .ludo-panel.ludo-fs .board-stage { width: min(96vw, calc(100vh - 120px)); max-height: calc(100vh - 120px); }
+      .ludo-panel.ludo-fs .board-wrap { width: 100%; max-width: none; margin: 0 auto; }
+      .ludo-fs-hud {
+        display: none; width: min(96vw, 620px); align-items: center; justify-content: space-between;
+        gap: 0.75rem; flex-wrap: wrap; padding: 0.65rem 0.85rem; border-radius: 14px;
+        background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
+      }
+      .ludo-panel.ludo-fs .ludo-fs-hud { display: flex; }
+      .ludo-fs-hud .ludo-msg { flex: 1 1 100%; margin: 0; min-height: auto; font-size: 0.88rem; padding: 0.4rem 0.55rem; }
+      .ludo-fs-hud .turn-badge { font-size: 1rem; padding: 0.35rem 0.75rem; }
+      .ludo-fs-hud .dice-value { font-size: 0.9rem; margin: 0; white-space: nowrap; }
+
+      /* sticky mobile action bar */
+      .ludo-mobile-bar {
+        display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 300;
+        padding: 0.65rem 0.85rem calc(0.65rem + env(safe-area-inset-bottom, 0px));
+        background: rgba(255,255,255,0.92); border-top: 1px solid var(--border);
+        backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 -8px 24px rgba(15,23,42,0.1);
+        align-items: center; gap: 0.65rem;
+      }
+      [data-theme="dark"] .ludo-mobile-bar { background: rgba(15,23,42,0.92); }
+      .ludo-mobile-bar.show { display: flex; }
+      .ludo-mobile-bar .turn-badge { font-size: 0.95rem; padding: 0.35rem 0.7rem; flex-shrink: 0; }
+      .ludo-mobile-bar .ludo-msg {
+        flex: 1; min-width: 0; margin: 0; min-height: auto; font-size: 0.82rem;
+        padding: 0.35rem 0.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      }
+      .ludo-mobile-bar .primary-btn { flex-shrink: 0; min-width: auto; padding: 0.65rem 1rem; font-size: 0.88rem; }
+      @media (min-width: 981px) { .ludo-mobile-bar { display: none !important; } }
+      @media (max-width: 980px) {
+        body:has(.ludo-mobile-bar.show) main { padding-bottom: 4.5rem; }
+      }
+      .ludo-exit { display: none; }
+      .ludo-exit.show { display: grid; place-items: center; position: fixed; top: 14px; right: 14px; z-index: 4100;
+        width: 48px; height: 48px; border-radius: 50%; border: 0; background: rgba(15,23,42,0.72); color: #fff;
+        font-size: 1.3rem; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,0.4); }
+
+      /* stacked tokens stay inside the cell */
+      .token.stacked { width: 3.5%; height: 3.5%; border-width: 1.5px; }
+      .token.returning { animation: retspin 0.28s ease-in-out; filter: brightness(1.3) saturate(1.25); }
+      @keyframes retspin {
+        0% { transform: translate(-50%,-50%) rotate(0) scale(1); }
+        100% { transform: translate(-50%,-50%) rotate(-300deg) scale(0.82); }
+      }
+      /* gentle idle bob for the current player's movable tokens is handled by tokpulse */
+
+      /* polish */
+      .pdf-merge-heading .hero-badge, .ludo-header .tag { display:inline-block; }
+
+      /* ---- attractive UI ---- */
+      .ludo-header .section-title { background: linear-gradient(120deg, var(--accent), #38bdf8 55%, #22c55e);
+        -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+      .ludo-header .tag { background: linear-gradient(135deg, var(--accent-soft), rgba(56,189,248,0.15));
+        color: var(--accent-strong); border: 1px solid var(--border); padding: 0.35rem 0.9rem; border-radius: 999px; font-weight: 700; }
+      .ludo-panel.content-card, .status-card { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+      .status-card { transition: box-shadow 0.2s ease, transform 0.2s ease; }
+      @media (hover: hover) {
+        .status-card:hover { transform: translateY(-2px); box-shadow: 0 16px 32px -24px rgba(79,70,229,0.55); }
+        .setup-row .primary-btn:hover, .btn-row button:hover { transform: translateY(-2px); }
+      }
+      .primary-btn, .secondary-btn { transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease; }
+      .turn-badge { padding: 0.45rem 1rem; border-radius: 999px; background: var(--surface-strong); border: 1px solid var(--border); }
+      .turn-dot { box-shadow: 0 0 0 3px rgba(255,255,255,0.55), 0 0 12px 2px currentColor; }
+      .ludo-msg { background: var(--accent-soft); border: 1px solid var(--border); border-radius: 10px; padding: 0.55rem 0.75rem; }
+
+      /* board frame + glow (box-shadow only — keeps token alignment) */
+      .board-wrap { animation: boardIn 0.5s ease both; }
+      @keyframes boardIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+      .board-stage.tilt .board-wrap { transform: rotateX(24deg) rotateZ(0deg); animation: none; opacity: 1; }
+      .ludo-board { box-shadow: 0 34px 64px -26px rgba(0,0,0,0.6), 0 0 0 4px rgba(255,255,255,0.6), 0 0 0 11px rgba(79,70,229,0.14); }
+      [data-theme="dark"] .ludo-board { box-shadow: 0 34px 64px -26px rgba(0,0,0,0.85), 0 0 0 4px rgba(148,163,184,0.18), 0 0 0 11px rgba(139,92,246,0.18); }
+      .lc.safe::after { color: #f59e0b; text-shadow: 0 0 3px rgba(245,158,11,0.5); }
+
+      /* highlight the current player's yard */
+      .ludo-board[data-turn="0"] .yard-0, .ludo-board[data-turn="1"] .yard-1,
+      .ludo-board[data-turn="2"] .yard-2, .ludo-board[data-turn="3"] .yard-3 {
+        filter: brightness(1.14) saturate(1.35); animation: yardglow 1.4s ease-in-out infinite;
+      }
+      @keyframes yardglow { 0%,100% { filter: brightness(1.1) saturate(1.25); } 50% { filter: brightness(1.22) saturate(1.5); } }
+
+      /* dice platform */
+      .dice-holder::before { content: ""; position: absolute; left: 50%; top: 78%; transform: translateX(-50%);
+        width: 66px; height: 14px; border-radius: 50%; background: radial-gradient(ellipse, rgba(0,0,0,0.28), transparent 70%); z-index: -1; }
+      body::before { content:""; position: fixed; inset: -25%; z-index: -1; pointer-events: none;
+        background: radial-gradient(circle at 18% 20%, rgba(79,70,229,0.16), transparent 40%),
+        radial-gradient(circle at 82% 12%, rgba(56,189,248,0.14), transparent 38%),
+        radial-gradient(circle at 68% 82%, rgba(139,92,246,0.12), transparent 42%);
+        filter: blur(24px); }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/ludo-game.html#webpage",
+      "url": "https://tooladda.online/ludo-game.html",
+      "inLanguage": "en",
+      "datePublished": "2026-06-30",
+      "dateModified": "2026-09-03",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="container navbar">
+        <a class="brand" href="/" aria-label="ToolAdda home">
+          <span class="brand-mark" aria-hidden="true">T</span>
+          <span>ToolAdda</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Home</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="privacy-policy.html">Privacy</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+              <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+              <path d="M3.1 16.9h10.8" />
+              <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+            </svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+          <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+          <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section class="section">
+        <aside class="ta-support" aria-label="Support ToolAdda">
+          <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+        </aside>
+
+        <div class="container">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span>›</span>
+            <a href="/">Games</a>
+            <span>›</span>
+            <span>Ludo</span>
+          </nav>
+
+          <div class="ludo-container">
+            <div class="ludo-header">
+              <p class="tag">🎲 Games</p>
+              <h1 class="section-title">Ludo — 3D Dice Board Game</h1>
+              <p>Classic local multiplayer Ludo for 2–4 players with a rolling 3D dice, animated tokens, captures, and safe zones. Play pass-and-play or against the computer — right in your browser.</p>
+            </div>
+
+            <div class="ludo-shell">
+              <section class="content-card ludo-panel" data-fs-panel>
+                <div class="board-stage" data-board-stage>
+                  <div class="board-wrap">
+                    <div class="ludo-board" data-board aria-label="Ludo board"></div>
+                    <div class="token-layer" data-token-layer></div>
+                  </div>
+                  <div class="dice-holder" data-dice-holder>
+                    <div class="dice-scene">
+                      <div class="dice-cube" data-dice-cube role="button" tabindex="0" aria-label="Dice — tap to roll">
+                        <div class="face f-front"><span class="pip c5"></span></div>
+                        <div class="face f-back"><span class="pip c1"></span><span class="pip c3"></span><span class="pip c4"></span><span class="pip c6"></span><span class="pip c7"></span><span class="pip c9"></span></div>
+                        <div class="face f-right"><span class="pip c1"></span><span class="pip c9"></span></div>
+                        <div class="face f-left"><span class="pip c1"></span><span class="pip c3"></span><span class="pip c5"></span><span class="pip c7"></span><span class="pip c9"></span></div>
+                        <div class="face f-top"><span class="pip c1"></span><span class="pip c5"></span><span class="pip c9"></span></div>
+                        <div class="face f-bottom"><span class="pip c1"></span><span class="pip c3"></span><span class="pip c7"></span><span class="pip c9"></span></div>
+                      </div>
+                    </div>
+                    <span class="dice-tap-hint" data-dice-hint>tap to roll</span>
+                  </div>
+                </div>
+                <div class="legend">
+                  <span><i style="background:#c62828"></i>Red</span>
+                  <span><i style="background:#2f7d32"></i>Green</span>
+                  <span><i style="background:#b8860b"></i>Yellow</span>
+                  <span><i style="background:#1d4ed8"></i>Blue</span>
+                  <span>★ = safe cell</span>
+                </div>
+                <div class="ludo-fs-hud" data-fs-hud aria-label="Game controls">
+                  <span class="turn-badge"><span class="turn-dot" data-fs-color></span><span data-fs-label>Ready</span></span>
+                  <p class="dice-value">Roll: <span data-fs-dice>–</span></p>
+                  <button class="primary-btn" type="button" data-fs-roll disabled>🎲 Roll</button>
+                  <p class="ludo-msg" data-fs-message></p>
+                </div>
+              </section>
+
+              <aside class="ludo-panel">
+                <div class="status-card">
+                  <h3>Setup</h3>
+                  <div class="setup-row">
+                    <select data-player-count aria-label="Number of players">
+                      <option value="2">2 Players</option>
+                      <option value="3">3 Players</option>
+                      <option value="4" selected>4 Players</option>
+                    </select>
+                    <label><input type="checkbox" data-cpu-toggle /> CPU opponents</label>
+                  </div>
+                  <div class="btn-row" style="margin-top:0.8rem">
+                    <button class="primary-btn" type="button" data-start-btn>▶ New game</button>
+                    <button class="secondary-btn" type="button" data-reset-btn disabled>↻ Reset</button>
+                    <button class="secondary-btn" type="button" data-tilt-btn>🎲 3D: Off</button>
+                    <button class="secondary-btn" type="button" data-fs-btn>⛶ Fullscreen</button>
+                    <button class="secondary-btn" type="button" data-mute-btn>🔊 Sound on</button>
+                  </div>
+                </div>
+
+                <div class="status-card" data-scores-card hidden>
+                  <h3>Progress</h3>
+                  <div class="player-scores" data-player-scores aria-live="polite"></div>
+                </div>
+
+                <div class="status-card">
+                  <h3>Current turn</h3>
+                  <span class="turn-badge"><span class="turn-dot" data-current-color></span><span data-current-label>Ready</span></span>
+                  <div class="dice-area" style="margin-top:0.9rem">
+                    <button class="primary-btn" type="button" data-roll-btn disabled>🎲 Roll dice</button>
+                    <p class="dice-value">Last roll: <span data-dice-value>–</span></p>
+                  </div>
+                  <p class="ludo-msg" data-message aria-live="polite"></p>
+                </div>
+
+                <div class="status-card">
+                  <h3>Move history</h3>
+                  <div class="history-panel" data-history-list><ul></ul></div>
+                </div>
+              </aside>
+            </div>
+
+            <div class="content-grid">
+              <article class="content-card">
+                <h2>How to play</h2>
+                <p>Roll a <strong>6</strong> to move a token out of its yard onto the coloured start. Race all four tokens clockwise around the ring and up your coloured lane to the centre. Land exactly on an opponent to send it home — but they are safe on ★ cells. Rolling a 6, capturing, or finishing a token earns an extra roll. First to bring all four tokens home wins.</p>
+              </article>
+              <article class="content-card">
+                <h2>Privacy notice</h2>
+                <p>The whole game runs in your browser. Your progress is saved only in local storage — nothing is uploaded to any server.</p>
+              </article>
+            </div>
+
+            <section class="section faq-section">
+              <h2 class="section-title">Frequently asked questions</h2>
+              <div class="grid-2">
+                <details class="faq-item"><summary><strong>How do I move a token out of the yard?</strong></summary><p>Roll a 6. Any token still in the yard can then move onto its coloured start cell.</p></details>
+                <details class="faq-item"><summary><strong>Can I play against the computer?</strong></summary><p>Yes. Tick "CPU opponents" before starting and every player except Red will be played by the computer.</p></details>
+                <details class="faq-item"><summary><strong>How does capturing work?</strong></summary><p>Landing exactly on a cell occupied by an opponent sends their token back to the yard — unless the cell is a ★ safe cell.</p></details>
+                <details class="faq-item"><summary><strong>When do I get an extra turn?</strong></summary><p>After rolling a 6, capturing an opponent, or bringing a token home.</p></details>
+                <details class="faq-item"><summary><strong>Is my progress saved?</strong></summary><p>Yes, locally in your browser, so you can refresh and continue.</p></details>
+                <details class="faq-item"><summary><strong>Can I turn off the 3D tilt?</strong></summary><p>Yes — use the "3D" button to switch between the tilted 3D view and a flat top-down board.</p></details>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+          <style>
+        /* Guide section shared by the expanded tool pages. Prefix: tg- */
+        .tg { width: min(1100px, 100% - 2rem); margin: 2.4rem auto 3rem; }
+        .tg-section { margin-top: 2.2rem; }
+        .tg-section h2 {
+          margin: 0 0 .8rem; font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+          font-weight: 900; letter-spacing: -.015em; color: var(--text);
+        }
+        .tg-section h3 { margin: 1.2rem 0 .4rem; font-size: 1rem; font-weight: 800; color: var(--text); }
+        .tg p, .tg li { color: var(--text-muted); line-height: 1.75; font-size: .94rem; }
+        .tg p { margin: 0 0 .85rem; }
+        .tg ul, .tg ol { margin: 0 0 .9rem; padding-left: 1.2rem; display: grid; gap: .42rem; }
+        .tg strong { color: var(--text); }
+        .tg code {
+          font-family: ui-monospace, Consolas, monospace; font-size: .86em;
+          padding: .12rem .34rem; border-radius: 5px;
+          background: var(--surface-strong); border: 1px solid var(--border); color: var(--accent);
+        }
+        .tg-grid { display: grid; gap: .7rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+        .tg-card { border: 1px solid var(--border); border-radius: 15px; background: var(--surface); padding: .95rem 1.05rem; }
+        .tg-card strong { display: block; margin-bottom: .3rem; font-size: .93rem; }
+        .tg-card p { margin: 0; font-size: .86rem; }
+        .tg-tablewrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; margin: .3rem 0 1rem; }
+        .tg-table { width: 100%; border-collapse: collapse; font-size: .89rem; min-width: 430px; }
+        .tg-table th, .tg-table td { padding: .58rem .85rem; text-align: left; border-bottom: 1px solid var(--border); }
+        .tg-table th { background: var(--surface-strong); font-size: .72rem; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+        .tg-table td { color: var(--text-muted); }
+        .tg-table td:first-child { color: var(--text); font-weight: 700; }
+        .tg-table tr:last-child td { border-bottom: 0; }
+        .tg-faq-grid { display: grid; gap: .55rem; }
+        .tg-faq { border: 1px solid var(--border); border-radius: 14px; background: var(--surface); padding: .8rem 1rem; }
+        .tg-faq summary { cursor: pointer; font-size: .92rem; font-weight: 700; color: var(--text); }
+        .tg-faq p { margin: .55rem 0 0; font-size: .88rem; }
+      </style>
+      <div class="tg">
+        <section class="tg-section" aria-labelledby="tg-rules-h">
+          <h2 id="tg-rules-h">How to play Ludo</h2>
+          <p>
+            Each player has four tokens waiting in their yard. The aim is to bring all four around
+            the board and home before anyone else. The rules are simple enough to learn in a minute,
+            which is why the game has survived for centuries.
+          </p>
+          <ol>
+            <li><strong>Roll a six to start.</strong> A token can only leave the yard on a six, which is why the opening can feel slow.</li>
+            <li><strong>Move by the number rolled.</strong> Tokens travel clockwise around the outer track.</li>
+            <li><strong>A six earns another roll.</strong> Sixes are the engine of the game &mdash; they release tokens and keep your turn alive.</li>
+            <li><strong>Landing on an opponent sends them home.</strong> Their token returns to the yard and must roll a six all over again.</li>
+            <li><strong>Safe squares protect you.</strong> A token on a marked square cannot be captured.</li>
+            <li><strong>Enter home with an exact roll.</strong> Overshooting is not allowed, so the last few squares often need patience.</li>
+          </ol>
+        </section>
+
+        <section class="tg-section" aria-labelledby="tg-strategy-h">
+          <h2 id="tg-strategy-h">Strategy that actually helps</h2>
+          <p>
+            Ludo is mostly luck, but not entirely &mdash; every roll gives you a choice of which
+            token to move, and that choice is where games are won.
+          </p>
+          <div class="tg-grid">
+            <div class="tg-card"><strong>Spread your tokens</strong><p>Keeping all four bunched together means one bad roll ruins everything. Spread out and you always have a useful move available.</p></div>
+            <div class="tg-card"><strong>Count the danger squares</strong><p>Before moving, look at where opponents sit. A token six or fewer squares behind an enemy is in immediate danger.</p></div>
+            <div class="tg-card"><strong>Capturing beats advancing</strong><p>Sending an opponent home costs them their whole journey. It is almost always worth more than moving a few squares forward.</p></div>
+            <div class="tg-card"><strong>Do not rush the last token</strong><p>A token close to home is safe from most captures. Use spare rolls on exposed tokens instead.</p></div>
+          </div>
+        </section>
+
+        <section class="tg-section" aria-labelledby="tg-players-h">
+          <h2 id="tg-players-h">Two, three or four players</h2>
+          <p>
+            The game supports two, three or four players on the same device, taking turns. The
+            player count changes the feel of the game more than people expect:
+          </p>
+          <ul>
+            <li><strong>Two players</strong> is the most tactical. Fewer tokens on the board means captures are deliberate rather than accidental.</li>
+            <li><strong>Three players</strong> creates shifting alliances &mdash; whoever is ahead tends to attract attention from both opponents.</li>
+            <li><strong>Four players</strong> is the traditional game and the most chaotic. Expect long journeys to end one square from home.</li>
+          </ul>
+        </section>
+
+        <section class="tg-section" aria-labelledby="tg-history-h">
+          <h2 id="tg-history-h">Where Ludo came from</h2>
+          <p>
+            Ludo is a simplified descendant of <strong>Pachisi</strong>, an Indian cross-and-circle
+            game documented since at least the sixteenth century and probably far older. Pachisi was
+            played on cloth with cowrie shells for dice, and the Mughal emperors are said to have
+            played it on life-sized courts using people as pieces.
+          </p>
+          <p>
+            The version most of the world knows was patented in England in 1896 under the name Ludo,
+            the Latin for "I play", with dice replacing the shells. The same game travels under many
+            names &mdash; Parcheesi in the United States, Mensch &auml;rgere Dich nicht in Germany,
+            Parqu&eacute;s in Colombia &mdash; and remains one of the most widely played board games
+            in the world.
+          </p>
+        </section>
+
+        <section class="tg-section" aria-labelledby="tg-faq-h">
+          <h2 id="tg-faq-h">Frequently asked questions</h2>
+          <div class="tg-faq-grid">
+            <details class="tg-faq">
+              <summary><strong>How many players can play?</strong></summary>
+              <p>Two, three or four, all on the same device taking turns. Four is the traditional game; two is the most tactical because there are fewer tokens on the board and captures become deliberate rather than accidental.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>How do I get a token out of the yard?</strong></summary>
+              <p>Roll a six. A token can only leave its yard on a six, which is why the opening can feel slow. Rolling a six also earns you another roll, so a good opening often releases two tokens at once.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>What happens when I land on another player's token?</strong></summary>
+              <p>Their token is sent back to its yard and has to roll a six to start again. Capturing costs an opponent their entire journey so far, which is usually worth far more than the squares you would have gained by moving elsewhere.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>What are safe squares?</strong></summary>
+              <p>Marked squares where a token cannot be captured. Parking on one is the safest way to hold position when you have no good move, particularly when an opponent is close behind.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Do I need an exact roll to get home?</strong></summary>
+              <p>Yes. You cannot overshoot the home square, so the last few steps often need a specific number. That is why games so often end with a token stuck one or two squares short.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Is Ludo a game of luck or skill?</strong></summary>
+              <p>Mostly luck, but not entirely. The dice are out of your control, but every roll gives you a choice of which token to move, and that choice decides most close games. Spreading tokens out and prioritising captures are the two decisions that matter most.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>What is the best Ludo strategy?</strong></summary>
+              <p>Spread your tokens rather than bunching them, so a bad roll never leaves you without a useful move. Check which opponents are within six squares before committing. Take a capture when one is available. And do not waste rolls pushing a token that is already nearly home.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Why does a six give another turn?</strong></summary>
+              <p>It is what keeps the game moving. Without it, players who could not roll a six would sit out entirely. The extra roll rewards the same number that releases tokens, so a six is always good news twice over.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Can I play Ludo against the computer?</strong></summary>
+              <p>This version is designed for people playing together on one device. For a game against a computer opponent, try Tic Tac Toe, where the hardest setting has solved the game completely.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Where did Ludo come from?</strong></summary>
+              <p>It is a simplified descendant of Pachisi, an Indian cross-and-circle game documented since at least the sixteenth century and played on cloth with cowrie shells instead of dice. The modern version was patented in England in 1896 as Ludo, Latin for "I play".</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Is Ludo the same as Parcheesi?</strong></summary>
+              <p>They are close relatives rather than the same game. Parcheesi in the United States, Mensch argere Dich nicht in Germany and Parques in Colombia are all descendants of Pachisi, each with small rule differences around safe squares and capturing.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Does the game work on a phone?</strong></summary>
+              <p>Yes. The board scales to the screen and the tokens stay large enough to tap accurately. Passing one phone around is the natural way to play a turn-based game like this.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Is my game saved if I close the tab?</strong></summary>
+              <p>The game runs in the page you have open. Closing or refreshing the tab starts a new game, so finish a game in one sitting.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Is it free?</strong></summary>
+              <p>Completely. No sign-up, no download and no paid tier.</p>
+            </details>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+          <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links">
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms.html">Terms</a>
+          </div>
+        </div>
+        <div>
+          <h3>Stay updated</h3>
+          <p>© <span data-year></span> ToolAdda. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <div class="ludo-mobile-bar" data-mobile-bar aria-label="Quick game controls">
+      <span class="turn-badge"><span class="turn-dot" data-mb-color></span><span data-mb-label>Ready</span></span>
+      <p class="ludo-msg" data-mb-message></p>
+      <button class="primary-btn" type="button" data-mb-roll disabled>🎲 Roll</button>
+    </div>
+
+    <script src="assets/js/ludo-game.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/side-ads.js" defer></script>
+    <script src="assets/js/inline-ads.js" data-in-article defer></script>
+  </body>
+</html>

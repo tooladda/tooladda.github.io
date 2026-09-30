@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+  <meta name="description" content="Compress image online to 20kb, 50kb, 100kb, 200kb, or 500kb free. Compress image to 20kb online, compress image to 100kb online, or any custom KB/MB target — reduce JPG, PNG, or WebP photos for SSC, UPSC, and government form uploads. 100% private, works in your browser." />
+  <title>Compress Image Online to 20KB, 50KB, 100KB, 200KB, 500KB Free | ToolAdda</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    /* Compress Image to Exact KB — "the scale".
+       A KB target is a weight limit, and this page is the scale the photo is
+       put on before it goes to the form. The cover carries a dial of the
+       usual limits with a needle that follows the chosen target, the tool
+       opens on a scale's LCD readout (it is the target field itself), and
+       every photo gets a meter with the limit marked on it, so "fits" and
+       "over" read at a glance. Lime is the one action colour (the readout's
+       backlight); red only ever means over the limit. */
+    body.ck-page {
+      --ck-desk: #f3f4ee;
+      --ck-card: #fdfdf9;
+      --ck-well: #f6f7f0;
+      --ck-grid: rgba(77, 124, 15, .07);
+      --ck-line: rgba(38, 46, 20, .13);
+      --ck-line-2: rgba(38, 46, 20, .25);
+      --ck-ink: #1a1d15;
+      --ck-ink-2: #373d2e;
+      --ck-mute: #5f6652;
+      --ck-lime: #4d7c0f;
+      --ck-lime-hover: #3f6212;
+      --ck-lime-ink: #ffffff;
+      --ck-lime-text: #3f6212;
+      --ck-lime-soft: rgba(77, 124, 15, .1);
+      --ck-lime-ring: rgba(77, 124, 15, .35);
+      --ck-lcd-bg: #1d2413;
+      --ck-lcd-edge: #0f140a;
+      --ck-lcd-ink: #d9f99d;
+      --ck-lcd-mute: rgba(217, 249, 157, .6);
+      --ck-over: #b91c1c;
+      --ck-over-soft: rgba(185, 28, 28, .08);
+      --ck-warn: #a16207;
+      --ck-warn-soft: rgba(161, 98, 7, .1);
+      --ck-thumb-bg: #eceee4;
+      --ck-shadow: 0 1px 0 rgba(38, 46, 20, .05), 0 18px 40px -26px rgba(38, 46, 20, .45);
+      --accent: var(--ck-lime-text);
+      --accent-soft: var(--ck-lime-soft);
+      --isp-accent: var(--ck-lime);
+      background: var(--ck-desk);
+    }
+    [data-theme="dark"] body.ck-page {
+      --ck-desk: #0f110c;
+      --ck-card: #171a12;
+      --ck-well: #13160f;
+      --ck-grid: rgba(163, 230, 53, .05);
+      --ck-line: rgba(236, 244, 220, .1);
+      --ck-line-2: rgba(236, 244, 220, .2);
+      --ck-ink: #eef3e4;
+      --ck-ink-2: #d3dcc3;
+      --ck-mute: #a2ab92;
+      --ck-lime: #a3e635;
+      --ck-lime-hover: #bef264;
+      --ck-lime-ink: #172103;
+      --ck-lime-text: #bef264;
+      --ck-lime-soft: rgba(163, 230, 53, .1);
+      --ck-lime-ring: rgba(163, 230, 53, .4);
+      --ck-lcd-bg: #0a0d06;
+      --ck-lcd-edge: #000000;
+      --ck-over: #fca5a5;
+      --ck-over-soft: rgba(252, 165, 165, .1);
+      --ck-warn: #fcd34d;
+      --ck-warn-soft: rgba(252, 211, 77, .1);
+      --ck-thumb-bg: #22261b;
+      --ck-shadow: 0 1px 0 rgba(0, 0, 0, .4), 0 20px 44px -26px rgba(0, 0, 0, .9);
+    }
+    body.ck-page .hidden, body.ck-page [hidden] { display: none !important; }
+    #compress-kb-page, .ck-files { scroll-margin-top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+
+    .ck-shell { padding: .6rem 0 3rem; }
+    .ck-page .breadcrumb { margin: .35rem 0 .9rem; font-size: .86rem; }
+    .ck-page .breadcrumb a { color: var(--ck-lime-text); font-weight: 700; }
+
+    /* ---------- buttons ---------- */
+    .ck-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .45rem;
+      min-height: 2.75rem; padding: .6rem 1.1rem; border-radius: 10px; border: 1px solid transparent;
+      font: inherit; font-size: .92rem; font-weight: 800; line-height: 1.2; text-decoration: none; white-space: nowrap; cursor: pointer;
+      transition: background-color .15s, border-color .15s, color .15s, transform .1s;
+    }
+    .ck-btn svg { width: 18px; height: 18px; flex: none; }
+    .ck-btn:active:not(:disabled) { transform: translateY(1px); }
+    .ck-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .ck-btn--primary { background: var(--ck-lime); color: var(--ck-lime-ink); border-color: var(--ck-lime); box-shadow: 0 1px 0 rgba(0, 0, 0, .12); }
+    .ck-btn--primary:hover:not(:disabled) { background: var(--ck-lime-hover); border-color: var(--ck-lime-hover); color: var(--ck-lime-ink); }
+    .ck-btn--ghost { background: var(--ck-card); color: var(--ck-ink); border-color: var(--ck-line-2); }
+    .ck-btn--ghost:hover:not(:disabled) { border-color: var(--ck-lime); color: var(--ck-lime-text); }
+    .ck-btn--sm { min-height: 2.3rem; padding: .35rem .8rem; font-size: .82rem; border-radius: 8px; }
+    .ck-btn--lg { min-height: 3.1rem; padding-inline: 1.5rem; font-size: 1rem; }
+    .ck-btn:focus-visible, .ck-chip:focus-visible, .ck-x:focus-visible, .ck-link:focus-visible, .ck-lcd input:focus-visible,
+    .ck-field input:focus-visible, .ck-adv summary:focus-visible, .ck-page .isp-btn:focus-visible {
+      outline: 3px solid var(--ck-lime-ring); outline-offset: 2px;
+    }
+
+    /* ---------- top: cover, tool, ad ----------
+       Under 980px one column: cover, tool, ad, then the lead and the trust
+       cards, so a phone reaches the drop zone straight after the headline.
+       From 980px the cover and lead sit beside the tool until a photo is in,
+       then the tool takes the full width (.is-editing). The ad follows it. */
+    .ck-top { display: grid; gap: 1rem; align-items: start; grid-template-areas: "cover" "tool" "ad" "intro" "extras"; }
+    .ck-top > * { min-width: 0; }
+    .ck-cover { grid-area: cover; }
+    .ck-intro { grid-area: intro; }
+    .ck-tool-card { grid-area: tool; }
+    .ck-ad-zone { grid-area: ad; }
+    .ck-extras { grid-area: extras; }
+    @media (min-width: 980px) {
+      .ck-top {
+        grid-template-columns: minmax(0, .86fr) minmax(0, 1.3fr);
+        grid-template-rows: auto 1fr auto auto;
+        grid-template-areas: "cover tool" "intro tool" "ad ad" "extras extras";
+        column-gap: 1.25rem;
+      }
+      .ck-top.is-editing { grid-template-rows: auto auto auto auto; grid-template-areas: "tool tool" "ad ad" "cover intro" "extras extras"; }
+    }
+
+    /* ---------- cover: the dial of common limits ---------- */
+    .ck-cover {
+      position: relative; overflow: hidden; padding: 1.5rem 1.35rem 1.3rem; border-radius: 14px;
+      background:
+        linear-gradient(var(--ck-grid) 1px, transparent 1px) 0 0 / 20px 20px,
+        linear-gradient(90deg, var(--ck-grid) 1px, transparent 1px) 0 0 / 20px 20px,
+        var(--ck-card);
+      border: 1px solid var(--ck-line-2); box-shadow: var(--ck-shadow);
+    }
+    .ck-badge {
+      display: inline-flex; align-items: center; gap: .35rem; margin: 0 0 .75rem; padding: .28rem .62rem; border-radius: 6px;
+      background: var(--ck-lcd-bg); color: var(--ck-lcd-ink); font-size: .72rem; font-weight: 900; letter-spacing: .05em; text-transform: uppercase;
+    }
+    .ck-title { margin: 0; color: var(--ck-ink); font-size: clamp(1.45rem, 1rem + 1.9vw, 2.05rem); font-weight: 900; line-height: 1.14; letter-spacing: -.02em; text-wrap: balance; }
+    .ck-dial { position: relative; margin: 1.15rem 0 .35rem; padding: 0 .35rem; }
+    .ck-dial-track { position: relative; height: 34px; }
+    .ck-dial-track::before { content: ""; position: absolute; left: 0; right: 0; bottom: 10px; height: 2px; border-radius: 2px; background: var(--ck-ink-2); }
+    .ck-dial-tick { position: absolute; bottom: 10px; width: 2px; height: 10px; margin-left: -1px; background: var(--ck-ink-2); }
+    .ck-dial-tick.minor { height: 5px; opacity: .55; }
+    .ck-dial-label { position: absolute; bottom: -8px; transform: translateX(-50%); font-size: .66rem; font-weight: 900; color: var(--ck-mute); white-space: nowrap; }
+    .ck-dial-needle {
+      position: absolute; left: var(--needle, 21%); bottom: 10px; width: 0; height: 30px; transition: left .45s cubic-bezier(.3, 1.4, .5, 1);
+    }
+    .ck-dial-needle::before { content: ""; position: absolute; left: -1.5px; bottom: 0; width: 3px; height: 30px; border-radius: 2px; background: var(--ck-lime); }
+    .ck-dial-needle::after { content: ""; position: absolute; left: -5px; bottom: -4px; width: 10px; height: 10px; border-radius: 50%; background: var(--ck-lime); box-shadow: 0 0 0 3px var(--ck-card); }
+    .ck-dial-read {
+      position: absolute; left: var(--needle, 21%); top: -1.35rem; transform: translateX(-50%); padding: .1rem .4rem; border-radius: 5px;
+      background: var(--ck-lcd-bg); color: var(--ck-lcd-ink); font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: .7rem; font-weight: 800; white-space: nowrap;
+      transition: left .45s cubic-bezier(.3, 1.4, .5, 1);
+    }
+    .ck-trust-row { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1.4rem; }
+    .ck-trust-pill { padding: .3rem .6rem; border-radius: 8px; background: var(--ck-card); border: 1px solid var(--ck-line); color: var(--ck-ink-2); font-size: .78rem; font-weight: 700; }
+    .ck-trust-pill:first-child { background: var(--ck-lime-soft); border-color: var(--ck-lime-ring); color: var(--ck-lime-text); }
+
+    .ck-intro { display: grid; gap: .8rem; padding: .15rem .2rem 0; }
+    .ck-lead { margin: 0; padding-left: .85rem; border-left: 3px solid var(--ck-lime); color: var(--ck-ink-2); font-size: .96rem; line-height: 1.68; }
+    .ck-intro .ck-btn { justify-self: start; }
+
+    .ck-extras { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem; }
+    .ck-trust-card { display: flex; gap: .7rem; align-items: flex-start; padding: .85rem .9rem; border-radius: 12px; background: var(--ck-card); border: 1px solid var(--ck-line); }
+    .ck-trust-card .ic { flex: none; font-size: 1.25rem; line-height: 1.3; }
+    .ck-trust-card strong { display: block; margin-bottom: .15rem; font-size: .88rem; color: var(--ck-ink); }
+    .ck-trust-card p { margin: 0; font-size: .8rem; line-height: 1.45; color: var(--ck-mute); }
+
+    /* ---------- tool card ---------- */
+    .ck-tool-card {
+      position: relative; padding: 1.1rem; border-radius: 14px; background: var(--ck-card);
+      border: 1px solid var(--ck-line); border-top: 4px solid var(--ck-lime); box-shadow: var(--ck-shadow);
+      outline: 2px dashed transparent; outline-offset: 4px; transition: outline-color .15s;
+    }
+    .ck-tool-card.is-file-over { outline-color: var(--ck-lime); }
+    .ck-flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .35rem; margin: 0 0 .9rem; padding: 0; list-style: none; }
+    .ck-flow li {
+      display: flex; align-items: center; justify-content: center; gap: .4rem; min-width: 0; padding: .4rem .3rem; border-radius: 8px;
+      background: var(--ck-well); border: 1px solid var(--ck-line); color: var(--ck-mute);
+      font-size: .7rem; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; transition: background-color .2s, border-color .2s, color .2s;
+    }
+    .ck-flow li span { display: inline-grid; place-items: center; flex: none; width: 1.25rem; height: 1.25rem; border-radius: 50%; background: var(--ck-line); color: var(--ck-ink-2); font-size: .66rem; }
+    .ck-flow li.is-active { background: var(--ck-lime-soft); border-color: var(--ck-lime-ring); color: var(--ck-ink); }
+    .ck-flow li.is-active span { background: var(--ck-lime); color: var(--ck-lime-ink); }
+    .ck-flow li.is-done { color: var(--ck-lime-text); }
+    .ck-flow li.is-done span { background: var(--ck-lime); color: var(--ck-lime-ink); }
+    .ck-toolhead { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: .6rem .9rem; margin: 0 0 .8rem; }
+    .ck-toolhead .tag { margin: 0; padding: 0; border: 0; background: none; font-size: .74rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--ck-lime-text); }
+    .ck-toolhead .pdf-helper-text { margin: .2rem 0 0; font-size: .86rem; line-height: 1.5; color: var(--ck-mute); }
+
+    .ck-body { display: grid; gap: 1rem; }
+    /* resize options only matter once there is a photo to resize */
+    .ck-tool-card:not(.has-files) .ck-adv { display: none; }
+    @media (min-width: 980px) {
+      .ck-top.is-editing .ck-body { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; }
+    }
+
+    /* drop zone, full size until a photo is in, then a strip */
+    .ck-drop {
+      display: grid; justify-items: center; gap: .3rem; padding: 1.35rem 1rem 1.2rem; text-align: center; cursor: pointer;
+      border: 2px dashed var(--ck-line-2); border-radius: 12px; background: var(--ck-well); transition: border-color .15s, background-color .15s;
+    }
+    .ck-drop:hover, .ck-drop.is-drag { border-color: var(--ck-lime); background: var(--ck-lime-soft); }
+    .ck-drop-art { width: 124px; height: 80px; margin-bottom: .1rem; }
+    .ck-drop-art .plate { fill: var(--ck-ink-2); }
+    .ck-drop-art .base { fill: var(--ck-card); stroke: var(--ck-ink); stroke-width: 1.6; }
+    .ck-drop-art .lcd { fill: var(--ck-lcd-bg); }
+    .ck-drop-art .lcd-t { fill: var(--ck-lcd-ink); font: 800 9px ui-monospace, Menlo, Consolas, monospace; }
+    .ck-drop-art .photo { fill: var(--ck-card); stroke: var(--ck-ink); stroke-width: 1.5; }
+    .ck-drop-art .sky { fill: var(--ck-lime-soft); }
+    .ck-drop-art .hill { fill: var(--ck-lime); }
+    .ck-drop-art .drop { animation: ck-drop 2.8s cubic-bezier(.5, 0, .3, 1) infinite; }
+    @keyframes ck-drop { 0%, 18% { transform: translateY(-10px); opacity: 0; } 38%, 82% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(0); opacity: 0; } }
+    .ck-drop .pdf-drop-zone-title { margin: .1rem 0 0; font-size: 1.1rem; color: var(--ck-ink); }
+    .ck-drop .cik-drop-sub { margin: 0; max-width: 34rem; font-size: .86rem; line-height: 1.5; color: var(--ck-mute); }
+    .ck-drop .isp-actions { margin-top: .55rem; }
+    .ck-drop .isp-btn { min-height: 2.6rem; padding: .55rem 1rem; font-size: .86rem; }
+    .ck-drop.is-compact { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .4rem .75rem; padding: .6rem .8rem; }
+    .ck-drop.is-compact .ck-drop-art, .ck-drop.is-compact .cik-drop-sub { display: none; }
+    .ck-drop.is-compact .pdf-drop-zone-title { margin: 0; font-size: .9rem; }
+    .ck-drop.is-compact .isp-actions { margin-top: 0; }
+    .ck-drop.is-compact .ck-btn { min-height: 2.3rem; padding: .35rem .85rem; font-size: .82rem; }
+    .ck-drop.is-compact .isp-btn { min-height: 2.3rem; padding: .35rem .8rem; font-size: .8rem; }
+    .ck-drop.is-compact .isp-panel { flex: 1 0 100%; margin-top: .15rem; }
+
+    /* one row per photo, each with a meter that has the limit marked on it */
+    .ck-list { display: grid; gap: .6rem; margin: 0; padding: 0; list-style: none; }
+    .ck-list > .pdf-file-item { display: none; }
+    .ck-row { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: .75rem; align-items: start; padding: .75rem; border-radius: 12px; background: var(--ck-well); border: 1px solid var(--ck-line); }
+    .ck-row.is-over { border-color: rgba(185, 28, 28, .3); }
+    .ck-row.is-fit { border-color: var(--ck-lime-ring); }
+    .ck-thumb { width: 64px; height: 64px; overflow: hidden; border-radius: 8px; background: var(--ck-thumb-bg); }
+    .ck-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .ck-meta { min-width: 0; }
+    .ck-name { margin: 0; overflow: hidden; font-size: .88rem; font-weight: 900; color: var(--ck-ink); text-overflow: ellipsis; white-space: nowrap; }
+    .ck-line { margin: .12rem 0 0; font-size: .78rem; font-weight: 700; color: var(--ck-mute); }
+    .ck-meter { position: relative; height: 10px; margin: .5rem 0 .3rem; border-radius: 99px; background: var(--ck-card); border: 1px solid var(--ck-line-2); overflow: hidden; }
+    .ck-meter-min { position: absolute; top: 0; bottom: 0; left: 0; width: var(--min, 0%); background: repeating-linear-gradient(135deg, var(--ck-warn-soft) 0 4px, transparent 4px 8px); }
+    .ck-meter-fill { position: absolute; top: 0; bottom: 0; left: 0; width: var(--fill, 0%); border-radius: 99px; background: var(--ck-lime); transition: width .35s ease; }
+    .ck-row.is-over .ck-meter-fill { background: var(--ck-over); }
+    .ck-row.is-low .ck-meter-fill { background: var(--ck-warn); }
+    .ck-row.is-working .ck-meter-fill { width: 100%; opacity: .45; background: repeating-linear-gradient(90deg, var(--ck-lime) 0 12px, transparent 12px 20px); background-size: 40px 100%; animation: ck-run .8s linear infinite; }
+    @keyframes ck-run { to { background-position: 40px 0; } }
+    .ck-meter-limit { position: absolute; top: -1px; bottom: -1px; left: 80%; width: 2px; margin-left: -1px; background: var(--ck-ink); }
+    .ck-verdict { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .6rem; margin: 0; font-size: .8rem; font-weight: 800; color: var(--ck-ink-2); }
+    .ck-verdict .ok { color: var(--ck-lime-text); }
+    .ck-verdict .bad { color: var(--ck-over); }
+    .ck-verdict .warn { color: var(--ck-warn); }
+    .ck-link { padding: 0; border: 0; background: none; color: var(--ck-lime-text); font: inherit; font-size: .8rem; font-weight: 800; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+    .ck-row-actions { display: flex; flex-direction: column; align-items: flex-end; gap: .4rem; }
+    .ck-x {
+      display: grid; place-items: center; width: 2.2rem; height: 2.2rem; padding: 0; border-radius: 8px;
+      border: 1px solid var(--ck-line-2); background: var(--ck-card); color: var(--ck-over); cursor: pointer;
+    }
+    .ck-x svg { width: 15px; height: 15px; }
+    .ck-x:hover:not(:disabled) { border-color: var(--ck-over); background: var(--ck-over-soft); }
+    .ck-x:disabled { opacity: .4; cursor: not-allowed; }
+    .ck-compare { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; padding-top: .6rem; border-top: 1px dashed var(--ck-line-2); }
+    .ck-compare figure { margin: 0; text-align: center; }
+    .ck-compare img { display: block; width: 100%; max-height: 240px; object-fit: contain; border-radius: 8px; background: var(--ck-thumb-bg); }
+    .ck-compare figcaption { margin-top: .3rem; font-size: .72rem; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; color: var(--ck-mute); }
+
+    /* the scale's readout: it is the target field itself */
+    .ck-settings { display: grid; gap: .8rem; align-content: start; }
+    .ck-lcd {
+      display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: .8rem; padding: .75rem .9rem .8rem; border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, .04), transparent 40%), var(--ck-lcd-bg);
+      border: 1px solid var(--ck-lcd-edge); box-shadow: inset 0 2px 8px rgba(0, 0, 0, .45);
+    }
+    .ck-lcd label { display: block; margin-bottom: .2rem; font-size: .66rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; color: var(--ck-lcd-mute); }
+    .ck-lcd .cik-optional { margin-left: .25rem; font-weight: 700; letter-spacing: .06em; color: var(--ck-lcd-mute); opacity: .8; }
+    .ck-lcd-main { display: flex; align-items: baseline; gap: .35rem; }
+    .ck-lcd input {
+      width: 100%; min-width: 0; padding: 0; border: 0; background: none; color: var(--ck-lcd-ink); caret-color: var(--ck-lcd-ink);
+      font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-variant-numeric: tabular-nums; font-weight: 800;
+      text-shadow: 0 0 12px rgba(217, 249, 157, .35); -moz-appearance: textfield; appearance: textfield;
+    }
+    .ck-lcd input::-webkit-outer-spin-button, .ck-lcd input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .ck-lcd input::placeholder { color: rgba(217, 249, 157, .28); }
+    .ck-lcd-target input { font-size: clamp(2rem, 1.4rem + 2vw, 2.6rem); line-height: 1; }
+    .ck-lcd-unit { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 1rem; font-weight: 800; color: var(--ck-lcd-mute); }
+    .ck-lcd-min { width: 6.5rem; padding-left: .8rem; border-left: 1px solid rgba(217, 249, 157, .16); }
+    .ck-lcd-min input { font-size: 1.35rem; line-height: 1.1; }
+    .cik-range-hint { margin: 0; font-size: .8rem; line-height: 1.5; color: var(--ck-mute); }
+    .cik-range-hint strong { color: var(--ck-ink); }
+    .ck-presets { display: flex; flex-wrap: wrap; gap: .35rem; }
+    .ck-chip {
+      min-height: 2.1rem; padding: .3rem .7rem; border-radius: 999px; border: 1px solid var(--ck-line-2); background: var(--ck-card);
+      color: var(--ck-ink); font: inherit; font-size: .8rem; font-weight: 800; font-variant-numeric: tabular-nums; cursor: pointer; transition: border-color .15s, background-color .15s, color .15s;
+    }
+    .ck-chip:hover:not(:disabled) { border-color: var(--ck-lime); color: var(--ck-lime-text); }
+    .ck-chip.is-active { background: var(--ck-lcd-bg); border-color: var(--ck-lcd-bg); color: var(--ck-lcd-ink); }
+    [data-theme="dark"] .ck-chip.is-active { background: var(--ck-lime); border-color: var(--ck-lime); color: var(--ck-lime-ink); }
+    .ck-adv { border: 1px solid var(--ck-line); border-radius: 10px; background: var(--ck-well); }
+    .ck-adv summary { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .65rem .8rem; list-style: none; cursor: pointer; font-size: .86rem; font-weight: 800; color: var(--ck-ink); }
+    .ck-adv summary::-webkit-details-marker { display: none; }
+    .ck-adv summary > span { transition: transform .2s; }
+    .ck-adv[open] summary > span { transform: rotate(180deg); }
+    .ck-adv-body { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; padding: 0 .8rem .8rem; }
+    .ck-adv-body > :first-child { grid-column: 1 / -1; }
+    .ck-field label { display: block; margin-bottom: .3rem; font-size: .76rem; font-weight: 800; color: var(--ck-ink-2); }
+    .ck-field input[type="number"] { width: 100%; min-height: 2.5rem; box-sizing: border-box; padding: .45rem .65rem; border: 1px solid var(--ck-line-2); border-radius: 8px; background: var(--ck-card); color: var(--ck-ink); font: inherit; font-size: 16px; }
+    .ck-field input:disabled { opacity: .5; }
+    .ck-check { display: flex; align-items: center; gap: .5rem; font-size: .86rem; font-weight: 700; color: var(--ck-ink); cursor: pointer; }
+    .ck-check input { width: 17px; height: 17px; margin: 0; accent-color: var(--ck-lime); }
+    .ck-adv .pdf-helper-text { margin: 0; padding: 0 .8rem .8rem; font-size: .78rem; line-height: 1.5; color: var(--ck-mute); }
+    .ck-actions { display: flex; flex-wrap: wrap; gap: .55rem; }
+    .ck-actions > .ck-btn--lg { flex: 1 1 14rem; }
+    .ck-actions > .ck-btn--ghost { flex: 1 1 11rem; min-height: 3.1rem; }
+
+    .ck-progress { margin: 0; }
+    .ck-progress-track { height: 10px; overflow: hidden; border-radius: 99px; background: var(--ck-well); border: 1px solid var(--ck-line); }
+    .ck-progress-fill { width: 0; height: 100%; border-radius: 99px; background: var(--ck-lime); transition: width .2s ease; }
+    .ck-progress-text { margin: .35rem 0 0; font-size: .8rem; font-weight: 700; color: var(--ck-mute); font-variant-numeric: tabular-nums; }
+    .ck-tool-card .message-box { margin: .9rem 0 0; padding: .6rem .8rem; border-radius: 10px; font-size: .88rem; font-weight: 700; line-height: 1.45; }
+    .ck-tool-card .message-box.success { background: var(--ck-lime-soft); color: var(--ck-lime-text); border: 1px solid var(--ck-lime-ring); }
+    .ck-tool-card .message-box.error { background: var(--ck-over-soft); color: var(--ck-over); border: 1px solid rgba(185, 28, 28, .25); }
+    .ck-tool-card.is-busy .ck-presets, .ck-tool-card.is-busy .ck-lcd { opacity: .6; }
+
+    /* ---------- ad slot straight after the tool ----------
+       inline-ads.js shows .ta-lb-ad (728x90) from 900px and .ta-inline-ad
+       (300x250) below 1000px; hiding the 300x250 from 900px leaves exactly one
+       ad at every width, and a display:none slot never loads its iframe. */
+    @media (min-width: 900px) { body.ck-page .ck-ad-zone .ta-inline-ad { display: none !important; } }
+    @media (max-width: 340px) { .ck-ad-zone { margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); } }
+
+    /* ---------- guide, FAQ ---------- */
+    .ck-page .section { padding: 2rem 0 0; }
+    .ck-page .content-card { padding: clamp(1.1rem, 3vw, 1.75rem); border-radius: 14px; background: var(--ck-card); border: 1px solid var(--ck-line); box-shadow: none; }
+    .ck-page .content-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .ck-page .content-card h2 { position: relative; margin: 0 0 .75rem; padding-bottom: .55rem; font-size: clamp(1.15rem, 2.3vw, 1.45rem); line-height: 1.3; color: var(--ck-ink); }
+    /* a limit line under each title: a short bar with a tick at its end */
+    .ck-page .content-card h2::after { content: ""; position: absolute; left: 0; bottom: 0; width: 3rem; height: 8px;
+      background: linear-gradient(var(--ck-lime), var(--ck-lime)) 0 100% / 100% 3px no-repeat, linear-gradient(var(--ck-ink), var(--ck-ink)) 100% 0 / 2px 100% no-repeat; }
+    .ck-page .content-card h3 { margin: 1rem 0 .45rem; font-size: 1.02rem; color: var(--ck-ink); }
+    .ck-page .content-card p, .ck-page .content-card li { font-size: .95rem; line-height: 1.75; color: var(--ck-ink-2); }
+    .ck-page .content-card strong { color: var(--ck-ink); }
+    .ck-page .content-card a { color: var(--ck-lime-text); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+    .ck-page .content-card ul, .ck-page .content-card ol { margin: .5rem 0 .8rem; padding-left: 1.25rem; }
+    .ck-page .content-card code { padding: .08rem .35rem; border-radius: 5px; background: var(--ck-well); border: 1px solid var(--ck-line); font-size: .86em; }
+    .ck-seo-table { width: 100%; margin: .8rem 0 1rem; border-collapse: collapse; font-size: .88rem; }
+    .ck-seo-table th, .ck-seo-table td { padding: .55rem .7rem; border: 1px solid var(--ck-line); text-align: left; vertical-align: top; color: var(--ck-ink-2); }
+    .ck-seo-table th { background: var(--ck-well); color: var(--ck-ink); font-weight: 800; }
+    .ck-seo-table td:first-child { color: var(--ck-ink); font-weight: 700; }
+
+    .ck-page .faq-section { margin-top: 0; }
+    .ck-page .faq-section .section-title { margin: 0 0 1rem; font-size: clamp(1.35rem, 2.6vw, 1.8rem); color: var(--ck-ink); }
+    .ck-page .faq-section .grid-2 { gap: .55rem; align-items: start; }
+    .ck-page .faq-item { padding: 0; border-radius: 10px; background: var(--ck-card); border: 1px solid var(--ck-line); box-shadow: none; transform: none; }
+    .ck-page .faq-item:hover { border-color: var(--ck-line-2); box-shadow: none; transform: none; }
+    .ck-page .faq-item summary { position: relative; padding: .8rem 2.2rem .8rem .95rem; list-style: none; cursor: pointer; line-height: 1.4; color: var(--ck-ink); }
+    .ck-page .faq-item summary::-webkit-details-marker { display: none; }
+    .ck-page .faq-item summary::after { content: "+"; position: absolute; right: .95rem; top: .75rem; font-weight: 900; color: var(--ck-lime-text); }
+    .ck-page .faq-item[open] summary::after { content: "\2212"; }
+    .ck-page .faq-item summary:hover strong { color: var(--ck-lime-text); }
+    .ck-page .faq-item p { margin: 0; padding: 0 .95rem .9rem; font-size: .9rem; line-height: 1.65; color: var(--ck-ink-2); }
+
+    /* Related tools (shared markup) in this page's palette. The shared single
+       column is `1fr`, whose minimum is the card's min-content; on a 320px
+       phone that is wider than the section and scrolls the page sideways. */
+    .ck-page .related-tools-section { background: var(--ck-card); border-color: var(--ck-line); border-radius: 14px; box-shadow: var(--ck-shadow); }
+    .ck-page .related-tools-eyebrow { color: var(--ck-lime-text); }
+    .ck-page .related-tools-title { color: var(--ck-ink); }
+    .ck-page .related-tools-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: .6rem; }
+    .ck-page .related-tool-card { min-width: 0; background: var(--ck-well); border-color: var(--ck-line); box-shadow: none; color: var(--ck-ink); }
+    .ck-page .related-tool-card:hover, .ck-page .related-tool-card:focus-visible { border-color: var(--ck-lime); }
+    .ck-page .related-tool-card > div:last-child, .ck-page .related-tool-body { min-width: 0; }
+
+    .ck-final { margin-top: 1.75rem; padding: 1.6rem 1.25rem; border-radius: 14px; text-align: center; background: var(--ck-lcd-bg); }
+    .ck-final p { margin: 0 0 .9rem; color: var(--ck-lcd-ink); font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .9rem; font-weight: 800; letter-spacing: .06em; }
+
+    /* ---------- phone sticky bar ---------- */
+    .ck-sticky-cta {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; padding: .55rem .75rem calc(.55rem + env(safe-area-inset-bottom));
+      background: var(--ck-card); border-top: 1px solid var(--ck-line-2); box-shadow: 0 -14px 30px -20px rgba(0, 0, 0, .45);
+      transform: translateY(110%); visibility: hidden; transition: transform .2s ease, visibility 0s linear .2s;
+    }
+    .ck-sticky-cta.is-visible { transform: none; visibility: visible; transition: transform .2s ease; }
+    .ck-sticky-cta .ck-btn { width: 100%; min-height: 3rem; font-size: 1rem; }
+    body.ck-page.ck-sticky-on { padding-bottom: calc(4.6rem + env(safe-area-inset-bottom)); }
+    @media (min-width: 769px) { .ck-sticky-cta { display: none !important; } }
+
+    /* ---------- smaller screens ---------- */
+    @media (max-width: 860px) { .ck-page .content-grid { grid-template-columns: 1fr; } .ck-extras { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 760px) { .ck-page .faq-section .grid-2 { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) {
+      .ck-seo-table, .ck-seo-table tbody, .ck-seo-table tr, .ck-seo-table td { display: block; width: 100%; }
+      .ck-seo-table { border: 0; }
+      .ck-seo-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+      .ck-seo-table tr { margin-bottom: .55rem; padding: .6rem .8rem; border: 1px solid var(--ck-line); border-radius: 12px; background: var(--ck-card); }
+      .ck-seo-table td { border: 0; padding: .14rem 0; }
+      .ck-seo-table td:first-child { margin-bottom: .2rem; font-weight: 800; }
+      .ck-seo-table td[data-label]::before { content: attr(data-label) ": "; color: var(--ck-ink); font-weight: 700; }
+      .ck-extras { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 559px) {
+      /* 10px gutters: a 320px phone then has the 300px its ads need */
+      body.ck-page .ck-wrap, body.ck-page .ta-support { width: calc(100% - 20px); }
+      .ck-page .breadcrumb { display: none; }
+      .ck-cover { padding: 1.2rem 1rem 1.05rem; }
+      .ck-title { font-size: 1.32rem; line-height: 1.2; }
+      .ck-trust-pill:nth-child(n+4) { display: none; }
+      .ck-tool-card { padding: .85rem; }
+      .ck-flow { gap: .25rem; }
+      .ck-flow li { padding: .42rem .1rem; font-size: .6rem; letter-spacing: 0; }
+      .ck-flow li span { display: none; }
+      .cik-helper-more, .cik-lead-more { display: none; }
+      .ck-drop { padding: 1rem .8rem .95rem; }
+      .ck-drop-art { width: 96px; height: 62px; }
+      /* the step chips already say what to do; the range hint returns with a photo */
+      .ck-toolhead, .ck-tool-card:not(.has-files) .cik-range-hint { display: none; }
+      /* one scrolling row of sizes on a phone instead of four wrapped rows */
+      .ck-presets { flex-wrap: nowrap; overflow-x: auto; padding-bottom: .35rem; margin-right: -.85rem; padding-right: .85rem; scrollbar-width: thin; }
+      .ck-chip { flex: none; }
+      .ck-row { position: relative; grid-template-columns: 52px minmax(0, 1fr); padding: .65rem; }
+      .ck-thumb { width: 52px; height: 52px; }
+      .ck-meta { padding-right: 2.5rem; }
+      .ck-row-actions { grid-column: 1 / -1; flex-direction: row; justify-content: flex-end; }
+      .ck-row-actions:not(:has(a)) { display: contents; }
+      .ck-row-actions .ck-btn { flex: 1 1 auto; }
+      .ck-x { position: absolute; top: .6rem; right: .6rem; }
+      .ck-lcd-min { width: 5.2rem; }
+      .ck-lead { font-size: .92rem; }
+      .ck-page .related-tools-section { padding: 1rem .85rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      body.ck-page *, body.ck-page *::before, body.ck-page *::after { animation: none !important; transition: none !important; }
+    }
+    @media print { .ck-sticky-cta, .ck-ad-zone { display: none !important; } }
+    /* =====================================================================
+       2026-09 layout pass. The scale stays; what changes is the frame. The
+       cover becomes one compact band (headline, dial of common limits), and
+       the tool is split so the ad can sit beside it: steps, the drop box, the
+       ad, then the scale's readout with the sizes. The ad is never above the
+       tool, and nothing else lives inside the grid, so it can stay sticky.
+       ===================================================================== */
+    body.ck-page .ck-wrap { max-width: none; }
+
+    /* ---------- cover band ---------- */
+    .ck-page .ck-cover { display: grid; gap: .9rem 2rem; align-items: center; margin: 0 0 1rem; padding: 1.15rem 1.35rem 1.1rem; }
+    @media (min-width: 900px) { .ck-page .ck-cover { grid-template-columns: minmax(0, 1fr) minmax(0, 400px); } }
+    .ck-page .ck-cover .ck-badge { margin-bottom: .55rem; }
+    .ck-page .ck-title { font-size: clamp(1.55rem, 1.05rem + 1.8vw, 2.2rem); }
+    .ck-t1 { display: block; }
+    /* the sizes read off the scale's display */
+    .ck-t2 { display: block; margin-top: .35rem; font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: .56em; font-weight: 800; letter-spacing: -.01em; color: var(--ck-lime-text); }
+    .ck-page .ck-cover-side .ck-dial { margin: 1.5rem 0 .2rem; }
+    .ck-page .ck-cover-side .ck-trust-row { margin-top: 1.25rem; }
+
+    /* ---------- the tool grid ----------
+       Under 700px one column: steps, the drop box, the ad, then the target
+       and sizes. 700-999px: the ad beside everything. From 1000px the drop
+       box and the target sit side by side with the ad on the right. */
+    .ck-work { display: grid; gap: 1rem; align-items: start; grid-template-areas: "flow" "drop" "ad" "set"; }
+    .ck-work > * { min-width: 0; }
+    .ck-work > .ck-flow { grid-area: flow; margin: 0; }
+    .ck-box--drop { grid-area: drop; }
+    .ck-box--set { grid-area: set; }
+    .ck-work > .ck-ad-zone { grid-area: ad; }
+    @media (min-width: 700px) {
+      .ck-work { grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "flow ad" "drop ad" "set ad"; grid-template-rows: auto auto 1fr; column-gap: 1.1rem; }
+      .ck-work > .ck-ad-zone { position: sticky; top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+    }
+    @media (min-width: 1000px) {
+      .ck-work { grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr) 300px; grid-template-areas: "flow flow ad" "drop set ad"; grid-template-rows: auto 1fr; }
+    }
+    /* One 300x250 at every width: inline-ads.js only shows .ta-inline-ad
+       below 1000px, and the old rule hid it from 900px; both are overruled
+       here, and data-unit="inline" sizes it. */
+    body.ck-page .ck-ad-zone { text-align: center; }
+    body.ck-page .ck-ad-zone .ta-inline-ad { display: block !important; margin: 0 auto !important; }
+
+    .ck-box { position: relative; padding: 1.05rem; border-radius: 14px; background: var(--ck-card); border: 1px solid var(--ck-line); box-shadow: var(--ck-shadow); outline: 2px dashed transparent; outline-offset: 4px; transition: outline-color .15s; }
+    .ck-box--drop { border-top: 4px solid var(--ck-lime); }
+    .ck-work.is-file-over .ck-box--drop { outline-color: var(--ck-lime); }
+    .ck-box--set { background: linear-gradient(var(--ck-grid) 1px, transparent 1px) 0 0 / 20px 20px, linear-gradient(90deg, var(--ck-grid) 1px, transparent 1px) 0 0 / 20px 20px, var(--ck-card); }
+    /* the scale's readout gets a caption, like the label on a real scale */
+    .ck-box--set .ck-settings::before { content: "Target" / ""; display: block; margin: -.1rem 0 -.25rem; font-size: .7rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; color: var(--ck-mute); }
+    /* the rules the old single card carried, now on the grid */
+    .ck-work:not(.has-files) .ck-adv { display: none; }
+    .ck-work.is-busy .ck-presets, .ck-work.is-busy .ck-lcd { opacity: .6; }
+    .ck-work .message-box { margin: .9rem 0 0; padding: .6rem .8rem; border-radius: 10px; font-size: .88rem; font-weight: 700; line-height: 1.45; }
+    .ck-work .message-box.success { background: var(--ck-lime-soft); color: var(--ck-lime-text); border: 1px solid var(--ck-lime-ring); }
+    .ck-work .message-box.error { background: var(--ck-over-soft); color: var(--ck-over); border: 1px solid rgba(185, 28, 28, .25); }
+    .ck-box--drop .ck-toolhead { margin-bottom: .75rem; }
+    /* one line of help is enough beside the drop zone; the rest stays in the page */
+    .ck-box--drop .cik-helper-more { display: none; }
+    #compress-kb-page { scroll-margin-top: calc(var(--header-overlap, 5.5rem) + .75rem); }
+
+    /* ---------- below the tool ---------- */
+    .ck-page .ck-after { display: grid; gap: .9rem 1.5rem; margin-top: 1.3rem; align-items: start; }
+    /* The old CSS names these "intro" and "extras" areas of the old .ck-top
+       grid. .ck-after has no such areas, so both landed in the same cell and
+       the trust cards covered the intro and its button; place them normally. */
+    .ck-page .ck-after > .ck-intro, .ck-page .ck-after > .ck-extras { grid-area: auto; }
+    @media (min-width: 900px) { .ck-page .ck-after { grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); } }
+    .ck-page .ck-after .ck-extras { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    /* the new "reading the result" section */
+    .ck-verdict-grid { display: grid; gap: .6rem; margin: .9rem 0 .4rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+    .ck-vcard { padding: .8rem .9rem .85rem; border-radius: 12px; background: var(--ck-well); border: 1px solid var(--ck-line); }
+    .ck-vcard p { margin: .5rem 0 0 !important; font-size: .88rem !important; line-height: 1.6 !important; }
+    .ck-vtag { display: inline-block; padding: .2rem .55rem; border-radius: 6px; font: 800 .8rem/1.4 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; }
+    .ck-vcard--fit { border-left: 4px solid var(--ck-lime); }
+    .ck-vcard--fit .ck-vtag { background: var(--ck-lime-soft); color: var(--ck-lime-text); }
+    .ck-vcard--low { border-left: 4px solid var(--ck-warn); }
+    .ck-vcard--low .ck-vtag { background: var(--ck-warn-soft); color: var(--ck-warn); }
+    .ck-vcard--over { border-left: 4px solid var(--ck-over); }
+    .ck-vcard--over .ck-vtag { background: var(--ck-over-soft); color: var(--ck-over); }
+    .ck-page .ck-steps-list { counter-reset: cks; list-style: none; padding-left: 0 !important; display: grid; gap: .4rem; }
+    .ck-page .ck-steps-list li { counter-increment: cks; position: relative; padding: .5rem .75rem .5rem 2.6rem; border-radius: 10px; background: var(--ck-well); border: 1px solid var(--ck-line); line-height: 1.6 !important; }
+    .ck-page .ck-steps-list li::before { content: counter(cks); position: absolute; left: .65rem; top: .55rem; width: 1.4rem; height: 1.4rem; border-radius: 5px; display: grid; place-items: center; background: var(--ck-lcd-bg); color: var(--ck-lcd-ink); font: 800 .72rem/1 ui-monospace, Menlo, Consolas, monospace; }
+
+    /* ---------- smaller screens ---------- */
+    @media (max-width: 899px) { .ck-page .ck-cover-side { display: none; } }
+    @media (max-width: 699px) {
+      /* phones: the headline only, then the steps and the drop box, so the ad
+         after them reaches the first screen; the target follows the ad */
+      .ck-page .ck-cover { padding: 1rem 1rem .95rem; }
+      .ck-page .ck-cover .ck-badge { display: none; }
+      .ck-page .ck-title { font-size: clamp(1.45rem, 6.6vw, 1.8rem); line-height: 1.15; }
+      .ck-t2 { font-size: .6em; line-height: 1.35; }
+      .ck-box { padding: .8rem; }
+      .ck-work > .ck-flow { gap: .25rem; }
+      .ck-page .ck-drop { padding: .95rem .75rem .85rem; }
+      .ck-page .ck-drop-art { display: none; }
+      .ck-page .ck-drop .cik-drop-sub { font-size: .8rem; }
+      .ck-page .ck-after .ck-extras { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 559px) {
+      .ck-work:not(.has-files) .cik-range-hint { display: none; }
+      .ck-page .ck-drop .cik-drop-sub { display: none; }
+      .ck-page .ck-presets { margin-right: -.8rem; padding-right: .8rem; }
+    }
+  </style>
+
+  <meta name="theme-color" content="#4d7c0f" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="author" content="ToolAdda" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <link rel="canonical" href="https://tooladda.online/image-compress-to-kb.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+  <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+  <link rel="manifest" href="/manifest.json" />
+
+  <meta property="og:title" content="Compress Image Online to 20KB, 50KB, 100KB, 200KB, 500KB Free | ToolAdda" />
+  <meta property="og:description" content="Compress image to 20kb, 50kb, 100kb, 200kb, 500kb, or any custom size for government form uploads. 100% private — runs entirely in your browser." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tooladda.online/image-compress-to-kb.html" />
+  <meta property="og:site_name" content="ToolAdda" />
+  <meta property="og:image" content="https://tooladda.online/assets/images/og/image-compress-to-kb.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Compress Image Online to 20KB, 50KB, 100KB, 200KB, 500KB Free — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="Compress Image Online to 20KB, 50KB, 100KB, 200KB, 500KB Free — free online tool on ToolAdda, runs in your browser with no sign-up." />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Compress Image Online to 20KB, 50KB, 100KB, 200KB, 500KB Free | ToolAdda" />
+  <meta name="twitter:description" content="Compress image online to an exact KB target for SSC, UPSC, and government forms. Free, private, and instant." />
+  <meta name="twitter:image" content="https://tooladda.online/assets/images/og/image-compress-to-kb.jpg" />
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": "https://tooladda.online/image-compress-to-kb.html",
+          "url": "https://tooladda.online/image-compress-to-kb.html",
+          "name": "Compress Image Online to 20KB, 50KB, 100KB, 200KB, 500KB Free | ToolAdda",
+          "description": "Compress image online to 20kb, 50kb, 100kb, 200kb, 500kb, or any custom KB/MB target for government exam and visa form uploads.",
+          "publisher": { "@type": "Organization", "name": "ToolAdda", "url": "https://tooladda.online/" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "ToolAdda Compress Image to Exact KB",
+          "operatingSystem": "Browser",
+          "applicationCategory": "UtilityApplication",
+          "url": "https://tooladda.online/image-compress-to-kb.html",
+          "description": "A free, offline tool that compresses JPG, PNG, WebP, and HEIC images to a precise target KB size using canvas-based binary search compression, with optional resize and ZIP batch download.",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "featureList": ["Compress to an exact KB or MB target", "14 quick-size presets from 10KB to 2MB", "Batch compression for multiple images", "ZIP download for batch results", "Resize before compress with aspect ratio", "HEIC/HEIF input support", "Before/after comparison", "100% client-side — no upload"]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {"@type":"Question","name":"Does this work for SSC, UPSC, and other government exam form uploads?","acceptedAnswer":{"@type":"Answer","text":"Yes. Government portals like SSC, UPSC, IBPS, and Railway RRB commonly require photos or documents under a specific KB limit (such as 20KB, 50KB, or 100KB). This tool lets you pick that exact target and compresses your image to fit without exceeding it."}},
+            {"@type":"Question","name":"Is it safe to use this tool?","acceptedAnswer":{"@type":"Answer","text":"Yes. All compression happens locally in your browser using the Canvas API — your image is never uploaded to any server, so it stays completely private."}},
+            {"@type":"Question","name":"Does compressing reduce image quality?","acceptedAnswer":{"@type":"Answer","text":"Some quality reduction is unavoidable when shrinking a file to a very small size, since compression works by lowering JPEG quality and, if needed, image dimensions. The tool automatically finds the highest quality possible that still fits under your target size."}},
+            {"@type":"Question","name":"How do I compress image to 20kb online?","acceptedAnswer":{"@type":"Answer","text":"Upload your photo, click the 20 KB preset (or type 20 into the target size field), then click Compress images. The tool finds the highest quality JPEG that stays at or under 20 KB, entirely online in your browser."}},
+            {"@type":"Question","name":"Can I compress image to 500kb or larger sizes like 1MB and 2MB?","acceptedAnswer":{"@type":"Answer","text":"Yes. Presets go up to 500 KB, 1 MB, and 2 MB, and you can also type any custom KB number into the target size field — there's no fixed upper limit for compress image to 500kb, compress image to 1mb, or compress image to 2mb targets."}},
+            {"@type":"Question","name":"What is the best size to compress image to 100kb or 200kb for exams?","acceptedAnswer":{"@type":"Answer","text":"Most exam portals like UPSC and SSC specify an exact KB range in their photo/signature upload instructions. Compress image to 100kb or compress image to 200kb only if that's what your specific form requests — otherwise use the smaller size it asks for, since smaller isn't always accepted if the form has a minimum too."}},
+            {"@type":"Question","name":"How do I compress a photo to between 20 KB and 50 KB?","acceptedAnswer":{"@type":"Answer","text":"Type 50 in the Target size box and 20 in the Minimum size box, then press Compress images. The tool looks for the largest file that still fits under 50 KB, and warns you if a photo cannot reach 20 KB without going over."}},
+            {"@type":"Question","name":"Why is my compressed file a little under the target, like 19.6 KB for 20 KB?","acceptedAnswer":{"@type":"Answer","text":"The tool never goes over your limit, so it picks the highest JPEG quality that fits and the file usually lands just below the target. Sizes are shown in KB of 1024 bytes, the same unit Windows File Explorer uses."}},
+            {"@type":"Question","name":"Why did the width and height of my photo change?","acceptedAnswer":{"@type":"Answer","text":"Only when the target is very small. If the photo is still too big at the lowest JPEG quality, the tool shrinks it in 10% steps until it fits. To control the exact pixel size yourself, turn on Resize before compress under Advanced settings."}},
+            {"@type":"Question","name":"Can I compress several photos to the same size at once?","acceptedAnswer":{"@type":"Answer","text":"Yes. Add as many images as you like, pick one target, and press Compress images once. Each photo gets its own result and meter, and Download all (ZIP) saves them together."}}
+          ]
+        }
+      ]
+    }
+  </script>
+  <script type="application/ld+json" data-tooladda-page-schema="true">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://tooladda.online/#website",
+        "name": "ToolAdda",
+        "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+        "url": "https://tooladda.online/",
+        "inLanguage": "en",
+        "publisher": {
+          "@id": "https://tooladda.online/#organization"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://tooladda.online/#organization",
+        "name": "ToolAdda",
+        "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+        "url": "https://tooladda.online/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://tooladda.online/assets/images/logo.svg"
+        }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://tooladda.online/image-compress-to-kb.html#webpage",
+        "url": "https://tooladda.online/image-compress-to-kb.html",
+        "name": "Compress Image Online to 20KB, 50KB, 100KB, 200KB, 500KB Free | ToolAdda",
+        "description": "Compress image online to 20kb, 50kb, 100kb, 200kb, or 500kb free. Compress image to 20kb online, compress image to 100kb online, or any custom KB/MB target — reduce JPG, PNG, or WebP photos for SSC, UPSC, and government form uploads. 100% private, works in your browser.",
+        "inLanguage": "en",
+        "isPartOf": {
+          "@id": "https://tooladda.online/#website"
+        },
+        "breadcrumb": {
+          "@id": "https://tooladda.online/image-compress-to-kb.html#breadcrumb"
+        },
+        "mainEntity": {
+          "@id": "https://tooladda.online/image-compress-to-kb.html#app"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://tooladda.online/image-compress-to-kb.html#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://tooladda.online/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Compress Image to Exact KB"
+          }
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://tooladda.online/image-compress-to-kb.html#app",
+        "name": "Compress Image to Exact KB",
+        "url": "https://tooladda.online/image-compress-to-kb.html",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any modern web browser",
+        "description": "Compress image online to 20kb, 50kb, 100kb, 200kb, or 500kb free. Compress image to 20kb online, compress image to 100kb online, or any custom KB/MB target — reduce JPG, PNG, or WebP photos for SSC, UPSC, and government form uploads. 100% private, works in your browser.",
+        "inLanguage": "en",
+        "isAccessibleForFree": true,
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "INR"
+        },
+        "publisher": {
+          "@id": "https://tooladda.online/#organization"
+        }
+      }
+    ]
+  }
+  </script>
+      <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 77, 124, 15; }
+      [data-theme="dark"] { --pca: 163, 230, 53; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 163, 230, 53; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/image-compress-to-kb.html#webpage",
+      "url": "https://tooladda.online/image-compress-to-kb.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-26",
+      "dateModified": "2026-09-09",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="ck-page">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/" aria-label="ToolAdda home">
+        <span class="brand-mark" aria-hidden="true">T</span>
+        <span>ToolAdda</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+            <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+            <path d="M3.1 16.9h10.8" />
+            <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+          </svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+        <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <div class="ck-shell">
+      <aside class="ta-support" aria-label="Support ToolAdda">
+        <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+        <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+      </aside>
+
+      <div class="container ck-wrap">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">›</span><a href="/">Image Tools</a><span aria-hidden="true">›</span><span aria-current="page">Compress Image to Exact KB</span>
+        </nav>
+        <header class="ck-cover">
+          <div>
+            <p class="ck-badge">🖼️ Image Tools · No Upload</p>
+            <h1 class="ck-title"><span class="ck-t1">Compress Image Online to Exact KB</span> <span class="ck-t2">— 20KB, 50KB, 100KB, 200KB &amp; 500KB</span></h1>
+          </div>
+          <div class="ck-cover-side">
+            <!-- The usual limits on a log scale; the needle follows the target. -->
+            <div class="ck-dial" aria-hidden="true">
+              <div class="ck-dial-track">
+                <i class="ck-dial-tick" style="left:4%"></i><i class="ck-dial-tick minor" style="left:11%"></i><i class="ck-dial-tick" style="left:16%"></i>
+                <i class="ck-dial-tick minor" style="left:23%"></i><i class="ck-dial-tick minor" style="left:28%"></i><i class="ck-dial-tick" style="left:31.8%"></i>
+                <i class="ck-dial-tick minor" style="left:40%"></i><i class="ck-dial-tick" style="left:43.8%"></i><i class="ck-dial-tick minor" style="left:50.8%"></i>
+                <i class="ck-dial-tick" style="left:55.8%"></i><i class="ck-dial-tick minor" style="left:62.8%"></i><i class="ck-dial-tick" style="left:71.6%"></i>
+                <i class="ck-dial-tick" style="left:84%"></i><i class="ck-dial-tick" style="left:96%"></i>
+                <span class="ck-dial-label" style="left:4%">10</span><span class="ck-dial-label" style="left:16%">20</span><span class="ck-dial-label" style="left:31.8%">50</span>
+                <span class="ck-dial-label" style="left:43.8%">100</span><span class="ck-dial-label" style="left:55.8%">200</span><span class="ck-dial-label" style="left:71.6%">500</span>
+                <span class="ck-dial-label" style="left:84%">1MB</span><span class="ck-dial-label" style="left:96%">2MB</span>
+                <span class="ck-dial-needle" data-dial-needle></span>
+                <span class="ck-dial-read" data-dial-read>20 KB</span>
+              </div>
+            </div>
+            <div class="ck-trust-row" aria-label="Trust highlights">
+              <span class="ck-trust-pill">🔒 Private — no upload</span>
+              <span class="ck-trust-pill">✓ Exact KB target</span>
+              <span class="ck-trust-pill">✓ Batch friendly</span>
+              <span class="ck-trust-pill">✓ Resize option</span>
+              <span class="ck-trust-pill">✓ Free forever</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- One grid (.ck-work) is the tool and the script's root
+             ([data-compress-kb-page]). Under 700px: steps, the drop box, the
+             ad, then the target. From 700px the ad sits beside the tool and
+             spans every row — never above it, and nothing else lives inside
+             the grid. -->
+        <section class="ck-work" id="compress-kb-page" data-compress-kb-page aria-label="Compress image to exact KB">
+          <ol class="ck-flow" aria-label="Steps">
+            <li class="is-active" data-ck-step aria-current="step"><span>1</span>Upload</li>
+            <li data-ck-step><span>2</span>Target size</li>
+            <li data-ck-step><span>3</span>Compress</li>
+            <li data-ck-step><span>4</span>Download</li>
+          </ol>
+
+          <div class="ck-box ck-box--drop">
+            <div class="ck-toolhead">
+              <div>
+                <p class="tag">Compress to target size</p>
+                <p class="pdf-helper-text">Add one or more images, choose a target size, then compress.<span class="cik-helper-more"> Quick presets range from compress image 20kb up to compress image 200kb and beyond, and multiple files are compressed to the same target, so you can compress image to 50kb for a whole batch at once.</span></p>
+              </div>
+            </div>
+              <div class="ck-files">
+                <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.heic,.heif" multiple hidden data-file-input />
+
+                <!-- A group, not a button: it holds real buttons, which a button
+                     role would flatten for screen readers. Clicking any empty
+                     part of it still opens the picker. -->
+                <div class="ck-drop" data-drop-zone role="group" aria-label="Drag and drop images here or choose images">
+                  <svg class="ck-drop-art" viewBox="0 0 124 80" aria-hidden="true" focusable="false">
+                    <g class="drop"><rect class="photo" x="44" y="8" width="36" height="30" rx="2"/><path class="sky" d="M46 10h32v19H46z"/><path class="hill" d="M46 29l9-9 7 6 5-4 11 7v5H46z"/></g>
+                    <rect class="plate" x="30" y="40" width="64" height="5" rx="2"/>
+                    <rect class="base" x="22" y="47" width="80" height="26" rx="6"/>
+                    <rect class="lcd" x="46" y="52" width="32" height="15" rx="2"/>
+                    <text class="lcd-t" x="62" y="63" text-anchor="middle">20KB</text>
+                  </svg>
+                  <p class="pdf-drop-zone-title"><strong>Drag &amp; drop images here</strong></p>
+                  <p class="cik-drop-sub">or click here to browse JPG, PNG, WebP, or HEIC files from your device (paste with Ctrl+V too). Multiple files supported.</p>
+                  <div class="isp-actions">
+                    <button class="ck-btn ck-btn--primary" type="button" data-file-picker><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>Browse images</button>
+                    <!-- Camera + URL import, wired by assets/js/image-source-picker.js -->
+                    <div class="isp-sources" data-image-sources data-isp-noun="image"></div>
+                  </div>
+                </div>
+
+                <ul class="ck-list" data-file-list>
+                  <li class="pdf-file-item" aria-hidden="true">No images added yet.</li>
+                </ul>
+              </div>
+          </div>
+
+          <!-- Ad: one 300x250 (see .ck-ad-zone CSS) — beside the tool from
+               700px, straight after the drop box below that. -->
+          <div class="ck-ad-zone">
+            <div class="ta-inline-ad" data-unit="inline"></div>
+          </div>
+
+          <div class="ck-box ck-box--set">
+              <div class="ck-settings">
+                <div class="ck-lcd">
+                  <div class="ck-lcd-target">
+                    <label for="cikTargetKb">Target size (KB)</label>
+                    <div class="ck-lcd-main"><input type="number" id="cikTargetKb" min="1" max="5000" step="1" value="20" inputmode="numeric" data-target-kb /><span class="ck-lcd-unit" aria-hidden="true">KB</span></div>
+                  </div>
+                  <div class="ck-lcd-min">
+                    <label for="cikMinKb">Minimum size (KB) <span class="cik-optional">optional</span></label>
+                    <input type="number" id="cikMinKb" min="0" max="5000" step="1" placeholder="—" inputmode="numeric" data-min-kb />
+                  </div>
+                </div>
+                <p class="cik-range-hint">Set a minimum only if your form asks for a range, like <strong>20–50 KB</strong>. Some portals reject a file for being too small as well as too large.</p>
+                <div class="ck-presets" role="group" aria-label="Target size presets — compress image to 10KB through 2MB">
+                  <button type="button" class="ck-chip" data-preset="10" aria-label="Compress image to 10 KB">10 KB</button>
+                  <button type="button" class="ck-chip" data-preset="15" aria-label="Compress image to 15 KB">15 KB</button>
+                  <button type="button" class="ck-chip is-active" data-preset="20" aria-label="Compress image to 20 KB">20 KB</button>
+                  <button type="button" class="ck-chip" data-preset="30" aria-label="Compress image to 30 KB">30 KB</button>
+                  <button type="button" class="ck-chip" data-preset="40" aria-label="Compress image to 40 KB">40 KB</button>
+                  <button type="button" class="ck-chip" data-preset="50" aria-label="Compress image to 50 KB">50 KB</button>
+                  <button type="button" class="ck-chip" data-preset="80" aria-label="Compress image to 80 KB">80 KB</button>
+                  <button type="button" class="ck-chip" data-preset="100" aria-label="Compress image to 100 KB">100 KB</button>
+                  <button type="button" class="ck-chip" data-preset="150" aria-label="Compress image to 150 KB">150 KB</button>
+                  <button type="button" class="ck-chip" data-preset="200" aria-label="Compress image to 200 KB">200 KB</button>
+                  <button type="button" class="ck-chip" data-preset="300" aria-label="Compress image to 300 KB">300 KB</button>
+                  <button type="button" class="ck-chip" data-preset="500" aria-label="Compress image to 500 KB">500 KB</button>
+                  <button type="button" class="ck-chip" data-preset="1024" aria-label="Compress image to 1 MB">1 MB</button>
+                  <button type="button" class="ck-chip" data-preset="2048" aria-label="Compress image to 2 MB">2 MB</button>
+                </div>
+
+                <details class="ck-adv">
+                  <summary>⚙️ Advanced settings — resize before compress <span aria-hidden="true">▾</span></summary>
+                  <div class="ck-adv-body">
+                    <div>
+                      <label class="ck-check" for="cikResizeToggle"><input type="checkbox" id="cikResizeToggle" data-resize-toggle /> Resize before compress</label>
+                    </div>
+                    <div class="ck-field">
+                      <label for="cikMaxWidth">Max width (px)</label>
+                      <input type="number" id="cikMaxWidth" data-max-width min="20" max="10000" step="1" placeholder="e.g. 600" inputmode="numeric" disabled />
+                    </div>
+                    <div class="ck-field">
+                      <label for="cikMaxHeight">Max height (px)</label>
+                      <input type="number" id="cikMaxHeight" data-max-height min="20" max="10000" step="1" placeholder="e.g. 800" inputmode="numeric" disabled />
+                    </div>
+                  </div>
+                  <p class="pdf-helper-text">Resizing first (e.g. to standard passport-photo dimensions) often reaches a target KB at noticeably higher visual quality than compression alone.</p>
+                </details>
+
+                <div class="ck-actions" data-actions hidden>
+                  <button class="ck-btn ck-btn--primary ck-btn--lg" type="button" data-compress-btn disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/></svg>Compress images</button>
+                  <a class="ck-btn ck-btn--ghost hidden" data-download-all href="#" role="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg><span data-download-all-label>Download all (ZIP)</span></a>
+                </div>
+
+                <div class="ck-progress hidden" data-progress-wrap role="progressbar" aria-label="Compression progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                  <div class="ck-progress-track"><div class="ck-progress-fill" data-progress-fill></div></div>
+                  <p class="ck-progress-text" data-progress-text>Preparing…</p>
+                </div>
+              </div>
+              <div class="message-box hidden" role="status" aria-live="polite" data-message></div>
+          </div>
+        </section>
+
+        <div class="ck-after">
+        <div class="ck-intro">
+          <p class="ck-lead">Compress image online to 50kb, compress image to 100kb, or hit any exact KB target.<span class="cik-lead-more"> Perfect for SSC, UPSC, IBPS, PAN, and other government form uploads that reject files over a strict size limit.</span></p>
+          <!-- A real picker, not a jump link: the visitor arrives wanting to
+               compress one photo, so the first tap opens the file dialog. -->
+          <button class="ck-btn ck-btn--ghost" type="button" data-file-picker data-hero-cta><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/></svg>Compress an image now</button>
+        </div>
+        <div class="ck-extras" aria-label="Why trust this compressor">
+          <div class="ck-trust-card"><div class="ic" aria-hidden="true">🔒</div><div><strong>100% local</strong><p>Runs fully inside your browser using the Canvas API. Nothing is uploaded, ever.</p></div></div>
+          <div class="ck-trust-card"><div class="ic" aria-hidden="true">🎯</div><div><strong>Won't exceed target</strong><p>Binary search finds the highest quality that still fits under your chosen KB limit.</p></div></div>
+          <div class="ck-trust-card"><div class="ic" aria-hidden="true">📦</div><div><strong>Bulk + ZIP</strong><p>Compress several images to the same target, then download them all as one ZIP.</p></div></div>
+          <div class="ck-trust-card"><div class="ic" aria-hidden="true">🆓</div><div><strong>Free, no signup</strong><p>No account, no watermark, no daily limits — unlimited compressions.</p></div></div>
+          <div class="ck-trust-card"><div class="ic" aria-hidden="true">📱</div><div><strong>Mobile ready</strong><p>Works from your phone's gallery — compress before uploading to any form.</p></div></div>
+          <div class="ck-trust-card"><div class="ic" aria-hidden="true">🧹</div><div><strong>Nothing stored</strong><p>Close the tab and every image is cleared from memory — no server copies exist.</p></div></div>
+        </div>
+        </div>
+
+        <section class="section ck-verdicts" aria-labelledby="ck-verdicts-h">
+          <div class="content-card">
+            <h2 id="ck-verdicts-h">Reading the Result — Fits, Over or Too Small</h2>
+            <p>Every photo gets a meter with your limit marked on it. The line under it says which of three things happened, and each one has a clear next step.</p>
+            <div class="ck-verdict-grid">
+              <div class="ck-vcard ck-vcard--fit">
+                <span class="ck-vtag">✓ Fits 20 KB</span>
+                <p>The file is at or under your target. You get the highest JPEG quality that still fits, so there is nothing to gain by going lower.</p>
+              </div>
+              <div class="ck-vcard ck-vcard--low">
+                <span class="ck-vtag">⚠ Under your minimum</span>
+                <p>It fits the maximum but is smaller than the minimum you set. The photo has too little detail to fill that many bytes — use a larger original, or resize it up in <a href="image-resizer.html">Image Resizer</a> first.</p>
+              </div>
+              <div class="ck-vcard ck-vcard--over">
+                <span class="ck-vtag">✕ Still over</span>
+                <p>Only happens with a very small target, when even a heavily shrunk photo cannot get under it. Check the limit on the form — a KB figure is easy to mistype — and try a slightly larger target.</p>
+              </div>
+            </div>
+            <h3>What happens to the photo, in order</h3>
+            <ol class="ck-steps-list">
+              <li><strong>Already small enough?</strong> A photo already under the target (and over any minimum) is left untouched and downloads with its own name — unless Resize before compress is on.</li>
+              <li><strong>Quality first.</strong> JPEG quality is searched between 10% and 100%, keeping the highest setting that fits.</li>
+              <li><strong>Then size.</strong> If even 10% quality is too big, the width and height shrink by 10% and the search runs again — up to 22 times.</li>
+              <li><strong>With a minimum set,</strong> full quality is tried first, because the largest file that fits is the one least likely to fall under the minimum.</li>
+              <li><strong>The download</strong> is always a JPEG named like <code>photo-compressed-20kb.jpg</code>; transparent areas become white.</li>
+            </ol>
+          </div>
+        </section>
+        <section class="section">
+          <div class="content-card">
+            <h2>Compress Image to Any Target Size — 10KB to 2MB</h2>
+            <p>This isn't a fixed list — pick any KB or MB number and compress image online to match it exactly. Whether you need to <strong>compress image to 20kb online</strong> for an SSC or Railway RRB form, <strong>compress image to 50kb</strong> for an IBPS application, <strong>compress image to 100kb online</strong> for a UPSC upload, <strong>compress image to 200kb</strong> for a scanned certificate, or <strong>compress image to 500kb</strong> for a larger document — just type the number and click Compress. Other sizes people commonly search for include <strong>compress image 20kb</strong>, <strong>compress image 200kb</strong>, and <strong>compress image 40kb</strong>, plus in-between targets like <strong>compress image to 30kb</strong>, <strong>compress image to 15kb</strong>, <strong>compress image to 10kb</strong>, <strong>compress image to 40kb</strong>, <strong>compress image to 80kb</strong>, <strong>compress image to 150kb</strong>, and <strong>compress image to 300kb</strong> — right up to larger scans with <strong>compress image to 1mb</strong> or <strong>compress image to 2mb</strong>.</p>
+            <div class="grid-2" style="margin-top:1rem">
+              <div>
+                <h3>Common government form sizes</h3>
+                <ul>
+                  <li><strong>10–20 KB</strong> — signature uploads, SSC &amp; Railway RRB photo fields</li>
+                  <li><strong>30–50 KB</strong> — IBPS, bank exam, and most passport-style photo uploads</li>
+                  <li><strong>80–150 KB</strong> — UPSC, university admission, and scanned mark sheets</li>
+                  <li><strong>200–500 KB</strong> — Aadhaar, PAN, and visa document scans</li>
+                  <li><strong>1–2 MB</strong> — high-resolution certificate or ID scans</li>
+                </ul>
+              </div>
+              <div>
+                <h3>Why an exact KB target matters</h3>
+                <p>Most portals reject a file even 1 KB over their stated limit. Instead of guessing a "quality %" like generic compressors, this tool runs a binary search until the output lands at or just under your exact target — so a file you compress image to 100kb for stays at 100 KB or less, never over.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="content-grid">
+            <article class="content-card">
+              <h2>How the compression works</h2>
+              <p>Your image is drawn onto an in-memory canvas. The tool then runs a binary search on JPEG quality (10%–100%) using <code>canvas.toBlob</code> to find the highest quality that stays at or under your target KB. If even the lowest quality is still too large, the image is progressively scaled down by 10% steps and retried until the target is met.</p>
+            </article>
+            <article class="content-card">
+              <h2>PNG &amp; transparency</h2>
+              <p>PNG images are converted to JPEG with a white background fill, since transparent PNGs generally can't be compressed small enough for strict government form limits.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="content-card">
+            <h2>Compress a Photo to a KB Range — Minimum and Maximum</h2>
+            <p>Many exam and job portals give a range instead of a single limit, such as <strong>"photo between 20 KB and 50 KB"</strong> or <strong>"signature 10–20 KB"</strong>. A file below the minimum is rejected just like one above the maximum. To hit a range, type the upper number as the <strong>Target size</strong> and the lower number as the <strong>Minimum size</strong>. The tool then looks for the largest file that still fits under the target, and each result's meter marks both the limit and the minimum, so you can see the file landed inside the range.</p>
+            <p>If a photo comes out under the minimum, it simply has too little detail to fill that many bytes — a plain passport photo against a white wall is a common example. Start from the original camera photo rather than a screenshot or a WhatsApp copy, or turn off <strong>Resize before compress</strong>, and it will usually land inside the range.</p>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="content-card">
+            <h2>How to Compress an Image to 20KB on Your Phone</h2>
+            <ol>
+              <li>Open this page in Chrome or Safari and tap <strong>Browse images</strong> to pick the photo from your gallery, or <strong>Use camera</strong> to take a new one.</li>
+              <li>Tap the <strong>20 KB</strong> preset, or type your form's limit into the target box.</li>
+              <li>Tap <strong>Compress images</strong>. The meter under the photo shows <strong>✓ Fits 20 KB</strong> once the file is under the limit.</li>
+              <li>Tap <strong>Download</strong>. The file is saved to your Downloads folder, ready to attach to the form.</li>
+            </ol>
+            <p>Everything happens on the phone itself, so nothing is uploaded and it keeps working on slow mobile data once the page has opened — useful when the photo is of an ID card or a signature.</p>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="content-card">
+            <h2>Lossy vs Lossless Compression — Which One Do You Need?</h2>
+            <p><strong>Lossless</strong> compression (like PNG) shrinks a file without discarding any pixel data — great for logos and screenshots with sharp edges and text, but it rarely gets a photo anywhere near 20–100 KB. <strong>Lossy</strong> compression (like JPEG) discards visual detail a human eye barely notices, and can shrink a photo by 90%+ while staying visually clean. Because government forms and exam portals almost always specify a strict KB ceiling, this tool always outputs lossy JPEG — it's the only realistic way to compress image to 20kb online for a real photograph without it looking blocky or unusable.</p>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="content-grid">
+            <article class="content-card">
+              <h2>Compress Images for WhatsApp &amp; Social Media</h2>
+              <p>WhatsApp already re-compresses photos on send, but pre-compressing large camera photos (often 3–8 MB) down to 300 KB–1 MB first keeps your original framing and color more intact than letting WhatsApp's own aggressive algorithm decide. For Instagram, Facebook, and LinkedIn, targeting 200 KB–1 MB keeps upload times fast on mobile data without visible quality loss on a phone screen.</p>
+            </article>
+            <article class="content-card">
+              <h2>Compress Images for Email &amp; Websites</h2>
+              <p>Most email providers cap attachments around 25 MB total, but large images still slow down mobile inboxes — compress image to 200kb–500kb per photo for smooth email attachments. For website images, compress image to 100kb online for hero banners and 20–50 KB for thumbnails; this directly improves page load speed and Core Web Vitals (LCP) scores.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="content-grid">
+            <article class="content-card">
+              <h2>Expert Tips for Best Results</h2>
+              <ul>
+                <li>Start from the highest-resolution original you have — compressing an already-compressed JPEG twice compounds quality loss.</li>
+                <li>For passport/signature photos, resize to the exact pixel dimensions your form asks for <em>before</em> compressing — it reaches your KB target at noticeably better quality than compression alone.</li>
+                <li>If a form gives a size range (e.g. "20–50 KB"), target the middle of the range, not the minimum — extra headroom protects against re-compression by the portal itself.</li>
+                <li>Keep a copy of the original — once quality is discarded via lossy compression, it can't be recovered.</li>
+              </ul>
+            </article>
+            <article class="content-card">
+              <h2>Common Mistakes to Avoid</h2>
+              <ul>
+                <li>Using a screenshot of a photo instead of the original file — screenshots are already re-compressed and re-scaled, so results are worse.</li>
+                <li>Ignoring the form's minimum size — some portals reject a file that's <em>too small</em> as well as too large.</li>
+                <li>Ignoring the width/height requirement — a form asking for "200×230 px, under 50 KB" needs both conditions met, not just the KB target.</li>
+                <li>Re-uploading a PDF screenshot as a "photo" — convert with <a href="pdf-to-images.html">PDF to Images</a> first if your source is a PDF page.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="section faq-section">
+          <h2 class="section-title">Frequently asked questions</h2>
+          <div class="grid-2">
+            <details class="faq-item">
+              <summary><strong>Does this work for SSC, UPSC, and other government exam form uploads?</strong></summary>
+              <p>Yes. Government portals like SSC, UPSC, IBPS, and Railway RRB commonly require photos or documents under a specific KB limit (such as 20KB, 50KB, or 100KB). This tool lets you pick that exact target and compresses your image to fit without exceeding it.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Is it safe to use this tool?</strong></summary>
+              <p>Yes. All compression happens locally in your browser using the Canvas API — your image is never uploaded to any server, so it stays completely private.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Does compressing reduce image quality?</strong></summary>
+              <p>Some quality reduction is unavoidable when shrinking a file to a very small size, since compression works by lowering JPEG quality and, if needed, image dimensions. The tool automatically finds the highest quality possible that still fits under your target size.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>What happens if my image is already smaller than the target?</strong></summary>
+              <p>The tool detects this automatically and lets you download the original file directly, without any unnecessary re-compression.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>How do I compress image to 20kb online?</strong></summary>
+              <p>Upload your photo, click the 20 KB preset (or type 20 into the target size field), then click Compress images. The tool finds the highest quality JPEG that stays at or under 20 KB, entirely online in your browser.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I compress image to 500kb or larger sizes like 1MB and 2MB?</strong></summary>
+              <p>Yes. Presets go up to 500 KB, 1 MB, and 2 MB, and you can also type any custom KB number into the target size field — there's no fixed upper limit for compress image to 500kb, compress image to 1mb, or compress image to 2mb targets.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>What is the best size to compress image to 100kb or 200kb for exams?</strong></summary>
+              <p>Most exam portals like UPSC and SSC specify an exact KB range in their photo/signature upload instructions. Compress image to 100kb or compress image to 200kb only if that's what your specific form requests — otherwise use the smaller size it asks for, since smaller isn't always accepted if the form has a minimum too.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Should I compress image to 100kb or 200kb for exam forms?</strong></summary>
+              <p>Most exam portals like UPSC and SSC specify an exact KB range in their photo/signature upload instructions. Compress image to 100kb or compress image to 200kb only if that's what your specific form requests — check the exact limit first, since some portals also enforce a minimum size.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>How do I compress a photo to between 20 KB and 50 KB?</strong></summary>
+              <p>Type 50 in the Target size box and 20 in the Minimum size box, then press Compress images. The tool looks for the largest file that still fits under 50 KB, and warns you if a photo cannot reach 20 KB without going over.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Why is my compressed file a little under the target, like 19.6 KB for 20 KB?</strong></summary>
+              <p>The tool never goes over your limit, so it picks the highest JPEG quality that fits and the file usually lands just below the target. Sizes are shown in KB of 1024 bytes, the same unit Windows File Explorer uses.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Why did the width and height of my photo change?</strong></summary>
+              <p>Only when the target is very small. If the photo is still too big at the lowest JPEG quality, the tool shrinks it in 10% steps until it fits. To control the exact pixel size yourself, turn on Resize before compress under Advanced settings.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I compress several photos to the same size at once?</strong></summary>
+              <p>Yes. Add as many images as you like, pick one target, and press Compress images once. Each photo gets its own result and meter, and Download all (ZIP) saves them together.</p>
+            </details>
+          </div>
+        </section>
+
+        <aside class="related-tools-section" style="margin-top:2rem" aria-label="Related image tools">
+          <div class="related-tools-section__header">
+            <div>
+              <p class="related-tools-eyebrow">Related tools</p>
+              <h2 class="related-tools-title">More image tools</h2>
+            </div>
+          </div>
+          <div class="related-tools-grid">
+            <a class="related-tool-card" href="passport-photo-maker.html"><div class="related-tool-icon">🪪</div><div><strong>Passport Photo Maker</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Exact-size ID photos</span></div></a>
+            <a class="related-tool-card" href="signature-resizer.html"><div class="related-tool-icon">✍️</div><div><strong>Signature Resizer</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">SSC, PAN &amp; exam signatures</span></div></a>
+            <a class="related-tool-card" href="image-resizer.html"><div class="related-tool-icon">📐</div><div><strong>Image Resizer</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Resize by pixels or %</span></div></a>
+            <a class="related-tool-card" href="image-compressor.html"><div class="related-tool-icon">🗜️</div><div><strong>Image Compressor</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Compress by quality %</span></div></a>
+            <a class="related-tool-card" href="heic-converter.html"><div class="related-tool-icon">🔄</div><div><strong>HEIC Converter</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">iPhone photos to JPG</span></div></a>
+            <a class="related-tool-card" href="jpg-to-png.html"><div class="related-tool-icon">🖼️</div><div><strong>JPG to PNG</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Convert image format</span></div></a>
+            <a class="related-tool-card" href="png-to-webp.html"><div class="related-tool-icon">⚡</div><div><strong>PNG to WebP</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Smaller web images</span></div></a>
+            <a class="related-tool-card" href="image-crop.html"><div class="related-tool-icon">✂️</div><div><strong>Crop Image</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Crop before compressing</span></div></a>
+            <a class="related-tool-card" href="images-to-pdf.html"><div class="related-tool-icon">📄</div><div><strong>Images to PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Combine into one PDF</span></div></a>
+          </div>
+        </aside>
+
+        <div class="ck-final">
+          <a class="ck-btn ck-btn--primary ck-btn--lg" href="#compress-kb-page">Compress an image now</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Phone-only bar. The script shows it only while the control it stands in
+       for (the tool, Compress, or the download) is off screen. -->
+  <div class="ck-sticky-cta" aria-hidden="true">
+    <button type="button" class="ck-btn ck-btn--primary" data-sticky-compress-cta tabindex="-1">Compress Image to KB — Free</button>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+      </div>
+      <div>
+        <h3>Explore</h3>
+        <div class="footer-links">
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms.html">Terms</a>
+        </div>
+      </div>
+      <div>
+        <h3>Stay updated</h3>
+        <p>© <span data-year></span> ToolAdda. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/image-source-picker.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var page = document.querySelector('[data-compress-kb-page]');
+      if (!page) return;
+      var topGrid = document.querySelector('.ck-top');
+      var fileInput = page.querySelector('[data-file-input]');
+      var filePickers = Array.from(document.querySelectorAll('[data-file-picker]'));
+      var dropZone = page.querySelector('[data-drop-zone]');
+      var fileListEl = page.querySelector('[data-file-list]');
+      var filesCol = page.querySelector('.ck-files');
+      var targetInput = document.getElementById('cikTargetKb');
+      var minInput = document.getElementById('cikMinKb');
+      var presetButtons = Array.from(page.querySelectorAll('[data-preset]'));
+      var actions = page.querySelector('[data-actions]');
+      var compressBtn = page.querySelector('[data-compress-btn]');
+      var downloadAllBtn = page.querySelector('[data-download-all]');
+      var downloadAllLabel = page.querySelector('[data-download-all-label]');
+      var messageBox = page.querySelector('[data-message]');
+      var progressWrap = page.querySelector('[data-progress-wrap]');
+      var progressFill = page.querySelector('[data-progress-fill]');
+      var progressText = page.querySelector('[data-progress-text]');
+      var steps = Array.from(page.querySelectorAll('[data-ck-step]'));
+      var needle = document.querySelector('[data-dial-needle]');
+      var needleRead = document.querySelector('[data-dial-read]');
+      var resizeToggle = document.getElementById('cikResizeToggle');
+      var maxWidthInput = document.getElementById('cikMaxWidth');
+      var maxHeightInput = document.getElementById('cikMaxHeight');
+      var stickyBar = document.querySelector('.ck-sticky-cta');
+      var stickyCta = document.querySelector('[data-sticky-compress-cta]');
+      var phoneQuery = window.matchMedia('(max-width: 768px)');
+
+      var queue = [];
+      var idCounter = 0;
+      var busy = false;
+      var heic2anyPromise = null;
+      var jsZipPromise = null;
+      var inView = { tool: true, compress: false, download: false };
+      var X_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18M6 6l12 12"/></svg>';
+
+      function loadHeic2any() {
+        if (window.heic2any) return Promise.resolve(window.heic2any);
+        if (!heic2anyPromise) {
+          heic2anyPromise = new Promise(function (resolve, reject) {
+            var s = document.createElement('script');
+            s.src = 'https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js';
+            s.onload = function () { resolve(window.heic2any); };
+            s.onerror = function () { heic2anyPromise = null; reject(new Error('Could not load HEIC converter.')); };
+            document.head.appendChild(s);
+          });
+        }
+        return heic2anyPromise;
+      }
+      function loadJSZip() {
+        if (window.JSZip) return Promise.resolve(window.JSZip);
+        if (!jsZipPromise) {
+          jsZipPromise = new Promise(function (resolve, reject) {
+            var s = document.createElement('script');
+            s.src = 'assets/js/jszip.min.js';
+            s.onload = function () { resolve(window.JSZip); };
+            s.onerror = function () { jsZipPromise = null; reject(new Error('Could not load ZIP library.')); };
+            document.head.appendChild(s);
+          });
+        }
+        return jsZipPromise;
+      }
+      function isHeicFile(file) {
+        var n = (file.name || '').toLowerCase();
+        return file.type === 'image/heic' || file.type === 'image/heif' || /\.(heic|heif)$/.test(n);
+      }
+
+      function showMessage(text, type) {
+        messageBox.textContent = text;
+        messageBox.classList.remove('hidden', 'success', 'error');
+        messageBox.classList.add(type === 'error' ? 'error' : 'success');
+      }
+      function clearMessage() {
+        messageBox.textContent = '';
+        messageBox.classList.add('hidden');
+        messageBox.classList.remove('success', 'error');
+      }
+      function formatKB(bytes) {
+        return bytes >= 1048576 ? (bytes / 1048576).toFixed(2) + ' MB' : (bytes / 1024).toFixed(1) + ' KB';
+      }
+      function kbLabel(kb) { return kb >= 1024 && kb % 1024 === 0 ? (kb / 1024) + ' MB' : kb + ' KB'; }
+
+      /* ---------- phase, busy state, phone bar ---------- */
+      function phase() {
+        if (!queue.length) return 'upload';
+        if (queue.some(function (e) { return e.status === 'done' || e.status === 'already-smaller'; })) return 'download';
+        return 'target';
+      }
+      function syncPhase() {
+        var p = phase();
+        var at = { upload: 0, target: 1, download: 3 }[p];
+        if (busy) at = 2;
+        steps.forEach(function (li, i) {
+          li.classList.toggle('is-active', i === at);
+          li.classList.toggle('is-done', i < at);
+          if (i === at) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
+        });
+        if (topGrid) topGrid.classList.toggle('is-editing', queue.length > 0);
+        page.classList.toggle('has-files', queue.length > 0);
+        actions.hidden = queue.length === 0;
+        compressBtn.disabled = busy || !queue.some(function (e) { return e.status !== 'error'; });
+        var n = downloadable().length;
+        downloadAllBtn.classList.toggle('hidden', !n);
+        downloadAllLabel.textContent = n > 1 ? 'Download all (ZIP)' : 'Download';
+        updateSticky();
+      }
+
+      function setBusy(on) {
+        busy = on;
+        page.classList.toggle('is-busy', on);
+        filePickers.forEach(function (b) { b.disabled = on; });
+        presetButtons.forEach(function (b) { b.disabled = on; });
+        [targetInput, minInput, resizeToggle].forEach(function (el) { el.disabled = on; });
+        maxWidthInput.disabled = maxHeightInput.disabled = on || !resizeToggle.checked;
+        Array.from(fileListEl.querySelectorAll('.ck-x')).forEach(function (b) { b.disabled = on; });
+        syncPhase();
+      }
+
+      /* Phone bottom bar: the picker while the tool is off screen, Compress
+         while that button is, then a download for the results. */
+      function updateSticky() {
+        if (!stickyBar || !stickyCta) return;
+        var p = phase();
+        var label = 'Compress Image to KB — Free';
+        var show = !inView.tool;
+        if (p === 'target') { label = 'Compress images'; show = !inView.compress; }
+        else if (p === 'download') { label = downloadable().length > 1 ? 'Download all (ZIP)' : 'Download'; show = !inView.download && !inView.compress; }
+        show = show && phoneQuery.matches && !busy;
+        if (stickyCta.textContent !== label) stickyCta.textContent = label;
+        stickyBar.classList.toggle('is-visible', show);
+        stickyBar.setAttribute('aria-hidden', show ? 'false' : 'true');
+        stickyCta.tabIndex = show ? 0 : -1;
+        var was = document.body.classList.contains('ck-sticky-on');
+        document.body.classList.toggle('ck-sticky-on', show);
+        // app.js re-measures the back-to-top button's clearance on scroll.
+        if (was !== show) window.dispatchEvent(new Event('scroll'));
+      }
+
+      /* ---------- choosing files ---------- */
+      function openPicker() { if (!busy) fileInput.click(); }
+      filePickers.forEach(function (btn) {
+        btn.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); openPicker(); });
+      });
+      dropZone.addEventListener('click', function (e) { if (!e.target.closest('button, a, input')) openPicker(); });
+      fileInput.addEventListener('change', function (e) { var files = Array.from(e.target.files || []); e.target.value = ''; addFiles(files); });
+
+      function hasFiles(e) { return !!e.dataTransfer && Array.from(e.dataTransfer.types || []).indexOf('Files') !== -1; }
+      var dragDepth = 0;
+      function clearFileOver() { dragDepth = 0; page.classList.remove('is-file-over'); dropZone.classList.remove('is-drag'); }
+      // Images can be dropped anywhere on the tool, not only on the drop zone.
+      page.addEventListener('dragenter', function (e) { if (!hasFiles(e)) return; e.preventDefault(); dragDepth++; page.classList.add('is-file-over'); dropZone.classList.add('is-drag'); });
+      page.addEventListener('dragover', function (e) { if (!hasFiles(e)) return; e.preventDefault(); e.dataTransfer.dropEffect = busy ? 'none' : 'copy'; });
+      page.addEventListener('dragleave', function (e) { if (!hasFiles(e)) return; dragDepth = Math.max(0, dragDepth - 1); if (!dragDepth) clearFileOver(); });
+      page.addEventListener('drop', function (e) {
+        if (!hasFiles(e)) return;
+        e.preventDefault();
+        clearFileOver();
+        if (!busy) addFiles(e.dataTransfer.files);
+      });
+      // A file dropped anywhere else would make the browser open it and lose the queue.
+      window.addEventListener('dragover', function (e) { if (hasFiles(e) && !page.contains(e.target)) { e.preventDefault(); e.dataTransfer.dropEffect = 'none'; } });
+      window.addEventListener('drop', function (e) { if (hasFiles(e) && !page.contains(e.target)) e.preventDefault(); });
+
+      document.addEventListener('paste', function (e) {
+        if (busy) return;
+        var items = (e.clipboardData || {}).items || [];
+        var pasted = [];
+        for (var i = 0; i < items.length; i++) {
+          if (items[i].kind === 'file' && items[i].type.indexOf('image/') === 0) {
+            var f = items[i].getAsFile();
+            if (f) pasted.push(f);
+          }
+        }
+        if (pasted.length) { e.preventDefault(); addFiles(pasted); }
+      });
+
+      /* ---------- target, minimum, presets ---------- */
+      // log scale of the cover dial: 10 KB at 4%, 2 MB at 96%
+      function dialPos(kb) {
+        var k = Math.min(2048, Math.max(10, kb || 10));
+        return 4 + 92 * (Math.log(k / 10) / Math.log(204.8));
+      }
+      function syncTarget() {
+        var kb = parseInt(targetInput.value, 10);
+        presetButtons.forEach(function (b) { b.classList.toggle('is-active', b.dataset.preset === String(kb)); b.setAttribute('aria-pressed', b.dataset.preset === String(kb) ? 'true' : 'false'); });
+        if (needle && kb > 0) {
+          var left = dialPos(kb).toFixed(1) + '%';
+          needle.style.setProperty('--needle', left);
+          needleRead.style.setProperty('--needle', left);
+          needleRead.textContent = kbLabel(kb);
+        }
+      }
+      presetButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          if (busy) return;
+          targetInput.value = btn.dataset.preset;
+          syncTarget();
+          settingsChanged();
+        });
+      });
+      targetInput.addEventListener('input', function () { syncTarget(); settingsChanged(); });
+      minInput.addEventListener('input', settingsChanged);
+      [targetInput, minInput, maxWidthInput, maxHeightInput].forEach(function (el) {
+        el.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') { e.preventDefault(); if (!compressBtn.disabled) compressBtn.click(); }
+        });
+      });
+      // The input is the single source of truth: a stale `value` in the HTML can
+      // never disagree with the highlighted preset.
+      syncTarget();
+
+      resizeToggle.addEventListener('change', function () {
+        maxWidthInput.disabled = !resizeToggle.checked;
+        maxHeightInput.disabled = !resizeToggle.checked;
+        settingsChanged();
+      });
+      maxWidthInput.addEventListener('input', settingsChanged);
+      maxHeightInput.addEventListener('input', settingsChanged);
+      function getResizeOptions() {
+        if (!resizeToggle.checked) return null;
+        var mw = parseInt(maxWidthInput.value, 10);
+        var mh = parseInt(maxHeightInput.value, 10);
+        if (!mw && !mh) return null;
+        return { maxWidth: mw || Infinity, maxHeight: mh || Infinity };
+      }
+
+      /* Results made for one target are wrong for another: any change sends
+         them back to "ready", so a download always matches the settings shown. */
+      function settingsChanged() {
+        var stale = false;
+        queue.forEach(function (entry) {
+          if (entry.status === 'done' || entry.status === 'already-smaller') {
+            if (entry.resultUrl) URL.revokeObjectURL(entry.resultUrl);
+            entry.resultUrl = null; entry.resultBlob = null; entry.status = 'pending'; entry.showCompare = false; entry.belowMin = false;
+            stale = true;
+          }
+        });
+        if (stale) {
+          renderList();
+          var kb = parseInt(targetInput.value, 10);
+          showMessage(kb > 0 ? 'Settings changed — press Compress images to redo the results for ' + kbLabel(kb) + '.' : 'Settings changed — press Compress images to redo the results.', 'success');
+        } else {
+          renderList();
+        }
+        syncPhase();
+      }
+
+      /* ---------- the queue ---------- */
+      async function addFiles(fileListLike) {
+        var incoming = Array.from(fileListLike || []);
+        var rejected = 0;
+        var heicFailed = 0;
+        var added = 0;
+
+        for (var i = 0; i < incoming.length; i++) {
+          var file = incoming[i];
+          var isHeic = isHeicFile(file);
+          var isValid = isHeic || /^image\/(jpeg|png|webp)$/.test(file.type) || /\.(jpe?g|png|webp)$/i.test(file.name || '');
+          if (!isValid) { rejected++; continue; }
+
+          var workingFile = file;
+          if (isHeic) {
+            try {
+              var heic2any = await loadHeic2any();
+              var converted = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.92 });
+              var convertedBlob = Array.isArray(converted) ? converted[0] : converted;
+              workingFile = new File([convertedBlob], file.name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' });
+            } catch (err) {
+              heicFailed++;
+              continue;
+            }
+          }
+
+          var entry = {
+            id: 'f' + (++idCounter),
+            file: workingFile,
+            originalUrl: URL.createObjectURL(workingFile),
+            originalWidth: null,
+            originalHeight: null,
+            status: 'pending',
+            resultBlob: null,
+            resultUrl: null,
+            resultWidth: null,
+            resultHeight: null,
+            showCompare: false
+          };
+          queue.push(entry);
+          added++;
+          probeImage(entry);
+        }
+
+        if (rejected && heicFailed) showMessage('Some files were skipped — only JPG, PNG, WebP, and HEIC images are supported, and one HEIC file failed to convert.', 'error');
+        else if (rejected) showMessage('Some files were skipped — only JPG, PNG, WebP, and HEIC images are supported.', 'error');
+        else if (heicFailed) showMessage('Could not convert one or more HEIC files. Try exporting as JPG from your Photos app.', 'error');
+        else if (added) clearMessage();
+
+        renderList();
+        syncPhase();
+        // Bring the preview into view so the visitor confirms the right photo
+        // arrived before picking a size.
+        if (added) filesCol.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      // Reads the size; a file that will not decode is marked instead of
+      // sitting on "Reading…" forever and failing at Compress.
+      function probeImage(entry) {
+        var probe = new Image();
+        probe.onload = function () {
+          entry.originalWidth = probe.naturalWidth;
+          entry.originalHeight = probe.naturalHeight;
+          renderList();
+        };
+        probe.onerror = function () {
+          entry.status = 'error';
+          renderList();
+          syncPhase();
+        };
+        probe.src = entry.originalUrl;
+      }
+
+      function removeEntry(id) {
+        if (busy) return;
+        var idx = queue.findIndex(function (q) { return q.id === id; });
+        if (idx === -1) return;
+        var entry = queue[idx];
+        if (entry.originalUrl) URL.revokeObjectURL(entry.originalUrl);
+        if (entry.resultUrl) URL.revokeObjectURL(entry.resultUrl);
+        queue.splice(idx, 1);
+        renderList();
+        syncPhase();
+        if (!queue.length) { clearMessage(); var b = dropZone.querySelector('[data-file-picker]'); if (b) b.focus(); }
+        else {
+          var next = fileListEl.querySelectorAll('.ck-x')[Math.min(idx, queue.length - 1)];
+          if (next) next.focus();
+        }
+      }
+
+      function downloadable() { return queue.filter(function (en) { return en.status === 'done' || en.status === 'already-smaller'; }); }
+
+      function renderList() {
+        // Full size while the zone is the only thing to do; a strip once there
+        // are images to look at.
+        dropZone.classList.toggle('is-compact', queue.length > 0);
+        fileListEl.textContent = '';
+        if (!queue.length) {
+          var empty = document.createElement('li');
+          empty.className = 'pdf-file-item';
+          empty.setAttribute('aria-hidden', 'true');
+          empty.textContent = 'No images added yet.';
+          fileListEl.appendChild(empty);
+          return;
+        }
+        var targetKb = parseInt(targetInput.value, 10) || 0;
+        var minKb = parseInt(minInput.value, 10) || 0;
+        queue.forEach(function (entry) { fileListEl.appendChild(buildRow(entry, targetKb, minKb)); });
+      }
+
+      function el(tag, cls, text) {
+        var n = document.createElement(tag);
+        if (cls) n.className = cls;
+        if (text != null) n.textContent = text;
+        return n;
+      }
+
+      /* The meter spans 0 to 1.25× the limit, so the limit line sits at 80%
+         and a result shows how much room it left under it. */
+      function buildRow(entry, targetKb, minKb) {
+        var li = el('li', 'ck-row');
+        li.dataset.id = entry.id;
+
+        var thumb = el('div', 'ck-thumb');
+        var img = el('img');
+        img.alt = '';
+        img.src = entry.status === 'done' && entry.resultUrl ? entry.resultUrl : entry.originalUrl;
+        thumb.appendChild(img);
+
+        var meta = el('div', 'ck-meta');
+        meta.appendChild(el('p', 'ck-name', entry.file.name));
+        var dims = entry.originalWidth ? (entry.originalWidth + '×' + entry.originalHeight + ' px') : (entry.status === 'error' ? 'unreadable' : 'Reading…');
+        meta.appendChild(el('p', 'ck-line', 'Original ' + formatKB(entry.file.size) + ' · ' + dims));
+
+        var limitKb = entry.status === 'done' || entry.status === 'already-smaller' ? entry.targetKb : targetKb;
+        var limitBytes = Math.max(1, limitKb * 1024);
+        var shownBytes = entry.status === 'done' ? entry.resultBlob.size : entry.file.size;
+        var scaleMax = limitBytes * 1.25;
+        var meter = el('div', 'ck-meter');
+        meter.setAttribute('aria-hidden', 'true');
+        var minMark = el('span', 'ck-meter-min');
+        var usedMin = entry.status === 'done' || entry.status === 'already-smaller' ? entry.minKb : minKb;
+        if (usedMin) minMark.style.setProperty('--min', Math.min(80, (usedMin * 1024) / scaleMax * 100).toFixed(1) + '%');
+        var fill = el('span', 'ck-meter-fill');
+        fill.style.setProperty('--fill', Math.min(100, shownBytes / scaleMax * 100).toFixed(1) + '%');
+        meter.append(minMark, fill, el('span', 'ck-meter-limit'));
+
+        var verdict = el('p', 'ck-verdict');
+        var fits = shownBytes <= limitBytes;
+        if (entry.status === 'error') {
+          li.classList.add('is-over');
+          verdict.appendChild(el('span', 'bad', 'This file could not be opened as an image.'));
+        } else if (entry.status === 'processing') {
+          li.classList.add('is-working');
+          verdict.appendChild(el('span', null, 'Compressing…'));
+        } else if (entry.status === 'already-smaller') {
+          li.classList.add('is-fit');
+          verdict.appendChild(el('span', 'ok', '✓ Already under ' + kbLabel(limitKb) + ' — the original is kept'));
+        } else if (entry.status === 'done') {
+          li.classList.add(fits ? (entry.belowMin ? 'is-low' : 'is-fit') : 'is-over');
+          var raw = (1 - entry.resultBlob.size / entry.file.size) * 100;
+          // 99.5% would round to a misleading "100% smaller"
+          var pct = raw >= 99 ? Math.floor(raw * 10) / 10 : Math.round(raw);
+          meta.appendChild(el('p', 'ck-line', 'Compressed ' + formatKB(entry.resultBlob.size) + ' · ' + entry.resultWidth + '×' + entry.resultHeight + ' px · ' + (pct >= 0 ? pct + '% smaller' : 'larger than the original')));
+          verdict.appendChild(el('span', fits ? 'ok' : 'bad', fits ? '✓ Fits ' + kbLabel(limitKb) : '✕ Still over ' + kbLabel(limitKb) + ' at the lowest quality'));
+          if (entry.belowMin) verdict.appendChild(el('span', 'warn', '⚠ Under your ' + entry.minKb + ' KB minimum'));
+          var cmp = el('button', 'ck-link', entry.showCompare ? 'Hide comparison' : 'Compare before/after');
+          cmp.type = 'button';
+          cmp.setAttribute('aria-expanded', entry.showCompare ? 'true' : 'false');
+          cmp.addEventListener('click', function () { entry.showCompare = !entry.showCompare; renderList(); var again = fileListEl.querySelector('[data-id="' + entry.id + '"] .ck-link'); if (again) again.focus(); });
+          verdict.appendChild(cmp);
+        } else if (targetKb > 0) {
+          if (fits) { li.classList.add('is-fit'); verdict.appendChild(el('span', 'ok', 'Already under ' + kbLabel(targetKb) + ' — ready')); }
+          else { li.classList.add('is-over'); verdict.appendChild(el('span', 'bad', (shownBytes / limitBytes).toFixed(shownBytes / limitBytes < 10 ? 1 : 0) + '× the ' + kbLabel(targetKb) + ' target — ready to compress')); }
+        }
+        meta.append(meter, verdict);
+
+        var acts = el('div', 'ck-row-actions');
+        if (entry.status === 'done' || entry.status === 'already-smaller') {
+          var dl = el('a', 'ck-btn ck-btn--primary ck-btn--sm');
+          dl.setAttribute('data-row-download', '');
+          dl.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Download';
+          dl.href = entry.status === 'already-smaller' ? entry.originalUrl : entry.resultUrl;
+          dl.download = outputName(entry);
+          dl.setAttribute('aria-label', 'Download ' + dl.download);
+          acts.appendChild(dl);
+        }
+        var removeBtn = el('button', 'ck-x');
+        removeBtn.type = 'button';
+        removeBtn.innerHTML = X_ICON;
+        removeBtn.setAttribute('aria-label', 'Remove ' + entry.file.name);
+        removeBtn.disabled = busy;
+        removeBtn.addEventListener('click', function () { removeEntry(entry.id); });
+        acts.appendChild(removeBtn);
+
+        li.append(thumb, meta, acts);
+
+        if (entry.status === 'done' && entry.showCompare) {
+          var compare = el('div', 'ck-compare');
+          [[entry.originalUrl, 'Before · ' + formatKB(entry.file.size), 'Original, ' + formatKB(entry.file.size)],
+           [entry.resultUrl, 'After · ' + formatKB(entry.resultBlob.size), 'Compressed, ' + formatKB(entry.resultBlob.size)]].forEach(function (p) {
+            var fig = el('figure');
+            var im = el('img');
+            im.src = p[0];
+            im.alt = p[2];
+            fig.append(im, el('figcaption', null, p[1]));
+            compare.appendChild(fig);
+          });
+          li.appendChild(compare);
+        }
+        return li;
+      }
+
+      function safeBase(name) { return String(name || 'image').replace(/\.[^/.]+$/, '').replace(/[<>:"/\\|?*\u0000-\u001f]+/g, '_').trim() || 'image'; }
+      function buildDownloadName(originalName, targetKb) { return safeBase(originalName) + '-compressed-' + targetKb + 'kb.jpg'; }
+      function outputName(entry) { return entry.status === 'already-smaller' ? entry.file.name : buildDownloadName(entry.file.name, entry.targetKb); }
+
+      /* ---------- compression ---------- */
+      function loadImageEl(url) {
+        return new Promise(function (resolve, reject) {
+          var img = new Image();
+          img.onload = function () { resolve(img); };
+          img.onerror = reject;
+          img.src = url;
+        });
+      }
+      function canvasToBlob(canvas, type, quality) {
+        return new Promise(function (resolve, reject) {
+          canvas.toBlob(function (b) { if (b) resolve(b); else reject(new Error('encode failed')); }, type, quality);
+        });
+      }
+      function drawScaled(img, width, height) {
+        var canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        var ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, width, height);
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(img, 0, 0, width, height);
+        return canvas;
+      }
+      function freeCanvas(c) { if (c) { c.width = 0; c.height = 0; } }
+
+      /* Binary search on JPEG quality (10%–100%) for the highest quality at or
+         under the target; if even 10% is too big, scale down by 10% and retry.
+         Each size is first tried at 10%: when that does not fit, no quality
+         will, so the eight-step search is skipped for that size. */
+      async function compressToTarget(entry, targetKb, onProgress, resizeOpts, minBytes) {
+        var targetBytes = Math.max(1, Math.round(targetKb * 1024));
+        var img = await loadImageEl(entry.originalUrl);
+        var naturalWidth = img.naturalWidth, naturalHeight = img.naturalHeight;
+        if (resizeOpts) {
+          var fitScale = Math.min(1, resizeOpts.maxWidth / naturalWidth, resizeOpts.maxHeight / naturalHeight);
+          if (fitScale < 1) {
+            naturalWidth = Math.max(20, Math.round(naturalWidth * fitScale));
+            naturalHeight = Math.max(20, Math.round(naturalHeight * fitScale));
+          }
+        }
+        var scale = 1;
+        var maxScaleSteps = 22;
+
+        for (var attempt = 1; attempt <= maxScaleSteps; attempt++) {
+          var w = Math.max(20, Math.round(naturalWidth * scale));
+          var h = Math.max(20, Math.round(naturalHeight * scale));
+          var canvas = drawScaled(img, w, h);
+          try {
+            // With a minimum in play the visitor needs the LARGEST file that
+            // still fits, and that is quality 1.0 whenever it fits at all.
+            if (minBytes && attempt === 1) {
+              var fullBlob = await canvasToBlob(canvas, 'image/jpeg', 1);
+              onProgress(attempt, maxScaleSteps, 1, fullBlob.size, targetBytes);
+              if (fullBlob.size <= targetBytes) return { blob: fullBlob, width: w, height: h };
+            }
+
+            var floorBlob = await canvasToBlob(canvas, 'image/jpeg', 0.1);
+            onProgress(attempt, maxScaleSteps, 0.1, floorBlob.size, targetBytes);
+            if (floorBlob.size <= targetBytes) {
+              var lo = 0.1, hi = 1.0, best = { blob: floorBlob, quality: 0.1 };
+              for (var i = 0; i < 8; i++) {
+                var mid = (lo + hi) / 2;
+                var blob = await canvasToBlob(canvas, 'image/jpeg', mid);
+                onProgress(attempt, maxScaleSteps, mid, blob.size, targetBytes);
+                if (blob.size <= targetBytes) { best = { blob: blob, quality: mid }; lo = mid; }
+                else { hi = mid; }
+              }
+              return { blob: best.blob, width: w, height: h };
+            }
+            if (w <= 24 || h <= 24) return { blob: floorBlob, width: w, height: h };
+          } finally {
+            freeCanvas(canvas);
+          }
+          scale *= 0.9;
+        }
+
+        var finalW = Math.max(20, Math.round(naturalWidth * scale));
+        var finalH = Math.max(20, Math.round(naturalHeight * scale));
+        var finalCanvas = drawScaled(img, finalW, finalH);
+        var finalBlob = await canvasToBlob(finalCanvas, 'image/jpeg', 0.1);
+        freeCanvas(finalCanvas);
+        return { blob: finalBlob, width: finalW, height: finalH };
+      }
+
+      function setProgress(pct, text) {
+        var v = Math.max(0, Math.min(100, Math.round(pct)));
+        progressFill.style.width = v + '%';
+        progressWrap.setAttribute('aria-valuenow', String(v));
+        if (text) progressText.textContent = text;
+      }
+
+      compressBtn.addEventListener('click', async function () {
+        if (busy) return;
+        var targetKb = parseInt(targetInput.value, 10);
+        if (!targetKb || targetKb < 1) {
+          showMessage('Please enter a valid target size in KB.', 'error');
+          targetInput.focus();
+          return;
+        }
+        var minKb = parseInt(minInput.value, 10);
+        if (isNaN(minKb) || minKb < 1) minKb = 0;
+        if (minKb && minKb >= targetKb) {
+          showMessage('The minimum size must be smaller than the target size — for a "20–50 KB" form, set minimum 20 and target 50.', 'error');
+          minInput.focus();
+          return;
+        }
+        var minBytes = minKb ? minKb * 1024 : 0;
+        clearMessage();
+        progressWrap.classList.remove('hidden');
+        setProgress(0, 'Preparing…');
+
+        var resizeOpts = getResizeOptions();
+        // A fixed list: nothing can be added or removed while this runs.
+        var work = queue.filter(function (e) { return e.status !== 'error'; });
+        var total = work.length;
+        setBusy(true);
+        var failed = 0;
+        for (var f = 0; f < total; f++) {
+          var entry = work[f];
+          entry.targetKb = targetKb;
+          entry.targetBytes = targetKb * 1024;
+          entry.minKb = minKb;
+          entry.minBytes = minBytes;
+          entry.belowMin = false;
+          entry.showCompare = false;
+          if (entry.resultUrl) { URL.revokeObjectURL(entry.resultUrl); entry.resultUrl = null; entry.resultBlob = null; }
+          setProgress((f / total) * 100);
+
+          // An original already under the target is normally left alone. One
+          // under the MINIMUM is not fine, so it goes through the search.
+          if (entry.file.size <= entry.targetBytes && !resizeOpts && (!minBytes || entry.file.size >= minBytes)) {
+            entry.status = 'already-smaller';
+            progressText.textContent = 'File ' + (f + 1) + ' of ' + total + ': already under target, skipping compression.';
+            renderList();
+            continue;
+          }
+
+          entry.status = 'processing';
+          renderList();
+          try {
+            var result = await compressToTarget(entry, targetKb, function (attempt, maxAttempts, quality, size, tb) {
+              var stepPct = ((f + Math.min(1, attempt / 12)) / total) * 100;
+              setProgress(Math.min(99, stepPct), 'File ' + (f + 1) + ' of ' + total + ': testing quality ' + Math.round(quality * 100) + '% → ' + formatKB(size) + ' (target ' + formatKB(tb) + ')');
+            }, resizeOpts, minBytes);
+            entry.resultBlob = result.blob;
+            entry.resultUrl = URL.createObjectURL(result.blob);
+            entry.resultWidth = result.width;
+            entry.resultHeight = result.height;
+            entry.belowMin = !!(minBytes && result.blob.size < minBytes);
+            entry.status = 'done';
+          } catch (err) {
+            entry.status = 'pending';
+            failed++;
+          }
+          renderList();
+        }
+
+        setProgress(100, 'Done — ' + total + ' image' + (total === 1 ? '' : 's') + ' processed.');
+        setBusy(false);
+        renderList();
+
+        var short = work.filter(function (en) { return en.belowMin; });
+        if (failed) {
+          showMessage(failed === 1 ? 'One image could not be compressed. The file may be corrupted.' : failed + ' images could not be compressed. The files may be corrupted.', 'error');
+        } else if (short.length) {
+          // Below the minimum means the picture has not got enough detail to
+          // fill that many bytes at any quality that still fits the target.
+          showMessage(short.length === 1
+            ? '"' + short[0].file.name + '" came out under your ' + minKb + ' KB minimum — this image cannot reach that size without going over ' + targetKb + ' KB. Try a larger original, or lower the minimum.'
+            : short.length + ' images came out under your ' + minKb + ' KB minimum — they cannot reach that size without going over ' + targetKb + ' KB. Try larger originals, or lower the minimum.', 'error');
+        }
+        window.setTimeout(function () { if (!busy) progressWrap.classList.add('hidden'); }, 1500);
+      });
+
+      /* ---------- downloads ---------- */
+      function clickDownload(href, name) {
+        var a = document.createElement('a');
+        a.href = href;
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+
+      downloadAllBtn.addEventListener('click', async function (e) {
+        e.preventDefault();
+        if (busy) return;
+        var list = downloadable();
+        if (!list.length) return;
+        if (list.length === 1) {
+          var only = list[0];
+          clickDownload(only.status === 'already-smaller' ? only.originalUrl : only.resultUrl, outputName(only));
+          return;
+        }
+        try {
+          downloadAllLabel.textContent = 'Building ZIP…';
+          var JSZip = await loadJSZip();
+          var zip = new JSZip();
+          var usedNames = {};
+          list.forEach(function (entry) {
+            var name = outputName(entry);
+            var key = name.toLowerCase();
+            if (usedNames[key]) { usedNames[key]++; name = name.replace(/(\.[^.]+)?$/, '-' + usedNames[key] + '$1'); }
+            else usedNames[key] = 1;
+            zip.file(name, entry.status === 'already-smaller' ? entry.file : entry.resultBlob);
+          });
+          var zipBlob = await zip.generateAsync({ type: 'blob' });
+          var zipUrl = URL.createObjectURL(zipBlob);
+          clickDownload(zipUrl, 'compressed-images.zip');
+          window.setTimeout(function () { URL.revokeObjectURL(zipUrl); }, 4000);
+        } catch (err) {
+          showMessage('Could not build ZIP — downloading files individually instead.', 'error');
+          list.forEach(function (entry, idx) {
+            window.setTimeout(function () {
+              clickDownload(entry.status === 'already-smaller' ? entry.originalUrl : entry.resultUrl, outputName(entry));
+            }, idx * 350);
+          });
+        } finally {
+          downloadAllLabel.textContent = list.length > 1 ? 'Download all (ZIP)' : 'Download';
+        }
+      });
+
+      /* ---------- phone bottom bar ---------- */
+      if (stickyCta) {
+        stickyCta.addEventListener('click', function () {
+          var p = phase();
+          if (p === 'upload') { page.scrollIntoView({ behavior: 'smooth', block: 'start' }); openPicker(); }
+          else if (p === 'target') { if (!compressBtn.disabled) compressBtn.click(); }
+          else downloadAllBtn.click();
+        });
+      }
+      if ('IntersectionObserver' in window) {
+        var watch = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.target === page) inView.tool = en.isIntersecting;
+            else if (en.target === compressBtn) inView.compress = en.isIntersecting;
+            else if (en.target === downloadAllBtn) inView.download = en.isIntersecting;
+          });
+          updateSticky();
+        });
+        watch.observe(page);
+        watch.observe(compressBtn);
+        watch.observe(downloadAllBtn);
+      }
+      if (phoneQuery.addEventListener) phoneQuery.addEventListener('change', updateSticky);
+      window.addEventListener('pagehide', function (e) {
+        if (e.persisted) return;
+        queue.forEach(function (en) { if (en.originalUrl) URL.revokeObjectURL(en.originalUrl); if (en.resultUrl) URL.revokeObjectURL(en.resultUrl); });
+      });
+
+      syncPhase();
+    })();
+  </script>
+  <script src="assets/js/side-ads.js" defer></script>
+  <script src="assets/js/inline-ads.js" data-in-article defer></script>
+</body>
+</html>

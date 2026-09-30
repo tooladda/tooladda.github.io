@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+    <meta name="description" content="Free cron expression generator. Build crontab schedules visually, convert any cron expression to plain English, and preview the next run times in any time zone." />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="ToolAdda" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta name="theme-color" content="#3730a3" />
+    <title>Cron Expression Generator | Crontab Builder &amp; Parser | ToolAdda</title>
+    <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+    <link rel="canonical" href="https://tooladda.online/cron-expression-generator.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <meta property="og:title" content="Cron Expression Generator - Build &amp; Explain Crontab Schedules" />
+    <meta property="og:description" content="Build cron expressions visually, read them in plain English, and preview the next run times in any time zone. Works entirely in your browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tooladda.online/cron-expression-generator.html" />
+    <meta property="og:site_name" content="ToolAdda" />
+    <meta property="og:image" content="https://tooladda.online/assets/images/og/cron-expression-generator.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Cron Expression Generator | Crontab Builder &amp;amp; Parser — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="Cron Expression Generator | Crontab Builder &amp;amp; Parser — free online tool on ToolAdda, runs in your browser with no sign-up." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Cron Expression Generator - Build &amp; Explain Crontab Schedules" />
+    <meta name="twitter:description" content="Visual crontab builder with plain-English descriptions, next run previews, time zone support and copy-ready code snippets." />
+    <meta name="twitter:image" content="https://tooladda.online/assets/images/og/cron-expression-generator.jpg" />
+
+    <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Cron Expression Generator",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any (Web Browser)",
+      "url": "https://tooladda.online/cron-expression-generator.html",
+      "description": "Free online cron expression generator, parser and schedule previewer. Build crontab, 6-field and Quartz expressions visually, translate them to plain English and preview upcoming run times in any time zone.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Visual field-by-field cron builder",
+        "Supports Unix 5-field, 6-field with seconds and 7-field Quartz syntax",
+        "Plain-English description of any cron expression",
+        "Next run time preview with IANA time zone support",
+        "Live validation with helpful error messages",
+        "Quartz L, W and # modifiers",
+        "Copy-ready snippets for crontab, GitHub Actions, Kubernetes, node-cron, Python and Spring",
+        "Shareable permalink for every schedule",
+        "100% client-side - nothing is uploaded"
+      ],
+      "publisher": {
+        "@type": "Organization",
+        "name": "ToolAdda",
+        "alternateName": [
+          "Tool Adda",
+          "Tools Adda",
+          "ToolsAdda",
+          "Tooladda",
+          "ToolAdda.online"
+        ],
+        "url": "https://tooladda.online/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a cron expression?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A cron expression is a compact string of five to seven space-separated fields that tells a scheduler when to run a job. The classic Unix form is minute, hour, day of month, month and day of week - so 30 9 * * 1-5 means 09:30 every weekday."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What do the special characters in cron mean?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An asterisk means every value, a comma separates a list, a hyphen makes a range, and a slash sets a step - so */15 means every 15 units. Quartz adds ? for no specific value, L for last, W for nearest weekday and # for the nth weekday of the month."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does my job run more often when I set both day of month and day of week?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Standard cron treats a restricted day-of-month and a restricted day-of-week as an OR, not an AND. If either field matches, the job runs. To pin a job to one specific weekday, leave day of month as * . Quartz avoids the ambiguity by requiring ? in one of the two fields."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which time zone does cron use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Traditional crontab uses the server's local time zone, GitHub Actions always uses UTC, and Kubernetes CronJob supports an explicit timeZone field from version 1.27 onwards. Use the time-zone selector above to confirm the real firing times before you deploy."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does cron support seconds?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Standard Unix crontab has a one-minute resolution and no seconds field. Quartz, Spring, node-cron and cronR accept a leading seconds column, giving a six or seven field expression. Switch the format selector to build those."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I share a schedule with a teammate?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Use Copy shareable link - the expression, format and time zone are stored in the URL, so opening the link reloads the exact same schedule."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data sent to a server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Validation, the plain-English description and the next-run calculations all run locally in your browser. Nothing is uploaded or stored."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to build a cron expression",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Pick a format",
+          "text": "Choose Unix crontab, the 6-field form with seconds, or Quartz depending on the scheduler you target."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Set each field",
+          "text": "Open the Minutes, Hours, Day of Month, Month and Day of Week tabs and choose every, every N, a range, specific values or a custom value."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Check the summary",
+          "text": "Read the plain-English description and the list of upcoming run times in your chosen time zone."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Copy the result",
+          "text": "Copy the expression, a ready-made snippet for your scheduler, or a shareable link to the schedule."
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Developer Tools",
+          "item": "https://tooladda.online/#tools"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Cron Expression Generator",
+          "item": "https://tooladda.online/cron-expression-generator.html"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+
+    <style>
+      /* Cron Expression Generator — "the departure board".
+         A cron line is a timetable: five fields that say when the next job
+         leaves. The cover is a split-flap station board, "Generator" in the
+         headline is set in flap tiles, and the next-run list reads like
+         departures. The board is black with flap-yellow text in both themes,
+         as a real one would be — that yellow is decoration only. Night indigo
+         is the one action colour; green, amber and red keep their meaning
+         (valid / warning / invalid). */
+      body.cr-page {
+        --cr-bg: #f1f2f7;
+        --cr-card: #ffffff;
+        --cr-well: #f6f7fb;
+        --cr-line: rgba(24, 26, 56, .12);
+        --cr-line-2: rgba(24, 26, 56, .24);
+        --cr-ink: #151731;
+        --cr-ink-2: #363a5c;
+        --cr-mute: #5f6388;
+        --cr-accent: #3730a3;
+        --cr-accent-hover: #312e81;
+        --cr-accent-ink: #ffffff;
+        --cr-accent-text: #3730a3;
+        --cr-accent-soft: rgba(55, 48, 163, .08);
+        --cr-accent-ring: rgba(55, 48, 163, .34);
+        --cr-good: #15803d;
+        --cr-good-soft: rgba(21, 128, 61, .1);
+        --cr-warn: #92400e;
+        --cr-warn-soft: rgba(245, 158, 11, .12);
+        --cr-bad: #b91c1c;
+        --cr-bad-soft: rgba(185, 28, 28, .08);
+        --cr-board: #15171c;
+        --cr-flap: #23262e;
+        --cr-flap-ink: #ffd23f;
+        --cr-shadow: 0 1px 0 rgba(24, 26, 56, .05), 0 18px 40px -26px rgba(24, 26, 56, .45);
+        --accent: var(--cr-accent);
+        --accent-strong: var(--cr-accent-text);
+        --accent-soft: var(--cr-accent-soft);
+        background: var(--cr-bg);
+      }
+      [data-theme="dark"] body.cr-page {
+        --cr-bg: #0d0e16;
+        --cr-card: #151726;
+        --cr-well: #11131f;
+        --cr-line: rgba(224, 228, 255, .1);
+        --cr-line-2: rgba(224, 228, 255, .2);
+        --cr-ink: #eef0ff;
+        --cr-ink-2: #cfd3ee;
+        --cr-mute: #9ca1c4;
+        --cr-accent: #a5b4fc;
+        --cr-accent-hover: #c7d2fe;
+        --cr-accent-ink: #12143a;
+        --cr-accent-text: #c7d2fe;
+        --cr-accent-soft: rgba(165, 180, 252, .12);
+        --cr-accent-ring: rgba(165, 180, 252, .45);
+        --cr-good: #4ade80;
+        --cr-good-soft: rgba(74, 222, 128, .1);
+        --cr-warn: #fcd34d;
+        --cr-warn-soft: rgba(252, 211, 77, .1);
+        --cr-bad: #fca5a5;
+        --cr-bad-soft: rgba(252, 165, 165, .1);
+        --cr-board: #0a0b0f;
+        --cr-flap: #1d2027;
+        --cr-shadow: 0 1px 0 rgba(0, 0, 0, .4), 0 20px 44px -26px rgba(0, 0, 0, .9);
+      }
+      body.cr-page [hidden] { display: none !important; }
+      #cron-tool { scroll-margin-top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+      .cr-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+
+      .cr-shell { padding: .6rem 0 3rem; }
+      .cr-page .breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin: .35rem 0 .9rem; font-size: .86rem; color: var(--cr-mute); }
+      .cr-page .breadcrumb a { color: var(--cr-accent-text); font-weight: 700; }
+      .cr-page code { padding: .08rem .35rem; border-radius: 5px; background: var(--cr-accent-soft); color: var(--cr-ink); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88em; }
+
+      /* ---------- top: cover, expression card, ad, bench ----------
+         Under 700px one column: cover, expression card, ad, then the lead and
+         the builder bench, so a phone reaches the expression and the ad in the
+         first screen. From 700px the cover is a band on top and the 300x250
+         sits beside the expression card — never above it. */
+      .cr-top { display: grid; gap: 1rem; align-items: start; grid-template-areas: "cover" "stage" "ad" "intro" "bench"; }
+      .cr-top > * { min-width: 0; }
+      .cr-cover { grid-area: cover; }
+      .cr-stage-card { grid-area: stage; }
+      .cr-ad-zone { grid-area: ad; }
+      .cr-intro { grid-area: intro; }
+      .cr-bench { grid-area: bench; }
+      @media (min-width: 700px) {
+        .cr-top { grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "cover cover" "stage ad" "intro intro" "bench bench"; column-gap: 1.1rem; }
+      }
+
+      /* One 300x250 at every width: inline-ads.js only shows .ta-inline-ad
+         below 1000px, so it is forced on here; data-unit="inline" sizes it. */
+      body.cr-page .cr-ad-zone { text-align: center; }
+      body.cr-page .cr-ad-zone .ta-inline-ad { display: block !important; margin: 0 auto !important; }
+      @media (max-width: 340px) { .cr-ad-zone { margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); } }
+
+      /* ---------- buttons ---------- */
+      .cr-btn, .cr-page .cron-actions button {
+        display: inline-flex; align-items: center; justify-content: center; gap: .45rem;
+        min-height: 2.75rem; padding: .55rem 1.05rem; border-radius: 10px; border: 1px solid var(--cr-line-2);
+        background: var(--cr-card); color: var(--cr-ink); font: inherit; font-size: .9rem; font-weight: 800; line-height: 1.2;
+        text-decoration: none; cursor: pointer; transition: background-color .15s, border-color .15s, color .15s, transform .1s;
+      }
+      .cr-btn:hover, .cr-page .cron-actions button:hover { border-color: var(--cr-accent); color: var(--cr-accent-text); }
+      .cr-btn:active, .cr-page .cron-actions button:active { transform: translateY(1px); }
+      .cr-btn--primary, .cr-page .cron-actions button.is-primary { background: var(--cr-accent); border-color: var(--cr-accent); color: var(--cr-accent-ink); box-shadow: 0 8px 18px -10px var(--cr-accent); }
+      .cr-btn--primary:hover, .cr-page .cron-actions button.is-primary:hover { background: var(--cr-accent-hover); border-color: var(--cr-accent-hover); color: var(--cr-accent-ink); }
+      .cr-btn--lg { min-height: 3.1rem; padding-inline: 1.5rem; font-size: 1rem; }
+      .cr-page :is(.cr-btn, .cron-actions button, .cron-flavors button, .cron-chip, .cron-tab, .cron-mini, .cron-presets button, .cron-snippet-tabs button, .cron-faq summary, .related-links a):focus-visible,
+      .cr-page .cr-top :is(input, select):focus-visible {
+        outline: 3px solid var(--cr-accent-ring); outline-offset: 2px;
+      }
+
+      /* ---------- cover: headline + a split-flap board ---------- */
+      .cr-cover {
+        position: relative; display: grid; gap: 1.2rem; align-items: center; overflow: hidden;
+        padding: 1.2rem 1.4rem 1.2rem; border-radius: 16px; background: var(--cr-card); border: 1px solid var(--cr-line); box-shadow: var(--cr-shadow);
+      }
+      @media (min-width: 900px) { .cr-cover { grid-template-columns: minmax(0, 1fr) minmax(300px, 400px); } }
+      .cr-badge {
+        display: inline-flex; align-items: center; gap: .35rem; margin: 0 0 .7rem; padding: .28rem .62rem; border-radius: 6px;
+        background: var(--cr-accent-soft); border: 1px solid var(--cr-accent-ring); color: var(--cr-accent-text);
+        font-size: .72rem; font-weight: 900; letter-spacing: .05em; text-transform: uppercase;
+      }
+      .cr-title { margin: 0; color: var(--cr-ink); }
+      .cr-title .cr-t1 { display: block; font-size: clamp(2rem, 1.2rem + 2.6vw, 2.8rem); font-weight: 900; line-height: 1.04; letter-spacing: -.025em; }
+      /* "Generator" in flap tiles: a monospace glyph is 1ch wide, so tiles of
+         1ch + the letter-spacing line up one per letter; half the spacing on
+         the left centres each letter in its tile. The text itself is plain. */
+      .cr-title .cr-t2 {
+        --ls: .32em;
+        display: inline-block; margin-top: .45rem; padding: .1em 0 .1em calc(var(--ls) / 2); border-radius: 4px;
+        font: 800 clamp(1.45rem, 1rem + 1.6vw, 1.95rem)/1.25 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        letter-spacing: var(--ls); text-transform: uppercase; color: var(--cr-flap-ink);
+        background:
+          linear-gradient(transparent calc(50% - .5px), rgba(0, 0, 0, .6) calc(50% - .5px) calc(50% + .5px), transparent calc(50% + .5px)),
+          repeating-linear-gradient(90deg, var(--cr-flap) 0 calc(1ch + var(--ls) - 3px), var(--cr-card) calc(1ch + var(--ls) - 3px) calc(1ch + var(--ls)));
+        /* the trailing letter-spacing would start a tenth tile; cut it off */
+        clip-path: inset(0 calc(var(--ls) / 2) 0 0 round 4px);
+      }
+
+      /* the board; its text comes from data-t, so it is decoration, not page text */
+      .cr-board { padding: .7rem .85rem .65rem; border-radius: 12px; background: var(--cr-board); color: #d8dbe6; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .05), 0 16px 30px -18px rgba(0, 0, 0, .8); }
+      .cr-board [data-t]::before { content: attr(data-t); }
+      .cr-board-head { display: flex; justify-content: space-between; gap: .5rem; margin-bottom: .6rem; font: 800 .62rem/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .14em; color: #8d93a8; }
+      .cr-board-head .live { color: #7ee2a8; }
+      .cr-flaps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .35rem; }
+      .cr-flap { display: grid; gap: .25rem; justify-items: center; }
+      .cr-flap b {
+        display: block; width: 100%; padding: .38rem 0; border-radius: 4px; text-align: center;
+        font: 800 1rem/1.1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: var(--cr-flap-ink);
+        background: linear-gradient(transparent calc(50% - .5px), rgba(0, 0, 0, .7) calc(50% - .5px) calc(50% + .5px), transparent calc(50% + .5px)), var(--cr-flap);
+        transform-origin: 50% 50%; animation: cr-flip .5s cubic-bezier(.3, .7, .3, 1) var(--d, .2s) both;
+      }
+      .cr-flap i { font: 700 .56rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-style: normal; letter-spacing: .12em; color: #8d93a8; }
+      @keyframes cr-flip { from { transform: rotateX(90deg); opacity: .2; } to { transform: none; opacity: 1; } }
+      .cr-deps { display: grid; gap: .25rem; margin: .55rem 0 0; padding: .5rem 0 0; list-style: none; border-top: 1px dashed rgba(255, 255, 255, .12); }
+      .cr-deps li { display: grid; grid-template-columns: 2.6rem 1fr auto; gap: .6rem; align-items: center; font: 700 .74rem/1.3 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+      .cr-deps .day { color: #8d93a8; }
+      .cr-deps .time { color: var(--cr-flap-ink); font-size: .86rem; }
+      .cr-deps .state { color: #7ee2a8; font-size: .66rem; letter-spacing: .08em; }
+      .cr-deps li + li .state { color: #8d93a8; }
+
+      .cr-intro { padding: .15rem .2rem 0; }
+      .cr-lede { margin: 0; max-width: 80ch; padding-left: .85rem; border-left: 3px solid var(--cr-accent); color: var(--cr-ink-2); font-size: .98rem; line-height: 1.7; }
+
+      /* ---------- expression card ---------- */
+      .cr-stage-card, .cr-panel-card {
+        position: relative; padding: 1.1rem; border-radius: 16px; background: var(--cr-card); border: 1px solid var(--cr-line); box-shadow: var(--cr-shadow);
+      }
+      .cr-stage-card { border-top: 4px solid var(--cr-accent); }
+      .cron-flavors { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; padding: 3px; border-radius: 11px; background: var(--cr-well); border: 1px solid var(--cr-line); }
+      .cron-flavors button {
+        min-height: 2.5rem; padding: .4rem .5rem; border: 0; border-radius: 8px; background: transparent; color: var(--cr-ink-2);
+        font: inherit; font-size: .82rem; font-weight: 800; line-height: 1.25; cursor: pointer;
+      }
+      .cron-flavors button:hover { color: var(--cr-accent-text); }
+      .cron-flavors button.is-active { background: var(--cr-card); color: var(--cr-accent-text); box-shadow: 0 1px 0 var(--cr-line-2), 0 4px 12px -6px rgba(24, 26, 56, .35); }
+      .cron-flavor-hint { margin: .55rem 0 0; font-size: .84rem; color: var(--cr-mute); }
+      .cron-stage { margin-top: .9rem; }
+      .cron-stage-label { display: block; margin-bottom: .45rem; font-size: .72rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--cr-mute); }
+      /* the expression itself, set like a flap board */
+      .cron-expr-input {
+        width: 100%; padding: .85rem 1rem; border-radius: 12px; border: 2px solid var(--cr-board); background: var(--cr-board); color: var(--cr-flap-ink);
+        font: 800 clamp(1.1rem, 2.4vw, 1.5rem)/1.3 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .12em; text-align: center;
+        box-shadow: inset 0 -2px 0 rgba(255, 255, 255, .05);
+      }
+      .cron-expr-input:focus { outline: none; border-color: var(--cr-accent); box-shadow: 0 0 0 4px var(--cr-accent-soft); }
+      .cron-chips { display: grid; grid-template-columns: repeat(auto-fit, minmax(76px, 1fr)); gap: .4rem; margin-top: .6rem; }
+      .cron-chip {
+        display: grid; justify-items: center; gap: .1rem; min-width: 0; padding: .45rem .35rem; border-radius: 9px; cursor: pointer;
+        border: 1px solid var(--cr-line); background: var(--cr-well); color: var(--cr-ink); font: inherit;
+      }
+      .cron-chip:hover { border-color: var(--cr-accent); }
+      .cron-chip-value { font: 800 .98rem/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: var(--cr-accent-text); word-break: break-all; }
+      .cron-chip-label { font-size: .64rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--cr-mute); }
+
+      .cron-status { display: flex; align-items: flex-start; gap: .5rem; margin: .75rem 0 0; padding: .55rem .75rem; border-radius: 10px; font-size: .9rem; font-weight: 700; line-height: 1.4; }
+      .cron-status.is-ok { background: var(--cr-good-soft); color: var(--cr-good); border: 1px solid rgba(21, 128, 61, .25); }
+      .cron-status.is-error { background: var(--cr-bad-soft); color: var(--cr-bad); border: 1px solid rgba(185, 28, 28, .25); }
+      .cron-warnings { margin-top: .55rem; padding: .55rem .75rem; border-radius: 10px; background: var(--cr-warn-soft); border: 1px solid rgba(245, 158, 11, .3); color: var(--cr-warn); font-size: .88rem; }
+      .cron-warnings p { margin: .15rem 0; }
+      .cr-page .cron-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .8rem; }
+
+      /* ---------- bench: presets, builder, meaning, snippets ---------- */
+      .cr-bench { display: grid; gap: 1rem; }
+      .cr-panel-card > h2, .cron-panel > h2 {
+        display: flex; align-items: center; gap: .5rem; margin: 0 0 .75rem; font-size: 1.05rem; font-weight: 900; color: var(--cr-ink);
+      }
+      .cr-panel-card > h2::before, .cron-panel > h2::before { content: ""; flex: none; width: 10px; height: 10px; border-radius: 2px; background: var(--cr-accent); }
+      .cr-presets-title { margin: 0 0 .6rem; font-size: .72rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--cr-mute); }
+      .cron-presets { display: flex; flex-wrap: wrap; gap: .4rem; }
+      .cron-presets button {
+        min-height: 2.3rem; padding: .35rem .75rem; border-radius: 999px; border: 1px solid var(--cr-line-2); background: var(--cr-card);
+        color: var(--cr-ink); font: inherit; font-size: .82rem; font-weight: 700; cursor: pointer;
+      }
+      .cron-presets button:hover { border-color: var(--cr-accent); background: var(--cr-accent-soft); color: var(--cr-accent-text); }
+      .cron-columns { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 1rem; align-items: start; }
+      .cron-panel { min-width: 0; padding: 1.1rem; border-radius: 16px; background: var(--cr-card); border: 1px solid var(--cr-line); box-shadow: var(--cr-shadow); }
+
+      .cron-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(88px, 1fr)); gap: .35rem; margin-bottom: .85rem; }
+      .cron-tab {
+        display: grid; gap: .1rem; min-width: 0; padding: .45rem .55rem; border-radius: 9px; text-align: left; cursor: pointer;
+        border: 1px solid var(--cr-line); background: var(--cr-well); color: var(--cr-ink); font: inherit;
+      }
+      .cron-tab:hover { border-color: var(--cr-accent); }
+      .cron-tab.is-active { background: var(--cr-accent); border-color: var(--cr-accent); color: var(--cr-accent-ink); }
+      .cron-tab-name { font-size: .74rem; font-weight: 900; }
+      .cron-tab-value { font: 700 .84rem/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: .85; word-break: break-all; }
+      .cron-builder-head h3 { margin: 0 0 .2rem; font-size: 1.08rem; color: var(--cr-ink); }
+      .cron-builder-head p { margin: 0 0 .8rem; font-size: .86rem; color: var(--cr-mute); }
+      .cron-modes { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .8rem; }
+      .cron-mode {
+        display: inline-flex; align-items: center; gap: .4rem; min-height: 2.3rem; padding: .35rem .75rem; border-radius: 999px; cursor: pointer;
+        border: 1px solid var(--cr-line-2); font-size: .84rem; font-weight: 700; color: var(--cr-ink-2);
+      }
+      .cron-mode input { accent-color: var(--cr-accent); }
+      .cron-mode.is-active { border-color: var(--cr-accent); background: var(--cr-accent-soft); color: var(--cr-accent-text); }
+      .cron-mode-panel { padding: .85rem; border-radius: 12px; border: 1px dashed var(--cr-accent-ring); background: var(--cr-accent-soft); }
+      .cron-mode-hint { margin: .5rem 0 0; font-size: .84rem; color: var(--cr-mute); }
+      .cron-inline { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; font-size: .92rem; color: var(--cr-ink); }
+      .cron-inline label { display: inline-flex; align-items: center; gap: .45rem; font-weight: 700; }
+      .cron-inline-tight { margin-top: .65rem; }
+      .cron-custom-label { flex-direction: column; align-items: flex-start !important; width: 100%; gap: .35rem !important; }
+      .cron-number, .cron-select, .cron-text {
+        min-height: 2.4rem; padding: .4rem .6rem; border-radius: 8px; border: 1px solid var(--cr-line-2); background: var(--cr-card);
+        color: var(--cr-ink); font: inherit; font-size: .92rem;
+      }
+      .cron-number { width: 5.2rem; }
+      .cron-text { width: 100%; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+      .cron-number:focus, .cron-select:focus, .cron-text:focus { outline: none; border-color: var(--cr-accent); box-shadow: 0 0 0 3px var(--cr-accent-soft); }
+      .cron-grid { display: grid; grid-template-columns: repeat(var(--cron-cols, 8), minmax(0, 1fr)); gap: .3rem; }
+      .cron-cell {
+        position: relative; display: flex; align-items: center; justify-content: center; min-height: 2.2rem; padding: .2rem; border-radius: 7px;
+        border: 1px solid var(--cr-line-2); background: var(--cr-card); color: var(--cr-ink); font-size: .82rem; font-weight: 700; cursor: pointer; user-select: none;
+      }
+      .cron-cell input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+      .cron-cell.is-checked { background: var(--cr-accent); border-color: var(--cr-accent); color: var(--cr-accent-ink); }
+      .cron-cell:focus-within { box-shadow: 0 0 0 3px var(--cr-accent-ring); }
+      .cron-mini {
+        min-height: 2.1rem; padding: .3rem .7rem; border-radius: 999px; border: 1px solid var(--cr-line-2); background: var(--cr-card);
+        color: var(--cr-accent-text); font: inherit; font-size: .8rem; font-weight: 800; cursor: pointer;
+      }
+
+      .cron-summary { margin: 0; padding: .85rem 1rem; border-radius: 12px; background: var(--cr-accent-soft); border: 1px solid var(--cr-accent-ring); font-size: 1.02rem; font-weight: 800; line-height: 1.5; color: var(--cr-ink); }
+      .cron-schedule-controls { display: flex; flex-wrap: wrap; gap: .6rem; margin: .9rem 0 .7rem; }
+      .cron-field { flex: 1 1 150px; min-width: 0; }
+      .cron-field label { display: block; margin-bottom: .3rem; font-size: .72rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; color: var(--cr-mute); }
+      .cron-field select { width: 100%; min-height: 2.5rem; padding: .45rem .6rem; border-radius: 9px; border: 1px solid var(--cr-line-2); background: var(--cr-card); color: var(--cr-ink); font: inherit; font-size: .9rem; }
+      .cron-field--count { flex: 0 0 120px; }
+      .cron-panel > h2.cr-h2-gap { margin-top: .4rem; }
+      /* next runs as a departures list */
+      .cron-runs { display: grid; gap: 0; margin: 0; padding: .35rem; list-style: none; border-radius: 12px; background: var(--cr-board); }
+      .cron-run { display: grid; grid-template-columns: 1.7rem minmax(0, 1fr) auto; gap: .6rem; align-items: center; padding: .45rem .5rem; border-bottom: 1px dashed rgba(255, 255, 255, .1); font-size: .88rem; color: #d8dbe6; }
+      .cron-run:last-child { border-bottom: 0; }
+      .cron-run-index { display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 4px; background: var(--cr-flap); color: var(--cr-flap-ink); font: 800 .74rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+      .cron-run-date { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-weight: 700; color: var(--cr-flap-ink); }
+      .cron-run-rel { font-size: .76rem; color: #8d93a8; white-space: nowrap; }
+      .cron-run-empty { display: block; padding: .8rem; text-align: center; color: #b7bbcc; font-style: italic; }
+      .cron-meta { margin: .6rem 0 0; font-size: .84rem; color: var(--cr-mute); }
+
+      .cron-snippet-tabs { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .7rem; }
+      .cron-snippet-tabs button {
+        min-height: 2.3rem; padding: .35rem .75rem; border-radius: 8px; border: 1px solid var(--cr-line-2); background: var(--cr-card);
+        color: var(--cr-ink); font: inherit; font-size: .82rem; font-weight: 800; cursor: pointer;
+      }
+      .cron-snippet-tabs button:hover { border-color: var(--cr-accent); }
+      .cron-snippet-tabs button.is-active { background: var(--cr-accent); border-color: var(--cr-accent); color: var(--cr-accent-ink); }
+      .cron-code { margin: 0; padding: 1rem; overflow-x: auto; border-radius: 12px; background: var(--cr-board); color: #e2e6f3; font: .86rem/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; white-space: pre; }
+
+      .cron-toast {
+        position: fixed; left: 50%; bottom: 1.5rem; z-index: 60; padding: .65rem 1.1rem; border-radius: 999px;
+        background: var(--cr-board); color: var(--cr-flap-ink); font-size: .9rem; font-weight: 800; box-shadow: 0 18px 34px rgba(0, 0, 0, .35);
+        opacity: 0; pointer-events: none; transform: translate(-50%, 1.5rem); transition: opacity .2s ease, transform .2s ease;
+      }
+      .cron-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+      /* ---------- sections below the tool ---------- */
+      .cr-sec { padding: 2.5rem 0 0; }
+      .cr-h2 { margin: 0 0 .45rem; text-align: center; font-size: clamp(1.4rem, 2.8vw, 1.9rem); line-height: 1.2; color: var(--cr-ink); }
+      /* five flap tiles under each section title — one per cron field */
+      .cr-h2::after {
+        content: ""; display: block; width: 5.4rem; height: 10px; margin: .6rem auto 0; border-radius: 2px;
+        background: repeating-linear-gradient(90deg, var(--cr-accent) 0 15px, transparent 15px 18.6px);
+      }
+      .cr-sub { max-width: 62ch; margin: 0 auto 1.4rem; text-align: center; color: var(--cr-mute); }
+      .cr-card { padding: clamp(1.1rem, 2.6vw, 1.7rem); border-radius: 14px; background: var(--cr-card); border: 1px solid var(--cr-line); box-shadow: var(--cr-shadow); }
+      .cr-card > h2 { margin: 1.8rem 0 .6rem; padding-left: .8rem; border-left: 5px solid var(--cr-accent); font-size: clamp(1.2rem, 2.3vw, 1.5rem); line-height: 1.3; color: var(--cr-ink); }
+      .cr-card > h2:first-child { margin-top: 0; }
+      .cr-card > p { margin: 0; font-size: .96rem; line-height: 1.75; color: var(--cr-ink-2); }
+      .cr-card strong { color: var(--cr-ink); }
+
+      .cr-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; margin: 0; padding: 0; list-style: none; }
+      .cr-step { padding: 1.05rem 1rem; border-radius: 12px; background: var(--cr-card); border: 1px solid var(--cr-line); }
+      .cr-step .n { display: grid; place-items: center; width: 2.1rem; height: 2.1rem; margin-bottom: .6rem; border-radius: 5px; font: 800 1rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: var(--cr-flap-ink); background: linear-gradient(transparent calc(50% - .5px), rgba(0, 0, 0, .6) calc(50% - .5px) calc(50% + .5px), transparent calc(50% + .5px)), var(--cr-flap); }
+      .cr-step h3 { margin: 0 0 .3rem; font-size: 1rem; color: var(--cr-ink); }
+      .cr-step p { margin: 0; font-size: .87rem; line-height: 1.55; color: var(--cr-mute); }
+
+      .cron-table-wrap { overflow: hidden; margin-top: .9rem; border-radius: 12px; border: 1px solid var(--cr-line); background: var(--cr-card); }
+      .cron-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+      .cron-table th, .cron-table td { padding: .55rem .75rem; border-bottom: 1px solid var(--cr-line); text-align: left; vertical-align: top; color: var(--cr-ink-2); }
+      .cron-table tbody tr:last-child td { border-bottom: 0; }
+      .cron-table th { background: var(--cr-well); color: var(--cr-ink); font-size: .74rem; font-weight: 900; letter-spacing: .05em; text-transform: uppercase; }
+      .cron-table td:first-child { color: var(--cr-ink); font-weight: 700; }
+      .cron-table tbody tr:hover { background: var(--cr-accent-soft); }
+
+      .info-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .6rem; margin-top: 1.4rem; }
+      .info-box { padding: .85rem .9rem; border-radius: 12px; background: var(--cr-well); border: 1px solid var(--cr-line); }
+      .info-box strong { display: block; margin-bottom: .25rem; color: var(--cr-accent-text); }
+      .info-box span { font-size: .86rem; line-height: 1.5; color: var(--cr-ink-2); }
+
+      .cr-faq-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; align-items: start; margin-top: .4rem; }
+      .cr-page .cr-faq-list .faq-item { margin: 0; padding: 0; border-radius: 10px; background: var(--cr-well); border: 1px solid var(--cr-line); box-shadow: none; transform: none; }
+      .cr-page .cr-faq-list .faq-item:hover { border-color: var(--cr-line-2); box-shadow: none; transform: none; }
+      .cr-page .cr-faq-list summary { position: relative; padding: .8rem 2.2rem .8rem .95rem; list-style: none; cursor: pointer; font-weight: 800; line-height: 1.4; color: var(--cr-ink); }
+      .cr-page .cr-faq-list summary::-webkit-details-marker { display: none; }
+      .cr-page .cr-faq-list summary::after { content: "+"; position: absolute; right: .95rem; top: .75rem; font-weight: 900; color: var(--cr-accent-text); }
+      .cr-page .cr-faq-list .faq-item[open] summary::after { content: "\2212"; }
+      .cr-page .cr-faq-list .faq-item p { margin: 0; padding: 0 .95rem .9rem; font-size: .9rem; line-height: 1.65; color: var(--cr-ink-2); }
+      .related-links { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .9rem; }
+      .related-links a { padding: .45rem .85rem; border-radius: 999px; border: 1px solid var(--cr-line-2); background: var(--cr-card); color: var(--cr-accent-text); font-size: .86rem; font-weight: 800; text-decoration: none; }
+      .related-links a:hover { border-color: var(--cr-accent); background: var(--cr-accent-soft); }
+
+      /* Related tools (added by app.js) in this page's palette */
+      .cr-page .related-tools-section { margin-top: 2.5rem; background: var(--cr-card); border-color: var(--cr-line); border-radius: 14px; box-shadow: var(--cr-shadow); }
+      .cr-page .related-tools-eyebrow { color: var(--cr-accent-text); }
+      .cr-page .related-tools-title { color: var(--cr-ink); }
+      .cr-page .related-tools-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: .6rem; }
+      .cr-page .related-tool-card { min-width: 0; background: var(--cr-well); border-color: var(--cr-line); box-shadow: none; color: var(--cr-ink); }
+      .cr-page .related-tool-card:hover, .cr-page .related-tool-card:focus-visible { border-color: var(--cr-accent); }
+      .cr-page .related-tool-body { min-width: 0; }
+
+      .cr-final { margin: 2.5rem 0 0; padding: 2rem 1.25rem; border-radius: 14px; text-align: center; background: var(--cr-board); color: #d8dbe6; }
+      .cr-final h2 { margin: 0 0 .45rem; font-size: clamp(1.35rem, 2.8vw, 1.8rem); color: #fff; }
+      .cr-final p { max-width: 56ch; margin: 0 auto 1.1rem; color: #b7bbcc; }
+      .cr-final .cr-btn--primary { background: var(--cr-flap-ink); border-color: var(--cr-flap-ink); color: #15171c; box-shadow: none; }
+      .cr-final .cr-btn--primary:hover { background: #ffe07a; border-color: #ffe07a; color: #15171c; }
+
+      /* ---------- smaller screens ---------- */
+      @media (max-width: 900px) {
+        .cron-columns { grid-template-columns: minmax(0, 1fr); }
+        .cr-steps, .info-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+      @media (max-width: 899px) { .cr-board { display: none; } }
+      @media (max-width: 760px) { .cr-faq-list { grid-template-columns: 1fr; } }
+      @media (max-width: 640px) {
+        .cron-table, .cron-table tbody, .cron-table tr, .cron-table td { display: block; width: 100%; }
+        .cron-table-wrap { overflow: visible; border: 0; background: none; }
+        .cron-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+        .cron-table tr { margin-bottom: .55rem; padding: .6rem .8rem; border: 1px solid var(--cr-line); border-radius: 12px; background: var(--cr-card); }
+        .cron-table td { padding: .14rem 0; border: 0; }
+        .cron-table td:first-child { margin-bottom: .2rem; }
+        .cron-table td[data-label]::before { content: attr(data-label) ": "; color: var(--cr-ink); font-weight: 700; }
+        .cron-run { grid-template-columns: 1.6rem minmax(0, 1fr); }
+        .cron-run-rel { grid-column: 2; }
+      }
+      @media (max-width: 699px) {
+        /* phones: the cover keeps the headline only and the expression card
+           drops its extra lines, so the ad after it reaches the first screen */
+        .cr-cover { padding: 1.25rem 1.1rem 1.15rem; }
+        .cr-cover .cr-badge { display: none; }
+        .cr-title .cr-t1 { font-size: clamp(1.8rem, 8.6vw, 2.4rem); }
+        .cr-title .cr-t2 { margin-top: .4rem; font-size: clamp(1.3rem, 6.4vw, 1.7rem); }
+        /* the expression card keeps the format, the expression, the verdict
+           and the buttons; the chips repeat the builder tabs below, and the
+           label stays for screen readers */
+        .cron-flavor-hint, .cron-chips { display: none; }
+        .cron-stage { margin-top: .7rem; }
+        .cron-stage-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+        .cr-page .cr-stage-card .cron-actions { display: grid; grid-template-columns: 1.1fr 1.1fr .8fr; gap: .4rem; }
+        .cr-page .cr-stage-card .cron-actions button { min-height: 2.6rem; padding: .3rem .4rem; font-size: .78rem; }
+      }
+      @media (max-width: 559px) {
+        /* 10px gutters: a 320px phone then has the 300px its ads need */
+        body.cr-page .cr-main, body.cr-page .ta-support { width: calc(100% - 20px); }
+        .cr-page .breadcrumb { display: none; }
+        .cr-stage-card, .cron-panel, .cr-panel-card { padding: .85rem; }
+        .cron-flavors button { min-height: 2.9rem; padding: .3rem .25rem; font-size: .72rem; }
+        .cr-steps, .info-grid { grid-template-columns: 1fr; }
+        .cron-grid { gap: .25rem; }
+        .cr-page .related-tools-section { padding: 1rem .85rem; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        body.cr-page *, body.cr-page *::before, body.cr-page *::after { animation: none !important; transition: none !important; }
+      }
+      @media print { .cr-ad-zone { display: none !important; } }
+    </style>
+    <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header. --pca is redefined
+         per theme so a deep colour is lifted on dark backgrounds. */
+      :root { --pca: 55, 48, 163; }
+      [data-theme="dark"] { --pca: 129, 140, 248; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 129, 140, 248; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/cron-expression-generator.html#webpage",
+      "url": "https://tooladda.online/cron-expression-generator.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-25",
+      "dateModified": "2026-07-25",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+
+  <body class="cr-page">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="container navbar">
+        <a class="brand" href="/" aria-label="ToolAdda home">
+          <span class="brand-mark" aria-hidden="true">T</span>
+          <span>ToolAdda</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Home</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="privacy-policy.html">Privacy</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+              <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+              <path d="M3.1 16.9h10.8" />
+              <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+            </svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+          <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+          <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <div class="cr-shell">
+        <aside class="ta-support" aria-label="Support ToolAdda">
+          <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+        </aside>
+
+        <div class="container cr-main">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span>/</span>
+            <a href="/">Developer Tools</a>
+            <span>/</span>
+            <span>Cron Expression Generator</span>
+          </nav>
+
+          <!-- One grid (.cr-top) places these and is also the script's root
+               ([data-cron]). Under 700px: cover, expression card, ad, lead,
+               builder bench. From 700px the cover is a band on top and the ad
+               sits beside the expression card — never above the tool. -->
+          <div class="cr-top" data-cron>
+            <header class="cr-cover">
+              <div class="cr-cover-copy">
+                <p class="cr-badge">⏱ Developer Tool</p>
+                <h1 class="cr-title"><span class="cr-t1">Cron Expression</span> <span class="cr-t2">Generator</span></h1>
+              </div>
+              <!-- A split-flap board; the text comes from data-t (decoration). -->
+              <div class="cr-board" aria-hidden="true">
+                <div class="cr-board-head"><span data-t="NEXT RUNS · UTC"></span><span class="live" data-t="● LIVE"></span></div>
+                <div class="cr-flaps">
+                  <div class="cr-flap"><b data-t="*/15" style="--d:.2s"></b><i data-t="MIN"></i></div>
+                  <div class="cr-flap"><b data-t="9-17" style="--d:.35s"></b><i data-t="HOUR"></i></div>
+                  <div class="cr-flap"><b data-t="*" style="--d:.5s"></b><i data-t="DAY"></i></div>
+                  <div class="cr-flap"><b data-t="*" style="--d:.65s"></b><i data-t="MONTH"></i></div>
+                  <div class="cr-flap"><b data-t="1-5" style="--d:.8s"></b><i data-t="WEEK"></i></div>
+                </div>
+                <ul class="cr-deps">
+                  <li><span class="day" data-t="MON"></span><span class="time" data-t="09:00"></span><span class="state" data-t="NEXT"></span></li>
+                  <li><span class="day" data-t="MON"></span><span class="time" data-t="09:15"></span><span class="state" data-t="+15 MIN"></span></li>
+                </ul>
+              </div>
+            </header>
+
+            <section class="cr-stage-card" id="cron-tool" aria-label="Cron expression">
+              <div class="cron-flavors" data-flavor role="group" aria-label="Cron format">
+                <button type="button" data-flavor-key="unix" aria-pressed="true">Unix / crontab (5 fields)</button>
+                <button type="button" data-flavor-key="seconds" aria-pressed="false">6-field with seconds</button>
+                <button type="button" data-flavor-key="quartz" aria-pressed="false">Quartz / Java (7 fields)</button>
+              </div>
+              <p class="cron-flavor-hint" data-flavor-hint></p>
+
+              <div class="cron-stage">
+                <label class="cron-stage-label" for="cronExpression">Cron expression — edit directly or use the builder below</label>
+                <input
+                  class="cron-expr-input"
+                  id="cronExpression"
+                  type="text"
+                  spellcheck="false"
+                  autocomplete="off"
+                  autocapitalize="off"
+                  aria-describedby="cronStatus"
+                  data-expr-input
+                />
+                <div class="cron-chips" data-expr-chips></div>
+                <p class="cron-status" id="cronStatus" role="status" aria-live="polite" data-status></p>
+                <div class="cron-warnings" data-warnings hidden></div>
+
+                <div class="cron-actions">
+                  <button type="button" class="is-primary" data-copy-expr>Copy expression</button>
+                  <button type="button" data-share>Copy shareable link</button>
+                  <button type="button" data-reset>Reset</button>
+                </div>
+              </div>
+            </section>
+
+            <!-- Ad: one 300x250 (see .cr-ad-zone CSS) — beside the expression
+                 card from 700px, straight after it below that. -->
+            <div class="cr-ad-zone">
+              <div class="ta-inline-ad" data-unit="inline"></div>
+            </div>
+
+            <div class="cr-intro">
+              <p class="cr-lede hero-lede">
+                Build a crontab schedule field by field, paste an existing expression to see exactly what it does,
+                and preview the next run times in any time zone. Supports Unix 5-field, 6-field with seconds and
+                Quartz syntax — everything runs privately in your browser.
+              </p>
+            </div>
+
+            <div class="cr-bench">
+              <div class="cr-panel-card">
+                <p class="cr-presets-title">Common schedules</p>
+                <div class="cron-presets">
+                  <button type="button" data-preset="* * * * *" data-preset-flavor="unix">Every minute</button>
+                  <button type="button" data-preset="*/5 * * * *" data-preset-flavor="unix">Every 5 minutes</button>
+                  <button type="button" data-preset="*/15 * * * *" data-preset-flavor="unix">Every 15 minutes</button>
+                  <button type="button" data-preset="0 * * * *" data-preset-flavor="unix">Every hour</button>
+                  <button type="button" data-preset="0 */6 * * *" data-preset-flavor="unix">Every 6 hours</button>
+                  <button type="button" data-preset="0 0 * * *" data-preset-flavor="unix">Daily at midnight</button>
+                  <button type="button" data-preset="30 9 * * 1-5" data-preset-flavor="unix">Weekdays 09:30</button>
+                  <button type="button" data-preset="0 9 * * 1" data-preset-flavor="unix">Every Monday 09:00</button>
+                  <button type="button" data-preset="0 0 * * 0" data-preset-flavor="unix">Weekly on Sunday</button>
+                  <button type="button" data-preset="0 0 1 * *" data-preset-flavor="unix">Monthly on the 1st</button>
+                  <button type="button" data-preset="0 0 1 1 *" data-preset-flavor="unix">Yearly on 1 January</button>
+                  <button type="button" data-preset="0 2 * * 6" data-preset-flavor="unix">Saturday 02:00 backup</button>
+                  <button type="button" data-preset="*/30 9-17 * * 1-5" data-preset-flavor="unix">Office hours, every 30 min</button>
+                  <button type="button" data-preset="0 0 0 L * ? *" data-preset-flavor="quartz">Quartz: last day of month</button>
+                  <button type="button" data-preset="0 0 9 ? * 2#1 *" data-preset-flavor="quartz">Quartz: 1st Monday 09:00</button>
+                  <button type="button" data-preset="*/30 * * * * *" data-preset-flavor="seconds">Every 30 seconds</button>
+                </div>
+              </div>
+
+              <div class="cron-columns">
+                <div class="cron-panel">
+                  <h2>Schedule builder</h2>
+                  <div class="cron-tabs" data-tabs role="tablist" aria-label="Cron fields"></div>
+                  <div data-builder></div>
+                </div>
+
+                <div class="cron-panel">
+                  <h2>What it means</h2>
+                  <p class="cron-summary" aria-live="polite" data-description></p>
+
+                  <div class="cron-schedule-controls">
+                    <div class="cron-field">
+                      <label for="cronTimezone">Time zone</label>
+                      <select id="cronTimezone" data-tz></select>
+                    </div>
+                    <div class="cron-field cron-field--count">
+                      <label for="cronCount">Show</label>
+                      <select id="cronCount" data-count>
+                        <option value="5">5 runs</option>
+                        <option value="10" selected>10 runs</option>
+                        <option value="25">25 runs</option>
+                        <option value="50">50 runs</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <h2 class="cr-h2-gap">Next run times</h2>
+                  <ul class="cron-runs" data-next-list></ul>
+                  <p class="cron-meta" data-next-meta></p>
+                  <div class="cron-actions">
+                    <button type="button" data-copy-runs>Copy run times</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="cron-panel">
+                <h2>Ready-to-paste snippets</h2>
+                <div class="cron-snippet-tabs" data-snippet-tabs role="tablist" aria-label="Snippet target">
+                  <button type="button" data-snippet="crontab" class="is-active" aria-selected="true">crontab</button>
+                  <button type="button" data-snippet="github" aria-selected="false">GitHub Actions</button>
+                  <button type="button" data-snippet="kubernetes" aria-selected="false">Kubernetes</button>
+                  <button type="button" data-snippet="node" aria-selected="false">node-cron</button>
+                  <button type="button" data-snippet="python" aria-selected="false">Python</button>
+                  <button type="button" data-snippet="spring" aria-selected="false">Spring</button>
+                </div>
+                <pre class="cron-code" data-snippet-code></pre>
+                <p class="cron-meta" data-snippet-note></p>
+                <div class="cron-actions">
+                  <button type="button" data-copy-snippet>Copy snippet</button>
+                </div>
+              </div>
+
+              <noscript>
+                <p class="cron-meta">This builder needs JavaScript. The cheat sheet and examples below still work without it.</p>
+              </noscript>
+            </div>
+
+            <div class="cron-toast" role="status" aria-live="polite" data-toast></div>
+          </div>
+
+          <!-- ================= HOW TO (new) ================= -->
+          <section class="cr-sec" aria-labelledby="cr-how">
+            <h2 class="cr-h2" id="cr-how">How to build a cron expression in four steps</h2>
+            <p class="cr-sub">Pick the format your scheduler speaks, set the fields, check the English, then copy.</p>
+            <ol class="cr-steps">
+              <li class="cr-step"><span class="n">1</span><h3>Pick a format</h3><p>Unix crontab for servers and GitHub Actions, 6-field with seconds for node-cron or Spring, Quartz for Java schedulers.</p></li>
+              <li class="cr-step"><span class="n">2</span><h3>Set each field</h3><p>Open the Minutes, Hours, Day of Month, Month and Day of Week tabs and choose every, every N, a range or exact values.</p></li>
+              <li class="cr-step"><span class="n">3</span><h3>Check the summary</h3><p>Read the plain-English sentence and the next run times in the time zone your server really uses.</p></li>
+              <li class="cr-step"><span class="n">4</span><h3>Copy the result</h3><p>Copy the expression, a ready snippet for your scheduler, or a shareable link to send to a teammate.</p></li>
+            </ol>
+          </section>
+
+          <!-- ================= SCHEDULERS (new) ================= -->
+          <section class="cr-sec" aria-labelledby="cr-where">
+            <h2 class="cr-h2" id="cr-where">Where schedulers differ</h2>
+            <p class="cr-sub">The same five fields do not behave the same everywhere. Check these two things before you deploy.</p>
+            <div class="cron-table-wrap">
+              <table class="cron-table">
+                <thead><tr><th scope="col">Scheduler</th><th scope="col">Fields</th><th scope="col">Time zone</th><th scope="col">Worth knowing</th></tr></thead>
+                <tbody>
+                  <tr><td>Linux crontab</td><td data-label="Fields">5</td><td data-label="Time zone">The server's local time</td><td data-label="Worth knowing">One-minute resolution; no seconds field.</td></tr>
+                  <tr><td>GitHub Actions</td><td data-label="Fields">5</td><td data-label="Time zone">Always UTC</td><td data-label="Worth knowing">The shortest interval is every 5 minutes, and runs can start late when GitHub is busy.</td></tr>
+                  <tr><td>Kubernetes CronJob</td><td data-label="Fields">5</td><td data-label="Time zone">Controller's zone, or <code>timeZone</code> (1.27+)</td><td data-label="Worth knowing">Set <code>concurrencyPolicy</code> if a slow job must not overlap the next one.</td></tr>
+                  <tr><td>node-cron</td><td data-label="Fields">5 or 6</td><td data-label="Time zone">Local, or the <code>timezone</code> option</td><td data-label="Worth knowing">An optional leading seconds field.</td></tr>
+                  <tr><td>Spring <code>@Scheduled</code></td><td data-label="Fields">6</td><td data-label="Time zone">Server default, or the <code>zone</code> attribute</td><td data-label="Worth knowing">Seconds come first, so <code>0 30 9 * * MON-FRI</code> is 09:30 on weekdays.</td></tr>
+                  <tr><td>Quartz</td><td data-label="Fields">6 or 7</td><td data-label="Time zone">The trigger's time zone</td><td data-label="Worth knowing">One of day-of-month or day-of-week must be <code>?</code>, and day-of-week runs 1-7 from Sunday.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+          <section class="cr-sec">
+            <div class="cr-card">
+            <h2>What is a cron expression?</h2>
+            <p>
+              A <strong>cron expression</strong> is a short string that tells a scheduler when to run a job. Unix
+              <code>crontab</code> uses five space-separated fields — minute, hour, day of month, month and day of week.
+              Schedulers such as Quartz, Spring and node-cron extend the format with a leading seconds column and an
+              optional trailing year, giving six or seven fields. The generator above writes all three variants and
+              explains them back to you in plain English so a schedule never has to be guesswork.
+            </p>
+
+            <div class="cron-table-wrap">
+              <table class="cron-table">
+                <caption class="sr-only">Cron field positions and allowed values</caption>
+                <thead>
+                  <tr><th scope="col">Position</th><th scope="col">Field</th><th scope="col">Allowed values</th><th scope="col">Special characters</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1 <em>(optional)</em></td><td data-label="Field">Seconds</td><td data-label="Allowed values">0-59</td><td data-label="Special characters"><code>, - * /</code></td></tr>
+                  <tr><td>2</td><td data-label="Field">Minutes</td><td data-label="Allowed values">0-59</td><td data-label="Special characters"><code>, - * /</code></td></tr>
+                  <tr><td>3</td><td data-label="Field">Hours</td><td data-label="Allowed values">0-23</td><td data-label="Special characters"><code>, - * /</code></td></tr>
+                  <tr><td>4</td><td data-label="Field">Day of Month</td><td data-label="Allowed values">1-31</td><td data-label="Special characters"><code>, - * / ? L W</code></td></tr>
+                  <tr><td>5</td><td data-label="Field">Month</td><td data-label="Allowed values">1-12 or JAN-DEC</td><td data-label="Special characters"><code>, - * /</code></td></tr>
+                  <tr><td>6</td><td data-label="Field">Day of Week</td><td data-label="Allowed values">0-6 or SUN-SAT (Quartz: 1-7)</td><td data-label="Special characters"><code>, - * / ? L #</code></td></tr>
+                  <tr><td>7 <em>(optional)</em></td><td data-label="Field">Year</td><td data-label="Allowed values">1970-2099</td><td data-label="Special characters"><code>, - * /</code></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h2>Special characters explained</h2>
+            <div class="cron-table-wrap">
+              <table class="cron-table">
+                <caption class="sr-only">Meaning of each cron special character</caption>
+                <thead><tr><th scope="col">Character</th><th scope="col">Meaning</th><th scope="col">Example</th><th scope="col">Reads as</th></tr></thead>
+                <tbody>
+                  <tr><td><code>*</code></td><td data-label="Meaning">Every value in the field</td><td data-label="Example"><code>* * * * *</code></td><td data-label="Reads as">Every minute</td></tr>
+                  <tr><td><code>,</code></td><td data-label="Meaning">A list of values</td><td data-label="Example"><code>0 8,12,18 * * *</code></td><td data-label="Reads as">At 08:00, 12:00 and 18:00</td></tr>
+                  <tr><td><code>-</code></td><td data-label="Meaning">An inclusive range</td><td data-label="Example"><code>0 9-17 * * *</code></td><td data-label="Reads as">Hourly between 09:00 and 17:59</td></tr>
+                  <tr><td><code>/</code></td><td data-label="Meaning">Step values</td><td data-label="Example"><code>*/10 * * * *</code></td><td data-label="Reads as">Every 10 minutes</td></tr>
+                  <tr><td><code>?</code></td><td data-label="Meaning">No specific value (Quartz)</td><td data-label="Example"><code>0 0 12 ? * MON</code></td><td data-label="Reads as">Noon every Monday</td></tr>
+                  <tr><td><code>L</code></td><td data-label="Meaning">Last day / last weekday (Quartz)</td><td data-label="Example"><code>0 0 0 L * ?</code></td><td data-label="Reads as">Midnight on the last day of the month</td></tr>
+                  <tr><td><code>W</code></td><td data-label="Meaning">Nearest weekday (Quartz)</td><td data-label="Example"><code>0 0 0 15W * ?</code></td><td data-label="Reads as">The weekday closest to the 15th</td></tr>
+                  <tr><td><code>#</code></td><td data-label="Meaning">Nth weekday of the month (Quartz)</td><td data-label="Example"><code>0 0 9 ? * 6#3</code></td><td data-label="Reads as">09:00 on the third Friday</td></tr>
+                  <tr><td><code>@daily</code></td><td data-label="Meaning">Shorthand for <code>0 0 * * *</code></td><td data-label="Example"><code>@daily</code></td><td data-label="Reads as">Once a day at midnight</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h2>Common cron expression examples</h2>
+            <div class="cron-table-wrap">
+              <table class="cron-table">
+                <caption class="sr-only">Frequently used cron expressions</caption>
+                <thead><tr><th scope="col">Expression</th><th scope="col">Schedule</th><th scope="col">Typical use</th></tr></thead>
+                <tbody>
+                  <tr><td><code>* * * * *</code></td><td data-label="Schedule">Every minute</td><td data-label="Typical use">Health checks and queue pollers</td></tr>
+                  <tr><td><code>*/5 * * * *</code></td><td data-label="Schedule">Every 5 minutes</td><td data-label="Typical use">Cache warming, metric scrapes</td></tr>
+                  <tr><td><code>0 * * * *</code></td><td data-label="Schedule">Top of every hour</td><td data-label="Typical use">Hourly report generation</td></tr>
+                  <tr><td><code>0 3 * * *</code></td><td data-label="Schedule">Daily at 03:00</td><td data-label="Typical use">Nightly database backups</td></tr>
+                  <tr><td><code>30 9 * * 1-5</code></td><td data-label="Schedule">Weekdays at 09:30</td><td data-label="Typical use">Business-hours reminders</td></tr>
+                  <tr><td><code>0 0 * * 0</code></td><td data-label="Schedule">Sundays at midnight</td><td data-label="Typical use">Weekly log rotation</td></tr>
+                  <tr><td><code>0 0 1 * *</code></td><td data-label="Schedule">First of every month</td><td data-label="Typical use">Invoice and billing runs</td></tr>
+                  <tr><td><code>0 0 1 1 *</code></td><td data-label="Schedule">1 January each year</td><td data-label="Typical use">Annual archive jobs</td></tr>
+                  <tr><td><code>0 22 * * 1-5</code></td><td data-label="Schedule">Weeknights at 22:00</td><td data-label="Typical use">Batch imports after hours</td></tr>
+                  <tr><td><code>*/30 9-17 * * 1-5</code></td><td data-label="Schedule">Every 30 min during office hours</td><td data-label="Typical use">Sync jobs while staff are online</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="info-grid">
+              <div class="info-box">
+                <strong>Built visually</strong>
+                <span>Pick every, every N, a range, or specific values per field — no memorising the syntax.</span>
+              </div>
+              <div class="info-box">
+                <strong>Explained in English</strong>
+                <span>Every expression is translated into a sentence so you can sanity-check it before shipping.</span>
+              </div>
+              <div class="info-box">
+                <strong>Time-zone aware</strong>
+                <span>Preview upcoming runs in any IANA zone, with daylight-saving transitions handled correctly.</span>
+              </div>
+              <div class="info-box">
+                <strong>Private by design</strong>
+                <span>Parsing and scheduling happen in your browser. Nothing is uploaded or logged.</span>
+              </div>
+            </div>
+            </div>
+          </section>
+
+          <section class="cr-sec">
+            <div class="cr-card">
+            <h2>Frequently asked questions</h2>
+            <div class="faq-list cr-faq-list">
+              <details class="faq-item">
+                <summary>What is a cron expression?</summary>
+                <p>A cron expression is a compact string of five to seven space-separated fields that tells a scheduler when to run a job. The classic Unix form is minute, hour, day of month, month and day of week — so <code>30 9 * * 1-5</code> means 09:30 every weekday.</p>
+              </details>
+              <details class="faq-item">
+                <summary>What do the special characters in cron mean?</summary>
+                <p>An asterisk means every value, a comma separates a list, a hyphen makes a range, and a slash sets a step — so <code>*/15</code> means every 15 units. Quartz adds <code>?</code> for no specific value, <code>L</code> for last, <code>W</code> for nearest weekday and <code>#</code> for the nth weekday of the month.</p>
+              </details>
+              <details class="faq-item">
+                <summary>Why does my job run more often when I set both day of month and day of week?</summary>
+                <p>Standard cron treats a restricted day-of-month and a restricted day-of-week as an OR, not an AND. If either field matches, the job runs. To pin a job to one specific weekday, leave day of month as <code>*</code>. Quartz avoids the ambiguity by requiring <code>?</code> in one of the two fields.</p>
+              </details>
+              <details class="faq-item">
+                <summary>Which time zone does cron use?</summary>
+                <p>Traditional crontab uses the server's local time zone, GitHub Actions always uses UTC, and Kubernetes CronJob supports an explicit <code>timeZone</code> field from version 1.27 onwards. Use the time-zone selector above to confirm the real firing times before you deploy.</p>
+              </details>
+              <details class="faq-item">
+                <summary>Does cron support seconds?</summary>
+                <p>Standard Unix crontab has a one-minute resolution and no seconds field. Quartz, Spring, node-cron and cronR accept a leading seconds column, giving a six or seven field expression. Switch the format selector to build those.</p>
+              </details>
+              <details class="faq-item">
+                <summary>Can I share a schedule with a teammate?</summary>
+                <p>Yes. Use <em>Copy shareable link</em> — the expression, format and time zone are stored in the URL, so opening the link reloads the exact same schedule.</p>
+              </details>
+              <details class="faq-item">
+                <summary>Is my data sent to a server?</summary>
+                <p>No. Validation, the plain-English description and the next-run calculations all run locally in your browser. Nothing is uploaded or stored.</p>
+              </details>
+            </div>
+
+            <h2>Related developer tools</h2>
+            <div class="related-links">
+              <a href="uuid-generator.html">UUID Generator</a>
+              <a href="jwt-debugger.html">JWT Debugger</a>
+              <a href="developer-tools/json-formatter.html">JSON Formatter</a>
+              <a href="developer-tools/json-to-yaml.html">JSON to YAML</a>
+              <a href="sitemap-generator.html">Sitemap Generator</a>
+              <a href="password-generator.html">Password Generator</a>
+            </div>
+            </div>
+          </section>
+
+          <!-- ================= FINAL CTA ================= -->
+          <section class="cr-final">
+            <h2>Know exactly when your job runs</h2>
+            <p>Build, check and copy a cron schedule in seconds — with next run times in your own time zone, and nothing sent to a server.</p>
+            <a class="cr-btn cr-btn--primary cr-btn--lg" href="#cron-tool">Build a cron expression</a>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+          <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links">
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms.html">Terms</a>
+          </div>
+        </div>
+        <div>
+          <h3>Stay updated</h3>
+          <p>© <span data-year></span> ToolAdda. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/cron-expression-generator.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/side-ads.js" defer></script>
+    <script src="assets/js/inline-ads.js" data-in-article defer></script>
+  </body>
+</html>

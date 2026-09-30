@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+    <meta name="description" content="Free JWT Encoder by ToolAdda. Build and sign JSON Web Tokens online — edit the header and payload, pick an algorithm (HS256/RS256/ES256), add a secret or private key, and generate a signed JWT. 100% in-browser, nothing is uploaded." />
+    <meta name="theme-color" content="#4f46e5" />
+    <title>JWT Encoder - Generate &amp; Sign JSON Web Tokens Online | ToolAdda</title>
+    <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="ToolAdda" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <link rel="canonical" href="https://tooladda.online/jwt-encoder.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta property="og:title" content="JWT Encoder - Generate &amp; Sign JSON Web Tokens Online" />
+    <meta property="og:description" content="Build and sign JWTs in your browser. Edit header and payload, choose an algorithm, add a secret or private key, and get a signed token." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tooladda.online/jwt-encoder.html" />
+    <meta property="og:site_name" content="ToolAdda" />
+    <meta property="og:image" content="https://tooladda.online/assets/images/og/jwt-encoder.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="JWT Encoder - Generate &amp;amp; Sign JSON Web Tokens Online — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="JWT Encoder - Generate &amp;amp; Sign JSON Web Tokens Online — free online tool on ToolAdda, runs in your browser with no sign-up." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JWT Encoder - Generate &amp; Sign JSON Web Tokens Online" />
+    <meta name="twitter:description" content="Create and sign JSON Web Tokens in-browser with HS, RS, PS, and ES algorithms. Free and private." />
+    <meta name="twitter:image" content="https://tooladda.online/assets/images/og/jwt-encoder.jpg" />
+    <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "JWT Encoder",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any (Web Browser)",
+      "url": "https://tooladda.online/jwt-encoder.html",
+      "description": "Free online JWT encoder. Edit the header and payload, choose a signing algorithm, add a secret or private key, and generate a signed JSON Web Token — entirely in the browser.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Editable header and payload JSON",
+        "Quick-add standard claims (iat, exp, nbf)",
+        "Sign with HS256/384/512, RS256/384/512, PS256/384/512, ES256/384",
+        "Live signed token with color-coded segments",
+        "One-click copy",
+        "100% client-side — secrets and keys never leave your device"
+      ],
+      "publisher": {
+        "@type": "Organization",
+        "name": "ToolAdda",
+        "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+        "url": "https://tooladda.online/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a JWT made of?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Three Base64url segments joined by dots: header, payload and signature. The header names the signing algorithm, the payload holds the claims, and the signature proves the first two parts have not been altered since they were signed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is a JWT encrypted?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No, and this is the single most important thing to understand. Base64 is encoding, not encryption. Anyone holding the token can decode the payload and read every claim in it. The signature proves the token has not been tampered with; it does not hide anything."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "So what should I never put in a JWT?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Anything you would not hand to whoever holds the token: passwords, card numbers, personal data. Put an identifier in the token and keep the sensitive data on your server, where the token is used to look it up."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which signing algorithm should I choose?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "HS256 when the same system both issues and verifies tokens, because it uses one shared secret for both. RS256 or ES256 when other parties need to verify tokens without being able to create them, because those split signing and verification into a private and a public key."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the practical difference between HS256 and RS256?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "With HS256, anyone who can verify a token can also mint one — it is the same secret. With RS256 you can publish the public key freely and remain the only party able to issue tokens. If a third party has to check your tokens, you want RS256 or ES256."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long should my HS256 secret be?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Long and genuinely random — treat it like a cryptographic key rather than a password. A short or guessable secret can be brute-forced offline from a single captured token, after which anyone can forge tokens your system will accept."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my secret or private key sent anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The token is signed on your device using the browser's own Web Crypto implementation, so the key never leaves the page. A signing key pasted into a remote service should be treated as compromised from that moment."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use tokens made here in production?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Treat them as test tokens. For production, sign on your own infrastructure and keep keys in a secrets manager rather than a browser tab. This tool is for building, inspecting and debugging tokens during development."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which claims should I always set?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An expiry (exp) above all — a token without one is valid forever, including after it leaks. Beyond that, iat for issued-at, sub for who the token is about, iss for who issued it, and aud so the token cannot be replayed against a different service."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long should a token last?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "As briefly as your flow allows. Short expiries are the most effective protection there is: a leaked token that expires in fifteen minutes is a far smaller problem than one lasting a year. Use refresh tokens for longer sessions."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I revoke a JWT?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not directly, and this is the main trade-off of the format. A signed token stays valid until it expires, because verification does not involve your server. If you need revocation, keep a denylist of token identifiers or use short expiries with refresh tokens."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is my token being rejected?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Usually one of four things: it has expired, the verifying side has a different secret or key, the algorithm does not match what the verifier expects, or the audience or issuer claim does not match. Decode the payload first — the reason is normally visible in the claims."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between this and a JWT decoder?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "This tool builds and signs a new token from claims you provide. A decoder takes an existing token apart so you can read its header and payload and check its signature. Both are linked from the site."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this tool free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, with no sign-up and no limit. Everything runs in your browser."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "JWT Encoder"
+        }
+      ]
+    }
+  ]
+}
+</script>
+    <style>
+      .jwt-layout { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+      @media (min-width: 900px) { .jwt-layout { grid-template-columns: 1fr 1fr; } }
+      .jwt-col h3 { margin: 0 0 0.55rem; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; }
+      .jwt-field { margin-bottom: 1rem; }
+      .jwt-field > label { display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: 0.4rem; }
+      .jwt-area { width: 100%; border: 1px solid var(--border); border-radius: 12px; padding: 0.85rem 1rem;
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.9rem; line-height: 1.6;
+        background: var(--surface-strong); color: var(--text); outline: none; resize: vertical; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+      .jwt-area:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+      .jwt-area.invalid { border-color: #ef4444; }
+      .jwt-area.header-area { min-height: 90px; }
+      .jwt-area.payload-area { min-height: 190px; }
+      .jwt-area.key-area { min-height: 120px; }
+      .jwt-select { width: 100%; border: 1px solid var(--border); border-radius: 10px; padding: 0.7rem 0.85rem; background: var(--surface-strong); color: var(--text); font: inherit; }
+      .claim-btns { display: flex; gap: 0.45rem; flex-wrap: wrap; margin-top: 0.5rem; }
+      .chip-btn { border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 999px;
+        padding: 0.35rem 0.8rem; font-size: 0.8rem; cursor: pointer; font: inherit; transition: all 0.12s ease; }
+      .chip-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+      .token-out { border: 1px solid var(--border); border-radius: 16px; overflow: hidden; position: relative; margin-top: 0.5rem; }
+      .token-out::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #ef4444, #8b5cf6, #0ea5e9); }
+      .token-out-body { padding: 1.2rem; }
+      .token-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin: 0 0 0.5rem; display: flex; align-items: center; gap: 0.6rem; }
+      .live-chip { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.04em;
+        color: #10b981; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); padding: 0.1rem 0.5rem; border-radius: 999px; text-transform: uppercase; }
+      .live-chip .dot { width: 7px; height: 7px; border-radius: 50%; background: #10b981; animation: pulseDot 1.6s ease-in-out infinite; }
+      @keyframes pulseDot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.7); } }
+      .token-value { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.95rem; line-height: 1.7; word-break: break-all;
+        background: var(--surface-strong); border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1rem; min-height: 3rem; }
+      .token-value.placeholder { color: var(--text-muted); font-family: inherit; }
+      .token-value .c-h { color: #ef4444; font-weight: 700; }
+      .token-value .c-p { color: #8b5cf6; font-weight: 700; }
+      .token-value .c-s { color: #0ea5e9; font-weight: 700; }
+      .token-value .c-dot { color: var(--text-muted); }
+      .token-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.9rem; }
+      .copy-btn.copied { background: linear-gradient(135deg, #10b981, #059669); color: #fff; }
+      .enc-crosslink { margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted); }
+      .enc-crosslink a { color: var(--accent); font-weight: 600; }
+      .key-hint { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; }
+
+      /* ---------- shared polish (scoped) ---------- */
+      [data-jwt-enc] { animation: rulerFade 0.45s ease both; }
+      @keyframes rulerFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+      .pdf-merge-heading .hero-badge { display: inline-block; padding: 0.4rem 0.9rem; border-radius: 999px; font-weight: 700; font-size: 0.82rem;
+        color: var(--accent-strong); border: 1px solid var(--border); background: linear-gradient(135deg, var(--accent-soft), rgba(56, 189, 248, 0.15)); }
+      .pdf-merge-heading .section-title { background: linear-gradient(120deg, var(--accent), #38bdf8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+      .pdf-feature-card { position: relative; overflow: hidden; transition: transform 0.18s ease, box-shadow 0.18s ease; }
+      .pdf-feature-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), #38bdf8); opacity: 0.9; }
+      .pdf-feature-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px -20px rgba(79, 70, 229, 0.55); }
+      body::before {
+        content: ""; position: fixed; inset: -25%; z-index: -1; pointer-events: none;
+        background:
+          radial-gradient(circle at 18% 20%, rgba(79, 70, 229, 0.18), transparent 40%),
+          radial-gradient(circle at 82% 12%, rgba(56, 189, 248, 0.16), transparent 38%),
+          radial-gradient(circle at 68% 82%, rgba(139, 92, 246, 0.14), transparent 42%),
+          radial-gradient(circle at 8% 88%, rgba(16, 185, 129, 0.10), transparent 40%);
+        filter: blur(24px); animation: bgFloat 20s ease-in-out infinite alternate;
+      }
+      @keyframes bgFloat { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(0, -3%, 0) scale(1.06); } }
+      @media (prefers-reduced-motion: reduce) { body::before { animation: none; } [data-jwt-enc] { animation: none; } }
+      .pdf-merge-unified-card {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.28));
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 24px 60px -30px rgba(79, 70, 229, 0.5);
+      }
+      [data-theme="dark"] .pdf-merge-unified-card {
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.62), rgba(15, 23, 42, 0.38));
+        border: 1px solid rgba(148, 163, 184, 0.18); box-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.7);
+      }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/jwt-encoder.html#webpage",
+      "url": "https://tooladda.online/jwt-encoder.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-24",
+      "dateModified": "2026-08-23",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="container navbar">
+        <a class="brand" href="/" aria-label="ToolAdda home">
+          <span class="brand-mark" aria-hidden="true">T</span>
+          <span>ToolAdda</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Home</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="privacy-policy.html">Privacy</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+              <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+              <path d="M3.1 16.9h10.8" />
+              <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+            </svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+          <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+          <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section class="section">
+        <aside class="ta-support" aria-label="Support ToolAdda">
+          <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+        </aside>
+
+        <div class="container">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span>›</span>
+            <a href="/">Developer Tools</a>
+            <span>›</span>
+            <span>JWT Encoder</span>
+          </nav>
+
+          <div class="pdf-merge-shell">
+            <div class="content-card pdf-merge-unified-card">
+              <div class="pdf-merge-intro">
+                <div class="pdf-merge-heading">
+                  <p class="hero-badge">🔐 Developer Tools</p>
+                  <h1 class="section-title">JWT Encoder</h1>
+                  <p>Build and sign a JSON Web Token in seconds. Edit the header and payload, pick an algorithm, add your secret or private key, and get a ready-to-use signed JWT — all privately in your browser.</p>
+                </div>
+              </div>
+
+              <div class="content-card image-tool-panel" data-jwt-enc>
+                <div class="jwt-layout">
+                  <!-- Left: inputs -->
+                  <div class="jwt-col">
+                    <div class="jwt-field">
+                      <label for="enc-alg">Algorithm</label>
+                      <select id="enc-alg" class="jwt-select" data-alg>
+                        <optgroup label="HMAC (shared secret)">
+                          <option value="HS256">HS256</option>
+                          <option value="HS384">HS384</option>
+                          <option value="HS512">HS512</option>
+                        </optgroup>
+                        <optgroup label="RSA (private key)">
+                          <option value="RS256">RS256</option>
+                          <option value="RS384">RS384</option>
+                          <option value="RS512">RS512</option>
+                          <option value="PS256">PS256</option>
+                          <option value="PS384">PS384</option>
+                          <option value="PS512">PS512</option>
+                        </optgroup>
+                        <optgroup label="ECDSA (private key)">
+                          <option value="ES256">ES256</option>
+                          <option value="ES384">ES384</option>
+                        </optgroup>
+                      </select>
+                    </div>
+
+                    <div class="jwt-field">
+                      <label for="enc-header">Header</label>
+                      <textarea id="enc-header" class="jwt-area header-area" data-header spellcheck="false" autocomplete="off"></textarea>
+                    </div>
+
+                    <div class="jwt-field">
+                      <label for="enc-payload">Payload</label>
+                      <textarea id="enc-payload" class="jwt-area payload-area" data-payload spellcheck="false" autocomplete="off"></textarea>
+                      <div class="claim-btns">
+                        <button class="chip-btn" type="button" data-claim="iat">+ iat (now)</button>
+                        <button class="chip-btn" type="button" data-claim="exp">+ exp (+1h)</button>
+                        <button class="chip-btn" type="button" data-claim="nbf">+ nbf (now)</button>
+                        <button class="chip-btn" type="button" data-format>Format JSON</button>
+                      </div>
+                    </div>
+
+                    <div class="jwt-field">
+                      <label data-key-label for="enc-secret">Secret</label>
+                      <input id="enc-secret" class="jwt-area" data-secret type="text" placeholder="your-256-bit-secret" autocomplete="off" style="min-height:auto" />
+                      <textarea id="enc-key" class="jwt-area key-area" data-key spellcheck="false" autocomplete="off" placeholder="-----BEGIN PRIVATE KEY-----" hidden></textarea>
+                      <label style="margin-top:0.5rem;font-weight:400;font-size:0.85rem" data-b64-wrap><input type="checkbox" data-secret-b64 style="width:auto;margin-right:0.4rem" />Secret is base64url encoded</label>
+                      <p class="key-hint" data-key-hint>HMAC uses a shared secret. Switch algorithm to RS/PS/ES to sign with a PEM private key.</p>
+                    </div>
+                  </div>
+
+                  <!-- Right: output -->
+                  <div class="jwt-col">
+                    <div class="token-out">
+                      <div class="token-out-body">
+                        <p class="token-label">Signed JWT <span class="live-chip"><span class="dot" aria-hidden="true"></span>live</span></p>
+                        <div class="token-value placeholder" data-token aria-live="polite">Your signed token will appear here…</div>
+                        <div class="token-actions">
+                          <button class="primary-btn copy-btn" type="button" data-copy disabled>📋 Copy token</button>
+                          <button class="secondary-btn" type="button" data-clear>Reset</button>
+                        </div>
+                        <p class="enc-crosslink">Want to inspect it? <a href="jwt-debugger.html">Open in JWT Debugger →</a></p>
+                      </div>
+                    </div>
+                    <div class="message-box hidden" role="status" aria-live="polite" data-message style="margin-top:1rem"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pdf-summary-grid">
+              <div class="pdf-feature-card">
+                <strong>Sign in the browser</strong>
+                <p>Generate signed tokens with the Web Crypto API — no server, no libraries, no exposure of your keys.</p>
+              </div>
+              <div class="pdf-feature-card">
+                <strong>Many algorithms</strong>
+                <p>HMAC (HS), RSA (RS/PS), and ECDSA (ES) are all supported for real, verifiable signatures.</p>
+              </div>
+              <div class="pdf-feature-card">
+                <strong>Quick claims</strong>
+                <p>Add iat, exp, and nbf with one click, and format your JSON instantly.</p>
+              </div>
+              <div class="pdf-feature-card">
+                <strong>Private by design</strong>
+                <p>Your secret, private key, and generated token never leave your device.</p>
+              </div>
+            </div>
+          </div>
+
+          <section class="section">
+            <div class="content-grid">
+              <article class="content-card">
+                <h2>How it works</h2>
+                <p>ToolAdda base64url-encodes your header and payload, joins them with a dot, and signs that string with your secret or private key using the selected algorithm. The signature is appended to produce a complete <code>header.payload.signature</code> token that other services can verify.</p>
+              </article>
+              <article class="content-card">
+                <h2>Privacy notice</h2>
+                <p>All signing happens locally in your browser. Your secret, private key, payload, and generated token are never uploaded, logged, or stored on any server.</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="section faq-section">
+            <h2 class="section-title">Frequently asked questions</h2>
+            <div class="grid-2">
+              <details class="faq-item">
+                <summary><strong>How do I generate a JWT?</strong></summary>
+                <p>Pick an algorithm, edit the payload with your claims, enter your secret or private key, and the signed token appears instantly on the right.</p>
+              </details>
+              <details class="faq-item">
+                <summary><strong>Are my secret and key safe?</strong></summary>
+                <p>Yes. Signing runs entirely in your browser with the Web Crypto API — nothing is sent anywhere.</p>
+              </details>
+              <details class="faq-item">
+                <summary><strong>What key format do RS/PS/ES need?</strong></summary>
+                <p>A PEM private key in PKCS#8 format (begins with <code>-----BEGIN PRIVATE KEY-----</code>).</p>
+              </details>
+              <details class="faq-item">
+                <summary><strong>Can I verify the token I created?</strong></summary>
+                <p>Yes — open it in our <a href="jwt-debugger.html">JWT Debugger</a> and check the signature with the matching secret or public key.</p>
+              </details>
+              <details class="faq-item">
+                <summary><strong>Is it OK to store sensitive data in the payload?</strong></summary>
+                <p>No. The payload is only encoded, not encrypted, so anyone can read it. Keep only non-sensitive claims.</p>
+              </details>
+              <details class="faq-item">
+                <summary><strong>Which algorithm should I use?</strong></summary>
+                <p>HS256 is common for simple shared-secret setups; RS256 and ES256 are preferred when different parties verify with a public key.</p>
+              </details>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="seo-jwt-enc">
+        <div class="container">
+          <h2 id="seo-jwt-enc">Free online JWT encoder and signer</h2>
+          <p>The <strong>JWT Encoder by ToolAdda</strong> lets developers quickly craft and sign JSON Web Tokens for testing authentication, APIs, and integrations. Edit the claims, choose the signing algorithm, and generate a valid token you can paste into requests or verify elsewhere — without installing anything or exposing your keys to a server.</p>
+          <div class="grid-2">
+            <article class="panel">
+              <h3>How to use</h3>
+              <ol>
+                <li>Choose your signing algorithm.</li>
+                <li>Edit the header and payload claims.</li>
+                <li>Enter your secret or private key and copy the signed token.</li>
+              </ol>
+            </article>
+            <article class="panel">
+              <h3>Benefits</h3>
+              <ul>
+                <li>Real, verifiable signatures for HS, RS, PS, and ES.</li>
+                <li>Live output with one-click copy.</li>
+                <li>Private, free, and no sign-up.</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+          <style>
+        /* Guide section shared by the expanded tool pages. Prefix: tg- */
+        .tg { width: min(1100px, 100% - 2rem); margin: 2.4rem auto 3rem; }
+        .tg-section { margin-top: 2.2rem; }
+        .tg-section h2 {
+          margin: 0 0 .8rem; font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+          font-weight: 900; letter-spacing: -.015em; color: var(--text);
+        }
+        .tg-section h3 { margin: 1.2rem 0 .4rem; font-size: 1rem; font-weight: 800; color: var(--text); }
+        .tg p, .tg li { color: var(--text-muted); line-height: 1.75; font-size: .94rem; }
+        .tg p { margin: 0 0 .85rem; }
+        .tg ul, .tg ol { margin: 0 0 .9rem; padding-left: 1.2rem; display: grid; gap: .42rem; }
+        .tg strong { color: var(--text); }
+        .tg code {
+          font-family: ui-monospace, Consolas, monospace; font-size: .86em;
+          padding: .12rem .34rem; border-radius: 5px;
+          background: var(--surface-strong); border: 1px solid var(--border); color: var(--accent);
+        }
+        .tg-grid { display: grid; gap: .7rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+        .tg-card { border: 1px solid var(--border); border-radius: 15px; background: var(--surface); padding: .95rem 1.05rem; }
+        .tg-card strong { display: block; margin-bottom: .3rem; font-size: .93rem; }
+        .tg-card p { margin: 0; font-size: .86rem; }
+        .tg-tablewrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; margin: .3rem 0 1rem; }
+        .tg-table { width: 100%; border-collapse: collapse; font-size: .89rem; min-width: 430px; }
+        .tg-table th, .tg-table td { padding: .58rem .85rem; text-align: left; border-bottom: 1px solid var(--border); }
+        .tg-table th { background: var(--surface-strong); font-size: .72rem; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+        .tg-table td { color: var(--text-muted); }
+        .tg-table td:first-child { color: var(--text); font-weight: 700; }
+        .tg-table tr:last-child td { border-bottom: 0; }
+        .tg-faq-grid { display: grid; gap: .55rem; }
+        .tg-faq { border: 1px solid var(--border); border-radius: 14px; background: var(--surface); padding: .8rem 1rem; }
+        .tg-faq summary { cursor: pointer; font-size: .92rem; font-weight: 700; color: var(--text); }
+        .tg-faq p { margin: .55rem 0 0; font-size: .88rem; }
+        .tg-note {
+          border: 1px solid var(--border); border-left: 3px solid var(--accent);
+          border-radius: 10px; padding: .8rem 1rem; background: var(--surface);
+          font-size: .88rem !important;
+        }
+      </style>
+      <div class="tg">
+        <section class="tg-section" aria-labelledby="tg-parts-h">
+          <h2 id="tg-parts-h">What a JWT is actually made of</h2>
+          <p>
+            A JSON Web Token is three Base64url segments joined by dots:
+            <code>header.payload.signature</code>. The first two are simply JSON that has been
+            encoded, not encrypted &mdash; anyone holding the token can read them.
+          </p>
+          <ul>
+            <li><strong>Header</strong> &mdash; which algorithm signed the token, and its type.</li>
+            <li><strong>Payload</strong> &mdash; the claims: who the token is about, who issued it, when it expires, and whatever else you add.</li>
+            <li><strong>Signature</strong> &mdash; proof that the first two parts have not been altered since they were signed.</li>
+          </ul>
+          <p>
+            The signature is the whole point. It does not hide anything; it guarantees that nobody
+            has edited the payload in transit. Change one character of the payload and the
+            signature no longer matches.
+          </p>
+        </section>
+
+        <section class="tg-section" aria-labelledby="tg-secret-h">
+          <h2 id="tg-secret-h">A JWT is not encrypted</h2>
+          <p>
+            This is the mistake that causes real breaches, so it is worth being blunt about.
+            <strong>Base64 is encoding, not encryption.</strong> Anyone who obtains the token can
+            decode the payload in one step and read every claim inside it.
+          </p>
+          <p>
+            So never put anything secret in a JWT payload: no passwords, no card numbers, no
+            personal data you would not hand to whoever holds the token. Put an identifier in the
+            token and keep the sensitive data on your server, where the token is used to look it up.
+          </p>
+        </section>
+
+        <section class="tg-section" aria-labelledby="tg-alg-h">
+          <h2 id="tg-alg-h">Choosing an algorithm</h2>
+          <div class="tg-tablewrap">
+            <table class="tg-table">
+              <thead>
+                <tr><th scope="col">Family</th><th scope="col">How it works</th><th scope="col">Use when</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>HS256 / HS384 / HS512</td><td>One shared secret both signs and verifies</td><td>The same system issues and checks the token.</td></tr>
+                <tr><td>RS256 / RS384 / RS512</td><td>A private key signs, a public key verifies</td><td>Other parties must verify without being able to issue.</td></tr>
+                <tr><td>ES256 / ES384</td><td>Elliptic curve — same split, smaller keys</td><td>Same as RS, when you want shorter signatures.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            The distinction that matters: with <strong>HS</strong>, anyone who can verify a token
+            can also mint one, because it is the same secret. With <strong>RS</strong> and
+            <strong>ES</strong>, you can hand out the public key freely and still be the only party
+            able to issue tokens. If a third party needs to check your tokens, you want RS or ES.
+          </p>
+          <p>
+            If you use HS, the secret must be genuinely long and random. A short or guessable secret
+            can be brute-forced offline from a single captured token, at which point anyone can
+            forge tokens that your system will trust.
+          </p>
+        </section>
+
+        <section class="tg-section" aria-labelledby="tg-claims-h">
+          <h2 id="tg-claims-h">The standard claims worth setting</h2>
+          <ul>
+            <li><code>exp</code> &mdash; expiry. Always set one. A token without an expiry is valid forever, including after it leaks.</li>
+            <li><code>iat</code> &mdash; issued at. Useful for auditing and for invalidating everything issued before a certain moment.</li>
+            <li><code>sub</code> &mdash; subject: who the token is about.</li>
+            <li><code>iss</code> &mdash; issuer: who created it, so a verifier can reject tokens from elsewhere.</li>
+            <li><code>aud</code> &mdash; audience: which service the token is meant for, so it cannot be replayed against another.</li>
+            <li><code>nbf</code> &mdash; not before, if the token should only become valid later.</li>
+          </ul>
+          <p>
+            Short expiries are the single most effective protection. A leaked token that expires in
+            fifteen minutes is a much smaller problem than one that lasts a year.
+          </p>
+        </section>
+
+        <section class="tg-section" aria-labelledby="tg-privacy-h">
+          <h2 id="tg-privacy-h">Signing happens in your browser</h2>
+          <p>
+            The token is built and signed on your device using the browser's own Web Crypto
+            implementation. Your secret or private key is never transmitted, which is the only
+            acceptable arrangement for a tool like this &mdash; a signing key pasted into a remote
+            service should be considered compromised from that moment.
+          </p>
+          <p>
+            Even so, treat tokens made here as test tokens. For production signing, use your own
+            infrastructure and keep keys in a secrets manager rather than a browser tab.
+          </p>
+        </section>
+
+        <section class="tg-section" aria-labelledby="tg-faq-h">
+          <h2 id="tg-faq-h">Frequently asked questions</h2>
+          <div class="tg-faq-grid">
+            <details class="tg-faq">
+              <summary><strong>What is a JWT made of?</strong></summary>
+              <p>Three Base64url segments joined by dots: header, payload and signature. The header names the signing algorithm, the payload holds the claims, and the signature proves the first two parts have not been altered since they were signed.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Is a JWT encrypted?</strong></summary>
+              <p>No, and this is the single most important thing to understand. Base64 is encoding, not encryption. Anyone holding the token can decode the payload and read every claim in it. The signature proves the token has not been tampered with; it does not hide anything.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>So what should I never put in a JWT?</strong></summary>
+              <p>Anything you would not hand to whoever holds the token: passwords, card numbers, personal data. Put an identifier in the token and keep the sensitive data on your server, where the token is used to look it up.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Which signing algorithm should I choose?</strong></summary>
+              <p>HS256 when the same system both issues and verifies tokens, because it uses one shared secret for both. RS256 or ES256 when other parties need to verify tokens without being able to create them, because those split signing and verification into a private and a public key.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>What is the practical difference between HS256 and RS256?</strong></summary>
+              <p>With HS256, anyone who can verify a token can also mint one — it is the same secret. With RS256 you can publish the public key freely and remain the only party able to issue tokens. If a third party has to check your tokens, you want RS256 or ES256.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>How long should my HS256 secret be?</strong></summary>
+              <p>Long and genuinely random — treat it like a cryptographic key rather than a password. A short or guessable secret can be brute-forced offline from a single captured token, after which anyone can forge tokens your system will accept.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Is my secret or private key sent anywhere?</strong></summary>
+              <p>No. The token is signed on your device using the browser's own Web Crypto implementation, so the key never leaves the page. A signing key pasted into a remote service should be treated as compromised from that moment.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Can I use tokens made here in production?</strong></summary>
+              <p>Treat them as test tokens. For production, sign on your own infrastructure and keep keys in a secrets manager rather than a browser tab. This tool is for building, inspecting and debugging tokens during development.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Which claims should I always set?</strong></summary>
+              <p>An expiry (exp) above all — a token without one is valid forever, including after it leaks. Beyond that, iat for issued-at, sub for who the token is about, iss for who issued it, and aud so the token cannot be replayed against a different service.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>How long should a token last?</strong></summary>
+              <p>As briefly as your flow allows. Short expiries are the most effective protection there is: a leaked token that expires in fifteen minutes is a far smaller problem than one lasting a year. Use refresh tokens for longer sessions.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Can I revoke a JWT?</strong></summary>
+              <p>Not directly, and this is the main trade-off of the format. A signed token stays valid until it expires, because verification does not involve your server. If you need revocation, keep a denylist of token identifiers or use short expiries with refresh tokens.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Why is my token being rejected?</strong></summary>
+              <p>Usually one of four things: it has expired, the verifying side has a different secret or key, the algorithm does not match what the verifier expects, or the audience or issuer claim does not match. Decode the payload first — the reason is normally visible in the claims.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>What is the difference between this and a JWT decoder?</strong></summary>
+              <p>This tool builds and signs a new token from claims you provide. A decoder takes an existing token apart so you can read its header and payload and check its signature. Both are linked from the site.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Is this tool free?</strong></summary>
+              <p>Yes, with no sign-up and no limit. Everything runs in your browser.</p>
+            </details>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+          <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links">
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms.html">Terms</a>
+          </div>
+        </div>
+        <div>
+          <h3>Stay updated</h3>
+          <p>© <span data-year></span> ToolAdda. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/jwt-encoder.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/side-ads.js" defer></script>
+    <script src="assets/js/inline-ads.js" data-in-article defer></script>
+  </body>
+</html>

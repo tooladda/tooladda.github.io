@@ -1,0 +1,2152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+<meta name="description" content="Free online scientific calculator with sin, cos, tan, log, ln, powers, roots and factorials. DEG/RAD/GRAD, editable tape, memory. No signup, works offline." />
+<title>Scientific Calculator Online — Free, No Download | ToolAdda</title>
+<link rel="stylesheet" href="assets/css/style.css" />
+<link rel="manifest" href="sci-calculator-manifest.json" />
+<style>
+/* ======================================================================
+   Page shell — warm lab backdrop; calculator keeps OSCILLOSCOPE console.
+   ====================================================================== */
+.sc-page{
+  --pg-bg:#e8eeec;--pg-grad:radial-gradient(920px 480px at 6% -8%,rgba(74,143,130,.09),transparent 58%),radial-gradient(780px 420px at 100% 0%,rgba(106,173,150,.07),transparent 52%),radial-gradient(640px 340px at 50% 100%,rgba(82,152,127,.06),transparent 55%);
+  --pg-surface:#f7faf9;--pg-text:#1e2b28;--pg-muted:#5a6b66;
+  --pg-border:rgba(30,43,40,.1);--pg-border2:rgba(30,43,40,.16);
+  --pg-accent:#4a8f82;--pg-accent2:#2f6b61;--pg-soft:rgba(74,143,130,.12);
+  --pg-brand:linear-gradient(135deg,#4a8f82 0%,#52987f 52%,#6aad96 100%);
+  --pg-sh:0 1px 2px rgba(30,43,40,.05),0 8px 28px rgba(74,143,130,.1),0 20px 48px rgba(30,43,40,.06);
+}
+[data-theme="dark"] .sc-page{
+  --pg-bg:#0f1413;--pg-grad:radial-gradient(920px 480px at 6% -8%,rgba(109,179,168,.1),transparent 58%),radial-gradient(780px 420px at 100% 0%,rgba(82,152,127,.08),transparent 52%),radial-gradient(640px 340px at 50% 100%,rgba(74,143,130,.06),transparent 55%);
+  --pg-surface:#1a2220;--pg-text:#e8eeec;--pg-muted:#9aa8a3;
+  --pg-border:rgba(168,184,178,.14);--pg-border2:rgba(168,184,178,.22);
+  --pg-accent:#6db3a8;--pg-accent2:#9fd4cc;--pg-soft:rgba(109,179,168,.14);
+  --pg-brand:linear-gradient(135deg,#5a9e92 0%,#6aad96 52%,#8ec9bf 100%);
+  --pg-sh:0 1px 2px rgba(0,0,0,.28),0 8px 28px rgba(0,0,0,.32),0 20px 48px rgba(0,0,0,.22);
+}
+body.sc-page{background:var(--pg-bg)!important;background-image:var(--pg-grad)!important;background-attachment:fixed!important;color:var(--pg-text)!important}
+.sc-page .section{color:var(--pg-text)}
+.sc-page .content-card,.sc-page .faq-section,.sc-page .cta-section{background:var(--pg-surface);border-color:var(--pg-border);box-shadow:var(--pg-sh)}
+.sc-page .section-title{color:var(--pg-text)}
+
+/* ---------- hero ---------- */
+.sc-hero{margin-bottom:1rem;padding:1rem 1.1rem 1.05rem;border:1px solid var(--pg-border);border-radius:18px;
+  background:linear-gradient(180deg,var(--pg-surface),color-mix(in srgb,var(--pg-bg) 35%,var(--pg-surface)));
+  box-shadow:var(--pg-sh);position:relative;overflow:hidden}
+.sc-hero::before{content:"";position:absolute;inset:0 auto auto 0;width:100%;height:3px;background:var(--pg-brand);opacity:.95}
+.sc-hero-badge{display:inline-flex;align-items:center;gap:.25rem;font-size:10px;font-weight:700;
+  letter-spacing:.05em;text-transform:uppercase;color:var(--pg-accent2);background:var(--pg-soft);
+  border:1px solid color-mix(in srgb,var(--pg-accent) 18%,var(--pg-border));padding:.14rem .45rem;
+  border-radius:999px;margin:0 0 .35rem;line-height:1.2}
+.sc-hero h1{font-size:clamp(1.35rem,3.2vw,1.85rem);margin:0 0 .4rem;letter-spacing:-.025em;font-weight:800;color:var(--pg-text)}
+.sc-hero-lede{margin:0;color:var(--pg-muted);font-size:.93rem;max-width:68ch;line-height:1.55}
+.sc-hero-lede code{font-family:var(--sc-mono,ui-monospace,monospace);font-size:.88em;background:var(--pg-soft);
+  color:var(--pg-accent2);padding:.08em .35em;border-radius:5px}
+.sc-badges{display:flex;flex-wrap:wrap;gap:.35rem;margin:.65rem 0 0;padding:0;list-style:none}
+.sc-badge{font-size:.71rem;font-weight:700;padding:.28rem .62rem;border-radius:999px;
+  border:1px solid var(--pg-border);background:color-mix(in srgb,var(--pg-surface) 88%,var(--pg-soft));
+  color:var(--pg-muted);white-space:nowrap}
+.sc-hero-cta{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.75rem}
+.sc-cta{min-height:44px;padding:.52rem 1rem;font-size:.86rem;font-weight:750;text-decoration:none;
+  border-radius:11px;display:inline-flex;align-items:center;justify-content:center;gap:.35rem;
+  transition:transform .18s cubic-bezier(.32,.72,0,1),box-shadow .18s,filter .18s,border-color .18s}
+.sc-cta-primary{background:var(--pg-brand)!important;color:#fff!important;-webkit-text-fill-color:#fff;
+  border:1px solid rgba(255,255,255,.18);box-shadow:0 6px 18px rgba(74,143,130,.28)}
+.sc-cta-primary:hover{filter:brightness(1.03);transform:translateY(-1px);box-shadow:0 10px 24px rgba(74,143,130,.36)}
+.sc-cta-ghost{background:var(--pg-surface)!important;color:var(--pg-text)!important;-webkit-text-fill-color:var(--pg-text);
+  border:1px solid var(--pg-border2)}
+.sc-cta-ghost:hover{border-color:var(--pg-accent);background:var(--pg-soft)!important;transform:translateY(-1px)}
+@media(max-width:520px){.sc-hero-cta .sc-cta{flex:1 1 100%;justify-content:center}}
+
+/* ---------- tool anchor wrap ---------- */
+.sc-tool-wrap{scroll-margin-top:5.5rem;margin-bottom:.5rem}
+.sc-tool-wrap .cal-privacy-banner{margin-bottom:.75rem}
+
+/* ======================================================================
+   "OSCILLOSCOPE" — a design language for this calculator.
+   Reference is laboratory instrumentation, not phone calculators: an
+   obsidian chassis, machined key faces, brass-amber operators, and a
+   recessed phosphor display well.
+
+   The signature decision: THE DISPLAY STAYS DARK IN BOTH THEMES. Real
+   instruments have a dark readout regardless of the room, and it is the
+   single detail that makes this calculator recognisable at a glance.
+
+   No blue/white, no purple gradient, no glass card.
+   ====================================================================== */
+.cal-shell{
+  /* --- chassis --- */
+  --sc-bg:#0e1113;            /* obsidian, faint green cast */
+  --sc-surface:#161b1e;
+  --sc-raised:#1e262a;
+  --sc-hover:#263036;
+  --sc-line:#2b353b;
+  --sc-line-soft:#212a2f;
+  /* --- readout (identical in both themes) --- */
+  --sc-display:#070b0a;
+  --sc-display-2:#0b1211;
+  --sc-phosphor:#d8f5e7;
+  --sc-phosphor-dim:#6f9c8b;
+  --sc-glow:rgba(52,224,161,.16);
+  /* --- key roles --- */
+  --sc-num:#232c31;           /* numerals: machined graphite */
+  --sc-num-face:#2b363c;
+  --sc-op:#f0a94c;            /* operators: brass */
+  --sc-op-bg:rgba(240,169,76,.13);
+  --sc-fn:#5fd3c4;            /* functions: teal */
+  --sc-fn-bg:rgba(95,211,196,.11);
+  --sc-eq:#34e0a1;            /* equals: phosphor mint */
+  --sc-danger:#ff6b6b;
+  --sc-warn:#f0a94c;
+  /* --- type --- */
+  --sc-text:#e6edf0;
+  --sc-muted:#8fa2ab;
+  --sc-r:14px; --sc-r-sm:9px;
+  --sc-mono:ui-monospace,"SFMono-Regular","JetBrains Mono","Cascadia Mono",Menlo,Consolas,monospace;
+  --sc-ease:cubic-bezier(.32,.72,0,1);
+  max-width:1320px;margin:0 auto;padding-bottom:6rem;
+}
+/* Light theme: warm lab-paper chassis, same brass/teal accents, dark readout. */
+:root:not([data-theme="dark"]) .cal-shell{
+  --sc-bg:#efeae1;
+  --sc-surface:#fbf9f5;
+  --sc-raised:#ffffff;
+  --sc-hover:#f3efe7;
+  --sc-line:#ddd5c8;
+  --sc-line-soft:#e8e1d6;
+  --sc-num:#ffffff;
+  --sc-num-face:#fdfcfa;
+  --sc-op:#b06a10;
+  --sc-op-bg:rgba(240,169,76,.18);
+  --sc-fn:#0d7a6d;
+  --sc-fn-bg:rgba(13,122,109,.1);
+  --sc-eq:#0f8f63;
+  --sc-text:#1c2426;
+  --sc-muted:#63747c;
+}
+
+/* ---------- chassis ---------- */
+.cal-console{
+  position:relative;border-radius:var(--sc-r);border:1px solid var(--sc-line);
+  background:
+    radial-gradient(120% 90% at 50% -20%, rgba(95,211,196,.06), transparent 60%),
+    var(--sc-bg);
+  padding:clamp(.7rem,2vw,1.1rem);
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 20px 48px -28px rgba(0,0,0,.7),
+             0 0 0 1px rgba(95,211,196,.05);
+  color:var(--sc-text);
+}
+.cal-console::after{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--sc-r) var(--sc-r) 0 0;pointer-events:none;
+  background:linear-gradient(90deg,var(--sc-fn),var(--sc-op),var(--sc-eq));opacity:.85;
+}
+/* hairline engineering grid — the texture that says "instrument" */
+.cal-console::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:.5;
+  background-image:
+    linear-gradient(var(--sc-line-soft) 1px,transparent 1px),
+    linear-gradient(90deg,var(--sc-line-soft) 1px,transparent 1px);
+  background-size:22px 22px;
+  -webkit-mask-image:radial-gradient(120% 70% at 50% 0%,#000 8%,transparent 68%);
+          mask-image:radial-gradient(120% 70% at 50% 0%,#000 8%,transparent 68%);
+}
+.cal-console>*{position:relative;z-index:1}
+
+.cal-privacy-banner{
+  display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;font-weight:650;font-size:.82rem;
+  color:var(--sc-eq);background:rgba(52,224,161,.09);
+  border:1px solid rgba(52,224,161,.24);border-radius:var(--sc-r-sm);
+  padding:.6rem .85rem;margin-bottom:.85rem;
+}
+:root:not([data-theme="dark"]) .cal-privacy-banner{color:#0b6b4a;background:rgba(15,143,99,.09)}
+
+/* ---------- mode rail ---------- */
+.cal-mode-tabs{
+  display:flex;gap:.25rem;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;
+  padding:.28rem;margin-bottom:.9rem;border-radius:999px;
+  border:1px solid var(--sc-line);background:var(--sc-surface);
+}
+.cal-mode-tabs::-webkit-scrollbar{display:none}
+.cal-mode-tab{
+  flex:1 0 auto;border:0;background:transparent;color:var(--sc-muted);cursor:pointer;
+  border-radius:999px;padding:.5rem .9rem;min-height:42px;font-weight:750;font-size:.79rem;
+  white-space:nowrap;transition:color .18s var(--sc-ease),background .18s var(--sc-ease);
+}
+.cal-mode-tab:hover{color:var(--sc-text);background:var(--sc-hover)}
+.cal-mode-tab.is-active{
+  background:linear-gradient(180deg,var(--sc-raised),var(--sc-surface));
+  color:var(--sc-fn);box-shadow:0 0 0 1px var(--sc-line), 0 4px 12px -6px rgba(0,0,0,.6),
+             inset 0 1px 0 rgba(95,211,196,.12);
+}
+.cal-mode-tab:focus-visible{outline:2px solid var(--sc-op);outline-offset:2px}
+.cal-mode-panel{display:none}
+.cal-mode-panel.is-active{display:block}
+
+/* ---------- layout ---------- */
+.cal-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,360px);gap:1rem;align-items:start}
+.cal-main{min-width:0}
+.cal-sidebar{min-width:0;display:flex;flex-direction:column;gap:.7rem}
+@media (max-width:1000px){ .cal-layout{grid-template-columns:1fr} }
+
+/* ---------- angle mode row ---------- */
+.cal-angle-row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:.6rem}
+.cal-angle-toggle{display:inline-flex;padding:.22rem;border-radius:999px;border:1px solid var(--sc-line);background:var(--sc-surface)}
+.cal-angle-btn{
+  border:0;background:transparent;color:var(--sc-muted);cursor:pointer;font-family:var(--sc-mono);
+  font-weight:800;font-size:.74rem;letter-spacing:.08em;padding:.45rem .9rem;min-height:38px;border-radius:999px;
+  transition:color .16s var(--sc-ease),background .16s var(--sc-ease),box-shadow .16s var(--sc-ease);
+}
+.cal-angle-btn:hover{color:var(--sc-text)}
+.cal-angle-btn.is-active{
+  background:var(--sc-op-bg);color:var(--sc-op);
+  box-shadow:inset 0 0 0 1px rgba(240,169,76,.42), 0 0 14px -6px var(--sc-op);
+}
+.cal-angle-btn:focus-visible{outline:2px solid var(--sc-op);outline-offset:2px}
+
+.cal-mini-btn{
+  border:1px solid var(--sc-line);background:var(--sc-surface);color:var(--sc-muted);cursor:pointer;
+  border-radius:var(--sc-r-sm);padding:.4rem .7rem;min-height:38px;font-weight:700;font-size:.76rem;
+  transition:color .16s var(--sc-ease),border-color .16s var(--sc-ease),background .16s var(--sc-ease);
+}
+.cal-mini-btn:hover{color:var(--sc-fn);border-color:var(--sc-fn)}
+.cal-mini-btn.is-active{background:var(--sc-fn-bg);color:var(--sc-fn);border-color:var(--sc-fn)}
+.cal-mini-btn:focus-visible{outline:2px solid var(--sc-op);outline-offset:2px}
+
+/* ---------- the readout well ---------- */
+.cal-expr-input{
+  width:100%;border:1px solid var(--sc-line);border-bottom:0;
+  border-radius:var(--sc-r) var(--sc-r) 0 0;
+  background:var(--sc-display-2);color:var(--sc-phosphor);
+  font-family:var(--sc-mono);font-size:clamp(.95rem,2.4vw,1.1rem);
+  padding:.8rem .95rem;min-height:52px;letter-spacing:.01em;
+}
+.cal-expr-input::placeholder{color:var(--sc-phosphor-dim);opacity:.75}
+.cal-expr-input:focus{outline:0;border-color:var(--sc-fn);box-shadow:0 0 0 1px var(--sc-fn)}
+.cal-bracket-indicator{
+  font-family:var(--sc-mono);font-size:.7rem;color:var(--sc-phosphor-dim);
+  background:var(--sc-display-2);border-inline:1px solid var(--sc-line);
+  padding:0 .95rem;min-height:1.1rem;
+}
+.cal-bracket-indicator.is-unbalanced{color:var(--sc-warn)}
+.cal-preview{
+  font-family:var(--sc-mono);font-size:.8rem;color:var(--sc-phosphor-dim);
+  background:var(--sc-display-2);border-inline:1px solid var(--sc-line);
+  padding:.1rem .95rem .35rem;min-height:1.3rem;overflow-x:auto;white-space:nowrap;
+}
+.cal-display{
+  position:relative;border:1px solid var(--sc-line);border-top:0;
+  border-radius:0 0 var(--sc-r) var(--sc-r);
+  background:linear-gradient(180deg,var(--sc-display-2),var(--sc-display));
+  color:var(--sc-phosphor);font-family:var(--sc-mono);font-weight:700;
+  font-size:clamp(1.5rem,5.2vw,2.5rem);line-height:1.25;
+  padding:.5rem .95rem .8rem;text-align:right;overflow-x:auto;white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+  text-shadow:0 0 22px var(--sc-glow), 0 0 40px rgba(52,224,161,.08);
+  box-shadow:inset 0 14px 28px -20px rgba(0,0,0,.95), inset 0 -1px 0 rgba(255,255,255,.04),
+             0 0 0 1px rgba(95,211,196,.06);
+  scrollbar-width:thin;
+  min-height:3.2rem;
+}
+/* faint scanlines across the readout — subtle, never distracting */
+.cal-display::after{
+  content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;opacity:.5;
+  background:repeating-linear-gradient(180deg,rgba(255,255,255,.028) 0 1px,transparent 1px 3px);
+}
+.cal-display.is-error{color:var(--sc-danger);text-shadow:0 0 22px rgba(255,107,107,.2)}
+.cal-engine-error{
+  margin:.6rem 0 0;padding:.65rem .8rem;border-radius:var(--sc-r-sm);font-size:.8rem;line-height:1.55;
+  color:var(--sc-danger);background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);
+}
+.cal-engine-error[hidden]{display:none}
+
+/* ---------- keypad: machined keys ---------- */
+.cal-pad{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.4rem;margin-top:.7rem}
+.cal-pad.basic-only{grid-template-columns:repeat(4,minmax(0,1fr))}
+.cal-pad button{
+  position:relative;border:1px solid var(--sc-line);border-radius:var(--sc-r-sm);
+  background:linear-gradient(180deg,var(--sc-num-face),var(--sc-num));
+  color:var(--sc-text);cursor:pointer;font-weight:700;font-size:.92rem;
+  padding:.7rem .25rem;min-height:48px;font-variant-numeric:tabular-nums;
+  box-shadow:0 1px 0 rgba(255,255,255,.07) inset, 0 2px 0 rgba(0,0,0,.35), 0 4px 10px -6px rgba(0,0,0,.6);
+  transition:transform .09s var(--sc-ease),background .14s var(--sc-ease),box-shadow .09s var(--sc-ease);
+  -webkit-tap-highlight-color:transparent;
+}
+:root:not([data-theme="dark"]) .cal-pad button{box-shadow:0 1px 0 rgba(255,255,255,.9) inset, 0 2px 0 rgba(0,0,0,.09), 0 4px 10px -7px rgba(0,0,0,.3)}
+@media (hover:hover){ .cal-pad button:hover{background:var(--sc-hover)} }
+.cal-pad button:active{transform:translateY(2px);box-shadow:0 0 0 rgba(0,0,0,0), 0 1px 4px -2px rgba(0,0,0,.6) inset}
+.cal-pad button:focus-visible{outline:2px solid var(--sc-op);outline-offset:2px;z-index:2}
+.cal-pad button.op{color:var(--sc-op);background:linear-gradient(180deg,var(--sc-num-face),var(--sc-num));
+  box-shadow:0 1px 0 rgba(255,255,255,.07) inset, 0 2px 0 rgba(0,0,0,.35), inset 0 0 0 1px rgba(240,169,76,.32);
+  font-weight:800}
+.cal-pad button.op:hover{background:var(--sc-op-bg);color:var(--sc-op)}
+.cal-pad button.eq{
+  grid-column:span 2;color:#04140d;font-weight:800;border-color:transparent;
+  background:linear-gradient(180deg,#5cf0b8,var(--sc-eq));
+  box-shadow:0 2px 0 rgba(0,0,0,.3), 0 8px 20px -10px var(--sc-eq);
+}
+:root:not([data-theme="dark"]) .cal-pad button.eq{color:#fff;background:linear-gradient(180deg,#14a877,var(--sc-eq))}
+.cal-pad button.wide{grid-column:span 2}
+@media (max-width:560px){
+  .sc-hero{padding:.85rem .9rem}
+  .cal-pad{grid-template-columns:repeat(4,minmax(0,1fr));gap:.35rem}
+  .cal-pad button{font-size:.85rem;padding:.6rem .15rem;min-height:46px}
+}
+
+.cal-percent-row,.cal-toggles-row,.cal-fn-row,.cal-tape-actions,.cal-bitwise-row,.cal-mem-row{
+  display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.6rem
+}
+.cal-percent-row button,.cal-bitwise-row button,.cal-mem-row button,.cal-tape-actions button{
+  flex:1 1 auto;border:1px solid var(--sc-line);background:var(--sc-surface);color:var(--sc-muted);
+  border-radius:var(--sc-r-sm);padding:.45rem .6rem;min-height:40px;font-size:.75rem;font-weight:700;cursor:pointer;
+  transition:color .16s var(--sc-ease),border-color .16s var(--sc-ease),background .16s var(--sc-ease),transform .14s var(--sc-ease)
+}
+.cal-percent-row button:hover,.cal-bitwise-row button:hover,.cal-mem-row button:hover,.cal-tape-actions button:hover{
+  color:var(--sc-fn);border-color:var(--sc-fn);background:var(--sc-fn-bg);transform:translateY(-1px)}
+.cal-percent-row button:focus-visible,.cal-bitwise-row button:focus-visible,.cal-mem-row button:focus-visible,.cal-tape-actions button:focus-visible{outline:2px solid var(--sc-op);outline-offset:2px}
+
+/* ---------- panels ---------- */
+.cal-panel,.cal-base-panel,.cal-result-box{
+  border:1px solid var(--sc-line);border-radius:var(--sc-r);background:var(--sc-surface);
+  padding:.85rem;margin-top:.7rem;color:var(--sc-text);
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 8px 24px -16px rgba(0,0,0,.5)
+}
+.cal-panel h3,.cal-base-panel h3{margin:0 0 .65rem;font-size:.76rem;font-weight:800;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--sc-fn)}
+.cal-panel h3 span{font-weight:650;text-transform:none;letter-spacing:0;color:var(--sc-muted)}
+.cal-panel[hidden]{display:none}
+.cal-base-panel{display:none}
+.cal-base-panel.is-open{display:block}
+.cal-base-row{display:flex;justify-content:space-between;gap:.7rem;font-family:var(--sc-mono);
+  font-size:.85rem;padding:.3rem 0;border-bottom:1px solid var(--sc-line-soft)}
+.cal-base-row:last-of-type{border-bottom:0}
+.cal-base-row .lbl{color:var(--sc-fn);font-weight:800;letter-spacing:.08em;font-size:.72rem}
+.cal-result-box{font-family:var(--sc-mono);font-size:.92rem;white-space:pre-wrap;word-break:break-word}
+
+.cal-var-row,.cal-tape-entry{
+  display:flex;gap:.5rem;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  padding:.5rem .6rem;border-radius:var(--sc-r-sm);border:1px solid var(--sc-line-soft);
+  background:var(--sc-bg);margin-bottom:.35rem;font-size:.82rem
+}
+.cal-tape-entry{cursor:pointer;transition:border-color .16s var(--sc-ease),background .16s var(--sc-ease)}
+.cal-tape-entry:hover{border-color:var(--sc-fn);background:var(--sc-hover)}
+.cal-tape-entry .expr{font-family:var(--sc-mono);color:var(--sc-muted);min-width:0;overflow-wrap:anywhere}
+.cal-tape-entry .res{font-family:var(--sc-mono);font-weight:800;color:var(--sc-eq);white-space:nowrap}
+.cal-tape-entry.is-error .res{color:var(--sc-danger)}
+.cal-tape-sep{font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--sc-muted);padding:.5rem .2rem .25rem;border-top:1px dashed var(--sc-line)}
+.cal-tape-list{max-height:min(46vh,420px);overflow-y:auto;scrollbar-width:thin}
+
+.cal-stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:.5rem}
+.cal-tape-entry.is-active,.cal-tape-entry:focus-visible{border-color:var(--sc-op);background:var(--sc-op-bg);outline:0}
+.cal-stat-card{border:1px solid var(--sc-line);border-radius:var(--sc-r-sm);padding:.6rem;background:var(--sc-bg);min-width:0;
+  transition:transform .16s var(--sc-ease),border-color .16s var(--sc-ease)}
+.cal-stat-card:hover{border-color:color-mix(in srgb,var(--sc-fn) 40%,var(--sc-line));transform:translateY(-1px)}
+.cal-stat-card .lbl{display:block;font-size:.66rem;font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--sc-muted);margin-bottom:.15rem}
+.cal-stat-card .val{font-family:var(--sc-mono);font-size:1.05rem;font-weight:800;color:var(--sc-fn);
+  overflow-wrap:anywhere}
+
+.cal-graph-canvas-wrap{border:1px solid var(--sc-line);border-radius:var(--sc-r);overflow:hidden;
+  background:var(--sc-display);margin-top:.6rem}
+.cal-graph-canvas-wrap canvas{display:block;width:100%;height:auto}
+.cal-matrix-grid{display:grid;gap:.35rem;margin:.5rem 0}
+.cal-matrix-grid input{border:1px solid var(--sc-line);background:var(--sc-bg);color:var(--sc-text);
+  border-radius:var(--sc-r-sm);padding:.45rem;min-height:42px;text-align:center;
+  font-family:var(--sc-mono);width:100%}
+.cal-matrix-grid input:focus-visible{outline:0;border-color:var(--sc-fn);box-shadow:0 0 0 2px var(--sc-fn-bg)}
+.cal-fn-color{color:var(--sc-fn)}
+
+/* generic inputs inside the console */
+.cal-console input[type=text],.cal-console input[type=number],.cal-console input[type=date],
+.cal-console select,.cal-console textarea{
+  border:1px solid var(--sc-line);background:var(--sc-bg);color:var(--sc-text);
+  border-radius:var(--sc-r-sm);padding:.5rem .65rem;min-height:44px;font-size:.9rem;max-width:100%
+}
+.cal-console input:focus-visible,.cal-console select:focus-visible,.cal-console textarea:focus-visible{
+  outline:0;border-color:var(--sc-fn);box-shadow:0 0 0 2px var(--sc-fn-bg)
+}
+.cal-console label{font-size:.78rem;font-weight:700;color:var(--sc-muted)}
+
+/* ---------- modal ---------- */
+.cal-modal-backdrop{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:1rem;
+  background:rgba(4,8,10,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.cal-modal-backdrop.hidden{display:none}
+.cal-modal{width:min(560px,100%);max-height:86vh;overflow-y:auto;border-radius:var(--sc-r);
+  border:1px solid var(--sc-line);background:var(--sc-surface);color:var(--sc-text);padding:1.1rem;
+  box-shadow:0 30px 70px -30px rgba(0,0,0,.85)}
+.cal-modal h2{margin:0 0 .8rem;font-size:1.02rem;color:var(--sc-fn)}
+.cal-modal table{width:100%;border-collapse:collapse;font-size:.84rem}
+.cal-modal td{padding:.45rem .5rem;border-bottom:1px solid var(--sc-line-soft)}
+.cal-modal td:first-child{font-family:var(--sc-mono);color:var(--sc-op);font-weight:700;white-space:nowrap}
+
+/* ---------- prose below the console ---------- */
+.sc-prose{max-width:76ch}
+.sc-prose h2{margin-top:2.2rem;letter-spacing:-.01em}
+.sc-prose h3{margin-top:1.4rem;font-size:1.04rem}
+.sc-eq{font-family:var(--sc-mono);font-size:.94em;background:var(--pg-soft);
+  color:var(--pg-accent2);padding:.08em .4em;border-radius:5px;white-space:nowrap}
+.sc-tw{overflow-x:auto;border:1px solid var(--pg-border);border-radius:12px;margin:1.1rem 0}
+.sc-t{border-collapse:collapse;width:100%;min-width:520px;font-size:.87rem}
+.sc-t th,.sc-t td{border-bottom:1px solid var(--pg-border);padding:.6rem .75rem;text-align:left;vertical-align:top}
+.sc-t th{background:var(--pg-soft);font-weight:800;color:var(--pg-accent2)}
+.sc-t td:first-child{font-family:var(--sc-mono);white-space:nowrap}
+.sc-t tbody tr:last-child td{border-bottom:0}
+.sc-callout{border-left:4px solid var(--pg-accent);background:var(--pg-soft);padding:.85rem 1rem;
+  border-radius:0 10px 10px 0;margin:1.1rem 0;font-size:.92rem}
+.sc-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:.65rem;margin:1rem 0}
+.sc-tool{display:block;border:1px solid var(--pg-border);border-radius:10px;padding:.75rem .85rem;
+  background:var(--pg-surface);text-decoration:none;color:var(--pg-text);
+  transition:transform .2s var(--sc-ease),border-color .2s var(--sc-ease),box-shadow .2s var(--sc-ease)}
+a.sc-tool:hover{border-color:var(--pg-accent);transform:translateY(-2px);box-shadow:0 8px 20px -10px rgba(74,143,130,.25)}
+.sc-tool strong{display:block;color:var(--pg-accent2);font-size:.89rem}
+.sc-tool span{font-size:.78rem;color:var(--pg-muted)}
+.sc-vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .cal-pad button:active{transform:none}
+  a.sc-tool:hover{transform:none}
+}
+@media print{.cal-console,.cal-mode-tabs,.site-header,.site-footer,.sc-hero{display:none!important}}
+
+/* ---------- navbar — sage theme, layout unchanged ---------- */
+body.sc-page{background:var(--pg-bg)!important;background-image:var(--pg-grad)!important;background-attachment:fixed!important;color:var(--pg-text)!important}
+.sc-page a:not(.btn):not(.nav-tools-cta):not(.primary-btn):not(.sc-cta):not(.sc-tool){color:var(--pg-accent)}
+.sc-page .site-footer a:not(.btn){color:var(--pg-accent)}
+.sc-page a.btn-primary,.sc-page a.btn.btn-primary,.sc-page .primary-btn{background:var(--pg-brand)!important;color:#fff!important;-webkit-text-fill-color:#fff!important}
+.sc-page .navbar{border-color:rgba(74,143,130,.14)!important;box-shadow:0 1px 0 rgba(255,255,255,.95) inset,0 16px 48px rgba(74,143,130,.11),0 4px 12px rgba(15,23,42,.05)!important}
+[data-theme="dark"] .sc-page .navbar{border-color:rgba(109,179,168,.2)!important}
+.sc-page .brand-mark{background:linear-gradient(145deg,#4a8f82 0%,#52987f 48%,#6aad96 100%)!important;box-shadow:0 8px 22px rgba(74,143,130,.38)!important}
+.sc-page .brand>span:last-child{background:linear-gradient(135deg,#2f6b61 0%,#4a8f82 50%,#52987f 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;color:transparent!important}
+[data-theme="dark"] .sc-page .brand>span:last-child{background:linear-gradient(135deg,#e8eeec 0%,#9fd4cc 50%,#8ec9bf 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;color:transparent!important}
+.sc-page .nav-links{background:rgba(74,143,130,.04)!important;border-color:rgba(74,143,130,.08)!important}
+.sc-page .icon-btn{border-color:rgba(74,143,130,.12)!important}
+@media(max-width:768px){
+  .sc-page .site-header + #main-content > :first-child:not(.home-hero-wrap){padding-top:calc(var(--header-overlap) + .05rem)!important}
+}
+</style>
+
+<meta name="theme-color" content="#4f46e5" />
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+<meta name="author" content="ToolAdda" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="X-Content-Type-Options" content="nosniff" />
+<link rel="canonical" href="https://tooladda.online/scientific-calculator.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+<link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+<meta property="og:title" content="Scientific Calculator with Tape History — Free Online | ToolAdda" />
+<meta property="og:description" content="A real scientific calculator engine (no eval!) with an editable running history tape, units, base conversion, graphing, equation solving, matrices, and statistics. Works offline." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://tooladda.online/scientific-calculator.html" />
+<meta property="og:site_name" content="ToolAdda" />
+<meta property="og:image" content="https://tooladda.online/assets/images/og/scientific-calculator.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Scientific Calculator with Tape History — Free Online — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="Scientific Calculator with Tape History — Free Online — free online tool on ToolAdda, runs in your browser with no sign-up." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Scientific Calculator with Tape History — Free Online | ToolAdda" />
+<meta name="twitter:description" content="Real math engine, editable tape history, unit/base conversion, graphing, equation solver, matrices, and statistics — free and offline-capable." />
+<meta name="twitter:image" content="https://tooladda.online/assets/images/og/scientific-calculator.jpg" />
+
+<script type="application/ld+json" data-tooladda-page-schema="true">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebSite",
+   "@id": "https://tooladda.online/#website",
+   "name": "ToolAdda",
+   "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+   "url": "https://tooladda.online/",
+   "inLanguage": "en",
+   "publisher": {
+    "@id": "https://tooladda.online/#organization"
+   }
+  },
+  {
+   "@type": "Organization",
+   "@id": "https://tooladda.online/#organization",
+   "name": "ToolAdda",
+   "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+   "url": "https://tooladda.online/",
+   "logo": {
+    "@type": "ImageObject",
+    "url": "https://tooladda.online/assets/images/logo.svg"
+   }
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://tooladda.online/scientific-calculator.html#webpage",
+   "url": "https://tooladda.online/scientific-calculator.html",
+   "name": "Scientific Calculator Online — Free, No Download",
+   "description": "Free online scientific calculator with sin, cos, tan, log, ln, powers, roots and factorials, DEG/RAD/GRAD modes, an editable tape and memory.",
+   "inLanguage": "en",
+   "isPartOf": {
+    "@id": "https://tooladda.online/#website"
+   },
+   "breadcrumb": {
+    "@id": "https://tooladda.online/scientific-calculator.html#breadcrumb"
+   },
+   "mainEntity": {
+    "@id": "https://tooladda.online/scientific-calculator.html#app"
+   },
+   "primaryImageOfPage": {
+    "@type": "ImageObject",
+    "url": "https://tooladda.online/assets/images/og/scientific-calculator.jpg",
+    "width": 1200,
+    "height": 630
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "@id": "https://tooladda.online/scientific-calculator.html#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://tooladda.online/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Calculators",
+     "item": "https://tooladda.online/#calculators"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Scientific Calculator"
+    }
+   ]
+  },
+  {
+   "@type": "WebApplication",
+   "@id": "https://tooladda.online/scientific-calculator.html#app",
+   "name": "Scientific Calculator",
+   "url": "https://tooladda.online/scientific-calculator.html",
+   "applicationCategory": "UtilitiesApplication",
+   "applicationSubCategory": "Scientific calculator",
+   "operatingSystem": "Any modern web browser (Windows, macOS, Linux, Android, iOS)",
+   "browserRequirements": "Requires JavaScript",
+   "description": "Free online scientific calculator with trigonometry, logarithms, powers, roots and factorials, DEG/RAD/GRAD angle modes, an editable recalculating tape, named variables, memory, unit-aware arithmetic, base conversion, graphing, an equation solver, matrices and statistics. Expressions are parsed and evaluated entirely in the browser.",
+   "featureList": [
+    "Full operator precedence with a real expression parser, not eval()",
+    "Trigonometric, inverse and hyperbolic functions",
+    "Logarithms to base 10, base e and any base",
+    "Powers, square, cube and nth roots, factorials, combinations and permutations",
+    "DEG, RAD and GRAD angle modes",
+    "Editable tape history that recalculates downstream lines",
+    "Named variables and memory registers",
+    "Unit-aware arithmetic and hex, octal and binary conversion with bitwise operators",
+    "Graphing, equation solver, matrix and statistics modes",
+    "Scientific notation with configurable display precision",
+    "Full keyboard entry, copy and paste",
+    "Works offline after the first visit; nothing is uploaded"
+   ],
+   "inLanguage": "en",
+   "isAccessibleForFree": true,
+   "datePublished": "2025-07-19",
+   "dateModified": "2026-08-09",
+   "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+   },
+   "publisher": {
+    "@id": "https://tooladda.online/#organization"
+   }
+  }
+ ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": "https://tooladda.online/scientific-calculator.html#faq",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a scientific calculator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A calculator that understands mathematical structure rather than just a sequence of keypresses. It applies correct order of operations, handles parentheses, and adds trigonometry, logarithms, exponents, roots, factorials and scientific notation. The defining test: type 2 + 3 x 4. A scientific calculator answers 14; a basic one often answers 20."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this scientific calculator free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, completely. No account, no trial, no paid tier, no limit on calculations, and no watermark on anything you copy out."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work on mobile?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The layout collapses to a single column, the keypad drops to four columns with full-size keys, and the display scales with the viewport. You can also use your phone's own keyboard to type expressions directly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it require a download?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It is a web page. You can optionally add it to your home screen to open it like an app and use it without a connection."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it support sin, cos and tan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, along with their inverses (asin, acos, atan), the hyperbolic versions (sinh, cosh, tanh) and the inverse hyperbolics. All of them respect the DEG, RAD or GRAD setting you have selected."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is DEG mode?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Degrees, where a full circle is 360. It is what school geometry, surveying and most engineering drawings use. In DEG mode sin(30) equals 0.5."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is RAD mode?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Radians, where a full circle is 2π ≈ 6.283. It is the natural unit for calculus and physics, because the derivative of sin(x) is cos(x) only when x is in radians. In RAD mode sin(pi/2) equals 1."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is GRAD mode?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Gradians, where a full circle is 400 and a right angle is exactly 100. It appears mainly in some European surveying and civil engineering traditions. In GRAD mode sin(100) equals 1."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I calculate a factorial?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Type the number followed by an exclamation mark: 6! gives 720. Factorials are defined for non-negative whole numbers, and 0! is 1 by definition. They grow extremely fast - 20! is already about 2.4 × 10¹⁸."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I calculate square roots?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use sqrt(144) for 12, cbrt(27) for cube roots, or nthRoot(32, 5) for any other root. A root is just a fractional power, so x^(1/2) gives the same answer as sqrt(x)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I calculate powers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use the caret: 2^10 gives 1024. Note two conventions - exponents bind tighter than a leading minus, so -2^2 is −4 and you need (-2)^2 for 4; and exponentiation is right-associative, so 2^3^2 is 2^9 = 512 rather than 64."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between log and ln?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In this engine log(x) is the natural logarithm and log10(x) is base 10, which is the programming-library convention and the opposite of the key labels on a physical Casio or TI. If a logarithm looks wrong by a factor of about 2.303 - which is ln(10) - this is why. For any other base, log(x, b) works directly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is scientific notation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Writing a number as a value between 1 and 10 times a power of ten, such as 6.022 × 10²³. Type it as 6.022e23. The display switches to it automatically above 10¹⁵ and below 10⁻⁹, where the plain digit string stops being readable."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use keyboard shortcuts?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, and it is the fastest way to use it. Type the whole expression as text; Enter evaluates, Escape clears, Backspace deletes, and the arrow keys, Home and End move the cursor. Because the input is an ordinary text field, select, copy and paste all work as usual."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it keep a calculation history?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes - a running tape. Every calculation is recorded with its expression and result. Click a past result to insert it into the current expression, or edit a past line and everything after it recalculates in order. That last part is what physical calculators cannot do."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it have memory functions?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, plus named variables. Memory is the classic store-and-recall behaviour for a running subtotal. Variables let you name a value - assign r = 4.2 and then write pi * r^2 - which is far less error-prone for multi-step work and makes the tape readable afterwards."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work offline?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, after your first visit. A service worker caches the page and the maths engine, so it opens and calculates with no connection - including your tape, memory and variables, which live on your device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are calculations sent to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Expressions are parsed and evaluated entirely in your browser; there is no server component to send them to. Open developer tools, go to the Network tab and run some calculations - you will see the page's files and the maths engine load once and nothing afterwards."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it use eval()?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Expressions are tokenised and evaluated by a dedicated maths library with its own parser. That matters for accuracy - it applies real operator precedence - and for security, since nothing you type into the field can execute as code."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does 0.1 + 0.2 not give exactly 0.3 on some calculators?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because computers store numbers in binary and some decimal fractions have no exact binary form, the same way 1/3 has no exact decimal form. The raw result is 0.30000000000000004. This calculator rounds at the display layer, so you see 0.3, while the underlying value keeps full precision so errors do not accumulate through a chain of calculations."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How precise is it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It uses standard double-precision floating point, giving about 15 to 17 significant decimal digits. That is comfortably enough for engineering, physics and school mathematics. It is not arbitrary precision - if you need fifty digits of π, this is the wrong instrument."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my trig answer look wrong?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Almost always the angle mode. sin(30) is 0.5 in DEG but about −0.988 in RAD, because 30 radians is a completely different angle. Neither is an error; only one answers the question you meant. Check the DEG/RAD/GRAD indicator at the top left before trusting any trigonometric result."
+      }
+    }
+  ]
+}
+  </script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "HowTo",
+ "@id": "https://tooladda.online/scientific-calculator.html#howto",
+ "name": "How to use a scientific calculator",
+ "description": "Enter an expression, check the angle mode, and evaluate it.",
+ "totalTime": "PT1M",
+ "step": [
+  {
+   "@type": "HowToStep",
+   "position": 1,
+   "name": "Type the expression",
+   "text": "Enter it in ordinary mathematical notation, for example sin(45) + ln(2)^3. A live preview evaluates as you type and unclosed brackets are counted.",
+   "url": "https://tooladda.online/scientific-calculator.html#how-to-use"
+  },
+  {
+   "@type": "HowToStep",
+   "position": 2,
+   "name": "Check the angle mode",
+   "text": "DEG, RAD or GRAD is shown at the top left. Wrong angle mode is the most common cause of a wrong trigonometric answer, and it produces a plausible number rather than an error.",
+   "url": "https://tooladda.online/scientific-calculator.html#angle-modes"
+  },
+  {
+   "@type": "HowToStep",
+   "position": 3,
+   "name": "Evaluate",
+   "text": "Press Enter. The result and its expression are recorded on the tape.",
+   "url": "https://tooladda.online/scientific-calculator.html#how-to-use"
+  },
+  {
+   "@type": "HowToStep",
+   "position": 4,
+   "name": "Reuse or correct earlier work",
+   "text": "Click a past result to insert it into the current expression, or edit a past line and every line after it recalculates in order.",
+   "url": "https://tooladda.online/scientific-calculator.html#memory"
+  }
+ ]
+}
+</script>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/scientific-calculator.html#webpage",
+      "url": "https://tooladda.online/scientific-calculator.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-27",
+      "dateModified": "2026-09-23",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="sc-page">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header">
+  <div class="container navbar">
+    <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+    <nav class="nav-links" aria-label="Primary"><a href="/">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy</a></nav>
+    <div class="nav-actions">
+      <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+        <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+          <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+          <path d="M3.1 16.9h10.8" />
+          <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+        </svg>
+        <span class="ta-donate-label">Buy me a coffee</span>
+      </a>
+      <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+      <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+  <section class="section">
+    <aside class="ta-support" aria-label="Support ToolAdda">
+      <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+      <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+      <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+        <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+        <span class="ta-donate-label">Buy me a coffee</span>
+      </a>
+    </aside>
+
+    <div class="container cal-shell">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>›</span><span>Scientific Calculator</span></nav>
+
+      <div class="sc-hero">
+        <p class="sc-hero-badge">🧮 Calculators</p>
+        <h1>Scientific Calculator</h1>
+        <p class="sc-hero-lede">A real maths engine (no <code>eval()</code>), a running tape you can edit and recalculate, unit-aware and base conversions, plus graphing, equation solving, matrices, and statistics.</p>
+        <ul class="sc-badges">
+          <li class="sc-badge">✅ Free forever</li>
+          <li class="sc-badge">🔒 Nothing uploaded</li>
+          <li class="sc-badge">📶 Works offline</li>
+          <li class="sc-badge">⌨️ Keyboard-first</li>
+          <li class="sc-badge">📝 Editable tape</li>
+        </ul>
+        <div class="sc-hero-cta">
+          <a class="sc-cta sc-cta-primary" href="#tool">▶ Start calculating</a>
+          <a class="sc-cta sc-cta-ghost" href="calculators/percentage-calculator.html">% Percentage Calculator</a>
+        </div>
+      </div>
+
+      <div class="sc-tool-wrap" id="tool">
+        <div class="cal-privacy-banner">🔒 Runs entirely in your browser and works offline — your calculations, tape, and variables are never uploaded.
+          <button type="button" class="cal-mini-btn" data-open-shortcuts style="margin-left:auto;">⌨️ Keyboard shortcuts</button>
+        </div>
+
+        <div class="cal-console">
+        <div class="cal-mode-tabs" role="tablist">
+          <button type="button" class="cal-mode-tab is-active" data-cal-mode="calculator">🧮 Calculator</button>
+          <button type="button" class="cal-mode-tab" data-cal-mode="graphing">📈 Graphing</button>
+          <button type="button" class="cal-mode-tab" data-cal-mode="equation">🧩 Equation Solver</button>
+          <button type="button" class="cal-mode-tab" data-cal-mode="matrix">🔢 Matrix</button>
+          <button type="button" class="cal-mode-tab" data-cal-mode="statistics">📊 Statistics</button>
+          <button type="button" class="cal-mode-tab" data-cal-mode="datecalc">📅 Date Calculator</button>
+        </div>
+
+        <!-- ================= CALCULATOR MODE ================= -->
+        <div class="cal-mode-panel is-active" data-cal-panel="calculator">
+          <div class="cal-layout">
+            <div class="cal-main">
+              <div class="cal-angle-row">
+                <div class="cal-angle-toggle" role="group" aria-label="Angle mode">
+                  <button type="button" class="cal-angle-btn is-active" data-angle="deg">DEG</button>
+                  <button type="button" class="cal-angle-btn" data-angle="rad">RAD</button>
+                  <button type="button" class="cal-angle-btn" data-angle="grad">GRAD</button>
+                </div>
+                <div style="display:flex;gap:0.3rem;flex-wrap:wrap;">
+                  <button type="button" class="cal-mini-btn" data-toggle-fraction>1/x Fraction</button>
+                  <button type="button" class="cal-mini-btn" data-toggle-base>0x Base</button>
+                  <button type="button" class="cal-mini-btn" data-toggle-sci-pad>🔬 Scientific</button>
+                  <button type="button" class="cal-mini-btn" data-open-settings>⚙️</button>
+                </div>
+              </div>
+
+              <input type="text" class="cal-expr-input" data-expr-input placeholder="Type an expression, e.g. sin(45)+ln(2)^3, or 5 km + 300 m" autocomplete="off" spellcheck="false" />
+              <div class="cal-bracket-indicator" data-bracket-indicator></div>
+              <div class="cal-preview" data-cal-preview>&nbsp;</div>
+              <div class="cal-display" data-cal-display>0</div>
+              <p class="cal-engine-error" role="alert" data-engine-error hidden></p>
+
+              <div class="cal-base-panel" data-base-panel>
+                <div class="cal-base-row"><span class="lbl">HEX</span><span data-base-hex>0</span></div>
+                <div class="cal-base-row"><span class="lbl">DEC</span><span data-base-dec>0</span></div>
+                <div class="cal-base-row"><span class="lbl">OCT</span><span data-base-oct>0</span></div>
+                <div class="cal-base-row"><span class="lbl">BIN</span><span data-base-bin>0</span></div>
+                <div class="cal-bitwise-row">
+                  <button type="button" data-bitop="AND">AND</button><button type="button" data-bitop="OR">OR</button><button type="button" data-bitop="XOR">XOR</button>
+                  <button type="button" data-bitop="NOT">NOT</button><button type="button" data-bitop="LSHIFT">&lt;&lt;</button><button type="button" data-bitop="RSHIFT">&gt;&gt;</button>
+                </div>
+              </div>
+
+              <div class="cal-pad" data-cal-pad></div>
+
+              <div class="cal-percent-row">
+                <button type="button" data-pct-mode="add">A + B%</button>
+                <button type="button" data-pct-mode="sub">A − B%</button>
+                <button type="button" data-pct-mode="whatpct">what % is A of B</button>
+                <button type="button" data-pct-mode="ofwhat">A is B% of what</button>
+              </div>
+
+              <div class="cal-toggles-row">
+                <button type="button" class="cal-mini-btn" data-toggle-panel="variables">𝑥 Variables</button>
+                <button type="button" class="cal-mini-btn" data-toggle-panel="memory">💾 Memory</button>
+                <button type="button" class="cal-mini-btn" data-toggle-panel="constants">π Constants</button>
+              </div>
+            </div>
+
+            <div class="cal-sidebar">
+              <div class="cal-panel" data-panel="tape">
+                <h3>Tape <span data-tape-total>Total: 0</span></h3>
+                <div class="cal-tape-list" data-tape-list></div>
+                <div class="cal-tape-actions">
+                  <button type="button" data-tape-sep>+ Separator</button>
+                  <button type="button" data-tape-clear>🗑️ Clear</button>
+                  <button type="button" data-tape-copy>📋 Copy</button>
+                  <button type="button" data-tape-export="txt">.txt</button>
+                  <button type="button" data-tape-export="csv">.csv</button>
+                  <button type="button" data-tape-print>🖨️ Print</button>
+                </div>
+              </div>
+              <div class="cal-panel hidden" data-panel="variables">
+                <h3>Variables</h3>
+                <div data-var-list></div>
+                <p class="stg-hint" style="font-size:0.76rem;color:var(--text-muted);">Type <code>x = 5</code> in the expression box to create one.</p>
+              </div>
+              <div class="cal-panel hidden" data-panel="memory">
+                <h3>Memory slots</h3>
+                <div data-mem-list></div>
+                <div style="display:flex;gap:0.3rem;margin-top:0.5rem;">
+                  <input type="text" placeholder="Slot name (e.g. A)" data-mem-name style="flex:1;border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:6px;padding:0.3rem 0.5rem;" />
+                  <button type="button" class="cal-mini-btn" data-mem-ms>MS</button>
+                  <button type="button" class="cal-mini-btn" data-mem-mplus>M+</button>
+                  <button type="button" class="cal-mini-btn" data-mem-mminus>M−</button>
+                </div>
+              </div>
+              <div class="cal-panel hidden" data-panel="constants">
+                <h3>Constants</h3>
+                <input type="text" placeholder="Search constants..." data-const-search style="width:100%;border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:6px;padding:0.3rem 0.5rem;margin-bottom:0.4rem;" />
+                <div data-const-list style="max-height:200px;overflow-y:auto;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= GRAPHING MODE ================= -->
+        <div class="cal-mode-panel" data-cal-panel="graphing">
+          <div data-fn-list></div>
+          <button type="button" class="secondary-btn" data-add-fn>➕ Add function</button>
+          <button type="button" class="secondary-btn" data-graph-reset>🔄 Reset view</button>
+          <button type="button" class="secondary-btn" data-graph-export>⬇️ Export PNG</button>
+          <div class="cal-graph-canvas-wrap" style="margin-top:0.7rem;"><canvas data-graph-canvas></canvas></div>
+          <p class="stg-hint" style="font-size:0.8rem;color:var(--text-muted);">Drag to pan, scroll/pinch to zoom. Click on a curve to trace values.</p>
+          <div data-trace-info style="font-family:monospace;font-size:0.85rem;"></div>
+        </div>
+
+        <!-- ================= EQUATION SOLVER MODE ================= -->
+        <div class="cal-mode-panel" data-cal-panel="equation">
+          <div class="cal-mode-tabs"><button type="button" class="cal-mode-tab is-active" data-eq-type="linear">Linear: ax + b = 0</button><button type="button" class="cal-mode-tab" data-eq-type="quadratic">Quadratic: ax² + bx + c = 0</button></div>
+          <div class="cal-fn-row" data-eq-linear><label>a<input type="number" value="1" data-eq-a /></label><label>b<input type="number" value="0" data-eq-b /></label></div>
+          <div class="cal-fn-row hidden" data-eq-quadratic><label>a<input type="number" value="1" data-eq-qa /></label><label>b<input type="number" value="0" data-eq-qb /></label><label>c<input type="number" value="0" data-eq-qc /></label></div>
+          <button type="button" class="primary-btn" data-eq-solve>Solve</button>
+          <div class="cal-result-box" data-eq-result>Enter coefficients and press Solve.</div>
+        </div>
+
+        <!-- ================= MATRIX MODE ================= -->
+        <div class="cal-mode-panel" data-cal-panel="matrix">
+          <div class="cal-fn-row">
+            <label>Rows <input type="number" min="1" max="5" value="2" data-matrix-rows style="width:60px;" /></label>
+            <label>Cols <input type="number" min="1" max="5" value="2" data-matrix-cols style="width:60px;" /></label>
+            <button type="button" class="secondary-btn" data-matrix-build>Build grids</button>
+          </div>
+          <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
+            <div><p class="tag">Matrix A</p><div class="cal-matrix-grid" data-matrix-a></div></div>
+            <div><p class="tag">Matrix B</p><div class="cal-matrix-grid" data-matrix-b></div></div>
+          </div>
+          <div class="cal-fn-row">
+            <button type="button" class="secondary-btn" data-matrix-op="add">A + B</button>
+            <button type="button" class="secondary-btn" data-matrix-op="multiply">A × B</button>
+            <button type="button" class="secondary-btn" data-matrix-op="transposeA">Aᵀ</button>
+            <button type="button" class="secondary-btn" data-matrix-op="detA">det(A)</button>
+            <button type="button" class="secondary-btn" data-matrix-op="invA">A⁻¹</button>
+          </div>
+          <div class="cal-result-box" data-matrix-result>Build grids, fill in values, and choose an operation.</div>
+        </div>
+
+        <!-- ================= STATISTICS MODE ================= -->
+        <div class="cal-mode-panel" data-cal-panel="statistics">
+          <textarea data-stats-input rows="4" style="width:100%;border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:8px;padding:0.6rem;font-family:monospace;" placeholder="Paste numbers separated by commas, spaces, or new lines: 4, 8, 15, 16, 23, 42"></textarea>
+          <button type="button" class="primary-btn" data-stats-compute style="margin-top:0.5rem;">Compute statistics</button>
+          <div class="cal-stat-grid" data-stats-grid></div>
+          <canvas data-stats-histogram style="width:100%;height:160px;border:1px solid var(--border);border-radius:8px;background:var(--surface-strong);"></canvas>
+        </div>
+
+        <!-- ================= DATE CALCULATOR MODE ================= -->
+        <div class="cal-mode-panel" data-cal-panel="datecalc">
+          <div class="cal-mode-tabs"><button type="button" class="cal-mode-tab is-active" data-date-mode="diff">Difference between dates</button><button type="button" class="cal-mode-tab" data-date-mode="add">Add/subtract from a date</button></div>
+          <div data-date-diff>
+            <div class="cal-fn-row"><label>From <input type="date" data-date-from /></label><label>To <input type="date" data-date-to /></label></div>
+            <button type="button" class="primary-btn" data-date-diff-btn>Calculate</button>
+          </div>
+          <div class="cal-fn-row hidden" data-date-add>
+            <label>Start <input type="date" data-date-start /></label>
+            <label>Days <input type="number" value="0" data-date-days style="width:80px;" /></label>
+            <label>Months <input type="number" value="0" data-date-months style="width:80px;" /></label>
+            <label>Years <input type="number" value="0" data-date-years style="width:80px;" /></label>
+            <button type="button" class="primary-btn" data-date-add-btn>Calculate</button>
+          </div>
+          <div class="cal-result-box" data-date-result>Pick dates above.</div>
+        </div>
+        </div><!-- /cal-console -->
+      </div><!-- /sc-tool-wrap -->
+
+        <section class="content-card" style="margin-top:1.5rem">
+          <h2 class="section-title">Free, private, and built for real work</h2>
+          <div class="sc-tools">
+            <div class="sc-tool"><strong>💸 Free, no signup</strong><span>No account, no trial, no paid tier, no limit on calculations.</span></div>
+            <div class="sc-tool"><strong>🔒 Nothing is uploaded</strong><span>Expressions are parsed and evaluated in your browser. Open DevTools → Network and run a calculation: nothing carrying your numbers leaves the page.</span></div>
+            <div class="sc-tool"><strong>🧮 A real parser, not <code>eval()</code></strong><span>Expressions are tokenised and evaluated by a proper maths library, so precedence, parentheses and functions behave correctly — and no code you type can execute.</span></div>
+            <div class="sc-tool"><strong>📶 Works offline</strong><span>A service worker caches the app and the engine after your first visit.</span></div>
+            <div class="sc-tool"><strong>⌨️ Keyboard-first</strong><span>Type the whole expression. Enter evaluates, Escape clears, Backspace deletes.</span></div>
+            <div class="sc-tool"><strong>📝 Editable tape</strong><span>Change any past line and every line after it recalculates in order.</span></div>
+          </div>
+        </section>
+
+        <article class="content-card sc-prose" style="margin-top:1.5rem">
+
+          <h2 id="what-is">What is a scientific calculator?</h2>
+          <p>A scientific calculator is one that understands mathematical <em>structure</em>, not just a sequence of keypresses. A basic four-function calculator processes what you type in the order you type it: press <span class="sc-eq">2 + 3 × 4 =</span> and many of them answer 20, because they add 2 and 3 first and then multiply. A scientific calculator answers <strong>14</strong>, because multiplication binds tighter than addition. That single difference is what makes it a mathematical instrument rather than an adding machine.</p>
+          <p>Beyond precedence, a scientific calculator adds the function set that secondary-school and university mathematics actually requires: trigonometry, logarithms, exponents and roots, factorials, scientific notation, and constants such as π and e. This one also carries an editable tape, unit-aware arithmetic, base conversion, an equation solver, matrices and statistics — but the core is the same: type an expression the way it is written on paper, and get the mathematically correct answer.</p>
+
+          <h2 id="how-to-use">How to use this calculator</h2>
+          <ol>
+            <li><strong>Type the expression.</strong> The input accepts ordinary mathematical notation — <span class="sc-eq">sin(45) + ln(2)^3</span> works as written. You do not have to press buttons; the keypad is there when you want it.</li>
+            <li><strong>Watch the preview.</strong> The line under the input evaluates as you type, so you can see a mistake before you commit to it. Unclosed brackets are counted and reported.</li>
+            <li><strong>Check the angle mode.</strong> DEG, RAD or GRAD is shown in brass at the top left. This is the setting that causes the most wrong answers in the world; see below.</li>
+            <li><strong>Press Enter.</strong> The result lands on the tape with its expression.</li>
+            <li><strong>Reuse anything.</strong> Click a past result to insert it into the current expression, or edit a past line to recalculate everything downstream of it.</li>
+          </ol>
+
+          <h2 id="functions">Scientific calculator functions explained</h2>
+          <div class="sc-tw">
+            <table class="sc-t">
+              <caption class="sc-vh">Scientific calculator functions with worked examples</caption>
+              <thead><tr><th scope="col">Function</th><th scope="col">Type as</th><th scope="col">Example</th><th scope="col">Result</th></tr></thead>
+              <tbody>
+                <tr><td>Sine</td><td>sin(x)</td><td>sin(30) in DEG</td><td>0.5</td></tr>
+                <tr><td>Cosine</td><td>cos(x)</td><td>cos(60) in DEG</td><td>0.5</td></tr>
+                <tr><td>Tangent</td><td>tan(x)</td><td>tan(45) in DEG</td><td>1</td></tr>
+                <tr><td>Inverse sine</td><td>asin(x)</td><td>asin(0.5) in DEG</td><td>30</td></tr>
+                <tr><td>Hyperbolic sine</td><td>sinh(x)</td><td>sinh(0)</td><td>0</td></tr>
+                <tr><td>Common log (base 10)</td><td>log10(x)</td><td>log10(1000)</td><td>3</td></tr>
+                <tr><td>Natural log (base e)</td><td>log(x)</td><td>log(e)</td><td>1</td></tr>
+                <tr><td>Log to any base</td><td>log(x, b)</td><td>log(8, 2)</td><td>3</td></tr>
+                <tr><td>Square root</td><td>sqrt(x)</td><td>sqrt(144)</td><td>12</td></tr>
+                <tr><td>Cube root</td><td>cbrt(x)</td><td>cbrt(27)</td><td>3</td></tr>
+                <tr><td>nth root</td><td>nthRoot(x, n)</td><td>nthRoot(32, 5)</td><td>2</td></tr>
+                <tr><td>Power</td><td>x^y</td><td>2^10</td><td>1024</td></tr>
+                <tr><td>Exponential</td><td>exp(x)</td><td>exp(1)</td><td>2.718281828…</td></tr>
+                <tr><td>Factorial</td><td>x!</td><td>6!</td><td>720</td></tr>
+                <tr><td>Absolute value</td><td>abs(x)</td><td>abs(-7)</td><td>7</td></tr>
+                <tr><td>Combinations</td><td>combinations(n, k)</td><td>combinations(5, 2)</td><td>10</td></tr>
+                <tr><td>Permutations</td><td>permutations(n, k)</td><td>permutations(5, 2)</td><td>20</td></tr>
+                <tr><td>Modulo</td><td>a mod b</td><td>17 mod 5</td><td>2</td></tr>
+                <tr><td>Round / floor / ceil</td><td>round(x)</td><td>ceil(4.1)</td><td>5</td></tr>
+                <tr><td>Constants</td><td>pi, e</td><td>2 * pi</td><td>6.283185307…</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="sc-callout"><strong>One naming trap worth knowing.</strong> In this engine, as in most programming maths libraries, <span class="sc-eq">log(x)</span> is the <em>natural</em> logarithm and <span class="sc-eq">log10(x)</span> is the base-10 one. On a physical Casio or TI, the <kbd>log</kbd> key is base 10 and <kbd>ln</kbd> is natural. If a logarithm answer looks wrong by a factor of about 2.303, this is why — that factor is ln(10).</div>
+
+          <h2 id="angle-modes">Degrees, radians and gradians</h2>
+          <p>Angle mode is the most common source of wrong answers on any scientific calculator, and it is worth understanding rather than memorising. All three units measure the same thing — how far round a circle you have gone — they just divide the circle differently.</p>
+          <div class="sc-tw">
+            <table class="sc-t">
+              <caption class="sc-vh">Angle modes compared</caption>
+              <thead><tr><th scope="col">Mode</th><th scope="col">A full circle is</th><th scope="col">Use it for</th><th scope="col">sin of a right angle</th></tr></thead>
+              <tbody>
+                <tr><td>DEG</td><td>360 degrees</td><td>School geometry, surveying, navigation, most engineering drawings</td><td>sin(90) = 1</td></tr>
+                <tr><td>RAD</td><td>2π ≈ 6.283 radians</td><td>Calculus, physics, anything where you differentiate a trig function</td><td>sin(pi/2) = 1</td></tr>
+                <tr><td>GRAD</td><td>400 gradians</td><td>Some surveying and civil engineering traditions, mostly European</td><td>sin(100) = 1</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>The trap is that a wrong mode does not produce an error — it produces a plausible-looking wrong number. <span class="sc-eq">sin(30)</span> is 0.5 in degrees and about −0.988 in radians. Both are valid sines; only one answers the question you meant. <strong>Radians are not an arbitrary alternative</strong>: they are the unit in which the derivative of sin(x) is cos(x). Use degrees for geometry, radians for calculus, and check the brass indicator before you trust a trig result.</p>
+
+          <h3 id="trig">Calculating sin, cos and tan</h3>
+          <p>In a right-angled triangle, sine is opposite over hypotenuse, cosine is adjacent over hypotenuse, and tangent is opposite over adjacent — the mnemonic is SOH-CAH-TOA. To find an angle rather than a ratio, use the inverse functions: <span class="sc-eq">asin(0.5)</span> returns 30 in DEG mode. Note that tan is undefined at 90° and 270°, where the adjacent side has length zero; the calculator will return a very large number rather than an error, because floating-point 90° is not exactly a right angle.</p>
+
+          <h2 id="logarithms">How logarithms work</h2>
+          <p>A logarithm answers the question "what power do I raise this base to, in order to get this number?" So <span class="sc-eq">log10(1000) = 3</span>, because 10³ = 1000. And <span class="sc-eq">log(e) = 1</span>, because e¹ = e.</p>
+          <p>Base 10 is used wherever quantities span many orders of magnitude — the decibel scale, pH, the Richter scale. Base e, the natural logarithm, is used wherever something grows or decays in proportion to its own size: compound interest, radioactive decay, population models, and every integral of 1/x. For any other base, <span class="sc-eq">log(x, b)</span> takes it directly — <span class="sc-eq">log(8, 2) = 3</span>.</p>
+          <p>Three rules do most of the work: <span class="sc-eq">log(ab) = log(a) + log(b)</span>, <span class="sc-eq">log(a/b) = log(a) − log(b)</span>, and <span class="sc-eq">log(aⁿ) = n·log(a)</span>. That last one is why logarithms turn awkward exponent problems into ordinary arithmetic, and why slide rules worked.</p>
+
+          <h2 id="powers">Powers, roots and reciprocals</h2>
+          <p>Use <span class="sc-eq">^</span> for any exponent: <span class="sc-eq">2^10 = 1024</span>. Roots are fractional powers, so <span class="sc-eq">sqrt(x)</span> is the same as <span class="sc-eq">x^(1/2)</span> and <span class="sc-eq">cbrt(x)</span> is <span class="sc-eq">x^(1/3)</span>. For anything else, <span class="sc-eq">nthRoot(32, 5) = 2</span>.</p>
+          <p>Two details that trip people up. First, <span class="sc-eq">-2^2</span> is −4, not 4: the exponent binds tighter than the unary minus, so it reads as −(2²). Write <span class="sc-eq">(-2)^2</span> if you mean 4. Second, exponentiation is right-associative, so <span class="sc-eq">2^3^2</span> is 2^(3²) = 2⁹ = 512, not (2³)² = 64. That is the standard mathematical convention, and it is what this engine does.</p>
+          <p>Square roots of negative numbers return a complex result rather than an error, since the underlying engine supports complex arithmetic — <span class="sc-eq">sqrt(-4)</span> gives <span class="sc-eq">2i</span>. If you are working strictly in the reals, treat that as a signal that something upstream is wrong.</p>
+
+          <h2 id="factorials">How factorials work</h2>
+          <p>The factorial of a whole number is that number multiplied by every whole number below it: <span class="sc-eq">5! = 5 × 4 × 3 × 2 × 1 = 120</span>. It counts the number of ways to arrange n distinct things in order, which is why it sits at the heart of probability and combinatorics.</p>
+          <p>By definition <span class="sc-eq">0! = 1</span> — there is exactly one way to arrange nothing. Factorials grow ferociously: 10! is 3,628,800, 20! is about 2.4 × 10¹⁸, and 171! exceeds what a double-precision number can represent at all. Beyond about 21! the result stops being exact even though it still displays, because it has passed the point where consecutive integers are representable.</p>
+          <p>For counting problems, prefer the dedicated functions over building factorials by hand: <span class="sc-eq">combinations(5, 2) = 10</span> for selections where order does not matter, <span class="sc-eq">permutations(5, 2) = 20</span> where it does.</p>
+
+          <h2 id="notation">Scientific notation</h2>
+          <p>Scientific notation writes a number as a value between 1 and 10 multiplied by a power of ten, which is the only sane way to handle the quantities physics and chemistry deal in. Avogadro's constant is 6.022 × 10²³; the mass of an electron is about 9.109 × 10⁻³¹ kg.</p>
+          <p>Type it with <span class="sc-eq">e</span>: <span class="sc-eq">6.022e23</span>. The display switches to scientific notation automatically once a result passes 10¹⁵ or drops below 10⁻⁹, because at that point the digit string becomes unreadable and the exponent is the part that matters. You can change where those thresholds sit, and how many decimal places are shown, in the settings panel.</p>
+
+          <h2 id="precision">Precision and floating-point</h2>
+          <p>Computers store numbers in binary, and some decimal fractions have no exact binary representation — the same way 1/3 has no exact decimal one. That is why <span class="sc-eq">0.1 + 0.2</span> evaluates to 0.30000000000000004 in raw JavaScript, and why calculators that display raw values look broken.</p>
+          <p>This calculator rounds for display at a configurable number of decimal places, defaulting to 10, so <span class="sc-eq">0.1 + 0.2</span> shows as <strong>0.3</strong> while <span class="sc-eq">1/3</span> still shows ten meaningful digits. Rounding happens only in the display layer; the value carried onto the tape and into the next calculation keeps its full precision, so errors do not accumulate.</p>
+          <div class="sc-callout"><strong>An honest limit.</strong> This engine uses standard double-precision floating point, which gives about 15–17 significant decimal digits. That is more than enough for engineering, physics and school mathematics, but it is not arbitrary precision. If you need 50 digits of π, this is the wrong instrument.</div>
+
+          <h2 id="memory">Memory, variables and the tape</h2>
+          <p>Three different ways to keep a number, and they are worth distinguishing.</p>
+          <p><strong>Memory</strong> is the classic MC/MR/M+/M− behaviour: one or more named slots you add to and recall. Use it for a running subtotal you keep coming back to.</p>
+          <p><strong>Variables</strong> let you name a value and use the name in later expressions — assign <span class="sc-eq">r = 4.2</span> and then write <span class="sc-eq">pi * r^2</span>. For any calculation with more than two steps this is far less error-prone than re-typing numbers, and it makes the tape readable afterwards.</p>
+          <p><strong>The tape</strong> is the running record of everything you have calculated. It is the feature physical calculators lack and the reason accountants kept printing adding machines. Because each line is editable and everything downstream recalculates, you can correct an input from ten steps ago without redoing the work.</p>
+
+          <h2 id="parentheses">Parentheses and order of operations</h2>
+          <p>The engine follows standard precedence: parentheses first, then exponents, then multiplication, division and modulo, then addition and subtraction, working left to right within each level. So <span class="sc-eq">2 + 3 × 4 = 14</span> and <span class="sc-eq">(2 + 3) × 4 = 20</span>.</p>
+          <p>Where precedence is genuinely ambiguous in everyday writing — expressions like 6 ÷ 2(1+2), which circulate online precisely because notation is unclear — the honest advice is not to memorise a rule but to add brackets. The bracket counter under the input tells you how many are still open, so long expressions do not become guesswork.</p>
+
+          <h2 id="mistakes">Common scientific calculator mistakes</h2>
+          <ul>
+            <li><strong>Wrong angle mode.</strong> By a wide margin the most common. Check DEG/RAD/GRAD before trusting any trig answer.</li>
+            <li><strong>Confusing log and ln.</strong> Here <span class="sc-eq">log</span> is natural and <span class="sc-eq">log10</span> is base 10 — the opposite of the key labels on a physical calculator.</li>
+            <li><strong>Missing brackets around a negative base.</strong> <span class="sc-eq">-3^2</span> is −9; <span class="sc-eq">(-3)^2</span> is 9.</li>
+            <li><strong>Assuming percentages chain.</strong> A 10% rise followed by a 10% fall does not return you to the start — it leaves you at 99%.</li>
+            <li><strong>Rounding too early.</strong> Round once, at the end. Rounding intermediate steps compounds the error.</li>
+            <li><strong>Trusting the last digits.</strong> Double precision gives about 15 significant digits; anything beyond that is noise.</li>
+          </ul>
+
+          <h2 id="students">For students, engineers and physicists</h2>
+          <p><strong>Students</strong> mostly need trigonometry in degrees, logarithms, powers and roots, and reliable order of operations. The tape is unusually useful for homework because it shows your working — you can read back the steps you took rather than re-deriving them.</p>
+          <p><strong>Engineers</strong> benefit most from the unit-aware arithmetic and base conversion. You can write <span class="sc-eq">5 km + 300 m</span> and get a sensible answer, or flip a value between decimal, hexadecimal, octal and binary with the bitwise operators alongside. For repeated financial calculations, our <a href="calculators/emi-calculator.html">EMI calculator</a> handles amortisation properly rather than making you rebuild it from a formula.</p>
+          <p><strong>Physicists and chemists</strong> want scientific notation that behaves, constants that are correct, and radians available in one tap. Combine variables with the tape and a multi-step derivation stays auditable.</p>
+
+          <h2 id="vs-basic">Scientific vs basic vs physical calculators</h2>
+          <div class="sc-tw">
+            <table class="sc-t">
+              <caption class="sc-vh">Calculator types compared</caption>
+              <thead><tr><th scope="col">Feature</th><th scope="col">Basic calculator</th><th scope="col">This calculator</th><th scope="col">Physical scientific calculator</th></tr></thead>
+              <tbody>
+                <tr><td>Order of operations</td><td>Often left to right</td><td>Full precedence</td><td>Full precedence</td></tr>
+                <tr><td>Trig and logs</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+                <tr><td>Editable history</td><td>No</td><td>Yes, recalculating tape</td><td>Limited replay at best</td></tr>
+                <tr><td>Named variables</td><td>No</td><td>Yes</td><td>A few lettered stores</td></tr>
+                <tr><td>Copy and paste</td><td>No</td><td>Yes</td><td>No</td></tr>
+                <tr><td>Allowed in exams</td><td>Sometimes</td><td>No</td><td>Often, if an approved model</td></tr>
+                <tr><td>Works without power</td><td>Battery</td><td>Needs a device</td><td>Solar or battery, years</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>The honest summary: a browser calculator wins on history, variables, copy-paste and never being in the other room. A physical calculator wins on exam rooms and battery life. Neither replaces the other.</p>
+
+          <h2 id="keyboard">Keyboard shortcuts</h2>
+          <div class="sc-tw">
+            <table class="sc-t">
+              <caption class="sc-vh">Keyboard shortcuts</caption>
+              <thead><tr><th scope="col">Key</th><th scope="col">Action</th></tr></thead>
+              <tbody>
+                <tr><td>0–9 . ( )</td><td>Type directly into the expression</td></tr>
+                <tr><td>+ − * /</td><td>Operators</td></tr>
+                <tr><td>^</td><td>Power</td></tr>
+                <tr><td>Enter</td><td>Evaluate and push to the tape</td></tr>
+                <tr><td>Backspace</td><td>Delete the character before the cursor</td></tr>
+                <tr><td>Escape</td><td>Clear the expression</td></tr>
+                <tr><td>← →</td><td>Move the cursor within the expression</td></tr>
+                <tr><td>Home / End</td><td>Jump to the start or end</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Because the expression is an ordinary text field, everything you expect from a text field works — select, copy, paste, and edit in the middle rather than deleting back to your mistake.</p>
+
+          <h2 id="privacy">Privacy</h2>
+          <p>Every expression is parsed and evaluated in your browser. There is no server component, so your calculations, tape, variables and memory are never transmitted — they are held in memory and, where you have used a feature that persists, in your browser's local storage on this device only.</p>
+          <p>You can verify it in about ten seconds: open developer tools, switch to the Network tab, and run a few calculations. You will see the page's own files and the maths engine load once, and nothing after that. The engine is currently fetched from a public CDN, which reveals that a file was requested but never what you typed; self-hosting it to remove even that request is on our list. Full details are in our <a href="privacy-policy.html">privacy policy</a>.</p>
+
+          <h2 id="related">Related calculators</h2>
+          <p>For everyday percentage work — discounts, tax, tips, percentage change — the dedicated <a href="calculators/percentage-calculator.html">percentage calculator</a> is quicker than typing the formula each time. Converting between units of length, mass, temperature or area is cleaner in the <a href="unit-converter.html">unit converter</a> than as an expression. If you are working out how old something is or counting days between dates, the <a href="calculators/age-calculator.html">age calculator</a> handles the calendar edge cases. For loan repayments use the <a href="calculators/emi-calculator.html">EMI calculator</a>, and for course marks the <a href="calculators/gpa-cgpa-calculator.html">GPA and CGPA calculator</a>. When you need unpredictable numbers rather than computed ones, the <a href="random-name-picker.html">random name picker</a> is the tool for drawing lots.</p>
+          <div class="sc-tools">
+            <a class="sc-tool" href="calculators/percentage-calculator.html"><strong>Percentage Calculator</strong><span>Discounts, tax, percentage change</span></a>
+            <a class="sc-tool" href="unit-converter.html"><strong>Unit Converter</strong><span>Length, mass, temperature, area</span></a>
+            <a class="sc-tool" href="calculators/age-calculator.html"><strong>Age Calculator</strong><span>Exact ages and date differences</span></a>
+            <a class="sc-tool" href="calculators/emi-calculator.html"><strong>EMI Calculator</strong><span>Loan repayments and amortisation</span></a>
+            <a class="sc-tool" href="calculators/gpa-cgpa-calculator.html"><strong>GPA &amp; CGPA Calculator</strong><span>Grade point averages</span></a>
+            <a class="sc-tool" href="calculators/bmi-calculator.html"><strong>BMI Calculator</strong><span>Body mass index</span></a>
+            <a class="sc-tool" href="calculators/loan-calculator.html"><strong>Loan Calculator</strong><span>Interest and total cost</span></a>
+            <a class="sc-tool" href="random-name-picker.html"><strong>Random Name Picker</strong><span>Draw names fairly</span></a>
+          </div>
+        </article>
+
+        <section class="content-card faq-section" id="faq" style="margin-top:1.5rem">
+          <h2 class="section-title">Frequently asked questions</h2>
+          <div class="grid-2">
+            <details class="faq-item"><summary><strong>What is a scientific calculator?</strong></summary><p>A calculator that understands mathematical structure rather than just a sequence of keypresses. It applies correct order of operations, handles parentheses, and adds trigonometry, logarithms, exponents, roots, factorials and scientific notation. The defining test: type 2 + 3 × 4. A scientific calculator answers 14; a basic one often answers 20.</p></details>
+            <details class="faq-item"><summary><strong>Is this scientific calculator free?</strong></summary><p>Yes, completely. No account, no trial, no paid tier, no limit on calculations, and no watermark on anything you copy out.</p></details>
+            <details class="faq-item"><summary><strong>Does it work on mobile?</strong></summary><p>Yes. The layout collapses to a single column, the keypad drops to four columns with full-size keys, and the display scales with the viewport. You can also use your phone's own keyboard to type expressions directly.</p></details>
+            <details class="faq-item"><summary><strong>Does it require a download?</strong></summary><p>No. It is a web page. You can optionally add it to your home screen to open it like an app and use it without a connection.</p></details>
+            <details class="faq-item"><summary><strong>Does it support sin, cos and tan?</strong></summary><p>Yes, along with their inverses (asin, acos, atan), the hyperbolic versions (sinh, cosh, tanh) and the inverse hyperbolics. All of them respect the DEG, RAD or GRAD setting you have selected.</p></details>
+            <details class="faq-item"><summary><strong>What is DEG mode?</strong></summary><p>Degrees, where a full circle is 360. It is what school geometry, surveying and most engineering drawings use. In DEG mode sin(30) equals 0.5.</p></details>
+            <details class="faq-item"><summary><strong>What is RAD mode?</strong></summary><p>Radians, where a full circle is 2π ≈ 6.283. It is the natural unit for calculus and physics, because the derivative of sin(x) is cos(x) only when x is in radians. In RAD mode sin(pi/2) equals 1.</p></details>
+            <details class="faq-item"><summary><strong>What is GRAD mode?</strong></summary><p>Gradians, where a full circle is 400 and a right angle is exactly 100. It appears mainly in some European surveying and civil engineering traditions. In GRAD mode sin(100) equals 1.</p></details>
+            <details class="faq-item"><summary><strong>How do I calculate a factorial?</strong></summary><p>Type the number followed by an exclamation mark: 6! gives 720. Factorials are defined for non-negative whole numbers, and 0! is 1 by definition. They grow extremely fast — 20! is already about 2.4 × 10¹⁸.</p></details>
+            <details class="faq-item"><summary><strong>How do I calculate square roots?</strong></summary><p>Use sqrt(144) for 12, cbrt(27) for cube roots, or nthRoot(32, 5) for any other root. A root is just a fractional power, so x^(1/2) gives the same answer as sqrt(x).</p></details>
+            <details class="faq-item"><summary><strong>How do I calculate powers?</strong></summary><p>Use the caret: 2^10 gives 1024. Note two conventions — exponents bind tighter than a leading minus, so -2^2 is −4 and you need (-2)^2 for 4; and exponentiation is right-associative, so 2^3^2 is 2^9 = 512 rather than 64.</p></details>
+            <details class="faq-item"><summary><strong>What is ln?</strong></summary><p>The natural logarithm, base e ≈ 2.71828. It answers "what power of e gives this number?", so ln(e) = 1. It appears wherever something grows or decays in proportion to its own size. In this calculator type it as log(x) — see the next answer.</p></details>
+            <details class="faq-item"><summary><strong>What is the difference between log and ln?</strong></summary><p>In this engine log(x) is the natural logarithm and log10(x) is base 10, which is the programming-library convention and the opposite of the key labels on a physical Casio or TI. If a logarithm looks wrong by a factor of about 2.303 — which is ln(10) — this is why. For any other base, log(x, b) works directly.</p></details>
+            <details class="faq-item"><summary><strong>What is scientific notation?</strong></summary><p>Writing a number as a value between 1 and 10 times a power of ten, such as 6.022 × 10²³. Type it as 6.022e23. The display switches to it automatically above 10¹⁵ and below 10⁻⁹, where the plain digit string stops being readable.</p></details>
+            <details class="faq-item"><summary><strong>Can I use keyboard shortcuts?</strong></summary><p>Yes, and it is the fastest way to use it. Type the whole expression as text; Enter evaluates, Escape clears, Backspace deletes, and the arrow keys, Home and End move the cursor. Because the input is an ordinary text field, select, copy and paste all work as usual.</p></details>
+            <details class="faq-item"><summary><strong>Does it keep a calculation history?</strong></summary><p>Yes — a running tape. Every calculation is recorded with its expression and result. Click a past result to insert it into the current expression, or edit a past line and everything after it recalculates in order. That last part is what physical calculators cannot do.</p></details>
+            <details class="faq-item"><summary><strong>Does it have memory functions?</strong></summary><p>Yes, plus named variables. Memory is the classic store-and-recall behaviour for a running subtotal. Variables let you name a value — assign r = 4.2 and then write pi * r^2 — which is far less error-prone for multi-step work and makes the tape readable afterwards.</p></details>
+            <details class="faq-item"><summary><strong>Can I copy results?</strong></summary><p>Yes. The result and any tape entry can be copied, and because the expression field is standard text you can select and copy from it directly with the keyboard.</p></details>
+            <details class="faq-item"><summary><strong>Does it work offline?</strong></summary><p>Yes, after your first visit. A service worker caches the page and the maths engine, so it opens and calculates with no connection — including your tape, memory and variables, which live on your device.</p></details>
+            <details class="faq-item"><summary><strong>Are calculations sent to a server?</strong></summary><p>No. Expressions are parsed and evaluated entirely in your browser; there is no server component to send them to. Open developer tools, go to the Network tab and run some calculations — you will see the page's files and the maths engine load once and nothing afterwards.</p></details>
+            <details class="faq-item"><summary><strong>Does it use eval()?</strong></summary><p>No. Expressions are tokenised and evaluated by a dedicated maths library with its own parser. That matters for accuracy — it applies real operator precedence — and for security, since nothing you type into the field can execute as code.</p></details>
+            <details class="faq-item"><summary><strong>Why does 0.1 + 0.2 not give exactly 0.3 on some calculators?</strong></summary><p>Because computers store numbers in binary and some decimal fractions have no exact binary form, the same way 1/3 has no exact decimal form. The raw result is 0.30000000000000004. This calculator rounds at the display layer, so you see 0.3, while the underlying value keeps full precision so errors do not accumulate through a chain of calculations.</p></details>
+            <details class="faq-item"><summary><strong>How precise is it?</strong></summary><p>It uses standard double-precision floating point, giving about 15 to 17 significant decimal digits. That is comfortably enough for engineering, physics and school mathematics. It is not arbitrary precision — if you need fifty digits of π, this is the wrong instrument.</p></details>
+            <details class="faq-item"><summary><strong>Is it useful for engineering?</strong></summary><p>Yes, particularly the unit-aware arithmetic — you can write 5 km + 300 m and get a sensible answer — plus base conversion between decimal, hex, octal and binary with bitwise operators, matrices, and an equation solver.</p></details>
+            <details class="faq-item"><summary><strong>Is it useful for physics?</strong></summary><p>Yes. Scientific notation, correct constants, one-tap radians, and named variables that keep a multi-step derivation auditable on the tape rather than living in your head.</p></details>
+            <details class="faq-item"><summary><strong>Can I use it for school mathematics?</strong></summary><p>Yes, and the tape is genuinely useful for homework because it shows your working. One caveat: it is a browser tool, so it will not be permitted in an exam room where an approved physical model is required. Check your exam board's rules.</p></details>
+            <details class="faq-item"><summary><strong>Why does my trig answer look wrong?</strong></summary><p>Almost always the angle mode. sin(30) is 0.5 in DEG but about −0.988 in RAD, because 30 radians is a completely different angle. Neither is an error; only one answers the question you meant. Check the DEG/RAD/GRAD indicator at the top left before trusting any trigonometric result.</p></details>
+            <details class="faq-item"><summary><strong>How do I calculate percentages?</strong></summary><p>Use the dedicated percentage buttons to avoid ambiguity: "200 + 10%" correctly gives 220 — ten percent of 200 added on — rather than 200.1. There are also direct buttons for "what % is A of B" and "A is B% of what". For heavier percentage work, the dedicated percentage calculator is quicker.</p></details>
+          </div>
+        </section>
+
+        <section class="cta-section content-card" style="margin-top:1.5rem;text-align:center">
+          <h2 class="section-title">Back to the console</h2>
+          <p>Free, no signup, nothing uploaded. Scroll up, type an expression, and press Enter.</p>
+          <p><a class="primary-btn" href="#tool">🧮 Open the calculator</a></p>
+        </section>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a><p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p></div>
+    <div><h3>Explore</h3><div class="footer-links"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms</a></div></div>
+    <div><h3>Stay updated</h3><p>© <span data-year></span> ToolAdda. All rights reserved.</p></div>
+  </div>
+</footer>
+
+<div class="cal-modal-backdrop hidden" data-modal-backdrop><div class="cal-modal" data-modal-body></div></div>
+
+<script src="assets/js/app.js"></script>
+<!-- Maths engine. crossorigin is required for Subresource Integrity and for
+     useful cross-origin error reporting.
+     TODO before launch: add an integrity hash, or self-host. Generate with:
+       curl -s https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.2/math.min.js \n         | openssl dgst -sha384 -binary | openssl base64 -A
+     Self-hosting is preferred: it removes the third-party request entirely,
+     makes the very first visit work offline, and eliminates the supply-chain
+     risk on a page where people type numbers they care about. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.2/math.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ============================================================
+     PURE LOGIC (verified independently in Node before transplant)
+     ============================================================ */
+  function angleToRad(x, mode) { if (mode === 'deg') return x * Math.PI / 180; if (mode === 'grad') return x * Math.PI / 200; return x; }
+  function radToAngle(x, mode) { if (mode === 'deg') return x * 180 / Math.PI; if (mode === 'grad') return x * 200 / Math.PI; return x; }
+
+  function preprocessPercentPhrases(expr) {
+    var m1 = /^what\s*%?\s*is\s+([\-\d.]+)\s+of\s+([\-\d.]+)$/i.exec(expr.trim());
+    if (m1) return '(' + m1[1] + '/' + m1[2] + ')*100';
+    var m2 = /^([\-\d.]+)\s+is\s+([\-\d.]+)\s*%\s+of\s+what$/i.exec(expr.trim());
+    if (m2) return '(' + m2[1] + ')/((' + m2[2] + ')/100)';
+    return expr;
+  }
+  function preprocessPercentOperators(expr) {
+    var trimmed = expr.trim();
+    var m = /^(.*?)([+\-])\s*([0-9]*\.?[0-9]+)\s*%\s*$/.exec(trimmed);
+    if (m && m[1].trim()) { var left = m[1].trim(), op = m[2], pct = m[3]; return '(' + left + ')' + op + '(' + left + ')*(' + pct + '/100)'; }
+    return trimmed.replace(/([0-9]*\.?[0-9]+)\s*%/g, '($1/100)');
+  }
+  var UNIT_ALIASES = { mph: 'mi/h', kmph: 'km/h', kph: 'km/h', mps: 'm/s' };
+  function preprocessUnitAliases(expr) { return Object.keys(UNIT_ALIASES).reduce(function (acc, key) { return acc.replace(new RegExp('\\b' + key + '\\b', 'g'), UNIT_ALIASES[key]); }, expr); }
+  function preprocessExpression(expr) {
+    var phrased = preprocessPercentPhrases(expr);
+    if (phrased !== expr) return preprocessUnitAliases(phrased);
+    return preprocessUnitAliases(preprocessPercentOperators(expr));
+  }
+  function addPercent(base, pct) { return base + (base * pct) / 100; }
+  function subPercent(base, pct) { return base - (base * pct) / 100; }
+  function whatPercentIs(part, whole) { return (part / whole) * 100; }
+  function percentOfWhatIsPart(part, pct) { return part / (pct / 100); }
+
+  function roundToSigFigs(value, sigFigs) {
+    if (value === 0) return 0;
+    var d = Math.ceil(Math.log10(Math.abs(value)));
+    var power = sigFigs - d;
+    var magnitude = Math.pow(10, power);
+    return Math.round(value * magnitude) / magnitude;
+  }
+  function groupInternational(intPart) { return intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  function groupIndian(intPart) {
+    var isNeg = intPart[0] === '-'; var digits = isNeg ? intPart.slice(1) : intPart;
+    if (digits.length <= 3) return (isNeg ? '-' : '') + digits;
+    var last3 = digits.slice(-3), rest = digits.slice(0, -3);
+    var grouped = rest.replace(/\B(?=(\d{2})+(?!\d))/g, ',');
+    return (isNeg ? '-' : '') + grouped + ',' + last3;
+  }
+  /* Round to a fixed number of decimals WITHOUT the multiply-round-divide
+     trick. `Math.round(v * 1e10) / 1e10` overflows the safe-integer range as
+     soon as |v| passes about 1e6 with 10 decimal places, and then it invents
+     digits: 123456789012 came back as 123456789011.99998, and
+     123456789012345 as 123456789012345.02. A scientific calculator silently
+     displaying a wrong number is the worst failure it can have.
+     toFixed is correctly rounded per spec and does no intermediate scaling. */
+  function roundDecimals(value, dp) {
+    if (!isFinite(value) || value === 0) return value;
+    dp = Math.max(0, Math.min(100, dp | 0));
+    if (Math.abs(value) >= 1e21) return value;   // toFixed goes exponential past this
+    return Number(value.toFixed(dp));
+  }
+  function formatNumber(value, opts) {
+    opts = opts || {};
+    if (!isFinite(value)) return value > 0 ? 'Infinity' : (value < 0 ? '-Infinity' : 'NaN');
+    var sciThreshold = opts.scientificThreshold || 1e15, sciLow = opts.scientificLowThreshold || 1e-9;
+    if (value !== 0 && (Math.abs(value) >= sciThreshold || Math.abs(value) < sciLow)) return value.toExponential(opts.decimalPlaces != null ? opts.decimalPlaces : 6).replace(/e([+-])(\d+)/, 'e$1$2');
+    var v = value;
+    if (opts.sigFigs) v = roundToSigFigs(v, opts.sigFigs);
+    else if (opts.decimalPlaces != null) v = roundDecimals(v, opts.decimalPlaces);
+    if (Object.is(v, -0)) v = 0;                 // never show "-0"
+    var str = String(v); var parts = str.split('.'); var intPart = parts[0], decPart = parts[1];
+    if (opts.thousands === 'indian') intPart = groupIndian(intPart); else if (opts.thousands === 'international') intPart = groupInternational(intPart);
+    return decPart ? intPart + '.' + decPart : intPart;
+  }
+
+  var BASE_MAP = { bin: 2, oct: 8, dec: 10, hex: 16 };
+  function convertBase(valueStr, fromBase, toBase) { var n = parseInt(valueStr, BASE_MAP[fromBase] || fromBase); if (isNaN(n)) return null; return n.toString(BASE_MAP[toBase] || toBase).toUpperCase(); }
+  function applyBitwiseOp(a, b, op) {
+    a = a | 0; if (b !== undefined) b = b | 0;
+    if (op === 'AND') return (a & b) >>> 0; if (op === 'OR') return (a | b) >>> 0; if (op === 'XOR') return (a ^ b) >>> 0;
+    if (op === 'NOT') return (~a) >>> 0; if (op === 'LSHIFT') return (a << b) >>> 0; if (op === 'RSHIFT') return (a >> b) >>> 0;
+    return null;
+  }
+
+  function createTapeEntry(id, expr, result, ts, comment) { return { id: id, expr: expr, result: result, error: null, ts: ts, comment: comment || '', isSeparator: false }; }
+  function createTapeSeparator(id, label, ts) { return { id: id, isSeparator: true, label: label || '', ts: ts }; }
+  function tapeRunningTotal(entries) { return entries.reduce(function (sum, e) { return (!e.isSeparator && typeof e.result === 'number' && !e.error) ? sum + e.result : sum; }, 0); }
+  function recalculateTape(entries, evaluate) {
+    var scope = {};
+    return entries.map(function (entry) {
+      if (entry.isSeparator) return entry;
+      try { var result = evaluate(entry.expr, scope); return Object.assign({}, entry, { result: result, error: null }); }
+      catch (e) { return Object.assign({}, entry, { result: null, error: e.message }); }
+    });
+  }
+  function editTapeEntry(entries, id, newExpr) { return entries.map(function (e) { return e.id === id ? Object.assign({}, e, { expr: newExpr }) : e; }); }
+  function deleteTapeEntry(entries, id) { return entries.filter(function (e) { return e.id !== id; }); }
+
+  function createMemoryStore() { return {}; }
+  function memorySet(store, name, value) { var out = Object.assign({}, store); out[name] = value; return out; }
+  function memoryAdd(store, name, delta) { var out = Object.assign({}, store); out[name] = (out[name] || 0) + delta; return out; }
+  function memoryClear(store, name) { var out = Object.assign({}, store); delete out[name]; return out; }
+
+  function mean(arr) { return arr.reduce(function (a, b) { return a + b; }, 0) / arr.length; }
+  function median(arr) { var sorted = arr.slice().sort(function (a, b) { return a - b; }); var mid = Math.floor(sorted.length / 2); return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2; }
+  function mode(arr) { var counts = {}; arr.forEach(function (v) { counts[v] = (counts[v] || 0) + 1; }); var max = Math.max.apply(null, Object.values(counts)); if (max === 1) return []; return Object.keys(counts).filter(function (k) { return counts[k] === max; }).map(Number); }
+  function range(arr) { return Math.max.apply(null, arr) - Math.min.apply(null, arr); }
+  function variance(arr, sample) { var m = mean(arr); var sumSq = arr.reduce(function (a, v) { return a + Math.pow(v - m, 2); }, 0); return sumSq / (sample ? arr.length - 1 : arr.length); }
+  function stddev(arr, sample) { return Math.sqrt(variance(arr, sample)); }
+  function quartiles(arr) { var sorted = arr.slice().sort(function (a, b) { return a - b; }); var mid = Math.floor(sorted.length / 2); var lowerHalf = sorted.slice(0, mid); var upperHalf = sorted.length % 2 ? sorted.slice(mid + 1) : sorted.slice(mid); return { q1: median(lowerHalf), q2: median(sorted), q3: median(upperHalf) }; }
+
+  function solveLinear(a, b) { if (a === 0) return b === 0 ? { infinite: true } : { noSolution: true }; return { x: -b / a }; }
+  function solveQuadratic(a, b, c) {
+    if (a === 0) return Object.assign({ degenerate: true }, solveLinear(b, c));
+    var discriminant = b * b - 4 * a * c;
+    if (discriminant > 0) { var sqrtD = Math.sqrt(discriminant); return { discriminant: discriminant, kind: 'two-real', roots: [(-b + sqrtD) / (2 * a), (-b - sqrtD) / (2 * a)] }; }
+    if (discriminant === 0) return { discriminant: discriminant, kind: 'one-real', roots: [-b / (2 * a)] };
+    var sqrtAbsD = Math.sqrt(-discriminant);
+    return { discriminant: discriminant, kind: 'complex', roots: [{ re: -b / (2 * a), im: sqrtAbsD / (2 * a) }, { re: -b / (2 * a), im: -sqrtAbsD / (2 * a) }] };
+  }
+
+  var MS_PER_DAY = 24 * 60 * 60 * 1000;
+  function dateDiffDays(d1, d2) { return Math.round((d2.getTime() - d1.getTime()) / MS_PER_DAY); }
+  function addDaysToDate(date, days) { var d = new Date(date.getTime()); d.setDate(d.getDate() + days); return d; }
+  function addMonthsToDate(date, months) { var d = new Date(date.getTime()); d.setMonth(d.getMonth() + months); return d; }
+  function addYearsToDate(date, years) { var d = new Date(date.getTime()); d.setFullYear(d.getFullYear() + years); return d; }
+  function workingDaysBetween(d1, d2) {
+    var start = d1 < d2 ? d1 : d2, end = d1 < d2 ? d2 : d1, count = 0, cur = new Date(start.getTime());
+    while (cur < end) { var day = cur.getDay(); if (day !== 0 && day !== 6) count++; cur = addDaysToDate(cur, 1); }
+    return count;
+  }
+
+  if (typeof document === 'undefined' || !document.getElementById) {
+    if (typeof module !== 'undefined') module.exports = { angleToRad, radToAngle, preprocessPercentPhrases, preprocessPercentOperators, preprocessUnitAliases, preprocessExpression, addPercent, subPercent, whatPercentIs, percentOfWhatIsPart, roundToSigFigs, roundDecimals, groupInternational, groupIndian, formatNumber, BASE_MAP, convertBase, applyBitwiseOp, createTapeEntry, createTapeSeparator, tapeRunningTotal, recalculateTape, editTapeEntry, deleteTapeEntry, createMemoryStore, memorySet, memoryAdd, memoryClear, mean, median, mode, range, variance, stddev, quartiles, solveLinear, solveQuadratic, dateDiffDays, addDaysToDate, addMonthsToDate, addYearsToDate, workingDaysBetween };
+    return;
+  }
+
+  /* ============================================================
+     Engine setup (math.js + angle-mode-aware trig override)
+     ============================================================ */
+  var LS = { get: function (k, d) { try { var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+  var state = {
+    angleMode: LS.get('sc-angle-mode', 'deg'), fractionMode: LS.get('sc-fraction-mode', false), baseMode: false, scientificPad: LS.get('sc-scientific-pad', true),
+    scope: {}, tape: LS.get('sc-tape', []), memory: LS.get('sc-memory', {}),
+    decimalPlaces: LS.get('sc-decimal-places', 10), thousands: LS.get('sc-thousands', 'international'),
+    lastResult: 0, tapeIdCounter: LS.get('sc-tape-id-counter', 1)
+  };
+
+  /* The maths engine is a third-party script. If it is blocked — corporate
+     proxy, aggressive content blocker, or a first visit while offline — every
+     call below throws a ReferenceError and the whole calculator dies with
+     nothing on screen but a console error. Fail loudly and usefully instead. */
+  if (typeof math === 'undefined' || !math || typeof math.import !== 'function') {
+    var dead = document.querySelector('[data-cal-display]');
+    if (dead) {
+      dead.textContent = 'Engine blocked';
+      dead.classList.add('is-error');
+    }
+    var warn = document.querySelector('[data-engine-error]');
+    if (warn) {
+      warn.hidden = false;
+      warn.textContent = 'The maths engine could not load. This is usually a content blocker or a network filter blocking cdnjs.cloudflare.com. Allow that domain, or reload once while online so the offline copy can be cached.';
+    }
+    return;
+  }
+
+  math.import({
+    sin: function (x) { return typeof x === 'number' ? Math.sin(angleToRad(x, state.angleMode)) : math.sin(x); },
+    cos: function (x) { return typeof x === 'number' ? Math.cos(angleToRad(x, state.angleMode)) : math.cos(x); },
+    tan: function (x) { return typeof x === 'number' ? Math.tan(angleToRad(x, state.angleMode)) : math.tan(x); },
+    asin: function (x) { return typeof x === 'number' ? radToAngle(Math.asin(x), state.angleMode) : math.asin(x); },
+    acos: function (x) { return typeof x === 'number' ? radToAngle(Math.acos(x), state.angleMode) : math.acos(x); },
+    atan: function (x) { return typeof x === 'number' ? radToAngle(Math.atan(x), state.angleMode) : math.atan(x); }
+  }, { override: true });
+
+  function evaluateExpr(expr, scope) {
+    var pre = preprocessExpression(expr);
+    return math.evaluate(pre, scope);
+  }
+  function resultToDisplayString(result) {
+    if (result === undefined) return '';
+    if (typeof result === 'number') {
+      if (state.fractionMode) { try { return math.fraction(result).toFraction(true); } catch (e) {} }
+      return formatNumber(result, { decimalPlaces: state.decimalPlaces, thousands: state.thousands });
+    }
+    if (result && result.toFraction) return result.toFraction(true);
+    if (result && typeof result.toString === 'function') return result.toString();
+    return String(result);
+  }
+  function resultToNumber(result) {
+    if (typeof result === 'number') return result;
+    if (result && typeof result.toNumber === 'function') { try { return result.toNumber(); } catch (e) { return NaN; } }
+    if (result && result.re !== undefined) return NaN; // complex: not summable on the tape
+    return NaN;
+  }
+
+  /* ============================================================
+     Standalone chrome bits app.js already provides (theme/mobile/year) — nothing extra needed here
+     ============================================================ */
+
+  /* ============================================================
+     Expression input, live preview, evaluate, keyboard
+     ============================================================ */
+  var exprInput = document.querySelector('[data-expr-input]');
+  var previewEl = document.querySelector('[data-cal-preview]');
+  var displayEl = document.querySelector('[data-cal-display]');
+  var bracketIndicator = document.querySelector('[data-bracket-indicator]');
+
+  function checkBrackets(expr) {
+    var depth = 0;
+    for (var i = 0; i < expr.length; i++) { if (expr[i] === '(') depth++; else if (expr[i] === ')') depth--; if (depth < 0) return depth; }
+    return depth;
+  }
+  function updateBracketIndicator() {
+    var depth = checkBrackets(exprInput.value);
+    if (depth === 0) { bracketIndicator.textContent = ''; bracketIndicator.classList.remove('is-unbalanced'); }
+    else { bracketIndicator.textContent = depth > 0 ? depth + ' unclosed bracket' + (depth > 1 ? 's' : '') : 'unmatched closing bracket'; bracketIndicator.classList.add('is-unbalanced'); }
+  }
+  function updatePreview() {
+    updateBracketIndicator();
+    var expr = exprInput.value.trim();
+    if (!expr) { previewEl.textContent = ' '; return; }
+    try {
+      var testScope = Object.assign({}, state.scope);
+      var result = evaluateExpr(expr, testScope);
+      previewEl.textContent = '= ' + resultToDisplayString(result);
+    } catch (e) { previewEl.textContent = ' '; }
+  }
+  exprInput.addEventListener('input', updatePreview);
+
+  function runEquals() {
+    var expr = exprInput.value.trim();
+    if (!expr) return;
+    try {
+      var result = evaluateExpr(expr, state.scope);
+      displayEl.classList.remove('is-error');
+      displayEl.textContent = resultToDisplayString(result);
+      var num = resultToNumber(result);
+      if (!isNaN(num)) state.lastResult = num;
+      state.scope.ans = (typeof result === 'number') ? result : num;
+      pushTapeEntry(expr, num, result);
+      exprInput.value = '';
+      updatePreview();
+      updateBaseDisplay();
+    } catch (e) {
+      displayEl.classList.add('is-error');
+      displayEl.textContent = friendlyError(e);
+    }
+  }
+  function friendlyError(e) {
+    var msg = e.message || String(e);
+    if (/division.*zero|divide.*zero/i.test(msg)) return 'Cannot divide by zero';
+    if (/undefined symbol/i.test(msg)) return 'Unknown name — ' + msg.replace(/undefined symbol/i, '').trim();
+    if (/unexpected/i.test(msg)) return 'Check your expression syntax';
+    return msg;
+  }
+  exprInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); runEquals(); }
+    if (e.key === 'Escape') { exprInput.value = ''; updatePreview(); displayEl.textContent = '0'; displayEl.classList.remove('is-error'); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (document.activeElement !== exprInput && !e.ctrlKey && !e.metaKey && /^[0-9+\-*/^().]$/.test(e.key)) { exprInput.focus(); }
+  });
+
+  /* ============================================================
+     Button pad
+     ============================================================ */
+  var BASIC_KEYS = [
+    ['(', ')', '⌫', 'C'],
+    ['7', '8', '9', '÷'],
+    ['4', '5', '6', '×'],
+    ['1', '2', '3', '−'],
+    ['0', '.', '=', '+']
+  ];
+  var SCI_KEYS = [
+    ['sin(', 'cos(', 'tan(', 'ln(', 'log(', 'π'],
+    ['asin(', 'acos(', 'atan(', 'sqrt(', 'cbrt(', 'e'],
+    ['sinh(', 'cosh(', 'tanh(', '^', '!', '%'],
+    ['(', ')', '⌫', 'C', 'ANS', 'EXP'],
+    ['7', '8', '9', '÷', 'mod', 'nCr('],
+    ['4', '5', '6', '×', '1/(', 'nPr('],
+    ['1', '2', '3', '−', 'rand()', 'randint('],
+    ['0', '.', '=', '+', '±', '10^(']
+  ];
+  function insertAtCursor(text) {
+    var start = exprInput.selectionStart, end = exprInput.selectionEnd;
+    var v = exprInput.value;
+    exprInput.value = v.slice(0, start) + text + v.slice(end);
+    var newPos = start + text.length;
+    exprInput.focus(); exprInput.setSelectionRange(newPos, newPos);
+    updatePreview();
+  }
+  function handlePadPress(key) {
+    if (key === '=') { runEquals(); return; }
+    if (key === 'C') { exprInput.value = ''; displayEl.textContent = '0'; displayEl.classList.remove('is-error'); updatePreview(); return; }
+    if (key === '⌫') {
+      var start = exprInput.selectionStart;
+      if (start > 0) { exprInput.value = exprInput.value.slice(0, start - 1) + exprInput.value.slice(start); exprInput.setSelectionRange(start - 1, start - 1); }
+      exprInput.focus(); updatePreview(); return;
+    }
+    if (key === '×') { insertAtCursor('*'); return; }
+    if (key === '÷') { insertAtCursor('/'); return; }
+    if (key === '−') { insertAtCursor('-'); return; }
+    if (key === 'π') { insertAtCursor('pi'); return; }
+    if (key === 'e') { insertAtCursor('e'); return; }
+    if (key === 'ANS') { insertAtCursor('ans'); return; }
+    if (key === 'EXP') { insertAtCursor('e'); return; }
+    if (key === '!') { insertAtCursor('!'); return; }
+    if (key === '±') {
+      // toggle sign of the whole current expression by wrapping with a unary minus / removing one
+      var v = exprInput.value.trim();
+      exprInput.value = v.indexOf('-(') === 0 && v.endsWith(')') ? v.slice(2, -1) : '-(' + v + ')';
+      updatePreview(); return;
+    }
+    if (key === 'mod') { insertAtCursor(' mod '); return; }
+    insertAtCursor(key);
+  }
+  function buildPad() {
+    var pad = document.querySelector('[data-cal-pad]');
+    pad.innerHTML = '';
+    var keys = state.scientificPad ? SCI_KEYS : BASIC_KEYS;
+    pad.className = 'cal-pad' + (state.scientificPad ? '' : ' basic-only');
+    keys.forEach(function (row) {
+      row.forEach(function (key) {
+        var btn = document.createElement('button');
+        btn.type = 'button'; btn.textContent = key;
+        if (['÷', '×', '−', '+', '^', 'mod'].indexOf(key) !== -1) btn.className = 'op';
+        if (key === '=') btn.className = 'eq';
+        btn.addEventListener('click', function () { handlePadPress(key); });
+        pad.appendChild(btn);
+      });
+    });
+  }
+  document.querySelector('[data-toggle-sci-pad]').addEventListener('click', function () { state.scientificPad = !state.scientificPad; LS.set('sc-scientific-pad', state.scientificPad); this.classList.toggle('is-active', state.scientificPad); buildPad(); });
+  document.querySelector('[data-toggle-sci-pad]').classList.toggle('is-active', state.scientificPad);
+
+  /* ============================================================
+     Angle mode / fraction mode / base mode toggles
+     ============================================================ */
+  Array.from(document.querySelectorAll('[data-angle]')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      state.angleMode = btn.getAttribute('data-angle'); LS.set('sc-angle-mode', state.angleMode);
+      Array.from(document.querySelectorAll('[data-angle]')).forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+      updatePreview();
+    });
+  });
+  Array.from(document.querySelectorAll('[data-angle]')).forEach(function (b) { b.classList.toggle('is-active', b.getAttribute('data-angle') === state.angleMode); });
+
+  document.querySelector('[data-toggle-fraction]').addEventListener('click', function () { state.fractionMode = !state.fractionMode; LS.set('sc-fraction-mode', state.fractionMode); this.classList.toggle('is-active', state.fractionMode); });
+  document.querySelector('[data-toggle-fraction]').classList.toggle('is-active', state.fractionMode);
+
+  var basePanel = document.querySelector('[data-base-panel]');
+  document.querySelector('[data-toggle-base]').addEventListener('click', function () {
+    state.baseMode = !state.baseMode; this.classList.toggle('is-active', state.baseMode);
+    basePanel.classList.toggle('is-open', state.baseMode);
+    updateBaseDisplay();
+  });
+  function updateBaseDisplay() {
+    if (!state.baseMode) return;
+    var n = Math.trunc(state.lastResult) || 0;
+    document.querySelector('[data-base-hex]').textContent = (n >>> 0).toString(16).toUpperCase();
+    document.querySelector('[data-base-dec]').textContent = String(n);
+    document.querySelector('[data-base-oct]').textContent = (n >>> 0).toString(8);
+    document.querySelector('[data-base-bin]').textContent = (n >>> 0).toString(2);
+  }
+  Array.from(document.querySelectorAll('[data-bitop]')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var op = btn.getAttribute('data-bitop');
+      var a = Math.trunc(state.lastResult);
+      if (op === 'NOT') { state.lastResult = applyBitwiseOp(a, undefined, 'NOT'); }
+      else {
+        var bStr = prompt('Second operand for ' + op + ':', '0'); if (bStr === null) return;
+        state.lastResult = applyBitwiseOp(a, parseInt(bStr, 10) || 0, op);
+      }
+      displayEl.textContent = String(state.lastResult);
+      updateBaseDisplay();
+    });
+  });
+
+  /* ============================================================
+     Percentage dedicated buttons
+     ============================================================ */
+  Array.from(document.querySelectorAll('[data-pct-mode]')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var mode = btn.getAttribute('data-pct-mode');
+      var a = prompt(mode === 'whatpct' ? 'Value A:' : mode === 'ofwhat' ? 'Value A:' : 'Base value A:', state.lastResult || '');
+      if (a === null) return;
+      var b = prompt(mode === 'add' ? 'Percent to add:' : mode === 'sub' ? 'Percent to subtract:' : mode === 'whatpct' ? 'Value B (A is what % of B):' : 'Percent B (A is B% of what):', '10');
+      if (b === null) return;
+      var A = parseFloat(a), B = parseFloat(b), result;
+      if (mode === 'add') result = addPercent(A, B);
+      else if (mode === 'sub') result = subPercent(A, B);
+      else if (mode === 'whatpct') result = whatPercentIs(A, B);
+      else result = percentOfWhatIsPart(A, B);
+      state.lastResult = result;
+      displayEl.textContent = formatNumber(result, { decimalPlaces: state.decimalPlaces, thousands: state.thousands });
+      pushTapeEntry(mode + '(' + a + ', ' + b + ')', result, result);
+    });
+  });
+
+  /* ============================================================
+     Tape
+     ============================================================ */
+  function saveTape() { LS.set('sc-tape', state.tape); LS.set('sc-tape-id-counter', state.tapeIdCounter); }
+  function pushTapeEntry(expr, num, rawResult) {
+    var entry = createTapeEntry(state.tapeIdCounter++, expr, num, Date.now());
+    entry.display = resultToDisplayString(rawResult);
+    state.tape.push(entry);
+    saveTape();
+    renderTape();
+  }
+  function renderTape() {
+    var list = document.querySelector('[data-tape-list]');
+    list.innerHTML = '';
+    state.tape.forEach(function (entry) {
+      if (entry.isSeparator) {
+        var sep = document.createElement('div'); sep.className = 'cal-tape-sep'; sep.textContent = entry.label || '───'; list.appendChild(sep); return;
+      }
+      var row = document.createElement('div'); row.className = 'cal-tape-entry' + (entry.error ? ' is-error' : '');
+      row.innerHTML = '<div class="expr" data-expr-text>' + escapeHtml(entry.expr) + '</div><div class="result" data-result-text>' + (entry.error ? 'Error: ' + escapeHtml(entry.error) : escapeHtml(entry.display || String(entry.result))) + '</div>' + (entry.comment ? '<div class="comment">— ' + escapeHtml(entry.comment) + '</div>' : '');
+      row.querySelector('[data-result-text]').addEventListener('click', function (e) { e.stopPropagation(); insertAtCursor(String(entry.result)); });
+      var exprEl = row.querySelector('[data-expr-text]');
+      exprEl.addEventListener('dblclick', function (e) {
+        e.stopPropagation(); exprEl.contentEditable = 'true'; exprEl.focus();
+        document.execCommand && document.execCommand('selectAll', false, null);
+      });
+      exprEl.addEventListener('blur', function () {
+        exprEl.contentEditable = 'false';
+        var newExpr = exprEl.textContent.trim();
+        if (newExpr && newExpr !== entry.expr) { state.tape = editTapeEntry(state.tape, entry.id, newExpr); recalcWholeTape(); }
+      });
+      exprEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); exprEl.blur(); } });
+      row.addEventListener('click', function () { exprInput.value = entry.expr; updatePreview(); exprInput.focus(); });
+      row.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+        var comment = prompt('Comment for this line:', entry.comment || '');
+        if (comment !== null) { entry.comment = comment; saveTape(); renderTape(); }
+      });
+      list.appendChild(row);
+    });
+    document.querySelector('[data-tape-total]').textContent = 'Total: ' + formatNumber(tapeRunningTotal(state.tape), { decimalPlaces: state.decimalPlaces, thousands: state.thousands });
+    list.scrollTop = list.scrollHeight;
+  }
+  function recalcWholeTape() {
+    state.tape = recalculateTape(state.tape, function (expr, scope) { return resultToNumber(evaluateExpr(expr, scope)); });
+    state.tape.forEach(function (e) { if (!e.isSeparator && !e.error) e.display = formatNumber(e.result, { decimalPlaces: state.decimalPlaces, thousands: state.thousands }); });
+    saveTape(); renderTape();
+  }
+  function escapeHtml(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+  document.querySelector('[data-tape-sep]').addEventListener('click', function () {
+    var label = prompt('Section label (optional):', '') || '';
+    state.tape.push(createTapeSeparator(state.tapeIdCounter++, label, Date.now()));
+    saveTape(); renderTape();
+  });
+  document.querySelector('[data-tape-clear]').addEventListener('click', function () {
+    var backup = state.tape.slice();
+    state.tape = []; saveTape(); renderTape();
+    showToast('Tape cleared.', { label: 'Undo', onClick: function () { state.tape = backup; saveTape(); renderTape(); } });
+  });
+  document.querySelector('[data-tape-copy]').addEventListener('click', function () {
+    var text = state.tape.map(function (e) { return e.isSeparator ? '--- ' + e.label + ' ---' : e.expr + ' = ' + (e.error || e.display); }).join('\n');
+    navigator.clipboard.writeText(text).then(function () { showToast('Tape copied.'); });
+  });
+  Array.from(document.querySelectorAll('[data-tape-export]')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var kind = btn.getAttribute('data-tape-export');
+      var content, mime;
+      if (kind === 'csv') { content = 'expression,result,comment,timestamp\n' + state.tape.filter(function (e) { return !e.isSeparator; }).map(function (e) { return '"' + e.expr.replace(/"/g, '""') + '","' + (e.error || e.display) + '","' + (e.comment || '') + '","' + new Date(e.ts).toISOString() + '"'; }).join('\n'); mime = 'text/csv'; }
+      else { content = state.tape.map(function (e) { return e.isSeparator ? '--- ' + e.label + ' ---' : e.expr + ' = ' + (e.error || e.display) + (e.comment ? ' — ' + e.comment : ''); }).join('\n'); mime = 'text/plain'; }
+      var blob = new Blob([content], { type: mime });
+      var url = URL.createObjectURL(blob); var a = document.createElement('a'); a.href = url; a.download = 'calculator-tape.' + kind;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+    });
+  });
+  var tapePrintBtn = document.querySelector('[data-tape-print]');
+  if (tapePrintBtn) tapePrintBtn.addEventListener('click', function () {
+    var w = window.open('', '_blank');
+    w.document.write('<html><head><title>Calculator Tape</title></head><body><pre>' + escapeHtml(state.tape.map(function (e) { return e.isSeparator ? '--- ' + e.label + ' ---' : e.expr + ' = ' + (e.error || e.display); }).join('\n')) + '</pre></body></html>');
+    w.document.close(); w.focus(); setTimeout(function () { w.print(); }, 300);
+  });
+
+  function showToast(message, action) {
+    var el = document.createElement('div');
+    el.style.cssText = 'position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);background:var(--surface-strong);border:1px solid var(--border);border-radius:10px;padding:0.6rem 1rem;box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:2000;font-size:0.85rem;display:flex;gap:0.7rem;align-items:center;color:var(--text);';
+    el.textContent = message;
+    if (action) { var btn = document.createElement('button'); btn.textContent = action.label; btn.style.cssText = 'border:none;background:var(--accent);color:#fff;border-radius:6px;padding:0.25rem 0.6rem;cursor:pointer;'; btn.onclick = function () { action.onClick(); el.remove(); }; el.appendChild(btn); }
+    document.body.appendChild(el);
+    setTimeout(function () { el.remove(); }, action ? 6000 : 2200);
+  }
+
+  /* ============================================================
+     Side panels: Variables / Memory / Constants
+     ============================================================ */
+  Array.from(document.querySelectorAll('[data-toggle-panel]')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var name = btn.getAttribute('data-toggle-panel');
+      var panel = document.querySelector('[data-panel="' + name + '"]');
+      panel.classList.toggle('hidden');
+      if (name === 'variables') renderVariables();
+      if (name === 'memory') renderMemory();
+      if (name === 'constants') renderConstants();
+    });
+  });
+  function renderVariables() {
+    var list = document.querySelector('[data-var-list]');
+    var keys = Object.keys(state.scope).filter(function (k) { return typeof state.scope[k] !== 'function'; });
+    list.innerHTML = keys.length ? keys.map(function (k) {
+      return '<div class="cal-var-row"><span>' + escapeHtml(k) + '</span><input type="text" value="' + escapeHtml(String(state.scope[k])) + '" data-var-edit="' + escapeHtml(k) + '" /></div>';
+    }).join('') : '<p class="stg-hint" style="font-size:0.8rem;color:var(--text-muted);">No variables yet.</p>';
+    Array.from(list.querySelectorAll('[data-var-edit]')).forEach(function (input) {
+      input.addEventListener('change', function () { var k = input.getAttribute('data-var-edit'); var v = parseFloat(input.value); if (!isNaN(v)) state.scope[k] = v; updatePreview(); });
+    });
+  }
+  function renderMemory() {
+    var list = document.querySelector('[data-mem-list]');
+    var keys = Object.keys(state.memory);
+    list.innerHTML = keys.length ? keys.map(function (k) {
+      return '<div class="cal-mem-row"><span>' + escapeHtml(k) + '</span><span>' + formatNumber(state.memory[k], { decimalPlaces: state.decimalPlaces, thousands: state.thousands }) + '</span><button type="button" class="cal-mini-btn" data-mem-recall="' + escapeHtml(k) + '">MR</button><button type="button" class="cal-mini-btn" data-mem-clear="' + escapeHtml(k) + '">MC</button></div>';
+    }).join('') : '<p class="stg-hint" style="font-size:0.8rem;color:var(--text-muted);">No memory slots yet.</p>';
+    Array.from(list.querySelectorAll('[data-mem-recall]')).forEach(function (b) { b.addEventListener('click', function () { insertAtCursor(String(state.memory[b.getAttribute('data-mem-recall')])); }); });
+    Array.from(list.querySelectorAll('[data-mem-clear]')).forEach(function (b) { b.addEventListener('click', function () { state.memory = memoryClear(state.memory, b.getAttribute('data-mem-clear')); LS.set('sc-memory', state.memory); renderMemory(); }); });
+  }
+  document.querySelector('[data-mem-ms]').addEventListener('click', function () { var name = document.querySelector('[data-mem-name]').value.trim() || 'M'; state.memory = memorySet(state.memory, name, state.lastResult); LS.set('sc-memory', state.memory); renderMemory(); });
+  document.querySelector('[data-mem-mplus]').addEventListener('click', function () { var name = document.querySelector('[data-mem-name]').value.trim() || 'M'; state.memory = memoryAdd(state.memory, name, state.lastResult); LS.set('sc-memory', state.memory); renderMemory(); });
+  document.querySelector('[data-mem-mminus]').addEventListener('click', function () { var name = document.querySelector('[data-mem-name]').value.trim() || 'M'; state.memory = memoryAdd(state.memory, name, -state.lastResult); LS.set('sc-memory', state.memory); renderMemory(); });
+
+  var CONSTANTS = [
+    { name: 'π (pi)', value: 'pi' }, { name: 'e (Euler\'s number)', value: 'e' }, { name: 'φ (golden ratio)', value: '(1+sqrt(5))/2' },
+    { name: 'c (speed of light)', value: '299792458' }, { name: 'g (gravity)', value: '9.80665' }, { name: 'h (Planck constant)', value: '6.62607015e-34' }, { name: 'Nₐ (Avogadro)', value: '6.02214076e23' }
+  ];
+  function renderConstants(filter) {
+    var list = document.querySelector('[data-const-list]');
+    var items = CONSTANTS.filter(function (c) { return !filter || c.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1; });
+    list.innerHTML = items.map(function (c) { return '<div class="cal-var-row" data-const-insert="' + escapeHtml(c.value) + '" style="cursor:pointer;"><span>' + c.name + '</span></div>'; }).join('');
+    Array.from(list.querySelectorAll('[data-const-insert]')).forEach(function (el) { el.addEventListener('click', function () { insertAtCursor(el.getAttribute('data-const-insert')); }); });
+  }
+  document.querySelector('[data-const-search]').addEventListener('input', function (e) { renderConstants(e.target.value); });
+
+  /* ============================================================
+     Settings modal
+     ============================================================ */
+  var modalBackdrop = document.querySelector('[data-modal-backdrop]');
+  var modalBody = document.querySelector('[data-modal-body]');
+  function openModal(html, onOpen) { modalBody.innerHTML = html; modalBackdrop.classList.remove('hidden'); if (onOpen) onOpen(modalBody); }
+  function closeModal() { modalBackdrop.classList.add('hidden'); }
+  modalBackdrop.addEventListener('click', function (e) { if (e.target === modalBackdrop) closeModal(); });
+
+  document.querySelector('[data-open-settings]').addEventListener('click', function () {
+    openModal(
+      '<h2>Display settings</h2>' +
+      '<div class="cal-fn-row"><label>Decimal places <input type="number" min="0" max="15" data-set-decimals style="width:70px;" /></label></div>' +
+      '<div class="cal-fn-row"><label>Thousands separator <select data-set-thousands><option value="none">None</option><option value="international">International (100,000)</option><option value="indian">Indian (1,00,000)</option></select></label></div>' +
+      '<div class="cal-fn-row" style="justify-content:flex-end;"><button class="primary-btn" type="button" data-close-settings>Done</button></div>',
+      function (body) {
+        body.querySelector('[data-set-decimals]').value = state.decimalPlaces;
+        body.querySelector('[data-set-thousands]').value = state.thousands;
+        body.querySelector('[data-set-decimals]').addEventListener('change', function (e) { state.decimalPlaces = parseInt(e.target.value, 10) || 0; LS.set('sc-decimal-places', state.decimalPlaces); });
+        body.querySelector('[data-set-thousands]').addEventListener('change', function (e) { state.thousands = e.target.value; LS.set('sc-thousands', state.thousands); });
+        body.querySelector('[data-close-settings]').addEventListener('click', closeModal);
+      }
+    );
+  });
+  document.querySelector('[data-open-shortcuts]').addEventListener('click', function () {
+    openModal(
+      '<h2>Keyboard shortcuts</h2><table><tr><td>Enter</td><td>Evaluate (=)</td></tr><tr><td>Escape</td><td>Clear</td></tr><tr><td>Backspace</td><td>Delete last character</td></tr><tr><td>0-9 + − × ÷ ( )</td><td>Direct input</td></tr><tr><td>^</td><td>Power</td></tr></table><div class="cal-fn-row" style="justify-content:flex-end;"><button class="secondary-btn" type="button" data-close-settings>Close</button></div>',
+      function (body) { body.querySelector('[data-close-settings]').addEventListener('click', closeModal); }
+    );
+  });
+
+  /* ============================================================
+     GRAPHING MODE
+     ============================================================ */
+  var graphState = { fns: [{ expr: 'x^2', color: '#4f46e5' }], viewport: { xMin: -10, xMax: 10, yMin: -10, yMax: 10 } };
+  var graphCanvas = document.querySelector('[data-graph-canvas]');
+  var gctx = graphCanvas.getContext('2d');
+  function resizeGraphCanvas() { var wrap = graphCanvas.parentElement; graphCanvas.width = wrap.clientWidth; graphCanvas.height = Math.round(wrap.clientWidth * 0.6); drawGraph(); }
+  function worldToScreenX(x) { return ((x - graphState.viewport.xMin) / (graphState.viewport.xMax - graphState.viewport.xMin)) * graphCanvas.width; }
+  function worldToScreenY(y) { return graphCanvas.height - ((y - graphState.viewport.yMin) / (graphState.viewport.yMax - graphState.viewport.yMin)) * graphCanvas.height; }
+  function screenToWorldX(sx) { return graphState.viewport.xMin + (sx / graphCanvas.width) * (graphState.viewport.xMax - graphState.viewport.xMin); }
+  function drawGraph() {
+    gctx.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
+    gctx.fillStyle = '#fff'; gctx.fillRect(0, 0, graphCanvas.width, graphCanvas.height);
+    gctx.strokeStyle = '#e5e7eb'; gctx.lineWidth = 1;
+    var xStep = niceStep(graphState.viewport.xMax - graphState.viewport.xMin);
+    for (var gx = Math.ceil(graphState.viewport.xMin / xStep) * xStep; gx <= graphState.viewport.xMax; gx += xStep) { gctx.beginPath(); gctx.moveTo(worldToScreenX(gx), 0); gctx.lineTo(worldToScreenX(gx), graphCanvas.height); gctx.stroke(); }
+    var yStep = niceStep(graphState.viewport.yMax - graphState.viewport.yMin);
+    for (var gy = Math.ceil(graphState.viewport.yMin / yStep) * yStep; gy <= graphState.viewport.yMax; gy += yStep) { gctx.beginPath(); gctx.moveTo(0, worldToScreenY(gy)); gctx.lineTo(graphCanvas.width, worldToScreenY(gy)); gctx.stroke(); }
+    gctx.strokeStyle = '#9ca3af'; gctx.lineWidth = 1.5;
+    gctx.beginPath(); gctx.moveTo(0, worldToScreenY(0)); gctx.lineTo(graphCanvas.width, worldToScreenY(0)); gctx.stroke();
+    gctx.beginPath(); gctx.moveTo(worldToScreenX(0), 0); gctx.lineTo(worldToScreenX(0), graphCanvas.height); gctx.stroke();
+    graphState.fns.forEach(function (fn) {
+      gctx.strokeStyle = fn.color; gctx.lineWidth = 2; gctx.beginPath();
+      var started = false;
+      for (var sx = 0; sx <= graphCanvas.width; sx++) {
+        var x = screenToWorldX(sx);
+        try {
+          var y = math.evaluate(fn.expr.replace(/\bx\b/g, '(' + x + ')'));
+          if (typeof y !== 'number' || !isFinite(y)) { started = false; continue; }
+          var sy = worldToScreenY(y);
+          if (!started) { gctx.moveTo(sx, sy); started = true; } else { gctx.lineTo(sx, sy); }
+        } catch (e) { started = false; }
+      }
+      gctx.stroke();
+    });
+  }
+  function niceStep(range) { var raw = range / 10; var mag = Math.pow(10, Math.floor(Math.log10(raw))); var norm = raw / mag; var step = norm < 1.5 ? 1 : norm < 3 ? 2 : norm < 7 ? 5 : 10; return step * mag; }
+  window.addEventListener('resize', resizeGraphCanvas);
+  var dragging = false, dragStart = null;
+  graphCanvas.addEventListener('pointerdown', function (e) { dragging = true; dragStart = { x: e.clientX, y: e.clientY, vp: Object.assign({}, graphState.viewport) }; });
+  window.addEventListener('pointermove', function (e) {
+    if (!dragging) return;
+    var dx = e.clientX - dragStart.x, dy = e.clientY - dragStart.y;
+    var worldDx = (dx / graphCanvas.width) * (dragStart.vp.xMax - dragStart.vp.xMin);
+    var worldDy = (dy / graphCanvas.height) * (dragStart.vp.yMax - dragStart.vp.yMin);
+    graphState.viewport = { xMin: dragStart.vp.xMin - worldDx, xMax: dragStart.vp.xMax - worldDx, yMin: dragStart.vp.yMin + worldDy, yMax: dragStart.vp.yMax + worldDy };
+    drawGraph();
+  });
+  window.addEventListener('pointerup', function () { dragging = false; });
+  graphCanvas.addEventListener('wheel', function (e) {
+    e.preventDefault();
+    var factor = e.deltaY > 0 ? 1.1 : 0.9;
+    var cx = (graphState.viewport.xMin + graphState.viewport.xMax) / 2, cy = (graphState.viewport.yMin + graphState.viewport.yMax) / 2;
+    var halfW = (graphState.viewport.xMax - graphState.viewport.xMin) / 2 * factor, halfH = (graphState.viewport.yMax - graphState.viewport.yMin) / 2 * factor;
+    graphState.viewport = { xMin: cx - halfW, xMax: cx + halfW, yMin: cy - halfH, yMax: cy + halfH };
+    drawGraph();
+  }, { passive: false });
+  graphCanvas.addEventListener('click', function (e) {
+    if (dragStart && (Math.abs(e.clientX - dragStart.x) > 3)) return;
+    var rect = graphCanvas.getBoundingClientRect();
+    var x = screenToWorldX((e.clientX - rect.left) * (graphCanvas.width / rect.width));
+    var fn = graphState.fns[0]; if (!fn) return;
+    try { var y = math.evaluate(fn.expr.replace(/\bx\b/g, '(' + x + ')')); document.querySelector('[data-trace-info]').textContent = 'x = ' + x.toFixed(4) + ', y = ' + Number(y).toFixed(4) + '  (' + fn.expr + ')'; } catch (er) {}
+  });
+  var FN_COLORS = ['#4f46e5', '#dc2626', '#16a34a', '#d97706', '#0891b2'];
+  function renderFnList() {
+    var list = document.querySelector('[data-fn-list]');
+    list.innerHTML = '';
+    graphState.fns.forEach(function (fn, i) {
+      var row = document.createElement('div'); row.className = 'cal-fn-row';
+      row.innerHTML = '<span class="cal-fn-color" style="background:' + fn.color + ';"></span><span>y =</span><input type="text" value="' + escapeHtml(fn.expr) + '" data-fn-idx="' + i + '" /><button type="button" data-fn-remove="' + i + '">✕</button>';
+      list.appendChild(row);
+    });
+    Array.from(list.querySelectorAll('[data-fn-idx]')).forEach(function (input) { input.addEventListener('input', function () { graphState.fns[parseInt(input.getAttribute('data-fn-idx'), 10)].expr = input.value; drawGraph(); }); });
+    Array.from(list.querySelectorAll('[data-fn-remove]')).forEach(function (btn) { btn.addEventListener('click', function () { graphState.fns.splice(parseInt(btn.getAttribute('data-fn-remove'), 10), 1); renderFnList(); drawGraph(); }); });
+  }
+  document.querySelector('[data-add-fn]').addEventListener('click', function () { graphState.fns.push({ expr: 'sin(x)', color: FN_COLORS[graphState.fns.length % FN_COLORS.length] }); renderFnList(); drawGraph(); });
+  document.querySelector('[data-graph-reset]').addEventListener('click', function () { graphState.viewport = { xMin: -10, xMax: 10, yMin: -10, yMax: 10 }; drawGraph(); });
+  document.querySelector('[data-graph-export]').addEventListener('click', function () { var a = document.createElement('a'); a.href = graphCanvas.toDataURL('image/png'); a.download = 'graph.png'; a.click(); });
+
+  /* ============================================================
+     EQUATION SOLVER MODE
+     ============================================================ */
+  Array.from(document.querySelectorAll('[data-eq-type]')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      Array.from(document.querySelectorAll('[data-eq-type]')).forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+      var type = btn.getAttribute('data-eq-type');
+      document.querySelector('[data-eq-linear]').classList.toggle('hidden', type !== 'linear');
+      document.querySelector('[data-eq-quadratic]').classList.toggle('hidden', type !== 'quadratic');
+    });
+  });
+  document.querySelector('[data-eq-solve]').addEventListener('click', function () {
+    var isQuadratic = !document.querySelector('[data-eq-quadratic]').classList.contains('hidden');
+    var resultBox = document.querySelector('[data-eq-result]');
+    if (!isQuadratic) {
+      var a = parseFloat(document.querySelector('[data-eq-a]').value), b = parseFloat(document.querySelector('[data-eq-b]').value);
+      var res = solveLinear(a, b);
+      resultBox.textContent = res.infinite ? 'Infinite solutions (0 = 0 for any x).' : res.noSolution ? 'No solution (contradiction).' : 'x = ' + res.x;
+    } else {
+      var qa = parseFloat(document.querySelector('[data-eq-qa]').value), qb = parseFloat(document.querySelector('[data-eq-qb]').value), qc = parseFloat(document.querySelector('[data-eq-qc]').value);
+      var q = solveQuadratic(qa, qb, qc);
+      var steps = 'Discriminant = b² − 4ac = ' + qb + '² − 4(' + qa + ')(' + qc + ') = ' + q.discriminant + '\n';
+      if (q.kind === 'two-real') steps += 'Two real roots: x = (' + (-qb) + ' ± √' + q.discriminant + ') / ' + (2 * qa) + '\nx₁ = ' + q.roots[0] + '\nx₂ = ' + q.roots[1];
+      else if (q.kind === 'one-real') steps += 'One repeated real root: x = ' + q.roots[0];
+      else if (q.kind === 'complex') steps += 'Complex roots (discriminant < 0):\nx₁ = ' + q.roots[0].re.toFixed(4) + ' + ' + q.roots[0].im.toFixed(4) + 'i\nx₂ = ' + q.roots[1].re.toFixed(4) + ' − ' + Math.abs(q.roots[1].im).toFixed(4) + 'i';
+      else steps = 'a = 0, this is actually linear: ' + (q.infinite ? 'infinite solutions' : q.noSolution ? 'no solution' : 'x = ' + q.x);
+      resultBox.textContent = steps;
+    }
+  });
+
+  /* ============================================================
+     MATRIX MODE
+     ============================================================ */
+  function buildMatrixGrid(container, rows, cols) {
+    container.innerHTML = '';
+    container.style.gridTemplateColumns = 'repeat(' + cols + ', 46px)';
+    for (var i = 0; i < rows * cols; i++) { var inp = document.createElement('input'); inp.type = 'number'; inp.value = '0'; container.appendChild(inp); }
+  }
+  function readMatrixGrid(container, rows, cols) {
+    var inputs = Array.from(container.querySelectorAll('input'));
+    var data = [];
+    for (var r = 0; r < rows; r++) { var row = []; for (var cIdx = 0; cIdx < cols; cIdx++) row.push(parseFloat(inputs[r * cols + cIdx].value) || 0); data.push(row); }
+    return data;
+  }
+  document.querySelector('[data-matrix-build]').addEventListener('click', function () {
+    var rows = parseInt(document.querySelector('[data-matrix-rows]').value, 10) || 2, cols = parseInt(document.querySelector('[data-matrix-cols]').value, 10) || 2;
+    rows = Math.min(5, Math.max(1, rows)); cols = Math.min(5, Math.max(1, cols));
+    buildMatrixGrid(document.querySelector('[data-matrix-a]'), rows, cols);
+    buildMatrixGrid(document.querySelector('[data-matrix-b]'), rows, cols);
+  });
+  document.querySelector('[data-matrix-build]').click();
+  Array.from(document.querySelectorAll('[data-matrix-op]')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var rows = parseInt(document.querySelector('[data-matrix-rows]').value, 10), cols = parseInt(document.querySelector('[data-matrix-cols]').value, 10);
+      var A = math.matrix(readMatrixGrid(document.querySelector('[data-matrix-a]'), rows, cols));
+      var B = math.matrix(readMatrixGrid(document.querySelector('[data-matrix-b]'), rows, cols));
+      var op = btn.getAttribute('data-matrix-op'); var resultBox = document.querySelector('[data-matrix-result]');
+      try {
+        var result;
+        if (op === 'add') result = math.add(A, B).toArray();
+        else if (op === 'multiply') result = math.multiply(A, B).toArray();
+        else if (op === 'transposeA') result = math.transpose(A).toArray();
+        else if (op === 'detA') result = math.det(A);
+        else if (op === 'invA') result = math.inv(A).toArray();
+        resultBox.textContent = Array.isArray(result) ? result.map(function (row) { return Array.isArray(row) ? row.map(function (v) { return Number(v.toFixed ? v.toFixed(4) : v); }).join('\t') : row; }).join('\n') : String(result);
+      } catch (e) { resultBox.textContent = 'Error: ' + e.message; }
+    });
+  });
+
+  /* ============================================================
+     STATISTICS MODE
+     ============================================================ */
+  document.querySelector('[data-stats-compute]').addEventListener('click', function () {
+    var raw = document.querySelector('[data-stats-input]').value;
+    var nums = raw.split(/[\s,]+/).map(parseFloat).filter(function (n) { return !isNaN(n); });
+    var grid = document.querySelector('[data-stats-grid]');
+    if (!nums.length) { grid.innerHTML = '<p class="stg-hint">Paste some numbers first.</p>'; return; }
+    var q = quartiles(nums);
+    var stats = [
+      ['Count', nums.length], ['Mean', mean(nums).toFixed(4)], ['Median', median(nums)], ['Mode', mode(nums).join(', ') || '—'],
+      ['Range', range(nums)], ['Sample StdDev', stddev(nums, true).toFixed(4)], ['Population StdDev', stddev(nums, false).toFixed(4)],
+      ['Sample Variance', variance(nums, true).toFixed(4)], ['Q1', q.q1], ['Q3', q.q3]
+    ];
+    grid.innerHTML = stats.map(function (s) { return '<div class="cal-stat-card"><div class="val">' + s[1] + '</div><div class="lbl">' + s[0] + '</div></div>'; }).join('');
+    drawHistogram(nums);
+  });
+  function drawHistogram(nums) {
+    var canvas = document.querySelector('[data-stats-histogram]');
+    canvas.width = canvas.clientWidth; canvas.height = 160;
+    var ctx = canvas.getContext('2d'); ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var min = Math.min.apply(null, nums), max = Math.max.apply(null, nums);
+    var bucketCount = Math.min(12, Math.max(4, Math.round(Math.sqrt(nums.length))));
+    var bucketSize = (max - min) / bucketCount || 1;
+    var buckets = new Array(bucketCount).fill(0);
+    nums.forEach(function (n) { var idx = Math.min(bucketCount - 1, Math.floor((n - min) / bucketSize)); buckets[idx]++; });
+    var maxCount = Math.max.apply(null, buckets);
+    var barW = canvas.width / bucketCount;
+    ctx.fillStyle = '#4f46e5';
+    buckets.forEach(function (count, i) { var h = (count / maxCount) * (canvas.height - 10); ctx.fillRect(i * barW + 2, canvas.height - h, barW - 4, h); });
+  }
+
+  /* ============================================================
+     DATE CALCULATOR MODE
+     ============================================================ */
+  Array.from(document.querySelectorAll('[data-date-mode]')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      Array.from(document.querySelectorAll('[data-date-mode]')).forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+      var mode = btn.getAttribute('data-date-mode');
+      document.querySelector('[data-date-diff]').classList.toggle('hidden', mode !== 'diff');
+      document.querySelector('[data-date-add]').classList.toggle('hidden', mode !== 'add');
+    });
+  });
+  document.querySelector('[data-date-diff-btn]').addEventListener('click', function () {
+    var from = new Date(document.querySelector('[data-date-from]').value), to = new Date(document.querySelector('[data-date-to]').value);
+    var resultBox = document.querySelector('[data-date-result]');
+    if (isNaN(from) || isNaN(to)) { resultBox.textContent = 'Pick both dates.'; return; }
+    var days = Math.abs(dateDiffDays(from, to));
+    var workDays = workingDaysBetween(from, to);
+    resultBox.textContent = days + ' days total (' + Math.floor(days / 7) + ' weeks, ' + (days % 7) + ' extra days)\n' + workDays + ' working days (excluding weekends)';
+  });
+  document.querySelector('[data-date-add-btn]').addEventListener('click', function () {
+    var start = new Date(document.querySelector('[data-date-start]').value);
+    var resultBox = document.querySelector('[data-date-result]');
+    if (isNaN(start)) { resultBox.textContent = 'Pick a start date.'; return; }
+    var days = parseInt(document.querySelector('[data-date-days]').value, 10) || 0;
+    var months = parseInt(document.querySelector('[data-date-months]').value, 10) || 0;
+    var years = parseInt(document.querySelector('[data-date-years]').value, 10) || 0;
+    var result = addYearsToDate(addMonthsToDate(addDaysToDate(start, days), months), years);
+    resultBox.textContent = 'Result: ' + result.toDateString();
+  });
+
+  /* ============================================================
+     Mode tabs
+     ============================================================ */
+  Array.from(document.querySelectorAll('[data-cal-mode]')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      Array.from(document.querySelectorAll('[data-cal-mode]')).forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+      var mode = btn.getAttribute('data-cal-mode');
+      Array.from(document.querySelectorAll('[data-cal-panel]')).forEach(function (p) { p.classList.toggle('is-active', p.getAttribute('data-cal-panel') === mode); });
+      if (mode === 'graphing') { resizeGraphCanvas(); renderFnList(); }
+    });
+  });
+
+  /* ============================================================
+     PWA
+     ============================================================ */
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sci-calculator-sw.js', { scope: '/scientific-calculator.html' }).catch(function (err) { console.error('SW registration failed:', err); });
+  }
+
+  buildPad();
+  renderTape();
+  updatePreview();
+})();
+</script>
+  <script src="assets/js/side-ads.js" defer></script>
+  <script src="assets/js/inline-ads.js" data-in-article defer></script>
+</body>
+</html>

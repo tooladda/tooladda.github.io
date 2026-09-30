@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+    <meta name="description" content="Convert PNG, JPG and JPEG images to WebP online for free. Adjust quality, resize, compare file sizes and download optimized images — all in your browser." />
+    <title>PNG &amp; JPG to WebP Converter — Free Online | ToolAdda</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <meta name="theme-color" content="#c2410c" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="ToolAdda" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <link rel="canonical" href="https://tooladda.online/png-to-webp.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+    <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta property="og:title" content="PNG &amp; JPG to WebP Converter — Free Online | ToolAdda" />
+    <meta property="og:description" content="Convert PNG, JPG and JPEG to WebP with quality control, resizing, batch conversion and honest size comparison. Nothing is uploaded." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tooladda.online/png-to-webp.html" />
+    <meta property="og:site_name" content="ToolAdda" />
+    <meta property="og:image" content="https://tooladda.online/assets/images/og/png-to-webp.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content="Image to WebP Converter — free online tool on ToolAdda, runs in your browser with no sign-up." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="PNG &amp; JPG to WebP Converter — Free Online | ToolAdda" />
+    <meta name="twitter:description" content="Convert PNG, JPG and JPEG to WebP with quality control, resizing, batch conversion and honest size comparison. Nothing is uploaded." />
+    <meta name="twitter:image" content="https://tooladda.online/assets/images/og/png-to-webp.jpg" />
+    <meta name="twitter:image:alt" content="Image to WebP Converter — free online tool on ToolAdda, runs in your browser with no sign-up." />
+
+    <style id="iw-styles">
+      /* Image to WebP — "the export panel".
+         Converting an image is what a design app's Export dialog does: pick a
+         format, a quality, a scale, and export. So the page is dressed as one.
+         The headline sits on a selected artboard (blue selection frame, square
+         handles) floating on the transparency checkerboard, the tool is the
+         export panel, and the one action colour is the tangerine of an Export
+         button. The checkerboard is a working token, not decoration: it is how
+         transparency is made visible in every preview. */
+      body.iw-page {
+        --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+        --iw-desk: #f1f1f0;
+        --iw-card: #ffffff;
+        --iw-well: #f7f7f6;
+        --iw-line: rgba(28, 25, 23, .12);
+        --iw-line-2: rgba(28, 25, 23, .22);
+        --iw-ink: #1c1917;
+        --iw-ink-2: #3f3a36;
+        --iw-mute: #6b645e;
+        --iw-orange: #c2410c;
+        --iw-orange-hover: #9a3412;
+        --iw-orange-ink: #ffffff;
+        --iw-orange-text: #b53d0b;
+        --iw-orange-soft: rgba(194, 65, 12, .08);
+        --iw-orange-ring: rgba(194, 65, 12, .35);
+        --iw-select: #0d8bf2;
+        --iw-select-soft: rgba(13, 139, 242, .08);
+        --iw-check-a: #ffffff;
+        --iw-check-b: #e7e5e4;
+        --iw-good: #15803d;
+        --iw-good-soft: rgba(21, 128, 61, .1);
+        --iw-warn: #92610a;
+        --iw-warn-soft: rgba(146, 97, 10, .1);
+        --iw-bad: #b3261e;
+        --iw-bad-soft: rgba(179, 38, 30, .08);
+        --iw-shadow: 0 1px 0 rgba(28, 25, 23, .04), 0 18px 40px -26px rgba(28, 25, 23, .42);
+        --checkerboard: conic-gradient(var(--iw-check-b) 25%, var(--iw-check-a) 0 50%, var(--iw-check-b) 0 75%, var(--iw-check-a) 0) 0 0 / 16px 16px;
+        --accent: var(--iw-orange-text);
+        --accent-soft: var(--iw-orange-soft);
+        background: var(--iw-desk);
+      }
+      [data-theme="dark"] .iw-page {
+        --iw-desk: #0f0e0d;
+        --iw-card: #1a1817;
+        --iw-well: #151312;
+        --iw-line: rgba(245, 240, 235, .1);
+        --iw-line-2: rgba(245, 240, 235, .2);
+        --iw-ink: #f5f0eb;
+        --iw-ink-2: #d6cec6;
+        --iw-mute: #a39a91;
+        --iw-orange: #fb923c;
+        --iw-orange-hover: #fdba74;
+        --iw-orange-ink: #1c0d03;
+        --iw-orange-text: #fdba74;
+        --iw-orange-soft: rgba(251, 146, 60, .12);
+        --iw-orange-ring: rgba(251, 146, 60, .4);
+        --iw-select: #4aa8ff;
+        --iw-select-soft: rgba(74, 168, 255, .1);
+        --iw-check-a: #221f1d;
+        --iw-check-b: #2c2825;
+        --iw-good: #6ee7a0;
+        --iw-good-soft: rgba(110, 231, 160, .1);
+        --iw-warn: #e0b054;
+        --iw-warn-soft: rgba(224, 176, 84, .12);
+        --iw-bad: #fca5a5;
+        --iw-bad-soft: rgba(252, 165, 165, .1);
+        --iw-shadow: 0 1px 0 rgba(0, 0, 0, .4), 0 20px 44px -26px rgba(0, 0, 0, .9);
+      }
+      body.iw-page [hidden] { display: none !important; }
+      .iw-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+      [data-iw-root], .iw-queue { scroll-margin-top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+
+      .iw-shell { padding: .6rem 0 3rem; }
+      .iw-crumb { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: .35rem 0 .9rem; font-size: .86rem; color: var(--iw-mute); }
+      .iw-crumb a { color: var(--iw-orange-text); font-weight: 700; text-decoration: none; }
+      .iw-crumb a:hover { text-decoration: underline; }
+      .iw-crumb span[aria-hidden] { opacity: .5; }
+
+      /* ---------- buttons ---------- */
+      .iw-btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: .4rem; min-height: 2.75rem; padding: .55rem 1rem;
+        border-radius: 10px; border: 1px solid transparent; background: none; color: inherit;
+        font: inherit; font-size: .9rem; font-weight: 800; line-height: 1.2; text-decoration: none; white-space: nowrap; cursor: pointer;
+        transition: background-color .15s, border-color .15s, color .15s, transform .1s;
+      }
+      .iw-btn svg { width: 18px; height: 18px; flex: none; }
+      .iw-btn:active:not(:disabled) { transform: translateY(1px); }
+      .iw-btn:disabled { opacity: .45; cursor: not-allowed; }
+      .iw-btn--accent { background: var(--iw-orange); border-color: var(--iw-orange); color: var(--iw-orange-ink); box-shadow: 0 1px 0 rgba(0, 0, 0, .12); }
+      .iw-btn--accent:hover:not(:disabled) { background: var(--iw-orange-hover); border-color: var(--iw-orange-hover); color: var(--iw-orange-ink); }
+      .iw-btn--ghost { background: var(--iw-card); border-color: var(--iw-line-2); color: var(--iw-ink); }
+      .iw-btn--ghost:hover:not(:disabled) { border-color: var(--iw-orange); color: var(--iw-orange-text); }
+      .iw-btn--sm { min-height: 2.25rem; padding: .3rem .7rem; font-size: .8rem; border-radius: 8px; }
+      .iw-page :focus-visible { outline: 3px solid var(--iw-orange-ring); outline-offset: 2px; }
+
+      /* ---------- top: cover, tool, ad ----------
+         Under 980px a single column, with the lede and trust list dropping
+         below the ad so a phone reaches the drop zone straight after the
+         headline. From 980px the cover and lede sit beside the tool. Either
+         way the ad comes straight after the tool. */
+      .iw-top { display: grid; gap: 1rem; align-items: start; grid-template-areas: "cover" "tool" "ad" "intro"; }
+      .iw-top > * { min-width: 0; }
+      .iw-cover { grid-area: cover; }
+      .iw-intro { grid-area: intro; }
+      .iw-console { grid-area: tool; }
+      .iw-ad-zone { grid-area: ad; }
+      @media (min-width: 980px) {
+        .iw-top {
+          grid-template-columns: minmax(0, .82fr) minmax(0, 1.3fr);
+          grid-template-rows: auto 1fr auto;
+          grid-template-areas: "cover tool" "intro tool" "ad ad";
+          column-gap: 1.25rem;
+        }
+      }
+
+      /* ---------- cover: an artboard, selected, on the transparency canvas ---------- */
+      .iw-cover { padding: 1.7rem 1.35rem 1.5rem; border-radius: 14px; background: var(--checkerboard); border: 1px solid var(--iw-line); box-shadow: var(--iw-shadow); }
+      .iw-eyebrow { display: inline-block; margin: 0 0 .35rem; font-family: var(--mono); font-size: .7rem; font-weight: 700; letter-spacing: .08em; color: var(--iw-select); }
+      .iw-eyebrow::before { content: "\25A2  "; }
+      .iw-artboard {
+        position: relative; padding: 1.15rem 1.2rem 1.05rem; background: var(--iw-card); outline: 1.5px solid var(--iw-select);
+        box-shadow: 0 10px 24px -14px rgba(0, 0, 0, .35);
+      }
+      /* the four selection handles */
+      .iw-artboard::after {
+        content: ""; position: absolute; inset: -5px; pointer-events: none;
+        background:
+          linear-gradient(var(--iw-card), var(--iw-card)) 1.5px 1.5px / 6px 6px no-repeat,
+          linear-gradient(var(--iw-card), var(--iw-card)) calc(100% - 1.5px) 1.5px / 6px 6px no-repeat,
+          linear-gradient(var(--iw-card), var(--iw-card)) 1.5px calc(100% - 1.5px) / 6px 6px no-repeat,
+          linear-gradient(var(--iw-card), var(--iw-card)) calc(100% - 1.5px) calc(100% - 1.5px) / 6px 6px no-repeat,
+          linear-gradient(var(--iw-select), var(--iw-select)) 0 0 / 9px 9px no-repeat,
+          linear-gradient(var(--iw-select), var(--iw-select)) 100% 0 / 9px 9px no-repeat,
+          linear-gradient(var(--iw-select), var(--iw-select)) 0 100% / 9px 9px no-repeat,
+          linear-gradient(var(--iw-select), var(--iw-select)) 100% 100% / 9px 9px no-repeat;
+      }
+      .iw-h1 { margin: 0; color: var(--iw-ink); font-size: clamp(1.6rem, 1rem + 2.4vw, 2.3rem); font-weight: 900; line-height: 1.1; letter-spacing: -.025em; text-wrap: balance; }
+      .iw-dim { display: block; width: max-content; margin: .55rem auto 0; padding: .12rem .45rem; border-radius: 4px; background: var(--iw-select); color: #fff; font-family: var(--mono); font-size: .68rem; font-weight: 700; }
+      .iw-formats-row { display: flex; align-items: center; gap: .5rem; margin-top: 1rem; }
+      .iw-fmt { display: grid; place-items: center; padding: .35rem .6rem; border-radius: 7px; font-family: var(--mono); font-size: .74rem; font-weight: 800; letter-spacing: .04em; }
+      .iw-fmt--in { background: var(--iw-card); color: var(--iw-ink-2); border: 1px solid var(--iw-line-2); }
+      .iw-fmt--out { background: var(--iw-orange); color: var(--iw-orange-ink); }
+      .iw-fmt-arrow { width: 26px; height: 12px; color: var(--iw-mute); }
+
+      .iw-intro { padding: .15rem .2rem 0; }
+      .iw-lede { margin: 0; padding-left: .85rem; border-left: 3px solid var(--iw-orange); color: var(--iw-ink-2); font-size: .98rem; line-height: 1.66; }
+      .iw-trust { display: flex; flex-wrap: wrap; gap: .4rem; margin: .9rem 0 0; padding: 0; list-style: none; }
+      .iw-trust li { padding: .32rem .62rem; border-radius: 8px; background: var(--iw-card); border: 1px solid var(--iw-line); color: var(--iw-ink-2); font-size: .78rem; font-weight: 700; }
+
+      /* ---------- the export panel ---------- */
+      .iw-console { overflow: hidden; border-radius: 14px; background: var(--iw-card); border: 1px solid var(--iw-line); box-shadow: var(--iw-shadow); }
+      .iw-console.is-file-over { outline: 2px dashed var(--iw-select); outline-offset: 4px; }
+      .iw-console-bar { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .8rem; padding: .7rem 1rem; background: var(--iw-well); border-bottom: 1px solid var(--iw-line); }
+      .iw-console-bar__title { display: inline-flex; align-items: center; gap: .55rem; margin: 0; font-family: var(--mono); font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--iw-ink-2); }
+      .iw-console-bar__title::before { content: ""; width: 34px; height: 10px; background: radial-gradient(circle, #ef6a5b 3.5px, transparent 4px) 0 0 / 12px 10px no-repeat, radial-gradient(circle, #f3bd4f 3.5px, transparent 4px) 12px 0 / 12px 10px no-repeat, radial-gradient(circle, #5dc26a 3.5px, transparent 4px) 24px 0 / 12px 10px no-repeat; }
+      .iw-privacy { font-size: .76rem; font-weight: 700; color: var(--iw-good); }
+
+      .iw-drop {
+        position: relative; display: grid; justify-items: center; gap: .35rem; margin: 1rem; padding: 1.4rem 1rem 1.3rem; text-align: center; cursor: pointer;
+        border: 2px dashed var(--iw-line-2); border-radius: 12px;
+        background: var(--iw-well); /* fallback where color-mix() is unknown */
+        background: linear-gradient(color-mix(in srgb, var(--iw-card) 82%, transparent), color-mix(in srgb, var(--iw-card) 82%, transparent)), var(--checkerboard);
+        transition: border-color .15s;
+      }
+      .iw-drop:hover, .iw-drop.is-dragging { border-color: var(--iw-select); border-style: solid; }
+      .iw-drop-art { width: 150px; height: 74px; }
+      .iw-drop-art .tile { fill: var(--iw-card); stroke: var(--iw-line-2); stroke-width: 1.5; }
+      .iw-drop-art .tile-out { fill: var(--iw-orange); }
+      .iw-drop-art .sky { fill: #bfdbfe; }
+      .iw-drop-art .hill { fill: #3b82f6; opacity: .75; }
+      .iw-drop-art .hill-out { fill: var(--iw-orange-ink); opacity: .85; }
+      .iw-drop-art .sun { fill: #f59e0b; }
+      .iw-drop-art .lbl { font: 800 8.5px/1 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .06em; fill: var(--iw-ink-2); }
+      .iw-drop-art .lbl-out { fill: var(--iw-orange-text); }
+      .iw-drop-art .arw { fill: none; stroke: var(--iw-select); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+      .iw-drop__title { margin: .15rem 0 0; font-size: 1.08rem; font-weight: 900; color: var(--iw-ink); }
+      .iw-drop__hint { margin: 0; font-size: .84rem; color: var(--iw-mute); }
+      .iw-drop .iw-btn { margin: .2rem 0; min-width: 12rem; }
+      .iw-drop__formats { font-family: var(--mono); font-size: .72rem; font-weight: 700; letter-spacing: .06em; color: var(--iw-mute); }
+      .iw-drop__paste { margin: 0; font-size: .76rem; color: var(--iw-mute); }
+      @media (pointer: coarse) { .iw-drop__paste { display: none; } }
+      /* once images are in, the zone shrinks to a strip that still takes drops and taps */
+      [data-iw-root].has-images .iw-drop { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .4rem .8rem; padding: .6rem .8rem; margin-bottom: .6rem; }
+      [data-iw-root].has-images .iw-drop-art, [data-iw-root].has-images .iw-drop__hint, [data-iw-root].has-images .iw-drop__formats, [data-iw-root].has-images .iw-drop__paste { display: none; }
+      [data-iw-root].has-images .iw-drop__title { margin: 0; font-size: .9rem; }
+      [data-iw-root].has-images .iw-drop .iw-btn { min-width: 0; min-height: 2.25rem; padding: .3rem .8rem; font-size: .84rem; background: var(--iw-card); border-color: var(--iw-line-2); color: var(--iw-ink); }
+      [data-iw-root] .iw-drop__more { display: none; }
+      [data-iw-root].has-images .iw-drop__fresh { display: none; }
+      [data-iw-root].has-images .iw-drop__more { display: inline; }
+
+      /* settings and actions wait for the first image */
+      [data-iw-root]:not(.has-images) .iw-settings,
+      [data-iw-root]:not(.has-images) .iw-actions { display: none; }
+
+      .iw-notice { margin: 0 1rem .9rem; padding: .6rem .8rem; border-radius: 10px; font-size: .84rem; line-height: 1.55; }
+      .iw-notice[data-kind="warn"] { background: var(--iw-warn-soft); color: var(--iw-ink-2); border-left: 3px solid var(--iw-warn); }
+      .iw-notice[data-kind="info"] { background: var(--iw-well); color: var(--iw-ink-2); }
+
+      .iw-settings { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: .9rem; margin: 0 1rem 1rem; padding: .9rem; border-radius: 12px; background: var(--iw-well); border: 1px solid var(--iw-line); }
+      .iw-field { display: grid; align-content: start; gap: .35rem; min-width: 0; }
+      .iw-label { font-size: .72rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; color: var(--iw-mute); }
+      .iw-label span { color: var(--iw-orange-text); font-family: var(--mono); }
+      .iw-hint { margin: 0; font-size: .76rem; line-height: 1.5; color: var(--iw-mute); }
+      .iw-select, .iw-num, .iw-color {
+        width: 100%; min-height: 2.75rem; box-sizing: border-box; padding: .45rem .65rem; border-radius: 9px;
+        border: 1px solid var(--iw-line-2); background: var(--iw-card); color: var(--iw-ink); font: inherit; font-size: 16px; font-weight: 600;
+      }
+      .iw-select:focus, .iw-num:focus { outline: none; border-color: var(--iw-orange); box-shadow: 0 0 0 3px var(--iw-orange-ring); }
+      .iw-color { padding: .2rem; cursor: pointer; }
+      .iw-range { -webkit-appearance: none; appearance: none; width: 100%; height: 28px; background: none; cursor: pointer; }
+      .iw-range::-webkit-slider-runnable-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--iw-line-2), var(--iw-orange)); }
+      .iw-range::-moz-range-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--iw-line-2), var(--iw-orange)); }
+      .iw-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; margin-top: -8px; width: 22px; height: 22px; border-radius: 50%; background: var(--iw-card); border: 3px solid var(--iw-orange); box-shadow: 0 1px 4px rgba(0, 0, 0, .3); }
+      .iw-range::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--iw-card); border: 3px solid var(--iw-orange); }
+      .iw-duo { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; }
+      .iw-check { display: inline-flex; align-items: center; gap: .45rem; min-height: 2.5rem; font-size: .82rem; font-weight: 700; color: var(--iw-ink-2); cursor: pointer; }
+      .iw-check input { width: 18px; height: 18px; accent-color: var(--iw-orange); }
+      .iw-chiprow { display: flex; flex-wrap: wrap; gap: .3rem; }
+      .iw-chip { min-height: 2.1rem; padding: .25rem .6rem; border-radius: 7px; border: 1px solid var(--iw-line-2); background: var(--iw-card); color: var(--iw-ink-2); font: inherit; font-size: .76rem; font-weight: 700; cursor: pointer; }
+      .iw-chip:hover { border-color: var(--iw-orange); color: var(--iw-orange-text); }
+      .iw-chip[aria-pressed="true"] { background: var(--iw-orange-soft); border-color: var(--iw-orange); color: var(--iw-orange-text); }
+
+      .iw-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; padding: .8rem 1rem; border-top: 1px solid var(--iw-line); background: var(--iw-well); }
+      .iw-actions > .iw-btn--accent { flex: 1 1 12rem; min-height: 3rem; font-size: 1rem; }
+      .iw-actions .iw-hint { font-weight: 700; }
+      .iw-status { display: inline-flex; align-items: center; gap: .4rem; margin-left: auto; padding: .3rem .65rem; border-radius: 999px; border: 1px solid var(--iw-line); background: var(--iw-card); color: var(--iw-mute); font-size: .8rem; font-weight: 800; }
+      /* a word plus a glyph — never colour alone */
+      .iw-status::before { content: "\2022"; }
+      .iw-status[data-state="done"] { color: var(--iw-good); border-color: var(--iw-good); }
+      .iw-status[data-state="done"]::before { content: "\2713"; }
+      .iw-status[data-state="partial"], .iw-status[data-state="stale"] { color: var(--iw-warn); border-color: var(--iw-warn); }
+      .iw-status[data-state="partial"]::before, .iw-status[data-state="stale"]::before { content: "!"; }
+      .iw-status[data-state="working"] { color: var(--iw-orange-text); border-color: var(--iw-orange); }
+      .iw-status[data-state="working"]::before { content: "\22EF"; }
+      .iw-progress { height: 6px; overflow: hidden; background: var(--iw-well); }
+      .iw-progress__bar { display: block; width: 0; height: 100%; background: var(--iw-orange); transition: width .18s linear; }
+
+      /* ---------- the queue ---------- */
+      .iw-empty { margin: 0 1rem 1rem; font-size: .82rem; text-align: center; color: var(--iw-mute); }
+      .iw-queue { display: grid; gap: .6rem; margin: 0; padding: 1rem; list-style: none; }
+      .iw-queue:empty { display: none; }
+      .iw-card { display: grid; grid-template-columns: 84px minmax(0, 1fr) auto; align-items: start; gap: .8rem; padding: .7rem; border-radius: 12px; background: var(--iw-well); border: 1px solid var(--iw-line); }
+      .iw-card.is-error { border-color: var(--iw-bad); background: var(--iw-bad-soft); }
+      .iw-thumb { display: grid; place-items: center; width: 84px; height: 84px; overflow: hidden; border-radius: 8px; border: 1px solid var(--iw-line); background: var(--checkerboard); }
+      .iw-thumb img { display: block; max-width: 100%; max-height: 100%; }
+      .iw-meta { display: grid; gap: .2rem; min-width: 0; }
+      .iw-name { margin: 0; font-size: .9rem; font-weight: 800; color: var(--iw-ink); overflow-wrap: anywhere; }
+      .iw-facts { margin: 0; font-family: var(--mono); font-size: .73rem; color: var(--iw-mute); }
+      .iw-alpha { margin: 0; font-size: .74rem; font-weight: 700; color: var(--iw-select); }
+      .iw-error { margin: 0; font-size: .8rem; font-weight: 700; color: var(--iw-bad); }
+      .iw-result { display: flex; flex-wrap: wrap; align-items: baseline; gap: .45rem; margin: .2rem 0 0; font-size: .84rem; }
+      .iw-result strong { color: var(--iw-ink); }
+      .iw-arrow { font-family: var(--mono); font-size: .72rem; color: var(--iw-mute); }
+      .iw-delta { font-size: .8rem; font-weight: 900; }
+      .iw-delta--down { color: var(--iw-good); }
+      .iw-delta--up { color: var(--iw-warn); }
+      .iw-delta--same { color: var(--iw-mute); }
+      .iw-bars { display: grid; gap: .2rem; margin-top: .3rem; }
+      .iw-bar { display: grid; grid-template-columns: 58px minmax(0, 1fr) 64px; align-items: center; gap: .4rem; font-size: .7rem; color: var(--iw-mute); }
+      .iw-bar__label, .iw-bar__size { font-family: var(--mono); }
+      .iw-bar__size { text-align: right; }
+      .iw-bar__track { display: block; height: 8px; overflow: hidden; border-radius: 999px; background: var(--iw-line); }
+      .iw-bar__fill { display: block; height: 100%; border-radius: 999px; background: var(--iw-mute); }
+      .iw-bar__fill.is-out { background: var(--iw-orange); }
+      .iw-side { display: flex; flex-direction: column; align-items: flex-end; gap: .35rem; }
+      .iw-side .iw-status { margin-left: 0; }
+      .iw-status--done { color: var(--iw-good); }
+      .iw-status--error { color: var(--iw-bad); }
+      @media (max-width: 640px) {
+        .iw-card { grid-template-columns: 64px minmax(0, 1fr); }
+        .iw-thumb { width: 64px; height: 64px; }
+        .iw-side { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; align-items: center; }
+        .iw-side .iw-btn--accent { flex: 1 1 auto; }
+      }
+
+      /* ---------- ad slot straight after the tool ----------
+         inline-ads.js shows .ta-lb-ad (728x90) from 900px and .ta-inline-ad
+         (300x250) below 1000px; hiding the 300x250 from 900px leaves exactly one
+         ad at every width, and a display:none slot never loads its iframe. */
+      @media (min-width: 900px) { body.iw-page .iw-ad-zone .ta-inline-ad { display: none !important; } }
+      @media (max-width: 340px) { .iw-ad-zone { margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); } }
+
+      /* ---------- guide ---------- */
+      .iw-section { margin-top: 1.5rem; padding: clamp(1.1rem, 3vw, 2rem); border-radius: 14px; background: var(--iw-card); border: 1px solid var(--iw-line); box-shadow: var(--iw-shadow); }
+      .iw-h2 { display: flex; align-items: center; gap: .6rem; margin: 0 0 .5rem; font-size: clamp(1.25rem, 2.6vw, 1.6rem); font-weight: 900; letter-spacing: -.015em; line-height: 1.22; color: var(--iw-ink); }
+      /* a layer swatch before every section title */
+      .iw-h2::before { content: ""; flex: none; width: .8rem; height: .8rem; border-radius: 3px; background: var(--iw-orange); box-shadow: 3px 3px 0 var(--iw-select); }
+      .iw-h3 { margin: 1.5rem 0 .4rem; font-size: 1.06rem; font-weight: 800; color: var(--iw-ink); }
+      .iw-sub { max-width: 74ch; margin: 0 0 1rem; color: var(--iw-mute); line-height: 1.65; }
+      .iw-section p, .iw-section li { color: var(--iw-ink-2); line-height: 1.74; }
+      .iw-section > p, .iw-section > ul, .iw-section > ol { max-width: 78ch; }
+      .iw-section > p { margin: 0 0 .85rem; }
+      .iw-section > ul, .iw-section > ol { margin: 0 0 .95rem; padding-left: 1.2rem; }
+      .iw-section li { margin-bottom: .35rem; }
+      .iw-section strong { color: var(--iw-ink); }
+      .iw-section a { color: var(--iw-orange-text); font-weight: 700; }
+      .iw-section code { padding: .08rem .32rem; border-radius: 4px; background: var(--iw-well); border: 1px solid var(--iw-line); color: var(--iw-ink); font-family: var(--mono); font-size: .86em; }
+      .iw-snippet { margin: 0 0 1rem; padding: .85rem 1rem; overflow-x: auto; border-radius: 10px; background: #1c1917; color: #f5f0eb; font-family: var(--mono); font-size: .82rem; line-height: 1.65; white-space: pre; }
+      .iw-tablewrap { margin: 0 0 1rem; overflow-x: auto; border: 1px solid var(--iw-line); border-radius: 10px; }
+      .iw-table { width: 100%; min-width: 460px; border-collapse: collapse; background: var(--iw-card); font-size: .88rem; }
+      .iw-table th, .iw-table td { padding: .6rem .75rem; text-align: left; border-bottom: 1px solid var(--iw-line); color: var(--iw-ink-2); }
+      .iw-table thead th { background: var(--iw-well); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--iw-mute); }
+      .iw-table tbody th { color: var(--iw-ink); }
+      .iw-table tbody tr:last-child > * { border-bottom: 0; }
+      /* each supported conversion as a pair of format tiles */
+      .iw-caps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr)); gap: .5rem; margin: 0 0 1rem; padding: 0; list-style: none; }
+      .iw-caps li { margin: 0; padding: .7rem .75rem; border-radius: 9px; background: var(--checkerboard); border: 1px solid var(--iw-line); color: var(--iw-ink); font-family: var(--mono); font-size: .84rem; font-weight: 800; text-align: center; text-shadow: 0 0 6px var(--iw-card), 0 0 2px var(--iw-card); }
+      .iw-callout { padding: .85rem 1rem; border-radius: 10px; background: var(--iw-warn-soft); border-left: 3px solid var(--iw-warn); color: var(--iw-ink-2); font-size: .88rem; line-height: 1.65; }
+      .iw-callout strong { color: var(--iw-warn); }
+
+      .iw-faq { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; align-items: start; }
+      .iw-faq details { border-radius: 10px; background: var(--iw-well); border: 1px solid var(--iw-line); }
+      .iw-faq summary { position: relative; padding: .8rem 2.2rem .8rem .95rem; list-style: none; cursor: pointer; font-size: .93rem; font-weight: 800; line-height: 1.4; color: var(--iw-ink); }
+      .iw-faq summary::-webkit-details-marker { display: none; }
+      .iw-faq summary::after { content: "+"; position: absolute; right: .95rem; top: .75rem; font-weight: 900; color: var(--iw-orange-text); }
+      .iw-faq details[open] summary::after { content: "\2212"; }
+      .iw-faq details p { margin: 0; padding: 0 .95rem .9rem; font-size: .9rem; line-height: 1.65; }
+      .iw-related { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: .6rem; }
+      .iw-related a { display: block; padding: .85rem .9rem; border-radius: 10px; background: var(--iw-well); border: 1px solid var(--iw-line); color: inherit; text-decoration: none; }
+      .iw-related a:hover { border-color: var(--iw-orange); }
+      .iw-related strong { display: block; margin-bottom: .18rem; font-size: .93rem; color: var(--iw-ink); }
+      .iw-related span { font-size: .8rem; line-height: 1.5; color: var(--iw-mute); }
+      /* The related-tools block app.js adds, in this page's palette. The shared
+         single column is `1fr`, whose minimum is the card's min-content; on a
+         320px phone that is wider than the section and scrolled the page. */
+      .iw-page .related-tools-section { background: var(--iw-card); border-color: var(--iw-line); border-radius: 14px; box-shadow: var(--iw-shadow); }
+      .iw-page .related-tools-eyebrow { color: var(--iw-orange-text); }
+      .iw-page .related-tools-title { color: var(--iw-ink); }
+      .iw-page .related-tools-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: .6rem; }
+      .iw-page .related-tool-card { min-width: 0; background: var(--iw-well); border-color: var(--iw-line); box-shadow: none; color: var(--iw-ink); }
+      .iw-page .related-tool-card:hover, .iw-page .related-tool-card:focus-visible { border-color: var(--iw-orange); }
+      .iw-page .related-tool-card > div:last-child { min-width: 0; }
+      @media (max-width: 559px) { .iw-page .related-tools-section { padding: 1rem .85rem; } }
+      .iw-disclaimer { margin: 1.5rem 0 0; padding: .9rem 1rem; border-radius: 10px; background: var(--iw-well); border: 1px solid var(--iw-line); color: var(--iw-mute); font-size: .82rem; line-height: 1.65; }
+
+      /* ---------- phone sticky bar ---------- */
+      .iw-sticky-cta {
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; padding: .55rem .75rem calc(.55rem + env(safe-area-inset-bottom));
+        background: var(--iw-card); border-top: 1px solid var(--iw-line-2); box-shadow: 0 -14px 30px -20px rgba(0, 0, 0, .45);
+        transform: translateY(110%); visibility: hidden; transition: transform .2s ease, visibility 0s linear .2s;
+      }
+      .iw-sticky-cta.is-visible { transform: none; visibility: visible; transition: transform .2s ease; }
+      .iw-sticky-cta .iw-btn { width: 100%; min-height: 3rem; font-size: 1rem; }
+      body.iw-page.iw-sticky-on { padding-bottom: calc(4.6rem + env(safe-area-inset-bottom)); }
+      @media (min-width: 769px) { .iw-sticky-cta { display: none !important; } }
+
+      /* ---------- smaller screens ---------- */
+      @media (max-width: 760px) { .iw-faq { grid-template-columns: 1fr; } }
+      @media (max-width: 559px) {
+        /* 10px gutters: a 320px phone then has the 300px its ads need */
+        body.iw-page .iwc-wrap, body.iw-page .ta-support { width: calc(100% - 20px); }
+        .iw-crumb { display: none; }
+        .iw-cover { padding: 1.35rem .9rem 1.1rem; }
+        .iw-artboard { padding: .95rem .9rem .9rem; }
+        .iw-console-bar { padding: .6rem .8rem; }
+        .iw-drop { margin: .8rem; }
+        .iw-settings { margin: 0 .8rem .8rem; padding: .75rem; }
+        .iw-notice { margin: 0 .8rem .8rem; }
+        .iw-queue { padding: .8rem; }
+        .iw-actions { padding: .75rem .8rem; }
+        .iw-actions > .iw-btn--ghost { flex: 1 1 0; }
+        .iw-status { margin-left: 0; }
+        .iw-section { padding: 1rem .9rem; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        body.iw-page *, body.iw-page *::before, body.iw-page *::after { transition: none !important; animation: none !important; }
+      }
+      @media print { .iw-sticky-cta, .iw-ad-zone { display: none !important; } }
+    </style>
+
+    <script type="application/ld+json" data-tooladda-page-schema="true">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        { "@type": "WebSite", "@id": "https://tooladda.online/#website", "name": "ToolAdda", "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"], "url": "https://tooladda.online/", "inLanguage": "en", "publisher": { "@id": "https://tooladda.online/#organization" } },
+        { "@type": "Organization", "@id": "https://tooladda.online/#organization", "name": "ToolAdda", "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"], "url": "https://tooladda.online/", "logo": { "@type": "ImageObject", "url": "https://tooladda.online/assets/images/logo.svg" } },
+        {
+          "@type": "WebPage",
+          "@id": "https://tooladda.online/png-to-webp.html#webpage",
+          "url": "https://tooladda.online/png-to-webp.html",
+          "name": "Image to WebP Converter — PNG, JPG and JPEG",
+          "description": "Convert PNG, JPG and JPEG images to WebP with quality control, resizing and batch conversion, entirely in the browser.",
+          "inLanguage": "en",
+          "isPartOf": { "@id": "https://tooladda.online/#website" },
+          "breadcrumb": { "@id": "https://tooladda.online/png-to-webp.html#breadcrumb" },
+          "mainEntity": { "@id": "https://tooladda.online/png-to-webp.html#app" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://tooladda.online/png-to-webp.html#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://tooladda.online/" },
+            { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://tooladda.online/#image" },
+            { "@type": "ListItem", "position": 3, "name": "Image to WebP Converter" }
+          ]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://tooladda.online/png-to-webp.html#app",
+          "name": "Image to WebP Converter",
+          "url": "https://tooladda.online/png-to-webp.html",
+          "applicationCategory": "MultimediaApplication",
+          "operatingSystem": "Any modern web browser",
+          "description": "Convert PNG, JPG and JPEG to WebP, and WebP back to PNG or JPG, with adjustable quality, resizing, batch conversion and accurate size comparison. Runs entirely in the browser.",
+          "inLanguage": "en",
+          "isAccessibleForFree": true,
+          "featureList": [
+            "PNG to WebP",
+            "JPG and JPEG to WebP",
+            "WebP to PNG",
+            "WebP to JPG with a chosen background colour",
+            "Batch conversion with a bounded processing queue",
+            "Adjustable quality with presets",
+            "Resize by width, height, percentage or longest edge",
+            "Accurate size comparison in both directions",
+            "Runs entirely in the browser with no upload"
+          ],
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+          "publisher": { "@id": "https://tooladda.online/#organization" }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://tooladda.online/png-to-webp.html#faq",
+          "isPartOf": { "@id": "https://tooladda.online/png-to-webp.html#webpage" },
+          "mainEntity": [
+            { "@type": "Question", "name": "What is WebP?", "acceptedAnswer": { "@type": "Answer", "text": "WebP is an image format developed by Google for the web. It supports both lossy and lossless compression as well as transparency and animation, and it is designed to produce smaller files than PNG or JPEG at comparable visual quality. Every current browser can display it." } },
+            { "@type": "Question", "name": "How do I convert PNG to WebP?", "acceptedAnswer": { "@type": "Answer", "text": "Drop your PNG files onto the upload area or use Select images. Leave the output set to WebP, adjust the quality slider if you want, then press Convert. Each result shows its new size next to the original, with a Download button." } },
+            { "@type": "Question", "name": "How do I convert JPG to WebP?", "acceptedAnswer": { "@type": "Answer", "text": "Exactly as for PNG — the tool accepts .jpg and .jpeg alongside PNG and WebP. Add the files, keep WebP as the output format, set a quality and convert. You can mix PNG and JPG files in the same batch." } },
+            { "@type": "Question", "name": "How do I convert JPEG to WebP?", "acceptedAnswer": { "@type": "Answer", "text": "JPEG and JPG are the same format with two common extensions, so the process is identical. Files ending .jpeg are accepted and converted the same way, and the output is named with a .webp extension." } },
+            { "@type": "Question", "name": "Can I convert WebP to PNG?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Add your WebP files and change the output format to PNG. PNG supports transparency, so any transparent areas in the source are preserved." } },
+            { "@type": "Question", "name": "Can I convert WebP to JPG?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Change the output format to JPG. Because JPG has no alpha channel, if any of your images contain transparency the tool asks you to choose a background colour and fills the transparent areas with it rather than picking one silently." } },
+            { "@type": "Question", "name": "Does WebP reduce file size?", "acceptedAnswer": { "@type": "Answer", "text": "Usually, but not always. WebP typically produces smaller files than PNG for photographs and than JPEG at similar quality, though the result depends on the image content and the quality setting. Re-encoding an already well-optimised file can make it larger — when that happens this tool says the output is larger rather than reporting a saving." } },
+            { "@type": "Question", "name": "Is WebP smaller than PNG?", "acceptedAnswer": { "@type": "Answer", "text": "For photographic content, almost always and often dramatically, because PNG is lossless and stores every pixel exactly. For flat graphics, logos and screenshots with few colours the gap narrows and PNG can occasionally win. The tool shows the actual numbers for your file." } },
+            { "@type": "Question", "name": "Is WebP smaller than JPG?", "acceptedAnswer": { "@type": "Answer", "text": "Generally yes at comparable visual quality, though the margin varies with the image and the encoder. The browser's built-in WebP encoder is not the most aggressive available, so results here may differ from a command-line tool such as cwebp." } },
+            { "@type": "Question", "name": "Is WebP better than PNG?", "acceptedAnswer": { "@type": "Answer", "text": "For most web imagery, yes — smaller files with transparency support. PNG remains the better choice when you need guaranteed lossless output, when you are editing and re-saving repeatedly, or when a tool in your pipeline does not read WebP." } },
+            { "@type": "Question", "name": "Is WebP better than JPG?", "acceptedAnswer": { "@type": "Answer", "text": "For the web, usually: smaller at similar quality, and it supports transparency, which JPG cannot. JPG is still the safer choice for maximum compatibility with older software, cameras and print workflows." } },
+            { "@type": "Question", "name": "Does WebP support transparency?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. WebP supports an alpha channel in both its lossy and lossless modes, which is one of its main advantages over JPG. Converting a transparent PNG to WebP keeps the transparency." } },
+            { "@type": "Question", "name": "Does JPG support transparency?", "acceptedAnswer": { "@type": "Answer", "text": "No. The JPEG format has no alpha channel at all. Any transparent area has to be filled with a solid colour, which is why this tool asks you to choose one before converting a transparent image to JPG." } },
+            { "@type": "Question", "name": "Is WebP lossless?", "acceptedAnswer": { "@type": "Answer", "text": "WebP supports both lossy and lossless encoding. However, the browser's canvas encoder used by this tool produces lossy WebP only — quality 100 is the highest lossy setting, not lossless. If you need true lossless WebP, use a command-line encoder such as cwebp with its lossless flag." } },
+            { "@type": "Question", "name": "What quality should I use for WebP?", "acceptedAnswer": { "@type": "Answer", "text": "80 is a good default for photographs and is what this tool starts with. Drop to 60–70 for large background images where fine detail does not matter, and raise to 90 for images with text or sharp edges. Compare a few settings on your own image rather than trusting a single number." } },
+            { "@type": "Question", "name": "Does conversion reduce image quality?", "acceptedAnswer": { "@type": "Answer", "text": "Converting to WebP or JPG is lossy, so some information is discarded — how much depends on the quality setting. Converting to PNG is lossless, but a lossy source cannot regain detail it never had, so a WebP converted to PNG will not look better than the WebP did." } },
+            { "@type": "Question", "name": "Can I convert multiple images at once?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Select or drop as many files as you like and press Convert. They are processed a few at a time rather than all at once, which keeps memory use bounded, and the progress indicator reports genuine completion rather than an animation." } },
+            { "@type": "Question", "name": "Can I download all converted images at once?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Download all packages every converted image into a single ZIP that is built in your browser. If ZIP creation is unavailable, the files are downloaded individually instead." } },
+            { "@type": "Question", "name": "Can I resize images while converting?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Resize by a custom width or height, by percentage, or by capping the longest edge to a preset such as 1920px. Aspect ratio is locked by default, so nothing is stretched unless you deliberately unlock it." } },
+            { "@type": "Question", "name": "What do the resize presets mean?", "acceptedAnswer": { "@type": "Answer", "text": "They cap the longest edge of the image. A 1920px preset applied to a 3000×2000 photo produces 1920×1280; applied to a portrait 2000×3000 it produces 1280×1920. Images already smaller than the cap are left alone rather than being enlarged." } },
+            { "@type": "Question", "name": "Are my images uploaded to a server?", "acceptedAnswer": { "@type": "Answer", "text": "No. Decoding, resizing, encoding and downloading all happen in your browser using the Canvas API. No network request carries your image data, and nothing is stored once you close the tab." } },
+            { "@type": "Question", "name": "Can I use this tool offline?", "acceptedAnswer": { "@type": "Answer", "text": "Once the page has loaded, conversion needs no network at all, so an already-open tab keeps working without a connection. Loading the page fresh does require the network." } },
+            { "@type": "Question", "name": "Does conversion keep EXIF metadata?", "acceptedAnswer": { "@type": "Answer", "text": "No. Browser-based conversion through the Canvas API discards metadata such as EXIF, including camera settings and any GPS coordinates. That is often desirable for privacy, but if you need to keep the metadata you will need a tool that copies it across explicitly." } },
+            { "@type": "Question", "name": "Will my photos be rotated incorrectly?", "acceptedAnswer": { "@type": "Answer", "text": "No. Images are decoded with the orientation flag applied, so a portrait photo from a phone converts the right way up. Because the rotation is baked into the pixels, the result stays correct even though the EXIF orientation tag itself is not carried over." } },
+            { "@type": "Question", "name": "How large an image can I convert?", "acceptedAnswer": { "@type": "Answer", "text": "There is a 30 MB per-file limit and a warning for images beyond roughly 40 megapixels, because very large canvases can exhaust browser memory. This is a browser constraint rather than a policy — a desktop application will handle bigger files." } },
+            { "@type": "Question", "name": "What happens if two files have the same name?", "acceptedAnswer": { "@type": "Answer", "text": "The second gets a numbered suffix — image.webp, then image-1.webp — so one download cannot overwrite another in your downloads folder." } },
+            { "@type": "Question", "name": "Which formats can I upload?", "acceptedAnswer": { "@type": "Answer", "text": "PNG, JPG, JPEG and WebP are fully supported. GIF and BMP are accepted where your browser can decode them, and animated GIFs convert as a single frame. Anything the browser cannot decode fails with a clear message rather than producing a broken file." } },
+            { "@type": "Question", "name": "Why did my file get larger after conversion?", "acceptedAnswer": { "@type": "Answer", "text": "Usually because the source was already well compressed, or because a flat graphic with few colours was re-encoded with a lossy codec. Try a lower quality, or keep PNG for logos and screenshots. The tool tells you plainly when the output is larger instead of showing a saving." } },
+            { "@type": "Question", "name": "Does WebP improve website speed?", "acceptedAnswer": { "@type": "Answer", "text": "Smaller images reduce transfer size, which usually helps — but page speed depends on the whole page. If your slowest element is a render-blocking script or a large font, converting images will not fix it. Measure before and after rather than assuming." } },
+            { "@type": "Question", "name": "Does WebP improve Core Web Vitals?", "acceptedAnswer": { "@type": "Answer", "text": "It can help Largest Contentful Paint when the LCP element is an image, because a smaller file arrives sooner. It does nothing for Cumulative Layout Shift unless you also set width and height attributes, and nothing at all for Interaction to Next Paint." } },
+            { "@type": "Question", "name": "How do I use WebP on my website?", "acceptedAnswer": { "@type": "Answer", "text": "Use a picture element with a WebP source and a JPG or PNG fallback, and the browser picks whichever it supports. All current browsers take the WebP, and older ones fall back automatically without any JavaScript." } },
+            { "@type": "Question", "name": "Is this converter free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Free, no sign-up, no email address, no watermark and no per-file charge." } }
+          ]
+        }
+      ]
+    }
+    </script>
+      <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 194, 65, 12; }
+      [data-theme="dark"] { --pca: 251, 146, 60; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 251, 146, 60; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/png-to-webp.html#webpage",
+      "url": "https://tooladda.online/png-to-webp.html",
+      "inLanguage": "en",
+      "datePublished": "2026-06-30",
+      "dateModified": "2026-09-22",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+  <body class="iw-page">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="container navbar">
+        <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Home</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="privacy-policy.html">Privacy</a>
+        </nav>
+        <div class="nav-actions"><a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee"><svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg><span class="ta-donate-label">Buy me a coffee</span></a><button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button><button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button></div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <div class="iw-shell">
+        <aside class="ta-support" aria-label="Support ToolAdda">
+          <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+        </aside>
+
+        <div class="container iwc-wrap">
+        <nav class="iw-crumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">/</span><a href="/#image">Image Tools</a><span aria-hidden="true">/</span><span>Image to WebP Converter</span>
+        </nav>
+
+        <!-- One grid (.iw-top) places these. Under 980px: cover, tool, ad, then
+             the lede and trust list, so a phone reaches the drop zone straight
+             after the headline. From 980px the cover and lede sit beside the
+             tool. The ad always comes straight after the tool. -->
+        <div class="iw-top">
+          <header class="iw-cover">
+            <span class="iw-eyebrow">Image Converter</span>
+            <div class="iw-artboard">
+              <h1 class="iw-h1">Image to WebP Converter</h1>
+              <div class="iw-formats-row" aria-hidden="true">
+                <span class="iw-fmt iw-fmt--in">PNG</span><span class="iw-fmt iw-fmt--in">JPG</span>
+                <svg class="iw-fmt-arrow" viewBox="0 0 26 12" focusable="false"><path d="M1 6h22M18 1.5 23 6l-5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="iw-fmt iw-fmt--out">WEBP</span>
+              </div>
+            </div>
+          </header>
+
+          <div class="iw-intro">
+            <p class="iw-lede">Convert PNG, JPG and JPEG images to WebP instantly with adjustable quality, batch conversion, previews and one-click downloads.</p>
+            <ul class="iw-trust">
+              <li>Free</li>
+              <li>No signup</li>
+              <li>Browser-based</li>
+              <li>Fast processing</li>
+              <li>Batch conversion</li>
+            </ul>
+          </div>
+
+          <!-- ============ WORKSPACE ============ -->
+          <section class="iw-console" data-iw-root aria-label="Image to WebP converter">
+            <div class="iw-console-bar">
+              <p class="iw-console-bar__title">Conversion Workspace</p>
+              <span class="iw-privacy">🔒 Your images stay on your device and are processed in your browser</span>
+            </div>
+
+            <!-- A group, not a role="button": it holds a real button, which a
+                 button role would flatten for screen readers. Clicking any empty
+                 part of it still opens the picker. -->
+            <div class="iw-drop" data-iw-drop role="group" aria-label="Drop images here or click to choose files">
+              <svg class="iw-drop-art" viewBox="0 0 150 74" aria-hidden="true" focusable="false">
+                <rect class="tile" x="6" y="4" width="54" height="54" rx="8"/><rect class="sky" x="12" y="10" width="42" height="34" rx="3"/><circle class="sun" cx="45" cy="19" r="4.5"/><path class="hill" d="M12 44l12-13 9 8 6-5 15 10z"/>
+                <text class="lbl" x="33" y="71" text-anchor="middle">PNG</text>
+                <path class="arw" d="M68 31h18M80 25l6 6-6 6"/>
+                <rect class="tile-out" x="98" y="12" width="38" height="38" rx="7"/><path class="hill-out" d="M103 44l9-9 7 6 5-4 8 6v1h-29z"/><circle class="hill-out" cx="127" cy="21" r="3"/>
+                <text class="lbl lbl-out" x="117" y="71" text-anchor="middle">WEBP</text>
+              </svg>
+              <p class="iw-drop__title"><span class="iw-drop__fresh">Drag &amp; drop images here</span><span class="iw-drop__more">Drop or tap to add more images</span></p>
+              <p class="iw-drop__hint">or</p>
+              <button type="button" class="iw-btn iw-btn--accent" data-iw-picker><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>Select images</button>
+              <span class="iw-drop__formats">PNG • JPG • JPEG • WebP</span>
+              <p class="iw-drop__paste">Tip: you can also paste a screenshot with Ctrl+V.</p>
+              <input id="iwFile" class="iw-sr" type="file" multiple
+                     aria-label="Choose images to convert"
+                     accept="image/png,image/jpeg,image/webp,image/gif,image/bmp" />
+            </div>
+
+            <p class="iw-notice" data-iw-support hidden></p>
+
+            <div class="iw-settings">
+              <div class="iw-field">
+                <label class="iw-label" for="iwTarget">Convert to</label>
+                <select class="iw-select" id="iwTarget"></select>
+                <p class="iw-hint">WebP for the web, PNG for lossless, JPG for maximum compatibility.</p>
+              </div>
+
+              <div class="iw-field" data-iw-quality-row>
+                <label class="iw-label" for="iwQuality">Quality · <span data-iw-quality-out>80</span></label>
+                <input class="iw-range" id="iwQuality" type="range" min="1" max="100" step="1" value="80" />
+                <div class="iw-chiprow" data-iw-presets role="group" aria-label="Quality presets"></div>
+                <p class="iw-hint" data-iw-quality-note hidden></p>
+              </div>
+
+              <div class="iw-field">
+                <label class="iw-label" for="iwResizeMode">Resize</label>
+                <select class="iw-select" id="iwResizeMode">
+                  <option value="original">Original size</option>
+                  <option value="longest">Cap longest edge</option>
+                  <option value="percent">Percentage</option>
+                  <option value="custom">Custom width / height</option>
+                </select>
+
+                <div data-iw-resize-longest hidden>
+                  <label class="iw-sr" for="iwLongest">Longest edge</label>
+                  <select class="iw-select" id="iwLongest">
+                    <option value="1920">1920 px</option>
+                    <option value="1600">1600 px</option>
+                    <option value="1280">1280 px</option>
+                    <option value="1080">1080 px</option>
+                    <option value="800">800 px</option>
+                    <option value="640">640 px</option>
+                  </select>
+                  <p class="iw-hint">Caps the longer side. Smaller images are never enlarged.</p>
+                </div>
+
+                <div data-iw-resize-percent hidden>
+                  <label class="iw-sr" for="iwPercent">Scale percentage</label>
+                  <input class="iw-num" id="iwPercent" type="number" min="1" max="400" step="1" value="100" />
+                </div>
+
+                <div data-iw-resize-custom hidden>
+                  <div class="iw-duo">
+                    <div>
+                      <label class="iw-label" for="iwWidth">Width</label>
+                      <input class="iw-num" id="iwWidth" type="number" min="1" step="1" placeholder="auto" />
+                    </div>
+                    <div>
+                      <label class="iw-label" for="iwHeight">Height</label>
+                      <input class="iw-num" id="iwHeight" type="number" min="1" step="1" placeholder="auto" />
+                    </div>
+                  </div>
+                  <label class="iw-check"><input type="checkbox" id="iwLock" checked /><span>Keep aspect ratio</span></label>
+                </div>
+              </div>
+
+              <div class="iw-field" data-iw-bg-row hidden>
+                <label class="iw-label" for="iwBg">Background for transparent areas</label>
+                <input class="iw-color" id="iwBg" type="color" value="#ffffff" />
+                <div class="iw-chiprow" data-iw-bg-chips role="group" aria-label="Background presets">
+                  <button type="button" class="iw-chip" data-iw-bg="#ffffff">White</button>
+                  <button type="button" class="iw-chip" data-iw-bg="#000000">Black</button>
+                </div>
+                <p class="iw-hint">JPG has no alpha channel, so transparent pixels must be filled.</p>
+              </div>
+            </div>
+
+            <p class="iw-notice" data-iw-notice hidden></p>
+
+            <div class="iw-actions">
+              <button type="button" class="iw-btn iw-btn--accent" data-iw-convert disabled>Convert images</button>
+              <button type="button" class="iw-btn iw-btn--ghost" data-iw-download-all disabled>Download all</button>
+              <button type="button" class="iw-btn iw-btn--ghost" data-iw-clear disabled>Clear all</button>
+              <span data-iw-count class="iw-hint"></span>
+              <span class="iw-status" data-iw-status data-state="idle">Ready</span>
+            </div>
+
+            <div class="iw-progress" data-iw-progress hidden role="progressbar"
+                 aria-label="Conversion progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <span class="iw-progress__bar" data-iw-progress-bar></span>
+            </div>
+
+            <p class="iw-empty" data-iw-empty>No images yet. Drop PNG, JPG, JPEG or WebP files above to begin.</p>
+            <ul class="iw-queue" data-iw-queue></ul>
+
+            <p class="iw-sr" role="status" aria-live="polite" data-iw-announce></p>
+          </section>
+
+          <!-- Ads: 728x90 from 900px, 300x250 below it (see .iw-ad-zone CSS).
+               Straight after the tool, never before or inside it. -->
+          <div class="iw-ad-zone">
+            <div class="ta-lb-ad"></div>
+            <div class="ta-inline-ad"></div>
+          </div>
+        </div>
+
+        <!-- ============ CAPABILITIES ============ -->
+        <section class="iw-section" aria-labelledby="iw-caps-heading">
+          <h2 class="iw-h2" id="iw-caps-heading">Supported conversions</h2>
+          <p class="iw-sub">Every conversion listed here is implemented and runs in your browser. Nothing else is offered.</p>
+          <ul class="iw-caps">
+            <li>PNG → WebP</li>
+            <li>JPG → WebP</li>
+            <li>JPEG → WebP</li>
+            <li>WebP → PNG</li>
+            <li>WebP → JPG</li>
+            <li>PNG ⇄ JPG</li>
+          </ul>
+          <p>Batch conversion, quality control, resizing and per-file download are available for all of them. GIF and BMP files are accepted where your browser can decode them; an animated GIF converts as a single frame.</p>
+          <div class="iw-callout"><strong>WebP output depends on your browser.</strong> If your browser cannot write WebP, the format is removed from the output list rather than silently producing a PNG named <code>.webp</code> — which is exactly what the previous version of this page did.</div>
+        </section>
+
+        <!-- ============ ANSWERS ============ -->
+        <section class="iw-section" aria-labelledby="iw-answers-heading">
+          <h2 class="iw-h2" id="iw-answers-heading">Converting images to WebP</h2>
+
+          <h3 class="iw-h3">What is WebP?</h3>
+          <p>WebP is an image format created by Google for the web. It supports lossy and lossless compression, transparency and animation, and is designed to produce smaller files than PNG or JPEG at comparable visual quality. Every browser in current use displays it.</p>
+
+          <h3 class="iw-h3">How do I convert PNG to WebP?</h3>
+          <ol>
+            <li>Drop your PNG files onto the upload area, or press <strong>Select images</strong>.</li>
+            <li>Leave <strong>Convert to</strong> set to WebP.</li>
+            <li>Adjust the quality slider — 80 is a sensible default.</li>
+            <li>Press <strong>Convert images</strong>.</li>
+            <li>Download each file, or use <strong>Download all</strong> for a ZIP.</li>
+          </ol>
+
+          <h3 class="iw-h3">How do I convert JPG to WebP?</h3>
+          <p>Identically. The tool accepts <code>.jpg</code> and <code>.jpeg</code> alongside PNG and WebP, and you can mix formats in one batch — each file's original format is shown on its card so you can see what is converting to what.</p>
+
+          <h3 class="iw-h3">Does converting to WebP always reduce file size?</h3>
+          <p>No, and any tool that promises it is wrong. WebP is usually smaller for photographs, but re-encoding an already-optimised file or a flat graphic with few colours can produce something larger. When that happens this tool says <em>"Output is 12% larger"</em> rather than reporting a saving.</p>
+
+          <h3 class="iw-h3">Is WebP lossless?</h3>
+          <p>The format supports both lossy and lossless encoding. The browser's canvas encoder that this tool uses produces <strong>lossy WebP only</strong> — quality 100 is the top lossy setting, not lossless. For genuine lossless WebP you need a command-line encoder such as <code>cwebp -lossless</code>. There is deliberately no "lossless" switch here, because it could not be honoured.</p>
+        </section>
+
+        <!-- ============ FORMAT COMPARISON ============ -->
+        <section class="iw-section" aria-labelledby="iw-compare-heading">
+          <h2 class="iw-h2" id="iw-compare-heading">PNG vs JPG vs WebP</h2>
+          <div class="iw-tablewrap">
+            <table class="iw-table">
+              <thead>
+                <tr><th scope="col">Format</th><th scope="col">Transparency</th><th scope="col">Typical use</th><th scope="col">Compression</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">PNG</th><td>Yes</td><td>Graphics, logos, screenshots</td><td>Lossless</td></tr>
+                <tr><th scope="row">JPG</th><td>No</td><td>Photographs</td><td>Lossy</td></tr>
+                <tr><th scope="row">WebP</th><td>Yes</td><td>Web images</td><td>Lossy or lossless</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>The single most practical difference is the transparency column. A photograph has no transparency, so JPG and WebP compete purely on size and quality. A logo or a UI screenshot usually does, which rules JPG out entirely unless you are willing to flatten it onto a background.</p>
+        </section>
+
+        <!-- ============ GUIDE ============ -->
+        <section class="iw-section" aria-labelledby="iw-guide-heading">
+          <h2 class="iw-h2" id="iw-guide-heading">Image formats, quality and page speed</h2>
+
+          <h3 class="iw-h3">PNG to WebP conversion</h3>
+          <p>PNG stores every pixel exactly. That is ideal for a logo with hard edges and terrible for a photograph, where the file ends up several times larger than a lossy format would need. Converting photographic PNGs to WebP is where the biggest savings live — a screenshot of a photo saved as PNG can easily drop by 80% or more.</p>
+          <p>Flat graphics are a different story. A two-colour icon is already tiny as a PNG, and a lossy WebP of it may be larger as well as slightly blurred around the edges. Check the reported size before replacing the original: this tool shows both numbers precisely because the answer varies.</p>
+          <p>Transparency carries across cleanly. WebP has a full alpha channel, so a PNG with a soft shadow or an anti-aliased edge converts without the halo you would get from flattening onto a background.</p>
+
+          <h3 class="iw-h3">JPG and JPEG to WebP conversion</h3>
+          <p><code>.jpg</code> and <code>.jpeg</code> are the same format; the two extensions are a historical accident from the 8.3 filename era. Both are handled identically here.</p>
+          <p>Converting JPG to WebP means re-encoding lossy data with a different lossy codec. Detail already discarded by the JPEG encoder cannot come back, and a second lossy pass discards a little more — this is generational loss, and it is why converting the same file back and forth repeatedly degrades it. Convert from the highest-quality source you have, once.</p>
+          <p>In practice a WebP at quality 80 from a good JPG source is typically 25–35% smaller at visually equivalent quality. That is a genuine win for a web page, and not worth doing to an archive of family photos where the original JPGs are the masters.</p>
+
+          <h3 class="iw-h3">WebP to PNG and WebP to JPG</h3>
+          <p>The reverse direction matters more than people expect, usually because something downstream cannot read WebP — an older design tool, a print service, a marketplace upload form.</p>
+          <p>WebP to PNG is lossless <em>as a conversion</em>, but it cannot restore what a lossy WebP already threw away. You get a PNG that looks exactly like the WebP did, at a considerably larger file size. That is the right trade when you need compatibility, and the wrong one if you were hoping to recover quality.</p>
+          <p>WebP to JPG runs into the alpha problem. JPEG has no transparency, so the transparent pixels must become something. This tool detects transparency, tells you it found it, and asks for a colour — because a logo that silently arrives on a black background is a genuinely annoying way to discover the limitation.</p>
+
+          <h3 class="iw-h3">Choosing a quality setting</h3>
+          <p>The quality number is not a percentage of anything and does not map linearly to file size or to perceived quality. It is an encoder parameter, and the relationship differs per image.</p>
+          <ul>
+            <li><strong>50</strong> — visibly soft on detailed photographs; fine for a large blurred background.</li>
+            <li><strong>75</strong> — a reasonable floor for photographic content on a web page.</li>
+            <li><strong>80</strong> — the default here, and a good general choice.</li>
+            <li><strong>90</strong> — for images with text, screenshots or sharp edges, where artifacts show first.</li>
+            <li><strong>100</strong> — the top lossy setting. Files grow sharply for very little visible gain, and it is still not lossless.</li>
+          </ul>
+          <p>The most useful habit is to convert one representative image at two or three settings and look at them at full size before committing a whole batch.</p>
+
+          <h3 class="iw-h3">Resizing while converting</h3>
+          <p>Resizing usually saves more bytes than any amount of quality tuning. A 4000px-wide photo displayed in a 800px column is carrying sixteen times more pixels than the page can show, and no codec fixes that.</p>
+          <p>Aspect ratio is locked by default. Type a width and the height follows; type a height and the width follows. If you set both with the lock on, the image is fitted inside those bounds rather than stretched to them, because that is the only reading of "keep aspect ratio" that does not distort. Unlocking is possible and deliberately requires a click.</p>
+          <p>The presets cap the longest edge, which handles portrait and landscape correctly in one setting, and never enlarge an image that is already smaller — upscaling adds bytes and invents detail.</p>
+
+          <h3 class="iw-h3">Transparency and backgrounds</h3>
+          <p>Whether an image is transparent is checked by sampling its alpha channel rather than by trusting the file extension, since plenty of PNGs are fully opaque. When transparency is found the card says so, and the background control appears only when it is actually needed — converting to JPG.</p>
+          <p>Previews sit on a checkerboard so transparent areas read as transparent rather than as white, which matters when you are deciding whether a background colour is required at all.</p>
+
+          <h3 class="iw-h3">Metadata and orientation</h3>
+          <p>Browser-based conversion through the Canvas API discards metadata. EXIF fields — camera model, exposure, timestamps and any GPS coordinates — do not survive. For publishing to the web that is usually a benefit, and it is worth knowing that stripping location data from photos is a side effect you get here for free. If you need the metadata preserved, this is the wrong kind of tool.</p>
+          <p>Orientation is handled separately and correctly. Photos from phones often carry a rotation flag rather than rotated pixels, and a naive converter produces sideways images. Here the image is decoded with orientation applied, so the rotation is baked into the output pixels and the result stays upright even though the EXIF tag itself is gone.</p>
+
+          <h3 class="iw-h3">Batch conversion and memory</h3>
+          <p>Decoding a large image allocates width × height × 4 bytes — a 6000×4000 photo is roughly 96 MB as raw pixels before any encoding. Starting fifty of those at once is how a browser tab runs out of memory.</p>
+          <p>So the queue processes a few images at a time, releases each canvas as soon as its blob exists, and revokes object URLs when files are removed or the page is closed. Progress reflects genuine completions, not a timer.</p>
+
+          <h3 class="iw-h3">WebP and page speed</h3>
+          <p>Smaller images mean fewer bytes over the network, which usually helps. But image size is one input to page speed among many: a render-blocking script, a slow server response or a large font can each dominate.</p>
+          <p>For Core Web Vitals specifically: converting the LCP image to WebP can improve Largest Contentful Paint, because a smaller file finishes downloading sooner. It does nothing for Cumulative Layout Shift unless you also set explicit <code>width</code> and <code>height</code> attributes so the browser can reserve space, and nothing whatsoever for Interaction to Next Paint, which is about JavaScript. Measure before and after rather than assuming.</p>
+
+          <h3 class="iw-h3">Using WebP on a website</h3>
+          <p>The safest pattern is a <code>&lt;picture&gt;</code> element with a fallback. Browsers that understand WebP take it; anything else quietly uses the JPG, with no JavaScript involved:</p>
+          <pre class="iw-snippet">&lt;picture&gt;
+  &lt;source srcset="image.webp" type="image/webp"&gt;
+  &lt;img src="image.jpg" alt="Example image" width="1200" height="800"&gt;
+&lt;/picture&gt;</pre>
+          <p>Keep the <code>width</code> and <code>height</code> attributes on the <code>img</code>. They cost nothing, and without them the browser cannot reserve space and your layout shifts as each image arrives.</p>
+
+          <h3 class="iw-h3">Privacy</h3>
+          <p>Everything here happens in the page. Files are read with the File API, decoded and drawn to a canvas, encoded to a blob and offered as a download. No request carries your image anywhere, nothing is logged, and closing the tab is all the cleanup required.</p>
+          <p>That is worth caring about for images specifically. A screenshot of a dashboard, a scanned document, a photo with location data in it — all of these routinely get dropped into online converters, and most of them upload.</p>
+
+          <h3 class="iw-h3">Common conversion problems</h3>
+          <ul>
+            <li><strong>The output is larger.</strong> The source was already well compressed, or it is a flat graphic. Try a lower quality or keep PNG.</li>
+            <li><strong>Transparency turned black.</strong> You converted to JPG. Choose a background colour — this tool asks first.</li>
+            <li><strong>The photo is sideways.</strong> A converter that ignored EXIF orientation. Not an issue here.</li>
+            <li><strong>The file will not open elsewhere.</strong> Something in your pipeline does not read WebP. Convert back to PNG or JPG.</li>
+            <li><strong>The image looks soft.</strong> Quality set too low, or an upscale. Raise the quality; never enlarge.</li>
+            <li><strong>The browser stalls on a big batch.</strong> Very large images consume real memory. Convert in smaller groups.</li>
+          </ul>
+        </section>
+
+        <!-- ============ FAQ ============ -->
+        <section class="iw-section" aria-labelledby="iw-faq-heading">
+          <h2 class="iw-h2" id="iw-faq-heading">Frequently asked questions</h2>
+          <div class="iw-faq" data-iw-faq>
+            <details><summary>What is WebP?</summary><p>WebP is an image format developed by Google for the web. It supports both lossy and lossless compression as well as transparency and animation, and it is designed to produce smaller files than PNG or JPEG at comparable visual quality. Every current browser can display it.</p></details>
+            <details><summary>How do I convert PNG to WebP?</summary><p>Drop your PNG files onto the upload area or use Select images. Leave the output set to WebP, adjust the quality slider if you want, then press Convert. Each result shows its new size next to the original, with a Download button.</p></details>
+            <details><summary>How do I convert JPG to WebP?</summary><p>Exactly as for PNG — the tool accepts .jpg and .jpeg alongside PNG and WebP. Add the files, keep WebP as the output format, set a quality and convert. You can mix PNG and JPG files in the same batch.</p></details>
+            <details><summary>How do I convert JPEG to WebP?</summary><p>JPEG and JPG are the same format with two common extensions, so the process is identical. Files ending .jpeg are accepted and converted the same way, and the output is named with a .webp extension.</p></details>
+            <details><summary>Can I convert WebP to PNG?</summary><p>Yes. Add your WebP files and change the output format to PNG. PNG supports transparency, so any transparent areas in the source are preserved.</p></details>
+            <details><summary>Can I convert WebP to JPG?</summary><p>Yes. Change the output format to JPG. Because JPG has no alpha channel, if any of your images contain transparency the tool asks you to choose a background colour and fills the transparent areas with it rather than picking one silently.</p></details>
+            <details><summary>Does WebP reduce file size?</summary><p>Usually, but not always. WebP typically produces smaller files than PNG for photographs and than JPEG at similar quality, though the result depends on the image content and the quality setting. Re-encoding an already well-optimised file can make it larger — when that happens this tool says the output is larger rather than reporting a saving.</p></details>
+            <details><summary>Is WebP smaller than PNG?</summary><p>For photographic content, almost always and often dramatically, because PNG is lossless and stores every pixel exactly. For flat graphics, logos and screenshots with few colours the gap narrows and PNG can occasionally win. The tool shows the actual numbers for your file.</p></details>
+            <details><summary>Is WebP smaller than JPG?</summary><p>Generally yes at comparable visual quality, though the margin varies with the image and the encoder. The browser's built-in WebP encoder is not the most aggressive available, so results here may differ from a command-line tool such as cwebp.</p></details>
+            <details><summary>Is WebP better than PNG?</summary><p>For most web imagery, yes — smaller files with transparency support. PNG remains the better choice when you need guaranteed lossless output, when you are editing and re-saving repeatedly, or when a tool in your pipeline does not read WebP.</p></details>
+            <details><summary>Is WebP better than JPG?</summary><p>For the web, usually: smaller at similar quality, and it supports transparency, which JPG cannot. JPG is still the safer choice for maximum compatibility with older software, cameras and print workflows.</p></details>
+            <details><summary>Does WebP support transparency?</summary><p>Yes. WebP supports an alpha channel in both its lossy and lossless modes, which is one of its main advantages over JPG. Converting a transparent PNG to WebP keeps the transparency.</p></details>
+            <details><summary>Does JPG support transparency?</summary><p>No. The JPEG format has no alpha channel at all. Any transparent area has to be filled with a solid colour, which is why this tool asks you to choose one before converting a transparent image to JPG.</p></details>
+            <details><summary>Is WebP lossless?</summary><p>WebP supports both lossy and lossless encoding. However, the browser's canvas encoder used by this tool produces lossy WebP only — quality 100 is the highest lossy setting, not lossless. If you need true lossless WebP, use a command-line encoder such as cwebp with its lossless flag.</p></details>
+            <details><summary>What quality should I use for WebP?</summary><p>80 is a good default for photographs and is what this tool starts with. Drop to 60–70 for large background images where fine detail does not matter, and raise to 90 for images with text or sharp edges. Compare a few settings on your own image rather than trusting a single number.</p></details>
+            <details><summary>Does conversion reduce image quality?</summary><p>Converting to WebP or JPG is lossy, so some information is discarded — how much depends on the quality setting. Converting to PNG is lossless, but a lossy source cannot regain detail it never had, so a WebP converted to PNG will not look better than the WebP did.</p></details>
+            <details><summary>Can I convert multiple images at once?</summary><p>Yes. Select or drop as many files as you like and press Convert. They are processed a few at a time rather than all at once, which keeps memory use bounded, and the progress indicator reports genuine completion rather than an animation.</p></details>
+            <details><summary>Can I download all converted images at once?</summary><p>Yes. Download all packages every converted image into a single ZIP that is built in your browser. If ZIP creation is unavailable, the files are downloaded individually instead.</p></details>
+            <details><summary>Can I resize images while converting?</summary><p>Yes. Resize by a custom width or height, by percentage, or by capping the longest edge to a preset such as 1920px. Aspect ratio is locked by default, so nothing is stretched unless you deliberately unlock it.</p></details>
+            <details><summary>What do the resize presets mean?</summary><p>They cap the longest edge of the image. A 1920px preset applied to a 3000×2000 photo produces 1920×1280; applied to a portrait 2000×3000 it produces 1280×1920. Images already smaller than the cap are left alone rather than being enlarged.</p></details>
+            <details><summary>Are my images uploaded to a server?</summary><p>No. Decoding, resizing, encoding and downloading all happen in your browser using the Canvas API. No network request carries your image data, and nothing is stored once you close the tab.</p></details>
+            <details><summary>Can I use this tool offline?</summary><p>Once the page has loaded, conversion needs no network at all, so an already-open tab keeps working without a connection. Loading the page fresh does require the network.</p></details>
+            <details><summary>Does conversion keep EXIF metadata?</summary><p>No. Browser-based conversion through the Canvas API discards metadata such as EXIF, including camera settings and any GPS coordinates. That is often desirable for privacy, but if you need to keep the metadata you will need a tool that copies it across explicitly.</p></details>
+            <details><summary>Will my photos be rotated incorrectly?</summary><p>No. Images are decoded with the orientation flag applied, so a portrait photo from a phone converts the right way up. Because the rotation is baked into the pixels, the result stays correct even though the EXIF orientation tag itself is not carried over.</p></details>
+            <details><summary>How large an image can I convert?</summary><p>There is a 30 MB per-file limit and a warning for images beyond roughly 40 megapixels, because very large canvases can exhaust browser memory. This is a browser constraint rather than a policy — a desktop application will handle bigger files.</p></details>
+            <details><summary>What happens if two files have the same name?</summary><p>The second gets a numbered suffix — image.webp, then image-1.webp — so one download cannot overwrite another in your downloads folder.</p></details>
+            <details><summary>Which formats can I upload?</summary><p>PNG, JPG, JPEG and WebP are fully supported. GIF and BMP are accepted where your browser can decode them, and animated GIFs convert as a single frame. Anything the browser cannot decode fails with a clear message rather than producing a broken file.</p></details>
+            <details><summary>Why did my file get larger after conversion?</summary><p>Usually because the source was already well compressed, or because a flat graphic with few colours was re-encoded with a lossy codec. Try a lower quality, or keep PNG for logos and screenshots. The tool tells you plainly when the output is larger instead of showing a saving.</p></details>
+            <details><summary>Does WebP improve website speed?</summary><p>Smaller images reduce transfer size, which usually helps — but page speed depends on the whole page. If your slowest element is a render-blocking script or a large font, converting images will not fix it. Measure before and after rather than assuming.</p></details>
+            <details><summary>Does WebP improve Core Web Vitals?</summary><p>It can help Largest Contentful Paint when the LCP element is an image, because a smaller file arrives sooner. It does nothing for Cumulative Layout Shift unless you also set width and height attributes, and nothing at all for Interaction to Next Paint.</p></details>
+            <details><summary>How do I use WebP on my website?</summary><p>Use a picture element with a WebP source and a JPG or PNG fallback, and the browser picks whichever it supports. All current browsers take the WebP, and older ones fall back automatically without any JavaScript.</p></details>
+            <details><summary>Is this converter free?</summary><p>Yes. Free, no sign-up, no email address, no watermark and no per-file charge.</p></details>
+          </div>
+        </section>
+
+        <!-- ============ RELATED ============ -->
+        <section class="iw-section" aria-labelledby="iw-related-heading">
+          <h2 class="iw-h2" id="iw-related-heading">Related image tools</h2>
+          <p class="iw-sub">More ToolAdda image utilities that run entirely in your browser.</p>
+          <div class="iw-related">
+            <a href="image-compressor.html"><strong>Image Compressor</strong><span>Compress JPG, PNG and WebP by quality.</span></a>
+            <a href="image-compress-to-kb.html"><strong>Compress to Exact KB</strong><span>Hit a hard file-size limit for uploads.</span></a>
+            <a href="image-resizer.html"><strong>Image Resizer</strong><span>Resize by pixels or percentage.</span></a>
+            <a href="image-crop.html"><strong>Image Cropper</strong><span>Crop and frame precisely.</span></a>
+            <a href="jpg-to-png.html"><strong>JPG to PNG</strong><span>Convert photos to lossless PNG.</span></a>
+            <a href="svg-to-png-converter.html"><strong>SVG to PNG</strong><span>Rasterise SVG to PNG, JPG or WebP.</span></a>
+            <a href="heic-converter.html"><strong>HEIC Converter</strong><span>Turn iPhone HEIC photos into JPG or PNG.</span></a>
+            <a href="image-grayscale.html"><strong>Image to Grayscale</strong><span>Convert photos to black and white.</span></a>
+          </div>
+        </section>
+
+        <p class="iw-disclaimer">
+          This converter runs entirely in your browser using the Canvas API. Your images are never uploaded, nothing is logged, and everything is discarded when you close the tab. Browser-based conversion removes metadata such as EXIF information, and WebP output uses the browser's lossy encoder — quality 100 is its highest lossy setting, not WebP lossless. File sizes shown are measured from the actual encoded output.
+        </p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Phone-only bar. The script shows it only while the control it stands
+         in for (Select images, Convert, or Download all) is off screen. -->
+    <div class="iw-sticky-cta" aria-hidden="true">
+      <button type="button" class="iw-btn iw-btn--accent" data-iw-sticky tabindex="-1">Select images</button>
+    </div>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+          <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy</a><a href="terms.html">Terms</a></div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/app.js"></script>
+    <script defer src="assets/js/jszip.min.js"></script>
+    <script defer src="assets/js/png-to-webp.js?v=2"></script>
+    <script src="assets/js/side-ads.js" defer></script>
+    <script src="assets/js/inline-ads.js" data-in-article defer></script>
+  </body>
+</html>

@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+    <meta name="description" content="Free Website SEO Checker — run an instant on-page & technical SEO audit in your browser. Get an SEO score, issues and fixes. No signup." />
+    <meta name="theme-color" content="#4f46e5" />
+    <title>Website SEO Checker — Free Instant SEO Audit | ToolAdda</title>
+    <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://api.codetabs.com" crossorigin />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="ToolAdda" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <link rel="canonical" href="https://tooladda.online/website-seo-checker.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta property="og:title" content="Website SEO Checker — Free Instant SEO Audit" />
+    <meta property="og:description" content="Run an instant on-page & technical SEO audit in your browser. SEO score, warnings, critical issues and fixes. Free, no signup." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tooladda.online/website-seo-checker.html" />
+    <meta property="og:site_name" content="ToolAdda" />
+    <meta property="og:image" content="https://tooladda.online/assets/images/og/website-seo-checker.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Website SEO Checker — Free Instant SEO Audit — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="Website SEO Checker — Free Instant SEO Audit — free online tool on ToolAdda, runs in your browser with no sign-up." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Website SEO Checker — Free Instant SEO Audit" />
+    <meta name="twitter:description" content="Instant on-page & technical SEO audit with score, issues and fixes. Free, in your browser." />
+    <meta name="twitter:image" content="https://tooladda.online/assets/images/og/website-seo-checker.jpg" />
+    <style>
+      [hidden] { display: none !important; }
+      .ssc-hero { text-align: center; padding: 1.6rem 0 0.4rem; }
+      .ssc-hero .hero-badge { display: inline-block; padding: 0.4rem 0.95rem; border-radius: 999px; font-weight: 700; font-size: 0.8rem;
+        color: var(--accent-strong); border: 1px solid var(--border); background: linear-gradient(135deg, var(--accent-soft), rgba(56,189,248,0.16)); }
+      .ssc-hero h1 { font-size: clamp(2rem, 4.5vw, 3.1rem); line-height: 1.1; margin: 0.8rem auto 0.6rem; max-width: 20ch;
+        background: linear-gradient(120deg, var(--accent), #38bdf8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+      .ssc-hero p.lede { max-width: 62ch; margin: 0 auto 1.2rem; color: var(--text-muted); font-size: 1.06rem; }
+
+      .ssc-form { display: flex; gap: 0.6rem; max-width: 640px; margin: 0 auto; flex-wrap: wrap; }
+      .ssc-form input[type="url"] { flex: 1 1 300px; padding: 0.95rem 1.1rem; border: 1px solid var(--border); border-radius: 14px; background: var(--surface-strong); color: var(--text); font: inherit; font-size: 1rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+      .ssc-form input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+      .ssc-form .primary-btn { flex: 0 0 auto; font-weight: 700; padding: 0.95rem 1.6rem; }
+      .ssc-sub { max-width: 640px; margin: 0.6rem auto 0; display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; font-size: 0.85rem; color: var(--text-muted); }
+      .ssc-linkbtn { background: none; border: 0; color: var(--accent); font: inherit; font-weight: 600; cursor: pointer; text-decoration: underline; }
+      .ssc-badges { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; margin-top: 1.1rem; }
+      .ssc-badge { font-size: 0.8rem; color: var(--text-muted); border: 1px solid var(--border); background: var(--surface); border-radius: 999px; padding: 0.3rem 0.8rem; }
+
+      .ssc-html-wrap { max-width: 720px; margin: 1rem auto 0; }
+      .ssc-html-wrap textarea { width: 100%; min-height: 140px; border: 1px solid var(--border); border-radius: 12px; padding: 0.8rem; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.85rem; background: var(--surface-strong); color: var(--text); }
+      .ssc-progress { max-width: 640px; margin: 1rem auto 0; height: 8px; border-radius: 999px; background: var(--surface-strong); border: 1px solid var(--border); overflow: hidden; }
+      .ssc-progress-bar { height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), #38bdf8); transition: width 0.3s ease; }
+      .ssc-msg { max-width: 640px; margin: 0.9rem auto 0; padding: 0.6rem 0.9rem; border-radius: 10px; font-size: 0.92rem; border: 1px solid var(--border); text-align: center; }
+      .ssc-msg[data-tone="error"] { color: #dc2626; background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); }
+      .ssc-msg[data-tone="info"] { color: var(--accent-strong); background: var(--accent-soft); }
+
+      /* results dashboard */
+      .ssc-results { margin-top: 1.8rem; }
+      .ssc-dash { display: grid; grid-template-columns: 1fr; gap: 1.2rem; }
+      @media (min-width: 860px) { .ssc-dash { grid-template-columns: 300px 1fr; align-items: start; } }
+      .ssc-scorecard { border: 1px solid var(--border); border-radius: 20px; padding: 1.4rem; background: var(--surface); text-align: center; box-shadow: 0 24px 60px -40px rgba(79,70,229,0.5); }
+      .ssc-gauge-svg { width: 160px; height: 160px; }
+      .ssc-gauge-track { fill: none; stroke: var(--border); stroke-width: 12; }
+      .ssc-gauge-arc { fill: none; stroke-width: 12; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 60px 60px; transition: stroke-dashoffset 0.9s ease; }
+      .ssc-gauge-arc[data-band="good"] { stroke: #16a34a; } .ssc-gauge-arc[data-band="warn"] { stroke: #d97706; } .ssc-gauge-arc[data-band="bad"] { stroke: #dc2626; }
+      .ssc-gauge-num { font-size: 2.2rem; font-weight: 800; }
+      .ssc-gauge-label { font-weight: 700; } .ssc-gauge-label[data-band="good"] { color: #16a34a; } .ssc-gauge-label[data-band="warn"] { color: #d97706; } .ssc-gauge-label[data-band="bad"] { color: #dc2626; }
+      .ssc-counts { display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; }
+      .ssc-count { font-size: 0.85rem; } .ssc-count strong { display: block; font-size: 1.3rem; }
+      .ssc-count.pass strong { color: #16a34a; } .ssc-count.warn strong { color: #d97706; } .ssc-count.fail strong { color: #dc2626; }
+      .ssc-report-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; margin-top: 1rem; }
+      .ssc-report-actions button, .ssc-report-actions a { border: 1px solid var(--border); background: var(--surface-strong); color: var(--text); border-radius: 10px; padding: 0.5rem 0.7rem; font: inherit; font-weight: 600; font-size: 0.82rem; cursor: pointer; }
+      .ssc-report-actions a:hover, .ssc-report-actions button:hover { border-color: var(--accent); color: var(--accent); }
+
+      .ssc-cat { margin-bottom: 0.7rem; }
+      .ssc-cat-top { display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.25rem; }
+      .ssc-cat-top strong[data-band="good"] { color: #16a34a; } .ssc-cat-top strong[data-band="warn"] { color: #d97706; } .ssc-cat-top strong[data-band="bad"] { color: #dc2626; }
+      .ssc-bar { height: 8px; border-radius: 999px; background: var(--surface-strong); border: 1px solid var(--border); overflow: hidden; }
+      .ssc-bar-fill { height: 100%; transition: width 0.8s ease; }
+      .ssc-bar-fill[data-band="good"] { background: #16a34a; } .ssc-bar-fill[data-band="warn"] { background: #d97706; } .ssc-bar-fill[data-band="bad"] { background: #dc2626; }
+
+      .ssc-checks { display: grid; gap: 0.55rem; margin-top: 1.2rem; }
+      .ssc-check { display: flex; gap: 0.7rem; padding: 0.7rem 0.85rem; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+      .ssc-check-ic { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 0.8rem; flex: 0 0 auto; }
+      .ssc-check-ic[data-status="pass"] { background: #16a34a; } .ssc-check-ic[data-status="warn"] { background: #d97706; } .ssc-check-ic[data-status="fail"] { background: #dc2626; } .ssc-check-ic[data-status="info"] { background: #64748b; }
+      .ssc-check-label { margin: 0; font-weight: 700; font-size: 0.95rem; }
+      .ssc-tag { font-size: 0.68rem; font-weight: 700; color: var(--text-muted); background: var(--surface-strong); border: 1px solid var(--border); padding: 0.05rem 0.45rem; border-radius: 999px; margin-left: 0.3rem; }
+      .ssc-check-detail { margin: 0.2rem 0 0; font-size: 0.86rem; color: var(--text-muted); }
+      .ssc-check-fix { margin: 0.3rem 0 0; font-size: 0.84rem; color: var(--accent-strong); }
+      .ssc-psi { margin-top: 1rem; padding: 0.9rem 1rem; border: 1px dashed var(--border); border-radius: 12px; background: var(--surface); font-size: 0.9rem; }
+
+      .ssc-section-title { font-size: clamp(1.5rem, 3vw, 2.1rem); text-align: center; margin: 0 0 0.5rem;
+        background: linear-gradient(120deg, var(--accent), #38bdf8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+      .ssc-section-sub { text-align: center; color: var(--text-muted); max-width: 62ch; margin: 0 auto 1.6rem; }
+      .ssc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; }
+      .ssc-tile { border: 1px solid var(--border); border-radius: 16px; padding: 1.2rem; background: var(--surface); transition: transform 0.18s, box-shadow 0.18s; }
+      .ssc-tile:hover { transform: translateY(-4px); box-shadow: 0 18px 34px -22px rgba(79,70,229,0.5); }
+      .ssc-tile .ic { font-size: 1.5rem; } .ssc-tile h3 { margin: 0.5rem 0 0.3rem; font-size: 1.05rem; } .ssc-tile p { margin: 0; color: var(--text-muted); font-size: 0.92rem; }
+
+      .ssc-related { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0.9rem; }
+      .ssc-related a { display: flex; gap: 0.7rem; align-items: center; padding: 0.9rem 1rem; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); color: var(--text); transition: all 0.15s; }
+      .ssc-related a:hover { border-color: var(--accent); transform: translateY(-2px); }
+      .ssc-related .ic { font-size: 1.3rem; }
+
+      .ssc-final { text-align: center; border: 1px solid var(--border); border-radius: 22px; padding: 2.4rem 1.4rem; margin: 2.4rem 0 0; background: linear-gradient(135deg, var(--accent-soft), rgba(56,189,248,0.12)); }
+      .ssc-prose h2 { margin-top: 2rem; } .ssc-prose h3 { margin-top: 1.2rem; } .ssc-prose p, .ssc-prose li { line-height: 1.75; }
+      .ssc-kw { max-width: 640px; margin: 0.6rem auto 0; display: block; width: 100%; padding: 0.7rem 1rem; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-strong); color: var(--text); font: inherit; }
+      .ssc-kw:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+      .ssc-serp { border: 1px solid var(--border); border-radius: 14px; padding: 1rem 1.2rem; background: var(--surface); margin: 1.4rem 0 0; }
+      .ssc-serp h3.k { margin: 0 0 0.5rem; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+      .ssc-serp .g-url { color: #4d5156; font-size: 0.82rem; word-break: break-all; }
+      [data-theme="dark"] .ssc-serp .g-url { color: #9aa0a6; }
+      .ssc-serp .g-title { color: #1a0dab; font-size: 1.15rem; line-height: 1.3; margin: 0.15rem 0; }
+      [data-theme="dark"] .ssc-serp .g-title { color: #8ab4f8; }
+      .ssc-serp .g-desc { color: #4d5156; font-size: 0.9rem; line-height: 1.4; }
+      [data-theme="dark"] .ssc-serp .g-desc { color: #bdc1c6; }
+      .ssc-filters { display: flex; gap: 0.4rem; flex-wrap: wrap; margin: 0 0 0.6rem; }
+      .ssc-filter { border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 999px; padding: 0.35rem 0.85rem; font: inherit; font-weight: 600; font-size: 0.82rem; cursor: pointer; }
+      .ssc-filter.is-active { background: linear-gradient(135deg, var(--accent), #38bdf8); color: #fff; border-color: transparent; }
+      @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+      body::before { content:""; position: fixed; inset: -25%; z-index: -1; pointer-events: none;
+        background: radial-gradient(circle at 18% 12%, rgba(79,70,229,0.14), transparent 42%), radial-gradient(circle at 85% 10%, rgba(56,189,248,0.12), transparent 40%); filter: blur(24px); }
+      /* ======================================================================
+         "Audit clipboard" - the checker as an inspector's checklist. Ground of
+         empty tick boxes; SEO ticked in the headline; the cover clips the real
+         checklist to a board, each check with the weight the checker gives it
+         (read from website-seo-checker.js). Indigo and sky stay (theme-color);
+         green / amber / red remain the results' pass / warn / fail. Scoped to
+         body.au-page.
+         ====================================================================== */
+      body.au-page { --au-paper: #fffdf7; --au-rule: rgba(79, 70, 229, .09); --au-ink: #1e1b4b; --au-clip: #4338ca; --au-line: rgba(30, 27, 75, .13); --au-card: #ffffff; }
+      [data-theme="dark"] body.au-page { --au-paper: #151a2e; --au-rule: rgba(165, 180, 252, .08); --au-ink: #e0e7ff; --au-clip: #818cf8; --au-line: rgba(199, 210, 254, .16); --au-card: #0f1324; }
+      /* ground: empty tick boxes (replaces the blurred glow) */
+      body.au-page::before { inset: 0; filter: none;
+        background:
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Crect x='8.5' y='8.5' width='9' height='9' rx='2' fill='none' stroke='%234f46e5' stroke-opacity='.13'/%3E%3C/svg%3E") 0 0 / 26px 26px,
+          radial-gradient(circle at 18% 8%, rgba(79, 70, 229, .1), transparent 40%), radial-gradient(circle at 86% 6%, rgba(56, 189, 248, .09), transparent 38%); }
+      [data-theme="dark"] body.au-page::before {
+        background:
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Crect x='8.5' y='8.5' width='9' height='9' rx='2' fill='none' stroke='%23a5b4fc' stroke-opacity='.09'/%3E%3C/svg%3E") 0 0 / 26px 26px,
+          radial-gradient(circle at 18% 8%, rgba(99, 102, 241, .14), transparent 40%); }
+      html body.au-page .ta-donate:is(a) { color: #14213d; }
+      /* the support strip sits inside .container, so style.css capped it twice */
+      html body.au-page .container > aside.ta-support { max-width: none; }
+
+      /* ---------- cover ---------- */
+      .au-page .ssc-hero.au-hero { text-align: left; padding: .5rem 0 0; }
+      .au-cover { display: grid; gap: 1.2rem; align-items: center; margin-bottom: 1.3rem; }
+      .au-cover .hero-badge { margin: 0 0 .6rem; }
+      .au-page .ssc-hero h1.au-title { margin: 0; max-width: none; font-size: clamp(2.2rem, 9.5vw, 3.4rem); line-height: 1.08; letter-spacing: -.03em;
+        background: none; -webkit-text-fill-color: currentColor; color: var(--au-ink); }
+      .au-t1, .au-t3 { background: linear-gradient(120deg, var(--accent), #38bdf8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+      /* SEO in a ticked box */
+      .au-t2 { position: relative; display: inline-block; margin: 0 .12em; padding: .02em .5em .04em .22em; border: .07em solid var(--au-clip); border-radius: .14em; color: var(--au-ink); -webkit-text-fill-color: currentColor; }
+      .au-t2::after { content: ""; position: absolute; right: .14em; top: 50%; width: .16em; height: .34em; margin-top: -.24em; border: solid #16a34a; border-width: 0 .07em .07em 0; transform: rotate(40deg); }
+      .au-art { display: none; margin: 0; }
+      @media (min-width: 900px) {
+        .au-cover { grid-template-columns: minmax(0, 1fr) minmax(0, 400px); gap: 2rem; }
+        .au-art { display: block; }
+      }
+      .au-art { position: relative; margin-top: 14px; padding: 1.3rem 1.1rem .85rem; border-radius: 14px; border: 1px solid var(--au-line); color: var(--au-ink);
+        background: repeating-linear-gradient(180deg, transparent 0 24px, var(--au-rule) 24px 25px) 0 1.3rem / 100% 100% no-repeat, var(--au-paper);
+        box-shadow: 0 22px 44px -30px rgba(30, 27, 75, .55); }
+      /* the clip */
+      .au-art::before { content: ""; position: absolute; left: 50%; top: -14px; width: 118px; height: 30px; margin-left: -59px; border-radius: 8px 8px 10px 10px;
+        background: linear-gradient(180deg, #6366f1, var(--au-clip)); box-shadow: 0 4px 8px -4px rgba(30, 27, 75, .6), inset 0 2px 0 rgba(255, 255, 255, .25); }
+      .au-art::after { content: ""; position: absolute; left: 50%; top: -8px; width: 34px; height: 8px; margin-left: -17px; border-radius: 6px; background: var(--au-paper); }
+      .au-art figcaption { display: flex; justify-content: space-between; margin: 0 0 .35rem; font: 800 .66rem/1 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
+      .au-art ul { list-style: none; margin: 0; padding: 0; }
+      .au-art li { display: grid; grid-template-columns: 16px minmax(0, 1fr) auto; gap: .55rem; align-items: center; height: 25px; font-size: .82rem; font-weight: 650; }
+      .au-art li::before { content: ""; width: 12px; height: 12px; border-radius: 3px; border: 1.5px solid var(--au-clip); }
+      .au-art li b { font-weight: 400; letter-spacing: 1px; color: var(--au-clip); }
+      .au-art .au-cap { margin: .45rem 0 0; font-size: .72rem; opacity: .7; line-height: 1.45; }
+
+      /* ---------- the checker: one grid ---------- */
+      .au-page .au-grid { display: grid; gap: 1rem; grid-template-columns: minmax(0, 1fr); grid-template-areas: "in" "ad" "res"; }
+      .au-in { grid-area: in; min-width: 0; } .au-ad-zone { grid-area: ad; min-width: 0; } .au-page .au-grid > .ssc-results { grid-area: res; margin-top: .6rem; min-width: 0; }
+      @media (min-width: 700px) {
+        /* the ad sits beside the form; results open full width below it */
+        .au-page .au-grid { grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "in ad" "res res"; gap: 1.1rem 1.3rem; align-items: start; }
+      }
+      body.au-page .au-ad-zone { text-align: center; }
+      body.au-page .au-ad-zone .ta-inline-ad { display: block !important; margin: 0 auto !important; }
+      .au-box { position: relative; padding: 1.15rem 1.2rem; border-radius: 20px; border: 1px solid var(--au-line); background: var(--au-card); box-shadow: 0 20px 48px -34px rgba(79, 70, 229, .55); }
+      .au-box::before { content: ""; position: absolute; top: 0; left: 20px; right: 20px; height: 3px; border-radius: 0 0 3px 3px; background: linear-gradient(90deg, var(--accent), #38bdf8); }
+      .au-page .au-in :is(.ssc-form, .ssc-kw, .ssc-sub, .ssc-progress, .ssc-msg, .ssc-html-wrap) { max-width: none; margin-left: 0; margin-right: 0; }
+      .au-page .au-in .ssc-sub, .au-page .au-in .ssc-badges { justify-content: flex-start; }
+      .au-page .au-in .ssc-form input[type="url"] { border-width: 2px; }
+      .au-page .au-in .ssc-kw { margin-top: .6rem; }
+      .au-page .au-in .ssc-badges { margin-top: .9rem; }
+      .au-page .au-in .ssc-badge { background: var(--au-paper); }
+      .au-page .ssc-check { border-radius: 10px; }
+
+      /* ---------- after the tool ---------- */
+      .au-after { margin-top: 1.3rem; padding: 1.05rem 1.2rem; border-radius: 18px; border: 1px solid var(--au-line); background: var(--au-card); }
+      .au-page .au-after .lede { margin: 0; max-width: none; color: var(--text-muted); font-size: 1.02rem; line-height: 1.65; }
+
+      /* ---------- new section ---------- */
+      .au-ext .au-tablewrap { overflow-x: auto; max-width: 900px; margin: 0 auto; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
+      .au-ladder { width: 100%; min-width: 560px; border-collapse: collapse; font-size: .9rem; }
+      .au-ladder th, .au-ladder td { padding: .6rem .8rem; text-align: left; border-bottom: 1px solid var(--border); vertical-align: middle; }
+      .au-ladder tbody tr:last-child td { border-bottom: 0; }
+      .au-ladder thead th { font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); background: var(--accent-soft); }
+      .au-ladder td:first-child { width: 2.4rem; font: 800 .8rem ui-monospace, Menlo, Consolas, monospace; color: var(--accent); }
+      .au-ladder td.s { width: 12rem; }
+      .au-ladder .bar { display: flex; align-items: center; gap: .6rem; font: 800 .95rem ui-monospace, Menlo, Consolas, monospace; }
+      .au-ladder .bar i { flex: 1 1 auto; height: 8px; border-radius: 999px; background: var(--surface-strong); border: 1px solid var(--border); overflow: hidden; }
+      .au-ladder .bar i::before { content: ""; display: block; height: 100%; width: var(--s); background: var(--b); }
+      .au-ladder .d { font: 800 .82rem ui-monospace, Menlo, Consolas, monospace; color: #16a34a; white-space: nowrap; }
+      .au-ext .au-note { max-width: 900px; margin: 1rem auto 0; color: var(--text-muted); line-height: 1.7; }
+      @media (max-width: 640px) {
+        .au-ext .au-tablewrap { overflow: visible; border: 0; background: none; }
+        .au-ladder { min-width: 0; }
+        .au-ladder, .au-ladder tbody, .au-ladder tr, .au-ladder td { display: block; }
+        .au-ladder thead { display: none; }
+        .au-ladder tr { display: grid; grid-template-columns: 2rem minmax(0, 1fr) auto; gap: .2rem .5rem; margin-bottom: .5rem; padding: .6rem .75rem; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+        .au-ladder td { padding: 0; border: 0; width: auto !important; }
+        .au-ladder td.d { grid-column: 3; grid-row: 1; }
+        .au-ladder td.s { grid-column: 1 / -1; grid-row: 2; }
+      }
+
+      @media print { .au-page .au-ad-zone, .au-page .au-art { display: none !important; } }
+
+      /* ---------- phones ---------- */
+      @media (max-width: 699px) {
+        .au-page main > .container > .breadcrumb, .au-page .au-cover .hero-badge, .au-page .au-in .ssc-badges { display: none; }
+        .au-cover { margin-bottom: 1rem; }
+        .au-box { padding: .9rem .85rem; border-radius: 18px; }
+        .au-page .au-in .ssc-form { gap: .5rem; }
+        .au-page .au-in .ssc-form input[type="url"] { flex-basis: 100%; padding: .8rem .9rem; }
+        .au-page .au-in .ssc-form .primary-btn { flex: 1 1 100%; padding: .8rem 1rem; }
+        .au-page .au-in .ssc-kw { padding: .65rem .9rem; }
+        .au-page .au-in .ssc-sub { font-size: .8rem; gap: .35rem; margin-top: .5rem; }
+      }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/website-seo-checker.html#webpage",
+      "url": "https://tooladda.online/website-seo-checker.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-30",
+      "dateModified": "2026-09-15",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+  <body class="au-page">
+    <!-- Page schema lives in the body, not the head: its FAQ answers use the word "noindex", and Brave's Web Discovery Project skips any page whose head contains that word. -->
+    <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Website SEO Checker",
+      "description": "Free website SEO checker that runs an on-page and technical SEO audit in the browser and returns an SEO score with passed checks, warnings, critical issues and recommended fixes.",
+      "url": "https://tooladda.online/website-seo-checker.html",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any (web browser)",
+      "image": "https://tooladda.online/assets/images/logo.svg",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "featureList": [
+        "Instant SEO score (0–100)",
+        "On-page SEO checks (title, meta, headings, images, content)",
+        "Technical SEO checks (HTTPS, viewport, canonical, indexability)",
+        "Structured data and social meta detection",
+        "Links and URL structure analysis",
+        "Prioritized fixes and downloadable report",
+        "No signup — runs in your browser"
+      ],
+      "publisher": {
+        "@type": "Organization",
+        "name": "ToolAdda",
+        "alternateName": [
+          "Tool Adda",
+          "Tools Adda",
+          "ToolsAdda",
+          "Tooladda",
+          "ToolAdda.online"
+        ],
+        "url": "https://tooladda.online/",
+        "logo": "https://tooladda.online/assets/images/logo.svg"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "name": "Website SEO Checker",
+      "url": "https://tooladda.online/website-seo-checker.html",
+      "description": "Free instant SEO audit tool — check any web page's on-page and technical SEO and get a score with fixes."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Website SEO Checker"
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to check a website's SEO",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Enter your URL",
+          "text": "Paste your website or page URL into the checker and press Analyze."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Run the audit",
+          "text": "The tool fetches the page and runs 25+ on-page and technical SEO checks in your browser."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Read your score",
+          "text": "See your overall SEO score plus category scores for on-page, technical, social, structured data, content and links."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Fix the issues",
+          "text": "Work through the critical issues and warnings using the recommended fixes, then re-analyze."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a website SEO checker?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A website SEO checker analyzes a web page and reports how well it follows SEO best practices — such as titles, meta descriptions, headings, images, HTTPS, mobile setup and structured data — then gives a score and a list of fixes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does this SEO audit work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You enter a URL. The tool fetches the page's HTML through a privacy-friendly proxy and runs 25+ on-page and technical checks directly in your browser, producing an SEO score and prioritized recommendations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this SEO checker free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, it is completely free with no signup, no credit card and no limits."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to register?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. There is no account or email required — just enter a URL and analyze."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a good SEO score?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Aim for 80 or above. 50–79 means there is meaningful room to improve, and below 50 usually means several important issues need fixing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I improve my SEO score?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Fix critical issues first (missing title/description, no HTTPS, no mobile viewport, noindex), then address warnings like heading structure, image alt text, canonical tags and thin content."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does page speed affect SEO?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Speed and Core Web Vitals are ranking signals. This tool checks on-page and technical SEO in the browser and links you to Google PageSpeed Insights for accurate lab and field performance data."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are Core Web Vitals?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Core Web Vitals are Google's user-experience metrics: Largest Contentful Paint (loading), Interaction to Next Paint (responsiveness) and Cumulative Layout Shift (visual stability)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I audit any website?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can audit any page whose HTML can be fetched. Some sites block cross-origin requests; in that case, paste the page's HTML source and the same checks run locally."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is technical SEO important?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Very. If search engines cannot crawl, index or render your pages, great content will not rank. Technical checks like HTTPS, indexability, canonical tags and mobile setup are foundational."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does mobile SEO impact rankings?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Google uses mobile-first indexing, so a responsive viewport and mobile-friendly layout directly affect rankings."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which SEO issues are most critical?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A missing or duplicate title, missing meta description, no HTTPS, a noindex tag, and no mobile viewport are the highest-impact issues to fix first."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does structured data help SEO?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Structured data (schema.org / JSON-LD) can unlock rich results like FAQs, breadcrumbs and ratings, improving visibility and click-through even though it is not a direct ranking factor."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How accurate is the report?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The on-page and technical checks read your actual HTML, so they are accurate for what is in the page source. Rendering-dependent and performance metrics should be verified with Google PageSpeed Insights and Search Console."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is HTTPS important for SEO?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. HTTPS is a lightweight ranking signal and is expected by users and browsers. Serving your site over HTTPS is essential."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long does the audit take?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Usually a few seconds — the page is fetched and analyzed instantly in your browser."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is crawlability?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Crawlability is how easily search engines can access and follow your pages and links. Robots rules, internal links and clean URLs all affect it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is indexability?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Whether a page is allowed to appear in search results (noindex makes it non-indexable)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How often should I audit my website?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Audit key pages monthly and after any major change (redesign, migration, new content). Regular checks catch regressions early."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data private?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - analysis runs in your browser; we don't store your URLs or reports."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+    <a class="skip-link" href="#tool">Skip to the SEO checker</a>
+    <header class="site-header">
+      <div class="container navbar">
+        <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+              <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+              <path d="M3.1 16.9h10.8" />
+              <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+            </svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+          <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+          <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <div class="container">
+        <aside class="ta-support" aria-label="Support ToolAdda">
+          <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+        </aside>
+
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span>›</span><a href="/">SEO Tools</a><span>›</span><span>Website SEO Checker</span>
+        </nav>
+
+        <section class="ssc-hero au-hero" id="tool">
+          <!-- Cover: the headline with SEO ticked; from 900px part of the real
+               checklist with each check's weight (read from the script). The
+               introduction follows the checker. -->
+          <header class="au-cover">
+            <div>
+              <p class="hero-badge">🔎 SEO Tools · Free &amp; instant</p>
+              <h1 class="au-title"><span class="au-t1">Website</span> <span class="au-t2">SEO</span> <span class="au-t3">Checker</span></h1>
+            </div>
+            <figure class="au-art" aria-hidden="true">
+              <figcaption><span>Checklist</span><span>weight</span></figcaption>
+              <ul><li><span>Mobile viewport tag</span><b>&#9679;&#9679;&#9679;</b></li><li><span>Served over HTTPS</span><b>&#9679;&#9679;&#9679;</b></li><li><span>Title of 30&ndash;60 characters</span><b>&#9679;&#9679;&#9679;</b></li><li><span>Description of 70&ndash;160</span><b>&#9679;&#9679;&#9675;</b></li><li><span>Exactly one H1</span><b>&#9679;&#9679;&#9675;</b></li><li><span>Canonical link</span><b>&#9679;&#9679;&#9675;</b></li><li><span>600+ words of text</span><b>&#9679;&#9679;&#9675;</b></li></ul>
+              <p class="au-cap">Weights as the checker scores them: a pass earns all of it, a warning half.</p>
+            </figure>
+          </header>
+
+          <!-- One grid, and the checker's root ([data-seo-checker], which the script
+               searches inside): the form; the ad beside it from 700px (after it on
+               phones - never above the tool); the results full width below. -->
+          <div class="au-grid" data-seo-checker>
+            <div class="au-in au-box">
+            <div class="ssc-form">
+              <input type="url" inputmode="url" placeholder="https://yourwebsite.com" data-url-input aria-label="Website URL to analyze" />
+              <button class="primary-btn" type="button" data-analyze-btn>🔎 Analyze SEO</button>
+            </div>
+            <input type="text" class="ssc-kw" data-keyword-input placeholder="🎯 Focus keyword (optional) — e.g. seo checker" aria-label="Focus keyword to check (optional)" />
+            <div class="ssc-sub">
+              <button class="ssc-linkbtn" type="button" data-sample-btn>Try a sample</button>
+              <span>·</span>
+              <button class="ssc-linkbtn" type="button" data-paste-toggle>Site blocks fetching? Paste HTML instead</button>
+            </div>
+            <div class="ssc-badges">
+              <span class="ssc-badge">✅ 25+ checks</span>
+              <span class="ssc-badge">⚡ Instant</span>
+              <span class="ssc-badge">🔒 No signup</span>
+              <span class="ssc-badge">🧠 Actionable fixes</span>
+            </div>
+
+            <div class="ssc-html-wrap" data-html-wrap hidden>
+              <label for="ssc-html" style="font-weight:600;font-size:.9rem;display:block;margin-bottom:.4rem">Paste your page's HTML source (View Source → copy all):</label>
+              <textarea id="ssc-html" data-html-input placeholder="<!DOCTYPE html> ..."></textarea>
+              <div style="margin-top:.6rem;text-align:right"><button class="secondary-btn" type="button" data-html-analyze-btn>Analyze pasted HTML</button></div>
+            </div>
+
+            <div class="ssc-progress" data-progress hidden><div class="ssc-progress-bar" data-progress-bar></div></div>
+            <div class="ssc-msg" role="status" aria-live="polite" data-message hidden></div>
+            </div>
+
+            <!-- Ad: one 300x250 (see .au-ad-zone). -->
+            <div class="au-ad-zone">
+              <div class="ta-inline-ad" data-unit="inline"></div>
+            </div>
+
+            <!-- results -->
+            <div class="ssc-results" data-results hidden>
+              <div class="ssc-dash">
+                <div class="ssc-scorecard">
+                  <div style="position:relative;display:inline-grid;place-items:center">
+                    <svg class="ssc-gauge-svg" viewBox="0 0 120 120" aria-hidden="true">
+                      <circle class="ssc-gauge-track" cx="60" cy="60" r="52"></circle>
+                      <circle class="ssc-gauge-arc" data-gauge cx="60" cy="60" r="52" data-band="warn"></circle>
+                    </svg>
+                    <div style="position:absolute;text-align:center">
+                      <div class="ssc-gauge-num" data-gauge-val>0</div>
+                      <div style="font-size:.72rem;color:var(--text-muted)">/ 100</div>
+                    </div>
+                  </div>
+                  <p class="ssc-gauge-label" data-gauge-label>—</p>
+                  <div class="ssc-counts">
+                    <div class="ssc-count pass"><strong data-count-pass>0</strong>Passed</div>
+                    <div class="ssc-count warn"><strong data-count-warn>0</strong>Warnings</div>
+                    <div class="ssc-count fail"><strong data-count-fail>0</strong>Critical</div>
+                  </div>
+                  <div class="ssc-report-actions">
+                    <button type="button" data-copy-report>📋 Copy report</button>
+                    <button type="button" data-download-report>⬇️ Download</button>
+                    <button type="button" data-print-report>🖨️ Print</button>
+                    <button type="button" data-reanalyze>🔄 New</button>
+                  </div>
+                  <p style="font-size:.78rem;color:var(--text-muted);margin:.7rem 0 0">Analyzed: <span data-analyzed-url></span></p>
+                </div>
+
+                <div>
+                  <h2 style="margin:0 0 0.8rem;font-size:1.2rem">Category scores</h2>
+                  <div data-cats></div>
+                  <div class="ssc-psi">
+                    ⚡ <strong>Performance &amp; Core Web Vitals</strong> need lab/field data. Get accurate numbers from
+                    <a data-psi-link href="https://pagespeed.web.dev/" target="_blank" rel="noopener noreferrer">Google PageSpeed Insights →</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ssc-serp" data-serp hidden>
+                <h3 class="k">Google search preview</h3>
+                <div class="g-url" data-serp-url></div>
+                <div class="g-title" data-serp-title></div>
+                <div class="g-desc" data-serp-desc></div>
+              </div>
+
+              <h2 style="margin:1.4rem 0 0.4rem;font-size:1.2rem">Detailed checks &amp; fixes</h2>
+              <div class="ssc-filters" role="tablist" aria-label="Filter checks by status">
+                <button class="ssc-filter is-active" type="button" data-filter="all">All</button>
+                <button class="ssc-filter" type="button" data-filter="fail">Critical</button>
+                <button class="ssc-filter" type="button" data-filter="warn">Warnings</button>
+                <button class="ssc-filter" type="button" data-filter="pass">Passed</button>
+              </div>
+              <div class="ssc-checks" data-checks></div>
+            </div>
+          </div>
+        </section>
+
+        <div class="au-after">
+          <p class="lede">Run an instant on-page &amp; technical SEO audit and get a clear score with the exact issues to fix. No signup — the analysis runs in your browser.</p>
+        </div>
+
+        <!-- trust -->
+        <section class="section">
+          <div class="ssc-grid">
+            <div class="ssc-tile"><div class="ic">🔒</div><h3>Private by design</h3><p>Analysis runs in your browser; we don't store your URLs or reports.</p></div>
+            <div class="ssc-tile"><div class="ic">🆓</div><h3>Free &amp; unlimited</h3><p>No signup, no credit card, no daily limits.</p></div>
+            <div class="ssc-tile"><div class="ic">🧠</div><h3>Actionable fixes</h3><p>Every issue comes with a plain-English recommendation.</p></div>
+            <div class="ssc-tile"><div class="ic">📏</div><h3>Industry-standard checks</h3><p>Based on the on-page and technical signals search engines actually use.</p></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2 class="ssc-section-title">How the SEO checker works</h2>
+          <p class="ssc-section-sub">Four steps to a clear, prioritized action plan.</p>
+          <div class="ssc-grid">
+            <div class="ssc-tile"><div class="ic">1️⃣</div><h3>Enter your URL</h3><p>Paste any page URL and press Analyze.</p></div>
+            <div class="ssc-tile"><div class="ic">2️⃣</div><h3>Run 25+ checks</h3><p>On-page, technical, social, schema, content and links — instantly.</p></div>
+            <div class="ssc-tile"><div class="ic">3️⃣</div><h3>Get your score</h3><p>An overall score plus per-category breakdown and pass/warn/fail counts.</p></div>
+            <div class="ssc-tile"><div class="ic">4️⃣</div><h3>Fix &amp; re-check</h3><p>Apply the recommended fixes, then re-analyze to track progress.</p></div>
+          </div>
+        </section>
+
+        <!-- NEW SECTION -->
+        <section class="section au-ext" aria-labelledby="au-ladder-h">
+          <h2 class="ssc-section-title" id="au-ladder-h">Which Fixes Move the Score Most</h2>
+          <p class="ssc-section-sub">One small product page, improved a step at a time and run through this checker&rsquo;s <em>Paste HTML</em> mode after each step, with the URL box left empty. Every score below is the one the checker gave.</p>
+          <div class="au-tablewrap">
+            <table class="au-ladder">
+              <thead><tr><th scope="col">Step</th><th scope="col">What changed</th><th scope="col">Score</th><th scope="col">Gain</th></tr></thead>
+              <tbody>
+                <tr data-step="0" data-score="47"><td>0</td><td>A bare page: a short title, one H1, one sentence</td><td class="s"><span class="bar"><i style="--s:47%;--b:#dc2626"></i>47</span></td><td class="d"></td></tr>
+                <tr data-step="1" data-score="57"><td>1</td><td>Add the mobile viewport tag</td><td class="s"><span class="bar"><i style="--s:57%;--b:#d97706"></i>57</span></td><td class="d">+10</td></tr>
+                <tr data-step="2" data-score="66"><td>2</td><td>Add a meta description (70&ndash;160 characters)</td><td class="s"><span class="bar"><i style="--s:66%;--b:#d97706"></i>66</span></td><td class="d">+9</td></tr>
+                <tr data-step="3" data-score="71"><td>3</td><td>Lengthen the title to 30&ndash;60 characters</td><td class="s"><span class="bar"><i style="--s:71%;--b:#d97706"></i>71</span></td><td class="d">+5</td></tr>
+                <tr data-step="4" data-score="79"><td>4</td><td>Write 600+ words of real copy</td><td class="s"><span class="bar"><i style="--s:79%;--b:#d97706"></i>79</span></td><td class="d">+8</td></tr>
+                <tr data-step="5" data-score="88"><td>5</td><td>Add canonical, <code>lang</code>, charset and a favicon</td><td class="s"><span class="bar"><i style="--s:88%;--b:#16a34a"></i>88</span></td><td class="d">+9</td></tr>
+                <tr data-step="6" data-score="96"><td>6</td><td>Add Open Graph, a Twitter card and JSON-LD</td><td class="s"><span class="bar"><i style="--s:96%;--b:#16a34a"></i>96</span></td><td class="d">+8</td></tr>
+                <tr data-step="7" data-score="100"><td>7</td><td>Add H2 subheadings and three internal links</td><td class="s"><span class="bar"><i style="--s:100%;--b:#16a34a"></i>100</span></td><td class="d">+4</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="au-note">The early fixes are worth the most because they are the heavily weighted checks: the viewport tag is weight 3, and a missing description counts as a failure at weight 3. The last few points come from many small checks at weight 1. When there is an address in the URL box, whether the page was fetched or pasted, the checker also scores HTTPS and the URL itself, so the same page can land a few points higher or lower.</p>
+        </section>
+
+        <!-- SEO CONTENT -->
+        <section class="section ssc-prose">
+          <h2 class="ssc-section-title">The complete guide to auditing your website's SEO</h2>
+
+          <h2>What is an SEO checker?</h2>
+          <p>An SEO checker is a tool that inspects a web page and measures how well it follows search engine optimization best practices. Instead of manually reading source code, you get an instant, structured report: what's done right, what's risky, and what's broken. A good checker looks at both <strong>on-page SEO</strong> (titles, descriptions, headings, content, images) and <strong>technical SEO</strong> (HTTPS, mobile setup, canonical tags, indexability, structured data), then turns those findings into a score and a prioritized list of fixes.</p>
+
+          <h2>Why website SEO matters</h2>
+          <p>Most online journeys start with a search. If your pages aren't optimized, they rank lower, earn fewer clicks, and lose traffic to competitors who did the basics well. SEO is one of the few marketing channels that compounds: a page fixed today can keep bringing free, high-intent visitors for years. Auditing regularly ensures small problems — a missing title, a broken canonical, a slow mobile layout — don't quietly cost you rankings.</p>
+
+          <h2>How our SEO audit tool works</h2>
+          <p>You enter a URL and the tool fetches that page's HTML through a privacy-friendly proxy, then runs more than twenty-five checks directly in your browser. Because the analysis happens locally, your data isn't stored on a server. Each check returns a status — passed, warning, or critical — with a short explanation and a concrete fix. The results roll up into an overall score and six category scores so you can see at a glance where to focus.</p>
+
+          <h2>Understanding SEO scores</h2>
+          <p>The score is a weighted average of the checks: high-impact items like the title tag, HTTPS and mobile viewport carry more weight than minor ones. A score of <strong>80+</strong> is good, <strong>50–79</strong> means meaningful improvements are available, and <strong>below 50</strong> usually signals several important issues. Treat the score as a compass, not a grade — the real value is in the specific issues and fixes it surfaces.</p>
+
+          <h2>Technical SEO explained</h2>
+          <p>Technical SEO is the foundation that lets search engines crawl, render and index your pages. Key elements include serving over HTTPS, a responsive mobile viewport, a correct canonical tag, an indexable robots configuration (no accidental <em>noindex</em>), a declared language and charset, and clean, readable URLs. If the technical base is broken, even excellent content struggles to rank.</p>
+
+          <h2>On-page SEO best practices</h2>
+          <p>On-page SEO is what a visitor and a crawler read on the page itself. Write a unique title of roughly 30–60 characters with your primary keyword near the front. Add a compelling meta description of 70–160 characters that earns the click. Use a single H1 that states the topic, then structure the body with H2 and H3 subheadings. Give every meaningful image descriptive alt text, and make sure the page has genuinely helpful, original content rather than thin filler.</p>
+
+          <h2>Core Web Vitals and rankings</h2>
+          <p>Core Web Vitals measure real user experience: <strong>Largest Contentful Paint</strong> (how fast the main content loads), <strong>Interaction to Next Paint</strong> (how responsive the page feels), and <strong>Cumulative Layout Shift</strong> (how stable the layout is). They are confirmed ranking signals. This tool checks the on-page and technical factors that influence them, and links you to Google PageSpeed Insights for accurate lab and field measurements — we never invent performance numbers.</p>
+
+          <h2>Website speed optimization</h2>
+          <p>Faster pages rank and convert better. Practical wins include compressing and lazy-loading images, minifying and deferring non-critical JavaScript, inlining critical CSS, using modern image formats like WebP, preloading key assets, and serving static files from a CDN. Measure before and after with PageSpeed Insights so you optimize what actually matters.</p>
+
+          <h2>Mobile SEO optimization</h2>
+          <p>Google uses mobile-first indexing, so the mobile version of your page is what gets ranked. Ensure a responsive viewport, tap targets that are large enough, text that's readable without zooming, and no content hidden only on mobile. A mobile-friendly layout is no longer optional — it's a baseline requirement.</p>
+
+          <h2>Common SEO problems</h2>
+          <p>The most frequent issues we see are missing or duplicate title tags, absent meta descriptions, multiple or missing H1s, images without alt text, no canonical tag, thin content, missing structured data, and pages accidentally set to <em>noindex</em>. Individually they seem small; together they can cap a site's potential. The audit flags each so you can clear them methodically.</p>
+
+          <h2>SEO audit checklist</h2>
+          <ul>
+            <li>Unique, keyword-led title (30–60 chars) and meta description (70–160 chars).</li>
+            <li>Exactly one H1, with logical H2/H3 structure.</li>
+            <li>HTTPS enabled and a responsive mobile viewport.</li>
+            <li>Self-referencing canonical and no accidental noindex.</li>
+            <li>Descriptive alt text on all meaningful images.</li>
+            <li>Structured data (JSON-LD) for eligible rich results.</li>
+            <li>Clean URLs, healthy internal linking, and helpful content.</li>
+          </ul>
+
+          <h2>How to improve your SEO score</h2>
+          <p>Work top-down: fix every <strong>critical</strong> issue first, then clear the <strong>warnings</strong>, then polish the passes. Re-run the audit after each batch of changes so you can see the score climb and confirm nothing regressed. Pair this on-page work with performance improvements from PageSpeed Insights and monitoring in Google Search Console for a complete picture.</p>
+
+          <h2>Small business &amp; enterprise SEO</h2>
+          <p>Small businesses get the most from nailing the fundamentals on their key pages — homepage, services, and top blog posts — because a handful of well-optimized pages can outrank larger, sloppier competitors locally. Enterprises need the same rigor at scale: consistent templates, automated checks in the deployment pipeline, and regular audits to catch regressions across thousands of URLs.</p>
+
+          <h2>Why choose our SEO checker</h2>
+          <p>It's genuinely free, needs no signup, and runs privately in your browser. It's honest about its limits — it measures what's in your HTML accurately and points you to the right tools for performance and index data rather than faking numbers. And every finding is paired with a clear, do-this-next recommendation, so you leave with an action plan, not just a score.</p>
+        </section>
+
+        <!-- FAQ -->
+        <section class="section faq-section">
+          <h2 class="ssc-section-title">Frequently asked questions</h2>
+          <div class="grid-2">
+            <details class="faq-item"><summary><strong>What is a website SEO checker?</strong></summary><p>A tool that analyzes a page and reports how well it follows SEO best practices, with a score and fixes.</p></details>
+            <details class="faq-item"><summary><strong>How does the audit work?</strong></summary><p>Enter a URL; the page's HTML is fetched and 25+ on-page and technical checks run in your browser.</p></details>
+            <details class="faq-item"><summary><strong>Is it free?</strong></summary><p>Yes — free, no signup, no limits.</p></details>
+            <details class="faq-item"><summary><strong>What is a good SEO score?</strong></summary><p>80+ is good, 50–79 needs work, under 50 has important issues to fix.</p></details>
+            <details class="faq-item"><summary><strong>How do I improve my score?</strong></summary><p>Fix critical issues first, then warnings — missing title/description, HTTPS, mobile viewport, noindex.</p></details>
+            <details class="faq-item"><summary><strong>Does page speed affect SEO?</strong></summary><p>Yes. We link you to Google PageSpeed Insights for accurate speed and Core Web Vitals data.</p></details>
+            <details class="faq-item"><summary><strong>What are Core Web Vitals?</strong></summary><p>Google's UX metrics: LCP (loading), INP (responsiveness), CLS (visual stability).</p></details>
+            <details class="faq-item"><summary><strong>Can I audit any website?</strong></summary><p>Any page whose HTML can be fetched. If a site blocks it, paste the HTML to analyze locally.</p></details>
+            <details class="faq-item"><summary><strong>Is technical SEO important?</strong></summary><p>Yes — if search engines can't crawl/index/render your pages, content won't rank.</p></details>
+            <details class="faq-item"><summary><strong>Does mobile SEO impact rankings?</strong></summary><p>Yes — Google uses mobile-first indexing.</p></details>
+            <details class="faq-item"><summary><strong>Which issues are most critical?</strong></summary><p>Missing/duplicate title, no meta description, no HTTPS, noindex, no mobile viewport.</p></details>
+            <details class="faq-item"><summary><strong>Does schema markup help?</strong></summary><p>It can unlock rich results (FAQ, breadcrumbs, ratings) and improve click-through.</p></details>
+            <details class="faq-item"><summary><strong>How accurate is the report?</strong></summary><p>Accurate for what's in your HTML; verify performance with PageSpeed and Search Console.</p></details>
+            <details class="faq-item"><summary><strong>Is HTTPS important?</strong></summary><p>Yes — it's a ranking signal and expected by users and browsers.</p></details>
+            <details class="faq-item"><summary><strong>How long does it take?</strong></summary><p>Usually a few seconds — analyzed instantly in your browser.</p></details>
+            <details class="faq-item"><summary><strong>What is crawlability?</strong></summary><p>How easily search engines can access and follow your pages and links.</p></details>
+            <details class="faq-item"><summary><strong>What is indexability?</strong></summary><p>Whether a page is allowed to appear in search results (noindex makes it non-indexable).</p></details>
+            <details class="faq-item"><summary><strong>How often should I audit?</strong></summary><p>Monthly for key pages, and after any major change or migration.</p></details>
+            <details class="faq-item"><summary><strong>Is my data private?</strong></summary><p>Yes — analysis runs in your browser; we don't store your URLs or reports.</p></details>
+            <details class="faq-item"><summary><strong>Do I need to register?</strong></summary><p>No. There is no account or email required — just enter a URL and analyze.</p></details>
+            <details class="faq-item"><summary><strong>Does structured data help SEO?</strong></summary><p>Structured data (schema.org / JSON-LD) can unlock rich results like FAQs, breadcrumbs and ratings, improving visibility and click-through even though it is not a direct ranking factor.</p></details>
+            <details class="faq-item"><summary><strong>Can it detect every SEO issue?</strong></summary><p>It covers on-page and technical HTML checks; combine it with PageSpeed and Search Console for full coverage.</p></details>
+          </div>
+        </section>
+
+        <!-- related -->
+        <section class="section">
+          <h2 class="ssc-section-title">Related SEO &amp; site tools</h2>
+          <div class="ssc-related">
+            <a href="robots-txt-generator.html"><span class="ic">🤖</span><span><strong>Robots.txt Generator</strong><br><small>Control crawling</small></span></a>
+            <a href="developer-tools/responsive-design-tester.html"><span class="ic">📱</span><span><strong>Responsive Design Tester</strong><br><small>Check mobile layout</small></span></a>
+            <a href="sitemap-generator.html"><span class="ic">🗺️</span><span><strong>Sitemap Generator</strong><br><small>Help indexing</small></span></a>
+            <a href="cyber-tools/dofollow-nofollow-link-checker.html"><span class="ic">🔗</span><span><strong>Dofollow / Nofollow Checker</strong><br><small>Audit link rel</small></span></a>
+            <a href="ssl-checker.html"><span class="ic">🔐</span><span><strong>SSL Checker</strong><br><small>Verify HTTPS</small></span></a>
+            <a href="internet-speed-test.html"><span class="ic">⚡</span><span><strong>Speed Test</strong><br><small>Check connection</small></span></a>
+            <a href="utm-builder.html"><span class="ic">📊</span><span><strong>UTM Builder</strong><br><small>Track campaigns</small></span></a>
+            <a href="favicon-generator.html"><span class="ic">🎨</span><span><strong>Favicon Generator</strong><br><small>Brand your tab</small></span></a>
+          </div>
+        </section>
+
+        <section class="ssc-final">
+          <h2 style="margin:0 0 0.5rem;font-size:clamp(1.5rem,3vw,2rem)">Check your website's SEO now — free</h2>
+          <p class="ssc-section-sub">No signup. Instant score, real issues, and fixes you can action today.</p>
+          <a class="primary-btn" style="font-weight:700;padding:0.85rem 1.6rem" href="#tool">🔎 Run a free SEO audit</a>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+          <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links">
+            <a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms</a>
+          </div>
+        </div>
+        <div>
+          <h3>Stay updated</h3>
+          <p>© <span data-year></span> ToolAdda. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script defer src="assets/js/website-seo-checker.js"></script>
+    <script defer src="assets/js/app.js"></script>
+    <script src="assets/js/side-ads.js" defer></script>
+    <script src="assets/js/inline-ads.js" data-in-article defer></script>
+  </body>
+</html>

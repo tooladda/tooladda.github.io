@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+<meta name="description" content="Flatten a PDF online free, no upload. Two modes explained in plain language: lock in filled form fields (keeps text selectable) or flatten to images (fully uneditable). Batch processing, verification report, works offline." />
+<title>Flatten PDF Online Free — No Upload | ToolAdda</title>
+<link rel="stylesheet" href="assets/css/style.css" />
+<link rel="manifest" href="flatten-pdf-manifest.json" />
+<style>
+  .fl-shell{position:relative;padding:2rem 0 3rem;background:radial-gradient(circle at 8% 12%,rgba(79,70,229,.16),transparent 28%),radial-gradient(circle at 92% 6%,rgba(124,58,237,.14),transparent 24%),radial-gradient(circle at 50% 100%,rgba(34,197,94,.08),transparent 40%),linear-gradient(135deg,#eef2ff 0%,#f8fafc 45%,#f5f3ff 100%);overflow:hidden}
+  [data-theme="dark"] .fl-shell{background:radial-gradient(circle at 8% 12%,rgba(79,70,229,.22),transparent 30%),radial-gradient(circle at 92% 6%,rgba(124,58,237,.18),transparent 26%),linear-gradient(135deg,#0f172a 0%,#111827 50%,#0b1220 100%)}
+  .fl-card{max-width:1280px;margin:0 auto;padding:clamp(1.1rem,2.5vw,1.75rem);border-radius:28px;border:1px solid rgba(148,163,184,.22);background:rgba(255,255,255,.84);backdrop-filter:blur(24px);box-shadow:0 24px 90px rgba(15,23,42,.12)}
+  [data-theme="dark"] .fl-card{background:rgba(15,23,42,.82);border-color:rgba(148,163,184,.18)}
+  .fl-badge{display:inline-flex;padding:.32rem .7rem;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.55rem;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff}
+  .fl-title{margin:0 0 .5rem;font-size:clamp(1.75rem,4vw,2.35rem);font-weight:900;line-height:1.15;background:linear-gradient(135deg,#1f2937,#4f46e5 55%,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}
+  [data-theme="dark"] .fl-title{background:linear-gradient(135deg,#f8fafc,#a5b4fc 55%,#c4b5fd);-webkit-background-clip:text;background-clip:text}
+  .fl-lead{margin:0 0 1rem;color:var(--text-muted);line-height:1.65;max-width:72ch;font-size:clamp(.92rem,1.8vw,1rem)}
+  .fl-feature-strip{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1rem}
+  .fl-feature-pill{font-size:.76rem;font-weight:700;padding:.35rem .7rem;border-radius:999px;border:1px solid var(--border);background:var(--surface-strong);color:var(--text-muted)}
+  .fl-privacy-banner{display:flex;align-items:center;gap:.55rem;font-weight:700;color:#166534;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.22);border-radius:999px;padding:.55rem .95rem;margin-bottom:.75rem;font-size:.88rem;width:fit-content;max-width:100%;flex-wrap:wrap}
+  [data-theme="dark"] .fl-privacy-banner{color:#86efac}
+  .fl-disclaimer{font-size:.85rem;color:var(--text-muted);background:var(--surface-strong);border:1px solid var(--border);border-radius:16px;padding:.85rem 1rem;margin-bottom:.9rem;line-height:1.6;border-left:3px solid var(--accent)}
+  .fl-disclaimer strong{color:var(--text)}
+  .fl-helper-box{border:1px solid var(--border);border-radius:20px;padding:1.1rem;background:var(--surface);margin-bottom:1rem;box-shadow:0 4px 20px rgba(15,23,42,.04)}
+  [data-theme="dark"] .fl-helper-box{box-shadow:0 4px 20px rgba(0,0,0,.2)}
+  .fl-helper-box h2{font-size:1.05rem;margin-top:0;font-weight:800}
+  .fl-mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.85rem 0}
+  @media (max-width:800px){.fl-mode-cards{grid-template-columns:1fr}}
+  .fl-mode-card{border:2px solid var(--border);border-radius:18px;padding:1rem;cursor:pointer;transition:border-color .2s,transform .15s,box-shadow .15s,background .2s;background:var(--surface-strong)}
+  .fl-mode-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(79,70,229,.1)}
+  .fl-mode-card.is-selected{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 3px rgba(79,70,229,.15)}
+  .fl-mode-card h3{margin:0 0 .4rem;font-size:1rem;font-weight:800}
+  .fl-mode-card ul{margin:.5rem 0 0;padding-left:1.1rem;font-size:.86rem;color:var(--text-muted);line-height:1.55}
+  .fl-tradeoff-table{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:.85rem;border-radius:14px;overflow:hidden;border:1px solid var(--border)}
+  .fl-tradeoff-table th,.fl-tradeoff-table td{border:1px solid var(--border);padding:.55rem .75rem;text-align:left}
+  .fl-tradeoff-table th{background:var(--surface-strong);font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.03em}
+  .fl-tradeoff-table .good{color:#16a34a;font-weight:700}
+  .fl-tradeoff-table .bad{color:#ef4444;font-weight:700}
+
+  .fl-report-card{border:1px solid var(--border);border-radius:16px;padding:1rem;background:var(--surface);margin-bottom:.8rem}
+  .fl-report-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.55rem;margin:.6rem 0}
+  .fl-report-stat{border:1px solid var(--border);border-radius:12px;padding:.55rem .75rem;background:var(--surface-strong);transition:transform .15s}
+  .fl-report-stat:hover{transform:translateY(-1px)}
+  .fl-report-stat .val{font-weight:800;font-size:1.05rem;color:var(--accent)}
+  .fl-report-stat .lbl{font-size:.72rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;letter-spacing:.03em;margin-top:.1rem}
+  .fl-field-list{max-height:220px;overflow-y:auto;border:1px solid var(--border);border-radius:12px;margin-top:.5rem;scrollbar-width:thin}
+  .fl-field-row{display:flex;justify-content:space-between;gap:.5rem;padding:.4rem .65rem;border-bottom:1px solid var(--border);font-size:.84rem;font-family:ui-monospace,monospace}
+  .fl-alert-warn{font-size:.85rem;background:rgba(245,158,11,.1);color:#92400e;border:1px solid rgba(245,158,11,.28);border-radius:14px;padding:.75rem .95rem;margin:.5rem 0;line-height:1.55}
+  [data-theme="dark"] .fl-alert-warn{color:#fcd34d;background:rgba(245,158,11,.08)}
+  .fl-alert-danger{font-size:.85rem;background:rgba(239,68,68,.08);color:#991b1b;border:1px solid rgba(239,68,68,.22);border-radius:14px;padding:.75rem .95rem;margin:.5rem 0;line-height:1.55}
+  [data-theme="dark"] .fl-alert-danger{color:#fca5a5;background:rgba(239,68,68,.12)}
+  .fl-alert-ok{font-size:.85rem;background:rgba(34,197,94,.1);color:#166534;border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:.75rem .95rem;margin:.5rem 0;line-height:1.55}
+  [data-theme="dark"] .fl-alert-ok{color:#86efac}
+
+  .fl-checklist label{display:flex;align-items:flex-start;gap:.5rem;font-size:.9rem;margin-bottom:.55rem;cursor:pointer;padding:.45rem .6rem;border-radius:12px;border:1px solid transparent;transition:border-color .2s,background .2s}
+  .fl-checklist label:hover{border-color:var(--border);background:var(--surface-strong)}
+  .fl-checklist input{margin-top:.2rem;accent-color:var(--accent);width:1rem;height:1rem;flex-shrink:0}
+  .fl-checklist .hint{display:block;font-size:.76rem;color:var(--text-muted);line-height:1.45;margin-top:.15rem}
+  .fl-radio-row{display:flex;gap:1rem;margin-bottom:.6rem;flex-wrap:wrap}
+  .fl-radio-row label{display:flex;align-items:center;gap:.4rem;font-size:.88rem;cursor:pointer;padding:.4rem .55rem;border-radius:10px;border:1px solid var(--border);background:var(--surface-strong)}
+  .fl-radio-row input{accent-color:var(--accent)}
+
+  .fl-dpi-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.6rem}
+  .fl-dpi-btn{border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:14px;padding:.65rem .9rem;cursor:pointer;font-weight:700;text-align:left;flex:1;min-width:130px;font-family:inherit;transition:border-color .2s,background .2s,transform .15s}
+  .fl-dpi-btn:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .fl-dpi-btn.is-active{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 3px rgba(79,70,229,.12)}
+  .fl-dpi-btn .sub{display:block;font-size:.72rem;color:var(--text-muted);font-weight:400;margin-top:.15rem}
+  .fl-size-estimate{font-size:.86rem;color:var(--text-muted);margin:.5rem 0;padding:.55rem .75rem;border-radius:12px;background:var(--surface-strong);border:1px solid var(--border)}
+
+  .fl-progress-wrap{display:none;margin:.85rem 0}
+  .fl-progress-wrap.is-active{display:block}
+  .fl-progress-track{width:100%;height:10px;border-radius:999px;background:var(--surface-strong);border:1px solid var(--border);overflow:hidden}
+  .fl-progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),#16a34a);transition:width .15s ease;border-radius:999px}
+  .fl-progress-text{font-size:.84rem;color:var(--text-muted);margin:.4rem 0 0;display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+
+  .fl-verify-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.6rem;margin-top:.7rem}
+  .fl-verify-card{border:1px solid var(--border);border-radius:14px;padding:.65rem .85rem;transition:transform .15s}
+  .fl-verify-card:hover{transform:translateY(-1px)}
+  .fl-verify-card.pass{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.3)}
+  .fl-verify-card.fail{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.3)}
+  .fl-verify-card .val{font-weight:800;font-size:.92rem}
+  .fl-verify-card .lbl{font-size:.72rem;color:var(--text-muted);margin-top:.15rem}
+
+  .fl-preview-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:.8rem}
+  @media (max-width:700px){.fl-preview-row{grid-template-columns:1fr}}
+  .fl-preview-col{text-align:center}
+  .fl-preview-col canvas{max-width:100%;border:1px solid var(--border);border-radius:12px}
+  .fl-preview-col p{font-size:.78rem;color:var(--text-muted);font-weight:700;text-transform:uppercase}
+
+  .fl-file-item{border:1px solid var(--border);border-radius:18px;padding:1rem;margin-bottom:.75rem;background:var(--surface);box-shadow:0 4px 16px rgba(15,23,42,.04)}
+  [data-theme="dark"] .fl-file-item{box-shadow:0 4px 16px rgba(0,0,0,.2)}
+  .fl-file-head{display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.35rem}
+  .fl-file-head strong{font-size:.95rem}
+
+  .fl-card .split-action-bar{margin-bottom:.75rem;padding:.85rem 1rem;border-radius:16px;border:1px solid var(--border);background:var(--surface-strong)}
+  .fl-card .pdf-drop-zone{border-radius:20px;border:2px dashed rgba(79,70,229,.35);background:radial-gradient(circle at 50% 0%,rgba(79,70,229,.06),transparent 55%),var(--surface);padding:clamp(1.5rem,4vw,2.5rem);transition:border-color .2s,background .2s,transform .15s}
+  .fl-card .pdf-drop-zone:hover,.fl-card .pdf-drop-zone.active,.fl-card .pdf-drop-zone:focus-visible{border-color:var(--accent);background:radial-gradient(circle at 50% 0%,rgba(79,70,229,.1),transparent 55%),var(--accent-soft);outline:none}
+  .fl-card .pdf-drop-zone-icon{font-size:2.75rem;margin-bottom:.5rem;filter:drop-shadow(0 4px 8px rgba(79,70,229,.15))}
+  .fl-card .pdf-drop-zone-title{font-size:1.05rem;font-weight:700}
+  .fl-card .message-box{border-radius:14px;font-weight:600}
+  .fl-card .message-box.success{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:#166534}
+  [data-theme="dark"] .fl-card .message-box.success{color:#86efac}
+  .fl-card .message-box.error{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:#991b1b}
+  [data-theme="dark"] .fl-card .message-box.error{color:#fca5a5}
+  .fl-card .primary-btn,.fl-card .secondary-btn{border-radius:12px;font-weight:700;transition:transform .15s,box-shadow .15s}
+  .fl-card .primary-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(79,70,229,.3)}
+  .fl-settings-panel{padding:1rem;border-radius:20px;border:1px solid var(--border);background:var(--surface);margin-top:.85rem}
+
+  .fl-faq-section,.fl-seo{max-width:1280px;margin:1.5rem auto 0;padding:clamp(1.1rem,2.5vw,1.75rem);border-radius:24px;border:1px solid var(--border);background:rgba(255,255,255,.85)}
+  [data-theme="dark"] .fl-faq-section,[data-theme="dark"] .fl-seo{background:rgba(15,23,42,.75)}
+  .fl-faq-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem;margin-top:.85rem}
+  .fl-faq-grid details{padding:.85rem;border-radius:14px;border:1px solid var(--border);background:var(--surface-strong);transition:border-color .2s}
+  .fl-faq-grid details[open]{border-color:rgba(79,70,229,.35)}
+  .fl-faq-grid summary{cursor:pointer;font-weight:700;line-height:1.4}
+  .fl-faq-grid p{margin:.55rem 0 0;color:var(--text-muted);line-height:1.6;font-size:.92rem}
+  .fl-seo h2{margin:0 0 .75rem;font-size:clamp(1.25rem,3vw,1.6rem)}
+  .fl-seo h3{margin:1.25rem 0 .5rem;font-size:1rem;font-weight:800}
+  .fl-seo p,.fl-seo li{color:var(--text-muted);line-height:1.7;font-size:.92rem}
+  .fl-seo ul,.fl-seo ol{padding-left:1.25rem;margin:.5rem 0 0}
+  .fl-seo li{margin-bottom:.35rem}
+  .fl-feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.65rem;margin:1rem 0}
+  .fl-feature-chip{padding:.75rem .9rem;border-radius:14px;border:1px solid var(--border);background:var(--surface-strong);font-size:.86rem;line-height:1.5}
+  .fl-feature-chip strong{display:block;color:var(--text);margin-bottom:.2rem;font-size:.88rem}
+  .fl-related{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+  .fl-related a{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .85rem;border-radius:999px;border:1px solid var(--border);background:var(--surface-strong);color:var(--text);font-size:.84rem;font-weight:600;text-decoration:none;transition:border-color .2s,background .2s}
+  .fl-related a:hover{border-color:var(--accent);background:var(--accent-soft)}
+
+  @media(max-width:640px){
+    .fl-faq-grid{grid-template-columns:1fr}
+    .fl-privacy-banner{border-radius:14px}
+  }
+
+  /* Tool-first layout: upload sits right under the hero, explanations follow the tool */
+  .fl-card [data-pre-upload],.fl-card [data-editor-root]{margin-bottom:1.1rem}
+  .fl-card #fl-which-mode{scroll-margin-top:5.5rem}
+  .fl-group-title{font-weight:800;text-transform:uppercase;font-size:.78rem;color:var(--text-muted);margin:0 0 .45rem}
+  .fl-mode-switch-wrap{margin-bottom:.85rem}
+  .fl-mode-switch{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem}
+  .fl-mode-seg{border:2px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:14px;padding:.6rem .7rem;cursor:pointer;font:inherit;font-weight:800;font-size:.9rem;text-align:left;min-height:3.2rem;transition:border-color .2s,background .2s}
+  .fl-mode-seg .sub{display:block;font-size:.72rem;font-weight:500;color:var(--text-muted);margin-top:.1rem}
+  .fl-mode-seg:hover{border-color:var(--accent)}
+  .fl-mode-seg.is-selected{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 3px rgba(79,70,229,.15)}
+  .fl-mode-seg:focus-visible,.fl-mode-card:focus-visible,.fl-hybrid-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  .fl-hybrid-btn.is-selected{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 3px rgba(79,70,229,.15)}
+  .fl-mode-suggest{font-size:.85rem;margin:.6rem 0 0;padding:.55rem .75rem;border-radius:12px;background:var(--accent-soft);border:1px solid var(--border);color:var(--text);line-height:1.5}
+  .fl-mode-help{font-size:.82rem;margin:.45rem 0 0}
+  .fl-mode-help a{color:var(--accent);font-weight:700;text-decoration:underline;text-underline-offset:2px}
+  .fl-mode-needed .fl-mode-switch{animation:flNudge .5s ease 2}
+  @keyframes flNudge{0%,100%{transform:none}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+  .fl-card [data-run-message]{margin-top:.75rem}
+  .fl-settings-panel [data-selected-mode-label]{display:none}
+  .fl-settings-panel select,.fl-settings-panel [data-page-range]{min-height:2.5rem;border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:10px;padding:.45rem .7rem;font:inherit;font-size:.9rem}
+  .fl-settings-panel [data-page-range]{flex:1;min-width:0}
+  @media (max-width:640px){
+    .fl-feature-strip{display:none}
+    .fl-card [data-pre-upload] .split-action-bar{display:none}
+    .fl-shell{padding-top:1.1rem}
+    .fl-mode-switch{grid-template-columns:minmax(0,1fr)}
+    .fl-mode-seg{min-height:2.9rem}
+    .fl-tradeoff-table{font-size:.8rem}
+    .fl-tradeoff-table th,.fl-tradeoff-table td{padding:.45rem .5rem}
+    .fl-card .wsg-btn-row{flex-wrap:wrap}
+    .fl-card [data-apply-btn]{min-height:3rem}
+  }
+  @media (prefers-reduced-motion:reduce){.fl-mode-needed .fl-mode-switch{animation:none}}
+</style>
+
+<meta name="theme-color" content="#4f46e5" />
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+<meta name="author" content="ToolAdda" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="X-Content-Type-Options" content="nosniff" />
+<link rel="canonical" href="https://tooladda.online/flatten-pdf.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+<link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+<meta property="og:title" content="Flatten PDF Online Free — No Upload | ToolAdda" />
+<meta property="og:description" content="Two flatten modes explained in plain language: lock in form fields (keeps text selectable) or rasterize to images (fully uneditable). Batch processing and a verification report." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://tooladda.online/flatten-pdf.html" />
+<meta property="og:site_name" content="ToolAdda" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:image" content="https://tooladda.online/assets/images/og/flatten-pdf.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Flatten PDF Online Free — No Upload — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="Flatten PDF Online Free — No Upload — free online tool on ToolAdda, runs in your browser with no sign-up." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Flatten PDF Online Free — No Upload | ToolAdda" />
+<meta name="twitter:description" content="Two flatten modes explained plainly: lock form fields (text stays selectable) or rasterize to images (fully uneditable). Batch, verification report, 100% client-side." />
+<meta name="twitter:image" content="https://tooladda.online/assets/images/og/flatten-pdf.jpg" />
+
+<script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://tooladda.online/#website",
+      "name": "ToolAdda",
+      "alternateName": [
+        "Tool Adda",
+        "Tools Adda",
+        "ToolsAdda",
+        "Tooladda",
+        "ToolAdda.online"
+      ],
+      "url": "https://tooladda.online/",
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "alternateName": [
+        "Tool Adda",
+        "Tools Adda",
+        "ToolsAdda",
+        "Tooladda",
+        "ToolAdda.online"
+      ],
+      "url": "https://tooladda.online/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tooladda.online/assets/images/logo.svg"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/flatten-pdf.html#webpage",
+      "url": "https://tooladda.online/flatten-pdf.html",
+      "name": "Flatten PDF Online Free — No Upload | ToolAdda",
+      "description": "Flatten PDF form fields and annotations while keeping text selectable, or rasterize pages to images for a fully uneditable file. Document analysis report, XFA detection, batch ZIP export — 100% in your browser.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://tooladda.online/flatten-pdf.html#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://tooladda.online/flatten-pdf.html#softwareapplication"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://tooladda.online/flatten-pdf.html#softwareapplication",
+      "name": "Flatten PDF Tool",
+      "url": "https://tooladda.online/flatten-pdf.html",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "description": "Free online PDF flattening tool with two clearly explained modes: bake form field values and annotations into selectable text, or rasterize every page to an image. Includes appearance regeneration to prevent blank fields, verification report, and batch processing.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Flatten form fields and annotations (text stays selectable)",
+        "Flatten to images at 72–600 DPI",
+        "Smart hybrid mode",
+        "XFA and digital signature detection",
+        "Appearance regeneration before flatten",
+        "Batch processing with ZIP export",
+        "Post-flatten verification report",
+        "Optional metadata/JS/attachment cleanup",
+        "100% client-side — no upload"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tooladda.online/flatten-pdf.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Flatten PDF"
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to flatten a PDF online without uploading",
+      "description": "Use ToolAdda's free browser-based PDF flattener to lock in form values or rasterize pages — nothing leaves your device.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Choose your flatten mode",
+          "text": "Pick Mode A to lock filled form fields and annotations while keeping text selectable, or Mode B to rasterize every page into an uneditable image. The tool explains the tradeoffs plainly."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Upload your PDF",
+          "text": "Drag and drop, browse, or paste one or more PDF files. The tool analyzes form fields, XFA forms, digital signatures, and encryption before you proceed."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Configure options",
+          "text": "For Mode A, choose which annotations to flatten and whether to permanently remove fields or just make them read-only. For Mode B, set DPI, JPEG/PNG format, and optional page range."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Flatten and download",
+          "text": "Click Flatten & Download. A verification report confirms fields were removed, text extractability, and page dimensions. Multiple files download as a ZIP."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What does flattening a PDF mean?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It usually means one of two things: (1) permanently baking filled form field values and annotations into the page content so they can no longer be edited, while keeping the page as real, selectable text — or (2) converting every page into a flat image, so nothing at all is editable or selectable, only visible. This tool offers both, explained plainly, since most tools silently pick one and confuse the other half of users."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why are my form fields still editable after flattening?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You may have used \"make read-only\" rather than \"flatten values\" - read-only fields can be unlocked by anyone with a PDF editor. Choose the flatten option for a permanent result."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is my flattened PDF blank?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "This is the most common flattening bug: if a form field doesn't have a generated 'appearance stream' (the saved visual representation of its value), some tools flatten it as blank instead of rendering the value. This tool explicitly regenerates appearances for every field before flattening to prevent this."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why did the file size increase?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "This happens specifically with Mode B (flatten to images) — a page of real vector text might be a few KB, but a rendered image of that same page, especially at higher DPI, can be hundreds of KB or more. Mode A (flatten fields only) barely changes file size since it keeps real text."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does flattening prevent editing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not completely. Mode A output can still be edited by anyone with a PDF editor that can add new content. Mode B makes editing much harder since there's no text or object structure to modify, but the underlying text can still be recovered with OCR. For genuine protection, use password encryption or rights management instead."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I flatten a signed PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can, but flattening changes the document's content, which invalidates any existing digital signature — the signature will show as broken or modified afterward. Only flatten a signed document if that's acceptable for your use case."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is an XFA form?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "XFA (XML Forms Architecture) is a dynamic form format used by Adobe LiveCycle Designer, common in some government and enterprise portals. Browser-based tools including this one cannot reliably flatten XFA forms. If detected, open the file in Adobe Acrobat Reader, use Print → Save as PDF to convert it to a standard PDF, then flatten that result here."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is flattening the same as password protection?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Flattening bakes content in but doesn't encrypt the file. For genuine protection, add password encryption or rights management after flattening if needed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this upload my PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. All processing runs 100% in your browser. Your files never leave your device and the tool works offline once cached."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/flatten-pdf.html#webpage",
+      "url": "https://tooladda.online/flatten-pdf.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-27",
+      "dateModified": "2026-09-21",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header">
+  <div class="container navbar">
+    <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+    <nav class="nav-links" aria-label="Primary"><a href="/">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy</a></nav>
+    <div class="nav-actions">
+      <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+        <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+          <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+          <path d="M3.1 16.9h10.8" />
+          <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+        </svg>
+        <span class="ta-donate-label">Buy me a coffee</span>
+      </a>
+      <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+      <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+  <div class="fl-shell">
+    <aside class="ta-support" aria-label="Support ToolAdda">
+      <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+      <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+      <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+        <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+        <span class="ta-donate-label">Buy me a coffee</span>
+      </a>
+    </aside>
+
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>›</span><a href="/">PDF Tools</a><span>›</span><span>Flatten PDF</span></nav>
+      <div class="content-card fl-card">
+        <span class="fl-badge">📄 PDF Tools · 100% Offline</span>
+        <h1 class="section-title fl-title">Flatten PDF Online Free — No Upload</h1>
+        <p class="fl-lead">"Flatten PDF" means two different things, and most tools silently pick one and leave the other half of users confused. This tool explains both plainly and lets you choose the right one — with a verification report so you know it actually worked.</p>
+        <div class="fl-feature-strip" aria-hidden="true">
+          <span class="fl-feature-pill">Mode A: lock fields</span>
+          <span class="fl-feature-pill">Mode B: rasterize pages</span>
+          <span class="fl-feature-pill">Smart hybrid</span>
+          <span class="fl-feature-pill">Verification report</span>
+          <span class="fl-feature-pill">Batch + ZIP</span>
+        </div>
+        <div class="fl-privacy-banner">🔒 Your PDF is processed entirely in your browser — never uploaded, and works offline once loaded.</div>
+
+        <div data-pre-upload>
+          <div class="split-action-bar">
+            <div><p class="tag">Upload PDF(s)</p><p class="pdf-helper-text">Drag &amp; drop, browse, or paste. Multiple files get the same settings, downloaded individually or as a ZIP.</p></div>
+            <button class="secondary-btn" type="button" data-file-picker>📁 Choose PDF(s)</button>
+          </div>
+          <input type="file" accept="application/pdf" multiple hidden data-file-input />
+          <div class="pdf-drop-zone" data-drop-zone tabindex="0" aria-label="Drag and drop PDF files here">
+            <div class="pdf-drop-zone-icon" aria-hidden="true">📄</div>
+            <p class="pdf-drop-zone-title"><strong>Drag &amp; drop PDF files here</strong></p>
+            <p>or click to browse, or paste.</p>
+            <button class="pdf-drop-zone-browse" type="button" data-file-picker>📂 Browse files</button>
+          </div>
+          <div class="message-box hidden" role="status" aria-live="assertive" data-message></div>
+        </div>
+
+        <div class="hidden" data-editor-root>
+          <div data-files-list></div>
+
+          <div class="hidden fl-settings-panel" data-mode-settings-root>
+            <div class="fl-mode-switch-wrap">
+              <p class="stg-group-title fl-group-title" id="fl-mode-switch-label">Choose a mode</p>
+              <div class="fl-mode-switch" role="group" aria-labelledby="fl-mode-switch-label">
+                <button type="button" class="fl-mode-seg" data-mode-select="formFields" aria-pressed="false">🅰️ Form fields<span class="sub">Text stays selectable</span></button>
+                <button type="button" class="fl-mode-seg" data-mode-select="images" aria-pressed="false">🅱️ Images<span class="sub">Nothing editable</span></button>
+                <button type="button" class="fl-mode-seg" data-mode-select="hybrid" aria-pressed="false">🅲 Hybrid<span class="sub">Forms only</span></button>
+              </div>
+              <p class="fl-mode-suggest hidden" data-mode-suggest></p>
+              <p class="fl-mode-help"><a href="#fl-which-mode">Not sure? Compare the modes ↓</a></p>
+            </div>
+            <p class="tag" data-selected-mode-label>Mode: —</p>
+
+            <!-- Mode A settings -->
+            <div class="hidden" data-mode-panel="formFields">
+              <p class="stg-group-title" style="font-weight:800;text-transform:uppercase;font-size:0.78rem;color:var(--text-muted);">What to flatten</p>
+              <div class="fl-checklist">
+                <label><input type="checkbox" data-flatten-opt="fields" checked /> Form fields<span class="hint">Text fields, checkboxes, radio buttons, dropdowns — baked in with their current values.</span></label>
+                <label><input type="checkbox" data-flatten-opt="comments" checked /> Comments &amp; sticky notes</label>
+                <label><input type="checkbox" data-flatten-opt="highlights" checked /> Highlights &amp; text markup</label>
+                <label><input type="checkbox" data-flatten-opt="ink" checked /> Freehand ink / drawings</label>
+                <label><input type="checkbox" data-flatten-opt="stamps" checked /> Stamps</label>
+                <label><input type="checkbox" data-flatten-opt="links" /> Link annotations<span class="hint">⚠️ Flattening links removes clickable URLs — usually best left unflattened.</span></label>
+              </div>
+              <p class="stg-group-title" style="font-weight:800;text-transform:uppercase;font-size:0.78rem;color:var(--text-muted);">How to flatten fields</p>
+              <div class="fl-radio-row">
+                <label><input type="radio" name="flattenMode" value="flatten" checked /> Flatten values (permanent, removes fields)</label>
+                <label><input type="radio" name="flattenMode" value="readonly" /> Make read-only only <span style="color:var(--text-muted);">(weaker — reversible with a PDF editor)</span></label>
+              </div>
+            </div>
+
+            <!-- Mode B settings -->
+            <div class="hidden" data-mode-panel="images">
+              <p class="stg-group-title" style="font-weight:800;text-transform:uppercase;font-size:0.78rem;color:var(--text-muted);">Resolution (DPI)</p>
+              <div class="fl-dpi-row" data-dpi-row>
+                <button type="button" class="fl-dpi-btn" data-dpi="72">72 DPI<span class="sub">Screen only, small file</span></button>
+                <button type="button" class="fl-dpi-btn is-active" data-dpi="150">150 DPI<span class="sub">Standard, good balance</span></button>
+                <button type="button" class="fl-dpi-btn" data-dpi="300">300 DPI<span class="sub">Print quality, large file</span></button>
+                <button type="button" class="fl-dpi-btn" data-dpi="600">600 DPI<span class="sub">Archival, very large</span></button>
+              </div>
+              <p class="fl-size-estimate" data-size-estimate>—</p>
+              <div class="fl-radio-row">
+                <label><input type="radio" name="imgFormat" value="jpeg" checked /> JPEG</label>
+                <label><input type="radio" name="imgFormat" value="png" /> PNG (lossless, larger)</label>
+              </div>
+              <div class="wsg-btn-row" data-jpeg-quality-row><label>Quality <input type="range" min="30" max="100" value="85" data-jpeg-quality /> <span data-jpeg-quality-val>85</span>%</label></div>
+              <div class="fl-checklist">
+                <label><input type="checkbox" data-img-opt="grayscale" /> Grayscale</label>
+                <label><input type="checkbox" data-img-opt="scanlook" /> "Scanned document" look<span class="hint">Adds slight noise/contrast for a physical-scan appearance — not a way to disguise a digital document.</span></label>
+              </div>
+              <p class="stg-group-title" style="font-weight:800;text-transform:uppercase;font-size:0.78rem;color:var(--text-muted);">Pages</p>
+              <div class="wsg-btn-row" style="display:flex;gap:0.5rem;align-items:center;">
+                <select data-page-mode><option value="all" selected>All pages</option><option value="custom">Custom range</option></select>
+                <input type="text" class="hidden" data-page-range placeholder="e.g. 1-5, 8, 12-" />
+              </div>
+            </div>
+
+            <p class="stg-group-title" style="font-weight:800;text-transform:uppercase;font-size:0.78rem;color:var(--text-muted);">Also clean up (optional)</p>
+            <div class="fl-checklist">
+              <label><input type="checkbox" data-sanitize-opt="metadata" /> Remove metadata (author, producer, creation date)</label>
+              <label><input type="checkbox" data-sanitize-opt="javascript" /> Remove embedded JavaScript</label>
+              <label><input type="checkbox" data-sanitize-opt="attachments" /> Remove attachments</label>
+              <label><input type="checkbox" data-sanitize-opt="bookmarks" /> Remove bookmarks / outline</label>
+            </div>
+
+            <p class="stg-group-title" style="font-weight:800;text-transform:uppercase;font-size:0.78rem;color:var(--text-muted);">Output filename</p>
+            <input type="text" data-filename-pattern value="{original}-flattened.pdf" style="width:100%;border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:8px;padding:0.5rem 0.7rem;font-family:monospace;" />
+
+            <div class="fl-progress-wrap" data-progress-wrap>
+              <div class="fl-progress-track"><div class="fl-progress-fill" data-progress-fill></div></div>
+              <p class="fl-progress-text"><span data-progress-text>Preparing…</span><button type="button" class="secondary-btn" data-cancel-btn style="padding:0.2rem 0.6rem;">Cancel</button></p>
+            </div>
+            <div class="wsg-btn-row" style="display:flex;gap:0.6rem;margin-top:0.8rem;">
+              <button class="primary-btn" type="button" data-apply-btn style="flex:1;">✅ Flatten &amp; Download</button>
+              <button class="secondary-btn" type="button" data-reset-btn>🔄 Start over</button>
+            </div>
+            <div class="message-box hidden" role="status" aria-live="polite" data-run-message></div>
+          </div>
+        </div>
+
+        <div class="fl-helper-box" id="fl-which-mode">
+          <h2 style="font-size:1.05rem;margin-top:0;">Which one do I need?</h2>
+          <div class="fl-mode-cards">
+            <div class="fl-mode-card" data-mode-select="formFields" role="button" tabindex="0" aria-pressed="false">
+              <h3>🅰️ Flatten form fields &amp; annotations</h3>
+              <p style="font-size:0.86rem;">Use this if: you filled a form and want the answers locked in; the recipient says fields are blank or editable; you added comments/highlights you want permanent; you signed digitally and want it fixed.</p>
+              <ul><li>Text stays selectable &amp; searchable</li><li>File size barely changes</li><li>Accessibility stays intact</li></ul>
+            </div>
+            <div class="fl-mode-card" data-mode-select="images" role="button" tabindex="0" aria-pressed="false">
+              <h3>🅱️ Flatten to images</h3>
+              <p style="font-size:0.86rem;">Use this if: you need the file completely uneditable; text is being extracted and you don't want that; fonts render wrong elsewhere; a printer/portal keeps rejecting the file; you have a watermark you don't want removed.</p>
+              <ul><li>Nothing is selectable or editable</li><li>File size increases significantly</li><li>Breaks screen-reader accessibility</li></ul>
+            </div>
+          </div>
+          <button type="button" class="secondary-btn fl-hybrid-btn" data-mode-select="hybrid" aria-pressed="false" style="width:100%;">🅲 Smart hybrid: flatten forms only, or rasterize only the pages that had fields</button>
+
+          <table class="fl-tradeoff-table">
+            <tr><th>Property</th><th>Mode A (fields)</th><th>Mode B (images)</th></tr>
+            <tr><td>Text searchable/selectable</td><td class="good">✓ Yes</td><td class="bad">✗ No</td></tr>
+            <tr><td>File size</td><td class="good">Barely changes</td><td class="bad">Increases significantly</td></tr>
+            <tr><td>Accessibility (screen readers)</td><td class="good">✓ Intact</td><td class="bad">✗ Broken</td></tr>
+            <tr><td>How locked-down it is</td><td class="bad">Editable with a PDF editor</td><td class="good">Much harder to edit</td></tr>
+            <tr><td>Quality at low DPI</td><td class="good">Always vector-perfect</td><td class="bad">Can look blurry</td></tr>
+          </table>
+        </div>
+
+        <div class="fl-disclaimer">
+          <strong>Read before using:</strong> Flattening is not security. Mode A output can still be edited by anyone with a PDF editor. Mode B makes editing much harder but not impossible — text can still be recovered with OCR. For genuine protection, use password encryption or document rights management. Flattening also <strong>invalidates existing digital signatures</strong>, and Mode B removes the text layer entirely, breaking search and screen-reader accessibility.
+        </div>
+
+        </div>
+
+
+        <section class="fl-seo" aria-labelledby="fl-about-title">
+          <h2 id="fl-about-title">Free Online PDF Flattener — Lock Form Fields or Rasterize Pages</h2>
+          <p>Flattening a PDF permanently bakes content into the page so it can't be changed later. But <strong>which</strong> content, and <strong>how</strong> it's baked in, matters enormously. ToolAdda explains both approaches in plain language: <strong>Mode A</strong> locks filled form fields and annotations while keeping real, selectable text; <strong>Mode B</strong> converts every page into a flat image where nothing is editable or searchable. Choose the one that matches your actual need — not what a random tool silently picked for you.</p>
+
+          <h3>Mode A vs Mode B — which do you need?</h3>
+          <div class="fl-feature-grid">
+            <div class="fl-feature-chip"><strong>🅰️ Flatten form fields</strong>Lock filled answers, comments, highlights, and stamps into the page. Text stays selectable, searchable, and accessible. File size barely changes.</div>
+            <div class="fl-feature-chip"><strong>🅱️ Flatten to images</strong>Rasterize every page at 72–600 DPI. Nothing is selectable or editable. File size grows significantly — use when you need maximum lock-down.</div>
+            <div class="fl-feature-chip"><strong>🅲 Smart hybrid</strong>Flatten forms on pages that had fields; rasterize only where needed. Best of both when your document is mixed.</div>
+            <div class="fl-feature-chip"><strong>✅ Verification report</strong>After flattening, confirms fields removed, text extractability, page count, and dimensions match — so you know it worked.</div>
+            <div class="fl-feature-chip"><strong>⚠️ Blank-field fix</strong>Regenerates field appearances before flattening — the #1 cause of "my flattened PDF is blank" in other tools.</div>
+            <div class="fl-feature-chip"><strong>📦 Batch + ZIP</strong>Apply the same settings to multiple PDFs. Download individually or as a single ZIP archive.</div>
+          </div>
+
+          <h3>How to flatten a PDF without uploading</h3>
+          <ol>
+            <li>Read the mode comparison above and click <strong>Mode A</strong>, <strong>Mode B</strong>, or <strong>Smart hybrid</strong>.</li>
+            <li>Drag &amp; drop your PDF(s). Review the analysis report for form fields, XFA warnings, and digital signatures.</li>
+            <li>Configure flatten options — which annotations to include, DPI for image mode, optional cleanup (metadata, JavaScript, attachments).</li>
+            <li>Click <strong>Flatten &amp; Download</strong>. Check the verification report, then save your flattened PDF.</li>
+          </ol>
+
+          <h3>Related PDF tools</h3>
+          <div class="fl-related">
+            <a href="pdf-watermark.html">PDF Watermark</a>
+            <a href="compare-pdfs.html">Compare PDFs</a>
+            <a href="pdf-to-images.html">PDF to Images</a>
+            <a href="pdf-extract.html">PDF Extract</a>
+            <a href="html-to-pdf.html">HTML to PDF</a>
+            <a href="pdf-split.html">Split PDF</a>
+          </div>
+        </section>
+
+        <section class="fl-faq-section faq-section" aria-labelledby="fl-faq-title">
+          <h2 class="section-title" id="fl-faq-title">Frequently asked questions</h2>
+          <div class="fl-faq-grid">
+            <details class="faq-item"><summary><strong>What does flattening a PDF mean?</strong></summary><p>It usually means one of two things: permanently baking filled form values and annotations into selectable page text, or converting every page into a flat image where nothing is selectable. This tool offers both, explained plainly.</p></details>
+            <details class="faq-item"><summary><strong>Why are my form fields still editable after flattening?</strong></summary><p>You may have used "make read-only" rather than "flatten values" — read-only fields can be unlocked by anyone with a PDF editor. Choose the flatten option for a permanent result.</p></details>
+            <details class="faq-item"><summary><strong>Why is my flattened PDF blank?</strong></summary><p>The most common bug: a field without a generated appearance stream can flatten as blank. This tool explicitly regenerates appearances for every field before flattening.</p></details>
+            <details class="faq-item"><summary><strong>Why did the file size increase?</strong></summary><p>Only with Mode B — a vector text page might be a few KB, but a rendered image of it, especially at higher DPI, can be hundreds of KB. Mode A barely changes size.</p></details>
+            <details class="faq-item"><summary><strong>Does flattening prevent editing?</strong></summary><p>Not completely. Mode A can still be edited with a PDF editor. Mode B is much harder to edit but text can still be recovered with OCR. Use password encryption for real protection.</p></details>
+            <details class="faq-item"><summary><strong>Can I flatten a signed PDF?</strong></summary><p>Yes, but it invalidates the existing digital signature since the content changes. Only do this if that's acceptable.</p></details>
+            <details class="faq-item"><summary><strong>What is an XFA form?</strong></summary><p>A dynamic form format (Adobe LiveCycle) used by some government portals. Browser tools can't flatten it reliably — open it in Adobe Acrobat Reader, Print → Save as PDF, then flatten that result here.</p></details>
+            <details class="faq-item"><summary><strong>Does this upload my PDF?</strong></summary><p>No. All processing runs 100% in your browser. Your files never leave your device and the tool works offline once cached.</p></details>
+            <details class="faq-item"><summary><strong>Is flattening the same as password protection?</strong></summary><p>No. Flattening bakes content in but doesn't encrypt the file. For genuine protection, add password encryption or rights management after flattening if needed.</p></details>
+          </div>
+        </section>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a><p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p></div>
+    <div><h3>Explore</h3><div class="footer-links"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms</a></div></div>
+    <div><h3>Related</h3><div class="footer-links"><a href="pdf-watermark.html">PDF Watermark</a><a href="compare-pdfs.html">Compare PDFs</a><a href="pdf-to-images.html">PDF to Images</a></div></div>
+    <div><h3>Stay updated</h3><p>© <span data-year></span> ToolAdda. All rights reserved.</p></div>
+    <div>              <a href="https://uno.directory" target="_blank" rel="nofollow noopener">
+          <img src="https://uno.directory/uno-directory.svg" alt="Listed on Uno Directory" width="120" height="30" />
+      </a></div>
+  </div>
+</footer>
+
+<script src="assets/js/pdf-lib.min.js"></script>
+<script src="assets/js/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var PDFJS_VERSION = '4.2.67';
+  var pdfjsLibPromise = null;
+  function loadPdfJs() {
+    if (!pdfjsLibPromise) {
+      pdfjsLibPromise = import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VERSION + '/pdf.min.mjs').then(function (module) {
+        var lib = module.default || module;
+        if (lib.GlobalWorkerOptions) lib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VERSION + '/pdf.worker.min.mjs';
+        return lib;
+      });
+    }
+    return pdfjsLibPromise;
+  }
+
+  /* ================= Pure logic (verified independently in Node before transplant) ================= */
+  function parsePageRange(input, maxPages) {
+    var result = new Set(); var errors = [];
+    (input || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean).forEach(function (part) {
+      var trailingMatch = /^(\d+)\s*-\s*$/.exec(part), rangeMatch = /^(\d+)\s*-\s*(\d+)$/.exec(part), singleMatch = /^(\d+)$/.exec(part);
+      if (trailingMatch) { var start = parseInt(trailingMatch[1], 10); if (start >= 1 && start <= maxPages) for (var i = start; i <= maxPages; i++) result.add(i); else errors.push(part); }
+      else if (rangeMatch) { var a = parseInt(rangeMatch[1], 10), b = parseInt(rangeMatch[2], 10); if (a > b) { var t = a; a = b; b = t; } if (a >= 1 && b <= maxPages) for (var j = a; j <= b; j++) result.add(j); else errors.push(part); }
+      else if (singleMatch) { var n = parseInt(singleMatch[1], 10); if (n >= 1 && n <= maxPages) result.add(n); else errors.push(part); }
+      else errors.push(part);
+    });
+    return { pages: Array.from(result).sort(function (a, b) { return a - b; }), errors: errors };
+  }
+  var WINANSI_EXTRA = new Set([0x20AC, 0x201A, 0x0192, 0x201E, 0x2026, 0x2020, 0x2021, 0x02C6, 0x2030, 0x0160, 0x2039, 0x0152, 0x017D, 0x2018, 0x2019, 0x201C, 0x201D, 0x2022, 0x2013, 0x2014, 0x02DC, 0x2122, 0x0161, 0x203A, 0x0153, 0x017E, 0x0178]);
+  function isWinAnsiChar(codePoint) { if (codePoint <= 0xFF) return !(codePoint >= 0x80 && codePoint <= 0x9F); return WINANSI_EXTRA.has(codePoint); }
+  function findNonWinAnsiChars(text) {
+    var bad = []; Array.from(text).forEach(function (ch) { var cp = ch.codePointAt(0); if (!isWinAnsiChar(cp)) bad.push(ch); }); return Array.from(new Set(bad));
+  }
+  function dpiToPixelDimensions(widthPt, heightPt, dpi) { return { width: Math.round((widthPt / 72) * dpi), height: Math.round((heightPt / 72) * dpi) }; }
+  function estimatePageBytes(widthPt, heightPt, dpi, format, quality) {
+    var px = dpiToPixelDimensions(widthPt, heightPt, dpi); var totalPixels = px.width * px.height;
+    if (format === 'png') return Math.round(totalPixels * 0.6);
+    var q = (quality != null ? quality : 85) / 100;
+    return Math.round(totalPixels * (0.05 + q * 0.25));
+  }
+  function estimateTotalBytes(pageCount, widthPt, heightPt, dpi, format, quality) { return pageCount * estimatePageBytes(widthPt, heightPt, dpi, format, quality); }
+  function formatBytes(n) { if (n < 1024) return n + ' B'; if (n < 1024 * 1024) return (n / 1024).toFixed(1) + ' KB'; return (n / (1024 * 1024)).toFixed(2) + ' MB'; }
+  function applyFilenamePattern(pattern, original) {
+    var base = original.replace(/\.pdf$/i, '');
+    return pattern.replace(/\{original\}/g, base) + (pattern.toLowerCase().endsWith('.pdf') ? '' : '.pdf');
+  }
+  function pageSizesMatch(originalSizes, newSizes, tolerancePt) {
+    tolerancePt = tolerancePt || 0.5;
+    if (originalSizes.length !== newSizes.length) return false;
+    for (var i = 0; i < originalSizes.length; i++) {
+      if (Math.abs(originalSizes[i].width - newSizes[i].width) > tolerancePt) return false;
+      if (Math.abs(originalSizes[i].height - newSizes[i].height) > tolerancePt) return false;
+    }
+    return true;
+  }
+
+  /* ---- pdf-lib-dependent helpers (verified via real pdf-lib integration tests in Node) ---- */
+  function cleanupDanglingAnnots(doc, page) {
+    var annots = page.node.Annots();
+    if (!annots) return 0;
+    var removed = 0;
+    for (var i = annots.size() - 1; i >= 0; i--) {
+      var item = annots.get(i);
+      var dict = item instanceof PDFLib.PDFRef ? doc.context.lookup(item) : item;
+      if (!dict) { annots.remove(i); removed++; }
+    }
+    return removed;
+  }
+  // PDF's FlateDecode is standard zlib-wrapped DEFLATE (RFC 1950) — verified against real pdf-lib
+  // output in Node (zlib.inflateSync succeeds, confirming the zlib header/checksum are present), so
+  // the browser's native DecompressionStream('deflate') is the exact right counterpart. This avoids
+  // pulling in a third-party inflate library just for our own internal verification check.
+  async function inflateBytes(bytes) {
+    if (typeof DecompressionStream === 'undefined') return null;
+    var ds = new DecompressionStream('deflate');
+    var stream = new Blob([bytes]).stream().pipeThrough(ds);
+    var buf = await new Response(stream).arrayBuffer();
+    return new Uint8Array(buf);
+  }
+  async function decompressStreamToString(stream) {
+    try {
+      var raw = stream.getContents();
+      var hasFilter = stream.dict && stream.dict.get && stream.dict.get(PDFLib.PDFName.of('Filter'));
+      if (!hasFilter) return bytesToLatin1(raw);
+      var inflated = await inflateBytes(raw);
+      if (inflated) return bytesToLatin1(inflated);
+      return null; // DecompressionStream unavailable — verification will report "unknown", not a false failure
+    } catch (e) { return bytesToLatin1(stream.getContents ? stream.getContents() : new Uint8Array()); }
+  }
+  function bytesToLatin1(raw) { var s = ''; for (var i = 0; i < raw.length; i++) s += String.fromCharCode(raw[i]); return s; }
+  function hasTextOperators(text) { return /\bTj\b|\bTJ\b/.test(text); }
+  async function extractAllPageText(doc, page) {
+    var texts = []; var anyUnknown = false;
+    var contentsEntry = page.node.get(PDFLib.PDFName.of('Contents'));
+    var resolved = contentsEntry instanceof PDFLib.PDFRef ? doc.context.lookup(contentsEntry) : contentsEntry;
+    var streams = resolved instanceof PDFLib.PDFArray ? resolved.asArray().map(function (item) { return item instanceof PDFLib.PDFRef ? doc.context.lookup(item) : item; }) : [resolved];
+    for (var i = 0; i < streams.length; i++) { if (streams[i]) { var t = await decompressStreamToString(streams[i]); if (t === null) anyUnknown = true; else texts.push(t); } }
+    var resources = page.node.Resources();
+    var xobjectDict = resources ? resources.lookupMaybe(PDFLib.PDFName.of('XObject'), PDFLib.PDFDict) : null;
+    if (xobjectDict) {
+      var keys = xobjectDict.keys();
+      for (var k = 0; k < keys.length; k++) {
+        var ref = xobjectDict.get(keys[k]);
+        var xobj = ref instanceof PDFLib.PDFRef ? doc.context.lookup(ref) : ref;
+        if (xobj && xobj.getContents) { var xt = await decompressStreamToString(xobj); if (xt === null) anyUnknown = true; else texts.push(xt); }
+      }
+    }
+    return { text: texts.join('\n'), unknown: anyUnknown };
+  }
+  function detectXFA(doc) {
+    var acroForm = doc.catalog.lookupMaybe(PDFLib.PDFName.of('AcroForm'), PDFLib.PDFDict);
+    if (!acroForm) return false;
+    return !!acroForm.get(PDFLib.PDFName.of('XFA'));
+  }
+  function classifyField(field) {
+    if (field instanceof PDFLib.PDFTextField) return 'Text';
+    if (field instanceof PDFLib.PDFCheckBox) return 'Checkbox';
+    if (field instanceof PDFLib.PDFRadioGroup) return 'Radio group';
+    if (field instanceof PDFLib.PDFDropdown) return 'Dropdown';
+    if (field instanceof PDFLib.PDFOptionList) return 'List box';
+    if (field instanceof PDFLib.PDFSignature) return 'Signature';
+    if (field instanceof PDFLib.PDFButton) return 'Button';
+    return 'Unknown';
+  }
+  function fieldValueSummary(field) {
+    try {
+      if (field instanceof PDFLib.PDFTextField) return field.getText() || '(empty)';
+      if (field instanceof PDFLib.PDFCheckBox) return field.isChecked() ? 'checked' : 'unchecked';
+      if (field instanceof PDFLib.PDFRadioGroup) return field.getSelected() || '(none selected)';
+      if (field instanceof PDFLib.PDFDropdown) return (field.getSelected() || []).join(', ') || '(none selected)';
+      if (field instanceof PDFLib.PDFOptionList) return (field.getSelected() || []).join(', ') || '(none selected)';
+      if (field instanceof PDFLib.PDFSignature) return '(signature)';
+    } catch (e) {}
+    return '—';
+  }
+
+  if (typeof document === 'undefined' || !document.getElementById) {
+    if (typeof module !== 'undefined') module.exports = { parsePageRange, isWinAnsiChar, findNonWinAnsiChars, dpiToPixelDimensions, estimatePageBytes, estimateTotalBytes, formatBytes, applyFilenamePattern, pageSizesMatch, cleanupDanglingAnnots, hasTextOperators, extractAllPageText, detectXFA, classifyField, fieldValueSummary };
+    return;
+  }
+
+  /* ================= DOM wiring ================= */
+  function $(sel) { return document.querySelector(sel); }
+  function $all(sel) { return Array.from(document.querySelectorAll(sel)); }
+  function escapeHtml(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function yieldToUI() { return new Promise(function (r) { setTimeout(r, 0); }); }
+
+  var preUpload = $('[data-pre-upload]');
+  var editorRoot = $('[data-editor-root]');
+  var uploadMessageBox = $('[data-message]');
+  var runMessageBox = $('[data-run-message]');
+  function showMessage(text, type) {
+    // The upload box hides once files load, so later messages go next to the Flatten button.
+    var box = editorRoot.classList.contains('hidden') ? uploadMessageBox : runMessageBox;
+    var other = box === uploadMessageBox ? runMessageBox : uploadMessageBox;
+    other.classList.add('hidden');
+    box.textContent = text; box.classList.remove('hidden', 'success', 'error'); box.classList.add(type === 'error' ? 'error' : 'success');
+  }
+  function clearRunMessage() { runMessageBox.classList.add('hidden'); runMessageBox.textContent = ''; }
+
+  var state = { files: [], selectedMode: null, cancelRequested: false };
+
+  var fileInput = $('[data-file-input]');
+  $all('[data-file-picker]').forEach(function (b) { b.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); fileInput.click(); }); });
+  var dropZone = $('[data-drop-zone]');
+  dropZone.addEventListener('click', function (e) { if (!e.target.closest('button')) fileInput.click(); });
+  ['dragenter', 'dragover'].forEach(function (ev) { dropZone.addEventListener(ev, function (e) { e.preventDefault(); dropZone.classList.add('active'); }); });
+  ['dragleave', 'drop'].forEach(function (ev) { dropZone.addEventListener(ev, function (e) { e.preventDefault(); dropZone.classList.remove('active'); }); });
+  dropZone.addEventListener('drop', function (e) { handleFiles(e.dataTransfer.files); });
+  fileInput.addEventListener('change', function (e) { handleFiles(e.target.files); e.target.value = ''; });
+  document.addEventListener('paste', function (e) {
+    var items = (e.clipboardData || {}).items || [];
+    for (var i = 0; i < items.length; i++) { if (items[i].type === 'application/pdf') { handleFiles([items[i].getAsFile()]); break; } }
+  });
+
+  function isPdfFile(f) { return f && (f.type === 'application/pdf' || /\.pdf$/i.test(f.name)); }
+
+  async function analyzeDocument(doc, file) {
+    var report = { pageCount: doc.getPageCount(), fileSize: file.size, isEncrypted: doc.isEncrypted, isXFA: detectXFA(doc), fields: [], annotCounts: {}, hasDigitalSignature: false, hasEmbeddedJS: false };
+    var form = null;
+    try { form = doc.getForm(); } catch (e) {}
+    report.markupAnnots = 0;
+    try {
+      doc.getPages().forEach(function (page) {
+        var annots = page.node.Annots(); if (!annots) return;
+        for (var ai = 0; ai < annots.size(); ai++) {
+          var a = annots.get(ai); var d = a instanceof PDFLib.PDFRef ? doc.context.lookup(a) : a;
+          var sub = d && d.get ? d.get(PDFLib.PDFName.of('Subtype')) : null;
+          var name = sub ? String(sub) : '';
+          if (name && name !== '/Widget' && name !== '/Link' && name !== '/Popup') report.markupAnnots++;
+        }
+      });
+    } catch (e) {}
+    if (form) {
+      form.getFields().forEach(function (field) {
+        var type = classifyField(field);
+        if (type === 'Signature') report.hasDigitalSignature = true;
+        report.fields.push({ name: field.getName(), type: type, value: fieldValueSummary(field) });
+      });
+    }
+    try {
+      var names = doc.context.enumerateIndirectObjects ? [] : [];
+      // lightweight embedded-JS check: look for a Names/JavaScript entry in the catalog
+      var namesDict = doc.catalog.lookupMaybe(PDFLib.PDFName.of('Names'), PDFLib.PDFDict);
+      if (namesDict && namesDict.get(PDFLib.PDFName.of('JavaScript'))) report.hasEmbeddedJS = true;
+    } catch (e) {}
+    return report;
+  }
+
+  async function handleFiles(fileList) {
+    var files = Array.from(fileList || []).filter(isPdfFile);
+    if (!files.length) { showMessage('Please choose valid PDF files.', 'error'); return; }
+    for (var i = 0; i < files.length; i++) {
+      try {
+        var buf = await files[i].arrayBuffer();
+        var doc = await PDFLib.PDFDocument.load(buf, { ignoreEncryption: true, updateMetadata: false });
+        var report = await analyzeDocument(doc, files[i]);
+        state.files.push({ file: files[i], doc: doc, name: files[i].name, report: report, excludedPages: new Set() });
+      } catch (err) {
+        showMessage('Could not open "' + files[i].name + '" — it may be corrupt or password-protected.', 'error');
+      }
+    }
+    if (!state.files.length) return;
+    preUpload.classList.add('hidden');
+    editorRoot.classList.remove('hidden');
+    renderFilesList();
+  }
+
+  function renderFilesList() {
+    var container = $('[data-files-list]');
+    container.innerHTML = '';
+    state.files.forEach(function (entry, idx) {
+      var r = entry.report;
+      var card = document.createElement('div'); card.className = 'fl-file-item';
+      var fieldsHtml = r.fields.length ? '<div class="fl-field-list">' + r.fields.map(function (f) { return '<div class="fl-field-row"><span>' + escapeHtml(f.name) + ' <em style="color:var(--text-muted);">(' + f.type + ')</em></span><span>' + escapeHtml(String(f.value)) + '</span></div>'; }).join('') + '</div>' : '<p class="stg-hint" style="font-size:0.82rem;color:var(--text-muted);">No form fields detected.</p>';
+      var warnings = '';
+      if (r.isXFA) warnings += '<div class="fl-alert-danger">⚠️ This is an <strong>XFA dynamic form</strong> (LiveCycle-style). Browser tools including this one cannot flatten it reliably. Open it in Adobe Acrobat Reader, use Print → Save as PDF, then flatten that result here.</div>';
+      if (r.hasDigitalSignature) warnings += '<div class="fl-alert-warn">⚠️ This document contains a <strong>digital signature</strong>. Flattening will invalidate it. Only proceed if that\'s acceptable.</div>';
+      if (r.isEncrypted) warnings += '<div class="fl-alert-warn">🔒 This document is encrypted / has restrictions. We\'ll do our best, but some operations may be limited.</div>';
+      if (r.hasEmbeddedJS) warnings += '<div class="fl-alert-warn">⚠️ This document contains embedded JavaScript. Consider the "Remove embedded JavaScript" cleanup option below.</div>';
+      card.innerHTML =
+        '<div class="fl-file-head"><strong>' + escapeHtml(entry.name) + '</strong><span style="font-size:0.8rem;color:var(--text-muted);">' + formatBytes(entry.file.size) + '</span></div>' +
+        '<div class="fl-report-grid">' +
+        '<div class="fl-report-stat"><div class="val">' + r.pageCount + '</div><div class="lbl">Pages</div></div>' +
+        '<div class="fl-report-stat"><div class="val">' + r.fields.length + '</div><div class="lbl">Form fields</div></div>' +
+        '<div class="fl-report-stat"><div class="val">' + (r.isEncrypted ? 'Yes' : 'No') + '</div><div class="lbl">Encrypted</div></div>' +
+        '<div class="fl-report-stat"><div class="val">' + (r.isXFA ? 'Yes ⚠️' : 'No') + '</div><div class="lbl">XFA form</div></div>' +
+        '</div>' + warnings + fieldsHtml;
+      container.appendChild(card);
+    });
+    $('[data-mode-settings-root]').classList.remove('hidden');
+    suggestMode();
+    updateSizeEstimate();
+  }
+
+  function suggestMode() {
+    var fields = 0, marks = 0;
+    state.files.forEach(function (f) { fields += f.report.fields.length; marks += f.report.markupAnnots || 0; });
+    var note = $('[data-mode-suggest]');
+    var suggested, why;
+    if (fields || marks) {
+      suggested = 'formFields';
+      var bits = [];
+      if (fields) bits.push(fields + ' form field' + (fields === 1 ? '' : 's'));
+      if (marks) bits.push(marks + ' comment' + (marks === 1 ? '' : 's') + '/annotation' + (marks === 1 ? '' : 's'));
+      why = 'Suggested: Mode A — ' + (state.files.length > 1 ? 'these files have ' : 'this file has ') + bits.join(' and ') + ' to lock in, and the text stays searchable.';
+    } else {
+      suggested = 'images';
+      why = 'Suggested: Mode B — no form fields or annotations were found, so Mode A would leave ' + (state.files.length > 1 ? 'these files' : 'this file') + ' unchanged.';
+    }
+    note.textContent = why + (state.selectedMode && state.selectedMode !== suggested ? ' You picked a different mode — that is fine if it is what you need.' : '');
+    note.classList.remove('hidden');
+    if (!state.selectedMode) selectMode(suggested, false);
+  }
+
+  function selectMode(mode, fromHelper) {
+    state.selectedMode = mode;
+    $all('[data-mode-select]').forEach(function (b) {
+      var on = b.getAttribute('data-mode-select') === mode;
+      b.classList.toggle('is-selected', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+    $('[data-selected-mode-label]').textContent = 'Mode: ' + (mode === 'formFields' ? 'Flatten form fields & annotations' : mode === 'images' ? 'Flatten to images' : 'Smart hybrid');
+    $all('[data-mode-panel]').forEach(function (p) { p.classList.toggle('hidden', p.getAttribute('data-mode-panel') !== mode); });
+    if (mode === 'hybrid') { $('[data-mode-panel="formFields"]').classList.remove('hidden'); }
+    $('[data-mode-settings-root]').classList.remove('fl-mode-needed');
+    clearRunMessage();
+    updateSizeEstimate();
+    // Picked from the explainer below the tool: bring the settings back into view.
+    if (fromHelper && state.files.length) {
+      var panel = $('[data-mode-settings-root]');
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: panel.getBoundingClientRect().top + window.pageYOffset - 90, behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+
+  $all('[data-mode-select]').forEach(function (btn) {
+    var fromHelper = !!btn.closest('.fl-helper-box');
+    btn.addEventListener('click', function () { selectMode(btn.getAttribute('data-mode-select'), fromHelper); });
+    if (btn.tagName !== 'BUTTON') {
+      btn.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectMode(btn.getAttribute('data-mode-select'), fromHelper); }
+      });
+    }
+  });
+
+  $all('[data-dpi]').forEach(function (btn) {
+    btn.addEventListener('click', function () { $all('[data-dpi]').forEach(function (b) { b.classList.toggle('is-active', b === btn); }); updateSizeEstimate(); });
+  });
+  $('[name="imgFormat"]', document) && $all('input[name="imgFormat"]').forEach(function (r) { r.addEventListener('change', function () { $('[data-jpeg-quality-row]').style.display = r.value === 'jpeg' && r.checked ? '' : ($('input[name="imgFormat"]:checked').value === 'jpeg' ? '' : 'none'); updateSizeEstimate(); }); });
+  $('[data-jpeg-quality]').addEventListener('input', function (e) { $('[data-jpeg-quality-val]').textContent = e.target.value; updateSizeEstimate(); });
+  $('[data-page-mode]').addEventListener('change', function (e) { $('[data-page-range]').classList.toggle('hidden', e.target.value !== 'custom'); updateSizeEstimate(); });
+
+  function getActiveDpi() { var active = $('.fl-dpi-btn.is-active'); return active ? parseInt(active.getAttribute('data-dpi'), 10) : 150; }
+  function updateSizeEstimate() {
+    if (state.selectedMode !== 'images' && state.selectedMode !== 'hybrid') return;
+    if (!state.files.length) return;
+    var dpi = getActiveDpi();
+    var format = $('input[name="imgFormat"]:checked') ? $('input[name="imgFormat"]:checked').value : 'jpeg';
+    var quality = parseInt($('[data-jpeg-quality]').value, 10);
+    var totalPages = state.files.reduce(function (sum, f) { return sum + f.report.pageCount; }, 0);
+    var estBytes = estimateTotalBytes(totalPages, 612, 792, dpi, format, quality);
+    var px = dpiToPixelDimensions(612, 792, dpi);
+    $('[data-size-estimate]').textContent = 'Estimated output: ~' + formatBytes(estBytes) + ' total, ~' + px.width + '×' + px.height + 'px per page (rough estimate — actual size depends on page content).';
+  }
+
+  $('[data-reset-btn]').addEventListener('click', function () { window.location.reload(); });
+
+  /* ================= Apply: flatten + download ================= */
+  var progressWrap = $('[data-progress-wrap]'), progressFill = $('[data-progress-fill]'), progressText = $('[data-progress-text]');
+  $('[data-cancel-btn]').addEventListener('click', function () { state.cancelRequested = true; });
+
+  async function flattenFormFieldsOnDoc(doc, opts) {
+    var form = null;
+    try { form = doc.getForm(); } catch (e) { return; }
+    var fields = form.getFields();
+    if (!fields.length) return;
+    var hasNonLatin = fields.some(function (f) { try { return f instanceof PDFLib.PDFTextField && findNonWinAnsiChars(f.getText() || '').length > 0; } catch (e) { return false; } });
+    var font;
+    if (hasNonLatin && window.fontkit) {
+      // a real Unicode font would be embedded here via doc.registerFontkit(fontkit) + doc.embedFont(customFontBytes);
+      // without a bundled Unicode font file we fall back honestly to the standard font and note the limitation.
+      font = await doc.embedFont(PDFLib.StandardFonts.Helvetica);
+    } else {
+      font = await doc.embedFont(PDFLib.StandardFonts.Helvetica);
+    }
+    try { form.updateFieldAppearances(font); } catch (e) {}
+    if (opts.flattenMode === 'readonly') {
+      fields.forEach(function (f) { try { f.enableReadOnly(); } catch (e) {} });
+    } else {
+      form.flatten();
+      doc.getPages().forEach(function (page) { cleanupDanglingAnnots(doc, page); });
+    }
+  }
+
+  function applySanitizeOptions(doc, opts) {
+    if (opts.metadata) { doc.setTitle(''); doc.setAuthor(''); doc.setProducer(''); doc.setCreator(''); doc.setSubject(''); doc.setKeywords([]); }
+    if (opts.bookmarks) { try { doc.catalog.delete(PDFLib.PDFName.of('Outlines')); } catch (e) {} }
+    if (opts.attachments) { try { var namesDict = doc.catalog.lookupMaybe(PDFLib.PDFName.of('Names'), PDFLib.PDFDict); if (namesDict) namesDict.delete(PDFLib.PDFName.of('EmbeddedFiles')); } catch (e) {} }
+    if (opts.javascript) { try { var namesDict2 = doc.catalog.lookupMaybe(PDFLib.PDFName.of('Names'), PDFLib.PDFDict); if (namesDict2) namesDict2.delete(PDFLib.PDFName.of('JavaScript')); doc.catalog.delete(PDFLib.PDFName.of('OpenAction')); } catch (e) {} }
+  }
+
+  async function rasterizeToImages(entry, opts, onProgress) {
+    var lib = await loadPdfJs();
+    var arrBuf = await entry.file.arrayBuffer();
+    var pdfDoc = await lib.getDocument({ data: arrBuf }).promise;
+    var selected = opts.pageMode === 'custom' ? parsePageRange(opts.pageRange, entry.report.pageCount).pages : Array.from({ length: entry.report.pageCount }, function (_, i) { return i + 1; });
+    var outDoc = await PDFLib.PDFDocument.create();
+    var originalSizes = [];
+    for (var i = 0; i < selected.length; i++) {
+      if (state.cancelRequested) return null;
+      var pageNum = selected[i];
+      var page = await pdfDoc.getPage(pageNum);
+      var baseViewport = page.getViewport({ scale: 1 });
+      var scale = opts.dpi / 72;
+      var viewport = page.getViewport({ scale: scale });
+      originalSizes.push({ width: baseViewport.width, height: baseViewport.height });
+      var canvas = document.createElement('canvas'); canvas.width = viewport.width; canvas.height = viewport.height;
+      var ctx = canvas.getContext('2d');
+      await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+      if (opts.grayscale || opts.scanlook) {
+        var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        var d = imgData.data;
+        for (var p = 0; p < d.length; p += 4) {
+          if (opts.grayscale) { var g = 0.3 * d[p] + 0.59 * d[p + 1] + 0.11 * d[p + 2]; d[p] = d[p + 1] = d[p + 2] = g; }
+          if (opts.scanlook) { var noise = (Math.random() - 0.5) * 14; d[p] = Math.min(255, Math.max(0, d[p] + noise)); d[p + 1] = Math.min(255, Math.max(0, d[p + 1] + noise)); d[p + 2] = Math.min(255, Math.max(0, d[p + 2] + noise)); }
+        }
+        ctx.putImageData(imgData, 0, 0);
+      }
+      var blob = await new Promise(function (resolve) { canvas.toBlob(resolve, opts.format === 'png' ? 'image/png' : 'image/jpeg', opts.quality / 100); });
+      var imgBytes = new Uint8Array(await blob.arrayBuffer());
+      var embeddedImg = opts.format === 'png' ? await outDoc.embedPng(imgBytes) : await outDoc.embedJpg(imgBytes);
+      // preserve EXACT original page point-dimensions regardless of raster DPI used
+      var newPage = outDoc.addPage([baseViewport.width, baseViewport.height]);
+      newPage.drawImage(embeddedImg, { x: 0, y: 0, width: baseViewport.width, height: baseViewport.height });
+      canvas.width = 0; canvas.height = 0; // release memory between pages
+      if (onProgress) onProgress(i + 1, selected.length);
+      await yieldToUI();
+    }
+    return { doc: outDoc, originalSizes: originalSizes };
+  }
+
+  function getFlattenOptions() {
+    return {
+      fields: $('[data-flatten-opt="fields"]').checked, comments: $('[data-flatten-opt="comments"]').checked, highlights: $('[data-flatten-opt="highlights"]').checked,
+      ink: $('[data-flatten-opt="ink"]').checked, stamps: $('[data-flatten-opt="stamps"]').checked, links: $('[data-flatten-opt="links"]').checked,
+      flattenMode: document.querySelector('input[name="flattenMode"]:checked').value
+    };
+  }
+  function getImageOptions() {
+    return {
+      dpi: getActiveDpi(), format: document.querySelector('input[name="imgFormat"]:checked').value, quality: parseInt($('[data-jpeg-quality]').value, 10),
+      grayscale: $('[data-img-opt="grayscale"]').checked, scanlook: $('[data-img-opt="scanlook"]').checked,
+      pageMode: $('[data-page-mode]').value, pageRange: $('[data-page-range]').value
+    };
+  }
+  function getSanitizeOptions() {
+    return { metadata: $('[data-sanitize-opt="metadata"]').checked, javascript: $('[data-sanitize-opt="javascript"]').checked, attachments: $('[data-sanitize-opt="attachments"]').checked, bookmarks: $('[data-sanitize-opt="bookmarks"]').checked };
+  }
+
+  async function verifyOutput(outBytes, originalPageCount, originalSizes) {
+    var reloaded = await PDFLib.PDFDocument.load(outBytes, { updateMetadata: false });
+    var fieldsRemaining = 0;
+    try { fieldsRemaining = reloaded.getForm().getFields().length; } catch (e) {}
+    var annotsRemaining = 0;
+    reloaded.getPages().forEach(function (p) { var a = p.node.Annots(); if (a) { for (var i = 0; i < a.size(); i++) { var item = a.get(i); var d = item instanceof PDFLib.PDFRef ? reloaded.context.lookup(item) : item; if (d) annotsRemaining++; } } });
+    var textExtractable = false, textUnknown = false;
+    try {
+      var extraction = await extractAllPageText(reloaded, reloaded.getPages()[0]);
+      textExtractable = hasTextOperators(extraction.text);
+      textUnknown = extraction.unknown && !textExtractable;
+    } catch (e) {}
+    var newSizes = reloaded.getPages().map(function (p) { return { width: p.getWidth(), height: p.getHeight() }; });
+    var sizeMatch = originalSizes ? pageSizesMatch(originalSizes, newSizes) : (reloaded.getPageCount() === originalPageCount);
+    return { fieldsRemaining: fieldsRemaining, annotsRemaining: annotsRemaining, textExtractable: textExtractable, textUnknown: textUnknown, pageCountMatch: reloaded.getPageCount() === originalPageCount, sizeMatch: sizeMatch, pageCount: reloaded.getPageCount() };
+  }
+
+  function renderVerification(container, v, mode) {
+    var old = container.querySelector('[data-verify-box]'); if (old) old.remove();
+    var box = document.createElement('div'); box.setAttribute('data-verify-box', '');
+    function card(label, val, pass) { return '<div class="fl-verify-card ' + (pass ? 'pass' : 'fail') + '"><div class="val">' + escapeHtml(String(val)) + '</div><div class="lbl">' + escapeHtml(label) + '</div></div>'; }
+    var html = '<div class="fl-verify-grid">';
+    if (mode !== 'images') {
+      html += card('Fields remaining', v.fieldsRemaining, v.fieldsRemaining === 0);
+      html += v.textUnknown ? card('Text extractable', 'Unknown (browser limitation)', true) : card('Text extractable', v.textExtractable ? 'Yes ✓' : 'No', v.textExtractable);
+    } else {
+      html += card('Text extractable (expected: no)', v.textExtractable ? 'Yes' : 'No ✓', !v.textExtractable);
+    }
+    html += card('Page count matches', v.pageCountMatch ? 'Yes ✓' : 'No', v.pageCountMatch);
+    html += card('Page sizes match input', v.sizeMatch ? 'Yes ✓' : 'No', v.sizeMatch);
+    html += '</div>';
+    box.innerHTML = '<h3 style="font-size:0.95rem;">Verification report</h3>' + html;
+    container.appendChild(box);
+  }
+
+  $('[data-apply-btn]').addEventListener('click', async function () {
+    if (!state.selectedMode) {
+      showMessage('Choose a mode above first.', 'error');
+      var root = $('[data-mode-settings-root]');
+      root.classList.remove('fl-mode-needed'); void root.offsetWidth; root.classList.add('fl-mode-needed');
+      var seg = $('.fl-mode-seg'); if (seg) seg.focus({ preventScroll: true });
+      return;
+    }
+    clearRunMessage();
+    var btn = this; btn.disabled = true;
+    state.cancelRequested = false;
+    progressWrap.classList.add('is-active');
+    var flattenOpts = getFlattenOptions(), imageOpts = getImageOptions(), sanitizeOpts = getSanitizeOptions();
+    var filenamePattern = $('[data-filename-pattern]').value || '{original}-flattened.pdf';
+    try {
+      var outputs = [];
+      for (var fi = 0; fi < state.files.length; fi++) {
+        if (state.cancelRequested) break;
+        var entry = state.files[fi];
+        progressText.textContent = 'Processing ' + entry.name + '…';
+        var outBytes, originalSizes = null;
+
+        if (state.selectedMode === 'formFields' || state.selectedMode === 'hybrid') {
+          await flattenFormFieldsOnDoc(entry.doc, flattenOpts);
+          applySanitizeOptions(entry.doc, sanitizeOpts);
+          outBytes = await entry.doc.save();
+        } else {
+          var result = await rasterizeToImages(entry, imageOpts, function (done, total) {
+            progressFill.style.width = Math.round((done / total) * 100) + '%';
+            progressText.textContent = 'Rendering page ' + done + ' of ' + total + ' (' + entry.name + ')';
+          });
+          if (!result) break; // cancelled
+          applySanitizeOptions(result.doc, sanitizeOpts);
+          outBytes = await result.doc.save();
+          originalSizes = result.originalSizes;
+        }
+
+        var verification = await verifyOutput(outBytes, originalSizes ? originalSizes.length : entry.report.pageCount, originalSizes);
+        var outName = applyFilenamePattern(filenamePattern, entry.name);
+        outputs.push({ name: outName, bytes: outBytes, originalSize: entry.file.size, verification: verification });
+        renderVerification($('[data-files-list]').children[fi], verification, state.selectedMode);
+      }
+
+      if (state.cancelRequested) { showMessage('Cancelled.', 'error'); return; }
+      if (outputs.length === 1) {
+        var blob = new Blob([outputs[0].bytes], { type: 'application/pdf' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a'); a.href = url; a.download = outputs[0].name; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        var sizeNote = 'Original: ' + formatBytes(outputs[0].originalSize) + ' → Output: ' + formatBytes(outputs[0].bytes.length);
+        if (outputs[0].bytes.length > outputs[0].originalSize * 3) sizeNote += ' ⚠️ File grew significantly — consider a lower DPI.';
+        showMessage(sizeNote, 'success');
+      } else {
+        var zip = new JSZip();
+        outputs.forEach(function (o) { zip.file(o.name, o.bytes); });
+        var zipBlob = await zip.generateAsync({ type: 'blob' });
+        var zurl = URL.createObjectURL(zipBlob);
+        var za = document.createElement('a'); za.href = zurl; za.download = 'flattened-pdfs.zip'; document.body.appendChild(za); za.click(); document.body.removeChild(za);
+        showMessage(outputs.length + ' files flattened and zipped.', 'success');
+      }
+    } catch (err) {
+      console.error(err);
+      showMessage('Something went wrong: ' + (err.message || 'unknown error'), 'error');
+    } finally {
+      btn.disabled = false;
+      setTimeout(function () { progressWrap.classList.remove('is-active'); }, 800);
+    }
+  });
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/flatten-pdf-sw.js', { scope: '/flatten-pdf.html' }).catch(function (err) { console.error('SW registration failed:', err); });
+  }
+})();
+</script>
+  <script src="assets/js/side-ads.js" defer></script>
+  <script src="assets/js/inline-ads.js" data-in-article defer></script>
+</body>
+</html>

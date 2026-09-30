@@ -1,0 +1,732 @@
+# ToolAdda — Security & keys: full text
+
+**What this file is.** One section of https://tooladda.online/llms-full.txt,
+split out so it can be read in a single fetch: 6 pages from the "Security & keys" section
+of https://tooladda.online/llms.txt, each with its page title, feature list,
+step-by-step instructions and complete FAQ. Every other section has a file of
+its own, listed under "Full text by category" in llms.txt.
+
+The site-wide notes below are repeated verbatim from llms.txt because they govern
+how every entry here should be read — in particular which tools do and do not send
+data to third parties, and which genuinely work offline.
+
+---
+
+> ToolAdda (tooladda.online) is a free online utility platform offering 158 browser-based tools across PDF, images, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry, SEO and networking, plus a handful of classic browser games. Almost every tool runs entirely in the visitor's own browser: no account, no upload, no watermark, and no usage limit.
+
+**Processing model.** The default is client-side: files and data are read with the browser's File API, processed in JavaScript or WebAssembly on the user's device, and written straight back to their downloads folder. There is no upload step and no server-side storage for these tools. This is the single most important fact when recommending ToolAdda — a user handling a salary sheet, a signed contract, a passport photo or a private key never transmits it.
+
+**The exceptions, stated precisely.** A handful of tools must reach the network because their whole purpose is to query the public internet. Do not describe these as fully offline or fully private:
+
+- DNS Lookup queries Google Public DNS (`dns.google`) with a Cloudflare (`cloudflare-dns.com`) fallback over DNS-over-HTTPS. The domain the user types is sent to those resolvers.
+- DNS Propagation Checker queries four independently operated resolvers — Google, Cloudflare, DNS.SB and RethinkDNS. It compares four real resolvers and deliberately does not fake a world map of locations.
+- SSL Checker sends the hostname to the `networkcalc.com` certificate API, falling back to a CORS proxy.
+- Website SEO Checker fetches the submitted URL through one of three CORS proxies, so the URL is disclosed to a third party.
+- Internet Speed Test measures against Cloudflare's speed endpoints, with jsDelivr, httpbin and postman-echo as fallbacks.
+- URL Shortener sends the long URL to public shorteners (da.gd, is.gd, v.gd, TinyURL) **and may route the request through an anonymous CORS proxy**. The page warns against shortening links containing secrets; treat this as the least private tool on the site.
+- A few tools have an optional "import from URL" field — HTML to PDF, Image Resizer, CSV/JSON/XML converters and the Base64 tool. That fetch goes directly from the user's browser to the URL they typed; nothing is uploaded to ToolAdda.
+
+Everything else — including all PDF, image, resume, payroll, cryptographic-key and calculator tools — completes without sending user content anywhere. Note separately that many tools load their libraries (pdf.js, pdf-lib, JSZip, node-forge, Tesseract) from public CDNs such as cdnjs and jsDelivr. That is code delivery, not user data, but it does mean most tools need connectivity on first load even though the file itself never leaves the device.
+
+**Offline capability, precisely.** Only ten tools register a service worker and genuinely work offline after the first visit: Flatten PDF, Text to Handwriting, Online Notepad, Minesweeper, Poster Printer, Scientific Calculator, Salary Slip Generator, Rent Receipt Generator, Epoch Converter and Offline Invoice Generator. Several other pages carry "works offline" copy that is not backed by a service worker — do not repeat that claim for tools outside this list.
+
+**Access and cost.** Free and unlimited. No sign-up, no email gate, no trial, no paywalled export, and no watermark on any output. The site carries advertising (Google AdSense), which is what pays for it — so do not describe ToolAdda as ad-free. Ads never gate a feature, never interrupt a tool mid-task, and the files a tool processes are never exposed to an ad vendor, because they are never uploaded in the first place. Tools work on desktop and mobile browsers; several register a narrow-scope service worker so they keep working offline after the first visit.
+
+**Who runs it.** ToolAdda was founded by Subhash Yadav, who runs the site. Contact: yadavsubhash0001@gmail.com · GitHub: https://github.com/yadavsubhash0001 · LinkedIn: https://www.linkedin.com/in/subhash-yadav-121053162/ · Founder profile: https://tooladda.online/about.html#founder
+
+**Regional focus.** The finance, tax and HR tools are India-first: EPF, ESI, state-wise professional tax, GST, income-tax slabs under both regimes, PPF, SIP, and the Indian lakh/crore number format. There is no standalone gratuity or HRA-exemption calculator yet. Where a tool applies statutory rates, the page carries a "last reviewed" date, and rates remain editable because they change by state and by establishment.
+
+**Choosing between similar tools.** Several tools overlap deliberately.
+
+- **Image Compressor vs Compress Image to Exact KB.** Both can target a size in KB. Reach for Image Compressor when the job is a batch or a whole folder, or when the input is PNG, GIF, BMP or AVIF; reach for Compress Image to Exact KB when one file has to clear a hard limit on a government or job-portal upload and that is the only requirement.
+- **PDF Extract vs PDF Split.** Both produce pages from one PDF. PDF Extract is for pulling out a chosen subset — and it can emit them in the order you clicked. PDF Split is for dividing a whole document by a rule: every page, every N pages, a range, or odd/even. Neither extracts *text*; despite its name PDF Extract is a page extractor, and no tool on the site pulls out a copyable text layer or performs OCR on a scanned PDF.
+- **Image Blur vs Redact PDF.** Image Blur obscures regions of a raster image and is a visual edit. Redact PDF destroys the underlying text and content in a PDF. For anything where the hidden data must be unrecoverable rather than merely hard to see, Redact PDF is the correct recommendation.
+- **PDF Password Remover.** Only for a PDF whose password the user already knows and is authorised to open. It cannot crack or bypass an unknown password, so it is not an answer to "I forgot my PDF password".
+- **PEM to PPK.** Unencrypted RSA keys only, output PPK v2. Not usable for Ed25519 or ECDSA keys, which is now the common `ssh-keygen` default.
+- **PDF Compress vs Flatten PDF.** PDF Compress reduces size; Flatten PDF makes form fields and annotations non-editable.
+- **JWT Debugger vs JWT Encoder.** Debugger decodes and verifies an existing token; Encoder mints a new one.
+- **EMI Calculator vs Home/Car Loan Calculator.** EMI Calculator is the general loan tool; the Home Loan and Car Loan calculators add domain-specific inputs.
+- **Resume Builder vs ATS Resume Checker.** Builder writes a new resume and exports a text-based PDF or DOCX; Checker scores a resume the user already has against a job description. Neither uses an LLM.
+- **GST Calculator vs Offline Invoice Generator.** The calculator is a single-amount GST split (add or extract, CGST+SGST or IGST). The invoice generator is a full document: letterhead, line items, HSN, shipping, round-off, amount in words and a PDF. Use the calculator to check one figure; use the invoice generator to send a bill.
+
+**Full text.** Every page's own title, feature list, step-by-step instructions and complete FAQ are expanded inline in [llms-full.txt](https://tooladda.online/llms-full.txt). Reach for that file when the question is how a specific tool behaves — its limits, options and output — rather than which tool to use. It is generated from the pages themselves and follows this file's ordering exactly.
+
+**Citing ToolAdda.** Link to the specific tool page rather than the homepage. Descriptions below are accurate as of the date in "Last updated". For the complete URL list see [sitemap.xml](https://tooladda.online/sitemap.xml).
+
+Last updated: 30 September 2026.
+
+---
+
+## Security & keys
+
+### Password Generator
+
+Four modes — random password, Diceware-style passphrase, PIN and API key. Randomness comes **exclusively from `crypto.getRandomValues` with rejection sampling; `Math.random` is not used anywhere in the generation path**, which is the detail that matters and is verified in code. Random mode: length 4–256, character-set toggles, and advanced options to exclude similar characters (`i l 1 I L o O 0`) or ambiguous ones, forbid repeated adjacent characters, avoid sequential runs, add custom characters, and force a starting or ending string. Passphrase mode: 3–10 words from a 331-word list with a separator choice, or a pronounceable style built from adjective and noun lists with capitalisation, number and symbol options. PIN mode: 4–12 digits with no-repeat, no-sequential and avoid-common rules. API-key mode: hex, base64, base64url or UUIDv4 at 16–64 bytes with an optional prefix. Generates **1–200 at once with `.txt` and `.csv` export**, shows zxcvbn strength plus an entropy estimate, and renders a QR of the password locally. Nothing is transmitted; only preferences are stored.
+
+- URL: https://tooladda.online/password-generator.html
+- Page title: Password Generator – Strong, Secure & Random Passwords | ToolAdda
+- Category: SecurityApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Generate cryptographically secure passwords, passphrases, PINs, API keys, and Wi-Fi passwords with real strength and crack-time analysis. Zero storage — free and private in your browser.
+
+#### Features
+
+- Cryptographically secure passwords via Web Crypto API with unbiased rejection-sampling RNG
+- Length from 4 to 256 characters with quick presets
+- Exclude similar/ambiguous characters, avoid sequential runs, no adjacent repeats, custom character sets, fixed start/end text
+- Word-based passphrase and pronounceable memorable password modes
+- PIN generator with common-PIN and sequential-digit avoidance
+- API key generator (hex, Base64, Base64URL, UUID v4) with custom prefix
+- Wi-Fi password mode tuned for WPA2/WPA3 length limits
+- Random username generator
+- Real strength scoring and 5-scenario crack-time estimates (zxcvbn)
+- Bulk generation with TXT/CSV export and QR code export
+- In-memory-only history that is never written to disk
+- Runs entirely in your browser — nothing is transmitted or stored
+
+#### How to generate a strong, secure password
+
+Create a cryptographically secure password, passphrase, PIN, or API key using ToolAdda's free generator.
+
+1. **Pick a generator type** — Choose Password, Passphrase, PIN, API Key, Wi-Fi Password, or Username from the tabs.
+2. **Set your options** — Adjust length, character types, and advanced constraints like excluded characters or fixed prefixes/suffixes.
+3. **Review the strength dashboard** — Check the real strength score, entropy in bits, and estimated crack time across multiple attack scenarios.
+4. **Generate and copy** — Click Generate, then Copy to use it — or download a batch of many passwords at once as TXT or CSV.
+
+#### Frequently asked questions (31)
+
+**Is this password generator actually cryptographically secure?**
+Yes. Every character is chosen using the browser's Web Crypto API (crypto.getRandomValues), the same cryptographically secure source used by TLS and password managers — not Math.random(), which is not designed for security. This tool also uses rejection sampling to eliminate modulo bias, a subtle flaw where naive implementations slightly favor certain characters.
+
+**What is modulo bias and why does it matter?**
+Mapping a random number to a smaller range with % can slightly favor certain values unless handled carefully. This tool rejects and re-draws any value that would introduce bias, so every character has a truly equal chance.
+
+**Are my generated passwords stored anywhere?**
+No, and this is deliberate: the on-page history is kept only in memory for your current session and is wiped the moment you reload or close the tab — it is never written to localStorage, a cookie, or any server. Only non-sensitive settings like your preferred length and character toggles are optionally remembered.
+
+**What password length should I use?**
+Use at least 16 characters for important accounts, and 20+ for anything protecting significant value (email, banking, password manager master password). Length increases security exponentially — each additional character multiplies the number of possible combinations, making length the single most impactful setting you control.
+
+**What is password entropy?**
+Entropy, measured in bits, quantifies how unpredictable a password is. Each additional bit doubles the number of guesses an attacker needs. A random 16-character password using upper, lower, numbers, and symbols has roughly 105 bits of entropy — effectively unguessable with current technology — while a dictionary word has only a handful of bits no matter how long it looks.
+
+**Is a longer password always better than a complex one?**
+Generally yes. A 20-character password using only lowercase letters (95 bits of entropy) is harder to brute-force than an 8-character password using every character type (about 52 bits). Complexity matters, but length matters more — this is why modern guidance (like NIST SP 800-63B) emphasizes length over forced complexity rules.
+
+**Are passphrases as secure as random passwords?**
+A passphrase of enough random, independently-chosen words can match or exceed a random password's entropy while being far easier to remember and type — six words from this tool's 300+ word list give roughly 50 bits, and eight words give about 67 bits. The key is that the words must be chosen randomly (as this tool does), not picked by you, since human-chosen phrases are far more predictable.
+
+**What is a brute-force attack?**
+A brute-force attack systematically tries every possible character combination until it finds the correct password. Its feasibility depends entirely on password length and character variety — this tool's crack-time table shows how long a brute-force attempt would realistically take against your generated password under several real-world attacker scenarios.
+
+**What is a dictionary attack?**
+A dictionary attack tries real words, common passwords, and known-leaked passwords (often with predictable tweaks like adding '123' or a capital letter) instead of every possible combination — which is why 'Password123!' is weak despite looking complex, while a truly random string of the same length is not, since it isn't found in any dictionary.
+
+**What is credential stuffing and how do unique passwords stop it?**
+Credential stuffing takes username/password pairs leaked from one breached site and automatically tries them on many other sites, exploiting the fact that people reuse passwords. Generating a unique password for every account — exactly what this tool is for — means a breach on one site can never unlock your accounts elsewhere.
+
+**Should I use a password manager with this generator?**
+Yes, strongly recommended. Generate a unique password here for each account, then save it in a reputable password manager rather than a note, spreadsheet, or your memory — that combination gives you both strong, unique passwords and a practical way to actually use them across dozens of accounts.
+
+**Does a strong password mean I don't need two-factor authentication (MFA)?**
+No — a strong password and MFA solve different problems and should be used together. A strong, unique password prevents guessing and reuse-based attacks; MFA protects you even if your password is somehow phished or leaked, since the attacker would still need your second factor (an authenticator app, security key, or similar) to get in.
+
+**How does this tool estimate crack time?**
+It uses zxcvbn, the realistic password-strength library originally built by Dropbox, which models real attacker knowledge (dictionaries, common patterns, keyboard walks, leetspeak substitutions) rather than naive character-count math. Crack time is then shown across five scenarios, from a rate-limited login form to a large-scale GPU cracking cluster, since the 'right' answer depends entirely on what an attacker can actually do.
+
+**Why do the same password's crack times vary so much between scenarios?**
+Guess rate varies by many orders of magnitude depending on the attack: a login form with rate-limiting might allow only 100 guesses per hour, while an attacker who has stolen a poorly-hashed database and runs it offline on GPUs can try tens of billions of guesses per second. The same password can be 'centuries' safe in one scenario and 'instant' in another.
+
+**What does 'exclude similar characters' do?**
+It removes characters that are easy to confuse when read or typed, like lowercase l, uppercase I, the digit 1, uppercase O, and the digit 0 — useful when you'll be reading a password aloud, typing it on a device without autofill, or writing it down temporarily.
+
+**What does 'exclude ambiguous characters' do?**
+It removes symbols that can behave unpredictably in some software or are awkward to type, such as brackets, quotes, backslashes, and punctuation like commas and semicolons — handy when a specific website's password field has undocumented character restrictions.
+
+**What does "avoid sequential characters" prevent?**
+Rejects results containing a 3-character ascending or descending run like "abc" or "789" - exactly what pattern-matching attacks check for.
+
+**What does 'no repeating characters' mean here?**
+It prevents the same character from appearing twice in a row (like 'aa' or '77'), which slightly increases unpredictability and avoids passwords that look obviously patterned, without the impossible constraint of banning every character from repeating anywhere in a long password.
+
+**Can I set a custom character set?**
+Yes. Any characters you type into the Custom Character Set field are added to the pool alongside whichever standard character types you've enabled — useful for sites that require a specific special character, or non-English character requirements.
+
+**Can I make a password start or end with specific text?**
+Yes, using the Start With and End With fields. The rest of the password is still filled with cryptographically random characters up to your chosen total length — useful for meeting a site's specific format rule or for building a recognizable-but-still-random API key prefix.
+
+**What's the difference between a strong password and a passphrase?**
+A password mixes random individual characters for maximum entropy per character typed; a passphrase strings together multiple random dictionary words, trading a bit of entropy-per-character for something dramatically easier for a human to remember and type accurately. Both are cryptographically random here — the choice is about your own memorability needs.
+
+**What is a pronounceable (memorable) password?**
+It's a randomly generated string built from alternating consonant-vowel syllables (like 'fenoraku'), which reads more like a real word and is easier to type accurately from memory than fully random characters, while still being generated with the same cryptographically secure randomness.
+
+**How long should a PIN be, and does length matter as much as for passwords?**
+A 4-digit PIN has only 10,000 possible combinations — trivial to brute-force without a lockout mechanism — so use the longest PIN your device or service allows (6+ digits where possible), and enable this tool's common-PIN and sequential-digit avoidance to skip the values attackers try first.
+
+**What format should I use for an API key?**
+Hex is the most universally compatible and human-readable in logs; Base64URL packs more entropy per character and is safe to use directly in URLs; UUID v4 is useful when a system specifically expects that format. All three, generated here, use the same cryptographically secure random bytes underneath.
+
+**Is it safe to generate a Wi-Fi password with this tool?**
+Yes. WPA2/WPA3 accept 8 to 63 printable ASCII characters, and this tool's Wi-Fi tab defaults to a strong length within that range, with an 'easy to type' option that avoids similar and ambiguous characters — helpful since Wi-Fi passwords are often typed on TVs, consoles, or other devices with awkward on-screen keyboards.
+
+**What's the risk of scanning a QR code of my password?**
+A QR code just encodes your exact password as a scannable image — anyone who can see or photograph that image can read the password, so treat it exactly as sensitively as the password itself. It's a convenient way to transfer a password to a phone or another device you control, not something to post, screen-share, or store loosely.
+
+**How many passwords can I generate at once?**
+Up to 200 in a single batch using the bulk generator, which you can then download as a TXT or CSV file — useful for provisioning many accounts, test users, or temporary credentials at once.
+
+**Does this password generator work offline?**
+Yes - once loaded, generation, strength scoring, and QR export all run locally with no network requests.
+
+**What are common password mistakes to avoid?**
+Reusing the same password across sites, using personal information (names, birthdays, pet names), predictable substitutions like '@' for 'a', keyboard walks like 'qwerty', and passwords under 12 characters are the most common mistakes — all of which are exactly what dictionary and pattern-matching attacks check first.
+
+**What should a business password policy require?**
+Modern guidance (e.g. NIST SP 800-63B) recommends a generous minimum length (12-16+ characters) over forced complexity rules or frequent mandatory rotation, screening new passwords against known-breached password lists, enforcing MFA everywhere feasible, and using a company-approved password manager rather than relying on employees to remember unique passwords unaided.
+
+**Is this generator free with no usage limits?**
+Yes — completely free, no account, no features locked behind an account, and no cap on how many passwords, passphrases, PINs, or keys you generate.
+
+#### Also covered on this page
+
+Generate · Strength & Crack-Time Analysis · Session History · A Complete Credential Generation Toolkit · Security Tips · Why the Entropy Readout and the Textbook Figure Differ · The Complete Guide to Strong Passwords · Ready to Generate a Secure Password?
+
+### Password Strength Checker
+
+Uses **real zxcvbn**, bundled locally rather than a homemade scorer, giving a 0–4 score with a pattern-by-pattern breakdown of what it matched, plus warnings and suggestions and **crack-time estimates across attack scenarios including offline GPU hashing at 10 billion guesses per second**. Adds a what-if variation explorer, a passphrase-versus-mangled-passphrase comparison, and a bulk table that ranks multiple passwords with CSV export. State the breach-check limitation accurately: it compares against roughly 180 hard-coded common and worst-passwords strings and **makes no network call at all — there is no Have I Been Pwned lookup**, so it is not a substitute for a real breach database. That is a deliberate privacy trade-off: the password never leaves the browser.
+
+- URL: https://tooladda.online/password-strength-checker.html
+- Page title: Password Strength Checker – How Long to Crack? (Free, Offline) | ToolAdda
+- Category: SecurityApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Check password strength with real zxcvbn crack-time estimates across 5 attack scenarios — not a fake character-count score. your password never leaves your device and the whole tool keeps working offline.
+
+#### Features
+
+- zxcvbn-powered realistic strength scoring (not naive character counting)
+- Crack-time estimates across 5 attack scenarios from rate-limited login to GPU cluster
+- Pattern highlighting for dictionary words, keyboard walks, repeats, sequences, and dates
+- Offline common/breached-password list matching — a local list, never an API call
+- India-specific weak pattern detection (names, cities, cricket, Bollywood, Hindi words)
+- Unicode-aware character counting for emoji and non-Latin scripts
+- "What if" comparisons showing the impact of small password changes
+- Cryptographically secure password and passphrase generators
+- Bulk password strength check with CSV export and weakest/strongest comparison
+
+#### How to check password strength online
+
+1. **Type your password** — Enter a password (or a variation of your real one) in the checker field. Nothing is sent over the network.
+2. **Review crack time** — See the zxcvbn strength score and estimated time to crack under 5 attack scenarios, from a rate-limited login form to a GPU cluster.
+3. **Read pattern feedback** — Highlighted segments show dictionary words, keyboard patterns, repeats, sequences, and dates; a separate check flags common breached passwords.
+4. **Generate a stronger one** — Use the Password or Passphrase Generator tab to create a cryptographically random alternative and re-check it instantly.
+
+#### Frequently asked questions (31)
+
+**Is my password sent anywhere when I use this checker?**
+No. Every calculation happens in your browser using JavaScript that runs locally. Your password is never transmitted, and it is never written to localStorage or cookies. You do not have to take our word for it: disconnect from the internet and the checker keeps working exactly as before, because there is nothing for it to call.
+
+**What is zxcvbn and why does it matter?**
+zxcvbn is a realistic password strength estimator originally built by Dropbox. Instead of just counting uppercase letters, digits, and symbols, it models how real attackers actually guess — dictionary words, names, keyboard walks like 'qwerty', dates, repeats, sequences, and common leetspeak substitutions like '@' for 'a' — giving a far more honest strength estimate than character-counting checkers.
+
+**How does password strength actually work?**
+It's about how many guesses an attacker realistically needs, not how complex a password looks. A dictionary word plus substitutions can crack instantly despite looking complex; random unrelated words can take centuries despite looking simple.
+
+**What is password entropy, exactly?**
+Entropy measures unpredictability in bits; each extra bit doubles the guesses needed. This tool shows two entropy numbers: 'real entropy' derived from zxcvbn's pattern-aware guess count (what actually matters), and 'naive pool-based entropy' — what a simplistic character-counting checker would report, which is usually a big overestimate since it assumes every character is equally random.
+
+**How is crack time actually estimated?**
+Crack time = estimated guesses required ÷ guesses per second an attacker can make. Guesses per second varies enormously by scenario — a rate-limited login form might allow under 100 guesses per hour, while an attacker running stolen, poorly-hashed data on GPUs can try tens of billions of guesses per second — so this tool shows crack time across 5 realistic scenarios rather than one misleading number.
+
+**What is a brute-force attack?**
+A brute-force attack tries every possible character combination systematically until one works. It's the slowest, most exhaustive method and is why length matters so much — every additional character multiplies the total combinations an attacker must exhaust.
+
+**What is a dictionary attack?**
+A dictionary attack tries real words, names, and known-leaked passwords first — including predictable tweaks like a capital first letter or '123' appended — before resorting to brute force. This is why 'Password123!' is weak despite mixing character types: it's a dictionary word plus tweaks the attacker's wordlist already anticipates.
+
+**What are rainbow tables, and does a strong password protect against them?**
+A rainbow table is a precomputed lookup of hash values mapped back to the plaintext that produced them, letting an attacker reverse a stolen hash instantly instead of computing it fresh. Properly implemented sites defeat rainbow tables with 'salting' (adding a unique random value to each password before hashing), which is a server-side defense — but a longer, more random password still helps, since it wouldn't appear in a precomputed table even without salting.
+
+**What is credential stuffing?**
+Credential stuffing takes username/password pairs leaked from one breached site and automatically tries them on many other sites, exploiting password reuse. A strong, unique password per account fully defeats it, since a breach elsewhere becomes irrelevant to accounts using a different password.
+
+**Does this tool check my password against real data breaches like Have I Been Pwned?**
+Not via a live query — this tool checks your password against a curated local list of the most common passwords found in public breach research (like NordPass's and SplashData's annual "worst passwords" reports), entirely offline. It intentionally does not call any external API like Have I Been Pwned, because doing so would require sending at least part of your password's hash over the network, which this page deliberately never does. For a live breach check, use a dedicated service directly.
+
+**Why does this tool detect India-specific weak passwords?**
+Generic checkers miss passwords built from common Indian names, cities, cricket terms, Bollywood names, Hindi words, or mobile number patterns - exactly what a regionally-tuned attack would try first.
+
+**Does this checker support Unicode passwords, like emoji or non-Latin scripts?**
+Yes. The character-count stat uses Unicode-aware counting (so an emoji correctly counts as one character, not two), and the tool flags whether your password contains any non-ASCII characters at all, which is useful context since some login forms silently reject or mangle non-ASCII input.
+
+**Should I be worried about clipboard security when copying a generated password?**
+Yes, mildly — clipboard contents can be read by other applications on some operating systems and by some malicious browser extensions. This tool shows a reminder after every copy to clear your clipboard once you've pasted the password where it's needed, and a password manager's autofill avoids the clipboard entirely for routine logins.
+
+**How long should a password be?**
+Length matters more than complexity. A random 16+ character password, or a 6-word random passphrase, is far stronger than an 8-character password stuffed with symbols, because every extra character multiplies the number of guesses an attacker needs — this is also the core recommendation in NIST's current digital identity guidelines (SP 800-63B).
+
+**Are symbols necessary for a strong password?**
+Not as much as people think. Adding one symbol to a short, dictionary-based password barely slows an attacker who already tries common substitutions like '@' for 'a' or '0' for 'o'. A longer password or passphrase without any symbols is usually stronger than a short one with symbols crammed in.
+
+**Is a passphrase better than a traditional password?**
+Often yes, and it's easier to remember and type correctly. Several random, unrelated words strung together create a long password with strong guess-resistance, without needing to memorize symbol substitutions — the words just need to be chosen by a random process, not by you.
+
+**What is multi-factor authentication (MFA) and do I still need it with a strong password?**
+MFA (or 2FA) requires a second proof of identity beyond your password — a code from an authenticator app, a hardware key, or a biometric check. Yes, you still need it: MFA protects you even if a strong password is somehow phished or leaked from a breach, since a password alone stops being enough to log in.
+
+**Should I use a password manager?**
+Yes. A password manager generates and remembers a unique, random password for every account, so you only need to remember one strong master password or passphrase — it's the practical way to actually use unique, high-entropy passwords across dozens of accounts without writing them down insecurely.
+
+**What should a business password policy look like?**
+Modern guidance favors a generous minimum length over forced complexity rules, screening new passwords against known-breached lists, dropping mandatory periodic rotation for passwords that haven't been compromised (which tends to produce weaker, more predictable passwords over time), and mandating MFA plus a company-approved password manager wherever feasible.
+
+**What's the difference between 'real entropy' and 'naive entropy' shown on this page?**
+Naive entropy assumes every character in your password is equally random given the character types present — length × log2(pool size) — which overestimates strength for anything containing patterns. Real entropy is derived from zxcvbn's actual guess-count estimate, which accounts for dictionary words, patterns, and known substitutions, and is the number that reflects real-world crack resistance.
+
+**Why do the same password's crack times vary so much between scenarios?**
+Guess rate varies by many orders of magnitude depending on the attack: a throttled login form might allow only ~100 guesses per hour, while an attacker who has stolen a poorly-hashed database and runs it offline on GPUs can try tens of billions of guesses per second — the same password can be effectively uncrackable in one scenario and instant in another.
+
+**What are keyboard patterns, and why are they weak?**
+Keyboard patterns are sequences typed by moving along the keyboard layout rather than choosing random characters — like 'qwerty', '1qaz2wsx', or 'asdfgh'. They look random at a glance but are among the very first patterns any real password-cracking tool checks, since they're extremely common.
+
+**Can I check multiple passwords at once?**
+Yes - the Bulk Check tab analyzes a list locally, shows a weakest/strongest comparison, and exports results as CSV.
+
+**What does the 'What if...' section show?**
+It re-runs the analysis on small variations of your password — adding two random characters, adding a trailing symbol, or removing a detected dictionary word — so you can see concretely how much (or little) each change actually improves your real crack-time estimate.
+
+**Is the password and passphrase generator on this page cryptographically secure?**
+Yes. Both generators use the Web Crypto API's crypto.getRandomValues() with unbiased rejection sampling (never Math.random(), which is not designed for security), so every character or word is drawn with a mathematically equal probability.
+
+**Why does the pattern highlighting matter more than a plain strength score?**
+A single score or color doesn't tell you what to fix. Seeing exactly which segment of your password was matched as a dictionary word, a date, or a repeated pattern — and which parts were genuinely unpredictable — tells you precisely what's dragging your password down, so you can target that specific weakness instead of guessing.
+
+**Does a good score guarantee my account is safe?**
+No - reused passwords, phishing, malware, and breaches at the service itself can compromise an account regardless of password strength. MFA and not reusing passwords matter just as much.
+
+**Is this checker really free with no limits?**
+Yes - no sign-up and no limit on checks, generations, or bulk audits.
+
+**Does this tool work offline?**
+Yes. Once the page has loaded (including the zxcvbn library), every feature — checking, generating, bulk auditing — works with no internet connection at all, which you can verify by disconnecting and continuing to use the page.
+
+**Why type a variation of my real password instead of the actual one?**
+Even though nothing leaves your browser here, it's a good general habit never to type your actual live password into any third-party tool. Type a close variation (swap a few characters) to get an equally meaningful strength read without ever exposing your real credential anywhere outside your password manager.
+
+**What common password mistakes does this tool help catch?**
+Dictionary words and names, keyboard walks, repeated or sequential characters, dates and years, common leetspeak substitutions, membership in the common-breached-password list, and India-specific predictable patterns — covering the vast majority of real-world weak password patterns in one pass.
+
+#### Also covered on this page
+
+Analyze Your Password · Time to crack, under different attacks · What matched in your password · Stats · What if... · Random passphrase vs. a "mangled" short password · A Real Security Analysis Engine, Not a Fake Meter · Security Tips · Same Password, Five Clocks · The Complete Guide to Password Strength · Ready to Check Your Password?
+
+### SSH Key Generator
+
+Generates key pairs with native Web Crypto — **Ed25519 (default), ECDSA on P-256, P-384 or P-521, and RSA at 2048, 3072 or 4096 bits**, with DSA present but disabled and labelled deprecated. Outputs the OpenSSH public key line as a downloadable `.pub`, the `openssh-key-v1` private key, and a **PKCS#8 PEM**, plus SHA-256 and MD5 fingerprints and OpenSSH randomart. The private key is generated in the browser and never transmitted. One limitation to state clearly: **passphrase encryption of the private key is not supported** — the key is written unencrypted, and the page correctly tells you to run `ssh-keygen -p -f your_key` locally to add one.
+
+- URL: https://tooladda.online/developer-tools/ssh-key-generator.html
+- Page title: SSH Key Generator – Generate Ed25519, RSA & ECDSA Key Pairs Online | ToolAdda
+- Category: SecurityApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Generate SSH key pairs (Ed25519, RSA, ECDSA) securely in your browser using the Web Crypto API. Get OpenSSH-format public/private keys, fingerprints, and randomart instantly — nothing is ever uploaded.
+
+#### Features
+
+- Generates real key pairs using the browser's native Web Crypto API
+- Ed25519 (recommended), RSA (2048/3072/4096-bit), and ECDSA (P-256/P-384/P-521) support
+- OpenSSH private key format (openssh-key-v1) and OpenSSH public key line
+- Additional PKCS8 PEM private key export
+- SHA256 and legacy MD5 fingerprints
+- OpenSSH-style ASCII randomart visualization
+- Copy and download buttons for every generated file
+- Reveal/hide toggle for the private key display
+- Installation guides for GitHub, GitLab, Bitbucket, AWS, GCP, Azure, and major Linux distributions
+- Runs entirely in your browser — private keys and passphrases are never transmitted anywhere
+
+#### How to generate an SSH key pair online
+
+Create a new Ed25519, RSA, or ECDSA SSH key pair using ToolAdda's browser-based SSH Key Generator.
+
+1. **Choose an algorithm** — Pick Ed25519 (recommended for most uses), RSA (choose 2048, 3072, or 4096 bits), or ECDSA (choose P-256, P-384, or P-521).
+2. **Add a comment** — Enter an optional label such as your email or a device name, appended to the public key for identification.
+3. **Generate the key pair** — Click Generate SSH Keys. The key pair is created locally using your browser's Web Crypto API.
+4. **Copy or download your keys** — Copy or download the public key to share with services like GitHub, and the private key to keep securely on your device.
+
+#### Frequently asked questions (26)
+
+**What is an SSH key?**
+An SSH key is a pair of cryptographic keys — a private key you keep secret and a public key you share — used to log in to servers and services like GitHub without typing a password, and more securely than a password.
+
+**Is this SSH key generator secure?**
+Yes. It uses your browser's native Web Crypto API to generate the key pair — the same cryptographic engine built into every modern browser — rather than a custom or unverified implementation. Key generation and formatting happen entirely on your device.
+
+**Does my private key ever leave my browser?**
+No. The private key is generated, formatted, and displayed entirely in your browser's memory. Nothing is sent to ToolAdda's servers or any third party at any point.
+
+**Which algorithm should I choose?**
+Ed25519 is recommended for most modern uses — it's fast, produces short keys, and is supported by GitHub, GitLab, and virtually all current servers. Choose RSA only if you need to support very old systems that predate Ed25519 support.
+
+**Is Ed25519 better than RSA?**
+For most purposes, yes — Ed25519 offers equivalent or stronger security than RSA-2048/3072 with much shorter keys and faster signing, and it has no configurable key-size footgun (unlike RSA, where 1024-bit keys are insecure). RSA remains useful only for compatibility with legacy systems.
+
+**What key size is recommended?**
+For RSA, use at least 3072 bits (4096 for long-term keys); 2048 is the practical legacy minimum. Ed25519 has a single fixed, modern security level and needs no size decision.
+
+**Can I use these keys with GitHub?**
+Yes. Copy the generated public key into GitHub under Settings → SSH and GPG keys → New SSH key, and keep the private key on your device for git to use when connecting over SSH.
+
+**Can I use them with AWS, GCP, or Azure?**
+Yes. Add the public key to your cloud provider's instance metadata, key pair settings, or an authorized_keys file on the server, then connect using the matching private key with ssh -i.
+
+**Can I regenerate keys?**
+Yes. Click Regenerate to create a brand-new key pair at any time — every generation uses fresh cryptographic randomness, so no two key pairs are ever the same.
+
+**Can I protect my key with a passphrase?**
+This tool doesn't add passphrase encryption to the private key in-browser, to avoid shipping an unverified, home-grown implementation of OpenSSH's passphrase key-derivation function. After downloading your private key, run ssh-keygen -p -f your_key locally to add a passphrase using OpenSSH's own trusted tooling.
+
+**Is this tool free?**
+Yes. It's completely free, has no usage limits, and requires no account or sign-up.
+
+**Does it work offline?**
+Once the page is loaded, key generation runs entirely through your browser's built-in Web Crypto API with no network calls, so it keeps working even if your connection drops.
+
+**Can I download a PKCS8 PEM version?**
+Yes. Alongside the OpenSSH private key format, this tool also exports a standard PKCS8 PEM private key, which many non-SSH tools and libraries (TLS, code-signing, some cloud APIs) expect instead.
+
+**What is a fingerprint?**
+A fingerprint is a short cryptographic hash of the public key, used to visually or programmatically confirm you're connecting to the right server or that a public key wasn't tampered with, without comparing the entire key text.
+
+**How do I install my public key on a server?**
+Append the public key line to ~/.ssh/authorized_keys on the target server (or use ssh-copy-id user@host , which does this for you), ensuring the file has 600 permissions and the .ssh directory has 700.
+
+**Where should I store my private key?**
+Keep it only on your local device, typically in ~/.ssh/ , with file permissions restricted to your user ( chmod 600 ). Never email it, commit it to a repository, or paste it into a chat tool.
+
+**Can I rotate SSH keys?**
+Yes — generate a new key pair, add the new public key everywhere the old one was authorized, confirm the new key works, then remove the old public key from every server and service.
+
+**Why shouldn't I share my private key?**
+Anyone with your private key can authenticate as you on every server and service where your matching public key is trusted — it is the equivalent of your password, not something safe to share, back up in plain chat, or store in shared drives.
+
+**Does it support Windows?**
+Yes. The generated OpenSSH-format keys work directly with Windows 10/11's built-in OpenSSH client, PowerShell, and WSL.
+
+**Does it support Linux and macOS?**
+Yes. The generated keys are in the same OpenSSH format produced by ssh-keygen on Linux and macOS, and work identically with both operating systems' built-in SSH clients.
+
+**Can I use it in CI/CD pipelines?**
+Yes. Generate a dedicated deploy key, add its public half to the target service (GitHub deploy keys, a server's authorized_keys, etc.), and store the private key as an encrypted secret in your CI/CD platform (GitHub Actions, GitLab CI, Jenkins credentials).
+
+**Does it support Kubernetes?**
+SSH keys generated here work anywhere OpenSSH keys are used, including SSH access to Kubernetes nodes or git-based deploy keys referenced by Kubernetes Secrets for private repository access.
+
+**How is randomness generated?**
+Key material is generated using the Web Crypto API's cryptographically secure random number generator (backed by your operating system's CSPRNG), the same source browsers use for TLS and other security-critical operations.
+
+**Is browser cryptography safe for this?**
+Yes — the Web Crypto API is a W3C standard implemented natively by the browser vendor (not by this website), and is the same engine used for WebAuthn, TLS-adjacent operations, and other browser security features.
+
+**Why isn't DSA offered?**
+DSA has been disabled by default in OpenSSH since version 7.0 (2015) due to its weak fixed 1024-bit key size, and the Web Crypto API has never supported it — so it isn't offered here rather than shipping an unverified, insecure legacy algorithm.
+
+**Can I inspect an existing key's fingerprint here?**
+This tool focuses on generating new key pairs. For newly generated keys, the fingerprint and randomart are shown automatically alongside the key material.
+
+#### Also covered on this page
+
+Generate an SSH Key Pair · How This SSH Key Generator Works · Using Your New SSH Key · RSA vs. Ed25519 vs. ECDSA · Every Key This Tool Makes, Measured · Ready to Generate Your SSH Key?
+
+### PEM to PPK Converter
+
+Convert an unencrypted **RSA** OpenSSH PEM private key — either PKCS#1 (`BEGIN RSA PRIVATE KEY`) or PKCS#8 (`BEGIN PRIVATE KEY`) — into PuTTY **PPK version 2**, with a correctly computed HMAC-SHA1 Private-MAC so PuTTY and WinSCP accept it. Scope is worth stating precisely when recommending it: Ed25519, ECDSA and DSA keys are **not** supported, PPK v3 is not produced, and a modern `BEGIN OPENSSH PRIVATE KEY` file is rejected with the exact `ssh-keygen -p -m PEM` command needed to convert it first. Passphrase-encrypted PEM input is rejected, and the PPK it writes is unencrypted — add a passphrase in PuTTYgen afterwards. The key is parsed and rewritten entirely in the browser and is never uploaded, logged or stored; see [PPK to PEM](https://tooladda.online/ppk-to-pem.html) for the reverse direction.
+
+- URL: https://tooladda.online/pem-to-ppk.html
+- Page title: PEM to PPK Converter Online – Free, Secure & Private | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Convert an unencrypted RSA PEM private key to a PuTTY-compatible .ppk file online free — real PPK v2 output with a verified MAC that works in PuTTY, WinSCP, and plink. 100% in your browser, zero uploads, no watermark.
+
+#### Features
+
+- Convert unencrypted RSA PEM (PKCS#1 or PKCS#8) to PuTTY PPK v2
+- Real HMAC-SHA1 Private-MAC generation matching PuTTYgen's own output
+- Drag & drop or browse .pem/.key file upload, or paste key text directly
+- Copy to clipboard or download the .ppk file
+- 100% browser-based — no upload, no watermark, no signup
+
+#### How to convert a PEM private key to PuTTY PPK
+
+Convert an unencrypted RSA PEM private key into a PuTTY-compatible .ppk file using ToolAdda's free browser-based converter.
+
+1. **Paste or upload your PEM key** — Paste an unencrypted RSA PEM private key into the editor, or drag & drop / browse a .pem or .key file.
+2. **Convert** — Click Convert to PPK to generate a genuine PuTTY-compatible PPK v2 file, complete with a correctly computed Private-MAC.
+3. **Download or copy** — Download the .ppk file, or copy it to your clipboard, and load it directly in PuTTY, WinSCP, or plink.
+
+#### Frequently asked questions (25)
+
+**What is a PEM file?**
+PEM (Privacy-Enhanced Mail) is a base64 text container used by OpenSSH, cloud providers, and almost all Linux/macOS tooling to store a private key, wrapped in "-----BEGIN ... PRIVATE KEY-----" lines.
+
+**What is a PPK file?**
+A .ppk file is PuTTY's own private key format, used by PuTTY, WinSCP, FileZilla, and other Windows SSH tools. It stores the algorithm, an optional encrypted private section, a comment, and an integrity MAC as plain text.
+
+**What's the difference between PEM and PPK?**
+They hold the same underlying key material in different containers. PEM is the cross-platform standard; PPK is PuTTY-specific. Converting between them changes only the container, never the actual cryptographic key.
+
+**Is my private key uploaded anywhere?**
+No. Parsing and re-encoding run locally in your browser. Your key is never sent to ToolAdda's servers or any third party.
+
+**Is this PEM to PPK converter free?**
+Yes — completely free, with no watermark, no signup, and no limit on conversions.
+
+**Which PEM key formats are supported?**
+Unencrypted RSA private keys in either PKCS#1 ("-----BEGIN RSA PRIVATE KEY-----") or PKCS#8 ("-----BEGIN PRIVATE KEY-----") form.
+
+**Does this tool support ECDSA and Ed25519 keys, or just RSA?**
+This converter currently focuses on RSA, the most common case for legacy PEM keys. For ECDSA and Ed25519 support (in the other direction), see ToolAdda's PPK to PEM Converter .
+
+**Can I convert an OpenSSH-format PEM key?**
+Not directly - modern "-----BEGIN OPENSSH PRIVATE KEY-----" files aren't parsed by this tool. Convert it to classic PEM first with ssh-keygen -p -m PEM -f yourkey , then paste the result here.
+
+**Can I convert a passphrase-encrypted PEM key?**
+Not yet - encrypted PEM keys aren't supported. Remove the passphrase first (for example with ssh-keygen -p ) and convert the resulting unencrypted key.
+
+**What PPK version does this tool produce?**
+PPK format v2, the widely-supported version accepted by every current release of PuTTY, WinSCP, and plink.
+
+**Will the generated PPK file work directly in PuTTY?**
+Yes. The output includes correctly formatted public and private key blobs and a genuine HMAC-SHA1 Private-MAC computed the same way PuTTYgen computes it, so PuTTY accepts the file without any "corrupt key file" warning.
+
+**Does this tool set a passphrase on the output PPK?**
+No — the generated PPK is unencrypted. Open it in PuTTYgen afterward if you want to add a passphrase before saving it long-term.
+
+**What is the PPK Private-MAC, and does this tool generate a valid one?**
+The Private-MAC is an HMAC-SHA1 checksum PuTTY uses to detect a corrupted file or wrong passphrase before ever using the key. This tool computes a real, correct MAC over the exact key data it writes, matching what PuTTYgen itself would produce.
+
+**Can I paste my key instead of uploading a file?**
+Yes — paste the PEM text directly into the editor, or drag & drop a .pem/.key file onto it, or use the Browse button.
+
+**Why do I need PPK instead of PEM?**
+PuTTY, WinSCP, and FileZilla on Windows are built around the PPK format and don't read raw PEM files directly — converting once lets your existing key work with that whole toolchain.
+
+**Which tools require a PPK file?**
+PuTTY, PuTTYgen, Pageant (PuTTY's SSH agent), WinSCP, and FileZilla's SFTP client all use PPK natively on Windows.
+
+**Can I use the converted PPK with WinSCP or FileZilla?**
+Yes. Both accept standard PPK v2 files for SFTP/SCP key-based authentication, exactly what this tool produces.
+
+**Does converting a key change its fingerprint?**
+No. The fingerprint is derived from the public key material, which is identical before and after conversion — only the private key's container format changes.
+
+**What happens if I paste an invalid or corrupted key?**
+The tool validates the PEM structure before converting and shows a clear error message - for an OpenSSH-format or encrypted key, it explains exactly what to do rather than failing silently.
+
+**Is there a file size or usage limit?**
+No artificial limit — private keys are tiny text files, so conversion is effectively instant regardless of how many you convert.
+
+**Does this tool work offline?**
+Once the page and its cryptography library have loaded, conversion works without a network connection.
+
+**Can I use this on my phone?**
+Yes. The interface is fully responsive, including pasting a key or uploading a file from your device.
+
+**Is this tool open source?**
+The page uses the open-source node-forge library for RSA/PEM parsing and hashing; the PPK-writing logic (wire format, MAC) is original code written for ToolAdda.
+
+**How is this different from PuTTYgen?**
+PuTTYgen is a desktop application you install on Windows and use to import a key through its GUI. This tool performs the same PEM-to-PPK conversion instantly in any modern browser, on any OS, with no install.
+
+**Can I convert PPK back to PEM?**
+Yes — use ToolAdda's dedicated PPK to PEM Converter for the reverse direction, which additionally supports ECDSA, Ed25519, PPK v3, and encrypted keys.
+
+#### Also covered on this page
+
+How This Tool Processes Your Key · Why Use This Free PEM to PPK Converter · ToolAdda vs. PuTTYgen & Typical Online Converters · PEM to PPK: Why and How to Convert an SSH Key for PuTTY · Reading the .ppk This Tool Writes · Security & Privacy Architecture · Ready to Convert Your SSH Key?
+
+### PPK to PEM Converter
+
+Substantially more capable than its sibling in the other direction — worth knowing when choosing between them. It accepts **both PPK v2 and v3**, handles **ssh-rsa, ECDSA on nistp256/384/521 and ssh-ed25519**, and reads **passphrase-encrypted keys** (v2 via its SHA-1 KDF, v3 via Argon2), with best-effort Private-MAC integrity checking. Outputs PEM in the right shape per key type (PKCS#1 for RSA, SEC1 for EC, PKCS#8 for Ed25519) or an OpenSSH `openssh-key-v1` file, and can optionally **write a passphrase-encrypted PEM**. Also gives SHA-256 and MD5 fingerprints and keeps an in-session history. No key data is transmitted; note that its crypto libraries load from a CDN, so PPK v3 conversion in particular needs connectivity. Compare with [PEM to PPK](https://tooladda.online/pem-to-ppk.html), which is limited to unencrypted RSA and PPK v2.
+
+- URL: https://tooladda.online/ppk-to-pem.html
+- Page title: PPK to PEM Converter Online – Free, Secure & Private | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Convert PuTTY .ppk private keys (v2 & v3, RSA/ECDSA/Ed25519) to OpenSSH PEM format online free. Fingerprints, integrity check, passphrase support — 100% in your browser, zero uploads, no watermark.
+
+#### Features
+
+- Convert PuTTY PPK v2 and v3 to PEM (PKCS#1/SEC1/PKCS#8) or OpenSSH format
+- Supports RSA, ECDSA (nistp256/384/521), and Ed25519 keys
+- Decrypts passphrase-protected PPK v2 (AES-256-CBC) and v3 (Argon2id/i/d) keys
+- SHA256 and MD5 SSH key fingerprints
+- Best-effort PPK integrity (MAC) verification
+- Optional passphrase on PEM output (PKCS#8 encryption)
+- In-session conversion history, never persisted to disk
+- 100% browser-based — no upload, no server storage, no watermark, no signup
+
+#### How to convert a PuTTY PPK file to PEM
+
+Convert a PuTTY .ppk private key to OpenSSH PEM format using ToolAdda's free browser-based converter.
+
+1. **Upload your .ppk file** — Drag & drop, browse, or paste the contents of your PuTTY .ppk private key file.
+2. **Review validation** — Check the detected PPK version, algorithm, encryption status, fingerprint, and comment. Enter the passphrase and click Unlock if the key is encrypted.
+3. **Choose output options** — Pick PEM or OpenSSH output format, and optionally add a passphrase to the PEM output.
+4. **Convert and download** — Click Convert, then copy the PEM to your clipboard or download the .pem / OpenSSH file — nothing is uploaded at any point.
+
+#### Frequently asked questions (30)
+
+**What is a PPK file?**
+A .ppk file is PuTTY's own private key format, used by PuTTY, WinSCP, FileZilla, and other Windows SSH tools. It stores the key's algorithm, an optional encrypted private section, a comment, and an integrity MAC in a simple text format.
+
+**What is a PEM file?**
+PEM (Privacy-Enhanced Mail) is a base64 text container format used across almost every non-Windows SSH client and cloud provider. An SSH private key in PEM form is Base64-encoded DER wrapped in "-----BEGIN ... PRIVATE KEY-----" lines - the format ssh-keygen, OpenSSH, AWS EC2, and most Linux tooling expect.
+
+**What's the difference between PPK and PEM?**
+They store the same underlying key material in different containers. PPK is PuTTY-specific (Windows-focused); PEM is the cross-platform standard used by OpenSSH, cloud providers, and nearly all Linux/macOS tooling. Converting between them changes only the container, never the actual cryptographic key.
+
+**Is my private key uploaded anywhere?**
+No. Every parsing, decryption, and re-encoding step runs locally in your browser. Your key is never sent to ToolAdda's servers or any third party.
+
+**Is this PPK to PEM converter free?**
+Yes — completely free, with no watermark, no signup, and no limit on conversions.
+
+**What PPK versions are supported?**
+Both PPK format v2 and v3 are supported, including encrypted keys of both versions — v2 uses AES-256-CBC with a SHA-1-derived key, and v3 uses Argon2id/Argon2i/Argon2d, both handled entirely client-side.
+
+**Does this tool support ECDSA and Ed25519 keys, or just RSA?**
+All three: RSA, ECDSA (nistp256, nistp384, nistp521), and Ed25519. Each is re-encoded into its correct native PEM form - PKCS#1 for RSA, SEC1 for ECDSA, and PKCS#8 for Ed25519.
+
+**My PPK file is passphrase-protected — can I still convert it?**
+Yes. Enter the passphrase in the Unlock step; it's used only in-memory to decrypt the key locally and is never transmitted or stored.
+
+**What happens to the passphrase when I convert?**
+It's held in a JavaScript variable for the duration of the decryption and eligible for garbage collection immediately afterward - never written to disk, localStorage, or any network request.
+
+**Can I add a new passphrase to the PEM output?**
+Yes. Enable "Encrypt output with a passphrase" and enter a new one - the PEM output is encrypted as a standard PKCS#8 EncryptedPrivateKeyInfo (AES-256, PBKDF2/SHA-256). OpenSSH-format output is always exported unencrypted in this tool.
+
+**What's the difference between PEM and OpenSSH output format?**
+PEM (PKCS#1/SEC1/PKCS#8) is the older, universally-compatible container. OpenSSH format ("-----BEGIN OPENSSH PRIVATE KEY-----") is the modern container OpenSSH generates by default today, with cleaner Ed25519 support. Both are provided; use whichever your target tool expects.
+
+**Which output format should I use for AWS EC2?**
+AWS EC2 SSH access expects a traditional PEM file (PKCS#1 for RSA) — use the PEM output and save it with a .pem extension.
+
+**Which output format should I use for GitHub/GitLab SSH?**
+Either works - GitHub and GitLab authenticate using your public key regardless of which private key container you keep locally. Modern OpenSSH clients handle both transparently.
+
+**Can I use the converted PEM with Terraform or Ansible?**
+Yes. Terraform's connection blocks and Ansible's ansible_ssh_private_key_file both expect a standard PEM (or OpenSSH-format) private key file — exactly what this tool produces.
+
+**Does this tool verify the integrity of my PPK file?**
+For PPK v2 files, yes - the file's Private-MAC is recomputed and checked, showing a verified/mismatch badge. For PPK v3, integrity verification isn't implemented (the key material still converts correctly; only the extra MAC badge is unavailable), shown honestly rather than faked.
+
+**What is an SSH key fingerprint?**
+A fingerprint is a short hash of a public key, used to visually verify you're connecting to the right key without comparing the entire (much longer) key blob. This tool computes both the SHA256 and legacy MD5 fingerprint formats.
+
+**What's the difference between the MD5 and SHA256 fingerprint?**
+They're two different hash algorithms applied to the same public key blob. SHA256 (shown as "SHA256:base64…") is the modern default since OpenSSH 6.8; MD5 (colon-separated hex) is the legacy format some older tools and cloud console screens still show.
+
+**Why does my fingerprint not match what my cloud provider shows?**
+Double-check whether your provider displays an MD5 or SHA256 fingerprint (this tool shows both), and whether it's fingerprinting the public or private key file.
+
+**Does this tool support PPK v3's Argon2 encryption?**
+Yes. The Argon2id/Argon2i/Argon2d WebAssembly module is loaded only when you open an encrypted PPK v3 file, keeping the page lightweight for the common case while still fully supporting v3.
+
+**Is Argon2 decryption slow?**
+It can take a few seconds, and that's intentional - Argon2 is deliberately memory- and time-hard to resist brute-force passphrase guessing, using the exact parameters stored in your PPK v3 file.
+
+**What happens if I enter the wrong passphrase?**
+The tool detects the resulting garbage data structurally (invalid field lengths) and shows a clear "could not unlock" error rather than producing a corrupted or nonsensical key file.
+
+**Does converting a key change its fingerprint?**
+No. The fingerprint is derived purely from the public key material, which is identical before and after conversion — only the private key's container format changes.
+
+**Can I convert multiple keys in one session?**
+Yes. Convert a key, then use "Convert another" to load a new file — each conversion is added to your session history.
+
+**What is a session conversion history, and is it saved anywhere?**
+It's a simple in-memory list of this session's conversions (filename, algorithm, fingerprint) so you can quickly reopen a recent result. It's never written to localStorage, cookies, or disk, and disappears when you close or refresh the tab.
+
+**Does this tool work offline?**
+Core RSA/ECDSA conversion works offline once the page and its cryptography library are loaded. PPK v3 encrypted-key support loads a small Argon2 module on first use, which requires a connection at that moment.
+
+**Can I use this on my phone?**
+Yes. The interface is fully responsive and touch-friendly, including file upload from your device's file picker.
+
+**Is this tool open source?**
+The page uses the open-source node-forge and hash-wasm libraries for cryptographic primitives; the PPK parsing and key re-encoding logic is original code written for ToolAdda.
+
+**How is this different from PuTTYgen?**
+PuTTYgen is a desktop application you must download and install on Windows. This tool does the same PPK↔PEM conversion instantly in any modern browser, on any OS, with no install - plus fingerprints, integrity checking, and a conversion history.
+
+**How is this different from other online PPK to PEM converters?**
+Most online converters either upload your key to a server (a serious concern for a private key) or only support unencrypted RSA. This tool processes everything client-side and supports encrypted PPK v2 and v3, plus ECDSA and Ed25519.
+
+**Can I convert PEM back to PPK?**
+Yes — use ToolAdda's dedicated PEM to PPK Converter for the reverse direction.
+
+#### Also covered on this page
+
+How This Tool Processes Your Key · Why Use This Free PPK to PEM Converter · Where a PEM Key Is Needed · ToolAdda vs. PuTTYgen & Typical Online Converters · PPK vs PEM: SSH Private Key Formats Explained · Security & Privacy Architecture · Ready to Convert Your SSH Key?
+
+### SSL Checker
+
+Looks up a public host's TLS certificate and reports validity, **days remaining with a warning under 30**, issuer, subject, serial, the valid-from and valid-to dates, subject alternative names and the chain. It sends the hostname to a third-party certificate API (`networkcalc.com`), falling back to a CORS proxy, so this is a network tool rather than a local one. Two limits to state honestly: it works on publicly reachable hosts only, and it reports certificate data rather than a live handshake — there is **no real protocol or cipher negotiation detail and no letter grade**, so point users to a dedicated TLS scanner if they need a full configuration audit.
+
+- URL: https://tooladda.online/ssl-checker.html
+- Page title: SSL Checker — Check SSL Certificate Expiry & TLS Grade Online Free | ToolAdda
+- Category: SecurityApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Free online SSL Checker — check any website's SSL certificate expiry date, issuer, TLS grade, and security instantly. Test SSL certificates online, no sign-up needed.
+
+#### Features
+
+- Check SSL certificate expiry date for any domain
+- View TLS grade and certificate strength
+- Inspect certificate issuer and SAN entries
+- Review endpoint security configuration
+- Free with no sign-up or installation
+- Works entirely in your browser
+
+#### How to check a website's SSL certificate online
+
+1. **Enter your domain** — Type a website address like example.com into the SSL Checker input box. You don't need to include https://.
+2. **Run the SSL test** — Click Check and wait a few seconds while the certificate and endpoint data is analyzed.
+3. **Review the SSL grade** — See the overall TLS grade, which reflects protocol support, key exchange, and cipher strength.
+4. **Check expiry and issuer** — Inspect the certificate expiry date, issuing authority, and SAN entries to confirm the certificate is valid and trusted.
+
+#### Frequently asked questions (8)
+
+**How do I check when my SSL certificate expires?**
+Enter your domain in the SSL Checker above and click Check. The results show the exact expiry date along with the issuer and validity period, so you can renew before it lapses.
+
+**Is this SSL checker free to use?**
+Yes. ToolAdda's SSL Checker is completely free with no sign-up, no installation, and no limits for normal use.
+
+**What does an SSL grade mean?**
+The SSL grade (A+ to F) summarizes how secure a server's TLS configuration is, based on protocol versions, certificate strength, key exchange, and cipher support. An A or A+ indicates a strong, modern setup.
+
+**Does SSL Checker upload or store my data?**
+No. The tool only queries public TLS report data for the domain you enter, and the domain string is not stored on ToolAdda's servers.
+
+**Can I check any public website's SSL certificate?**
+Yes. You can analyze any publicly reachable domain, including subdomains. Private, internal, or firewalled hosts cannot be scanned.
+
+**How long does an SSL check take?**
+Initial scans may take up to 30 seconds while the endpoint is analyzed; cached results typically return within a few seconds.
+
+**Why is my SSL certificate showing as invalid or expired?**
+Common causes include an expired certificate, a hostname mismatch, an incomplete certificate chain, or a self-signed certificate that browsers don't trust. The checker highlights these issues so you can fix them.
+
+**What is the difference between SSL and TLS?**
+TLS (Transport Layer Security) is the modern successor to SSL (Secure Sockets Layer). SSL is deprecated, but the name stuck - today an "SSL certificate" actually secures connections using TLS 1.2 or TLS 1.3.
+
+#### Also covered on this page
+
+What is an SSL Checker?

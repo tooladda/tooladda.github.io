@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+    <meta name="description" content="Create free QR codes for URLs, text, WiFi, email, phone, contacts and more. Customize colors, add a logo, choose settings and download PNG or SVG instantly." />
+    <title>Free QR Code Generator — URLs, WiFi &amp; More | ToolAdda</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <meta name="theme-color" content="#047857" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="ToolAdda" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <link rel="canonical" href="https://tooladda.online/qr-code-generator.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+    <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta property="og:title" content="Free QR Code Generator — URLs, WiFi &amp; More | ToolAdda" />
+    <meta property="og:description" content="Create QR codes for URLs, text, WiFi, email, phone, SMS, contacts and locations. Customize colors, add a logo, download PNG or SVG. Nothing is uploaded." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tooladda.online/qr-code-generator.html" />
+    <meta property="og:site_name" content="ToolAdda" />
+    <meta property="og:image" content="https://tooladda.online/assets/images/og/qr-code-generator.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content="Free QR Code Generator — create QR codes on ToolAdda, entirely in your browser with no sign-up." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Free QR Code Generator — URLs, WiFi &amp; More | ToolAdda" />
+    <meta name="twitter:description" content="Create QR codes for URLs, text, WiFi, email, phone, SMS, contacts and locations. Customize colors, add a logo, download PNG or SVG. Nothing is uploaded." />
+    <meta name="twitter:image" content="https://tooladda.online/assets/images/og/qr-code-generator.jpg" />
+    <meta name="twitter:image:alt" content="Free QR Code Generator — create QR codes on ToolAdda, entirely in your browser with no sign-up." />
+
+    <style id="qr-styles">
+      /* QR Code Generator — "the viewfinder".
+         What a QR code is for is being found by a camera. The cover is a phone
+         viewfinder — four corner brackets, a code, and the scan line sweeping
+         over it — and the page keeps to the code's own black and white with
+         one emerald accent, so the live preview is the most coloured thing on
+         screen. Amber and red keep their meaning (check this / refused). */
+      body.qs-page {
+        --qs-bg: #f3f5f3;
+        --qs-card: #ffffff;
+        --qs-well: #f7f8f7;
+        --qs-line: rgba(22, 30, 26, .12);
+        --qs-line-2: rgba(22, 30, 26, .24);
+        --qs-ink: #141a17;
+        --qs-ink-2: #343d38;
+        --qs-mute: #5f6963;
+        --qs-accent: #047857;
+        --qs-accent-hover: #065f46;
+        --qs-accent-ink: #ffffff;
+        --qs-accent-text: #047857;
+        --qs-accent-soft: rgba(4, 120, 87, .09);
+        --qs-accent-ring: rgba(4, 120, 87, .34);
+        --qs-warn: #8a5a06;
+        --qs-warn-soft: rgba(217, 150, 20, .13);
+        --qs-bad: #b3261e;
+        --qs-bad-soft: rgba(179, 38, 30, .09);
+        --qs-stage: #e8ebe8;
+        --qs-scope: #0f1512;
+        --qs-shadow: 0 1px 0 rgba(22, 30, 26, .05), 0 18px 40px -26px rgba(22, 30, 26, .45);
+        --accent: var(--qs-accent);
+        --accent-strong: var(--qs-accent-hover);
+        --accent-soft: var(--qs-accent-soft);
+        background: var(--qs-bg);
+      }
+      [data-theme="dark"] body.qs-page {
+        --qs-bg: #0e1210;
+        --qs-card: #171c19;
+        --qs-well: #121714;
+        --qs-line: rgba(232, 242, 236, .1);
+        --qs-line-2: rgba(232, 242, 236, .2);
+        --qs-ink: #eef4f0;
+        --qs-ink-2: #cfd9d3;
+        --qs-mute: #97a39c;
+        --qs-accent: #34d399;
+        --qs-accent-hover: #6ee7b7;
+        --qs-accent-ink: #062016;
+        --qs-accent-text: #6ee7b7;
+        --qs-accent-soft: rgba(52, 211, 153, .13);
+        --qs-accent-ring: rgba(52, 211, 153, .42);
+        --qs-warn: #e0b054;
+        --qs-warn-soft: rgba(224, 176, 84, .12);
+        --qs-bad: #fca5a5;
+        --qs-bad-soft: rgba(252, 165, 165, .11);
+        --qs-stage: #0b0f0d;
+        --qs-shadow: 0 1px 0 rgba(0, 0, 0, .4), 0 20px 44px -26px rgba(0, 0, 0, .9);
+      }
+      body.qs-page [hidden] { display: none !important; }
+      .qs-page [id], .qs-top > .qs-preview { scroll-margin-top: calc(var(--header-overlap, 5.5rem) + .75rem); }
+      .qr-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+      .qs-mono, .qr-bar__title { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+      .qs-shell { padding: .6rem 0 3rem; }
+      .qr-crumb { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin: .35rem 0 .9rem; font-size: .86rem; color: var(--qs-mute); }
+      .qr-crumb a { color: var(--qs-accent-text); font-weight: 700; text-decoration: none; }
+      .qr-crumb a:hover { text-decoration: underline; }
+      .qr-crumb span[aria-hidden] { opacity: .5; }
+
+      /* ---------- buttons ---------- */
+      .qr-btn, .qs-btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: .4rem; min-height: 2.75rem; padding: .5rem .95rem;
+        border-radius: 10px; border: 1px solid transparent; background: none; color: inherit; font: inherit; font-size: .9rem; font-weight: 800;
+        line-height: 1.2; text-decoration: none; cursor: pointer; transition: background-color .15s, border-color .15s, color .15s;
+      }
+      .qr-btn:disabled { opacity: .45; cursor: not-allowed; }
+      .qr-btn--accent, .qs-btn--primary { background: var(--qs-accent); border-color: var(--qs-accent); color: var(--qs-accent-ink); box-shadow: 0 8px 18px -10px var(--qs-accent); }
+      .qr-btn--accent:hover:not(:disabled), .qs-btn--primary:hover { background: var(--qs-accent-hover); border-color: var(--qs-accent-hover); color: var(--qs-accent-ink); }
+      .qr-btn--ghost, .qs-btn--ghost { background: var(--qs-card); border-color: var(--qs-line-2); color: var(--qs-ink); }
+      .qr-btn--ghost:hover:not(:disabled), .qs-btn--ghost:hover { border-color: var(--qs-accent); color: var(--qs-accent-text); }
+      .qr-btn--sm { min-height: 2.4rem; padding: .3rem .7rem; font-size: .82rem; }
+      .qs-page :is(.qr-btn, .qs-btn, .qr-type, .qr-swatch, .qr-related a, .qr-faq summary, details.qr-adv > summary):focus-visible,
+      .qs-page .qs-top :is(input, select, textarea):focus-visible { outline: 3px solid var(--qs-accent-ring); outline-offset: 2px; }
+
+      /* ---------- top: cover, input, preview, customise, ad ----------
+         Under 700px one column: cover, the input card, the ad, then the
+         preview — so a phone gets the headline, the input and the ad in the
+         first screen, and Generate scrolls down to the code. 700-999px: the
+         300x250 sits beside the cards. From 1000px: input | preview | ad,
+         all side by side. The ad is never above the tool. */
+      .qs-top { display: grid; gap: 1rem; align-items: start; grid-template-areas: "cover" "input" "ad" "preview" "custom"; }
+      .qs-top > * { min-width: 0; }
+      .qs-cover { grid-area: cover; }
+      .qs-input { grid-area: input; }
+      .qs-preview { grid-area: preview; }
+      .qs-custom { grid-area: custom; }
+      .qs-ad-zone { grid-area: ad; }
+      @media (min-width: 700px) {
+        .qs-top { grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "cover cover" "input ad" "preview ad" "custom ad"; column-gap: 1.1rem; }
+        .qs-ad-zone { position: sticky; top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+      }
+      @media (min-width: 1000px) {
+        .qs-top { grid-template-columns: minmax(300px, 1fr) minmax(240px, 320px) 300px; grid-template-areas: "cover cover cover" "input preview ad" "custom preview ad"; }
+      }
+      /* The preview follows the customise panel only when the whole card,
+         buttons included, fits on screen; on a laptop-height window it
+         scrolls normally so Copy data and Share stay reachable. */
+      @media (min-width: 1000px) and (min-height: 860px) {
+        .qs-top > .qs-preview { position: sticky; top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+      }
+      /* One 300x250 at every width: inline-ads.js only shows .ta-inline-ad
+         below 1000px, so it is forced on here; data-unit="inline" sizes it. */
+      body.qs-page .qs-ad-zone { text-align: center; }
+      body.qs-page .qs-ad-zone .ta-inline-ad { display: block !important; margin: 0 auto !important; }
+      @media (max-width: 340px) { .qs-ad-zone { margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); } }
+
+      /* ---------- cover: headline + a viewfinder ---------- */
+      .qs-cover {
+        position: relative; display: grid; gap: 1.2rem; align-items: center; overflow: hidden;
+        padding: 1.25rem 1.4rem; border-radius: 16px; background: var(--qs-card); border: 1px solid var(--qs-line); box-shadow: var(--qs-shadow);
+      }
+      @media (min-width: 900px) { .qs-cover { grid-template-columns: minmax(0, 1fr) auto; } }
+      .qr-eyebrow {
+        display: inline-flex; align-items: center; gap: .4rem; margin: 0 0 .65rem; padding: .28rem .62rem; border-radius: 6px;
+        background: var(--qs-accent-soft); border: 1px solid var(--qs-accent-ring); color: var(--qs-accent-text);
+        font: 800 .68rem/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .14em; text-transform: uppercase;
+      }
+      /* DOM order stays "Free QR Code Generator"; visually the pill sits
+         after "Generator" so it costs no line of its own */
+      .qr-h1 { display: flex; flex-wrap: wrap; align-items: center; column-gap: .55rem; margin: 0; color: var(--qs-ink); letter-spacing: -.028em; }
+      .qr-h1 .qs-t1 { order: 1; flex-basis: 100%; }
+      .qr-h1 .qs-t2 { order: 2; }
+      .qr-h1 .qs-free { order: 3; }
+      .qr-h1 .qs-free {
+        display: inline-block; margin-top: .2rem; padding: .12rem .5rem; border-radius: 6px; background: var(--qs-accent); color: var(--qs-accent-ink);
+        font-size: clamp(.95rem, .8rem + .5vw, 1.15rem); font-weight: 900; letter-spacing: .02em; vertical-align: middle;
+      }
+      /* "QR Code" set big, led by a finder pattern — the square every scanner looks for first */
+      .qr-h1 .qs-t1 { display: flex; align-items: center; gap: .18em; font-size: clamp(2.2rem, 1.3rem + 3.2vw, 3.3rem); font-weight: 900; line-height: 1; }
+      .qr-h1 .qs-t1::before {
+        content: ""; flex: none; width: .72em; height: .72em; border-radius: .08em; box-sizing: border-box;
+        border: .1em solid currentColor; background: linear-gradient(currentColor 0 0) center / 42% 42% no-repeat;
+      }
+      .qr-h1 .qs-t2 { display: block; margin-top: .2rem; font-size: clamp(1.25rem, 1rem + 1vw, 1.7rem); font-weight: 800; line-height: 1.2; color: var(--qs-ink-2); }
+
+      /* the viewfinder: brackets, a code, and the scan line */
+      .qs-finder { position: relative; width: 132px; aspect-ratio: 1; padding: 11px; border-radius: 16px; background: var(--qs-scope); box-shadow: 0 16px 30px -18px rgba(0, 0, 0, .8); }
+      .qs-finder .qs-code { display: block; width: 100%; height: 100%; border-radius: 6px; }
+      .qs-finder::before {
+        content: ""; position: absolute; inset: 8px; pointer-events: none;
+        background:
+          linear-gradient(#34d399, #34d399) 0 0 / 22px 3px no-repeat, linear-gradient(#34d399, #34d399) 0 0 / 3px 22px no-repeat,
+          linear-gradient(#34d399, #34d399) 100% 0 / 22px 3px no-repeat, linear-gradient(#34d399, #34d399) 100% 0 / 3px 22px no-repeat,
+          linear-gradient(#34d399, #34d399) 0 100% / 22px 3px no-repeat, linear-gradient(#34d399, #34d399) 0 100% / 3px 22px no-repeat,
+          linear-gradient(#34d399, #34d399) 100% 100% / 22px 3px no-repeat, linear-gradient(#34d399, #34d399) 100% 100% / 3px 22px no-repeat;
+      }
+      .qs-scanline {
+        position: absolute; left: 11px; right: 11px; top: 11px; height: 3px; border-radius: 3px; pointer-events: none;
+        background: #34d399; box-shadow: 0 0 12px 3px rgba(52, 211, 153, .6);
+        animation: qs-scan 2.8s ease-in-out infinite alternate;
+      }
+      @keyframes qs-scan { from { transform: translateY(0); } to { transform: translateY(107px); } }
+      .qs-finder-tag { display: flex; justify-content: center; gap: .35rem; margin-top: .5rem; }
+      .qs-finder-tag span { padding: .12rem .45rem; border-radius: 5px; background: var(--qs-well); border: 1px solid var(--qs-line); font: 800 .62rem/1.3 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .08em; color: var(--qs-mute); }
+      .qs-finder-tag span::before { content: attr(data-t); }
+
+      /* ---------- the three tool cards ---------- */
+      .qs-card { position: relative; padding: 1rem; border-radius: 16px; background: var(--qs-card); border: 1px solid var(--qs-line); box-shadow: var(--qs-shadow); }
+      .qs-input { border-top: 4px solid var(--qs-accent); }
+      .qr-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem .8rem; margin: 0 0 .75rem; }
+      .qr-bar__title { margin: 0; font-size: .68rem; font-weight: 800; letter-spacing: .17em; text-transform: uppercase; color: var(--qs-mute); }
+      .qr-privacy { display: inline-flex; align-items: center; gap: .3rem; padding: .22rem .55rem; border-radius: 999px; background: var(--qs-accent-soft); border: 1px solid var(--qs-accent-ring); color: var(--qs-accent-text); font-size: .72rem; font-weight: 800; }
+      .qr-types { display: flex; flex-wrap: wrap; gap: .3rem; margin: 0 0 .9rem; }
+      .qr-type {
+        min-height: 2.4rem; padding: .3rem .75rem; border-radius: 999px; border: 1px solid var(--qs-line-2); background: var(--qs-card);
+        color: var(--qs-ink-2); font: inherit; font-size: .82rem; font-weight: 800; cursor: pointer;
+      }
+      .qr-type:hover { border-color: var(--qs-accent); color: var(--qs-accent-text); }
+      .qr-type.is-on { background: var(--qs-accent); border-color: var(--qs-accent); color: var(--qs-accent-ink); }
+
+      .qr-label { display: block; margin-bottom: .3rem; font-size: .7rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--qs-mute); }
+      .qr-hint { margin: .3rem 0 0; font-size: .77rem; line-height: 1.5; color: var(--qs-mute); }
+      .qr-block + .qr-block { margin-top: .85rem; }
+      .qr-input, .qr-select, .qr-textarea {
+        width: 100%; min-height: 2.75rem; padding: .5rem .65rem; border-radius: 9px; border: 1px solid var(--qs-line-2);
+        background: var(--qs-card); color: var(--qs-ink); font: inherit; font-size: .95rem; box-sizing: border-box;
+      }
+      .qr-textarea { min-height: 96px; resize: vertical; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .86rem; }
+      .qr-input[aria-invalid="true"], .qr-textarea[aria-invalid="true"] { border-color: var(--qs-bad); box-shadow: 0 0 0 3px var(--qs-bad-soft); }
+      .qr-duo { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+      .qr-fieldgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr)); gap: .6rem; }
+      .qr-check { display: inline-flex; align-items: center; gap: .45rem; min-height: 2.75rem; font-size: .84rem; font-weight: 700; color: var(--qs-ink-2); cursor: pointer; }
+      .qr-check input { width: 18px; height: 18px; accent-color: var(--qs-accent); }
+      .qr-color { width: 100%; min-height: 2.75rem; padding: .2rem; border-radius: 9px; border: 1px solid var(--qs-line-2); background: var(--qs-card); cursor: pointer; }
+      .qr-range { width: 100%; accent-color: var(--qs-accent); }
+      .qr-msg { margin: .8rem 0 0; padding: .6rem .8rem; border-radius: 9px; font-size: .85rem; line-height: 1.55; }
+      .qr-msg--error { background: var(--qs-bad-soft); border: 1px solid var(--qs-bad); color: var(--qs-bad); }
+      .qr-msg--warn { background: var(--qs-warn-soft); border: 1px solid rgba(217, 150, 20, .35); color: var(--qs-ink-2); }
+      .qr-note { margin: .7rem 0 0; padding: .55rem .75rem; border-radius: 9px; background: var(--qs-warn-soft); border-left: 3px solid var(--qs-warn); font-size: .8rem; line-height: 1.55; color: var(--qs-ink-2); }
+      .qr-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(130px, 100%), 1fr)); gap: .4rem; margin-top: .9rem; }
+      .qs-input .qr-actions { grid-template-columns: 2fr 1fr; }
+
+      .qs-preview-head { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-bottom: .6rem; }
+      .qs-preview-head .qr-label { margin: 0; }
+      .qr-stage { display: grid; place-items: center; min-height: 260px; padding: 1.1rem; border-radius: 12px; background: var(--qs-stage); border: 1px solid var(--qs-line); }
+      .qr-stage canvas { display: block; max-width: 100%; height: auto; border-radius: 4px; }
+      .qr-empty { display: grid; place-items: center; gap: .5rem; text-align: center; font-size: .86rem; color: var(--qs-mute); }
+      /* a grid hint, deliberately not a scannable code */
+      .qr-empty__grid { width: 96px; height: 96px; border-radius: 6px; opacity: .35; background-image: linear-gradient(var(--qs-mute) 1px, transparent 1px), linear-gradient(90deg, var(--qs-mute) 1px, transparent 1px); background-size: 12px 12px; }
+      .qr-status { display: inline-flex; align-items: center; gap: .35rem; padding: .25rem .6rem; border-radius: 999px; border: 1px solid var(--qs-line-2); background: var(--qs-card); color: var(--qs-mute); font-size: .76rem; font-weight: 800; }
+      /* state is a word plus a glyph — never colour alone */
+      .qr-status::before { content: "•"; }
+      .qr-status[data-state="ok"] { color: var(--qs-accent-text); border-color: var(--qs-accent); }
+      .qr-status[data-state="ok"]::before { content: "✓"; }
+      .qr-status[data-state="error"] { color: var(--qs-bad); border-color: var(--qs-bad); background: var(--qs-bad-soft); }
+      .qr-status[data-state="error"]::before { content: "!"; }
+      .qr-summary { display: grid; gap: .3rem; margin: .85rem 0 0; }
+      .qr-summary > div { display: flex; justify-content: space-between; gap: .8rem; font-size: .8rem; }
+      .qr-summary dt { color: var(--qs-mute); }
+      .qr-summary dd { margin: 0; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-weight: 800; color: var(--qs-ink); }
+      .qs-preview .qr-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .qs-preview .qr-actions .qr-btn--accent { grid-column: 1 / -1; }
+
+      details.qr-adv { border-radius: 12px; border: 1px solid var(--qs-line); background: var(--qs-well); }
+      details.qr-adv + details.qr-adv { margin-top: .6rem; }
+      details.qr-adv > summary { display: flex; align-items: center; justify-content: space-between; gap: .5rem; min-height: 2.75rem; padding: .6rem .85rem; list-style: none; cursor: pointer; font-size: .72rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--qs-ink-2); }
+      details.qr-adv > summary::-webkit-details-marker { display: none; }
+      details.qr-adv > summary::after { content: "+"; font-size: 1.05rem; color: var(--qs-accent-text); }
+      details.qr-adv[open] > summary::after { content: "\2212"; }
+      details.qr-adv[open] > summary { border-bottom: 1px solid var(--qs-line); }
+      .qr-adv__body { padding: .85rem; }
+      .qr-swatches { display: flex; flex-wrap: wrap; gap: .35rem; }
+      .qr-swatch { display: grid; justify-items: center; gap: .2rem; min-height: 2.75rem; padding: .35rem .5rem; border-radius: 8px; border: 1px solid var(--qs-line-2); background: var(--qs-card); color: var(--qs-ink-2); font: inherit; cursor: pointer; }
+      .qr-swatch:hover { border-color: var(--qs-accent); }
+      .qr-swatch__chip { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 5px; border: 1px solid; }
+      .qr-swatch__chip > span { display: block; width: 12px; height: 12px; border-radius: 2px; }
+      .qr-swatch__name { font-size: .66rem; font-weight: 700; }
+
+      /* ---------- intro ---------- */
+      .qs-intro { display: grid; gap: .9rem; margin-top: 1.2rem; }
+      @media (min-width: 900px) { .qs-intro { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: center; } }
+      .qr-lede { margin: 0; padding-left: .85rem; border-left: 3px solid var(--qs-accent); color: var(--qs-ink-2); font-size: .98rem; line-height: 1.7; }
+      .qr-trust { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0; padding: 0; list-style: none; }
+      .qr-trust li { padding: .3rem .6rem; border-radius: 8px; background: var(--qs-card); border: 1px solid var(--qs-line); font-size: .78rem; font-weight: 700; color: var(--qs-ink-2); }
+      .qr-trust li::before { content: "✓ "; color: var(--qs-accent-text); font-weight: 900; }
+      .qr-hero-cta { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+      /* ---------- content ---------- */
+      .qr-section { margin-top: 2.5rem; padding: clamp(1.1rem, 2.6vw, 1.7rem); border-radius: 14px; background: var(--qs-card); border: 1px solid var(--qs-line); box-shadow: var(--qs-shadow); }
+      .qr-h2 { margin: 0 0 .5rem; padding-left: .8rem; border-left: 5px solid var(--qs-accent); font-size: clamp(1.25rem, 2.5vw, 1.6rem); font-weight: 900; line-height: 1.25; letter-spacing: -.012em; color: var(--qs-ink); }
+      .qs-h2 { margin: 0 0 .45rem; text-align: center; font-size: clamp(1.4rem, 2.8vw, 1.9rem); line-height: 1.2; color: var(--qs-ink); }
+      /* three finder squares under each centred title */
+      .qs-h2::after { content: ""; display: block; width: 44px; height: 12px; margin: .6rem auto 0; background: repeating-linear-gradient(90deg, var(--qs-accent) 0 12px, transparent 12px 16px); }
+      .qs-sub { max-width: 64ch; margin: 0 auto 1.3rem; text-align: center; color: var(--qs-mute); }
+      .qr-h3 { margin: 1.5rem 0 .4rem; font-size: 1.05rem; font-weight: 900; color: var(--qs-ink); }
+      .qr-sub { margin: 0 0 1rem; max-width: 78ch; line-height: 1.65; color: var(--qs-ink-2); }
+      .qr-section p, .qr-section li { line-height: 1.72; color: var(--qs-ink-2); }
+      .qr-section > p, .qr-section > ul, .qr-section > ol { max-width: 78ch; }
+      .qr-section > p { margin: 0 0 .85rem; }
+      .qr-section > ul, .qr-section > ol { margin: 0 0 .95rem; padding-left: 1.2rem; }
+      .qr-section li { margin-bottom: .35rem; }
+      .qr-section strong { color: var(--qs-ink); }
+      .qr-section a { color: var(--qs-accent-text); font-weight: 700; }
+      .qs-page code { padding: .08rem .32rem; border-radius: 4px; background: var(--qs-well); border: 1px solid var(--qs-line); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .86em; color: var(--qs-ink); overflow-wrap: anywhere; }
+      .qr-tablewrap { overflow-x: auto; margin: 0 0 1rem; border-radius: 12px; border: 1px solid var(--qs-line); }
+      .qr-table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: .87rem; background: var(--qs-card); }
+      .qr-table th, .qr-table td { padding: .55rem .7rem; text-align: left; border-bottom: 1px solid var(--qs-line); color: var(--qs-ink-2); }
+      .qr-table thead th { background: var(--qs-well); font-size: .7rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; color: var(--qs-mute); }
+      .qr-table tbody th { color: var(--qs-ink); }
+      .qr-table tbody tr:last-child th, .qr-table tbody tr:last-child td { border-bottom: 0; }
+      /* phones: each row becomes a small card, so no column hides off the edge */
+      @media (max-width: 640px) {
+        .qr-tablewrap { overflow: visible; border: 0; border-radius: 0; }
+        .qr-table, .qr-table tbody, .qr-table tr, .qr-table th, .qr-table td { display: block; width: 100%; min-width: 0; }
+        .qr-table { background: none; }
+        .qr-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+        .qr-table tr { margin-bottom: .5rem; padding: .55rem .8rem; border: 1px solid var(--qs-line); border-radius: 10px; background: var(--qs-card); }
+        .qr-table th, .qr-table td { padding: .12rem 0; border: 0; }
+        .qr-table tbody th { margin-bottom: .15rem; }
+        .qr-table td[data-label]::before { content: attr(data-label) ": "; color: var(--qs-ink); font-weight: 700; }
+        .qr-table code { overflow-wrap: anywhere; }
+      }
+      .qr-caps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr)); gap: .45rem; margin: 0 0 1rem; padding: 0; list-style: none; }
+      .qr-caps li { padding: .5rem .7rem; border-radius: 9px; background: var(--qs-well); border: 1px solid var(--qs-line); font-size: .84rem; font-weight: 800; color: var(--qs-ink); }
+      .qr-caps li::before { content: ""; display: inline-block; width: .6em; height: .6em; margin-right: .45em; border: 2px solid var(--qs-accent); border-radius: 2px; vertical-align: -.02em; }
+      .qr-callout { padding: .8rem .9rem; border-radius: 10px; background: var(--qs-warn-soft); border: 1px solid rgba(217, 150, 20, .35); font-size: .88rem; line-height: 1.65; color: var(--qs-ink-2); }
+      .qr-callout strong { color: var(--qs-warn); }
+      .qr-faq { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; align-items: start; }
+      .qr-faq details { border-radius: 10px; background: var(--qs-well); border: 1px solid var(--qs-line); }
+      .qr-faq summary { position: relative; padding: .8rem 2.2rem .8rem .95rem; list-style: none; cursor: pointer; font-size: .93rem; font-weight: 800; line-height: 1.4; color: var(--qs-ink); }
+      .qr-faq summary::-webkit-details-marker { display: none; }
+      .qr-faq summary::after { content: "+"; position: absolute; right: .95rem; top: .75rem; font-weight: 900; color: var(--qs-accent-text); }
+      .qr-faq details[open] summary::after { content: "\2212"; }
+      .qr-faq p { margin: 0; padding: 0 .95rem .9rem; font-size: .88rem; line-height: 1.65; color: var(--qs-ink-2); }
+      .qr-related { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(228px, 100%), 1fr)); gap: .6rem; }
+      .qr-related a { display: block; padding: .85rem .9rem; border-radius: 10px; background: var(--qs-well); border: 1px solid var(--qs-line); text-decoration: none; color: inherit; }
+      .qr-related a:hover { border-color: var(--qs-accent); }
+      .qr-related strong { display: block; margin-bottom: .18rem; font-size: .93rem; color: var(--qs-ink); }
+      .qr-related span { font-size: .8rem; line-height: 1.5; color: var(--qs-mute); }
+      .qr-disclaimer { margin: 2rem 0 0; padding: .85rem 1rem; border-radius: 12px; background: var(--qs-well); border: 1px solid var(--qs-line); font-size: .82rem; line-height: 1.65; color: var(--qs-mute); }
+
+      .qs-sec { padding: 2.5rem 0 0; }
+      .qs-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; margin: 0; padding: 0; list-style: none; }
+      .qs-step { padding: 1rem .95rem; border-radius: 12px; background: var(--qs-card); border: 1px solid var(--qs-line); }
+      .qs-step .n { display: grid; place-items: center; width: 2.1rem; height: 2.1rem; margin-bottom: .55rem; border-radius: 6px; border: 3px solid var(--qs-accent); color: var(--qs-accent-text); font-weight: 900; }
+      .qs-step h3 { margin: 0 0 .3rem; font-size: .98rem; color: var(--qs-ink); }
+      .qs-step p { margin: 0; font-size: .86rem; line-height: 1.55; color: var(--qs-mute); }
+
+      /* Related tools (added by app.js) in this page's palette */
+      .qs-page .related-tools-section { margin-top: 2.5rem; background: var(--qs-card); border-color: var(--qs-line); border-radius: 14px; box-shadow: var(--qs-shadow); }
+      .qs-page .related-tools-eyebrow { color: var(--qs-accent-text); }
+      .qs-page .related-tools-title { color: var(--qs-ink); }
+      .qs-page .related-tools-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: .6rem; }
+      .qs-page .related-tool-card { min-width: 0; background: var(--qs-well); border-color: var(--qs-line); box-shadow: none; color: var(--qs-ink); }
+      .qs-page .related-tool-card:hover, .qs-page .related-tool-card:focus-visible { border-color: var(--qs-accent); }
+      .qs-page .related-tool-body { min-width: 0; }
+
+      /* footer directory badge */
+      .qr-directory { display: flex; justify-content: center; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+      .qr-directory a { display: inline-flex; border-radius: 8px; }
+      .qr-directory img { display: block; max-width: 100%; height: auto; }
+
+      /* ---------- smaller screens ---------- */
+      @media (max-width: 899px) { .qs-cover .qs-viewfinder { display: none; } }
+      @media (max-width: 860px) { .qs-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+      @media (max-width: 760px) { .qr-faq { grid-template-columns: 1fr; } }
+      @media (max-width: 699px) {
+        /* phones: a compact cover and input card, so the ad after the input
+           reaches the first screen; the type chips scroll sideways */
+        .qs-cover { padding: 1.15rem 1.1rem 1.05rem; }
+        .qs-cover .qr-eyebrow { display: none; }
+        .qr-h1 .qs-t1 { font-size: clamp(2.1rem, 11vw, 2.8rem); }
+        .qr-h1 .qs-t2 { font-size: clamp(1.15rem, 5.4vw, 1.45rem); }
+        .qs-input .qr-bar { display: none; }
+        .qr-types { flex-wrap: nowrap; overflow-x: auto; margin: 0 -1rem .8rem; padding: 0 1rem .2rem; scrollbar-width: none; scroll-snap-type: x proximity; }
+        .qr-types::-webkit-scrollbar { display: none; }
+        .qr-type { flex: none; scroll-snap-align: start; }
+      }
+      @media (max-width: 559px) {
+        /* 10px gutters: a 320px phone then has the 300px its ads need */
+        body.qs-page .qs-main, body.qs-page .ta-support { width: calc(100% - 20px); }
+        .qr-crumb { display: none; }
+        .qs-card { padding: .85rem; }
+        .qr-types { margin-inline: -.85rem; padding-inline: .85rem; }
+        .qs-steps { grid-template-columns: 1fr; }
+        .qr-duo { grid-template-columns: 1fr; }
+        .qs-page .related-tools-section { padding: 1rem .85rem; }
+        .qr-input, .qr-select, .qr-textarea { font-size: 16px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        body.qs-page *, body.qs-page *::before, body.qs-page *::after { animation: none !important; transition: none !important; }
+        .qs-scanline { transform: translateY(60px); }
+      }
+
+      /* ---------- print: only the code and its label ---------- */
+      .qr-print { display: none; }
+      @media print {
+        /* hide the page wrapper itself: an empty <main> still carries the
+           header-overlap padding and would print a blank band */
+        .site-header, .site-footer, .skip-link, #main-content, .side-ad-rail { display: none !important; }
+        .qr-print { display: block !important; text-align: center; padding: 2rem 0; }
+        .qr-print img { max-width: 70vw; height: auto; }
+        .qr-print p { margin-top: 1rem; font-family: sans-serif; font-size: 1rem; color: #000; }
+        body { background: #fff !important; }
+      }
+    </style>
+
+    <script type="application/ld+json" data-tooladda-page-schema="true">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        { "@type": "WebSite", "@id": "https://tooladda.online/#website", "name": "ToolAdda", "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"], "url": "https://tooladda.online/", "inLanguage": "en", "publisher": { "@id": "https://tooladda.online/#organization" } },
+        { "@type": "Organization", "@id": "https://tooladda.online/#organization", "name": "ToolAdda", "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"], "url": "https://tooladda.online/", "logo": { "@type": "ImageObject", "url": "https://tooladda.online/assets/images/logo.svg" } },
+        {
+          "@type": "WebPage",
+          "@id": "https://tooladda.online/qr-code-generator.html#webpage",
+          "url": "https://tooladda.online/qr-code-generator.html",
+          "name": "Free QR Code Generator",
+          "description": "Create QR codes for URLs, text, Wi-Fi, email, phone, SMS, contacts and locations, with colour customisation, logos and PNG or SVG download.",
+          "inLanguage": "en",
+          "isPartOf": { "@id": "https://tooladda.online/#website" },
+          "breadcrumb": { "@id": "https://tooladda.online/qr-code-generator.html#breadcrumb" },
+          "mainEntity": { "@id": "https://tooladda.online/qr-code-generator.html#app" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://tooladda.online/qr-code-generator.html#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://tooladda.online/" },
+            { "@type": "ListItem", "position": 2, "name": "Generators", "item": "https://tooladda.online/#generators" },
+            { "@type": "ListItem", "position": 3, "name": "QR Code Generator" }
+          ]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://tooladda.online/qr-code-generator.html#app",
+          "name": "QR Code Generator",
+          "url": "https://tooladda.online/qr-code-generator.html",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "Any modern web browser",
+          "description": "Generate QR codes for URLs, plain text, Wi-Fi networks, email, phone numbers, SMS, vCard contacts, map locations and WhatsApp, with colour customisation, an optional logo, adjustable error correction and PNG or SVG export. Everything runs in the browser.",
+          "inLanguage": "en",
+          "isAccessibleForFree": true,
+          "featureList": [
+            "URL QR codes",
+            "Text QR codes",
+            "Wi-Fi QR codes with correct credential escaping",
+            "Email, phone and SMS QR codes",
+            "vCard contact QR codes",
+            "Location (geo) QR codes",
+            "WhatsApp chat QR codes",
+            "Custom foreground and background colours with contrast checking",
+            "Optional centre logo with automatic error-correction upgrade",
+            "PNG raster and true vector SVG export",
+            "Print layout",
+            "Runs entirely in the browser with no upload"
+          ],
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+          "publisher": { "@id": "https://tooladda.online/#organization" }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://tooladda.online/qr-code-generator.html#faq",
+          "isPartOf": { "@id": "https://tooladda.online/qr-code-generator.html#webpage" },
+          "mainEntity": [
+            { "@type": "Question", "name": "What is a QR code?", "acceptedAnswer": { "@type": "Answer", "text": "A QR code is a two-dimensional barcode that stores data as a grid of black and white squares called modules. A camera reads the whole grid at once, which is why it holds far more than a traditional barcode and can be scanned from any angle." } },
+            { "@type": "Question", "name": "How do I create a QR code?", "acceptedAnswer": { "@type": "Answer", "text": "Pick a type — URL, text, Wi-Fi, email, phone, SMS, contact, location or WhatsApp — fill in the fields, and the preview updates as you type. Adjust colours or error correction if you want, then download as PNG or SVG." } },
+            { "@type": "Question", "name": "Is this QR code generator free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. It is free, needs no account or email address, adds no watermark, and there is no limit on how many codes you create." } },
+            { "@type": "Question", "name": "Do I need an account?", "acceptedAnswer": { "@type": "Answer", "text": "No. There is no sign-up at any point. The generator runs entirely in your browser, so there is nothing for an account to store." } },
+            { "@type": "Question", "name": "How do I create a QR code for a website?", "acceptedAnswer": { "@type": "Answer", "text": "Choose the URL type and paste your address. If you leave off the scheme, https:// is added; a URL that already names a scheme is encoded exactly as typed, including any query string." } },
+            { "@type": "Question", "name": "How do I create a Wi-Fi QR code?", "acceptedAnswer": { "@type": "Answer", "text": "Choose Wi-Fi, enter the network name and password, and pick the security type. Scanning the result offers to join the network. Characters such as semicolons and colons in the name or password are escaped correctly, which is where naive generators produce the wrong credentials." } },
+            { "@type": "Question", "name": "Can I create a QR code for a Wi-Fi password?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, and it works on both iOS and Android. Be aware that anyone who scans or photographs the code gets your password — it encodes the credentials in plain text, so treat a printed Wi-Fi QR the way you would treat the password written on a card." } },
+            { "@type": "Question", "name": "Can I create a contact or vCard QR code?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Fill in name, organisation, job title, phone, email, website and address, and the code encodes a standard vCard 3.0. Scanning it offers to save a new contact. Commas and semicolons in your details are escaped so the fields do not split in the wrong places." } },
+            { "@type": "Question", "name": "Can I create a QR code for email?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Enter an address and optionally a subject and message body. The code encodes a mailto: link, so scanning it opens a pre-filled email. The subject and body are URL-encoded, so ampersands and spaces survive." } },
+            { "@type": "Question", "name": "Can I create a QR code for a phone number?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The Phone type encodes a tel: link, and scanning it starts a call to that number. International formats with a leading plus and spaces or brackets are accepted." } },
+            { "@type": "Question", "name": "Can I create an SMS QR code?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Enter a number and an optional message, and scanning opens the messaging app with both pre-filled. The recipient still has to press send." } },
+            { "@type": "Question", "name": "Can I create a location QR code?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Enter latitude and longitude and the code encodes a geo: URI that opens in the phone's map app. Latitude is validated to between -90 and 90, longitude to between -180 and 180." } },
+            { "@type": "Question", "name": "Can I create a WhatsApp QR code?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Enter a phone number with country code and an optional message; the code encodes a wa.me link that opens a chat with the message pre-filled." } },
+            { "@type": "Question", "name": "Can I add a logo to my QR code?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Upload a PNG, JPG or WebP and it is placed in the centre. Error correction is raised to H automatically, because a logo covers modules that the error correction then has to reconstruct. Keep the logo small — above about 30% of the width the code stops scanning reliably." } },
+            { "@type": "Question", "name": "Can I change the QR code colours?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, foreground and background are both adjustable, and there are presets. The contrast ratio is calculated as you change them and you are warned when the combination is likely to fail — under 3:1 it is refused as unscannable." } },
+            { "@type": "Question", "name": "Can I change the QR code size?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The export size is separate from the on-screen preview, so you can work with a comfortable preview and still download at 1024 or 2048 pixels for print." } },
+            { "@type": "Question", "name": "What is QR error correction?", "acceptedAnswer": { "@type": "Answer", "text": "QR codes store redundant data so they still scan when part of the symbol is damaged, dirty or covered. There are four levels — L, M, Q and H — with H holding the most redundancy and therefore the least payload for a given symbol size." } },
+            { "@type": "Question", "name": "Which error correction level should I use?", "acceptedAnswer": { "@type": "Answer", "text": "M is a good default for screens and clean printing. Use Q or H for codes that will be printed on packaging, displayed outdoors, or that carry a logo. Use L only when the payload is long and the code will be scanned from a screen in good conditions." } },
+            { "@type": "Question", "name": "Why is my QR code not scanning?", "acceptedAnswer": { "@type": "Answer", "text": "The usual causes are too little contrast between foreground and background, a code printed too small for its data density, a missing quiet zone — the light margin around the symbol — or a logo covering too much of the pattern. Try black on white at a larger size to isolate which one it is." } },
+            { "@type": "Question", "name": "What is the quiet zone and why does it matter?", "acceptedAnswer": { "@type": "Answer", "text": "The quiet zone is the blank margin of at least four modules that must surround a QR code. Without it a scanner cannot tell where the symbol ends, and codes placed flush against coloured backgrounds often fail. Every code this tool produces includes the margin." } },
+            { "@type": "Question", "name": "How can I make a QR code easier to scan?", "acceptedAnswer": { "@type": "Answer", "text": "Use dark on light, keep the quiet zone, print it larger than you think you need, shorten the data so the grid is less dense, and raise the error correction level. Then test it with more than one phone before printing a batch." } },
+            { "@type": "Question", "name": "Can I download my QR code as PNG?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, and PNG is the recommended format for screens, documents and most printing. It is lossless, so the module edges stay sharp." } },
+            { "@type": "Question", "name": "Can I download my QR code as SVG?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The SVG is a genuine vector — one path built from the module grid, not a PNG wrapped in markup — so it scales to any size without losing sharpness. Note that a centre logo is not included in the SVG export." } },
+            { "@type": "Question", "name": "Is SVG better for printing?", "acceptedAnswer": { "@type": "Answer", "text": "Usually yes. A vector prints crisply at any physical size, which matters for posters, signage and packaging where a raster would show soft edges. For a business card at a fixed size, a high-resolution PNG is equally fine." } },
+            { "@type": "Question", "name": "Can I print my QR code?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The Print button produces a clean page containing only the QR code and a short label — no navigation, controls or page furniture." } },
+            { "@type": "Question", "name": "Do QR codes expire?", "acceptedAnswer": { "@type": "Answer", "text": "No. A QR code is just an encoding of data; it has no expiry and needs no service to keep working. What can stop working is what it points at — if the URL inside it goes away, the code still scans but leads nowhere." } },
+            { "@type": "Question", "name": "Are QR codes permanent?", "acceptedAnswer": { "@type": "Answer", "text": "The codes produced here are static: the data is baked into the pattern and cannot be changed afterwards. Editing the destination later requires a dynamic QR service that redirects through its own URL, which is a different product with its own tracking and dependency." } },
+            { "@type": "Question", "name": "Does a QR code require internet?", "acceptedAnswer": { "@type": "Answer", "text": "Scanning does not — the data is in the image itself. Acting on it might: a URL code needs a connection to load the page, while a Wi-Fi, contact or SMS code works entirely offline." } },
+            { "@type": "Question", "name": "Are QR codes secure?", "acceptedAnswer": { "@type": "Answer", "text": "A QR code is neither secure nor insecure by itself — it is just encoded data that anyone can decode. The risk is what it points to, since a scanner cannot tell a genuine code from a sticker placed over it. Check the URL your phone shows before opening it." } },
+            { "@type": "Question", "name": "Is my QR data stored or uploaded?", "acceptedAnswer": { "@type": "Answer", "text": "No. The code is generated in your browser by a local library. Nothing you type — including Wi-Fi passwords and contact details — is sent anywhere, logged, or saved to local storage." } },
+            { "@type": "Question", "name": "Does the generator support Hindi, Chinese or emoji?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Text is encoded as UTF-8, so Devanagari, Chinese, Japanese, Arabic, accented Latin and emoji all survive scanning intact. This is worth checking in any generator — a common library default encodes Latin-1 and silently turns non-ASCII text into mojibake." } },
+            { "@type": "Question", "name": "How much data can a QR code hold?", "acceptedAnswer": { "@type": "Answer", "text": "Up to roughly 2,953 bytes at the lowest error correction level and about 1,273 at the highest. In practice much less is advisable: more data means a denser grid, which needs a larger print size to stay scannable. This tool refuses payloads that will not fit and warns when one is getting dense." } },
+            { "@type": "Question", "name": "How large should a printed QR code be?", "acceptedAnswer": { "@type": "Answer", "text": "A common rule of thumb is that the code should be about a tenth of the scanning distance — roughly 3 cm for arm's length, and much larger for a poster read from across a room. Denser codes need to be bigger, so shortening the data is often the cheapest way to shrink the print size." } },
+            { "@type": "Question", "name": "Can I use these QR codes for business?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. There is no licence, watermark or attribution requirement on the codes you generate, and the QR standard itself is free to use. Menus, packaging, business cards and signage are all fine." } },
+            { "@type": "Question", "name": "Can I use a transparent background?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, for PNG and SVG. It is worth testing though — with a transparent background the code takes on whatever is behind it, and a busy or mid-tone surface can destroy the contrast a scanner needs." } },
+            { "@type": "Question", "name": "What is the full form of QR code?", "acceptedAnswer": { "@type": "Answer", "text": "QR stands for Quick Response. The name reflects the design goal: a camera reads the whole two-dimensional grid in a single capture instead of sweeping across a set of lines, so decoding is near-instant. In Hindi it is commonly written as क्विक रिस्पॉन्स कोड." } },
+            { "@type": "Question", "name": "Who invented the QR code?", "acceptedAnswer": { "@type": "Answer", "text": "A team led by Masahiro Hara at Denso Wave, part of the Toyota group, developed it in 1994 to track automotive parts faster than barcodes allowed. Denso Wave chose not to charge for use of the standard, which is why QR codes became universal. QR Code remains its registered trademark, while the specification is published as ISO/IEC 18004." } },
+            { "@type": "Question", "name": "What is the difference between a barcode and a QR code?", "acceptedAnswer": { "@type": "Answer", "text": "A barcode is one-dimensional and stores roughly 20 to 48 characters in the widths of vertical bars, read along a single line. A QR code is two-dimensional, holds up to about 4,296 alphanumeric characters, scans at any angle, and carries error correction so a damaged symbol still resolves. Code 128 is a barcode symbology, not a type of QR code." } },
+            { "@type": "Question", "name": "How do I make a QR code for a Google Form?", "acceptedAnswer": { "@type": "Answer", "text": "Open the form, press Send or Share, and copy the link — the short forms.gle address is better than the long one because fewer characters mean a less dense code. Paste it into the URL type here and download the result." } },
+            { "@type": "Question", "name": "How do I create a QR code for a location?", "acceptedAnswer": { "@type": "Answer", "text": "Two ways. The Location type takes latitude and longitude and encodes a geo: URI that opens the phone's default map app, which works for places with no listing. Alternatively copy a Google Maps share link and encode it with the URL type, which opens the full listing with directions and reviews." } },
+            { "@type": "Question", "name": "Can I create a QR code for my Google review link?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Copy the \"Ask for reviews\" short link from your Google Business Profile — usually of the form g.page/r/…/review — and encode it with the URL type. Printed on a table card or receipt it takes customers straight to the review box." } },
+            { "@type": "Question", "name": "How do I convert a link into a QR code?", "acceptedAnswer": { "@type": "Answer", "text": "Choose the URL type, paste the link, and the preview updates as you type; then download PNG or SVG. Shorter links produce less dense codes that stay readable at smaller print sizes, so trim tracking parameters where you can." } },
+            { "@type": "Question", "name": "Can I turn a PDF, image or video into a QR code?", "acceptedAnswer": { "@type": "Answer", "text": "Not directly — a QR code holds a few hundred characters of text, not a file of any kind. Host the PDF, image or video somewhere with a public link, set the sharing permission to anyone with the link, then encode that link with the URL type. Every \"file to QR code\" service does exactly this behind a friendlier label." } },
+            { "@type": "Question", "name": "Can I create a UPI, Google Pay or PhonePe payment QR code?", "acceptedAnswer": { "@type": "Answer", "text": "No, and deliberately so. A collection or merchant QR carries a verified payee identifier — and for merchant codes a signature only the issuer can produce — so it must come from your bank, your payment app or your gateway dashboard. You can, however, encode a link to your own payment or donation page with the URL type." } },
+            { "@type": "Question", "name": "Can I generate QR codes in bulk?", "acceptedAnswer": { "@type": "Answer", "text": "No. This tool makes one code at a time and has no CSV or spreadsheet upload for batch output. For a small number, change the input and download again — the settings and fields keep their values between codes." } },
+            { "@type": "Question", "name": "Can I edit a QR code after I have created it?", "acceptedAnswer": { "@type": "Answer", "text": "No. A static QR code is not an editable document; the data is baked into the module pattern, so changing it means generating a new code. Editing a destination after printing requires a dynamic QR service that redirects through a URL it owns, or your own redirect on a domain you control." } },
+            { "@type": "Question", "name": "Can this tool scan or decode a QR code?", "acceptedAnswer": { "@type": "Answer", "text": "No — this page only creates codes. To read one from your camera, a screenshot or an image file, use the ToolAdda QR code scanner, which also runs entirely in your browser." } },
+            { "@type": "Question", "name": "How do I scan a QR code on an iPhone?", "acceptedAnswer": { "@type": "Answer", "text": "Open the Camera app, point it at the code, and tap the banner that appears; no app is needed on iOS 11 or later. You can also add the Code Scanner to Control Centre, or read a code inside a saved photo by opening it in Photos and tapping the Live Text button." } },
+            { "@type": "Question", "name": "How do I scan a QR code on Android?", "acceptedAnswer": { "@type": "Answer", "text": "Most Android cameras detect codes automatically; otherwise use Google Lens or the QR scanner tile in the Quick Settings panel. Google Lens can also decode a code from a picture already in your gallery via Google Photos." } },
+            { "@type": "Question", "name": "How do I scan a QR code on a laptop or PC?", "acceptedAnswer": { "@type": "Answer", "text": "Use a browser-based scanner: either grant webcam access and hold the code up, or upload the image file, which is usually easier and needs no camera at all. That is what the ToolAdda QR code scanner is for, and it requires no installation." } },
+            { "@type": "Question", "name": "How do I scan a QR code from a photo in my gallery?", "acceptedAnswer": { "@type": "Answer", "text": "Upload the image to a scanner that accepts files, or use Google Lens from within Google Photos on Android. This is also the reliable way to handle a code displayed on the same screen you are reading — a camera cannot photograph its own display." } },
+            { "@type": "Question", "name": "Why does my phone say the QR code is invalid or the format is unrecognised?", "acceptedAnswer": { "@type": "Answer", "text": "Usually the image is cropped, blurry, stretched or missing its quiet zone, or the code decoded correctly but the app expected its own payload format — a payment app shown a plain URL will call it invalid. Login and ticket codes are also short-lived session tokens that are meaningless outside their own app. Decode the image in a general-purpose scanner: if the raw text comes out cleanly, the pattern is fine." } },
+            { "@type": "Question", "name": "Can I make a WhatsApp group QR code?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, indirectly. Open the group, choose Invite via link, copy the invite link, and encode it with the URL type — scanning then opens the join screen. The WhatsApp type itself builds a wa.me chat link to a single number." } },
+            { "@type": "Question", "name": "Can I create the WhatsApp Web or Telegram login QR code?", "acceptedAnswer": { "@type": "Answer", "text": "No. Those are rotating session tokens generated by WhatsApp and Telegram themselves and cannot be produced by any third-party generator. Never scan a login QR code that somebody else has sent you — doing so hands them access to your account." } },
+            { "@type": "Question", "name": "Can I make a heart-shaped or artistic QR code?", "acceptedAnswer": { "@type": "Answer", "text": "Not here. This generator keeps clean square modules because they scan most reliably. For rounded modules, custom corner shapes and heavier styling, use the ToolAdda custom QR code maker, and test any decorative code on several phones before printing it." } },
+            { "@type": "Question", "name": "Do I need an app to scan a QR code?", "acceptedAnswer": { "@type": "Answer", "text": "No. The built-in camera on any current iPhone or Android phone reads QR codes without an extra app, and on a desktop a browser-based scanner works from your webcam or from an uploaded image. Dedicated scanner apps are rarely necessary." } },
+            { "@type": "Question", "name": "What is a static QR code generator?", "acceptedAnswer": { "@type": "Answer", "text": "One that writes your data directly into the pattern, with no service in the middle — which is what this page is. Static codes never expire, need no account, are not tracked, and work offline for Wi-Fi, contact and location types. The trade-off is that the destination cannot be changed after the code is printed." } }
+          ]
+        }
+      ]
+    }
+    </script>
+      <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 4, 120, 87; }
+      [data-theme="dark"] { --pca: 52, 211, 153; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 52, 211, 153; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/qr-code-generator.html#webpage",
+      "url": "https://tooladda.online/qr-code-generator.html",
+      "inLanguage": "en",
+      "datePublished": "2026-06-30",
+      "dateModified": "2026-09-23",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+  <body class="qs-page">
+    <a class="skip-link" href="#qrStudio">Skip to the QR generator</a>
+    <header class="site-header">
+      <div class="container navbar">
+        <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Home</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="privacy-policy.html">Privacy</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+              <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+              <path d="M3.1 16.9h10.8" />
+              <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+            </svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+          <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+          <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <div class="qs-shell">
+        <aside class="ta-support" aria-label="Support ToolAdda">
+          <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+        </aside>
+
+        <div class="container qs-main">
+        <nav class="qr-crumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">/</span><a href="/#generators">Generators</a><span aria-hidden="true">/</span><span>QR Code Generator</span>
+        </nav>
+
+          <!-- One grid (.qs-top) places these and is the script's root
+               ([data-qr-root]). Under 700px: cover, input card, ad, preview,
+               style. 700-999px: the ad sits beside the cards. From 1000px:
+               input | preview | ad side by side. Never above the tool. -->
+          <div class="qs-top" data-qr-root>
+            <header class="qs-cover">
+              <div class="qs-cover-copy">
+                <span class="qr-eyebrow">QR Code Generator</span>
+                <h1 class="qr-h1"><span class="qs-free">Free</span> <span class="qs-t1">QR Code</span> <span class="qs-t2">Generator</span></h1>
+              </div>
+              <!-- A viewfinder over a decorative pattern — deliberately not a
+                   scannable code. Labels come from data-t (decoration). -->
+              <div class="qs-viewfinder" aria-hidden="true">
+                <div class="qs-finder"><svg class="qs-code" viewBox="-2 -2 29 29" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><rect x="-2" y="-2" width="29" height="29" fill="#fff"/><path d="M0 0h1v1h-1zM1 0h1v1h-1zM2 0h1v1h-1zM3 0h1v1h-1zM4 0h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM8 0h1v1h-1zM11 0h1v1h-1zM14 0h1v1h-1zM18 0h1v1h-1zM19 0h1v1h-1zM20 0h1v1h-1zM21 0h1v1h-1zM22 0h1v1h-1zM23 0h1v1h-1zM24 0h1v1h-1zM0 1h1v1h-1zM6 1h1v1h-1zM9 1h1v1h-1zM10 1h1v1h-1zM11 1h1v1h-1zM14 1h1v1h-1zM18 1h1v1h-1zM24 1h1v1h-1zM0 2h1v1h-1zM2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM6 2h1v1h-1zM10 2h1v1h-1zM11 2h1v1h-1zM13 2h1v1h-1zM14 2h1v1h-1zM15 2h1v1h-1zM16 2h1v1h-1zM18 2h1v1h-1zM20 2h1v1h-1zM21 2h1v1h-1zM22 2h1v1h-1zM24 2h1v1h-1zM0 3h1v1h-1zM2 3h1v1h-1zM3 3h1v1h-1zM4 3h1v1h-1zM6 3h1v1h-1zM8 3h1v1h-1zM9 3h1v1h-1zM15 3h1v1h-1zM16 3h1v1h-1zM18 3h1v1h-1zM20 3h1v1h-1zM21 3h1v1h-1zM22 3h1v1h-1zM24 3h1v1h-1zM0 4h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1zM4 4h1v1h-1zM6 4h1v1h-1zM12 4h1v1h-1zM13 4h1v1h-1zM14 4h1v1h-1zM15 4h1v1h-1zM18 4h1v1h-1zM20 4h1v1h-1zM21 4h1v1h-1zM22 4h1v1h-1zM24 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM10 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM16 5h1v1h-1zM18 5h1v1h-1zM24 5h1v1h-1zM0 6h1v1h-1zM1 6h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM19 6h1v1h-1zM20 6h1v1h-1zM21 6h1v1h-1zM22 6h1v1h-1zM23 6h1v1h-1zM24 6h1v1h-1zM9 7h1v1h-1zM10 7h1v1h-1zM13 7h1v1h-1zM14 7h1v1h-1zM15 7h1v1h-1zM1 8h1v1h-1zM2 8h1v1h-1zM3 8h1v1h-1zM4 8h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM9 8h1v1h-1zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM15 8h1v1h-1zM16 8h1v1h-1zM17 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM23 8h1v1h-1zM1 9h1v1h-1zM3 9h1v1h-1zM4 9h1v1h-1zM7 9h1v1h-1zM8 9h1v1h-1zM9 9h1v1h-1zM10 9h1v1h-1zM12 9h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM20 9h1v1h-1zM21 9h1v1h-1zM24 9h1v1h-1zM0 10h1v1h-1zM3 10h1v1h-1zM6 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM10 10h1v1h-1zM12 10h1v1h-1zM14 10h1v1h-1zM17 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM21 10h1v1h-1zM0 11h1v1h-1zM2 11h1v1h-1zM3 11h1v1h-1zM4 11h1v1h-1zM5 11h1v1h-1zM7 11h1v1h-1zM8 11h1v1h-1zM9 11h1v1h-1zM11 11h1v1h-1zM12 11h1v1h-1zM18 11h1v1h-1zM19 11h1v1h-1zM20 11h1v1h-1zM24 11h1v1h-1zM3 12h1v1h-1zM5 12h1v1h-1zM6 12h1v1h-1zM14 12h1v1h-1zM18 12h1v1h-1zM23 12h1v1h-1zM1 13h1v1h-1zM7 13h1v1h-1zM10 13h1v1h-1zM12 13h1v1h-1zM14 13h1v1h-1zM17 13h1v1h-1zM22 13h1v1h-1zM23 13h1v1h-1zM24 13h1v1h-1zM1 14h1v1h-1zM2 14h1v1h-1zM5 14h1v1h-1zM6 14h1v1h-1zM8 14h1v1h-1zM10 14h1v1h-1zM11 14h1v1h-1zM15 14h1v1h-1zM17 14h1v1h-1zM18 14h1v1h-1zM24 14h1v1h-1zM0 15h1v1h-1zM1 15h1v1h-1zM2 15h1v1h-1zM3 15h1v1h-1zM4 15h1v1h-1zM8 15h1v1h-1zM11 15h1v1h-1zM12 15h1v1h-1zM13 15h1v1h-1zM15 15h1v1h-1zM18 15h1v1h-1zM20 15h1v1h-1zM21 15h1v1h-1zM22 15h1v1h-1zM23 15h1v1h-1zM0 16h1v1h-1zM1 16h1v1h-1zM2 16h1v1h-1zM4 16h1v1h-1zM6 16h1v1h-1zM11 16h1v1h-1zM13 16h1v1h-1zM14 16h1v1h-1zM16 16h1v1h-1zM17 16h1v1h-1zM18 16h1v1h-1zM19 16h1v1h-1zM20 16h1v1h-1zM22 16h1v1h-1zM23 16h1v1h-1zM24 16h1v1h-1zM12 17h1v1h-1zM15 17h1v1h-1zM16 17h1v1h-1zM20 17h1v1h-1zM23 17h1v1h-1zM24 17h1v1h-1zM0 18h1v1h-1zM1 18h1v1h-1zM2 18h1v1h-1zM3 18h1v1h-1zM4 18h1v1h-1zM5 18h1v1h-1zM6 18h1v1h-1zM10 18h1v1h-1zM15 18h1v1h-1zM16 18h1v1h-1zM18 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM0 19h1v1h-1zM6 19h1v1h-1zM10 19h1v1h-1zM16 19h1v1h-1zM20 19h1v1h-1zM21 19h1v1h-1zM24 19h1v1h-1zM0 20h1v1h-1zM2 20h1v1h-1zM3 20h1v1h-1zM4 20h1v1h-1zM6 20h1v1h-1zM8 20h1v1h-1zM9 20h1v1h-1zM13 20h1v1h-1zM15 20h1v1h-1zM16 20h1v1h-1zM17 20h1v1h-1zM18 20h1v1h-1zM19 20h1v1h-1zM20 20h1v1h-1zM22 20h1v1h-1zM23 20h1v1h-1zM0 21h1v1h-1zM2 21h1v1h-1zM3 21h1v1h-1zM4 21h1v1h-1zM6 21h1v1h-1zM8 21h1v1h-1zM9 21h1v1h-1zM17 21h1v1h-1zM18 21h1v1h-1zM20 21h1v1h-1zM0 22h1v1h-1zM2 22h1v1h-1zM3 22h1v1h-1zM4 22h1v1h-1zM6 22h1v1h-1zM9 22h1v1h-1zM10 22h1v1h-1zM13 22h1v1h-1zM18 22h1v1h-1zM22 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h1v1h-1zM13 23h1v1h-1zM15 23h1v1h-1zM18 23h1v1h-1zM20 23h1v1h-1zM21 23h1v1h-1zM0 24h1v1h-1zM1 24h1v1h-1zM2 24h1v1h-1zM3 24h1v1h-1zM4 24h1v1h-1zM5 24h1v1h-1zM6 24h1v1h-1zM8 24h1v1h-1zM9 24h1v1h-1zM12 24h1v1h-1zM14 24h1v1h-1zM15 24h1v1h-1zM16 24h1v1h-1zM18 24h1v1h-1zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h1v1h-1z" fill="#0f172a"/></svg><span class="qs-scanline"></span></div>
+              </div>
+            </header>
+
+            <section class="qs-card qs-input" id="qrStudio" aria-label="QR code generator">
+          <div class="qr-bar">
+            <p class="qr-bar__title">QR Studio</p>
+            <span class="qr-privacy">🔒 Generated in your browser — your QR data is not uploaded</span>
+          </div>
+
+          <div class="qr-types" role="group" aria-label="QR code type">
+            <button type="button" class="qr-type is-on" data-qr-type="url" aria-pressed="true">URL</button>
+            <button type="button" class="qr-type" data-qr-type="text" aria-pressed="false">Text</button>
+            <button type="button" class="qr-type" data-qr-type="wifi" aria-pressed="false">Wi-Fi</button>
+            <button type="button" class="qr-type" data-qr-type="email" aria-pressed="false">Email</button>
+            <button type="button" class="qr-type" data-qr-type="phone" aria-pressed="false">Phone</button>
+            <button type="button" class="qr-type" data-qr-type="sms" aria-pressed="false">SMS</button>
+            <button type="button" class="qr-type" data-qr-type="vcard" aria-pressed="false">Contact</button>
+            <button type="button" class="qr-type" data-qr-type="geo" aria-pressed="false">Location</button>
+            <button type="button" class="qr-type" data-qr-type="whatsapp" aria-pressed="false">WhatsApp</button>
+          </div>
+
+          <div data-qr-form="url">
+            <div class="qr-block" data-qr-field="url">
+              <label class="qr-label" for="qrUrl">Website URL</label>
+              <input class="qr-input" id="qrUrl" name="url" type="url" inputmode="url" autocomplete="off" placeholder="https://example.com" />
+              <p class="qr-hint">Enter the URL you want to encode. If you leave off https:// it will be added.</p>
+            </div>
+          </div>
+
+          <div data-qr-form="text" hidden>
+            <div class="qr-block" data-qr-field="text">
+              <label class="qr-label" for="qrText">Text</label>
+              <textarea class="qr-textarea" id="qrText" name="text" placeholder="Any text you want to encode…"></textarea>
+              <p class="qr-hint">Unicode is supported — Hindi, Chinese, Arabic and emoji all encode correctly.</p>
+            </div>
+          </div>
+
+          <div data-qr-form="wifi" hidden>
+            <div class="qr-block" data-qr-field="ssid">
+              <label class="qr-label" for="qrSsid">Network name (SSID)</label>
+              <input class="qr-input" id="qrSsid" name="ssid" type="text" autocomplete="off" placeholder="MyNetwork" />
+            </div>
+            <div class="qr-block" data-qr-field="password">
+              <label class="qr-label" for="qrWifiPass">Password</label>
+              <input class="qr-input" id="qrWifiPass" name="password" type="text" autocomplete="off" placeholder="Network password" />
+            </div>
+            <div class="qr-block">
+              <label class="qr-label" for="qrSecurity">Security</label>
+              <select class="qr-select" id="qrSecurity" name="security">
+                <option value="WPA">WPA / WPA2 / WPA3</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">No password (open)</option>
+              </select>
+            </div>
+            <label class="qr-check"><input type="checkbox" name="hidden" /><span>Hidden network</span></label>
+            <p class="qr-note">A Wi-Fi QR code can reveal the encoded network credentials to anyone who scans it. Share it only with trusted people.</p>
+          </div>
+
+          <div data-qr-form="email" hidden>
+            <div class="qr-block" data-qr-field="email">
+              <label class="qr-label" for="qrEmail">Email address</label>
+              <input class="qr-input" id="qrEmail" name="email" type="email" autocomplete="off" placeholder="name@example.com" />
+            </div>
+            <div class="qr-block">
+              <label class="qr-label" for="qrSubject">Subject</label>
+              <input class="qr-input" id="qrSubject" name="subject" type="text" autocomplete="off" placeholder="Optional" />
+            </div>
+            <div class="qr-block">
+              <label class="qr-label" for="qrBody">Message</label>
+              <textarea class="qr-textarea" id="qrBody" name="body" placeholder="Optional"></textarea>
+            </div>
+          </div>
+
+          <div data-qr-form="phone" hidden>
+            <div class="qr-block" data-qr-field="phone">
+              <label class="qr-label" for="qrPhone">Phone number</label>
+              <input class="qr-input" id="qrPhone" name="phone" type="tel" autocomplete="off" placeholder="+91 98765 43210" />
+              <p class="qr-hint">Include the country code for international use.</p>
+            </div>
+          </div>
+
+          <div data-qr-form="sms" hidden>
+            <div class="qr-block" data-qr-field="phone">
+              <label class="qr-label" for="qrSmsPhone">Phone number</label>
+              <input class="qr-input" id="qrSmsPhone" name="phone" type="tel" autocomplete="off" placeholder="+91 98765 43210" />
+            </div>
+            <div class="qr-block">
+              <label class="qr-label" for="qrSmsMessage">Message</label>
+              <textarea class="qr-textarea" id="qrSmsMessage" name="message" placeholder="Optional pre-filled message"></textarea>
+            </div>
+          </div>
+
+          <div data-qr-form="vcard" hidden>
+            <div class="qr-fieldgrid">
+              <div data-qr-field="firstName">
+                <label class="qr-label" for="qrFirst">First name</label>
+                <input class="qr-input" id="qrFirst" name="firstName" type="text" autocomplete="off" />
+              </div>
+              <div>
+                <label class="qr-label" for="qrLast">Last name</label>
+                <input class="qr-input" id="qrLast" name="lastName" type="text" autocomplete="off" />
+              </div>
+              <div>
+                <label class="qr-label" for="qrOrg">Organisation</label>
+                <input class="qr-input" id="qrOrg" name="org" type="text" autocomplete="off" />
+              </div>
+              <div>
+                <label class="qr-label" for="qrTitle">Job title</label>
+                <input class="qr-input" id="qrTitle" name="title" type="text" autocomplete="off" />
+              </div>
+              <div data-qr-field="phone">
+                <label class="qr-label" for="qrVPhone">Phone</label>
+                <input class="qr-input" id="qrVPhone" name="phone" type="tel" autocomplete="off" />
+              </div>
+              <div data-qr-field="email">
+                <label class="qr-label" for="qrVEmail">Email</label>
+                <input class="qr-input" id="qrVEmail" name="email" type="email" autocomplete="off" />
+              </div>
+              <div>
+                <label class="qr-label" for="qrWebsite">Website</label>
+                <input class="qr-input" id="qrWebsite" name="website" type="text" autocomplete="off" />
+              </div>
+              <div>
+                <label class="qr-label" for="qrAddress">Address</label>
+                <input class="qr-input" id="qrAddress" name="address" type="text" autocomplete="off" />
+              </div>
+            </div>
+          </div>
+
+          <div data-qr-form="geo" hidden>
+            <div class="qr-duo">
+              <div data-qr-field="lat">
+                <label class="qr-label" for="qrLat">Latitude</label>
+                <input class="qr-input" id="qrLat" name="lat" type="text" inputmode="decimal" autocomplete="off" placeholder="28.4595" />
+              </div>
+              <div data-qr-field="lng">
+                <label class="qr-label" for="qrLng">Longitude</label>
+                <input class="qr-input" id="qrLng" name="lng" type="text" inputmode="decimal" autocomplete="off" placeholder="77.0266" />
+              </div>
+            </div>
+            <div class="qr-block">
+              <label class="qr-label" for="qrPlace">Place name</label>
+              <input class="qr-input" id="qrPlace" name="label" type="text" autocomplete="off" placeholder="Optional" />
+            </div>
+          </div>
+
+          <div data-qr-form="whatsapp" hidden>
+            <div class="qr-block" data-qr-field="phone">
+              <label class="qr-label" for="qrWaPhone">Phone number with country code</label>
+              <input class="qr-input" id="qrWaPhone" name="phone" type="tel" autocomplete="off" placeholder="+91 98765 43210" />
+            </div>
+            <div class="qr-block">
+              <label class="qr-label" for="qrWaMessage">Message</label>
+              <textarea class="qr-textarea" id="qrWaMessage" name="message" placeholder="Optional pre-filled message"></textarea>
+            </div>
+          </div>
+
+          <p class="qr-msg qr-msg--error" data-qr-error role="alert" hidden></p>
+
+          <div class="qr-actions">
+            <button type="button" class="qr-btn qr-btn--accent" data-qr-generate>Generate QR Code</button>
+            <button type="button" class="qr-btn qr-btn--ghost" data-qr-reset>Reset</button>
+          </div>
+            </section>
+
+            <!-- Ad: one 300x250 (see .qs-ad-zone CSS) — beside the tool from
+                 700px; on a phone between the input and the preview. -->
+            <div class="qs-ad-zone">
+              <div class="ta-inline-ad" data-unit="inline"></div>
+            </div>
+
+            <section class="qs-card qs-preview" aria-label="QR code preview">
+              <div class="qs-preview-head">
+                <span class="qr-label">Your QR code</span>
+                <span class="qr-status" data-qr-status data-state="idle">Ready</span>
+              </div>
+
+            <div class="qr-stage">
+              <div class="qr-empty" data-qr-empty>
+                <span class="qr-empty__grid" aria-hidden="true"></span>
+                <span>Your QR code will appear here</span>
+              </div>
+              <div data-qr-canvas-wrap hidden>
+                <canvas data-qr-canvas role="img" aria-label="Generated QR code preview"></canvas>
+              </div>
+            </div>
+
+            <p class="qr-hint" style="text-align:center">Scan to test before you print or share.</p>
+
+            <p class="qr-msg qr-msg--warn" data-qr-warning hidden></p>
+
+            <dl class="qr-summary" data-qr-summary></dl>
+
+            <div class="qr-actions">
+              <button type="button" class="qr-btn qr-btn--accent" data-qr-download-png disabled>Download PNG</button>
+              <button type="button" class="qr-btn qr-btn--ghost" data-qr-download-svg disabled>Download SVG</button>
+              <button type="button" class="qr-btn qr-btn--ghost" data-qr-print disabled>Print</button>
+              <button type="button" class="qr-btn qr-btn--ghost" data-qr-copy-data disabled>Copy data</button>
+              <button type="button" class="qr-btn qr-btn--ghost" data-qr-share disabled>Share</button>
+            </div>
+
+            <p class="qr-sr" role="status" aria-live="polite" data-qr-announce></p>
+            </section>
+
+            <div class="qs-card qs-custom">
+            <details class="qr-adv" open>
+              <summary>Style</summary>
+              <div class="qr-adv__body">
+                <div class="qr-block">
+                  <span class="qr-label">Presets</span>
+                  <div class="qr-swatches" data-qr-presets role="group" aria-label="Colour presets"></div>
+                </div>
+                <div class="qr-duo qr-block">
+                  <div>
+                    <label class="qr-label" for="qrFg">Foreground</label>
+                    <input class="qr-color" id="qrFg" type="color" value="#111827" />
+                  </div>
+                  <div>
+                    <label class="qr-label" for="qrBg">Background</label>
+                    <input class="qr-color" id="qrBg" type="color" value="#ffffff" />
+                  </div>
+                </div>
+                <label class="qr-check"><input type="checkbox" id="qrTransparent" /><span>Transparent background</span></label>
+                <button type="button" class="qr-btn qr-btn--ghost qr-btn--sm" data-qr-reset-style>Reset style</button>
+              </div>
+            </details>
+
+            <details class="qr-adv">
+              <summary>Output &amp; error correction</summary>
+              <div class="qr-adv__body">
+                <div class="qr-duo">
+                  <div>
+                    <label class="qr-label" for="qrEcc">Error correction</label>
+                    <select class="qr-select" id="qrEcc">
+                      <option value="L">L — lowest redundancy</option>
+                      <option value="M" selected>M — medium</option>
+                      <option value="Q">Q — higher</option>
+                      <option value="H">H — highest</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="qr-label" for="qrSize">Export size</label>
+                    <select class="qr-select" id="qrSize">
+                      <option value="256">256 px</option>
+                      <option value="512">512 px</option>
+                      <option value="1024" selected>1024 px</option>
+                      <option value="2048">2048 px</option>
+                    </select>
+                  </div>
+                </div>
+                <p class="qr-hint">Higher error correction survives more damage but stores less data. The preview size and the export size are separate.</p>
+              </div>
+            </details>
+
+            <details class="qr-adv">
+              <summary>Logo</summary>
+              <div class="qr-adv__body">
+                <label class="qr-label" for="qrLogo">Centre logo</label>
+                <input class="qr-input" id="qrLogo" type="file" accept="image/png,image/jpeg,image/webp" />
+                <div data-qr-logo-row hidden>
+                  <label class="qr-label" for="qrLogoSize" style="margin-top:.7rem">Logo size · <span data-qr-logo-out>18%</span></label>
+                  <input class="qr-range" id="qrLogoSize" type="range" min="8" max="30" step="1" value="18" />
+                  <label class="qr-label" for="qrLogoBacking">Logo backing</label>
+                  <select class="qr-select" id="qrLogoBacking">
+                    <option value="white">White</option>
+                    <option value="background">Match background</option>
+                    <option value="transparent">Transparent</option>
+                  </select>
+                  <button type="button" class="qr-btn qr-btn--ghost qr-btn--sm" style="margin-top:.6rem" data-qr-logo-clear>Remove logo</button>
+                </div>
+                <p class="qr-hint">Adding a logo raises error correction to H automatically. The SVG export does not include the logo.</p>
+              </div>
+            </details>
+            </div>
+          </div>
+
+          <!-- After the grid, not inside it: the sticky preview must never
+               ride down over these links. -->
+          <div class="qs-intro">
+            <p class="qr-lede">Create custom QR codes for URLs, text, Wi-Fi, contact details, email, phone numbers and more. Customize your QR code and download it instantly.</p>
+            <div>
+        <ul class="qr-trust">
+          <li>Free</li>
+          <li>No signup</li>
+          <li>Instant generation</li>
+          <li>Customizable</li>
+          <li>Downloadable</li>
+        </ul>
+        <div class="qr-hero-cta">
+          <a class="qs-btn qs-btn--primary" href="#qrStudio">▶ Open the generator</a>
+          <a class="qs-btn qs-btn--ghost" href="custom-qr-code-maker.html">Custom QR Code Maker</a>
+        </div>
+            </div>
+          </div>
+
+          <!-- ============ HOW TO (new) ============ -->
+          <section class="qs-sec" aria-labelledby="qs-how">
+            <h2 class="qs-h2" id="qs-how">Make a QR code in four steps</h2>
+            <p class="qs-sub">No account and no upload — the code is drawn on your own device as you type.</p>
+            <ol class="qs-steps">
+              <li class="qs-step"><span class="n">1</span><h3>Pick a type</h3><p>URL, text, Wi-Fi, email, phone, SMS, contact, location or WhatsApp — each one formats the data the way phones expect.</p></li>
+              <li class="qs-step"><span class="n">2</span><h3>Fill in the fields</h3><p>The preview redraws as you type, and a field that cannot be encoded is flagged right next to it.</p></li>
+              <li class="qs-step"><span class="n">3</span><h3>Style it if you like</h3><p>Colours, error correction, export size or a centre logo. Low-contrast colours are warned about or refused.</p></li>
+              <li class="qs-step"><span class="n">4</span><h3>Test, then download</h3><p>Scan it with your phone first, then save a PNG or SVG, print it, or copy the encoded data.</p></li>
+            </ol>
+          </section>
+
+          <!-- ============ CAPABILITIES ============ -->
+          <section class="qr-section" aria-labelledby="qr-caps-heading">
+            <h2 class="qr-h2" id="qr-caps-heading">What can this QR code generator create?</h2>
+            <p class="qr-sub">This free QR code generator creates QR codes for URLs, text, Wi-Fi networks, email, phone numbers, SMS, contacts and locations. Every type listed is implemented and runs in your browser.</p>
+            <ul class="qr-caps">
+              <li>URL QR codes</li>
+              <li>Text QR codes</li>
+              <li>Wi-Fi QR codes</li>
+              <li>Email QR codes</li>
+              <li>Phone QR codes</li>
+              <li>SMS QR codes</li>
+              <li>Contact / vCard QR codes</li>
+              <li>Location QR codes</li>
+              <li>WhatsApp QR codes</li>
+            </ul>
+            <div class="qr-tablewrap">
+              <table class="qr-table">
+                <thead><tr><th scope="col">Type</th><th scope="col">Use case</th><th scope="col">Encoded as</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row">URL</th><td data-label="Use case">Open a website</td><td data-label="Encoded as"><code>https://example.com</code></td></tr>
+                  <tr><th scope="row">Text</th><td data-label="Use case">Plain information</td><td data-label="Encoded as"><code>Hello World</code></td></tr>
+                  <tr><th scope="row">Wi-Fi</th><td data-label="Use case">Join a network</td><td data-label="Encoded as"><code>WIFI:T:WPA;S:Name;P:Pass;;</code></td></tr>
+                  <tr><th scope="row">Email</th><td data-label="Use case">Compose an email</td><td data-label="Encoded as"><code>mailto:a@b.com?subject=Hi</code></td></tr>
+                  <tr><th scope="row">Phone</th><td data-label="Use case">Start a call</td><td data-label="Encoded as"><code>tel:+919876543210</code></td></tr>
+                  <tr><th scope="row">SMS</th><td data-label="Use case">Pre-filled message</td><td data-label="Encoded as"><code>SMSTO:+15551234567</code></td></tr>
+                  <tr><th scope="row">Contact</th><td data-label="Use case">Save a contact</td><td data-label="Encoded as"><code>BEGIN:VCARD … END:VCARD</code></td></tr>
+                  <tr><th scope="row">Location</th><td data-label="Use case">Open a map pin</td><td data-label="Encoded as"><code>geo:28.4595,77.0266</code></td></tr>
+                  <tr><th scope="row">WhatsApp</th><td data-label="Use case">Open a chat</td><td data-label="Encoded as"><code>https://wa.me/919876543210</code></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- ============ ANSWERS ============ -->
+          <section class="qr-section" aria-labelledby="qr-answers-heading">
+            <h2 class="qr-h2" id="qr-answers-heading">Creating and customising QR codes</h2>
+
+            <h3 class="qr-h3">What is a QR code?</h3>
+            <p>A QR code is a two-dimensional barcode that stores data as a grid of black and white squares called modules. A camera reads the entire grid at once rather than sweeping across it, which is why a QR code holds far more than a traditional barcode and can be scanned at any angle.</p>
+
+            <h3 class="qr-h3">How do I create a QR code?</h3>
+            <ol>
+              <li>Choose a type at the top of the studio — URL, text, Wi-Fi, email, phone, SMS, contact, location or WhatsApp.</li>
+              <li>Fill in the fields. The preview updates as you type.</li>
+              <li>Adjust colours, error correction or add a logo if you want.</li>
+              <li>Check the contrast and density warnings.</li>
+              <li>Download as PNG or SVG, or press Print.</li>
+            </ol>
+
+            <h3 class="qr-h3">How do I create a Wi-Fi QR code?</h3>
+            <p>Choose Wi-Fi, enter the network name and password, and pick the security type. Scanning the code offers to join the network. Characters such as semicolons, colons and commas in the name or password are escaped as the format requires — this is where simpler generators silently produce the wrong credentials.</p>
+
+            <h3 class="qr-h3">Can I create a QR code with a logo?</h3>
+            <p>Yes. Upload a PNG, JPG or WebP and it is placed in the centre. Error correction is raised to H automatically, because a logo covers modules the error correction then has to reconstruct. Keep it small: above roughly 30% of the width the code stops scanning reliably, and the tool refuses to go further.</p>
+
+            <h3 class="qr-h3">Why won't my QR code scan?</h3>
+            <p>Four causes account for almost all failures: too little contrast, a code printed too small for its data density, a missing quiet zone, or a logo covering too much of the pattern. Fall back to black on white at a larger size to work out which one it is.</p>
+
+            <h3 class="qr-h3">Is my QR data uploaded?</h3>
+            <p>No. Everything is generated in the page by a local library. Nothing you type — including Wi-Fi passwords and contact details — is sent anywhere, logged, or written to local storage.</p>
+          </section>
+
+          <!-- ============ USE CASES ============ -->
+          <section class="qr-section" aria-labelledby="qr-uses-heading">
+            <h2 class="qr-h2" id="qr-uses-heading">Popular ways to use this free QR code generator</h2>
+            <p class="qr-sub">Every example below is built with a type that already exists in the studio above — mostly URL, Wi-Fi, Contact or Location. If a job needs something this tool genuinely cannot do, it says so and points you somewhere sensible instead of pretending.</p>
+
+            <h3 class="qr-h3">Convert a link or URL into a QR code</h3>
+            <p>This is the most common job by far: you have a link and you want a scannable version of it. Choose the <strong>URL</strong> type, paste the address, and the preview appears as you type. It works the same whether you are turning a website, a blog post, a Drive file, a form, a landing page or a shortened link into a QR code — a QR code does not care what is at the other end, it only stores the string.</p>
+            <p>Two habits make the result better. Keep the link short, because a long address with tracking parameters produces a denser grid that needs a bigger print size; our <a href="url-shortener.html">URL shortener</a> and <a href="utm-builder.html">UTM builder</a> help you keep campaign links tidy. And scan your own code once before you print it anywhere.</p>
+
+            <h3 class="qr-h3">QR code for a Google Form</h3>
+            <p>Open your form, press <em>Send</em> or <em>Share</em>, copy the link (either the long <code>docs.google.com/forms/…</code> address or the short <code>forms.gle/…</code> one), then paste it into the URL type here. The short link is the better choice: fewer characters means fewer modules, so the printed code stays readable on a classroom handout, a feedback card or a poster at an event.</p>
+
+            <h3 class="qr-h3">QR code for Google reviews</h3>
+            <p>Google gives every verified business a review link in the Google Business Profile dashboard — the "Ask for reviews" short link, usually of the form <code>g.page/r/…/review</code>. Copy that link, encode it with the URL type, and print it on a table card, receipt or counter sticker so customers land straight on the review box instead of hunting for your listing.</p>
+
+            <h3 class="qr-h3">Location and Google Maps QR codes</h3>
+            <p>There are two honest ways to make a location QR code, and they behave differently:</p>
+            <ul>
+              <li><strong>Location type (coordinates).</strong> Enter latitude and longitude and the code encodes a <code>geo:</code> URI, which opens the phone's default map app. This works offline and depends on no single company, which is why it is the type provided here.</li>
+              <li><strong>URL type (a map link).</strong> Open the place in Google Maps, use <em>Share → Copy link</em>, and encode that link as a URL. Scanning opens the exact listing — with the name, photos, reviews and directions — instead of a bare pin.</li>
+            </ul>
+            <p>Use coordinates for a spot with no listing (a plot, a gate, a wedding venue field) and a map link for a business or landmark that already exists on the map.</p>
+
+            <h3 class="qr-h3">WhatsApp chat and group QR codes</h3>
+            <p>The <strong>WhatsApp</strong> type builds a <code>wa.me</code> link from a phone number with country code, plus an optional pre-filled message, so scanning opens a chat with you. For a <strong>group</strong>, open the group in WhatsApp, go to <em>Invite via link</em>, copy the invite link, and encode it with the URL type — anyone who scans it gets the join screen.</p>
+            <p>One thing worth being clear about: the QR code you see on <em>web.whatsapp.com</em> when you log in is generated by WhatsApp itself and is a rotating session token. The same is true of the Telegram desktop login code. Codes like those cannot be created here, or by any third-party generator, and you should never scan a login QR that somebody else has sent you.</p>
+
+            <h3 class="qr-h3">Business card and contact QR codes</h3>
+            <p>Choose <strong>Contact</strong> and fill in name, organisation, job title, phone, email, website and address. The output is a standard vCard 3.0, so scanning it offers to save you as a new contact — no typing, no transcription errors. Printed on a visiting card it turns the card into something the recipient actually keeps, and commas or semicolons in your details are escaped so the fields do not split in the wrong places.</p>
+
+            <h3 class="qr-h3">Wi-Fi QR codes for guests, cafés and hotels</h3>
+            <p>The <strong>Wi-Fi</strong> type encodes the network name, the password and the security mode, so a guest scans once and joins — no dictating a twenty-character password across a room. It is read natively by both iOS and Android cameras. Remember that the credentials are stored in plain text inside the pattern: printing a Wi-Fi QR code is as public as writing the password on the wall, so use it for a guest network and keep it away from anything sensitive.</p>
+
+            <h3 class="qr-h3">Payment, UPI and merchant QR codes — read this first</h3>
+            <div class="qr-callout">
+              <p style="margin:0"><strong>Payment codes must come from your bank or payment provider.</strong> A collect-money QR — UPI, Google Pay, PhonePe, Paytm, an NPCI-compliant merchant code — carries a verified merchant identifier and, for merchant codes, a signature that only the issuer can produce. Generating a payment code from a string you typed yourself is how people end up with money going to the wrong account. Get your QR from your bank, your PSP app or your payment gateway dashboard, and never re-encode or reprint a code you found somewhere else.</p>
+            </div>
+            <p>What you <em>can</em> legitimately do here is encode a link that leads to payment: your own payment-page URL, a donation page, an invoice link or a hosted payment link from your gateway. Paste it into the URL type. There is no dedicated UPI type in this tool, and that omission is deliberate rather than an oversight.</p>
+
+            <h3 class="qr-h3">PDF, image, photo and video QR codes</h3>
+            <p>This is the single most misunderstood request, so it is worth stating plainly: <strong>a QR code cannot contain a file.</strong> It holds a few hundred characters of text at most — nowhere near a PDF, a JPG, an MP4 or a photo. Every "PDF to QR code" or "image to QR code" service in existence does the same two steps behind a friendlier label:</p>
+            <ol>
+              <li>Upload the file somewhere it has a public web address — Drive, Dropbox, your own site, a CDN.</li>
+              <li>Encode <em>that address</em> as a URL QR code.</li>
+            </ol>
+            <p>So host the file yourself, copy its share link, and paste it into the URL type above. You keep control of the file and there is no third party that can delete it, meter it or start charging you later. The one thing to check is that the sharing permission is set to "anyone with the link", otherwise scanners land on a sign-in screen.</p>
+
+            <h3 class="qr-h3">YouTube, Instagram and other social QR codes</h3>
+            <p>Copy the profile, channel, video or reel link and encode it with the URL type — a YouTube channel code on a business card, a video link on packaging, a profile link on a shop shelf. Note that apps such as Instagram and Snapchat also have their own in-app profile codes (Instagram: profile menu → <em>QR code</em>), which are stylised and app-specific. Those are made in the app; what you build here is a plain, standards-compliant code to your public link, which has the advantage of working in any camera.</p>
+
+            <h3 class="qr-h3">Events, menus, signage and notices</h3>
+            <p>A short URL plus a printed code covers an enormous amount of everyday work: a restaurant menu, a birthday or wedding invitation with directions, a hospital or clinic notice pointing at appointment information, a shop counter card, a donation page, a product manual, a classroom worksheet, a conference schedule. For anything printed, choose error correction Q or H, export SVG, and test the code at final size before ordering the run.</p>
+          </section>
+
+          <!-- ============ GUIDE ============ -->
+          <section class="qr-section" aria-labelledby="qr-guide-heading">
+            <h2 class="qr-h2" id="qr-guide-heading">Understanding QR codes</h2>
+
+            <h3 class="qr-h3">How QR codes work</h3>
+            <p>The three large squares in the corners are finder patterns. A scanner locates those first, which is how it works out where the code is, how big it is and which way up. The smaller square near the fourth corner is an alignment pattern that corrects for the code being photographed at an angle or on a curved surface.</p>
+            <p>Around the edges run timing patterns — alternating light and dark modules that tell the scanner the module size. The remaining area holds the data, interleaved with error correction codewords using Reed–Solomon coding, which is what lets a partly damaged code still resolve.</p>
+            <p>The one thing that is not part of the pattern but is still required is the <strong>quiet zone</strong>: a blank margin of at least four modules on every side. Without it a scanner cannot tell where the symbol ends. It is the most commonly omitted requirement and the most common reason a technically valid code fails to read against a coloured background.</p>
+
+            <h3 class="qr-h3">QR code types and what they encode</h3>
+            <p>A QR code has no notion of type — it holds a string. What makes a Wi-Fi code different from a URL code is a convention about how that string is formatted, which scanners recognise and act on.</p>
+            <p>That is why the formatting has to be exact. <code>WIFI:T:WPA;S:name;P:pass;;</code> uses semicolons as separators, so a semicolon inside the network name has to be escaped as <code>\;</code> or the payload splits in the wrong place. vCard uses commas and semicolons structurally, so an organisation called "ToolAdda, Inc." needs its comma escaped. mailto: needs URL encoding so an ampersand in the subject does not start a new parameter.</p>
+            <p>Each of those escaping rules is implemented and tested here. It is unglamorous work and it is the difference between a code that does what you meant and one that quietly does something else.</p>
+
+            <h3 class="qr-h3">Error correction levels</h3>
+            <p>QR codes store redundant data so a damaged, dirty or partly covered symbol still resolves. There are four levels, and the trade is always the same: more redundancy means less room for your payload at a given symbol size.</p>
+            <ul>
+              <li><strong>L</strong> — lowest redundancy, most capacity. Suitable for long payloads scanned from a screen.</li>
+              <li><strong>M</strong> — the default here, and a sensible choice for most screen and clean-print use.</li>
+              <li><strong>Q</strong> — for printed material that will be handled: packaging, tickets, table cards.</li>
+              <li><strong>H</strong> — highest redundancy. Required when a logo covers part of the pattern, and useful outdoors.</li>
+            </ul>
+            <p>Raising the level does not make a code easier to scan in good conditions — it makes it more tolerant of bad ones. If your code fails on a clean screen, error correction is not the problem.</p>
+
+            <h3 class="qr-h3">Choosing colours</h3>
+            <p>Scanners look for a strong light–dark difference. The reliable arrangement is a dark foreground on a light background, and black on white is the most reliable of all.</p>
+            <p>The contrast ratio is calculated here from WCAG relative luminance as you pick colours. Below 3:1 the combination is refused, because it will not scan. Between 3:1 and 7:1 you get a warning — it may work on a good phone in good light and fail on a cheap camera in a dim restaurant. Above 7:1 you are safe.</p>
+            <p>Inverting — light modules on a dark background — is flagged rather than refused. Most modern scanners handle it, but not all older ones do, and it is worth knowing you have made that choice deliberately.</p>
+            <p>Two further cautions. A transparent background means the code takes on whatever is behind it, so a busy photograph can destroy the contrast entirely. And a mid-tone foreground that looks fine on screen often loses contrast once printed, because printing darkens light tones less than you expect.</p>
+
+            <h3 class="qr-h3">QR codes with logos</h3>
+            <p>Placing a logo in the centre works because Reed–Solomon error correction can reconstruct missing codewords. It is a deliberate use of redundancy, not a trick — but redundancy is finite.</p>
+            <p>Practical limits: keep the logo under about 20% of the width for comfort, and never above 30%. Use error correction H, which this tool switches to automatically when you add one. Give the logo a solid backing so it does not blend into surrounding modules — a white square or circle behind it helps scanners considerably. And never cover a finder pattern in a corner; that is what the scanner uses to find the code at all.</p>
+            <p>Then test it. A code with a logo that scans instantly on your phone can be unreliable on an older Android camera, and the only way to know is to try more than one device.</p>
+
+            <h3 class="qr-h3">Size, density and printing</h3>
+            <p>How large a code needs to be depends on how much data it holds and how far away it will be scanned. More data means more modules in the same square, so each module is physically smaller and the camera needs to be closer or better.</p>
+            <p>A widely used rule of thumb is that the printed code should be about one tenth of the intended scanning distance — roughly 3 cm for something read at arm's length, and much larger for a poster read from across a room. Treat that as a starting point rather than a specification.</p>
+            <p>The cheapest way to make a code more scannable is almost always to shorten the data. A long URL with tracking parameters produces a dense grid; the same link shortened can drop several versions and become noticeably easier to read at the same physical size.</p>
+            <p>For print, prefer the SVG export. It is a genuine vector — one path built from the module grid — so it stays perfectly crisp at any size, which matters on signage and packaging. And always print a test at final size before ordering a run.</p>
+
+            <h3 class="qr-h3">PNG or SVG?</h3>
+            <p>PNG is the right default for screens, documents, slides and most everyday printing. It is lossless, so module edges stay sharp, and it is universally supported.</p>
+            <p>SVG is better wherever the code will be scaled: posters, banners, vinyl, packaging artwork. Because it is a vector it has no resolution at all, and a print shop can enlarge it without any loss.</p>
+            <p>One thing to know: the SVG export here contains the QR symbol only. A centre logo is a raster image, and embedding it would make the file part-vector and part-bitmap while claiming to be a vector. If you need the logo, use the PNG.</p>
+            <p>JPG is deliberately not offered. Its lossy compression puts ringing artifacts along the hard edges between modules — exactly the wrong kind of damage for something a camera has to threshold into black and white.</p>
+
+            <h3 class="qr-h3">Unicode and international text</h3>
+            <p>Text is encoded as UTF-8, so Devanagari, Chinese, Japanese, Arabic, accented Latin and emoji all survive scanning intact.</p>
+            <p>This is worth checking in any generator you use. The widely used <code>qrcode-generator</code> library ships two byte encoders and defaults to a Latin-1 one, in which "नमस्ते" becomes six meaningless bytes rather than the correct eighteen. The code still builds, still scans, and decodes to mojibake. The UTF-8 encoder is selected explicitly here, and the test suite verifies the byte output against Node's own encoder for six scripts.</p>
+
+            <h3 class="qr-h3">Security and privacy</h3>
+            <p>A QR code is neither secure nor insecure. It is encoded data that anyone can decode, and it has no authentication of any kind. The risk lies in what it points to.</p>
+            <p>The practical attack is a sticker: someone covers a genuine code — on a parking meter, a restaurant table, a payment poster — with their own. Nothing about the pattern reveals this. The defence is on the scanning side: read the URL your phone previews before opening it, and be suspicious of a payment code that has visibly been stuck over something else.</p>
+            <p>Wi-Fi codes deserve particular care. The credentials are encoded in plain text, so anyone who scans or photographs the code has your password. A Wi-Fi QR on a café wall is exactly as public as writing the password on the wall — which is often fine, as long as it is a guest network and you meant to.</p>
+            <p>On this page, nothing you enter leaves the browser. There is no request carrying your data, no analytics event containing it, and nothing written to local storage — deliberately, because a QR generator routinely handles Wi-Fi passwords and personal contact details.</p>
+
+            <h3 class="qr-h3">Static and dynamic codes</h3>
+            <p>The codes here are static: the data is baked into the pattern. That has real advantages — they never expire, depend on no service, work offline for Wi-Fi and contact types, and cannot be tracked.</p>
+            <p>The limitation is that the destination cannot be changed afterwards. If you print ten thousand flyers pointing at a URL and the page moves, the codes are wrong. Dynamic QR services solve this by encoding a redirect URL they own, which lets them change the target and count scans — at the cost of a permanent dependency on that provider and their analytics.</p>
+            <p>A middle path worth knowing: point a static code at a URL you control and set up the redirect yourself. You keep the ability to change the destination without handing anyone else control of your printed material.</p>
+
+            <h3 class="qr-h3">Common problems</h3>
+            <ul>
+              <li><strong>No quiet zone.</strong> The code was cropped tight to the modules. Every export here includes the four-module margin.</li>
+              <li><strong>Printed too small.</strong> Dense codes need physical size. Shorten the data or print larger.</li>
+              <li><strong>Low contrast.</strong> Pale foregrounds and mid-tone backgrounds fail in poor light.</li>
+              <li><strong>Logo too large.</strong> Past roughly 30% the error correction cannot recover the pattern.</li>
+              <li><strong>Distorted when placed.</strong> A code stretched to fit a layout is no longer square and may not resolve.</li>
+              <li><strong>Glossy or curved surface.</strong> Reflections defeat the camera; matte finishes scan better.</li>
+              <li><strong>Mojibake after scanning.</strong> The generator encoded non-ASCII text as Latin-1. Not an issue here.</li>
+            </ul>
+          </section>
+
+          <!-- ============ PRINT SIZE (new) ============ -->
+          <section class="qr-section" aria-labelledby="qr-printsize-heading">
+            <h2 class="qr-h2" id="qr-printsize-heading">How big should you print it?</h2>
+            <p class="qr-sub">A starting point from the one-tenth rule above: print the code at about a tenth of the distance it will be scanned from. Short data can go a little smaller; a long link needs more room.</p>
+            <div class="qr-tablewrap">
+              <table class="qr-table">
+                <thead><tr><th scope="col">Where it goes</th><th scope="col">Scanned from</th><th scope="col">Print at least</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row">Business card or label</th><td data-label="Scanned from">About 25–30 cm</td><td data-label="Print at least">2.5–3 cm</td></tr>
+                  <tr><th scope="row">Table card, menu or flyer</th><td data-label="Scanned from">About 50 cm</td><td data-label="Print at least">5 cm</td></tr>
+                  <tr><th scope="row">Shop window or notice board</th><td data-label="Scanned from">About 1 m</td><td data-label="Print at least">10 cm</td></tr>
+                  <tr><th scope="row">Poster across a room</th><td data-label="Scanned from">About 3 m</td><td data-label="Print at least">30 cm</td></tr>
+                  <tr><th scope="row">Banner or hoarding</th><td data-label="Scanned from">10 m or more</td><td data-label="Print at least">1 m or more</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Whatever the size, keep the four-module quiet zone around the code, use the SVG export for anything larger than A4, and test one print at final size before ordering the full run.</p>
+          </section>
+
+          <!-- ============ MEANING & HISTORY ============ -->
+          <section class="qr-section" aria-labelledby="qr-meaning-heading">
+            <h2 class="qr-h2" id="qr-meaning-heading">QR code meaning, full form and history</h2>
+
+            <h3 class="qr-h3">What is the full form of QR code?</h3>
+            <p>QR stands for <strong>Quick Response</strong>. The name was chosen because the symbol was designed to be decoded fast — a camera reads the whole two-dimensional grid in one capture instead of sweeping a laser across a set of lines. So "QR code" means, quite literally, quick-response code, and a "QR code scanner" is simply a camera plus software that decodes that grid.</p>
+            <p lang="hi">हिंदी में QR कोड का पूरा नाम "क्विक रिस्पॉन्स कोड" है — यह एक द्वि-आयामी बारकोड है जिसमें जानकारी काले और सफ़ेद चौकोर खानों के रूप में संग्रहित रहती है, और मोबाइल कैमरा उसे स्कैन करके पढ़ लेता है।</p>
+
+            <h3 class="qr-h3">Who invented the QR code?</h3>
+            <p>The QR code was developed in 1994 by a team led by <strong>Masahiro Hara</strong> at Denso Wave, a Japanese company in the Toyota group. The problem being solved was industrial rather than consumer: barcodes on automotive parts held too little data and had to be scanned one at a time in a precise orientation, which slowed assembly lines down. The finder patterns in three corners — the feature that lets a phone read a code upside down or at an angle today — exist because a part on a moving line does not arrive neatly aligned.</p>
+            <p>Denso Wave chose not to charge for use of the standard, which is the main reason QR codes are everywhere while several competing 2D symbologies are not. QR Code is a registered trademark of Denso Wave Incorporated, but the specification itself is published as ISO/IEC 18004 and free to implement.</p>
+
+            <h3 class="qr-h3">Difference between a barcode and a QR code</h3>
+            <p>A traditional barcode is one-dimensional: information is encoded in the widths of vertical bars, read along a single line. A QR code is two-dimensional, encoding data across both axes, which is why the capacity difference is so large.</p>
+            <div class="qr-tablewrap">
+              <table class="qr-table">
+                <thead><tr><th scope="col"></th><th scope="col">Barcode (1D, e.g. Code 128)</th><th scope="col">QR code (2D)</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row">Data direction</th><td data-label="Barcode">Horizontal only</td><td data-label="QR code">Horizontal and vertical</td></tr>
+                  <tr><th scope="row">Typical capacity</th><td data-label="Barcode">Around 20–48 characters</td><td data-label="QR code">Up to about 4,296 alphanumeric characters</td></tr>
+                  <tr><th scope="row">Orientation</th><td data-label="Barcode">Must be roughly aligned</td><td data-label="QR code">Any angle, including upside down</td></tr>
+                  <tr><th scope="row">Damage tolerance</th><td data-label="Barcode">None built in</td><td data-label="QR code">Reed–Solomon error correction, L to H</td></tr>
+                  <tr><th scope="row">Read with</th><td data-label="Barcode">Laser scanner or camera</td><td data-label="QR code">Any phone camera</td></tr>
+                  <tr><th scope="row">Common use</th><td data-label="Barcode">Retail SKUs, logistics labels, shelf tags</td><td data-label="QR code">Links, Wi-Fi, contacts, payments, tickets</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>A frequent mix-up is worth clearing up here: <strong>Code 128 is a barcode symbology, not a kind of QR code.</strong> If you searched for "QR code 128" and what you actually need is a linear barcode for stock, shipping or labelling, use our <a href="barcode-generator.html">barcode generator</a>, which covers CODE 128, EAN, UPC and ITF.</p>
+
+            <h3 class="qr-h3">Do you need a static or a dynamic QR code generator?</h3>
+            <p>Everything produced on this page is a <strong>static</strong> QR code: the data lives inside the pattern, so the code never expires, never phones home, needs no account, and keeps working even if this site does not. That is the right choice for Wi-Fi, contacts, locations, plain text and any link you control.</p>
+            <p>A <strong>dynamic</strong> QR code is a different product. It encodes a short redirect URL owned by a service; the service then forwards each scan to a destination you can edit later and counts the scans on the way through. You gain editability and analytics, and you take on a permanent dependency — if that provider changes its pricing, or shuts down, the printed codes stop leading anywhere.</p>
+            <p>There is a middle path that most people overlook. Point a static code at a short URL on a domain <em>you</em> own, and control the redirect yourself: you can change the destination whenever you like, and nobody else holds your printed material hostage. Combine a <a href="url-shortener.html">short link</a> with <a href="utm-builder.html">UTM parameters</a> and you get editable destinations plus scan attribution in your own analytics.</p>
+          </section>
+
+          <!-- ============ SCANNING ============ -->
+          <section class="qr-section" aria-labelledby="qr-scan-heading">
+            <h2 class="qr-h2" id="qr-scan-heading">How to scan a QR code</h2>
+            <p class="qr-sub">This page creates codes; it does not read them. If you need to decode one — from your camera, a screenshot or a saved image — use the <a href="qr-code-scanner.html">ToolAdda QR code scanner</a>, which also runs entirely in your browser. The notes below cover how scanning works on the devices people actually ask about, because the most common reason a printed code "fails" is a scanning habit rather than the code itself.</p>
+
+            <h3 class="qr-h3">On an iPhone or iPad</h3>
+            <p>Open the built-in <strong>Camera</strong> app, point it at the code, and hold steady — a notification banner appears at the top and tapping it opens the link. No app installation is needed on iOS 11 or later. There is also a dedicated <em>Code Scanner</em> you can add to Control Centre from <em>Settings → Control Centre</em>, which is handy because it opens straight into scan mode. For a code sitting in a photo or a screenshot, open it in <strong>Photos</strong> and tap the Live Text button, or long-press the code in the image.</p>
+
+            <h3 class="qr-h3">On Android</h3>
+            <p>Most Android cameras detect QR codes automatically; if yours does not, look for a Lens or QR icon in the camera viewfinder, or use <strong>Google Lens</strong>. Many phones also carry a QR scanner tile in the Quick Settings panel that you pull down from the top of the screen — swipe to the second page of tiles if you do not see it. Google Lens can also read a code out of an image you already have: open the picture in Google Photos and press the Lens button.</p>
+
+            <h3 class="qr-h3">On a laptop, PC or Mac</h3>
+            <p>Desktops have no camera app worth the name, so a browser-based scanner is the practical route: grant webcam access and hold the code up, or — usually easier — drop the image file straight in. Our <a href="qr-code-scanner.html">online QR code scanner</a> does both without installing anything, which is what people are after when they search for a QR scanner for PC or a way to scan a code without an app.</p>
+
+            <h3 class="qr-h3">From a photo, screenshot or image file</h3>
+            <p>You do not need to point a camera at a physical code at all. If someone has sent you a code as an image, or you have a screenshot of one, upload the file to a scanner and it decodes the pattern from the pixels. This is the reliable way to handle a code on the same screen you are reading it from — a camera cannot photograph its own display.</p>
+
+            <h3 class="qr-h3">Scanning a Wi-Fi QR code</h3>
+            <p>Point the camera at a Wi-Fi code and both iOS and Android offer to join the network directly; you never see or type the password. If what you actually want is to <em>read</em> the password out of the code, use a scanner that shows the raw decoded text — a Wi-Fi payload looks like <code>WIFI:T:WPA;S:NetworkName;P:ThePassword;;</code>, with the password after <code>P:</code>. That also explains why a printed Wi-Fi code should never be shared more widely than you intend.</p>
+
+            <h3 class="qr-h3">"Invalid QR code" or "unrecognised QR code format"</h3>
+            <p>Those messages almost never mean the QR standard was violated. In practice they mean one of the following:</p>
+            <ul>
+              <li><strong>The image is incomplete or cropped.</strong> A code missing its quiet zone or one of its corner finder patterns cannot be located, let alone decoded.</li>
+              <li><strong>The photo is blurry, skewed or glare-hit.</strong> Reflections on glossy paper and phone screens are a leading cause; tilt slightly, or move to diffuse light.</li>
+              <li><strong>It decoded fine, but the app rejected the contents.</strong> A payment app shown a plain URL, or a ticket scanner shown a link, will say the code is invalid because it expected its own payload format. The code is valid; it is the wrong code for that app.</li>
+              <li><strong>It is a single-app or expiring code.</strong> Login codes and one-time tickets are session tokens that go stale in seconds and are meaningless outside their own app.</li>
+              <li><strong>The code has been rendered too small or stretched.</strong> A code squashed to fit a layout is no longer square and often will not resolve.</li>
+            </ul>
+            <p>The quickest diagnosis is to decode the image in a general-purpose scanner. If the raw text comes out cleanly, the pattern is fine and the problem is on the app side.</p>
+          </section>
+
+          <!-- ============ LIMITS ============ -->
+          <section class="qr-section" aria-labelledby="qr-limits-heading">
+            <h2 class="qr-h2" id="qr-limits-heading">What this tool does not do — and where to go instead</h2>
+            <p class="qr-sub">Being straight about the boundaries saves you the time of discovering them yourself. Each item below is a real limitation of this page, with the nearest honest alternative.</p>
+            <ul>
+              <li><strong>Bulk or batch generation.</strong> Codes are made one at a time; there is no CSV or spreadsheet upload that spits out hundreds of codes in a ZIP. For a handful you can simply change the input and download again — the fields keep their values.</li>
+              <li><strong>Dynamic, editable or trackable codes.</strong> The output is static by design, so there is no dashboard, no scan counter and no way to change a destination after printing. Use a self-owned redirect, as described above, or a dedicated dynamic QR service if you need the analytics.</li>
+              <li><strong>Reading, decoding or editing an existing code.</strong> You cannot upload a finished QR code here to see what it contains or to alter it — a QR code is not an editable document. Decode it with the <a href="qr-code-scanner.html">QR code scanner</a>, then generate a fresh code from the text.</li>
+              <li><strong>Artistic codes, shaped modules and gradients.</strong> This generator keeps to clean square modules because that is what scans most reliably. For rounded modules, custom eye shapes and heavier styling, use the <a href="custom-qr-code-maker.html">custom QR code maker</a> — and test any decorative code on several phones before committing it to print.</li>
+              <li><strong>Linear barcodes.</strong> Code 128, EAN-13, UPC-A and ITF are a different symbology entirely; that is what the <a href="barcode-generator.html">barcode generator</a> is for.</li>
+              <li><strong>Payment code issuance.</strong> As covered above, UPI and merchant collection codes have to come from your bank or payment provider.</li>
+              <li><strong>Photo-editing "QR codes".</strong> Codes shared for Snapseed, Lightroom, CapCut or VN presets are app-specific preset containers that happen to be distributed as scannable images. They are decoded by those apps, not by the QR standard, and nothing here creates or applies them.</li>
+            </ul>
+          </section>
+
+          <!-- ============ FAQ ============ -->
+          <section class="qr-section" aria-labelledby="qr-faq-heading">
+            <h2 class="qr-h2" id="qr-faq-heading">Frequently asked questions</h2>
+            <div class="qr-faq" data-qr-faq>
+              <details><summary>What is a QR code?</summary><p>A QR code is a two-dimensional barcode that stores data as a grid of black and white squares called modules. A camera reads the whole grid at once, which is why it holds far more than a traditional barcode and can be scanned from any angle.</p></details>
+              <details><summary>How do I create a QR code?</summary><p>Pick a type — URL, text, Wi-Fi, email, phone, SMS, contact, location or WhatsApp — fill in the fields, and the preview updates as you type. Adjust colours or error correction if you want, then download as PNG or SVG.</p></details>
+              <details><summary>Is this QR code generator free?</summary><p>Yes. It is free, needs no account or email address, adds no watermark, and there is no limit on how many codes you create.</p></details>
+              <details><summary>Do I need an account?</summary><p>No. There is no sign-up at any point. The generator runs entirely in your browser, so there is nothing for an account to store.</p></details>
+              <details><summary>How do I create a QR code for a website?</summary><p>Choose the URL type and paste your address. If you leave off the scheme, https:// is added; a URL that already names a scheme is encoded exactly as typed, including any query string.</p></details>
+              <details><summary>How do I create a Wi-Fi QR code?</summary><p>Choose Wi-Fi, enter the network name and password, and pick the security type. Scanning the result offers to join the network. Characters such as semicolons and colons in the name or password are escaped correctly, which is where naive generators produce the wrong credentials.</p></details>
+              <details><summary>Can I create a QR code for a Wi-Fi password?</summary><p>Yes, and it works on both iOS and Android. Be aware that anyone who scans or photographs the code gets your password — it encodes the credentials in plain text, so treat a printed Wi-Fi QR the way you would treat the password written on a card.</p></details>
+              <details><summary>Can I create a contact or vCard QR code?</summary><p>Yes. Fill in name, organisation, job title, phone, email, website and address, and the code encodes a standard vCard 3.0. Scanning it offers to save a new contact. Commas and semicolons in your details are escaped so the fields do not split in the wrong places.</p></details>
+              <details><summary>Can I create a QR code for email?</summary><p>Yes. Enter an address and optionally a subject and message body. The code encodes a mailto: link, so scanning it opens a pre-filled email. The subject and body are URL-encoded, so ampersands and spaces survive.</p></details>
+              <details><summary>Can I create a QR code for a phone number?</summary><p>Yes. The Phone type encodes a tel: link, and scanning it starts a call to that number. International formats with a leading plus and spaces or brackets are accepted.</p></details>
+              <details><summary>Can I create an SMS QR code?</summary><p>Yes. Enter a number and an optional message, and scanning opens the messaging app with both pre-filled. The recipient still has to press send.</p></details>
+              <details><summary>Can I create a location QR code?</summary><p>Yes. Enter latitude and longitude and the code encodes a geo: URI that opens in the phone's map app. Latitude is validated to between -90 and 90, longitude to between -180 and 180.</p></details>
+              <details><summary>Can I create a WhatsApp QR code?</summary><p>Yes. Enter a phone number with country code and an optional message; the code encodes a wa.me link that opens a chat with the message pre-filled.</p></details>
+              <details><summary>Can I add a logo to my QR code?</summary><p>Yes. Upload a PNG, JPG or WebP and it is placed in the centre. Error correction is raised to H automatically, because a logo covers modules that the error correction then has to reconstruct. Keep the logo small — above about 30% of the width the code stops scanning reliably.</p></details>
+              <details><summary>Can I change the QR code colours?</summary><p>Yes, foreground and background are both adjustable, and there are presets. The contrast ratio is calculated as you change them and you are warned when the combination is likely to fail — under 3:1 it is refused as unscannable.</p></details>
+              <details><summary>Can I change the QR code size?</summary><p>Yes. The export size is separate from the on-screen preview, so you can work with a comfortable preview and still download at 1024 or 2048 pixels for print.</p></details>
+              <details><summary>What is QR error correction?</summary><p>QR codes store redundant data so they still scan when part of the symbol is damaged, dirty or covered. There are four levels — L, M, Q and H — with H holding the most redundancy and therefore the least payload for a given symbol size.</p></details>
+              <details><summary>Which error correction level should I use?</summary><p>M is a good default for screens and clean printing. Use Q or H for codes that will be printed on packaging, displayed outdoors, or that carry a logo. Use L only when the payload is long and the code will be scanned from a screen in good conditions.</p></details>
+              <details><summary>Why is my QR code not scanning?</summary><p>The usual causes are too little contrast between foreground and background, a code printed too small for its data density, a missing quiet zone — the light margin around the symbol — or a logo covering too much of the pattern. Try black on white at a larger size to isolate which one it is.</p></details>
+              <details><summary>What is the quiet zone and why does it matter?</summary><p>The quiet zone is the blank margin of at least four modules that must surround a QR code. Without it a scanner cannot tell where the symbol ends, and codes placed flush against coloured backgrounds often fail. Every code this tool produces includes the margin.</p></details>
+              <details><summary>How can I make a QR code easier to scan?</summary><p>Use dark on light, keep the quiet zone, print it larger than you think you need, shorten the data so the grid is less dense, and raise the error correction level. Then test it with more than one phone before printing a batch.</p></details>
+              <details><summary>Can I download my QR code as PNG?</summary><p>Yes, and PNG is the recommended format for screens, documents and most printing. It is lossless, so the module edges stay sharp.</p></details>
+              <details><summary>Can I download my QR code as SVG?</summary><p>Yes. The SVG is a genuine vector — one path built from the module grid, not a PNG wrapped in markup — so it scales to any size without losing sharpness. Note that a centre logo is not included in the SVG export.</p></details>
+              <details><summary>Is SVG better for printing?</summary><p>Usually yes. A vector prints crisply at any physical size, which matters for posters, signage and packaging where a raster would show soft edges. For a business card at a fixed size, a high-resolution PNG is equally fine.</p></details>
+              <details><summary>Can I print my QR code?</summary><p>Yes. The Print button produces a clean page containing only the QR code and a short label — no navigation, controls or page furniture.</p></details>
+              <details><summary>Do QR codes expire?</summary><p>No. A QR code is just an encoding of data; it has no expiry and needs no service to keep working. What can stop working is what it points at — if the URL inside it goes away, the code still scans but leads nowhere.</p></details>
+              <details><summary>Are QR codes permanent?</summary><p>The codes produced here are static: the data is baked into the pattern and cannot be changed afterwards. Editing the destination later requires a dynamic QR service that redirects through its own URL, which is a different product with its own tracking and dependency.</p></details>
+              <details><summary>Does a QR code require internet?</summary><p>Scanning does not — the data is in the image itself. Acting on it might: a URL code needs a connection to load the page, while a Wi-Fi, contact or SMS code works entirely offline.</p></details>
+              <details><summary>Are QR codes secure?</summary><p>A QR code is neither secure nor insecure by itself — it is just encoded data that anyone can decode. The risk is what it points to, since a scanner cannot tell a genuine code from a sticker placed over it. Check the URL your phone shows before opening it.</p></details>
+              <details><summary>Is my QR data stored or uploaded?</summary><p>No. The code is generated in your browser by a local library. Nothing you type — including Wi-Fi passwords and contact details — is sent anywhere, logged, or saved to local storage.</p></details>
+              <details><summary>Does the generator support Hindi, Chinese or emoji?</summary><p>Yes. Text is encoded as UTF-8, so Devanagari, Chinese, Japanese, Arabic, accented Latin and emoji all survive scanning intact. This is worth checking in any generator — a common library default encodes Latin-1 and silently turns non-ASCII text into mojibake.</p></details>
+              <details><summary>How much data can a QR code hold?</summary><p>Up to roughly 2,953 bytes at the lowest error correction level and about 1,273 at the highest. In practice much less is advisable: more data means a denser grid, which needs a larger print size to stay scannable. This tool refuses payloads that will not fit and warns when one is getting dense.</p></details>
+              <details><summary>How large should a printed QR code be?</summary><p>A common rule of thumb is that the code should be about a tenth of the scanning distance — roughly 3 cm for arm's length, and much larger for a poster read from across a room. Denser codes need to be bigger, so shortening the data is often the cheapest way to shrink the print size.</p></details>
+              <details><summary>Can I use these QR codes for business?</summary><p>Yes. There is no licence, watermark or attribution requirement on the codes you generate, and the QR standard itself is free to use. Menus, packaging, business cards and signage are all fine.</p></details>
+              <details><summary>Can I use a transparent background?</summary><p>Yes, for PNG and SVG. It is worth testing though — with a transparent background the code takes on whatever is behind it, and a busy or mid-tone surface can destroy the contrast a scanner needs.</p></details>
+              <details><summary>What is the full form of QR code?</summary><p>QR stands for Quick Response. The name reflects the design goal: a camera reads the whole two-dimensional grid in a single capture instead of sweeping across a set of lines, so decoding is near-instant. In Hindi it is commonly written as क्विक रिस्पॉन्स कोड.</p></details>
+              <details><summary>Who invented the QR code?</summary><p>A team led by Masahiro Hara at Denso Wave, part of the Toyota group, developed it in 1994 to track automotive parts faster than barcodes allowed. Denso Wave chose not to charge for use of the standard, which is why QR codes became universal. QR Code remains its registered trademark, while the specification is published as ISO/IEC 18004.</p></details>
+              <details><summary>What is the difference between a barcode and a QR code?</summary><p>A barcode is one-dimensional and stores roughly 20 to 48 characters in the widths of vertical bars, read along a single line. A QR code is two-dimensional, holds up to about 4,296 alphanumeric characters, scans at any angle, and carries error correction so a damaged symbol still resolves. Code 128 is a barcode symbology, not a type of QR code.</p></details>
+              <details><summary>How do I make a QR code for a Google Form?</summary><p>Open the form, press Send or Share, and copy the link — the short forms.gle address is better than the long one because fewer characters mean a less dense code. Paste it into the URL type here and download the result.</p></details>
+              <details><summary>How do I create a QR code for a location?</summary><p>Two ways. The Location type takes latitude and longitude and encodes a geo: URI that opens the phone's default map app, which works for places with no listing. Alternatively copy a Google Maps share link and encode it with the URL type, which opens the full listing with directions and reviews.</p></details>
+              <details><summary>Can I create a QR code for my Google review link?</summary><p>Yes. Copy the "Ask for reviews" short link from your Google Business Profile — usually of the form g.page/r/…/review — and encode it with the URL type. Printed on a table card or receipt it takes customers straight to the review box.</p></details>
+              <details><summary>How do I convert a link into a QR code?</summary><p>Choose the URL type, paste the link, and the preview updates as you type; then download PNG or SVG. Shorter links produce less dense codes that stay readable at smaller print sizes, so trim tracking parameters where you can.</p></details>
+              <details><summary>Can I turn a PDF, image or video into a QR code?</summary><p>Not directly — a QR code holds a few hundred characters of text, not a file of any kind. Host the PDF, image or video somewhere with a public link, set the sharing permission to anyone with the link, then encode that link with the URL type. Every "file to QR code" service does exactly this behind a friendlier label.</p></details>
+              <details><summary>Can I create a UPI, Google Pay or PhonePe payment QR code?</summary><p>No, and deliberately so. A collection or merchant QR carries a verified payee identifier — and for merchant codes a signature only the issuer can produce — so it must come from your bank, your payment app or your gateway dashboard. You can, however, encode a link to your own payment or donation page with the URL type.</p></details>
+              <details><summary>Can I generate QR codes in bulk?</summary><p>No. This tool makes one code at a time and has no CSV or spreadsheet upload for batch output. For a small number, change the input and download again — the settings and fields keep their values between codes.</p></details>
+              <details><summary>Can I edit a QR code after I have created it?</summary><p>No. A static QR code is not an editable document; the data is baked into the module pattern, so changing it means generating a new code. Editing a destination after printing requires a dynamic QR service that redirects through a URL it owns, or your own redirect on a domain you control.</p></details>
+              <details><summary>Can this tool scan or decode a QR code?</summary><p>No — this page only creates codes. To read one from your camera, a screenshot or an image file, use the ToolAdda QR code scanner, which also runs entirely in your browser.</p></details>
+              <details><summary>How do I scan a QR code on an iPhone?</summary><p>Open the Camera app, point it at the code, and tap the banner that appears; no app is needed on iOS 11 or later. You can also add the Code Scanner to Control Centre, or read a code inside a saved photo by opening it in Photos and tapping the Live Text button.</p></details>
+              <details><summary>How do I scan a QR code on Android?</summary><p>Most Android cameras detect codes automatically; otherwise use Google Lens or the QR scanner tile in the Quick Settings panel. Google Lens can also decode a code from a picture already in your gallery via Google Photos.</p></details>
+              <details><summary>How do I scan a QR code on a laptop or PC?</summary><p>Use a browser-based scanner: either grant webcam access and hold the code up, or upload the image file, which is usually easier and needs no camera at all. That is what the ToolAdda QR code scanner is for, and it requires no installation.</p></details>
+              <details><summary>How do I scan a QR code from a photo in my gallery?</summary><p>Upload the image to a scanner that accepts files, or use Google Lens from within Google Photos on Android. This is also the reliable way to handle a code displayed on the same screen you are reading — a camera cannot photograph its own display.</p></details>
+              <details><summary>Why does my phone say the QR code is invalid or the format is unrecognised?</summary><p>Usually the image is cropped, blurry, stretched or missing its quiet zone, or the code decoded correctly but the app expected its own payload format — a payment app shown a plain URL will call it invalid. Login and ticket codes are also short-lived session tokens that are meaningless outside their own app. Decode the image in a general-purpose scanner: if the raw text comes out cleanly, the pattern is fine.</p></details>
+              <details><summary>Can I make a WhatsApp group QR code?</summary><p>Yes, indirectly. Open the group, choose Invite via link, copy the invite link, and encode it with the URL type — scanning then opens the join screen. The WhatsApp type itself builds a wa.me chat link to a single number.</p></details>
+              <details><summary>Can I create the WhatsApp Web or Telegram login QR code?</summary><p>No. Those are rotating session tokens generated by WhatsApp and Telegram themselves and cannot be produced by any third-party generator. Never scan a login QR code that somebody else has sent you — doing so hands them access to your account.</p></details>
+              <details><summary>Can I make a heart-shaped or artistic QR code?</summary><p>Not here. This generator keeps clean square modules because they scan most reliably. For rounded modules, custom corner shapes and heavier styling, use the ToolAdda custom QR code maker, and test any decorative code on several phones before printing it.</p></details>
+              <details><summary>Do I need an app to scan a QR code?</summary><p>No. The built-in camera on any current iPhone or Android phone reads QR codes without an extra app, and on a desktop a browser-based scanner works from your webcam or from an uploaded image. Dedicated scanner apps are rarely necessary.</p></details>
+              <details><summary>What is a static QR code generator?</summary><p>One that writes your data directly into the pattern, with no service in the middle — which is what this page is. Static codes never expire, need no account, are not tracked, and work offline for Wi-Fi, contact and location types. The trade-off is that the destination cannot be changed after the code is printed.</p></details>
+            </div>
+          </section>
+
+          <!-- ============ RELATED ============ -->
+          <section class="qr-section" aria-labelledby="qr-related-heading">
+            <h2 class="qr-h2" id="qr-related-heading">Related tools</h2>
+            <p class="qr-sub">More ToolAdda utilities that run entirely in your browser.</p>
+            <div class="qr-related">
+              <a href="custom-qr-code-maker.html"><strong>Custom QR Code Maker</strong><span>QR codes with logos, styles and shaped modules.</span></a>
+              <a href="qr-code-scanner.html"><strong>QR Code Scanner</strong><span>Decode QR codes from your camera or an image.</span></a>
+              <a href="barcode-generator.html"><strong>Barcode Generator</strong><span>CODE 128, EAN, UPC and ITF barcodes.</span></a>
+              <a href="password-generator.html"><strong>Password Generator</strong><span>Strong, random passwords generated locally.</span></a>
+              <a href="url-encoder-decoder.html"><strong>URL Encoder / Decoder</strong><span>Encode and decode URL components.</span></a>
+              <a href="favicon-generator.html"><strong>Favicon Generator</strong><span>Every icon size plus the web manifest.</span></a>
+            </div>
+          </section>
+
+          <p class="qr-disclaimer">
+            QR codes are generated in your browser by a local library. Nothing you enter — including Wi-Fi passwords, contact details and URLs — is uploaded, logged or saved to storage, and the generator never fetches or visits the URLs you encode. Every code includes the four-module quiet zone the specification requires, and text is encoded as UTF-8. QR Code is a registered trademark of Denso Wave Incorporated; the standard itself is free to use.
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+          <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy</a><a href="terms.html">Terms</a></div>
+        </div>
+      </div>
+      <div class="container qr-directory">
+        <a href="https://uno.directory" target="_blank" rel="nofollow noopener">
+          <img src="https://uno.directory/uno-directory.svg" alt="Listed on Uno Directory"
+            width="120" height="36" loading="lazy" decoding="async" />
+        </a>
+      </div>
+    </footer>
+
+    <!-- Print-only layout: just the code and a label.
+
+         This must NOT sit between </header> and <main>. The global
+         stylesheet compensates for the sticky, overlapping header with
+
+             .site-header + #main-content > :first-child { padding-top: … }
+
+         and an adjacent-sibling selector stops matching the moment
+         anything is inserted between the two — which silently tucked
+         the breadcrumb and hero under the navbar. -->
+    <div class="qr-print" data-qr-print-title>
+      <img alt="Generated QR code" />
+      <p data-qr-print-label>QR code</p>
+    </div>
+
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/qrcode-generator.min.js"></script>
+    <script defer src="assets/js/qr-code-generator.js"></script>
+    <script>
+      /* Below 1000px the preview sits under the input (and, on phones, under
+         the ad too), so Generate brings the finished code into view when it
+         is not already on screen. */
+      (function () {
+        var btn = document.querySelector('[data-qr-generate]');
+        var preview = document.querySelector('.qs-preview');
+        if (!btn || !preview || !window.matchMedia) return;
+        btn.addEventListener('click', function () {
+          if (!window.matchMedia('(max-width: 999px)').matches) return;
+          setTimeout(function () {
+            var top = preview.getBoundingClientRect().top;
+            if (top < 0 || top > window.innerHeight * 0.5) {
+              var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+              preview.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' });
+            }
+          }, 80);
+        });
+      })();
+    </script>
+    <script src="assets/js/side-ads.js" defer></script>
+    <script src="assets/js/inline-ads.js" data-in-article defer></script>
+  </body>
+</html>

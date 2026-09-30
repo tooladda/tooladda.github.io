@@ -1,0 +1,252 @@
+/* ==========================================================================
+   Reversi — board, discs and the flip.
+
+   Every disc is a real two-sided coin: a black face and a white face back to
+   back, and the colour on top is simply which way it is turned. So a flip is
+   not a colour swap with a fade — changing the disc's colour attribute turns
+   it over in 3D, and each flipped disc is delayed by its distance from the
+   disc just placed, so a capture ripples out along its lines the way it does
+   on a real board.
+
+   Sizes inside a square are in em, and a square's font-size is a tenth of
+   its own width (container query units on the grid), so the rim and the
+   markers scale with the board.
+   ========================================================================== */
+
+/* -------------------------------------------------------------- styles --
+   Four board-and-disc sets. "contrast" swaps black and white for blue and
+   orange, which stay distinct on a dim screen and for colour-blind players. */
+[data-reversi] {
+  --rv-sq: #1f7a4d; --rv-sq-2: #186a42; --rv-line: #0b3d24;
+  --rv-frame: #14532d; --rv-frame-deep: #052e16;
+  --rv-b: #3f3f46; --rv-b-deep: #050505;
+  --rv-w: #ffffff; --rv-w-deep: #cbd5e1;
+  --rv-mark: #ef4444;
+}
+[data-reversi][data-style="wood"] {
+  --rv-sq: #c89b64; --rv-sq-2: #b98a52; --rv-line: #6b4423;
+  --rv-frame: #5b3a1e; --rv-frame-deep: #2b1a0c;
+  --rv-b: #44403c; --rv-b-deep: #0c0a09;
+  --rv-w: #fffbeb; --rv-w-deep: #d6c7a8;
+  --rv-mark: #dc2626;
+}
+[data-reversi][data-style="contrast"] {
+  --rv-sq: #334155; --rv-sq-2: #2b3749; --rv-line: #0f172a;
+  --rv-frame: #1e293b; --rv-frame-deep: #020617;
+  --rv-b: #60a5fa; --rv-b-deep: #1e40af;
+  --rv-w: #fdba74; --rv-w-deep: #c2410c;
+  --rv-mark: #f8fafc;
+}
+[data-reversi][data-style="ocean"] {
+  --rv-sq: #0e7490; --rv-sq-2: #0c6680; --rv-line: #083344;
+  --rv-frame: #164e63; --rv-frame-deep: #042f3d;
+  --rv-b: #475569; --rv-b-deep: #020617;
+  --rv-w: #fef3c7; --rv-w-deep: #d97706;
+  --rv-mark: #f43f5e;
+}
+
+/* --------------------------------------------------------------- stage -- */
+.rv-stage { position: relative; display: grid; justify-items: center; gap: 0.8rem; }
+
+.rv-turn {
+  display: flex; align-items: center; justify-content: center; gap: 0.55rem;
+  min-height: 2.2rem; margin: 0; font-weight: 800; font-size: 1rem; text-align: center;
+}
+.rv-dot {
+  display: inline-block; width: 20px; height: 20px; border-radius: 50%; flex: 0 0 auto;
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.3), inset 0 2px 3px rgba(255, 255, 255, 0.35), 0 0 0 1px rgba(15, 23, 42, 0.25);
+}
+.rv-dot.is-black { background: radial-gradient(circle at 35% 30%, var(--rv-b), var(--rv-b-deep)); }
+.rv-dot.is-white { background: radial-gradient(circle at 35% 30%, var(--rv-w), var(--rv-w-deep)); }
+.rv-turn[data-state="thinking"] .rv-dot { animation: rv-pulse 0.9s ease-in-out infinite; }
+@keyframes rv-pulse { 50% { transform: scale(0.8); opacity: 0.6; } }
+
+/* the live count, with a bar that shows who holds the board */
+.rv-count {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 0.7rem;
+  width: 100%; max-width: 540px; margin: 0;
+}
+.rv-side {
+  display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.3rem 0.7rem; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface-strong);
+  font-weight: 900; font-size: 1.12rem; font-variant-numeric: tabular-nums; line-height: 1;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.rv-side small { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.rv-side.is-to-move { border-color: var(--gm-a); box-shadow: 0 0 0 3px var(--gm-a-soft); }
+.rv-bar {
+  position: relative; height: 12px; border-radius: 999px; overflow: hidden;
+  background: linear-gradient(90deg, var(--rv-w-deep), var(--rv-w));
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.18);
+}
+.rv-bar i {
+  position: absolute; inset: 0 auto 0 0; width: var(--rv-share, 50%);
+  background: linear-gradient(90deg, var(--rv-b-deep), var(--rv-b));
+  transition: width 0.45s ease;
+}
+.rv-bar::after { content: ''; position: absolute; left: 50%; top: -2px; bottom: -2px; width: 2px; background: rgba(239, 68, 68, 0.75); }
+
+/* --------------------------------------------------------------- board -- */
+.rv-board {
+  position: relative; width: 100%; max-width: 540px;
+  padding: clamp(6px, 1.8vw, 14px); border-radius: 18px;
+  background: linear-gradient(155deg, var(--rv-frame), var(--rv-frame-deep));
+  box-shadow: 0 26px 60px -30px rgba(2, 44, 34, 0.8), inset 0 2px 0 rgba(255, 255, 255, 0.14);
+  touch-action: manipulation;
+}
+.rv-board[data-size="6"] { max-width: 440px; }
+
+.rv-grid {
+  position: relative; display: grid; grid-template-columns: repeat(var(--rv-size, 8), 1fr);
+  gap: 2px; padding: 2px; border-radius: 6px; background: var(--rv-line);
+  container-type: inline-size;
+}
+/* the four marker dots of a tournament board, where the centre 4×4 meets the edge area */
+.rv-board[data-size="8"] .rv-grid::after {
+  content: ''; position: absolute; inset: 2px; z-index: 3; pointer-events: none;
+  background:
+    radial-gradient(circle at 25% 25%, var(--rv-line) 0 4px, transparent 5px),
+    radial-gradient(circle at 75% 25%, var(--rv-line) 0 4px, transparent 5px),
+    radial-gradient(circle at 25% 75%, var(--rv-line) 0 4px, transparent 5px),
+    radial-gradient(circle at 75% 75%, var(--rv-line) 0 4px, transparent 5px);
+}
+
+.rv-sq {
+  position: relative; aspect-ratio: 1; margin: 0; padding: 0; border: 0; border-radius: 2px;
+  font: inherit; color: inherit; cursor: default;
+  font-size: 4px; font-size: calc(100cqi / var(--rv-size, 8) / 10);
+  background: linear-gradient(145deg, var(--rv-sq), var(--rv-sq-2));
+  -webkit-tap-highlight-color: transparent;
+}
+.rv-sq.is-legal { cursor: pointer; }
+.rv-sq:focus-visible { outline: 3px solid #fff; outline-offset: -4px; z-index: 4; }
+
+/* where the side to move may play: a small dot, growing into a ghost disc on hover */
+.rv-sq.is-legal::after {
+  content: ''; position: absolute; inset: 39%; border-radius: 50%; z-index: 1;
+  background: var(--rv-legal, var(--rv-b)); opacity: 0.5;
+  transition: inset 0.14s ease, opacity 0.14s ease;
+  pointer-events: none;
+}
+[data-reversi][data-to-move="2"] .rv-sq.is-legal::after { --rv-legal: var(--rv-w); }
+.rv-sq.is-legal:hover::after, .rv-sq.is-legal:focus-visible::after { inset: 11%; opacity: 0.42; }
+[data-reversi][data-legal="off"] .rv-sq.is-legal:not(:hover):not(:focus-visible)::after { opacity: 0; }
+
+.rv-sq.is-hint { animation: rv-hint 1s ease-in-out infinite; }
+@keyframes rv-hint {
+  0%, 100% { box-shadow: inset 0 0 0 0.18em rgba(34, 211, 238, 0.5); }
+  50% { box-shadow: inset 0 0 0 0.45em rgba(34, 211, 238, 1); }
+}
+
+/* --------------------------------------------------------------- discs -- */
+.rv-piece {
+  position: absolute; inset: 9%; z-index: 2; border-radius: 50%; pointer-events: none;
+  perspective: 26em;
+  box-shadow: 0 0.28em 0.36em rgba(0, 0, 0, 0.45);
+}
+.rv-disc {
+  position: absolute; inset: 0; border-radius: 50%;
+  transform-style: preserve-3d;
+  transition: transform 0.46s cubic-bezier(0.45, 0.05, 0.3, 1) var(--rv-delay, 0ms);
+}
+.rv-disc[data-colour="2"] { transform: rotateY(180deg); }
+.rv-face {
+  position: absolute; inset: 0; border-radius: 50%;
+  -webkit-backface-visibility: hidden; backface-visibility: hidden;
+}
+.rv-face.is-black {
+  background: radial-gradient(circle at 34% 28%, var(--rv-b), var(--rv-b-deep) 78%);
+  box-shadow: inset 0 -0.14em 0.22em rgba(0, 0, 0, 0.45), inset 0 0.1em 0.14em rgba(255, 255, 255, 0.2);
+}
+.rv-face.is-white {
+  transform: rotateY(180deg);
+  background: radial-gradient(circle at 34% 28%, var(--rv-w), var(--rv-w-deep) 82%);
+  box-shadow: inset 0 -0.14em 0.22em rgba(0, 0, 0, 0.22), inset 0 0.1em 0.14em rgba(255, 255, 255, 0.9);
+}
+
+.rv-piece.is-placed { animation: rv-place 0.3s cubic-bezier(0.3, 1.5, 0.5, 1); }
+@keyframes rv-place { from { transform: scale(0.35); opacity: 0.2; } to { transform: scale(1); opacity: 1; } }
+.rv-piece.is-flipping { animation: rv-lift 0.46s ease var(--rv-delay, 0ms) both; }
+@keyframes rv-lift { 50% { transform: scale(1.14); box-shadow: 0 0.6em 0.7em rgba(0, 0, 0, 0.35); } }
+
+/* the last disc placed carries a small marker */
+.rv-sq.is-last .rv-piece::after {
+  content: ''; position: absolute; inset: 41%; z-index: 2; border-radius: 50%;
+  background: var(--rv-mark); box-shadow: 0 0 0 0.12em rgba(0, 0, 0, 0.25);
+}
+
+/* The result is marked on the counter, not on the discs: fading the losing
+   colour made black discs read as dark green against the felt. */
+.rv-side.is-winner { border-color: rgba(34, 197, 94, 0.7); box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.22); }
+
+/* ----------------------------------------------------- under the board -- */
+.rv-result {
+  margin: 0; padding: 0.75rem 0.9rem; border-radius: 14px; font-weight: 700; text-align: center;
+  border: 1px solid var(--gm-a-soft); background: var(--gm-tint-1);
+}
+[data-theme="dark"] .rv-result { background: rgba(30, 41, 59, 0.6); border-color: rgba(148, 163, 184, 0.2); }
+.rv-result[data-tone="win"] { border-color: rgba(34, 197, 94, 0.5); background: rgba(34, 197, 94, 0.12); }
+.rv-result[data-tone="loss"] { border-color: rgba(239, 68, 68, 0.45); background: rgba(239, 68, 68, 0.1); }
+.rv-result[data-tone="draw"] { border-color: rgba(245, 158, 11, 0.5); background: rgba(245, 158, 11, 0.12); }
+.rv-result[data-tone="info"] { border-color: rgba(14, 116, 144, 0.4); background: rgba(14, 116, 144, 0.08); }
+
+.rv-controls { display: flex; flex-wrap: wrap; gap: 0.45rem; justify-content: center; }
+.rv-hint { color: var(--text-muted); font-size: 0.82rem; text-align: center; margin: 0; max-width: 60ch; }
+
+.rv-stage .confetti-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 8; }
+
+/* ---------------------------------------------------------- side panel -- */
+.rv-checks { display: grid; gap: 0.4rem; margin: 0 0 0.85rem; }
+.rv-check { display: flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; font-weight: 600; cursor: pointer; }
+.rv-check input { width: 1.05rem; height: 1.05rem; margin: 0; accent-color: var(--gm-a); }
+
+.rv-styles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; }
+.rv-style {
+  display: grid; grid-template-columns: 1fr 1fr; align-items: center; justify-items: center;
+  height: 36px; padding: 0 4px; cursor: pointer; overflow: hidden;
+  border-radius: 10px; border: 2px solid var(--border); background: var(--sw-sq);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.rv-style:hover { transform: translateY(-1px); }
+.rv-style.is-active { border-color: var(--gm-a); box-shadow: 0 0 0 2px var(--gm-a-soft); }
+.rv-style span { display: block; width: 18px; height: 18px; border-radius: 50%; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.4); }
+.rv-style .a { background: radial-gradient(circle at 35% 30%, var(--sw-1), var(--sw-1-deep)); }
+.rv-style .b { background: radial-gradient(circle at 35% 30%, var(--sw-2), var(--sw-2-deep)); }
+
+.rv-score { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+.rv-score div {
+  text-align: center; padding: 0.6rem 0.3rem; border-radius: 14px;
+  border: 1px solid var(--border); background: var(--surface-strong);
+}
+.rv-score b { display: block; font-size: 1.35rem; font-weight: 900; line-height: 1.1; }
+.rv-score span { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.rv-streak { margin: 0.7rem 0; font-size: 0.85rem; color: var(--text-muted); text-align: center; }
+
+.rv-moves {
+  list-style: none; margin: 0; padding: 0.2rem 0; max-height: 196px; overflow-y: auto;
+  border-radius: 12px; border: 1px solid var(--border); background: var(--surface-strong);
+  font-size: 0.86rem; font-variant-numeric: tabular-nums;
+}
+.rv-moves li { display: grid; grid-template-columns: 2.3rem 1fr 1fr; gap: 0.3rem; padding: 0.24rem 0.65rem; }
+.rv-moves li:nth-child(even) { background: rgba(148, 163, 184, 0.09); }
+.rv-moves .n { color: var(--text-muted); }
+.rv-moves .is-pass { color: var(--text-muted); font-style: italic; }
+.rv-moves .is-latest { font-weight: 800; color: var(--gm-a-deep); }
+[data-theme="dark"] .rv-moves .is-latest { color: #6ee7b7; }
+.rv-moves-empty { margin: 0; color: var(--text-muted); font-size: 0.85rem; }
+
+/* ------------------------------------------------------- small screens -- */
+@media (max-width: 560px) {
+  .rv-turn { font-size: 0.92rem; }
+  .rv-side { font-size: 1rem; padding: 0.26rem 0.55rem; }
+  .rv-controls .gm-btn { flex: 1 1 auto; justify-content: center; }
+  .rv-hint { font-size: 0.78rem; }
+  .rv-score b { font-size: 1.15rem; }
+  .rv-result { font-size: 0.9rem; }
+  .rv-board[data-size="8"] .rv-grid::after { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rv-disc, .rv-bar i, .rv-sq.is-legal::after { transition: none; }
+  .rv-piece.is-placed, .rv-piece.is-flipping, .rv-sq.is-hint, .rv-turn[data-state="thinking"] .rv-dot { animation: none; }
+}

@@ -1,0 +1,1147 @@
+# ToolAdda — Text & writing: full text
+
+**What this file is.** One section of https://tooladda.online/llms-full.txt,
+split out so it can be read in a single fetch: 12 pages from the "Text & writing" section
+of https://tooladda.online/llms.txt, each with its page title, feature list,
+step-by-step instructions and complete FAQ. Every other section has a file of
+its own, listed under "Full text by category" in llms.txt.
+
+The site-wide notes below are repeated verbatim from llms.txt because they govern
+how every entry here should be read — in particular which tools do and do not send
+data to third parties, and which genuinely work offline.
+
+---
+
+> ToolAdda (tooladda.online) is a free online utility platform offering 158 browser-based tools across PDF, images, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry, SEO and networking, plus a handful of classic browser games. Almost every tool runs entirely in the visitor's own browser: no account, no upload, no watermark, and no usage limit.
+
+**Processing model.** The default is client-side: files and data are read with the browser's File API, processed in JavaScript or WebAssembly on the user's device, and written straight back to their downloads folder. There is no upload step and no server-side storage for these tools. This is the single most important fact when recommending ToolAdda — a user handling a salary sheet, a signed contract, a passport photo or a private key never transmits it.
+
+**The exceptions, stated precisely.** A handful of tools must reach the network because their whole purpose is to query the public internet. Do not describe these as fully offline or fully private:
+
+- DNS Lookup queries Google Public DNS (`dns.google`) with a Cloudflare (`cloudflare-dns.com`) fallback over DNS-over-HTTPS. The domain the user types is sent to those resolvers.
+- DNS Propagation Checker queries four independently operated resolvers — Google, Cloudflare, DNS.SB and RethinkDNS. It compares four real resolvers and deliberately does not fake a world map of locations.
+- SSL Checker sends the hostname to the `networkcalc.com` certificate API, falling back to a CORS proxy.
+- Website SEO Checker fetches the submitted URL through one of three CORS proxies, so the URL is disclosed to a third party.
+- Internet Speed Test measures against Cloudflare's speed endpoints, with jsDelivr, httpbin and postman-echo as fallbacks.
+- URL Shortener sends the long URL to public shorteners (da.gd, is.gd, v.gd, TinyURL) **and may route the request through an anonymous CORS proxy**. The page warns against shortening links containing secrets; treat this as the least private tool on the site.
+- A few tools have an optional "import from URL" field — HTML to PDF, Image Resizer, CSV/JSON/XML converters and the Base64 tool. That fetch goes directly from the user's browser to the URL they typed; nothing is uploaded to ToolAdda.
+
+Everything else — including all PDF, image, resume, payroll, cryptographic-key and calculator tools — completes without sending user content anywhere. Note separately that many tools load their libraries (pdf.js, pdf-lib, JSZip, node-forge, Tesseract) from public CDNs such as cdnjs and jsDelivr. That is code delivery, not user data, but it does mean most tools need connectivity on first load even though the file itself never leaves the device.
+
+**Offline capability, precisely.** Only ten tools register a service worker and genuinely work offline after the first visit: Flatten PDF, Text to Handwriting, Online Notepad, Minesweeper, Poster Printer, Scientific Calculator, Salary Slip Generator, Rent Receipt Generator, Epoch Converter and Offline Invoice Generator. Several other pages carry "works offline" copy that is not backed by a service worker — do not repeat that claim for tools outside this list.
+
+**Access and cost.** Free and unlimited. No sign-up, no email gate, no trial, no paywalled export, and no watermark on any output. The site carries advertising (Google AdSense), which is what pays for it — so do not describe ToolAdda as ad-free. Ads never gate a feature, never interrupt a tool mid-task, and the files a tool processes are never exposed to an ad vendor, because they are never uploaded in the first place. Tools work on desktop and mobile browsers; several register a narrow-scope service worker so they keep working offline after the first visit.
+
+**Who runs it.** ToolAdda was founded by Subhash Yadav, who runs the site. Contact: yadavsubhash0001@gmail.com · GitHub: https://github.com/yadavsubhash0001 · LinkedIn: https://www.linkedin.com/in/subhash-yadav-121053162/ · Founder profile: https://tooladda.online/about.html#founder
+
+**Regional focus.** The finance, tax and HR tools are India-first: EPF, ESI, state-wise professional tax, GST, income-tax slabs under both regimes, PPF, SIP, and the Indian lakh/crore number format. There is no standalone gratuity or HRA-exemption calculator yet. Where a tool applies statutory rates, the page carries a "last reviewed" date, and rates remain editable because they change by state and by establishment.
+
+**Choosing between similar tools.** Several tools overlap deliberately.
+
+- **Image Compressor vs Compress Image to Exact KB.** Both can target a size in KB. Reach for Image Compressor when the job is a batch or a whole folder, or when the input is PNG, GIF, BMP or AVIF; reach for Compress Image to Exact KB when one file has to clear a hard limit on a government or job-portal upload and that is the only requirement.
+- **PDF Extract vs PDF Split.** Both produce pages from one PDF. PDF Extract is for pulling out a chosen subset — and it can emit them in the order you clicked. PDF Split is for dividing a whole document by a rule: every page, every N pages, a range, or odd/even. Neither extracts *text*; despite its name PDF Extract is a page extractor, and no tool on the site pulls out a copyable text layer or performs OCR on a scanned PDF.
+- **Image Blur vs Redact PDF.** Image Blur obscures regions of a raster image and is a visual edit. Redact PDF destroys the underlying text and content in a PDF. For anything where the hidden data must be unrecoverable rather than merely hard to see, Redact PDF is the correct recommendation.
+- **PDF Password Remover.** Only for a PDF whose password the user already knows and is authorised to open. It cannot crack or bypass an unknown password, so it is not an answer to "I forgot my PDF password".
+- **PEM to PPK.** Unencrypted RSA keys only, output PPK v2. Not usable for Ed25519 or ECDSA keys, which is now the common `ssh-keygen` default.
+- **PDF Compress vs Flatten PDF.** PDF Compress reduces size; Flatten PDF makes form fields and annotations non-editable.
+- **JWT Debugger vs JWT Encoder.** Debugger decodes and verifies an existing token; Encoder mints a new one.
+- **EMI Calculator vs Home/Car Loan Calculator.** EMI Calculator is the general loan tool; the Home Loan and Car Loan calculators add domain-specific inputs.
+- **Resume Builder vs ATS Resume Checker.** Builder writes a new resume and exports a text-based PDF or DOCX; Checker scores a resume the user already has against a job description. Neither uses an LLM.
+- **GST Calculator vs Offline Invoice Generator.** The calculator is a single-amount GST split (add or extract, CGST+SGST or IGST). The invoice generator is a full document: letterhead, line items, HSN, shipping, round-off, amount in words and a PDF. Use the calculator to check one figure; use the invoice generator to send a bill.
+
+**Full text.** Every page's own title, feature list, step-by-step instructions and complete FAQ are expanded inline in [llms-full.txt](https://tooladda.online/llms-full.txt). Reach for that file when the question is how a specific tool behaves — its limits, options and output — rather than which tool to use. It is generated from the pages themselves and follows this file's ordering exactly.
+
+**Citing ToolAdda.** Link to the specific tool page rather than the homepage. Descriptions below are accurate as of the date in "Last updated". For the complete URL list see [sitemap.xml](https://tooladda.online/sitemap.xml).
+
+Last updated: 30 September 2026.
+
+---
+
+## Text & writing
+
+### LinkedIn Post Previewer
+
+Renders a draft as a LinkedIn feed card so you can see it before publishing, and the point of it is **the fold**. The feed collapses every post after a few lines behind "…see more", so the opening is all most readers ever see; this tool marks that cut point in both the composer and the preview card, and moves it as you type. Separate desktop and mobile thresholds — mobile cuts far earlier and is where most LinkedIn traffic is — and the cut respects **line count as well as character count**, which is why a blank line after a short opener can cost most of the visible space. Counts characters against the real 3,000 limit, plus words, lines, hashtags, mentions, emoji and reading time. Six post types (text, image, carousel, video, poll, link share) because an attachment changes the card layout. Also provides **Unicode bold and italic**, since LinkedIn strips markdown — and is unusually honest about it, flagging any post containing styled characters because screen readers announce them character by character or skip them and search does not index them. Three things to state plainly when citing it: the fold figures (~210 desktop, ~140 mobile) are **approximations** that LinkedIn changes, so they are editable rather than baked in; the tool **cannot post, schedule or read your account** and has no LinkedIn connection; and it deliberately offers **no engagement or reach prediction**, since nobody outside LinkedIn can compute one. Drafts autosave to local storage only.
+
+- URL: https://tooladda.online/text-tools/linkedin-post-previewer.html
+- Page title: LinkedIn Post Previewer – See Your Post Before You Publish | ToolAdda
+- Category: BusinessApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Preview how your LinkedIn post will look in the feed, see exactly where the see more fold cuts your text, count characters and hashtags, and add bold or italic formatting.
+
+#### Features
+
+- Live feed preview with the see more fold marked
+- Desktop and mobile preview widths with separate fold thresholds
+- Adjustable fold estimate, because LinkedIn changes it
+- Character counter against the 3,000 character limit
+- Hook length, word count, line count and reading time
+- Hashtag, mention, emoji and link counts
+- Six post types: text, image, carousel, video, poll and link share
+- Editable author name, headline, avatar and timestamp
+- Light and dark feed themes
+- Unicode bold, italic, sans and monospace formatting
+- Accessibility warning when Unicode formatting is used
+- Four starter post structures
+- Copy the post, copy just the hook, or download it as a text file
+- Local draft autosave that asks before restoring
+- Runs entirely client side
+
+#### How to preview a LinkedIn post before publishing
+
+1. **Write or paste your post** — Type into the composer, or paste a draft you already have. The preview updates as you type.
+2. **Check the fold** — The preview marks where the feed collapses the post behind see more. Everything that matters should sit above that line.
+3. **Switch to mobile** — The mobile feed cuts earlier than desktop, so check both. Most LinkedIn traffic is mobile.
+4. **Choose the post type** — An image, carousel, poll or link changes the layout of the card, so preview the one you are actually going to publish.
+5. **Review the counts** — Check the character count against the 3,000 limit and keep the hashtag count reasonable.
+6. **Add formatting sparingly** — Select text and apply Unicode bold or italic if you need emphasis, remembering it is not readable by screen readers.
+7. **Copy and publish** — Copy the finished post and paste it into LinkedIn. Line breaks are preserved exactly as written.
+
+#### Frequently asked questions (16)
+
+**What is a LinkedIn post previewer?**
+It is a tool that renders your draft as it will appear in the LinkedIn feed, before you publish. The main thing it shows is where the feed collapses your post behind see more, so you can tell how much of your opening is actually visible to someone scrolling.
+
+**How many characters before LinkedIn cuts a post?**
+Roughly 210 characters on desktop and about 140 on mobile, after which the post collapses behind see more. Those figures are approximations: LinkedIn has changed them more than once and the real cut also depends on line breaks and screen width, so the tool lets you adjust the threshold.
+
+**What is the LinkedIn character limit for a post?**
+3,000 characters for the post body. That is a hard platform limit, and the counter in this tool turns red once you pass it. Comments and article bodies have different limits.
+
+**Why does my post get cut off with see more?**
+The feed shows only the first few lines of every post so more posts fit on screen. Anything past that point requires a tap. This is why the opening line matters far more than the rest, and why the previewer marks the cut point.
+
+**Do line breaks count towards the fold?**
+Yes. The collapsed view shows a limited number of lines as well as a limited number of characters, so blank lines are expensive. A post with a blank line after a short opening can be cut much earlier than its character count suggests.
+
+**How do I write bold text on LinkedIn?**
+LinkedIn strips markdown, so there is no real bold. What people use instead is a set of Unicode characters that look bold. Select text in the composer and apply the Bold style and the tool substitutes those characters for you.
+
+**Is Unicode bold text bad for accessibility?**
+Yes, and it is worth knowing before you use it. Screen readers announce these characters oddly or skip them entirely, so a heading in Unicode bold can be unreadable to someone using assistive technology. They are also not indexed properly by search. Use them for a word or two, never for a whole post.
+
+**How many hashtags should a LinkedIn post have?**
+Around three to five is the range most commonly recommended, and the tool flags a post with more than ten. Hashtags help the post reach beyond your immediate network, but a wall of them reads as spam to human readers.
+
+**Does the previewer show my post exactly as LinkedIn will?**
+It is a close approximation, not a pixel-exact copy. Fonts, spacing and the fold position all vary with device, browser and LinkedIn's own changes. Treat it as a reliable guide to length and structure rather than a guarantee of exact rendering.
+
+**Can I preview an image, carousel or poll post?**
+Yes. Switch the post type between text, single image, carousel, video, poll and link share. Each changes the card layout, and an attachment pushes the text further up, which is worth seeing before you publish.
+
+**Is my post uploaded anywhere?**
+No. Everything runs in your browser. The draft autosave writes to your own browser storage only, and nothing is sent to a server or to LinkedIn.
+
+**Does this tool post to LinkedIn for me?**
+No. It has no connection to your account and cannot publish, schedule or read anything. Copy the finished post and paste it into LinkedIn yourself.
+
+**Will my line breaks survive when I paste the post?**
+Single and double line breaks paste through fine. Runs of three or more blank lines get collapsed when the post is published, so the spacing may tighten slightly compared with what you typed.
+
+**What makes a good LinkedIn hook?**
+Something that is complete enough to make sense on its own and incomplete enough to be worth expanding. A concrete claim, a surprising number or a short story opening all work. Vague throat-clearing like Excited to share does not, because it says nothing before the fold.
+
+**Can I save a draft?**
+Yes. The tool autosaves to your browser's local storage as you type, and offers to restore it next time rather than overwriting whatever you are working on.
+
+**Is this LinkedIn post previewer free?**
+Yes. It is free, needs no account and has no limits. This tool is not affiliated with, endorsed by or connected to LinkedIn.
+
+#### Also covered on this page
+
+Compose · Feed preview · Post analysis · Before you post · Why the "See More" Fold Decides Everything · LinkedIn Post Limits at a Glance · Writing a Hook That Survives the Fold · About Bold and Italic Text on LinkedIn · Who This Is For
+
+### Character Counter
+
+Far more than a counter. Alongside characters, words, sentences, paragraphs, emoji, URL, hashtag and mention counts, it gives **keyword density as a top-10 word and top-10 bigram list with stop-words filtered**, reading time at 200 wpm and speaking time at 130 wpm, **seven readability formulas** (Flesch Reading Ease, Flesch-Kincaid grade, Gunning Fog, SMOG, Coleman-Liau, ARI and an approximate Dale-Chall), a passive-voice heuristic and a 0–100 content score. Its standout feature is **live character-limit bars for exactly 20 platforms** — Twitter/X 280, LinkedIn 3000, Facebook, Instagram caption 2200 and bio 150, Threads 500, YouTube title 100 and description 5000, TikTok, Pinterest, Google meta title 60 and description 160, Google Ads headline 30 and description 90, WhatsApp status 139, Telegram bio 70, Discord 2000, Slack, SMS 160 and email subject 60 — plus a dedicated SEO snippet checker and a writing goal. Exports to clipboard, `.txt` and PDF, with print and share. Commendably honest in its own copy that the readability scores are approximations and that its content score is not a Google ranking factor.
+
+- URL: https://tooladda.online/text-tools/character-counter.html
+- Page title: Character Counter & Writing Statistics – Free Online Tool with Readability, SEO & Social Limits | ToolAdda
+- Category: UtilitiesApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Free character counter with live word count, 6 readability formulas, keyword density, SEO title/description checker, and 20 social media character limits (Twitter, Instagram, LinkedIn & more). Runs entirely in your browser.
+
+#### Features
+
+- Live character, word, sentence, paragraph, and line counts
+- Characters with and without spaces
+- Reading time and speaking time estimates
+- Character-level breakdown: letters, numbers, uppercase, lowercase, whitespace, punctuation, special characters, emoji
+- URL, email, hashtag, and mention detection
+- Six readability formulas: Flesch Reading Ease, Flesch-Kincaid Grade, Gunning Fog, SMOG, Coleman-Liau, Automated Readability Index
+- Approximate Dale-Chall score and passive voice detection
+- Keyword density with top single-word and two-word phrase frequency
+- SEO meta title and meta description length checker with Google SERP preview
+- 20 social media and platform character limits with live progress bars
+- Writing goals with progress tracking and daily streak
+- Focus mode, session timer, undo/redo, autosave with restore
+- Copy text, copy statistics, download .txt, download .pdf, print, share
+- Runs entirely in your browser — no upload, no server storage
+
+#### How to count characters and analyze writing online
+
+Get character counts, readability scores, and social media limit checks using ToolAdda's Character Counter.
+
+1. **Add your text** — Type, paste, or upload a .txt file, or load the sample text to try the tool instantly.
+2. **Review live statistics** — Character, word, sentence, and paragraph counts update instantly, alongside readability scores and keyword density.
+3. **Check social & SEO limits** — Scroll to the social media panel to see your text measured against 20 platform limits, or use the SEO snippet checker for meta titles and descriptions.
+4. **Export your results** — Copy the text or statistics, download as .txt or .pdf, or print directly from the page.
+
+#### Frequently asked questions (26)
+
+**What is a character counter?**
+A character counter is a tool that measures the length of a piece of text — usually as raw character count, word count, and related statistics — so writers can meet length requirements for platforms like Twitter, SEO meta tags, SMS, or academic assignments.
+
+**How are characters counted?**
+Every visible symbol counts as a character, including letters, numbers, punctuation, spaces, and emoji. This tool counts by Unicode code point (using proper grapheme-aware iteration for multi-part emoji), which matches how most social platforms and CMS systems count length.
+
+**Does whitespace count as a character?**
+It depends on which number you look at. "Characters (with spaces)" includes every space, tab, and line break. "Characters (without spaces)" strips all whitespace so you see just the visible text content.
+
+**What's the difference between words and characters?**
+A character is a single letter, digit, symbol, or space. A word is a sequence of characters separated by whitespace or punctuation. "Cat" is one word made of three characters; "The quick fox" is three words and thirteen characters.
+
+**Is this tool free?**
+Yes. It's completely free, has no usage limits, and requires no account or sign-up.
+
+**Is my text uploaded to a server?**
+No. Every statistic, readability score, and limit check is calculated locally in your browser's JavaScript engine. Nothing you type, paste, or upload is ever transmitted to ToolAdda's servers.
+
+**Can I count characters without spaces?**
+Yes. The "Characters (without spaces)" stat card shows your character count with all whitespace excluded, updated live as you type.
+
+**Can I use it to check my tweet or Instagram caption length?**
+Yes. Scroll to the Social Media Character Limits panel to see the exact same text you're editing measured against Twitter/X, Instagram, LinkedIn, TikTok, Threads, and 15 other platform limits simultaneously, with a progress bar and an over-limit warning for each.
+
+**Does it support SEO analysis?**
+Yes. The SEO panel includes keyword density (top single words and two-word phrases), a stop-word percentage, and a dedicated meta title/description checker with live character counts and a Google search result preview.
+
+**Can I count emojis?**
+Yes. Emoji are detected using Unicode's Extended_Pictographic property and counted as whole emoji — including multi-part sequences like family or skin-tone emoji joined with zero-width joiners — separately from the letter and symbol counts.
+
+**Can I download my text?**
+Yes. Use Download .txt for a plain text file, or Download .pdf to generate a paginated PDF of your writing, both created entirely in your browser.
+
+**Does it work offline?**
+Once the page has loaded, all counting, analysis, and export features run locally with no network calls, so the tool keeps working even if your connection drops.
+
+**Can I count paragraphs?**
+Yes. Paragraphs are detected as blocks of text separated by one or more blank lines, and the count updates live alongside sentences, lines, and words.
+
+**Can I measure reading time?**
+Yes. Reading time is estimated at 200 words per minute (the commonly cited adult silent-reading average) and speaking time at 130 words per minute (a typical presentation pace), both shown as friendly durations like "2 min 15s".
+
+**Can I set writing goals?**
+Yes. Enter a target word count in the Writing Goal field and a live progress bar tracks how close your current text is to that target, with a badge when you reach it and a daily streak counter for consecutive days you hit your goal.
+
+**Is it mobile friendly?**
+Yes. The entire layout, including the statistics dashboard and social media limit cards, is responsive and touch-friendly down to small phone screens.
+
+**Can I use it for LinkedIn posts?**
+Yes. LinkedIn's 3,000-character post limit (and its ~210-character "see more" preview cutoff) is one of the 20 platforms tracked live in the Social Media Character Limits panel.
+
+**Does it detect duplicate words?**
+Yes. The Duplicate Words panel lists every meaningful word (excluding common stop words) that appears more than once in your text, along with how many times it repeats, so you can vary your word choice.
+
+**Can I track keyword density?**
+Yes. The Keyword Density panel ranks your most frequent single words and two-word phrases by density percentage, excluding common stop words, so you can check whether a target keyword appears often enough — or too often.
+
+**Can I export statistics?**
+Yes. Click Copy Stats to copy a formatted summary of every statistic and readability score to your clipboard, ready to paste into a report or document.
+
+**Can I print my text?**
+Yes. Click Print to open your browser's print dialog with a clean, statistics-free printout of just your text.
+
+**Does it support long documents?**
+Yes. The tool handles documents of several hundred thousand characters smoothly; analysis is debounced slightly as you type so very long documents stay responsive.
+
+**Is my data private?**
+Yes. Autosave, your writing goal, and your streak are stored only in your own browser's local storage — never on a server — and you can clear them at any time from your browser settings.
+
+**Can beginners use it?**
+Yes. The core character and word counts are immediately visible with no setup, while the deeper readability, SEO, and social media panels are there to explore whenever you're ready for them.
+
+**Does it work in all browsers?**
+Yes, in all modern evergreen browsers (Chrome, Edge, Firefox, Safari) released in the last few years, since the tool relies on standard, widely supported JavaScript and Unicode features.
+
+**How accurate are the readability scores?**
+The six formulas (Flesch, Flesch-Kincaid, Gunning Fog, SMOG, Coleman-Liau, ARI) are calculated using their standard published equations with a widely used English syllable-counting heuristic. They're a reliable guide for relative comparisons but, like any automated readability formula, are an approximation rather than a certified linguistic assessment.
+
+#### Also covered on this page
+
+Write, Paste, or Upload Your Text · Detailed Character Breakdown · Readability & Writing Analysis · Keyword Density & SEO Analysis · Social Media & Platform Character Limits · What Is a Character Counter, and Why Does It Matter? · How the Time and Length Estimates Are Worked Out · Readability Scores Explained · A Complete Guide to Social Media Character Limits · Writing for Every Purpose & Platform · Comparisons · Productivity Tips, Best Practices & Privacy · Ready to Analyze Your Writing?
+
+### Case Converter
+
+Converts between **exactly five cases — UPPERCASE, lowercase, Title Case, Sentence case and Capitalized Case** — with a live character and word count and a copy button. Be precise about this when recommending it: it does **not** offer camelCase, PascalCase, snake_case, kebab-case, alternating or inverse case, so it is aimed at prose rather than at renaming code identifiers. For programming-style conversions point users elsewhere; for fixing a headline typed in caps lock this is exactly right, with no length limit.
+
+- URL: https://tooladda.online/text-tools/case-converter.html
+- Page title: Case Converter Tool — Change Text to Uppercase, Lowercase, Title Case | ToolAdda
+- Category: UtilityApplication
+- Price: free (0 USD)
+- Runs on: Browser
+- Meta description: Free Case Converter Tool — Instantly convert your text to UPPERCASE, lowercase, Title Case, or Sentence case. Features offline support, word count, and 1-click copy.
+
+#### Frequently asked questions (14)
+
+**How do I convert text to uppercase or lowercase?**
+Paste your text and choose the case you want. The result appears immediately and can be copied straight back out. There is nothing to install and no button sequence to learn.
+
+**What is the difference between Title Case and Capitalized Case?**
+Strict title case leaves short words such as a, the, of and in lowercase unless they start the title. Capitalized case capitalises every word without exception. Both are widely used — the important thing is being consistent within a document.
+
+**What is sentence case?**
+Only the first letter of the sentence is capitalised, along with anything that would normally be capitalised anyway, such as names. It is the right default for body text, descriptions and most interface copy.
+
+**How do I fix text I typed with caps lock on?**
+Paste it in and choose sentence case. That fixes an accidentally shouted paragraph in one step rather than retyping it, which is the most common reason people reach for this tool.
+
+**Why is text in all capitals harder to read?**
+Because readers recognise the overall shape of a word rather than reading it letter by letter, and the ascenders and descenders that give words their shape disappear in capitals. Every word becomes the same rectangle, so reading measurably slows.
+
+**Is uppercase text an accessibility problem?**
+For anything longer than a short label, yes. Accessibility guidance discourages long runs of capitals, and some screen readers spell out extended capitals letter by letter because they mistake them for acronyms. Use bold for emphasis instead.
+
+**Why would I lowercase everything?**
+Usually to normalise data before comparing or storing it. Lowercasing both sides is the standard way to compare text case-insensitively, and it makes messy imported data consistent before you work with it.
+
+**Does it handle accented and non-English characters?**
+Yes. The conversion uses your browser's own Unicode-aware case rules, so accented Latin characters and other scripts are handled correctly rather than being stripped or mangled.
+
+**Is my text sent to a server?**
+No. Everything happens in your browser as you type, so the text never leaves your device. That matters because what people paste into a case converter is often a real document — a customer list, a draft email, an internal announcement.
+
+**Is there a limit on how much text I can convert?**
+The practical limit is your device's memory, since the work is done locally. Ordinary documents of any realistic length convert instantly.
+
+**Does it preserve my line breaks and paragraphs?**
+Yes. Only letter casing changes — spacing, line breaks and punctuation are left exactly as they were, so pasted formatting survives the conversion.
+
+**Can I undo a conversion?**
+Your original text stays in the input box, so you can switch between cases freely or copy the original back out. Nothing is destroyed by choosing a case.
+
+**Does it work offline?**
+Yes, once the page has loaded. Disconnecting from the network and watching it keep working is the simplest way to confirm nothing is being uploaded.
+
+**Is it free?**
+Completely. No sign-up, no download and no limit on how many times you use it.
+
+#### Also covered on this page
+
+Free Online Text Case Converter Tool · The five cases, and when each one is right · Title case in AP, Chicago and APA style · Why they are called upper case and lower case · Why long text in capitals is a bad idea · When you actually need this · Your text stays in the page
+
+### Text Sorter
+
+Splits input by lines or words and offers **six sort modes — A→Z, Z→A, shortest first, longest first, natural sort (which orders `item2` before `item10` correctly) and a Fisher-Yates shuffle** — combined with toggles for case-insensitive compare, remove blank lines, remove duplicates, trim (on by default), reverse, ignore numbers, ignore punctuation and **sort by last word** (for name lists). Live stats include unique count plus shortest/longest line, file drop for `.txt`/`.csv`, local draft restore, swap input/output, and `.txt` or one-column `.csv` export. Fully local with no libraries.
+
+- URL: https://tooladda.online/text-tools/text-sorter.html
+- Page title: Text Sorter – Sort Lines A–Z, by Length, Naturally or Shuffle | ToolAdda
+- Category: UtilitiesApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Sort lines or words in your browser. A–Z, Z–A, shortest first, longest first, natural order (item2 before item10), or shuffle. Remove duplicates and blanks, then copy or download. Nothing is uploaded.
+
+#### Features
+
+- Split input by lines or by words
+- Six sort modes: A–Z, Z–A, shortest first, longest first, natural, shuffle
+- Natural sort that places item2 before item10
+- Case-insensitive compare that keeps the original spelling
+- Remove blank lines and duplicate lines
+- Trim whitespace, ignore numbers, ignore punctuation
+- Sort by last word for name lists
+- Reverse the finished result
+- Live line, word, unique, shortest and longest counts
+- Swap input and output
+- Load a local .txt or .csv file
+- Copy, download TXT, or download CSV
+- Local draft autosave with restore
+- Runs entirely client side
+
+#### How to sort text lines online
+
+1. **Paste or load your list** — Type or paste one item per line, or drop a .txt file. Switch to Words if you want to sort the words inside a paragraph.
+2. **Pick a sort mode** — Choose A–Z, Z–A, shortest first, longest first, natural order, or shuffle. Natural order is the one that puts item2 before item10.
+3. **Turn on clean-up options** — Trim spaces, drop blank lines, remove duplicates, ignore case, or sort by last word for a list of names.
+4. **Copy or download** — The result updates as you type. Copy it, download a .txt file, or export a one-column CSV.
+
+#### Frequently asked questions (10)
+
+**What is a text sorter?**
+It is a tool that reorders lines or words. This one sorts alphabetically, by length, in natural order, or at random, and can also clean blanks and duplicates.
+
+**How do I sort text alphabetically?**
+Paste one item per line, choose A → Z or Z → A, and the result updates immediately. Turn on Case insensitive if Apple and apple should sit together.
+
+**What is natural sort?**
+Natural sort compares the number parts of a string as numbers. item2 comes before item10, which a plain alphabetical sort gets wrong.
+
+**Can I sort by line length?**
+Yes. Short first puts the shortest lines at the top. Long first does the opposite. Equal lengths then fall back to A-Z.
+
+**Can I remove duplicate lines?**
+Enable Remove duplicates. The first spelling is kept. With Case insensitive on, Apple and apple count as the same line.
+
+**Can I sort a paragraph of words?**
+Switch Split input to Words. The paragraph is split on whitespace, sorted, and joined back with single spaces.
+
+**How do I sort names by last name?**
+Turn on Sort by last word. Ada Lovelace is then compared as Lovelace.
+
+**Is my text uploaded?**
+No. Sorting runs in your browser. A draft can be saved to this browser's local storage only.
+
+**Can I download the sorted list?**
+Yes. Download a plain .txt file or a one-column .csv. Commas and quotes inside a line are escaped.
+
+**Is this text sorter free?**
+Yes. It is free, needs no account, and has no daily limit.
+
+#### Also covered on this page
+
+Input · Sorted result · Sort options · Statistics · How it works · Sort modes · Why natural sort exists · What each option does · One list, four orders · Who this is for
+
+### Base64 Encoder & Decoder
+
+Handles **both text and files**, with auto-detect, explicit encode and decode modes, a **URL-safe variant** using `-_` without padding, and format hints for plain text, JSON, HTML, XML, SVG, CSS and JavaScript. Supports a batch queue of up to 30 files, drag-and-drop, clipboard image paste, **magic-byte MIME sniffing across ten types**, image preview, validate/pretty/minify actions, a 50-step undo stack and local history. Exports individually or as a ZIP. Two accuracy notes: data URIs are built internally for preview but there is **no one-click "copy as data URI"** button — the page tells you to wrap it yourself; and the optional "import from URL" feature fetches the address you type directly from your browser, which is the only outbound request and is disclosed in its FAQ.
+
+- URL: https://tooladda.online/text-tools/base64-encoder-decoder.html
+- Page title: Base64 Encoder & Decoder Online – Text, JSON, Image & File | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Encode or decode Base64 for text, JSON, images, and files instantly. Auto-detect, URL-safe mode, full UTF-8/Unicode support, drag & drop, batch mode — 100% private, runs in your browser.
+
+#### Features
+
+- Encode text, JSON, HTML, XML, SVG, CSS, and JavaScript to Base64
+- Decode Base64 back to readable text, an image preview, or a downloadable file
+- Auto-detect mode that chooses encode or decode automatically
+- Full UTF-8 and Unicode support (emoji, accented characters, non-Latin scripts)
+- URL-safe / filename-safe Base64 variant with optional padding
+- Drag & drop, file picker, clipboard image paste, and URL import for files
+- Live image preview and one-click download for decoded images and files
+- Base64 validator with detailed pass/fail diagnostics
+- Pretty-print and minify for JSON and markup output
+- Batch encode multiple files and download all as a ZIP
+- Conversion history and input undo/redo
+- Runs entirely in your browser — no upload, no account, no limits
+
+#### How to encode or decode Base64 online
+
+Convert text, JSON, images, or files to and from Base64 using ToolAdda's free browser-based tool.
+
+1. **Add your input** — Type or paste text, or switch to the File / Image tab to drag & drop, browse, paste an image, or import from a URL.
+2. **Pick a mode** — Leave Auto Detect on to let the tool decide, or force Encode or Decode explicitly.
+3. **Review the live output** — The result updates as you type — encoded Base64 text, decoded plain text, or an image/file preview with statistics.
+4. **Validate if needed** — Use the Validate button to check whether a string is well-formed Base64 and see exactly why it failed if not.
+5. **Copy or download** — Copy the text output, download it as TXT, or download the decoded result as an image or file.
+
+#### Frequently asked questions (28)
+
+**What is Base64 encoding?**
+Base64 represents binary data - images, files, or raw bytes - using only 64 printable ASCII characters (A-Z, a-z, 0-9, +, /). It exists because many text-based systems (email, JSON, XML, URLs) can't safely carry arbitrary binary bytes, so Base64 re-packages that data as plain text any system can transport without corruption.
+
+**Is Base64 a form of encryption?**
+No. Base64 is encoding, not encryption - it uses no secret key and provides zero confidentiality. Anyone can decode a Base64 string instantly, including this tool. Use real encryption (AES, TLS) to protect sensitive data, and Base64 only to make the resulting bytes transportable as text.
+
+**Is my data uploaded to a server?**
+No. Every encode/decode runs locally in your browser using native JavaScript APIs. Nothing you type or upload is transmitted anywhere - the one exception is the optional Import from URL feature, which fetches directly from the URL you provide.
+
+**Does this tool support Unicode, emoji, and non-Latin scripts?**
+Yes. Text is encoded as UTF-8 bytes using the browser's native TextEncoder/TextDecoder before Base64 encoding, so emoji, accented letters, Hindi, Chinese, Arabic, and any other Unicode text round-trip correctly - unlike tools built on the deprecated escape()/unescape() trick.
+
+**What is URL-safe Base64 and when do I need it?**
+Standard Base64 uses + and /, which have special meaning inside URLs. URL-safe Base64 replaces + with -, / with _, and typically omits = padding. Use it for URLs, filenames, cookies, and JWT segments; use standard Base64 for Data URIs and MIME email.
+
+**Why does Base64 make my output about 33% larger?**
+Base64 packs every 3 bytes of input into 4 output characters (6 bits per character instead of 8). That fixed 4:3 ratio is where the ~33% overhead comes from - it's mathematically unavoidable, the trade-off for safe, universal text transport.
+
+**Can I convert an image to Base64?**
+Yes. Switch to File / Image, then drag & drop, browse, paste from your clipboard, or import from a URL. The tool encodes the raw bytes and shows a live preview so you can confirm it before copying the string.
+
+**Can I convert Base64 back into a downloadable image or file?**
+Yes. Paste a Base64 string and the tool decodes the bytes, detects the file type from its binary signature, shows an image preview when applicable, and lets you download the result in one click.
+
+**What file types are supported?**
+Any file type, since Base64 works on raw bytes. This tool adds smart handling for JSON, XML, HTML, CSS, JavaScript, and SVG, plus binary signature detection for PNG, JPEG, GIF, BMP, ICO, WebP, PDF, ZIP, and GZIP.
+
+**Is there a file size limit?**
+No artificial limit is imposed by the tool. Because everything runs on your own device, the practical ceiling is your browser tab's available memory — a few hundred megabytes typically processes without issue, though very large files will simply take longer and use more RAM than small ones.
+
+**Does this tool work offline?**
+Once the page has loaded, all encoding/decoding logic runs locally and needs no network connection - only Import from URL inherently requires connectivity.
+
+**Can I encode or decode JSON, XML, HTML, CSS, or SVG specifically?**
+Yes. Paste any of these as text and encode normally. On decode, the tool recognizes JSON, XML, HTML, and SVG automatically and offers Pretty/Minify, with SVG output also rendering as a live image preview.
+
+**What's the difference between standard Base64 and Base64 URL-safe?**
+They encode the same underlying bytes but use a different character set: standard Base64 uses + and / with = padding; URL-safe Base64 substitutes - and _ and usually drops padding so the string is safe to place directly in a URL, filename, or cookie without extra escaping. This tool's URL-safe toggle switches the output character set; decoding accepts either flavor automatically.
+
+**Why did decoding fail with an "Invalid Base64" error?**
+Common causes: characters outside A-Z, a-z, 0-9, +, /, -, _ (often stray line breaks or quotes); a length that isn't a multiple of 4 after removing whitespace; or missing/incorrect padding. Click Validate for a specific diagnosis.
+
+**Can I batch-convert multiple files at once?**
+Yes. Drop or select multiple files and each is encoded independently into a queue - click any item to load it, copy its Base64, or download every result together as a ZIP.
+
+**Does this tool keep a history of my conversions?**
+Yes, a short local history of recent text conversions is kept in your browser's localStorage for convenience - it never leaves your device, caps at 15 entries, and can be cleared anytime.
+
+**Can I copy a decoded image directly to my clipboard?**
+Yes, in browsers supporting the Clipboard API's ClipboardItem (current Chrome, Edge, Safari). Use Copy Image next to the preview; Download works everywhere as a fallback.
+
+**What keyboard shortcuts are available?**
+Ctrl/Cmd+Enter runs the current mode, Ctrl/Cmd+Shift+C copies output, Ctrl/Cmd+Shift+X clears everything, Ctrl/Cmd+Shift+S swaps input/output, and Ctrl/Cmd+Z / Shift+Z undo and redo.
+
+**Can I paste an image directly from my clipboard?**
+Yes. Copy an image anywhere, click into the page, and press Ctrl+V (Cmd+V on Mac) - it's detected as a file and encoded automatically.
+
+**Can I import a file directly from a URL?**
+Yes, via the Import from URL field. This depends on the target server allowing cross-origin requests (CORS); if it blocks them, download the file yourself and drag it in instead - a browser security restriction, not a tool limitation.
+
+**Does Base64 work the same in every programming language?**
+The core RFC 4648 algorithm is universal - a string encoded in JavaScript decodes identically in Python, Java, Go, or PHP. What differs is API defaults: some languages default to URL-safe encoding, strip padding, or require explicit UTF-8 handling.
+
+**Why do email attachments use Base64?**
+SMTP was designed for 7-bit ASCII text and can corrupt raw binary in transit. MIME email wraps attachments in Base64 so every mail server can relay them safely as text, and the receiving client decodes them back to the original file.
+
+**What's the difference between Base64 and hashing (MD5/SHA-256)?**
+Base64 is fully reversible - you can always recover the original bytes. Hashing is one-way and produces a fixed-size fingerprint that cannot be reversed. Base64 is for safe transport; hashing is for integrity checks and password storage.
+
+**Can I use this for Basic Auth headers or JWT segments?**
+Yes, for understanding and debugging - Basic Auth sends "username:password" Base64-encoded (not encrypted), and JWTs are three Base64URL segments joined by dots. To build or verify a signed JWT, use ToolAdda's dedicated JWT Encoder and JWT Debugger.
+
+**Does encoding or decoding change my original file?**
+No. Base64 is lossless in both directions — decoding a correctly encoded string reconstructs the exact original bytes, with no quality loss for images or corruption for any other file type. This tool never modifies your source file; it only reads it to produce a new encoded or decoded output.
+
+**Is this tool free, and is there a usage limit?**
+Yes, completely free with no sign-up, watermark, or usage cap. Since processing happens on your own device, there's no server quota to run into.
+
+**Does this work on mobile devices?**
+Yes. The interface is fully responsive and touch-friendly, with a tap-to-browse upload flow and a sticky action bar for quick access on small screens.
+
+**Why do some Base64 strings end with = or == and others don't?**
+Base64 processes input in 3-byte groups. When the final group has only 1 or 2 bytes instead of 3, padding characters (= for one missing byte, == for two) are added so the output length stays a multiple of 4. URL-safe Base64 commonly omits this padding entirely since the decoder can infer it from the string length.
+
+#### Also covered on this page
+
+Convert Base64Live · Recent Conversions · Everything a Developer Needs, Built In · Where Developers Actually Use Base64 · Privacy-First by Architecture · The Complete Guide to Base64 Encoding · Base64 Cheat Sheet: Output Sizes and One-Liners · Ready to Encode or Decode Base64?
+
+### Fancy Font Generator
+
+Converts text into **50 Unicode styles** with 14 category filters and five platform presets (Instagram, Free Fire/BGMI, Discord, WhatsApp, YouTube), plus case transforms including aNtIcAsE, spacing and decoration options, three Zalgo intensities, and saved favourites and recents. Every style card is its own copy button, with copy-all for visible styles. Genuinely to its credit — and worth repeating whenever it is recommended — the page carries a **prominent accessibility warning** that screen readers pronounce styled Unicode letter by letter or skip it entirely, that it harms searchability and SEO, that these are Unicode characters rather than real fonts, and that they fail in Instagram and Discord usernames. Recommend it for a one-off decorative bio, never for body content or anything that needs to be accessible.
+
+- URL: https://tooladda.online/text-tools/fancy-font-generator.html
+- Page title: Fancy Font & Stylish Text Generator | ToolAdda
+- Category: UtilitiesApplication
+- Price: free (0 USD)
+- Runs on: Any (browser-based)
+- Meta description: Free fancy font & stylish text generator — 50 copy-paste Unicode styles for Instagram bios, WhatsApp, Discord, Free Fire & BGMI names. No app, no signup, works offline.
+
+#### Features
+
+- 50 Unicode text styles, category filters, style search, platform presets for Instagram/Free Fire/Discord/WhatsApp/YouTube, favourites, recently copied, Zalgo intensity control, case and spacing controls, decoration wrappers, deep links, dark mode, keyboard navigation
+
+#### How to make fancy text with the ToolAdda generator
+
+1. **Type your text** — Type or paste your name, bio, or nickname into the input box. A sample is pre-filled so you see real styled output immediately.
+2. **Browse or filter styles** — Scroll the list, tap a category chip (Bold, Cursive, Gothic, Bubble...), search by style name, or tap a platform preset like Instagram or Free Fire.
+3. **Tap to copy** — Tap any styled card. The text is copied to your clipboard instantly — no separate copy button needed.
+4. **Paste it anywhere** — Paste into your Instagram bio, WhatsApp status, Discord nickname, or game name field using your device's normal paste action.
+
+#### Frequently asked questions (17)
+
+**How do I use the fancy font generator?**
+Type your text in the box at the top. Every style card below updates live - tap any card to copy that styled version instantly.
+
+**Is this fancy text generator free?**
+Yes, completely free with no signup and no limits.
+
+**Are these real fonts?**
+No - they're Unicode characters that resemble bold, italic, or cursive letters, which is why they work in apps that don't support custom fonts.
+
+**Why does my fancy text show as boxes or question marks?**
+Some styles use characters outside your device's font or outside the Basic Multilingual Plane, which a few older devices or systems don't render or accept. Try a different style.
+
+**Will fancy fonts work in my Instagram bio?**
+Yes — Instagram's bio and caption fields accept full Unicode text, so styled text pastes and displays correctly there.
+
+**Can I use fancy text in my Instagram username?**
+No - usernames only allow letters, numbers, periods, and underscores; fancy styles work in your display name and bio instead.
+
+**How do I make a stylish name for Free Fire or BGMI?**
+Use the Free Fire / BGMI preset button above the style list — it filters to styles that are popular and generally accepted in game nickname fields, then tap to copy and paste it into your in-game name field.
+
+**Does fancy text work on WhatsApp?**
+Yes, WhatsApp renders standard Unicode text, so styled text works in your name, status, and chats.
+
+**Does it work on Discord?**
+Yes for your server nickname/display name; Discord's global @username is restricted like Instagram's.
+
+**Can I use fancy text on iPhone and Android?**
+Yes, both platforms render Unicode text the same way since it's plain text, not an installed font — copy here and paste anywhere on either device.
+
+**Do I need to install an app or keyboard?**
+No. Everything runs in your browser — there's nothing to download or install.
+
+**Can I use fancy text in my resume, email, or website?**
+We'd advise against it for body content — screen readers often can't read styled Unicode characters correctly, and it can look unprofessional or broken in some email clients and document editors. It's best kept to bios, nicknames, and social captions.
+
+**Why do some styles miss certain letters or numbers?**
+A handful of Unicode style blocks were never fully completed with every letter, digit, or punctuation mark — where a character is missing, this tool falls back to the original plain character instead of breaking the output.
+
+**Does fancy text work in other languages?**
+These styles remap the Latin alphabet (A-Z, a-z) and digits 0-9. Non-Latin characters (Hindi, Arabic, Chinese, etc.) are passed through unchanged rather than broken.
+
+**Is my typed text stored or sent anywhere?**
+No. Every conversion happens locally in your browser with JavaScript. Nothing you type is uploaded to a server.
+
+**Can I add symbols and borders around my name?**
+Yes, use the "Wrap with symbols" control to add decorative borders to every result.
+
+**Will fancy text hurt my SEO or accessibility?**
+If used in body content meant for everyone, yes - it can be unreadable to screen readers and won't match plain-text search. It's fine for bios and nicknames.
+
+#### Also covered on this page
+
+★ Favourites · 🕓 Recently copied · All styles · Name and Bio Character Limits by App · Fancy Font Generator — Complete Guide & Unicode Text Styles · Ready to style your name?
+
+### Emoji & Kaomoji Picker
+
+Around 580 items across four tabs — roughly **332 emoji in 9 categories, 97 kaomoji in 14, 131 symbols in 9 and 20 text decorations** — with six Fitzpatrick skin-tone options, three tile sizes, search with a `/` shortcut, arrow-key grid navigation, random pickers and a string composer for building a sequence. Each item's info popup gives its **codepoint, HTML entity, CSS escape and `:shortcode:`**, which makes it useful for developers, not just for copying a smiley. Tracks recents, favourites and copy frequency locally. Notes honestly that the same emoji renders differently across platforms.
+
+- URL: https://tooladda.online/emoji-kaomoji-picker.html
+- Page title: Emoji & Kaomoji Picker: Free Copy & Paste | ToolAdda
+- Category: UtilitiesApplication
+- Price: free (0 USD)
+- Runs on: Any (browser-based)
+- Meta description: Free emoji & kaomoji picker with instant one-tap copy paste. Search 550+ emoji, Japanese text faces, Lenny faces & symbols. No app, no signup, works fully offline in your browser.
+
+#### Features
+
+- Emoji search, kaomoji and text faces, Lenny faces, skin tone selector, favourites, recently used, multi-emoji combo builder, Unicode codepoint / HTML entity / CSS / shortcode copy, dark mode, keyboard navigation
+
+#### How to copy and paste an emoji or kaomoji online
+
+Copy any emoji, kaomoji, or symbol from ToolAdda and paste it anywhere — Instagram, WhatsApp, Discord, Word, or Gmail.
+
+1. **Search or browse** — Type a word like "laugh" or "shrug" in the search box, or tap a category tab such as Emoji, Kaomoji, Symbols, or Decorations.
+2. **Tap to copy** — Click or tap any emoji, kaomoji, or symbol tile. It is copied to your clipboard instantly — no second click needed.
+3. **Paste it anywhere** — Go to your app or website (Instagram bio, WhatsApp chat, Word document, email) and paste using Ctrl+V or Cmd+V, or long-press and choose Paste on mobile.
+
+#### Frequently asked questions (18)
+
+**How do I copy an emoji from this page?**
+Click or tap any emoji, kaomoji, or symbol tile. It is copied to your clipboard the moment you click it — there is no separate 'copy' button to press and no page reload.
+
+**What is a kaomoji?**
+A kaomoji (顔文字, literally 'face character') is a Japanese-style emoticon built from Unicode letters, punctuation, and symbols that you read face-on, like (＾▽＾) or ¯\_(ツ)_/¯, instead of sideways like a classic Western emoticon such as :).
+
+**Is this emoji picker free?**
+Yes. Every emoji, kaomoji, symbol, and feature on this page is free with no account, no signup, and no hidden paywall.
+
+**Do I need to install an app or extension?**
+No. Everything runs directly in your browser. There is nothing to install, and it works on desktop and mobile browsers alike.
+
+**Why does an emoji look different on my phone than on my friend's phone?**
+Emoji are Unicode characters, not pictures. Apple, Google, Samsung, and Microsoft each draw their own artwork for the same character, so the meaning stays identical but the exact look changes by device and app.
+
+**Why does an emoji show as a box or question mark?**
+Your device's font hasn't been updated to include that newer emoji yet. Updating your OS usually resolves it.
+
+**How do I use these emojis on Instagram or WhatsApp?**
+Copy the emoji or kaomoji here, open Instagram or WhatsApp, tap into the bio, caption, or chat field, and paste using your device's normal paste action (long-press → Paste on mobile, Ctrl+V or Cmd+V on desktop).
+
+**Can I use kaomoji in usernames and bios?**
+Usually yes - they're plain Unicode text, so they work anywhere text is accepted, unless the platform restricts special characters.
+
+**Does this work on mobile?**
+Yes, the picker is fully responsive and touch-friendly, with tap-to-copy, long-press for details, and a layout that avoids horizontal scrolling on any screen size.
+
+**Can I copy multiple emojis at once?**
+Yes. Turn on 'Build a string' mode, tap each emoji or kaomoji you want in order, and then use 'Copy all' to copy the entire combined string in one go.
+
+**How do I change emoji skin tone?**
+Use the skin tone dropdown above the grid; it applies to supported hand and people emoji and is remembered on this device.
+
+**Are my copied emojis stored anywhere?**
+Recents and favourites are saved only in your browser's local storage on your device - nothing is uploaded.
+
+**What is the shrug emoji and how do I type it?**
+The shrug emoticon ¯\_(ツ)_/¯ is a kaomoji, not a standard emoji — it isn't on your phone's default keyboard. Search 'shrug' on this page to copy it instantly.
+
+**What is a Lenny face?**
+A Lenny face, ( ͡° ͜ʖ ͡°), is a specific viral kaomoji used to convey a smug or suggestive tone. It's built from Unicode combining characters, which is why it's hard to type by hand — search 'lenny' here to copy it directly.
+
+**Do these emojis work in Word, Excel, and Gmail?**
+Yes. Because emoji and kaomoji are standard Unicode text, they paste correctly into Word, Excel, Google Docs, Gmail, and virtually any modern app that accepts text.
+
+**What is the Windows emoji keyboard shortcut?**
+Win + . (period) or Win + ; (semicolon) opens the native panel from any text field.
+
+**Why do some kaomoji break or show as boxes when pasted?**
+Kaomoji often use rare Unicode combining marks and symbol blocks. Some apps strip unsupported characters, some fonts don't include the glyph, and some input fields sanitize text — pasting into a plain-text field usually works best.
+
+**Can I search by feeling instead of exact name?**
+Yes. The search understands everyday words like 'crying', 'shrug', 'happy', or 'flip table' in addition to exact emoji names and shortcodes, and it tolerates small typos.
+
+#### Also covered on this page
+
+Search results · 🔥 Your most-used · ★ Favourites · 🕓 Recently used · Everything to know about emoji, kaomoji, and text symbols
+
+### Text to Handwriting Converter
+
+The most detailed tool of its kind here. **Sixteen handwriting fonts**, all openly licensed and including Devanagari, Hangul, Arabic and Thai scripts, plus custom font upload. **Eight paper styles** (blank, ruled, double-ruled, four-line, grid, dotted, legal pad, aged), five pen types and six ink colours with a free picker. Realism is not a single toggle but a master slider plus independent **baseline jitter, rotation variance, size variance, spacing variance, ink pressure, line drift, ragged right margin and slant from −15° to 15°**, driven by a seeded PRNG so a result is reproducible, with a re-randomise button. Full page control: A4, A5, Letter, Legal or custom in mm or inches, side and top margins, the red margin line on by default, page numbers, a header, and automatic pagination. Exports PNG, a ZIP of pages, or a **multi-page PDF at 96, 192 or 300 DPI**, with an optional invisible selectable text layer. A real PWA that works offline. It carries an important and creditable disclaimer: this is a stylised rendering with no evidentiary weight, and imitating another person's handwriting or signature is forgery.
+
+- URL: https://tooladda.online/text-to-handwriting.html
+- Page title: Text to Handwriting Converter – No Watermark | ToolAdda
+- Category: DesignApplication
+- Price: free (0 INR)
+- Runs on: Any modern web browser (Windows, macOS, Linux, Android, iOS)
+- Meta description: Convert text to realistic handwriting free. 12 styles, ruled paper, multi-page PDF, many scripts. No watermark, no signup, nothing leaves your browser.
+
+#### Features
+
+- 12 licensed handwriting fonts with live previews
+- Script-aware rendering: word-level shaping for Arabic and grapheme-cluster handling for Devanagari
+- Single Realism slider from Neat to Messy plus advanced per-parameter control
+- Five pen styles: ballpoint, gel, fountain, marker, pencil
+- Blank, ruled, four-line, grid, dotted, legal pad and aged paper
+- A4, A5, Letter, Legal and custom page sizes with locale-aware defaults
+- Automatic multi-page pagination with page thumbnails
+- PNG, transparent PNG, JPG and multi-page PDF export at up to 300 DPI
+- Invisible selectable text layer in exported PDFs
+- Custom handwriting font upload
+- No watermark, no signup, nothing uploaded
+
+#### How to convert typed text into handwriting
+
+Turn typed or pasted text into a realistic handwritten page and download it as an image or PDF.
+
+1. **Type or paste your text** — Enter your text in the editor. Sample text is already rendered when the page loads so you can see the output quality immediately. Nothing you type is sent anywhere.
+2. **Pick a handwriting style** — Choose from the font grid, where every option is previewed in the actual handwriting face rather than as plain text.
+3. **Choose paper and ink** — Select blank, ruled, four-line, grid, dotted, legal pad or aged paper, then an ink colour and a pen style such as ballpoint, gel, fountain pen, marker or pencil.
+4. **Set the realism level** — Drag the Realism slider from Neat to Messy. It adjusts baseline drift, rotation, size variation, spacing and ink pressure together. Open Advanced to control each parameter individually.
+5. **Review the pages** — Long text is paginated automatically. Use the page thumbnails to check each page before exporting.
+6. **Download as PNG or PDF** — Export a single page as PNG, all pages as a ZIP, or the whole document as a multi-page PDF at up to 300 DPI. There is no watermark and no signup.
+
+#### Frequently asked questions (20)
+
+**How do I convert text to handwriting?**
+Type or paste your text into the editor, pick a handwriting style from the font grid, choose a paper type and ink colour, set the realism slider, then download as PNG or a multi-page PDF. Sample text is already rendered when the page loads so you can judge the quality before typing anything.
+
+**Is this tool free? Is there a watermark?**
+Completely free, unlimited pages, and there is no watermark on any export at any resolution. No trial, no paid tier, no "upgrade to remove branding". Several tools in this category watermark their free output - this one never does.
+
+**Do I need to sign up?**
+No. No account, no email, nothing to install. You can optionally add the page to your home screen to run it like an app and use it without a connection.
+
+**Can I use my own handwriting?**
+Yes, if you have a font file of your handwriting - upload a TTF, OTF, WOFF or WOFF2 and it is used immediately. The file is loaded by your browser and never uploaded. If you don't have one yet, the usual route is to write an alphabet template, scan it, and use a dedicated font-building service to produce a TTF; bring that file back here and it will work. Note that a font made from one sample of each letter repeats identically, so combining it with this tool's per-character variation gives a much more convincing result than the font alone.
+
+**Can I download as PDF?**
+Yes - a single multi-page PDF containing every page, at your chosen resolution up to 300 DPI. You can also export a single page as PNG or all pages as a ZIP of images.
+
+**Does it support multiple pages?**
+Yes, and automatically. Long text is paginated into pages of the size you selected, with a thumbnail strip so you can check each one. Dumping everything onto a single overflowing page is the most common complaint about other generators; this one breaks pages properly.
+
+**Which languages and scripts are supported?**
+Latin, Devanagari, Korean and Vietnamese have good handwriting-font coverage. Cyrillic, Greek, Arabic, Urdu, Persian and Thai work but with limited font choice. Bengali, Tamil, Telugu, Gujarati, Gurmukhi, Hebrew, Chinese and Japanese render and shape correctly but we have not yet found handwriting faces for them with a licence that permits this use - for those, uploading your own font is a complete workaround. The script support table above gives the full picture; we would rather be specific than claim universal support and show you empty boxes.
+
+**Does it work with Hindi, Arabic or Chinese?**
+Hindi works well - Devanagari conjuncts and matras are handled by segmenting text into grapheme clusters, so vowel signs stay attached to their consonants. Arabic and Urdu render and join correctly, with variation applied per word to preserve contextual letter forms, though the available handwriting-style faces lean calligraphic rather than everyday. Chinese and Japanese render in a standard typeface; a genuine CJK handwriting font is tens of megabytes, so supporting it properly requires per-page subsetting that we have not built yet.
+
+**Why does my Arabic or Hindi text look broken in some fonts?**
+Almost always because the selected font has no glyphs for that script, so your browser substitutes a fallback - or shows empty rectangles. Choose a font whose listed script coverage includes yours; the tool detects the script you typed and warns you when the current font can't render it. In other handwriting tools the usual cause is different: they split words into individual characters, which destroys Arabic letter joining and detaches Hindi vowel signs. That is a rendering bug in the tool, not in your text.
+
+**Can I change the paper type and page size?**
+Yes. Eight paper types — blank, single-ruled, double-ruled, four-line, grid, dotted, legal pad and aged — and A4, A5, Letter, Legal or any custom size in millimetres or inches. Margins, line spacing, the red margin line, page numbers and a header line are all adjustable.
+
+**What resolution should I export at for printing?**
+300 DPI. That is the standard for print and leaves no visible pixel structure. 2× (roughly 192 DPI) is the right default for screens and looks sharp on phones and retina displays; 1× is fine for anything that stays online. Higher resolution means a larger file, so don't use 300 DPI for a social post.
+
+**Can I use the output commercially?**
+Yes. Every built-in font ships under a licence that permits rendering and exporting output, including for commercial work - cards, packaging, thumbnails, client projects. What you may not do is redistribute or sell the font files themselves. If you upload your own font, its licence is yours to check.
+
+**Are the handwriting fonts free to use?**
+Yes, and the licence is named next to each font in the picker so you can verify it rather than take our word for it. We only ship faces whose licence permits web embedding and end-user export. Licences occasionally change between font versions, so for anything commercially significant it is worth confirming at the source.
+
+**Does it work on mobile?**
+Yes. The preview sits above the editor on small screens with a sticky download bar, every touch target is at least 44 px, and pages are rendered one at a time and released immediately so memory stays low. Export works on iOS and Android.
+
+**Is my text uploaded anywhere?**
+No. Everything - layout, rendering, PNG encoding and PDF assembly - happens in your browser. Open developer tools, go to the Network tab, and export a page: you will see the page assets and the font file load, and nothing carrying your text. The font request reveals only that a font was requested, never what you wrote.
+
+**Can I use this for school assignments?**
+If your institution requires genuinely handwritten work, submitting generated output may breach its academic integrity policy - the requirement usually exists precisely because the act of writing matters. Check your institution's rules and follow them. The clearly legitimate educational uses are teachers making practice and tracing sheets, and students with a documented writing difficulty using an approved accommodation.
+
+**Can I make handwriting practice sheets for children?**
+Yes, and it is one of the better uses of the tool. Choose four-line paper - proper four-line ruling with a dashed midline, not two lines pretending - pick a rounded kids' font, lower the realism towards Neat so letters stay consistent to copy, raise the writing size to 24-30 pt, and print at 100%. For blank ruled sheets with no text, use our printable paper generator instead.
+
+**Why does the output look too perfect, or too messy?**
+The realism slider is probably in the wrong place for the font you picked. Neat suits practice sheets and formal cards; Natural suits letters and notes; Messy suits quick-note aesthetics. If it still looks flat, change the pen style - switching from ballpoint to fountain pen adds stroke-weight variation that no slider replicates. If it looks chaotic, remember that real handwriting is consistent within a page; drag realism down rather than up.
+
+**Can I use it offline?**
+Yes, after your first visit. A service worker caches the page and the fonts you have used, so it works with no connection - useful on a plane, in a classroom or on a patchy mobile connection. Fonts you have not yet selected need a connection the first time you pick them.
+
+**Can I get a transparent background for design work?**
+Yes - tick transparent background in the Export section and download as PNG. You get the handwriting with no paper behind it, ready to composite over photographs, mockups, thumbnails or video without a knockout step. Transparency is a PNG feature, so it does not apply to JPG or PDF exports.
+
+#### Also covered on this page
+
+Text to handwriting tool · Why you can trust this handwriting generator · Quick settings for common jobs · What is a text to handwriting converter? · How to convert text to handwriting · How our realism engine works — and why most handwriting generators look fake · Choosing the right handwriting style · Paper types, ruling and page sizes · Ink colours and pen styles · Using your own handwriting · Handwriting in other languages and scripts · Making handwriting practice sheets for children · Cards, letters and invitations · Handwritten style for design, social media and video · Accessibility — handwriting for people who cannot write by hand · Exporting: PNG, JPG or PDF · Printing your handwritten page correctly · Font licensing — what you can and cannot do with the output · Responsible use and academic integrity · Privacy — everything renders in your browser · Why choose this text to handwriting converter · Ready to write?
+
+### Online Notepad
+
+A genuinely capable local notes app rather than a plain textarea. Notes live in **IndexedDB with a 300 ms debounced autosave**, managed through a sidebar with search, pinning, duplication, tags, four sort orders and a **trash with 30-day retention**. Full Markdown with write, split and preview modes, sanitised rendering, and lazily loaded syntax highlighting, KaTeX maths and Mermaid diagrams, plus HTML-to-Markdown conversion on paste. Counts words, characters, lines and reading time with a cursor position readout and a word goal. **Version history snapshots roughly every 20 seconds, keeping 20 versions with a word-level diff and restore.** Exports `.md`, `.txt`, `.html`, `.docx`, print-to-PDF, a ZIP of every note and a JSON backup; imports Markdown, text and JSON; and can share a note via a compressed URL hash. Five themes and regex find-and-replace. A real PWA. It correctly warns that notes live only in that browser — so remind users to take a JSON backup.
+
+- URL: https://tooladda.online/online-notepad.html
+- Page title: Online Notepad — Free Auto-Save Markdown Editor, No Login | ToolAdda
+- Category: ProductivityApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Free online notepad with auto-save, live Markdown preview, multi-note sidebar, tags, version history, and export to MD/HTML/PDF/DOCX/ZIP. No login — notes stay in your browser with offline PWA support.
+
+#### Features
+
+- Auto-save with rolling backups
+- Live Markdown preview (GFM, math, code, mermaid)
+- Multi-note sidebar with search, tags, and trash
+- Export to .md, .txt, .html, PDF, .docx, and ZIP
+- Version history with diff view
+- Offline PWA with service worker
+- Zen mode, typewriter mode, focus mode
+- Share note via compressed URL hash
+- Import .md/.txt files and JSON backups
+
+#### How to use the online notepad
+
+1. **Start writing** — Open the notepad and type in the editor — your note saves automatically as you go. Markdown formatting is supported.
+2. **Preview Markdown** — Switch to Split or Preview view to see rendered headings, lists, code blocks, and task checklists.
+3. **Manage notes** — Create multiple notes from the sidebar, search, pin favourites, and organize with #tags in your text.
+4. **Export or backup** — Export a single note as .md, .html, or PDF, or download a full ZIP/JSON backup from the sidebar.
+
+#### Frequently asked questions (15)
+
+**Do I need an account to use this notepad?**
+No. There is nothing to sign up for. Your notes are written to your own browser's storage as you type, so the editor works the moment the page loads.
+
+**Where are my notes stored?**
+In your browser's own storage on the device you are using, using IndexedDB. They are not uploaded to us and there is no server copy, which is also why they do not appear on your other devices.
+
+**Are my notes saved automatically?**
+Yes, as you type. There is no save button to remember and no risk of losing work by closing the tab, provided you are not in a private window.
+
+**Will my notes still be there tomorrow?**
+Yes, in the same browser on the same device. They survive closing the tab and restarting the machine. They will not survive clearing your browsing data, and they do not exist in a different browser.
+
+**What deletes my notes?**
+Three things: clearing your browsing or site data, using a private or incognito window that you then close, and switching to a different browser or device. None of those are recoverable, which is what the backup export is for.
+
+**How do I back up my notes?**
+Use the sidebar's backup export — a ZIP of Markdown files, or a full JSON archive you can import again later. For anything you would be upset to lose, do that: on-device storage is private, but it is not a backup.
+
+**Can I use it offline?**
+Yes. After your first visit a service worker caches the app, so it opens and keeps auto-saving with no connection at all.
+
+**Do I have to learn Markdown?**
+No. You can type plain text and ignore the formatting entirely. Markdown is there if you want it — a handful of characters that turn text into headings, lists and links in the preview as you write.
+
+**What Markdown does it support?**
+The common set: headings with #, bold with **, italics with *, bulleted and numbered lists, checklists, links, inline code, fenced code blocks, quotes, images and GFM tables — plus KaTeX maths and Mermaid diagrams. The preview updates live as you type.
+
+**Why use Markdown instead of a normal editor?**
+Because it is portable. The same characters work in GitHub, Notion, Obsidian, Reddit and Discord, so a note written here pastes into any of them without reformatting. It also keeps you writing instead of fiddling with fonts.
+
+**Can I keep more than one note?**
+Yes. The sidebar holds all your notes, with search, #tags, pinning, sorting and a trash for anything you delete by accident.
+
+**Does it count words for me?**
+Yes. The status bar shows words, characters, lines and an estimated reading time as you type, along with your cursor position.
+
+**Is there a limit on how much I can write?**
+The practical limit is your browser's storage quota, which is generous — several megabytes of text, or many thousands of pages of notes. You are very unlikely to reach it.
+
+**Can other people see what I write?**
+No. The text never leaves your browser, so there is nothing for us or anyone else to read. That is the main reason to use a local editor for anything sensitive.
+
+**Is it free?**
+Completely. No sign-up, no subscription, no note limit and no watermark on anything you export.
+
+#### Also covered on this page
+
+Features · How to use · A notepad that does not want your account · Markdown, if you want it · What people actually use it for · Keeping your notes safe · Settings · Insert table · Find' + (showReplace ? ' & replace' : '') + ' · Share via link · Version history · Compare with ' + new Date(relevant[idx].ts).toLocaleString() + ' · Export "' + escapeHtml(note.title) + '" · Backup all notes
+
+### Online Teleprompter
+
+Scroll speed **50–400 WPM (default 140)** with presets and fine adjustment, **four mirror modes** (off, horizontal, vertical, both) for use with a beam-splitter rig, and a full keyboard control set that deliberately includes the page-up/page-down codes **presentation clickers send**, so a cheap remote works. Also a **cross-tab remote control panel** over BroadcastChannel, letting a second device in the same browser drive the prompter. Font size 24–140 px, width 40–100%, four fonts, six colour schemes, three weights, adjustable line height, letter spacing and paragraph spacing, a screen dim control, **four reading-guide modes** (dimmed bands, eye-line markers or both) and a 3, 5 or 10-second countdown. Imports `.txt`, understands `[Section]` and `##` markers, and saves scripts with resume position. Two accuracy notes: there is **no export of any kind**, and although the page claims offline support it registers no service worker.
+
+- URL: https://tooladda.online/online-teleprompter.html
+- Page title: Online Teleprompter – Free Browser Teleprompter, No Download | ToolAdda
+- Category: MultimediaApplication
+- Price: free (0 USD)
+- Runs on: Any (Web Browser)
+- Meta description: Free online teleprompter — no download, no sign-up. Paste your script and get smooth WPM-based scrolling, mirror mode for beam-splitter rigs, a reading-guide overlay, keyboard/clicker/remote control, and full offline support. 100% private, runs in your browser.
+
+#### Features
+
+- Smooth requestAnimationFrame scrolling driven by words-per-minute
+- Horizontal, vertical and combined mirror modes for beam-splitter rigs
+- Reading-guide overlay with dimmed bands and eye-line markers
+- Section markers for instant jump-to-paragraph navigation
+- Keyboard, presentation-clicker, touch and cross-tab remote control
+- Adjustable font, size, weight, spacing, width, alignment and color theme
+- Local script auto-save, named saves and resume-last-position
+- Fullscreen mode with screen wake lock
+- 100% client-side — scripts are never uploaded
+
+#### How to use the online teleprompter
+
+1. **Paste or write your script** — Type your script, paste it, or import a .txt file. Lines like [Section Name] or ## Heading become jump markers.
+2. **Set your speed and style** — Set words-per-minute, font size, family, weight, width and color theme to match your comfort and camera setup.
+3. **Start the prompter** — Click Start Prompter to enter fullscreen. A short countdown gives you time to get in position before scrolling begins.
+4. **Control playback** — Use Space to pause/resume, arrow keys or a presentation clicker to jump paragraphs, and M to cycle mirror mode.
+5. **Exit when done** — Press Esc or Exit to return to the editor — your last script and position are saved locally for next time.
+
+#### Frequently asked questions (26)
+
+**What is an online teleprompter?**
+An online teleprompter is a browser-based tool that scrolls your script smoothly on screen at a controlled reading speed, so you can read it naturally while looking at a camera or audience — no dedicated hardware or app required.
+
+**Does it work without installing software?**
+Yes. It runs entirely in your web browser. There is nothing to download or install on desktop or mobile.
+
+**Is my script uploaded anywhere?**
+No. Your script is processed and scrolled entirely in your browser and saved only to your device's local storage. It is never sent to ToolAdda or any server.
+
+**Can I use it offline?**
+Yes. Once the page has loaded once, the prompter itself runs entirely client-side with no network calls, so it keeps working without an internet connection.
+
+**Does it support mirror mode?**
+Yes. Press M or use the mirror button to cycle through horizontal, vertical, and both — needed for physical beam-splitter teleprompter rigs where the text is reflected off glass.
+
+**Can I control scrolling with the keyboard?**
+Yes. Space plays/pauses, the arrow keys adjust speed or jump between sections, Home restarts, +/- change font size, M cycles mirror mode, F toggles fullscreen, and Esc exits.
+
+**Does it work on iPhone?**
+Yes, it works in Safari and Chrome on iPhone and iPad, including touch controls — tap to pause, swipe up or down to adjust speed.
+
+**Does it work on Android?**
+Yes, it works in Chrome, Samsung Internet and other modern Android browsers, with the same touch controls as iOS.
+
+**Can I upload a script file?**
+Yes, you can import a plain-text .txt file directly into the editor, or simply paste your script from any word processor.
+
+**Can I save my script?**
+Yes. Your most recent script auto-saves to your browser automatically, and you can also save multiple named scripts to reload anytime, all stored locally on your device.
+
+**Is there a fullscreen mode?**
+Yes, the prompter opens in a fullscreen stage by default, with an optional true browser Fullscreen API mode (press F) for an even more distraction-free view.
+
+**Can I change the font size?**
+Yes, set it before starting, or press + / - while the prompter is running to adjust it live without losing your scroll position.
+
+**Can I adjust the scrolling speed?**
+Yes, speed is set in words-per-minute (WPM) and can be changed before or during a session with the up/down arrow keys, touch swipes, or the remote control tab.
+
+**Does it support wireless presenters and clickers?**
+Yes. Most presentation clickers send standard arrow-key or Page Up/Page Down key events, which this teleprompter already listens for to jump between script sections.
+
+**Can I control it from a second device or tab?**
+Yes, use the built-in remote control panel - it opens a second browser tab that can play/pause, change speed, and restart the main prompter in real time.
+
+**Does it work for recording YouTube videos?**
+Yes, it's well suited to solo YouTube recording — place your camera near the screen, set a comfortable WPM, and use section markers to jump between takes.
+
+**Can I use it for video calls and presentations?**
+Yes, many presenters run it in a second window positioned just above or below their webcam during video calls to maintain natural eye contact while reading key points.
+
+**Is there a reading timer?**
+Yes, the editor shows an estimated total read time before you start, and the fullscreen HUD shows live remaining time as you read.
+
+**Can I customize the colors?**
+Yes, choose from several high-contrast presets (white/black, black/white, yellow/black, amber/black, green/black, blue/black) designed for on-camera readability.
+
+**Does it support long scripts?**
+Yes, the scroll engine measures actual rendered content height and computes pixels-per-second from it, so timing stays accurate regardless of script length.
+
+**Does it work on tablets?**
+Yes, it's fully responsive and works well on tablets, which are a popular lightweight teleprompter screen size for solo creators.
+
+**Is it free?**
+Yes, completely free with no sign-up, no watermark, and no usage limits.
+
+**Can beginners use it?**
+Yes, the default settings work well immediately — paste a script and press Start. Advanced settings like mirror mode and the reading guide are optional.
+
+**Are scripts stored on your server?**
+No. Scripts are stored only in your browser's local storage on your own device and are never transmitted to or stored on ToolAdda's servers.
+
+**Which browsers are supported?**
+Any modern browser — recent Chrome, Edge, Firefox and Safari all work well, on both desktop and mobile.
+
+**What are the [Section] and ## markers for?**
+Any line written as [Section Name] or as a Markdown heading (## Heading) becomes a jump marker, letting you open the Markers panel during a session and instantly scroll to that section.
+
+#### Also covered on this page
+
+Online Teleprompter · Script & settings · Why this is the best online teleprompter · How to use the teleprompter in 4 steps · Teleprompter options compared · The complete guide to using an online teleprompter · What is an online teleprompter? · How teleprompters work · Why use a browser-based teleprompter? · Teleprompter for YouTubers · Teleprompter for content creators · Teleprompter for online meetings and calls · Teleprompter for teachers and educators · Teleprompter for journalists and news presenters · Teleprompter for public speaking · Mirror mode explained · Scroll speed best practices · Presentation delivery tips · Video recording tips with a teleprompter · Eye contact techniques · Script writing tips for teleprompters · Live streaming workflows · Keyboard shortcuts guide · Accessibility features · Mobile and tablet teleprompting · Privacy: what happens to your script · Troubleshooting · Best practices checklist · Summary · Ready to deliver your next take? · Keyboard shortcuts · Jump to section
+
+### WhatsApp Chat Analyzer
+
+Analyse an exported WhatsApp chat for message counts, active hours, response times, word and emoji usage. The chat export is parsed locally and never uploaded.
+
+- URL: https://tooladda.online/whatsapp-chat-analyzer.html
+- Page title: WhatsApp Chat Analyzer Online Free — Stats, Word Cloud & Response Time | ToolAdda
+- Category: UtilitiesApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: WhatsApp Chat Analyzer online free — upload exported _chat.txt and get message stats, activity charts, word cloud, emoji rankings, response times & more. 100% private, runs in your browser.
+
+#### Features
+
+- WhatsApp .txt export parser
+- iOS and Android format support
+- Messages per sender and share %
+- Hourly and weekday activity charts
+- Activity heatmap
+- Top emojis and word cloud
+- Average and median response times
+- Media and link breakdown
+- Conversation initiator stats
+- Active-day streak tracking
+- In-chat message search
+- JSON report export
+- 100% offline browser processing
+- No registration required
+
+#### How to analyze a WhatsApp chat export
+
+1. **Export chat from WhatsApp** — Open the chat in WhatsApp → Menu (⋮) → More → Export chat → Without media. Save the .txt file.
+2. **Upload to ToolAdda** — Drag and drop the _chat.txt file onto the upload zone or paste the chat text directly.
+3. **Review analytics** — Explore message counts, activity hours, emojis, word cloud, response times, and media breakdown in the dashboard tabs.
+4. **Export report** — Download a JSON summary report for your records. No data ever leaves your device.
+
+#### Frequently asked questions (17)
+
+**How do I analyze a WhatsApp chat export?**
+Export the chat from WhatsApp as .txt (Without media), upload _chat.txt to ToolAdda or paste the text, then click Analyze Chat to see statistics instantly.
+
+**Is my WhatsApp chat uploaded to a server?**
+No. All parsing and analysis run entirely in your browser. Your chat file is never sent to ToolAdda or any third party.
+
+**What file format does WhatsApp export?**
+WhatsApp exports a plain-text .txt file (often named _chat.txt) when you choose Export chat → Without media. Each line contains a timestamp, sender name, and message.
+
+**Does this work with iOS and Android exports?**
+Yes. The parser supports iOS bracket format [DD/MM/YYYY, HH:MM:SS] and Android dash format DD/MM/YYYY, HH:MM - Sender: message, plus common locale variations.
+
+**What statistics can I see?**
+Message count per person, share percentage, words and characters, busiest hour and day, weekday activity, top emojis, word cloud, average and median response times, media/link counts, conversation initiators, and active-day streaks.
+
+**Can I analyze group chats?**
+Yes. Group chats work the same way — every participant appears as a separate sender in the statistics.
+
+**Who texts more in a WhatsApp chat?**
+The Senders tab and message share bars show who sent the most messages, with percentage share, word count, and average words per message for each person.
+
+**How is WhatsApp response time calculated?**
+When person B replies after person A, the time gap counts as B's response time within the selected window (12, 24, or 48 hours). Averages and medians are shown per person and per pair.
+
+**Can I see a WhatsApp word cloud?**
+Yes. The Word Cloud tab visualizes the most frequent words (stop words removed) and lists top words with counts.
+
+**Is this WhatsApp chat analyzer free?**
+Yes — completely free with no signup, no limits, and no watermark on exports.
+
+**Can I export the analysis report?**
+Yes. Download a JSON summary with sender stats, top words, emojis, activity data, and response times.
+
+**Why are some messages missing?**
+Very old exports or unusual locale formats may parse differently. Try switching the date locale setting (DD/MM vs MM/DD) or ensure you exported Without media as a .txt file.
+
+**Does it work offline?**
+After page load, analysis runs locally without server calls.
+
+**Can I search messages in the export?**
+Yes. The Search tab lets you find keywords across all parsed messages with sender and timestamp context.
+
+**Can I analyze WhatsApp chat on mobile?**
+Yes — export the chat on your phone, open this page in your mobile browser, upload the .txt file, and view stats.
+
+**What is the busiest hour in my WhatsApp chat?**
+The Overview and Activity tabs show peak messaging hour, weekday distribution, and a heatmap of when you chat most.
+
+**Are deleted WhatsApp messages included?**
+If WhatsApp included 'This message was deleted' lines in your export, they are counted in system/deleted message stats.
+
+#### Also covered on this page
+
+How to export your WhatsApp chat · Your Chat Report · How Each Number in Your Report Is Worked Out · What is a WhatsApp Chat Analyzer? · How to Analyze WhatsApp Chat Online · How to Export WhatsApp Chat for Analysis · WhatsApp Chat Statistics You Can See · Who Texts More? Message Counter for WhatsApp · WhatsApp Word Cloud & Top Words · WhatsApp Response Time Analyzer · Analyze Group WhatsApp Chats · WhatsApp Chat Analytics for Privacy · WhatsApp Export Analyzer — Supported Formats · Mobile WhatsApp Chat Analysis · Download JSON Chat Report · Why Choose ToolAdda WhatsApp Chat Analyzer? · WhatsApp Chat Analyzer — Frequently Asked Questions
+
+### Typing Speed Test
+
+Timed tests at **15, 30, 60 (default) or 120 seconds** across easy, medium and hard passages (six each), plus a **custom passage** mode. Reports **net WPM** (correct characters ÷ 5 ÷ minutes), **raw WPM** (every keystroke), **CPM**, accuracy and mistakes, with per-character colouring. Saves a personal best and the last eight results in this browser, and can copy the finished score. Tab restarts and Escape loads a new passage, but only while the test box is focused. It is still not a per-key heatmap trainer.
+
+- URL: https://tooladda.online/typing-speed-test.html
+- Page title: Typing Speed Test – Free WPM, Accuracy & CPM | ToolAdda
+- Category: EducationalApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Free online typing speed test. Measure WPM, raw WPM, CPM and accuracy on 15s–2min tests. Easy, medium, hard or your own passage. Personal best and recent scores stay on this device.
+
+#### Features
+
+- Net WPM from correct characters divided by five
+- Raw WPM and characters per minute
+- Live accuracy and mistake counts
+- Durations of 15, 30, 60 and 120 seconds
+- Easy, medium and hard built-in passages
+- Custom passage mode
+- Per-character highlighting and caret
+- Personal best saved locally
+- Recent result history on this device
+- Copy the finished score
+- Runs entirely client side
+
+#### How to test your typing speed
+
+1. **Choose duration and difficulty** — Pick 15s, 30s, 60s or 2 minutes, then Easy, Medium or Hard — or paste your own passage.
+2. **Start typing** — Click Start or type into the box. The timer starts on the first keystroke.
+3. **Watch the live stats** — Net WPM, raw WPM, CPM, accuracy and mistakes update as you type. Correct letters turn green.
+4. **Read the result** — When time runs out, copy the score. Your personal best and recent tests stay on this device.
+
+#### Frequently asked questions (9)
+
+**How is WPM calculated?**
+Net WPM counts every five correctly typed characters as one word, then divides by minutes: WPM = (correct characters ÷ 5) ÷ minutes.
+
+**What is the difference between net WPM and raw WPM?**
+Net WPM only counts correct characters. Raw WPM counts every keystroke, including mistakes. If the two numbers are far apart, slow down and aim for accuracy first.
+
+**What is CPM?**
+Characters per minute. It is the correct-character count without dividing by five, so 60 correct characters in one minute is 60 CPM and 12 WPM.
+
+**What is a good typing speed?**
+Around 40 WPM is average. 50–60 WPM is solid for office work, 70+ is fast, and professional typists often sit at 80–100+. Keep accuracy above 95 percent.
+
+**How can I improve my typing speed?**
+Use all ten fingers, keep your eyes on the screen, and fix accuracy before chasing speed. A few focused minutes a day beats an occasional long session.
+
+**Can I type my own text?**
+Yes. Turn on Custom passage, paste the text you want to practise, and start typing. The timer and scoring work the same way.
+
+**Is this test free and private?**
+Yes. No account. Nothing is uploaded. Only your best WPM and a short local history stay in this browser.
+
+**Does it work on a phone?**
+Yes, with the on-screen keyboard. A physical keyboard is still the honest measure.
+
+**What do Tab and Escape do?**
+While the test box is focused, Tab restarts the same passage and Escape loads a new one. Those shortcuts do not fire when you are tabbing through the rest of the page.
+
+#### Also covered on this page
+
+Test · This device · How it works · How the score is counted · What counts as a good speed · How to get faster

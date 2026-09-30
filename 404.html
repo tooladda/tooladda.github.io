@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page Not Found | ToolAdda</title>
+    <meta name="description" content="The page you requested could not be found. Search all ToolAdda tools or jump straight to a popular one." />
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href="https://tooladda.online/404.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+    <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#4f46e5" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <!-- Every asset and link on this page is ROOT-ABSOLUTE on purpose. A 404 is
+         served at whatever URL the visitor typed (/foo/bar/baz), so a relative
+         "assets/js/app.js" resolves against that phantom directory and 404s too —
+         which is how this page lost its theme toggle, nav search and consent
+         banner. Nothing here may use a relative path. -->
+    <link rel="stylesheet" href="/assets/css/style.css" />
+    <style>
+      /* ── 404 — recovery page ── */
+      .nf-hero {
+        padding: 3.5rem 0 1rem;
+        text-align: center;
+      }
+      .nf-code {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        font-size: clamp(3.2rem, 9vw, 5rem);
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -0.04em;
+        background: linear-gradient(135deg, var(--accent), #38bdf8);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .nf-hero h1 {
+        font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+        margin: 0.6rem 0 0.5rem;
+      }
+      .nf-lede {
+        color: var(--text-muted);
+        max-width: 46rem;
+        margin: 0 auto;
+      }
+      .nf-url {
+        display: inline-block;
+        margin-top: 1rem;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+        padding: 0.45rem 0.85rem;
+        border: 1px dashed var(--border);
+        border-radius: var(--radius-sm);
+        background: var(--accent-soft);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.86rem;
+      }
+
+      /* Search */
+      .nf-search-wrap {
+        max-width: 40rem;
+        margin: 1.8rem auto 0;
+        text-align: left;
+      }
+      .nf-search-box {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.85rem 1rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: var(--surface-strong);
+        box-shadow: var(--shadow);
+      }
+      .nf-search-box:focus-within {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px var(--accent-soft);
+      }
+      .nf-search-box input {
+        flex: 1;
+        min-width: 0;
+        border: 0;
+        outline: none;
+        background: transparent;
+        color: var(--text);
+        font-size: 1rem;
+      }
+      .nf-results {
+        margin-top: 0.6rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: var(--surface-strong);
+        overflow: hidden;
+      }
+      .nf-result {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.7rem 0.95rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .nf-result:last-child { border-bottom: 0; }
+      .nf-result:hover,
+      .nf-result.is-active {
+        background: var(--accent-soft);
+      }
+      .nf-result-icon { font-size: 1.15rem; }
+      .nf-result strong { font-weight: 600; }
+      .nf-result-tag {
+        margin-left: auto;
+        flex: none;
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 0.1rem 0.55rem;
+      }
+      .nf-empty {
+        padding: 0.85rem 0.95rem;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+
+      /* Shared card grid — used by "did you mean" and popular tools */
+      .nf-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+        gap: 0.85rem;
+        margin-top: 1.1rem;
+      }
+      .nf-card {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.85rem 1rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: var(--surface-strong);
+        transition: transform 0.15s ease, border-color 0.15s ease;
+      }
+      .nf-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--accent);
+      }
+      .nf-card-icon { font-size: 1.35rem; flex: none; }
+      .nf-card-body { min-width: 0; }
+      .nf-card-body strong { display: block; font-weight: 600; }
+      .nf-card-body span {
+        display: block;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      .nf-block { margin-top: 2.6rem; }
+      .nf-block h2 {
+        font-size: 1.15rem;
+        margin: 0;
+      }
+      .nf-block p.nf-block-sub {
+        margin: 0.25rem 0 0;
+        color: var(--text-muted);
+        font-size: 0.92rem;
+      }
+
+      /* Category chips */
+      .nf-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+      .nf-chip {
+        border: 1px solid var(--border);
+        background: var(--surface-strong);
+        border-radius: 999px;
+        padding: 0.4rem 0.95rem;
+        font-size: 0.88rem;
+        cursor: pointer;
+        transition: border-color 0.15s ease, background 0.15s ease;
+      }
+      .nf-chip:hover {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+      }
+
+      .nf-footnote {
+        margin-top: 2.6rem;
+        padding-top: 1.4rem;
+        border-top: 1px solid var(--border);
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+      .nf-footnote a {
+        color: var(--accent);
+        text-decoration: underline;
+      }
+
+      /* Nothing JS-dependent should be visible before the catalog answers. */
+      [hidden] { display: none !important; }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/404.html#webpage",
+      "url": "https://tooladda.online/404.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-13",
+      "dateModified": "2026-09-23",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="container navbar">
+        <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Home</a>
+          <a href="/about.html">About</a>
+          <a href="/contact.html">Contact</a>
+          <a href="/privacy-policy.html">Privacy</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+              <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+              <path d="M3.1 16.9h10.8" />
+              <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+            </svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+          <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+          <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section class="section nf-hero">
+        <div class="container">
+          <div class="nf-code" aria-hidden="true">404</div>
+          <h1>That page isn't here</h1>
+          <p class="nf-lede">
+            The link may be old, mistyped, or the tool may have moved. All 158 tools are still one search away —
+            everything below runs free in your browser, with no sign-up.
+          </p>
+          <code class="nf-url" data-nf-url hidden></code>
+
+          <div class="nf-search-wrap">
+            <label class="sr-only" for="nf-search">Search all ToolAdda tools</label>
+            <div class="nf-search-box">
+              <span aria-hidden="true">🔎</span>
+              <input
+                id="nf-search"
+                type="search"
+                placeholder="Search 158 tools — PDF, EMI, QR, resume…"
+                autocomplete="off"
+                role="combobox"
+                aria-expanded="false"
+                aria-controls="nf-results"
+                aria-autocomplete="list"
+              />
+            </div>
+            <div class="nf-results" id="nf-results" role="listbox" aria-label="Search results" hidden></div>
+            <p class="sr-only" role="status" aria-live="polite" data-nf-status></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Filled in only when the requested URL actually resembles a real tool. -->
+      <section class="container nf-block" data-nf-suggestions hidden>
+        <h2>Did you mean…</h2>
+        <p class="nf-block-sub">Closest matches to the address you tried.</p>
+        <div class="nf-grid" data-nf-suggestion-grid></div>
+      </section>
+
+      <section class="container nf-block">
+        <h2>Popular tools</h2>
+        <p class="nf-block-sub">The ones people reach for most.</p>
+        <div class="nf-grid">
+          <a class="nf-card" href="/pdf-merge.html"><span class="nf-card-icon" aria-hidden="true">📄</span><span class="nf-card-body"><strong>PDF Merge</strong><span>Combine PDFs in your browser</span></span></a>
+          <a class="nf-card" href="/pdf-split.html"><span class="nf-card-icon" aria-hidden="true">✂️</span><span class="nf-card-body"><strong>PDF Split</strong><span>Split by range, pages or rule</span></span></a>
+          <a class="nf-card" href="/image-compressor.html"><span class="nf-card-icon" aria-hidden="true">🗜️</span><span class="nf-card-body"><strong>Image Compressor</strong><span>Shrink JPG, PNG, WebP in bulk</span></span></a>
+          <a class="nf-card" href="/image-resizer.html"><span class="nf-card-icon" aria-hidden="true">📐</span><span class="nf-card-body"><strong>Image Resizer</strong><span>Exact pixels or percentage</span></span></a>
+          <a class="nf-card" href="/qr-code-generator.html"><span class="nf-card-icon" aria-hidden="true">📱</span><span class="nf-card-body"><strong>QR Code Generator</strong><span>URLs, text, contacts, Wi-Fi</span></span></a>
+          <a class="nf-card" href="/password-generator.html"><span class="nf-card-icon" aria-hidden="true">🔐</span><span class="nf-card-body"><strong>Password Generator</strong><span>Secure passwords and passphrases</span></span></a>
+          <a class="nf-card" href="/calculators/emi-calculator.html"><span class="nf-card-icon" aria-hidden="true">🏦</span><span class="nf-card-body"><strong>EMI Calculator</strong><span>Loan EMI and amortisation</span></span></a>
+          <a class="nf-card" href="/calculators/gst-calculator.html"><span class="nf-card-icon" aria-hidden="true">🧾</span><span class="nf-card-body"><strong>GST Calculator</strong><span>Add or extract CGST, SGST, IGST</span></span></a>
+          <a class="nf-card" href="/salary-slip-generator.html"><span class="nf-card-icon" aria-hidden="true">💼</span><span class="nf-card-body"><strong>Salary Slip Generator</strong><span>Payslip PDFs with EPF and ESI</span></span></a>
+          <a class="nf-card" href="/rent-receipt-generator.html"><span class="nf-card-icon" aria-hidden="true">🧾</span><span class="nf-card-body"><strong>Rent Receipt Generator</strong><span>HRA-ready receipts, 7 languages</span></span></a>
+          <a class="nf-card" href="/developer-tools/json-formatter.html"><span class="nf-card-icon" aria-hidden="true">🧩</span><span class="nf-card-body"><strong>JSON Formatter</strong><span>Format, validate, tree view</span></span></a>
+          <a class="nf-card" href="/calculators/age-calculator.html"><span class="nf-card-icon" aria-hidden="true">🎂</span><span class="nf-card-body"><strong>Age Calculator</strong><span>Years, months, days, milestones</span></span></a>
+        </div>
+      </section>
+
+      <section class="container nf-block">
+        <h2>Browse by category</h2>
+        <p class="nf-block-sub">Or open the <a href="/blog.html" style="color: var(--accent); text-decoration: underline;">full tool guide</a>.</p>
+        <div class="nf-chips">
+          <a class="nf-chip" href="/pdf-tools.html" data-nf-chip="PDF">📄 PDF</a>
+          <a class="nf-chip" href="/image-tools.html" data-nf-chip="Image">🖼️ Image</a>
+          <a class="nf-chip" href="/#home-categories" data-nf-chip="Developer">⚙️ Developer</a>
+          <a class="nf-chip" href="/#home-categories" data-nf-chip="Finance">💰 Finance</a>
+          <a class="nf-chip" href="/#home-categories" data-nf-chip="Calculator">🧮 Calculator</a>
+          <a class="nf-chip" href="/#home-categories" data-nf-chip="Text">🔤 Text</a>
+          <a class="nf-chip" href="/#home-categories" data-nf-chip="Security">🔐 Security</a>
+          <a class="nf-chip" href="/#home-categories" data-nf-chip="Game">🎮 Games</a>
+        </div>
+
+        <div class="hero-actions" style="margin-top: 1.6rem;">
+          <a class="primary-btn" href="/">Go to homepage</a>
+          <a class="secondary-btn" href="/#search-tools">Browse all 158 tools</a>
+        </div>
+
+        <p class="nf-footnote">
+          Followed a link from another site and landed here? <a href="/contact.html">Tell us which link</a> and we'll
+          fix or redirect it.
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+          <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links">
+            <a href="/about.html">About</a>
+            <a href="/contact.html">Contact</a>
+            <a href="/privacy-policy.html">Privacy Policy</a>
+            <a href="/terms.html">Terms</a>
+          </div>
+        </div>
+        <div>
+          <h3>Stay updated</h3>
+          <p>© <span data-year></span> ToolAdda. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/assets/js/app.js"></script>
+    <script>
+      /* Recovery logic for the 404 page.
+
+         Two jobs, both driven by the same catalog the site's nav search uses:
+
+         1. "Did you mean" — the visitor already told us what they wanted by
+            typing a URL. A mistyped or renamed slug ("/pdf-merger.html",
+            "/emi-calc") is usually one or two characters away from a real tool,
+            so the slug is scored against every tool rather than thrown away.
+         2. On-page search over all 158 tools.
+
+         Everything degrades cleanly: the popular-tools grid and the category
+         chips are plain server-rendered links, so a visitor with no JS, or one
+         whose catalog request fails, still leaves this page with somewhere to go.
+         The search box is only revealed as interactive once the catalog lands. */
+      (function () {
+        var input = document.getElementById('nf-search');
+        var results = document.getElementById('nf-results');
+        var status = document.querySelector('[data-nf-status]');
+        var urlEl = document.querySelector('[data-nf-url]');
+        var suggestBlock = document.querySelector('[data-nf-suggestions]');
+        var suggestGrid = document.querySelector('[data-nf-suggestion-grid]');
+        var MAX_RESULTS = 8;
+
+        /* Show the address that failed. Rendered from location rather than the
+           server so it is correct whatever path the host served this file at. */
+        var rawPath = '';
+        try {
+          rawPath = decodeURIComponent(window.location.pathname + window.location.search);
+        } catch (e) {
+          rawPath = window.location.pathname;
+        }
+        var isDirectVisit = /^\/?(404\.html)?\/?$/.test(window.location.pathname);
+        if (urlEl && !isDirectVisit) {
+          urlEl.textContent = rawPath.length > 120 ? rawPath.slice(0, 117) + '…' : rawPath;
+          urlEl.hidden = false;
+        }
+
+        /* ---- the requested slug, reduced to searchable tokens ---- */
+        var segments = window.location.pathname.split('/').filter(Boolean);
+        var lastSegment = (segments[segments.length - 1] || '').toLowerCase();
+        var requestedSlug = lastSegment
+          .replace(/\.(html?|php|aspx?)$/, '')
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+        var requestedTokens = requestedSlug.split('-').filter(function (token) {
+          return token.length > 2;
+        });
+
+        /* Dice coefficient over character bigrams. Cheap, needs no tuning, and
+           unlike "includes" it still scores a transposition or a dropped letter —
+           which is what a mistyped URL actually looks like. */
+        function bigrams(value) {
+          var out = [];
+          for (var i = 0; i < value.length - 1; i += 1) out.push(value.slice(i, i + 2));
+          return out;
+        }
+        function similarity(a, b) {
+          if (!a || !b) return 0;
+          if (a === b) return 1;
+          var first = bigrams(a);
+          var second = bigrams(b);
+          if (!first.length || !second.length) return 0;
+          var pool = second.slice();
+          var hits = 0;
+          for (var i = 0; i < first.length; i += 1) {
+            var at = pool.indexOf(first[i]);
+            if (at > -1) {
+              hits += 1;
+              pool.splice(at, 1);
+            }
+          }
+          return (2 * hits) / (first.length + second.length);
+        }
+
+        function slugOf(tool) {
+          return tool.h.split('/').pop().replace('.html', '').toLowerCase();
+        }
+
+        function suggest(tools) {
+          if (isDirectVisit || !requestedSlug || requestedSlug.length < 3) return [];
+          return tools
+            .map(function (tool) {
+              var slug = slugOf(tool);
+              var haystack = (tool.t + ' ' + tool.g + ' ' + tool.k + ' ' + slug).toLowerCase();
+              var title = tool.t.toLowerCase();
+              var score = similarity(requestedSlug, slug) * 6;
+              requestedTokens.forEach(function (token) {
+                if (title.indexOf(token) > -1) score += 2.5;
+                else if (haystack.indexOf(token) > -1) score += 1;
+              });
+              return { tool: tool, score: score };
+            })
+            .filter(function (row) {
+              return row.score >= 2.2;
+            })
+            .sort(function (a, b) {
+              return b.score - a.score;
+            })
+            .slice(0, 4)
+            .map(function (row) {
+              return row.tool;
+            });
+        }
+
+        function escapeHtml(value) {
+          return String(value).replace(/[&<>"']/g, function (ch) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+          });
+        }
+
+        function renderSuggestions(tools) {
+          var picks = suggest(tools);
+          if (!picks.length || !suggestGrid || !suggestBlock) return;
+          suggestGrid.innerHTML = picks
+            .map(function (tool) {
+              return (
+                '<a class="nf-card" href="' + escapeHtml(tool.h) + '">' +
+                '<span class="nf-card-icon" aria-hidden="true">' + escapeHtml(tool.i) + '</span>' +
+                '<span class="nf-card-body"><strong>' + escapeHtml(tool.t) + '</strong>' +
+                '<span>' + escapeHtml(tool.g) + ' tool</span></span></a>'
+              );
+            })
+            .join('');
+          suggestBlock.hidden = false;
+        }
+
+        /* ---- live search ---- */
+        function score(tool, query) {
+          var title = tool.t.toLowerCase();
+          var haystack = (tool.t + ' ' + tool.g + ' ' + tool.k).toLowerCase();
+          if (title.indexOf(query) === 0) return 3;
+          if (title.indexOf(query) > -1) return 2;
+          if (haystack.indexOf(query) > -1) return 1;
+          return 0;
+        }
+
+        function wireSearch(tools) {
+          var matches = [];
+          var activeIndex = -1;
+
+          function close() {
+            results.hidden = true;
+            results.innerHTML = '';
+            input.setAttribute('aria-expanded', 'false');
+            activeIndex = -1;
+          }
+
+          function render() {
+            if (!matches.length) {
+              results.innerHTML = '<div class="nf-empty">No tool matches that. Try a shorter word — “pdf”, “image”, “loan”.</div>';
+            } else {
+              results.innerHTML = matches
+                .map(function (tool, idx) {
+                  return (
+                    '<a class="nf-result' + (idx === activeIndex ? ' is-active' : '') + '" role="option"' +
+                    ' aria-selected="' + (idx === activeIndex) + '" href="' + escapeHtml(tool.h) + '">' +
+                    '<span class="nf-result-icon" aria-hidden="true">' + escapeHtml(tool.i) + '</span>' +
+                    '<strong>' + escapeHtml(tool.t) + '</strong>' +
+                    '<span class="nf-result-tag">' + escapeHtml(tool.g) + '</span></a>'
+                  );
+                })
+                .join('');
+            }
+            results.hidden = false;
+            input.setAttribute('aria-expanded', 'true');
+            if (status) {
+              status.textContent = matches.length
+                ? matches.length + ' tools found'
+                : 'No tools found';
+            }
+          }
+
+          function search(rawQuery) {
+            var query = rawQuery.trim().toLowerCase();
+            activeIndex = -1;
+            if (query.length < 2) {
+              close();
+              return;
+            }
+            matches = tools
+              .map(function (tool) {
+                return { tool: tool, score: score(tool, query) };
+              })
+              .filter(function (row) {
+                return row.score > 0;
+              })
+              .sort(function (a, b) {
+                return b.score - a.score || a.tool.t.localeCompare(b.tool.t);
+              })
+              .slice(0, MAX_RESULTS)
+              .map(function (row) {
+                return row.tool;
+              });
+            render();
+          }
+
+          input.addEventListener('input', function () {
+            search(input.value);
+          });
+
+          input.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+              close();
+              return;
+            }
+            if (!matches.length || results.hidden) {
+              /* Enter on an unopened list still runs the search rather than
+                 submitting nothing. */
+              if (event.key === 'Enter') search(input.value);
+              return;
+            }
+            if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+              event.preventDefault();
+              var step = event.key === 'ArrowDown' ? 1 : -1;
+              activeIndex = (activeIndex + step + matches.length) % matches.length;
+              render();
+              return;
+            }
+            if (event.key === 'Enter') {
+              event.preventDefault();
+              var target = matches[activeIndex > -1 ? activeIndex : 0];
+              if (target) window.location.href = target.h;
+            }
+          });
+
+          document.addEventListener('click', function (event) {
+            if (results.hidden) return;
+            if (results.contains(event.target) || event.target === input) return;
+            /* A category chip opens the dropdown from outside it, so it must be
+               exempt here — otherwise this handler closes the results in the same
+               click that just populated them. */
+            if (event.target.closest && event.target.closest('[data-nf-chip]')) return;
+            close();
+          });
+
+          /* Category chips prefill the search instead of bouncing the visitor to
+             the homepage — but they stay real links, so no-JS and middle-click
+             both still work. */
+          document.querySelectorAll('[data-nf-chip]').forEach(function (chip) {
+            if (chip.getAttribute('href') !== '/index.html#home-categories') return;
+            chip.addEventListener('click', function (event) {
+              event.preventDefault();
+              input.value = chip.getAttribute('data-nf-chip');
+              search(input.value);
+              input.focus();
+              if (input.scrollIntoView) input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+          });
+        }
+
+        /* app.js already fetches the catalog for the navbar search; reuse it when
+           it is there and fall back to loading it ourselves when it is not. */
+        function withCatalog(callback) {
+          if (window.TOOLADDA_TOOLS && window.TOOLADDA_TOOLS.length) {
+            callback(window.TOOLADDA_TOOLS);
+            return;
+          }
+          var script = document.createElement('script');
+          script.src = '/assets/js/tools-catalog.js';
+          script.async = true;
+          script.onload = function () {
+            if (window.TOOLADDA_TOOLS && window.TOOLADDA_TOOLS.length) callback(window.TOOLADDA_TOOLS);
+          };
+          script.onerror = function () {
+            /* The popular-tools grid below is static markup and is already on
+               screen, so a failed catalog costs the visitor nothing but search. */
+            if (input) input.placeholder = 'Search unavailable — browse the tools below';
+          };
+          document.head.appendChild(script);
+        }
+
+        withCatalog(function (tools) {
+          renderSuggestions(tools);
+          if (input && results) wireSearch(tools);
+        });
+      })();
+    </script>
+  <script src="/assets/js/side-ads.js" defer></script>
+  <script src="/assets/js/inline-ads.js" data-in-article defer></script>
+  </body>
+</html>

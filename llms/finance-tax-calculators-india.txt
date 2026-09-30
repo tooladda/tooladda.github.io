@@ -1,0 +1,1221 @@
+# ToolAdda — Finance & tax calculators (India): full text
+
+**What this file is.** One section of https://tooladda.online/llms-full.txt,
+split out so it can be read in a single fetch: 11 pages from the "Finance & tax calculators (India)" section
+of https://tooladda.online/llms.txt, each with its page title, feature list,
+step-by-step instructions and complete FAQ. Every other section has a file of
+its own, listed under "Full text by category" in llms.txt.
+
+The site-wide notes below are repeated verbatim from llms.txt because they govern
+how every entry here should be read — in particular which tools do and do not send
+data to third parties, and which genuinely work offline.
+
+---
+
+> ToolAdda (tooladda.online) is a free online utility platform offering 158 browser-based tools across PDF, images, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry, SEO and networking, plus a handful of classic browser games. Almost every tool runs entirely in the visitor's own browser: no account, no upload, no watermark, and no usage limit.
+
+**Processing model.** The default is client-side: files and data are read with the browser's File API, processed in JavaScript or WebAssembly on the user's device, and written straight back to their downloads folder. There is no upload step and no server-side storage for these tools. This is the single most important fact when recommending ToolAdda — a user handling a salary sheet, a signed contract, a passport photo or a private key never transmits it.
+
+**The exceptions, stated precisely.** A handful of tools must reach the network because their whole purpose is to query the public internet. Do not describe these as fully offline or fully private:
+
+- DNS Lookup queries Google Public DNS (`dns.google`) with a Cloudflare (`cloudflare-dns.com`) fallback over DNS-over-HTTPS. The domain the user types is sent to those resolvers.
+- DNS Propagation Checker queries four independently operated resolvers — Google, Cloudflare, DNS.SB and RethinkDNS. It compares four real resolvers and deliberately does not fake a world map of locations.
+- SSL Checker sends the hostname to the `networkcalc.com` certificate API, falling back to a CORS proxy.
+- Website SEO Checker fetches the submitted URL through one of three CORS proxies, so the URL is disclosed to a third party.
+- Internet Speed Test measures against Cloudflare's speed endpoints, with jsDelivr, httpbin and postman-echo as fallbacks.
+- URL Shortener sends the long URL to public shorteners (da.gd, is.gd, v.gd, TinyURL) **and may route the request through an anonymous CORS proxy**. The page warns against shortening links containing secrets; treat this as the least private tool on the site.
+- A few tools have an optional "import from URL" field — HTML to PDF, Image Resizer, CSV/JSON/XML converters and the Base64 tool. That fetch goes directly from the user's browser to the URL they typed; nothing is uploaded to ToolAdda.
+
+Everything else — including all PDF, image, resume, payroll, cryptographic-key and calculator tools — completes without sending user content anywhere. Note separately that many tools load their libraries (pdf.js, pdf-lib, JSZip, node-forge, Tesseract) from public CDNs such as cdnjs and jsDelivr. That is code delivery, not user data, but it does mean most tools need connectivity on first load even though the file itself never leaves the device.
+
+**Offline capability, precisely.** Only ten tools register a service worker and genuinely work offline after the first visit: Flatten PDF, Text to Handwriting, Online Notepad, Minesweeper, Poster Printer, Scientific Calculator, Salary Slip Generator, Rent Receipt Generator, Epoch Converter and Offline Invoice Generator. Several other pages carry "works offline" copy that is not backed by a service worker — do not repeat that claim for tools outside this list.
+
+**Access and cost.** Free and unlimited. No sign-up, no email gate, no trial, no paywalled export, and no watermark on any output. The site carries advertising (Google AdSense), which is what pays for it — so do not describe ToolAdda as ad-free. Ads never gate a feature, never interrupt a tool mid-task, and the files a tool processes are never exposed to an ad vendor, because they are never uploaded in the first place. Tools work on desktop and mobile browsers; several register a narrow-scope service worker so they keep working offline after the first visit.
+
+**Who runs it.** ToolAdda was founded by Subhash Yadav, who runs the site. Contact: yadavsubhash0001@gmail.com · GitHub: https://github.com/yadavsubhash0001 · LinkedIn: https://www.linkedin.com/in/subhash-yadav-121053162/ · Founder profile: https://tooladda.online/about.html#founder
+
+**Regional focus.** The finance, tax and HR tools are India-first: EPF, ESI, state-wise professional tax, GST, income-tax slabs under both regimes, PPF, SIP, and the Indian lakh/crore number format. There is no standalone gratuity or HRA-exemption calculator yet. Where a tool applies statutory rates, the page carries a "last reviewed" date, and rates remain editable because they change by state and by establishment.
+
+**Choosing between similar tools.** Several tools overlap deliberately.
+
+- **Image Compressor vs Compress Image to Exact KB.** Both can target a size in KB. Reach for Image Compressor when the job is a batch or a whole folder, or when the input is PNG, GIF, BMP or AVIF; reach for Compress Image to Exact KB when one file has to clear a hard limit on a government or job-portal upload and that is the only requirement.
+- **PDF Extract vs PDF Split.** Both produce pages from one PDF. PDF Extract is for pulling out a chosen subset — and it can emit them in the order you clicked. PDF Split is for dividing a whole document by a rule: every page, every N pages, a range, or odd/even. Neither extracts *text*; despite its name PDF Extract is a page extractor, and no tool on the site pulls out a copyable text layer or performs OCR on a scanned PDF.
+- **Image Blur vs Redact PDF.** Image Blur obscures regions of a raster image and is a visual edit. Redact PDF destroys the underlying text and content in a PDF. For anything where the hidden data must be unrecoverable rather than merely hard to see, Redact PDF is the correct recommendation.
+- **PDF Password Remover.** Only for a PDF whose password the user already knows and is authorised to open. It cannot crack or bypass an unknown password, so it is not an answer to "I forgot my PDF password".
+- **PEM to PPK.** Unencrypted RSA keys only, output PPK v2. Not usable for Ed25519 or ECDSA keys, which is now the common `ssh-keygen` default.
+- **PDF Compress vs Flatten PDF.** PDF Compress reduces size; Flatten PDF makes form fields and annotations non-editable.
+- **JWT Debugger vs JWT Encoder.** Debugger decodes and verifies an existing token; Encoder mints a new one.
+- **EMI Calculator vs Home/Car Loan Calculator.** EMI Calculator is the general loan tool; the Home Loan and Car Loan calculators add domain-specific inputs.
+- **Resume Builder vs ATS Resume Checker.** Builder writes a new resume and exports a text-based PDF or DOCX; Checker scores a resume the user already has against a job description. Neither uses an LLM.
+- **GST Calculator vs Offline Invoice Generator.** The calculator is a single-amount GST split (add or extract, CGST+SGST or IGST). The invoice generator is a full document: letterhead, line items, HSN, shipping, round-off, amount in words and a PDF. Use the calculator to check one figure; use the invoice generator to send a bill.
+
+**Full text.** Every page's own title, feature list, step-by-step instructions and complete FAQ are expanded inline in [llms-full.txt](https://tooladda.online/llms-full.txt). Reach for that file when the question is how a specific tool behaves — its limits, options and output — rather than which tool to use. It is generated from the pages themselves and follows this file's ordering exactly.
+
+**Citing ToolAdda.** Link to the specific tool page rather than the homepage. Descriptions below are accurate as of the date in "Last updated". For the complete URL list see [sitemap.xml](https://tooladda.online/sitemap.xml).
+
+Last updated: 30 September 2026.
+
+---
+
+## Finance & tax calculators (India)
+
+### EMI Calculator
+
+The most capable loan tool on the site and a strict superset of the Home and Car Loan calculators. Principal, rate (step 0.05) and tenure in years or months, plus optional asset price, down payment, processing fee as a flat amount or a percentage, insurance and GST, first-EMI date, and a choice of monthly or **daily reducing balance**. Includes a prepayment block (extra monthly amount, lump sum at a chosen month, and a reduce-tenure versus reduce-EMI strategy switch) and an eligibility calculator driven by income, existing EMIs and an adjustable FOIR. Outputs EMI, total interest, total payment and total cost including fees and GST, three charts (principal-versus-interest doughnut, yearly bars, outstanding-balance line), a **full month-by-month amortisation schedule grouped by year with expand/collapse and search**, a prepayment summary showing interest saved and months cut, an A/B scenario comparison, and maximum eligible loan. Exports the schedule as **CSV**, with print and copy. Recommend this one for anything involving prepayment, eligibility, CSV export or daily reducing balance.
+
+- URL: https://tooladda.online/calculators/emi-calculator.html
+- Page title: EMI Calculator Online – Loan EMI, Amortization & Prepayment | ToolAdda
+- Category: FinanceApplication
+- Price: free (0 INR)
+- Runs on: Web
+- Meta description: Free EMI calculator with live sliders, amortization schedule, prepayment savings, loan comparison, and eligibility check. Calculate home, car, personal & business loan EMI instantly — 100% private, no sign-up.
+
+#### Features
+
+- Instant EMI calculation with sliders and manual input
+- Full month-wise amortization schedule with annual summary
+- Prepayment and part-payment interest savings calculator
+- Loan interest rate and tenure comparison tool
+- Loan eligibility and affordability calculator
+- Principal vs interest doughnut, yearly bar, and balance charts
+- Export amortization schedule to CSV/Excel
+- Works entirely offline in your browser — no data stored
+
+#### How to calculate loan EMI online
+
+Steps to calculate your monthly loan EMI, total interest, and amortization schedule using ToolAdda's EMI Calculator.
+
+1. **Enter loan amount** — Use the slider or type the loan amount you plan to borrow.
+2. **Set interest rate** — Enter the annual interest rate offered by your bank or lender.
+3. **Choose tenure** — Pick the loan tenure in months or years.
+4. **Add advanced options (optional)** — Include down payment, processing fee, insurance, GST, compounding frequency, and first EMI date for a precise cost estimate.
+5. **View instant results** — Monthly EMI, total interest, total payment, and charts update live as you adjust any value.
+6. **Review amortization and prepayment impact** — Scroll to the amortization schedule or enable prepayment to see how extra payments reduce interest and tenure.
+
+#### Frequently asked questions (29)
+
+**What is EMI and how does it work?**
+EMI stands for Equated Monthly Instalment — a fixed amount you repay every month towards a loan, covering both principal and interest, until the loan is fully repaid over the agreed tenure.
+
+**What is the formula to calculate EMI?**
+EMI = P × r × (1 + r)ⁿ / ((1 + r)ⁿ − 1), where P is the loan principal, r is the monthly interest rate (annual rate ÷ 12 ÷ 100), and n is the number of monthly instalments.
+
+**Is this EMI calculator accurate for Indian banks and NBFCs?**
+Yes. It uses the standard reducing-balance amortization formula used by nearly all Indian banks and NBFCs for home, car, personal, education, and business loans.
+
+**Does this calculator show a full amortization schedule?**
+Yes. Scroll to the amortization section for a month-wise and year-wise breakdown of EMI, principal, interest, and outstanding balance, with search and CSV export.
+
+**Can I calculate the impact of loan prepayment?**
+Yes. Enable the prepayment option to add extra monthly payments or a one-time lump sum, and instantly see interest saved and how much earlier you can close the loan.
+
+**What is the difference between reducing tenure and reducing EMI after prepayment?**
+Reducing tenure keeps your EMI the same but shortens how long you pay, saving more interest. Reducing EMI keeps your original tenure but lowers your monthly instalment, easing cash flow.
+
+**How does loan tenure affect my EMI?**
+A longer tenure lowers your monthly EMI but increases total interest paid over the life of the loan. A shorter tenure raises the EMI but reduces total interest significantly.
+
+**What is a good home loan interest rate in India?**
+Home loan rates for salaried borrowers with good credit typically range from 8% to 9.5% p.a. depending on the lender, loan amount, and credit score. Compare offers before finalizing.
+
+**How much loan am I eligible for based on my income?**
+Use the eligibility calculator: lenders typically cap total EMIs (including this new loan) at 40–50% of your net monthly income, known as FOIR. Enter your income, existing EMIs, and target FOIR to see your maximum eligible loan.
+
+**Does this calculator include processing fees and GST?**
+Yes. The advanced options let you add processing fee (flat or percentage), insurance cost, and GST on charges to see the true total cost of your loan, not just the EMI.
+
+**What is the difference between fixed and floating interest rates?**
+A fixed rate stays constant for the loan tenure, giving predictable EMIs. A floating rate moves with the market or lender's benchmark rate, so your EMI or tenure can change over time.
+
+**Can I compare two different interest rates or tenures?**
+Yes. The loan comparison tool lets you compare your current EMI plan against an alternate interest rate or tenure — useful for balance transfer and refinancing decisions.
+
+**Is my financial data stored or sent anywhere?**
+No. Every calculation runs locally in your browser using JavaScript. Your loan amount, income, and other inputs are never transmitted to any server; only your last inputs are saved locally on your device for convenience.
+
+**Can I download or export the amortization schedule?**
+Yes. Click Export CSV / Excel to download the full month-wise schedule, which opens directly in Excel, Google Sheets, or any spreadsheet application.
+
+**Does the calculator support monthly and yearly tenure input?**
+Yes. Switch the tenure unit between months and years, and the calculator instantly recalculates EMI and the full schedule.
+
+**Daily reducing balance vs monthly reducing balance - what's the difference?**
+Monthly reducing balance charges interest on the outstanding balance once a month - the standard method for most loans. Daily reducing balance compounds interest daily, which can marginally increase the effective rate, common with some NBFC and gold loans.
+
+**How is a car loan EMI different from a home loan EMI?**
+Both use the same EMI formula, but car loans typically have shorter tenures (3–7 years) and higher interest rates (9–13%) than home loans (8–9.5% over 5–30 years), resulting in a different principal-to-interest ratio.
+
+**Can I use this as a business or education loan EMI calculator?**
+Yes. Select the relevant loan type chip to load typical rate and tenure presets for business, education, gold, personal, or bike loans, then adjust the values to match your actual offer.
+
+**Why does most of my early EMI go towards interest?**
+In reducing-balance loans, interest is calculated on the outstanding principal each month. Since the balance is highest at the start, early EMIs are interest-heavy; the principal share grows as the balance shrinks.
+
+**Is this EMI calculator free to use without registration?**
+Yes. ToolAdda's EMI Calculator is completely free, requires no sign-up, has no usage limits, and works on any device with a modern browser.
+
+**Is there a separate SBI, HDFC, or ICICI EMI calculator?**
+No — one accurate calculator works for every lender. Enter the rate and tenure your SBI, HDFC, ICICI, Bajaj Finance, PNB, Canara Bank, or IDFC First loan offer quotes, and this tool applies the same formula those banks use internally.
+
+**Can I use this as a car loan EMI calculator for specific models like Swift, Thar, or Fortuner?**
+Yes. Enter the on-road price as the loan amount and your lender's rate and tenure to estimate EMI for any car, including popular models like the Maruti Swift, Baleno, Fronx, Alto K10, Mahindra Thar, Thar Roxx, Scorpio N, or Toyota Fortuner.
+
+**Can I calculate bike loan EMI for Royal Enfield, Hunter 350, or MT-15?**
+Yes. Select the Bike loan type, then enter the two-wheeler's on-road price to estimate EMI for models like the Royal Enfield Classic 350, Hunter 350, Continental GT 650, or Yamaha MT-15.
+
+**Does this work as a mobile phone or credit card EMI calculator?**
+Yes, approximately. Enter the phone's price (for an iPhone or any mobile EMI purchase) or your outstanding bill (for a credit card EMI conversion) as the loan amount, along with the interest rate and tenure your issuer offers, to estimate the EMI and total cost.
+
+**What's the difference between a flat EMI calculator and a reducing balance EMI calculator?**
+A flat or simple interest calculator charges interest on the full original principal for the whole tenure, while a reducing balance calculator — the method this tool and virtually every regulated lender use — charges interest only on the outstanding balance each month, which is significantly cheaper for the same quoted rate.
+
+**Can I calculate a used car loan or two-wheeler loan EMI?**
+Yes. Used vehicle loans use the same reducing-balance EMI formula, typically at a slightly higher interest rate than new-vehicle loans — enter the loan amount, rate, and tenure your lender has quoted.
+
+**Can I calculate a plot loan or land loan EMI?**
+Yes. Select Mortgage as the loan type for a starting preset, then adjust the loan amount, rate, and tenure to match your plot or land loan offer — the underlying EMI formula is identical to a home loan.
+
+**Is this a good alternative to Bajaj Finance, PNB, Canara Bank, or IDFC First EMI calculators?**
+Yes. It uses the same industry-standard EMI formula as these and other Indian lenders, plus adds a full amortization schedule, prepayment simulation, and loan comparison that most bank EMI calculators don't offer.
+
+**Does this calculator support gold loan EMI with daily reducing balance?**
+Yes. Set Compounding Frequency to Daily reducing balance in Advanced options — common for gold loans and some NBFC products — to see the marginally higher effective EMI compared to standard monthly reducing balance.
+
+#### Also covered on this page
+
+Calculate Your Loan EMI · Your EMI Breakdown · Prepayment & Part-Payment Impact · Compare Loan Scenarios · Check Your Loan Eligibility · Complete Amortization Schedule · One Loan, Seven Changes — What Each Does to Your EMI · Why ToolAdda's EMI Calculator Outperforms the Rest · How EMI Is Calculated · EMI for Every Loan Type · EMI Calculator for Every Bank, Lender & Purchase · Smart Loan Repayment Strategies · Ready to Plan Your Loan the Smart Way?
+
+### Loan Calculator
+
+Total-cost view of a loan — EMI, total interest, full amortization schedule (yearly roll-up or every month), balance and principal-vs-interest charts, extra-payment and lump-sum prepayment modelling in both reduce-tenure and reduce-EMI modes, and a borrowing-capacity estimate. Arithmetic runs in integer paise so the schedule always closes at zero. Use the EMI Calculator instead for lender comparison and eligibility.
+
+- URL: https://tooladda.online/calculators/loan-calculator.html
+- Page title: Loan Calculator — Calculate EMI, Interest & Total Loan Cost | ToolAdda
+- Category: FinanceApplication
+- Price: free (0 INR)
+- Runs on: Any modern web browser
+- Meta description: Free loan calculator. Work out your monthly EMI, total interest and full repayment cost, with an amortization schedule and prepayment savings. No sign-up.
+
+#### Features
+
+- Monthly EMI on a reducing-balance loan
+- Total interest and total repayment cost
+- Tenure in years or months, with fractional years converted
+- Zero-interest loans handled without dividing by zero
+- Yearly summary and full monthly amortization schedule
+- Outstanding balance and principal-versus-interest charts with text equivalents
+- Extra monthly payment and one-time prepayment modelling
+- Reduce-tenure and reduce-EMI prepayment modes
+- Interest saved and tenure reduced against a no-prepayment baseline
+- Borrowing capacity estimate from income and an EMI-to-income ratio
+- Processing fee included in the total cost of borrowing
+- Indian number formatting with lakh and crore grouping
+- Copy, share, print and CSV export of the schedule
+- Runs entirely client side with no sign-up
+
+#### How to calculate a loan EMI
+
+1. **Enter the loan amount** — Type the amount you want to borrow, or drag the slider. Indian grouping is applied automatically.
+2. **Enter the interest rate** — Enter the annual interest rate your lender has quoted. Decimal rates such as 8.75% are supported.
+3. **Choose the tenure** — Set the repayment period in years or months. Switching the unit converts the number rather than changing the loan.
+4. **Read the EMI and total cost** — The monthly instalment, total interest and total repayment appear immediately, along with the share of every rupee that goes to interest.
+5. **Model a prepayment** — Add an extra monthly amount or a one-time prepayment to see the interest saved and how much sooner the loan would close.
+
+#### Frequently asked questions (24)
+
+**What is a loan calculator?**
+A loan calculator works out what a loan costs. Given an amount, an interest rate and a repayment period it computes the monthly instalment, the total interest over the full term and the total amount repaid, and breaks the repayment down month by month.
+
+**What is EMI?**
+EMI stands for Equated Monthly Instalment — a fixed monthly payment that covers both interest and principal. The amount stays the same each month, but its composition shifts: early instalments are mostly interest, later ones mostly principal.
+
+**How is EMI calculated?**
+EMI = P × r × (1+r)ⁿ ÷ ((1+r)ⁿ − 1), where P is the loan amount, r is the monthly interest rate (annual rate divided by 12 and by 100) and n is the number of monthly instalments. The formula produces the fixed payment that repays the loan exactly over n months.
+
+**What is the loan EMI formula?**
+For a reducing-balance loan the formula is EMI = P × r × (1+r)ⁿ ÷ ((1+r)ⁿ − 1). At a zero interest rate this degenerates, and the instalment is simply the loan amount divided by the number of months.
+
+**How does the interest rate affect EMI?**
+A higher rate raises both the instalment and the total interest, and the effect compounds over longer tenures. On ₹10,00,000 over five years, moving from 8% to 12% raises the EMI from about ₹20,276 to about ₹22,244 and the total interest from roughly ₹2,16,584 to ₹3,34,667.
+
+**How does tenure affect EMI?**
+A longer tenure lowers the monthly instalment but raises the total interest, because the balance stays outstanding for longer. On ₹10,00,000 at 8.5%, five years costs about ₹2,30,992 in interest while fifteen years costs about ₹7,72,530 — more than three times as much for a smaller monthly payment.
+
+**How can I reduce the total interest on a loan?**
+Shorten the tenure, negotiate a lower rate, borrow less, or make prepayments. Prepayments made early in the term save the most, because interest each month is charged on the outstanding balance and reducing it early removes interest from every remaining month.
+
+**What is an amortization schedule?**
+A month-by-month table showing how each instalment splits between interest and principal and what balance remains afterwards. It is the clearest way to see that a fixed EMI does very different work at the start of a loan than at the end.
+
+**What is principal?**
+The principal is the amount actually borrowed, before any interest. Each instalment repays a slice of it; the outstanding principal is what remaining interest is charged on.
+
+**What is total interest?**
+The sum of the interest portions of every instalment over the life of the loan — the price of borrowing. Total payment is the principal plus this figure.
+
+**Can I calculate a personal loan EMI?**
+Yes. Personal loans are ordinary reducing-balance loans, so the same calculation applies. Enter the amount, the rate quoted to you and the tenure. Personal loans usually carry shorter tenures and higher rates than secured loans.
+
+**Can I calculate a home loan EMI?**
+Yes, and the prepayment section is particularly useful for one, since interest dominates the early years of a twenty-year loan. For housing-specific inputs, ToolAdda also has a dedicated home loan calculator .
+
+**Can I calculate a car loan EMI?**
+Yes. Enter the amount financed after your down payment rather than the vehicle's full price, since you only pay interest on what you actually borrow. There is also a dedicated car loan calculator that handles down payment and on-road cost.
+
+**Can I calculate an education loan EMI?**
+You can calculate the repayment phase. Education loans often include a moratorium during study, and interest behaviour during that period depends entirely on the lender's terms, so this calculator does not model it — enter the balance at the point repayment begins.
+
+**Can I calculate loan prepayment savings?**
+Yes. Add an extra monthly amount or a one-time prepayment and the calculator runs the loan twice — once without and once with the prepayment — reporting the interest saved and how many months earlier the loan closes.
+
+**What is the difference between reducing tenure and reducing EMI?**
+After a prepayment a lender can either keep your instalment the same and end the loan sooner, or keep the end date and lower the instalment. Reducing the tenure saves considerably more interest; reducing the EMI improves monthly cash flow. The calculator models both.
+
+**What happens if the interest rate is 0%?**
+The standard EMI formula divides by zero at a zero rate, so this calculator handles that case separately: the instalment becomes the loan amount divided by the number of months, and the total interest is zero. ₹1,00,000 over 60 months at 0% is ₹1,666.67 a month, shown as ₹1,667 with the difference absorbed in the final instalment.
+
+**Can I use a custom interest rate?**
+Yes. Any rate from 0% to 100% is accepted, including decimals such as 8.75% or 10.49%. The rate you enter is used exactly as typed and is never rounded.
+
+**Why does my last instalment differ slightly?**
+Interest is rounded to whole paise every month, so tiny rounding differences accumulate across the term. Lenders absorb these in the final instalment, and so does this calculator — which is why the schedule always closes at exactly zero.
+
+**Does this calculator guarantee loan approval?**
+No. It performs arithmetic on the numbers you enter. Lenders assess income stability, credit history, existing obligations and their own policies, none of which a calculator can evaluate.
+
+**Does this calculator include lender fees?**
+Only the processing fee you enter, which is added to the total cost of borrowing but not amortized, since such fees are usually charged upfront. Insurance, documentation charges, prepayment penalties and taxes are not modelled — check the lender's schedule of charges.
+
+**Is my financial data uploaded anywhere?**
+No. Every calculation runs in your browser and no request is made. The amounts you enter are not stored — only your view preferences, such as whether the schedule shows years or months, are remembered.
+
+**Can I export the amortization schedule?**
+Yes. The CSV export writes every instalment with raw unformatted numbers, so it opens cleanly in Excel, Google Sheets or LibreOffice without currency symbols or digit grouping breaking the columns.
+
+**Is this loan calculator free?**
+Yes. No sign-up, no limits and no paid tier.
+
+#### Also covered on this page
+
+The EMI formula · How rate and tenure change the cost · Where a Home-Loan EMI Goes, Year by Year · The complete guide to loan calculations
+
+### Home Loan Calculator
+
+A full housing-loan planner, not just an EMI box. Takes property price, down payment, rate and tenure up to 40 years, and returns EMI, total interest, total repayment and the **complete month-by-month amortisation schedule** grouped by year (expand a year to see each month's interest/principal split and closing balance), plus a CSV export of the whole schedule. It models **part-payments properly** — a recurring monthly extra, a one-off lump sum in any month, and a step-up EMI that rises a set percentage each year — then reports the interest and tenure actually saved against the plain loan, with a choice of **reducing the tenure or reducing the EMI** (and states plainly that reducing tenure saves more). It adds the costs a loan does not cover — **stamp duty, registration, processing fee** — to show the real upfront cash, and checks loan-to-value against the usual lender caps (about 90% under ₹30L, 80% under ₹75L, 75% above). It estimates **Section 24(b), 80C and 80EEA relief** under the old regime, correctly returns **zero under the new regime** for a self-occupied property and says why, and treats a let-out property's uncapped interest separately. An **FOIR-based eligibility** estimate compares what a lender would advance against what is being borrowed and quantifies any shortfall. Two honesty notes it makes itself: the tax and eligibility figures are indicative, and the sanction letter is the final word on the EMI. Everything computes in the browser; income and property details are never uploaded.
+
+- URL: https://tooladda.online/calculators/home-loan-calculator.html
+- Page title: Home Loan EMI Calculator with Prepayment & Tax | ToolAdda
+- Category: FinanceApplication
+- Price: free (0 INR)
+- Runs on: Web
+- Meta description: Free home loan EMI calculator with full amortisation schedule, part-payment savings, step-up EMI, stamp duty costs, Section 24 and 80C tax relief and eligibility.
+
+#### Features
+
+- EMI, total interest and total repayment
+- Full month-by-month amortisation schedule, grouped by year
+- Part-payment modelling with one-off and recurring extra payments
+- Choice of reducing the tenure or reducing the EMI
+- Step-up EMI that rises each year with your income
+- Interest and tenure saved, compared against the plain loan
+- Stamp duty, registration and processing fees the loan does not cover
+- Upfront cash and loan-to-value check against lender caps
+- Section 24(b), 80C and 80EEA relief under the old regime
+- Honest handling of the new regime, which allows none of it
+- FOIR-based eligibility estimate against your income
+- Outstanding balance chart comparing both plans
+- CSV export of the full schedule
+- Runs entirely in your browser with no sign-up
+
+#### How to calculate your home loan EMI
+
+1. **Enter the property price** — Put in the agreed price and the down payment you plan to make. The loan amount is the difference.
+2. **Set the rate and tenure** — Enter the interest rate your lender quoted and how many years you want to repay over.
+3. **Add the costs the loan does not cover** — Stamp duty, registration and the processing fee are paid from your own pocket, so add them to see the real upfront cash.
+4. **Model a part-payment** — Add a monthly extra or a one-off lump sum and choose whether to shorten the tenure or lower the EMI.
+5. **Check the schedule** — Open any year in the amortisation table to see how each month splits between interest and principal.
+6. **Check eligibility and tax** — Enter your income to see whether the loan fits a lender's FOIR, and your tax regime to estimate the relief you can claim.
+
+#### Frequently asked questions (19)
+
+**How is home loan EMI calculated?**
+EMI = P x r x (1+r)^n / ((1+r)^n - 1), where P is the loan amount, r is the monthly interest rate (the annual rate divided by 12 and by 100) and n is the number of months. A ₹50,00,000 loan at 8.5% over 20 years works out to an EMI of about ₹43,391.
+
+**Why is my early EMI almost entirely interest?**
+Interest is charged on the balance outstanding, which is at its largest at the start. On a 20-year loan at 8.5%, roughly 82% of the first EMI is interest and only 18% reduces the principal. That flips gradually — by the final year almost the whole instalment is principal.
+
+**How much interest will I pay in total?**
+Usually more than people expect. A ₹50,00,000 loan at 8.5% over 20 years costs about ₹54,00,000 in interest — you repay more than double what you borrowed. The calculator states this as a percentage of the loan so it is not hidden in a large number.
+
+**Does prepaying a home loan actually save money?**
+Yes, and usually far more than people expect, because every rupee of part-payment removes all the future interest that rupee would have attracted. Paying an extra ₹5,000 a month on a ₹50,00,000 loan at 8.5% typically saves several years and well over ₹10,00,000 in interest.
+
+**Should I reduce the tenure or reduce the EMI when I prepay?**
+Reducing the tenure saves considerably more interest, because you stop paying interest sooner. Reducing the EMI eases monthly cash flow but keeps the loan running to its original end date. The calculator shows both so you can see the difference in rupees.
+
+**When is the best time to prepay a home loan?**
+As early as you can. A lump sum in year one removes far more future interest than the same amount in year ten, because the balance it reduces would otherwise have accrued interest for the whole remaining tenure.
+
+**Is there a penalty for prepaying a home loan?**
+For floating-rate home loans to individual borrowers, the RBI does not permit banks to charge a foreclosure or prepayment penalty. Fixed-rate loans can still carry one, so check your sanction letter before making a large payment.
+
+**What is a step-up EMI?**
+An instalment that rises by a set percentage each year, on the assumption your income will too. A 5% annual step-up on a 20-year loan typically clears it several years early. It is only sensible if your income genuinely rises — the higher instalment is a commitment.
+
+**How much down payment do I need for a home loan?**
+Lenders fund a percentage of the property value, so the rest is yours to find. As a rough guide the cap is about 90% for properties up to ₹30 lakh, 80% up to ₹75 lakh and 75% above that — meaning a 10% to 25% down payment, plus stamp duty and registration on top.
+
+**Does the loan cover stamp duty and registration?**
+No, and this catches many first-time buyers. Stamp duty and registration are calculated on the property value and must be paid in cash from your own funds. In many states that is another 5% to 7% of the price on top of the down payment.
+
+**What is FOIR and how does it affect eligibility?**
+FOIR — fixed obligation to income ratio — is the share of your monthly income a lender will let go to all EMIs combined, commonly 40% to 55%. If you earn ₹1,50,000 a month at a 50% FOIR with no other loans, about ₹75,000 a month is available for EMI, which supports roughly ₹86 lakh over 20 years at 8.5%.
+
+**How much home loan can I get on my salary?**
+Enter your monthly income and any existing EMIs and the calculator estimates it from the FOIR. Treat it as indicative — lenders also weigh your credit score, employment stability, age at loan maturity and their own valuation of the property.
+
+**What tax benefits does a home loan give?**
+Under the old regime, Section 24(b) allows up to ₹2,00,000 a year of interest on a self-occupied home, and Section 80C up to ₹1,50,000 of principal — though 80C is shared with EPF, insurance and other items. Section 80EEA can add more interest relief for eligible first-time buyers.
+
+**Can I claim home loan tax benefits under the new regime?**
+Generally not for a self-occupied property — the new regime removes the Section 24(b) and 80C deductions, which is why the calculator shows zero saving when you select it. A let-out property is treated differently, so check your specific case with an advisor.
+
+**Is a shorter or longer tenure better?**
+A longer tenure lowers the monthly instalment but costs substantially more overall. The same ₹50,00,000 at 8.5% costs about ₹22,00,000 in interest over 10 years and about ₹54,00,000 over 20. Pick the shortest tenure whose EMI you can comfortably sustain.
+
+**What happens to my EMI if interest rates change?**
+On a floating-rate loan, lenders usually keep the EMI the same and extend the tenure instead. That hides the impact — the loan quietly gets longer. Re-run this calculator at the new rate to see the real effect, and ask your lender to raise the EMI rather than the tenure if you can afford it.
+
+**Are my figures saved or sent anywhere?**
+No. Everything is calculated in your browser and your inputs are stored only in your own browser so the page remembers them next time. Nothing is uploaded, which matters given these are your income and property details.
+
+**Can I download the amortisation schedule?**
+Yes. The CSV export gives you every month with the instalment, the interest and principal split, any part-payment and the closing balance, ready to open in Excel or Google Sheets.
+
+**Will my actual EMI match this exactly?**
+It will normally be very close, but lenders differ in how they treat the first broken period, the exact day interest is applied and whether insurance is bundled into the loan. Treat this as an accurate planning figure and your sanction letter as the final word.
+
+#### Also covered on this page
+
+Your loan · What it costs · What paying extra saves you · Cash you need upfront · Would a lender approve this? · Tax relief in year one · Amortisation schedule · How Home Loan EMI Is Calculated · What Tenure Really Costs · Why Prepaying Early Beats Prepaying Later · What a Step-Up EMI Does to a ₹40 Lakh Loan · The Costs the Loan Does Not Cover
+
+### Car Loan Calculator
+
+The same engine as the Home Loan Calculator with vehicle-appropriate defaults and a maximum tenure of 7 years: vehicle price, down payment, rate, tenure and a flat processing fee, giving EMI, total interest, total payment, a pie split and a month-wise table. Note precisely: despite the vehicle framing there are **no separate on-road cost, registration, insurance or GST inputs** — fold those into the price, or use the EMI Calculator, which has dedicated fields for them.
+
+- URL: https://tooladda.online/calculators/car-loan-calculator.html
+- Page title: Car Loan EMI Calculator Online | ToolAdda
+- Category: FinanceApplication
+- Price: free (0 INR)
+- Runs on: Web
+- Meta description: Free Car Loan EMI Calculator — estimate monthly EMI, total interest, and full amortization schedule for car loans in India. Plan your vehicle purchase with live results in your browser.
+
+#### Features
+
+- Car price and down payment planning
+- Live EMI and interest calculation
+- Month-wise amortization schedule
+- Principal vs interest chart
+- Processing fee support
+- Copy results to clipboard
+- Works entirely in your browser
+
+#### How to calculate car loan EMI online
+
+1. **Enter car price and down payment** — Type the on-road or ex-showroom price of the vehicle and the amount you plan to pay upfront as down payment.
+2. **Set interest rate and tenure** — Enter the car loan interest rate offered by your bank or NBFC and choose the loan tenure in years (typically 1 to 7 years).
+3. **View live EMI results** — Monthly EMI, loan amount, total interest, and total payment update instantly as you change inputs.
+4. **Review amortization schedule** — Scroll the month-wise breakdown table to see how each EMI splits between principal and interest over the loan term.
+
+#### Frequently asked questions (6)
+
+**How is car loan EMI calculated in India?**
+Car loan EMI uses the reducing balance method: EMI = [P × R × (1+R)^N] / [(1+R)^N − 1], where P is the loan amount (car price minus down payment), R is the monthly interest rate, and N is the number of months.
+
+**What is the typical down payment for a car loan in India?**
+Most banks and NBFCs require a minimum down payment of 10-20% of the car's on-road price. A higher down payment reduces your loan amount and monthly EMI.
+
+**What is the interest rate for car loans in India?**
+Car loan interest rates typically range from 7% to 15% per annum depending on the lender, your credit score, vehicle type (new vs used), and loan tenure.
+
+**What is the maximum tenure for a car loan in India?**
+Most lenders offer car loan tenures between 1 and 7 years. New car loans can go up to 7 years, while used car loans are usually capped at 5 years.
+
+**Can I prepay my car loan early?**
+Yes. Most banks allow partial or full prepayment. Some lenders may charge a prepayment penalty (typically 2-5%) if paid within the first 12 months. Prepaying reduces total interest.
+
+**Is this car loan calculator free and private?**
+Yes. ToolAdda's Car Loan EMI Calculator is completely free and runs locally in your browser without sending your financial data to any server.
+
+#### Also covered on this page
+
+Calculate your car loan EMI · About car loans · Car Loan EMI Calculator — plan your vehicle purchase · Down Payment or Tenure: What Moves the Cost
+
+### SIP Calculator
+
+Mutual-fund SIP projections using the annuity-due (start-of-period) convention, with four modes — regular SIP, step-up SIP compared against a flat instalment, target corpus solved backwards, and SIP versus the same total as a lump sum. Adds inflation-adjusted value and a real return via the Fisher relation, plus a year-by-year table and growth chart. Projections are illustrative estimates at an assumed constant return and exclude expense ratios, exit loads and taxes; no XIRR is shown because none is computed.
+
+- URL: https://tooladda.online/calculators/sip-calculator.html
+- Page title: SIP Calculator — Estimate SIP Returns, Step-Up & Target Corpus | ToolAdda
+- Category: FinanceApplication
+- Price: free (0 INR)
+- Runs on: Any modern web browser
+- Meta description: Free SIP calculator. Estimate your SIP returns and future value, model an annual step-up, work out the SIP needed for a target corpus, and see the year-by-year projection.
+
+#### Features
+
+- Estimated future value of a monthly or yearly SIP
+- Total invested, estimated returns and wealth gain
+- Step-up SIP compared against a flat instalment
+- Target corpus mode that solves for the required instalment
+- Inflation-adjusted value in today's money
+- Estimated real return using the Fisher relation
+- SIP versus the same total deployed as a lump sum
+- Year-by-year projection table and growth chart
+- Sliders and presets for amount, period and assumed return
+- Copy, share and print the projection
+- Optional local calculation history
+- Runs entirely client side with no sign-up
+
+#### How to use a SIP calculator
+
+1. **Enter your instalment** — Type the amount you plan to invest each month, or drag the slider. Switch to yearly if you invest once a year instead.
+2. **Choose the period** — Set how long you plan to keep investing. The number of instalments is shown alongside so the assumption is explicit.
+3. **Enter an assumed annual return** — This is an assumption you choose, not a rate the calculator knows. Market-linked returns vary and are not guaranteed.
+4. **Read the projection** — The estimated future value, the amount invested and the estimated returns appear immediately, with a year-by-year table and growth chart.
+5. **Explore the other modes** — Model an annual step-up, solve for the instalment a goal needs, or compare the same total deployed as a lump sum.
+
+#### Frequently asked questions (31)
+
+**What is a SIP?**
+A systematic investment plan is an arrangement to invest a fixed amount into a mutual fund scheme at regular intervals, usually monthly. Each instalment buys units at that day's net asset value, so the number of units bought varies with the price while the amount stays constant.
+
+**What is a SIP calculator?**
+A SIP calculator projects what a series of regular investments might grow to under an assumed constant rate of return. It is a planning aid for comparing scenarios, not a prediction — the return is a figure you supply, not one the calculator knows.
+
+**How does a SIP calculator work?**
+It treats the SIP as an annuity: each instalment is invested and left to compound for the remaining periods. The first instalment compounds for the whole term, the last for almost none. Adding those up gives the projected corpus.
+
+**What is the SIP formula?**
+FV = P × [((1 + r)ⁿ − 1) ÷ r] × (1 + r), where P is the instalment, r is the periodic rate (annual rate ÷ 12 ÷ 100 for a monthly SIP) and n is the number of instalments. The final × (1 + r) reflects investing at the start of each period, which is how a SIP mandate actually debits.
+
+**How are SIP returns calculated?**
+Estimated returns are simply the projected value minus the total you invested. On ₹10,000 a month for 10 years you invest ₹12,00,000; at an assumed 12% the projection is about ₹23,23,391, so the estimated returns are about ₹11,23,391.
+
+**How much can a ₹5,000 SIP grow to?**
+At an assumed 12% a year, ₹5,000 a month for 10 years invests ₹6,00,000 and projects to about ₹11,61,695. Over 20 years the same instalment invests ₹12,00,000 and projects to about ₹49,95,740. These are illustrations at one assumed rate, not forecasts.
+
+**How much can a ₹10,000 SIP grow to?**
+At an assumed 12% a year, ₹10,000 a month projects to roughly ₹23,23,391 over 10 years, ₹50,45,760 over 15 years, ₹99,91,479 over 20 years and ₹1,89,76,351 over 25 years. Change the assumed return and every one of those figures changes.
+
+**How much can a ₹20,000 SIP grow to?**
+At an assumed 12% a year over 15 years, ₹20,000 a month invests ₹36,00,000 and projects to about ₹1,00,91,520. Doubling the instalment doubles the projection, because the calculation is linear in the amount.
+
+**How much SIP is needed for ₹1 crore?**
+At an assumed 12% a year it is roughly ₹43,041 a month over 10 years, ₹19,819 over 15 years, or ₹10,009 over 20 years. The longer the horizon, the smaller the instalment — which is the clearest illustration of what time does in a compounding calculation.
+
+**What is a step-up SIP?**
+A step-up SIP increases the instalment by a set percentage each year, typically to track rising income. Starting at ₹10,000 with a 10% annual step-up means ₹11,000 in year two, ₹12,100 in year three, and so on.
+
+**How does a step-up SIP work in this calculator?**
+The increase is applied at the start of each new year, not to the first instalment, and the calculator shows the same starting amount without any step-up alongside it. Part of the larger projection comes from the higher return base and part simply from having invested more of your own money — both figures are shown separately.
+
+**Are SIP returns guaranteed?**
+No. Mutual fund returns are market-linked and can be negative over any period, including long ones. Every figure this calculator produces is an arithmetic projection from an assumption you chose, not a forecast and not a promise.
+
+**What return should I enter in a SIP calculator?**
+Whatever you consider a reasonable assumption for the kind of fund you are considering — and it is worth running the calculation more than once at different rates. A projection at a single rate tells you far less than seeing how much the answer moves between, say, 8% and 14%.
+
+**What is the difference between SIP and lump sum?**
+A lump sum invests everything at once; a SIP spreads the same money across many instalments. Under a single constant assumed return the lump sum always projects higher, because the money is invested for longer — but that is arithmetic, not evidence. Real markets do not deliver a constant return, and a SIP spreads entry across many different prices.
+
+**Can I calculate a SIP for 10, 20 or 25 years?**
+Yes, for any period up to 60 years. The year-by-year table and growth chart update with it, so you can see where the projected returns overtake the amount contributed.
+
+**How does compounding affect a SIP?**
+Each instalment compounds for a different length of time, so early instalments do far more work than late ones. That is why the projected curve bends upward rather than rising in a straight line, and why extending the period tends to change the outcome more than raising the instalment.
+
+**What happens if I increase my SIP every year?**
+The projected corpus rises for two separate reasons: you invest more in total, and the extra money still has years to compound. The calculator's step-up mode separates those two effects so you can see how much of the difference is simply additional contribution.
+
+**What is inflation-adjusted SIP value?**
+The projected corpus expressed in today's purchasing power, obtained by dividing by (1 + inflation)^years. A projected ₹1 crore in 20 years at 6% inflation is worth roughly ₹31 lakh in today's money — the same corpus, a very different amount of buying.
+
+**What is real return?**
+The return above inflation. It is not the nominal return minus inflation: the correct relation is ((1 + nominal) ÷ (1 + inflation)) − 1. At 12% nominal and 6% inflation the real return is about 5.66%, not 6%.
+
+**Can a SIP calculator predict actual returns?**
+No. It applies one constant rate that you supplied to a fixed schedule of contributions. Real returns vary month to month, and the sequence in which they arrive changes the outcome even when the average is identical.
+
+**Does this SIP calculator include taxes?**
+No. Capital gains tax on redemption is not modelled, and the treatment depends on the fund type, the holding period and rules that change. The projection is a pre-tax figure.
+
+**Does this SIP calculator include mutual fund expenses?**
+No. Expense ratios, exit loads, stamp duty and transaction costs are not deducted. If you want a rough allowance for the expense ratio, enter an assumed return that is already net of it.
+
+**Is this SIP calculator accurate?**
+The arithmetic is exact and tested against the closed-form annuity formula. Whether the projection resembles your outcome depends entirely on whether the assumed return resembles reality, which no calculator can know.
+
+**What is CAGR?**
+Compound annual growth rate — the constant annual rate that would take a single investment from its starting value to its ending value. It suits a lump sum with one entry and one exit, and does not describe a SIP properly because a SIP has many cash flows on many dates.
+
+**What is XIRR?**
+The annualised return of a series of cash flows on irregular dates, which is the right measure for an actual SIP once you have real transaction data. This calculator does not compute XIRR — it projects forward from an assumption rather than measuring a realised history, so no XIRR figure is shown.
+
+**Is SIP better than lump sum?**
+Neither is universally better, and this calculator does not take a position. A lump sum invests for longer; a SIP spreads entry across many prices and matches how most people actually receive income. The right choice depends on whether you have the money now and how you would react to a fall shortly after investing.
+
+**What is the minimum SIP amount?**
+That is set by each fund house, and many schemes accept small monthly amounts. The calculator itself imposes no minimum beyond requiring a positive number.
+
+**Can I calculate a yearly SIP instead of a monthly one?**
+Yes. Switch the frequency to yearly and the calculator uses one instalment a year compounding annually — not a monthly figure multiplied by twelve, which would give a different and wrong answer.
+
+**Why does the projection assume investing at the start of each month?**
+Because that is how a SIP mandate works: the amount is debited on the SIP date and invested from that day. This is the annuity-due convention, and it produces a slightly higher figure than assuming end-of-period investment. The convention is stated so results can be compared with other calculators.
+
+**Are my figures stored or uploaded?**
+No. Every calculation runs in your browser and no request is made. Amounts are not saved unless you switch on the optional history, which writes to your own browser and can be cleared at any time.
+
+**Is this SIP calculator free?**
+Yes. No sign-up, no limits and no paid tier.
+
+#### Also covered on this page
+
+The SIP formula · Worked examples · The cost of waiting a year · The complete guide to SIP calculations
+
+### FD Calculator
+
+The deepest of the three deposit calculators. Compounding as simple, annual, half-yearly, quarterly (the default and Indian norm), monthly or daily; cumulative or non-cumulative payout; tenure in days, months or years; a senior-citizen toggle with an editable rate bonus; a tax-slab selector; and an inflation rate. Outputs maturity value, interest, effective yield, annualised return, post-tax value, inflation-adjusted real return, a **TDS estimate that flags the ₹40,000 threshold (₹50,000 for seniors)**, a year-wise growth table whose columns change for non-cumulative mode, charts, and a premature-withdrawal simulator with a penalty rate. Eight presets covering bank, short, medium, long, tax-saving, senior, post-office and monthly-income deposits. Copy, print and share; no CSV. The page states its return figures are illustrative and tells users to check current bank rates.
+
+- URL: https://tooladda.online/calculators/fd-calculator.html
+- Page title: FD Calculator – Fixed Deposit Maturity & Interest Calculator | ToolAdda
+- Category: FinanceApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Calculate FD maturity amount, interest earned, effective yield, and post-tax returns instantly. Senior citizen rates, TDS, and inflation-adjusted real returns — free, private, in your browser.
+
+#### Features
+
+- Maturity amount, interest earned, and effective annual yield calculation
+- Simple interest and annual/half-yearly/quarterly/monthly/daily compounding
+- Senior citizen bonus rate, tax slab, and TDS estimate
+- Inflation-adjusted real return calculation
+- Cumulative and non-cumulative (periodic payout) FD modes
+- Premature withdrawal penalty simulator
+- Interactive doughnut, year-wise, and growth timeline charts
+- Year-wise growth table, copy/share/print result
+- Runs entirely in your browser — no data uploaded, no account needed
+
+#### How to calculate fixed deposit maturity and interest
+
+Estimate your FD maturity amount and total interest using ToolAdda's free FD calculator.
+
+1. **Enter your deposit amount** — Type the amount or drag the slider to set your fixed deposit principal.
+2. **Set the interest rate and tenure** — Enter the annual interest rate offered by your bank, and the deposit tenure in days, months, or years.
+3. **Choose compounding and payout** — Pick simple interest or a compounding frequency (annual, half-yearly, quarterly, monthly, daily), and choose cumulative or non-cumulative payout.
+4. **Add advanced options** — Optionally enable senior citizen rate, set your tax slab, inflation rate, and investment date for a fuller picture.
+5. **Review your dashboard** — See maturity amount, interest earned, effective annual yield, post-tax return, real return after inflation, and maturity date update instantly.
+6. **Explore charts and export** — Switch between the principal-vs-interest, year-wise, and growth timeline charts, check the year-wise table, then copy, share, or print your result.
+
+#### Frequently asked questions (29)
+
+**How does this FD calculator work?**
+It applies the standard compound interest formula M = P × (1 + r/n)^(n×t) for compounding FDs, or simple interest M = P × (1 + r×t) for Simple Interest, where t is the exact tenure in years computed from the days between your investment date and maturity date.
+
+**What is the FD interest formula?**
+Compound: Maturity = Principal × (1 + Rate/n)^(n × Years). Simple: Maturity = Principal × (1 + Rate × Years). Total interest earned is Maturity minus Principal either way.
+
+**What's the difference between simple and compound interest in an FD?**
+Simple interest is calculated only on the original principal for the whole tenure and grows linearly. Compound interest is calculated on principal plus previously earned interest, so it grows faster the longer the tenure and the more frequently it compounds.
+
+**Which compounding frequency gives the highest FD returns?**
+For the same nominal annual rate, more frequent compounding always yields a slightly higher maturity amount — daily compounds more than monthly, which compounds more than quarterly, and so on. In practice the difference is small (often under 0.3% of the total maturity value for typical rates), so the compounding frequency your bank actually offers usually matters far less than the nominal rate itself.
+
+**How is the senior citizen FD rate calculated?**
+Most Indian banks add a fixed bonus — commonly 0.50 percentage points, sometimes up to 0.75-1% at small finance banks — on top of the regular FD rate for depositors aged 60 and above. This calculator lets you toggle Senior Citizen and edit the bonus amount, since it varies by bank; check your bank's current rate card for the exact figure.
+
+**Is fixed deposit interest taxable?**
+Yes. FD interest is fully taxable as 'Income from Other Sources' at your applicable income tax slab rate, added to your total income for the year — it does not get any special lower tax treatment like some capital gains do, regardless of the FD's tenure.
+
+**What is TDS on FD and when does it apply?**
+Banks deduct 10% TDS if your total FD interest from that bank in a financial year exceeds ₹40,000 (₹50,000 for senior citizens), with PAN on file - 20% without PAN. TDS is a provisional withholding, reconciled at tax filing.
+
+**How can I avoid or reduce TDS on my FD?**
+If your total taxable income is below the exemption limit, you can submit Form 15G (under 60) or Form 15H (60 and above) to your bank declaring that your income doesn't attract tax, and the bank will not deduct TDS. This doesn't make the interest tax-free — it only removes the upfront deduction; you'd still need to report the income if it becomes taxable.
+
+**What is the penalty for premature FD withdrawal?**
+Most banks charge a penalty of 0.5% to 1% off the interest rate that applied for the period you actually held the deposit, not the rate you originally locked in. Some banks also apply the lower of the booked rate or the rate applicable for the actual tenure. Tax-saving FDs (5-year lock-in) generally cannot be withdrawn early at all.
+
+**Can I withdraw a fixed deposit before maturity?**
+Most regular FDs allow premature withdrawal with a penalty. Tax-saving FDs have a mandatory 5-year lock-in with no early exit except in specific cases like the depositor's death.
+
+**What is the difference between cumulative and non-cumulative FDs?**
+A cumulative FD reinvests the interest each period so it compounds, and you receive principal plus all accumulated interest as a single lump sum at maturity — best for long-term wealth building. A non-cumulative FD pays out interest at regular intervals (monthly, quarterly, etc.) as income, while your original principal remains untouched until maturity — better for those who need regular income, such as retirees.
+
+**What is a tax-saving fixed deposit?**
+A tax-saving FD is a special 5-year (minimum) fixed deposit where the principal amount invested (up to ₹1.5 lakh per year) qualifies for a deduction under Section 80C of the Income Tax Act. It comes with a mandatory 5-year lock-in and no premature withdrawal or loan-against-FD facility.
+
+**Is the interest on a tax-saving FD also tax-free?**
+No - only the principal gets the 80C deduction. The interest earned is fully taxable every year, same as a regular FD.
+
+**FD vs RD — which is better?**
+An FD is a one-time lump-sum deposit, ideal when you already have a sum of money to park. An RD (Recurring Deposit) is built for disciplined monthly saving from income, letting you build a corpus over time rather than needing it upfront. Interest rates are usually similar; the real choice depends on whether you have a lump sum now or want to save in installments — use ToolAdda's RD Calculator to compare.
+
+**FD vs SIP — which is better?**
+FDs offer fixed, predictable, low-risk returns with capital safety (within DICGC insurance limits). SIPs invest in market-linked mutual funds, which historically outperform FDs over long horizons (7+ years) but carry market risk and no guaranteed return. Conservative, short-term, or capital-protection goals favor FDs; long-term wealth creation with risk tolerance favors SIPs — many investors use both for balance.
+
+**FD vs mutual funds - which should I choose?**
+Mutual funds can potentially outperform FDs but carry market risk and no capital guarantee, while FDs offer certainty at a lower expected return. The right choice depends on your goal's horizon and your risk tolerance.
+
+**FD vs bonds — what's the difference?**
+Bonds are debt instruments issued by governments or companies that typically pay periodic coupon interest and return the face value at maturity; some carry credit risk (issuer default) and market price fluctuation if sold before maturity. FDs are simpler, bank-issued, and insured up to ₹5 lakh by DICGC, making them generally lower-risk than most corporate bonds, though government bonds can be comparably safe.
+
+**FD vs savings account — why lock money in an FD?**
+Savings accounts typically pay 2.5-4% interest with full liquidity, while FDs pay meaningfully higher rates (often 6-8%) in exchange for locking your money for a fixed tenure. If you don't need instant access to the full amount, moving it to an FD earns substantially more over time.
+
+**How does inflation affect my FD returns?**
+Inflation erodes the purchasing power of your maturity amount. If your FD earns 7% and inflation runs at 6%, your real (inflation-adjusted) return is only about 1% — your money grew, but it buys barely more than before. This calculator's Real Return After Inflation figure shows what your maturity is actually worth in today's rupees.
+
+**What is FD laddering and should I use it?**
+FD laddering means splitting a lump sum across several FDs with staggered maturities (e.g., 1, 2, 3, and 4 years) instead of one large FD. As each matures, you get periodic liquidity and can reinvest at prevailing rates, reducing the risk of locking your entire corpus at a single rate for a single tenure while still earning FD-level safety.
+
+**Are bank fixed deposits insured?**
+Yes, in India, deposits (including FDs) in DICGC-insured banks are protected up to ₹5 lakh per depositor per bank (covering both principal and interest). Amounts above that are not guaranteed if the bank fails, which is why spreading large sums across multiple banks is a common risk-management practice.
+
+**What is a corporate FD and is it riskier than a bank FD?**
+Corporate (or company) FDs are fixed deposits offered by NBFCs and companies rather than banks, usually at higher interest rates to compensate for higher risk. They are not covered by DICGC insurance, and their safety depends entirely on the issuing company's credit rating — always check the credit rating (CRISIL/ICRA/CARE) before investing in a corporate FD.
+
+**What is a Post Office Time Deposit and how does it compare to a bank FD?**
+A Post Office Time Deposit (POTD) is a government-backed fixed deposit scheme, functionally similar to a bank FD, with tenures of 1, 2, 3, or 5 years and interest compounded quarterly but paid out annually. It's fully government-backed (effectively sovereign risk, considered extremely safe) and the 5-year POTD also qualifies for Section 80C tax deduction.
+
+**Does this calculator use the exact day-count conventions banks use?**
+It uses a 365-day year and computes your exact tenure in days between the investment date and maturity date, which closely matches how most banks calculate FD interest. Some banks use slightly different day-count conventions (e.g., 366-day leap years, or actual/actual conventions) for specific products, so your bank's exact maturity value may differ by a small amount.
+
+**Can I calculate FD interest for a tenure in days, not just months or years?**
+Yes - the Tenure field supports Days, Months, or Years, so you can model short-term FDs like a 91-day deposit precisely.
+
+**Is this FD calculator accurate?**
+Yes, it uses the same compound and simple interest formulas banks use internally, applied to your exact deposit amount, rate, and day-accurate tenure. Results are estimates for planning purposes — your bank's official maturity certificate is always the authoritative figure, since exact day-count conventions and rounding can cause tiny variances.
+
+**Is my financial data stored or sent anywhere?**
+No. Every calculation happens locally in your browser using JavaScript. Your last inputs are optionally saved to your own browser's localStorage purely so the calculator remembers your numbers on your next visit — nothing is ever transmitted to ToolAdda's servers or any third party.
+
+**Does this calculator work on mobile and offline?**
+Yes - the interface is fully responsive with a sticky mobile action bar, and once loaded, calculations run locally without needing an internet connection.
+
+**Can I download, print, or share my FD calculation?**
+Yes. Use Copy Result to copy a text summary to your clipboard, Share to send it via your device's native share sheet (or copy as a fallback), or Print to generate a clean, print-formatted report you can save as a PDF using your browser's 'Save as PDF' print destination.
+
+#### Also covered on this page
+
+Calculate Your Fixed Deposit · Your Investment Dashboard · Year-wise Growth Table · Popular Types of Fixed Deposits · FD vs Other Investment Options · Everything You Need to Plan Your FD · How This FD Calculator Works · Benefits of Fixed Deposits · Investment Tips · What Breaking an FD Early Costs · The Complete Guide to Fixed Deposits · Ready to Plan Your Fixed Deposit?
+
+### RD Calculator
+
+Recurring-deposit maturity with compounding quarterly (default, matching Indian practice), monthly, half-yearly or annually, and tenure as years plus months. Two modes: standard, where deposit and tenure give the maturity value, and **target, which solves backwards for the monthly deposit needed to reach a chosen corpus**. Outputs the invested-versus-interest split, a growth chart, a timeline and a full monthly deposit schedule. Copy, print and share, with an opt-in local calculation history. Carries an explicit disclaimer that it is educational rather than financial advice and that figures are gross, before tax.
+
+- URL: https://tooladda.online/calculators/rd-calculator.html
+- Page title: RD Calculator — Recurring Deposit Maturity Amount | ToolAdda
+- Category: FinanceApplication
+- Price: free (0 INR)
+- Runs on: Any modern web browser
+- Meta description: Free RD calculator to estimate recurring deposit maturity amount, total deposits and interest. Enter your monthly deposit, tenure and rate.
+
+#### Features
+
+- Estimated RD maturity amount
+- Total deposits and estimated interest
+- Year-wise and month-wise breakdown
+- Target mode: required monthly deposit for a savings goal
+- Selectable compounding frequency
+- Runs entirely in the browser
+
+#### Frequently asked questions (26)
+
+**What is a recurring deposit (RD)?**
+A recurring deposit is a bank or post office savings product where you deposit a fixed amount every month for a fixed tenure at a fixed interest rate agreed at the time of opening. At the end of the tenure you receive your deposits plus the interest accumulated on them.
+
+**What is an RD calculator?**
+An RD calculator estimates what a recurring deposit will be worth at maturity. You enter the monthly deposit, the tenure and the annual interest rate, and it returns the total you will have deposited, the estimated interest and the estimated maturity amount.
+
+**How is RD interest calculated?**
+Each monthly instalment earns interest only for the time it actually stays in the account. The first instalment earns interest for the full tenure, the last for roughly one month. Indian banks normally compound this quarterly, so the total is the sum of every instalment grown for its own remaining period.
+
+**What is the RD maturity formula?**
+The commonly published form is M = R × [(1 + i)^n − 1] ÷ [1 − (1 + i)^(−1/3)], where R is the monthly instalment, i is the quarterly interest rate (annual rate ÷ 4 ÷ 100) and n is the number of quarters. This calculator uses an equivalent series that also works for tenures that are not whole quarters.
+
+**How much will a ₹5,000 monthly RD become in 5 years?**
+At an assumed 7% annual rate with quarterly compounding, ₹5,000 a month for 5 years means ₹3,00,000 deposited and an estimated maturity of about ₹3,59,664, of which roughly ₹59,664 is interest. Change the rate in the calculator to match your bank's actual offer.
+
+**How much will a ₹10,000 monthly RD become in 5 years?**
+At an assumed 7% annual rate with quarterly compounding, ₹10,000 a month for 5 years means ₹6,00,000 deposited and an estimated maturity of about ₹7,19,328. Because the formula is linear in the instalment, this is exactly double the ₹5,000 result.
+
+**How much will a ₹20,000 monthly RD become in 5 years?**
+At an assumed 7% annual rate with quarterly compounding, ₹20,000 a month for 5 years means ₹12,00,000 deposited and an estimated maturity of about ₹14,38,656.
+
+**Is RD interest compounded?**
+Yes. Interest already credited to a recurring deposit starts earning interest itself. Most Indian banks compound recurring deposit interest quarterly, which is why the maturity value is higher than simple interest on the same deposits.
+
+**How often is RD interest compounded?**
+Quarterly is the usual convention for recurring deposits at Indian banks. This calculator defaults to quarterly and lets you switch to monthly, half-yearly or annual compounding if your product uses a different basis.
+
+**What is the difference between an RD and an FD?**
+A recurring deposit takes a fixed amount every month over the tenure, so it suits saving out of monthly income. A fixed deposit takes one lump sum at the start, so the whole amount earns interest for the full period. For the same rate and tenure, a lump sum earns more interest than the same total paid in monthly instalments, because the money is invested for longer.
+
+**What is the difference between an RD and a SIP?**
+An RD is a deposit product where the interest rate is set by the bank when you open it. A SIP is a way of investing regularly in mutual funds, where returns are market-linked and not fixed. An RD gives a contractual rate; a SIP carries market risk and its outcome is not known in advance.
+
+**Is RD interest taxable?**
+Interest earned on a recurring deposit is generally treated as taxable income in India and is added to your total income for the year. The rate that applies depends on your own tax situation. This calculator shows gross figures before any tax; consult a qualified tax adviser for your circumstances.
+
+**Is there TDS on RD interest?**
+Banks may deduct tax at source on recurring deposit interest once it crosses the applicable threshold for the year. Thresholds, rates and exemption forms are set by tax rules that change from time to time, so check the current position with your bank or a tax adviser.
+
+**What happens if I miss an RD instalment?**
+The consequences depend on the bank and the product. Many banks charge a penalty for a missed or delayed instalment, and repeated defaults can lead to the account being closed early. A missed instalment also means less money in the account earning interest, so the maturity value falls. Check your own bank's terms.
+
+**Can I close an RD before maturity?**
+Most recurring deposits allow premature closure, but the interest paid is usually recalculated at a lower rate and a penalty may apply. The amount you receive can therefore be noticeably less than the maturity figure shown here. This calculator projects the full-tenure outcome only.
+
+**Does this calculator handle a 0% interest rate?**
+Yes. At 0% the maturity amount is simply the monthly deposit multiplied by the number of instalments, and the interest shown is zero. The calculation branches explicitly for this case rather than dividing by zero.
+
+**Can I calculate an RD for 10 years?**
+Yes. The tenure accepts anything from one month up to 30 years, entered as years plus months. Note that many banks cap recurring deposit tenures at 10 years, so check what your bank actually offers before planning around a longer term.
+
+**Can I work out the monthly deposit needed for a target amount?**
+Yes. Switch to Target mode, enter the amount you want at maturity along with the tenure and rate, and the calculator solves the same RD formula backwards for the required monthly deposit. It rounds up to the nearest rupee so the projection reaches the goal rather than falling just short.
+
+**Is the maturity amount guaranteed?**
+No. Every figure here is an estimate based on the rate you typed and a standard quarterly-compounding model. Your bank's contracted rate, its rounding rules, the exact deposit dates and any tax deducted will all move the real number. Treat the output as an illustration, not a promise.
+
+**Why does my bank's RD maturity differ from this calculator?**
+Banks vary in how they round intermediate interest, which day of the month they treat the instalment as received, and how they handle part periods and holidays. Those small differences accumulate over a long tenure. A gap of a few hundred rupees on a multi-year RD is normal; a large gap usually means the rate or tenure entered does not match the actual product.
+
+**Can I calculate a senior citizen RD?**
+Yes, by entering the rate that applies. Banks commonly offer senior citizens a higher rate on deposits, but the size of that difference varies by bank and by product, so this calculator does not assume one. Enter the actual rate your bank quotes.
+
+**Does the calculator use quarterly compounding?**
+By default, yes, because that is the usual convention for recurring deposits at Indian banks. The compounding frequency is shown next to every result and you can change it to monthly, half-yearly or annual if your product differs.
+
+**Are my figures sent anywhere?**
+No. The whole calculation runs in your browser. Nothing you type is uploaded, and the optional recent-calculations list is stored only in your own browser's local storage until you clear it.
+
+**Is this RD calculator free?**
+Yes. It is free, needs no sign-up, no email address and no app install, and there is no limit on how many calculations you can run.
+
+**Does the calculator show the amount after tax?**
+No. It shows gross maturity and gross interest only. Because the tax on recurring deposit interest depends on your total income and current tax rules, showing an after-tax figure would be misleading without knowing your circumstances.
+
+**What is the minimum tenure and deposit I can enter?**
+The calculator accepts a monthly deposit from ₹100 up to ₹1 crore and a tenure from one month up to 30 years. Real bank products usually have narrower limits, typically a minimum of six months and ₹100 to ₹500 a month, so check what your bank allows.
+
+#### Also covered on this page
+
+RD calculator formula · Common RD examples · Where an RD's interest comes from · Understanding recurring deposits
+
+### PPF Calculator
+
+Public Provident Fund projection with the statutory ₹1.5 lakh annual cap enforced, an editable interest rate defaulting to 7.1%, tenure from 15 years upward, and a beginning-or-end-of-year deposit timing switch. Outputs maturity value, total invested, total interest and a year-wise opening/deposit/interest/closing table. State its limits plainly when recommending it: it compounds annually on the yearly deposit and does **not** model PPF's lowest-monthly-balance interest rule, monthly instalments, the formal 5-year extension blocks, loans or partial withdrawals, or the Section 80C benefit — and unlike the tax calculator it carries no "last reviewed" date, so the 7.1% should be verified against the current notified rate.
+
+- URL: https://tooladda.online/calculators/ppf-calculator.html
+- Page title: PPF Calculator Online | Public Provident Fund Maturity | ToolAdda
+- Category: FinanceApplication
+- Price: free (0 INR)
+- Runs on: Web
+- Meta description: Free PPF Calculator — estimate Public Provident Fund maturity amount, total interest, and year-wise growth. Plan 15-year PPF investments with live results in your browser.
+
+#### Features
+
+- Yearly PPF deposit planning
+- Live maturity and interest calculation
+- Year-wise breakdown table
+- Principal vs interest chart
+- Copy results to clipboard
+- Works entirely in your browser
+
+#### How to calculate PPF maturity online
+
+1. **Enter yearly investment** — Type your annual PPF deposit amount (up to ₹1.5 lakh per financial year).
+2. **Set interest rate and tenure** — Enter the current PPF interest rate and investment period in years (minimum 15).
+3. **View live results** — Maturity amount, total invested, and interest earned update instantly as you change inputs.
+4. **Review year-wise breakdown** — Scroll the breakdown table to see opening balance, deposit, interest, and closing balance for each year.
+
+#### Frequently asked questions (15)
+
+**What is the PPF lock-in period?**
+Fifteen financial years from the year the account is opened. After that you can withdraw everything, or extend in blocks of five years with or without making further deposits.
+
+**How much can I deposit in PPF each year?**
+Between 500 and 1,50,000 rupees in a financial year. Deposits above the ceiling do not earn interest and do not qualify for deduction, so there is no benefit to exceeding it.
+
+**Why does the deposit date matter so much?**
+Because interest for a month is calculated on the lowest balance between the 5th and the last day of that month. Deposit on the 3rd and the money earns interest for that month; deposit on the 6th and it earns nothing until the next one.
+
+**When is the best time to deposit?**
+Before the 5th of April, in one lump sum for the year if you can. The whole amount then earns interest for all twelve months of the financial year instead of accruing gradually. If you deposit monthly, do it before the 5th every month.
+
+**Is PPF interest taxable?**
+No. PPF is one of the few EEE instruments in India: the deposit is deductible under Section 80C, the annual interest is untaxed, and the maturity amount is untaxed. That last point is why its effective return beats a fixed deposit at a similar headline rate.
+
+**Is the PPF interest rate fixed for fifteen years?**
+No. The government reviews it every quarter, and it has moved between roughly 7% and 8% in recent years. The calculator applies the current rate throughout because future rates are unknowable, so treat the maturity figure as a projection rather than a promise.
+
+**How is PPF interest calculated?**
+Monthly on the lowest balance between the 5th and the month end, but credited once a year at the end of the financial year. Because it is credited annually, the compounding is annual rather than monthly.
+
+**Can I withdraw money before fifteen years?**
+Partly. You can take a loan against the balance between years three and six, make one partial withdrawal a year from year seven, and close the account early from year five for specific reasons such as serious illness or higher education, with an interest penalty.
+
+**What happens after fifteen years?**
+You can withdraw the entire balance tax-free, or extend the account in five-year blocks. An extension can be with fresh deposits or without them — in both cases the balance keeps earning.
+
+**What if I miss a year's deposit?**
+The account becomes inactive. It can be revived by paying a small penalty for each missed year along with the minimum deposit for those years. An inactive account cannot be used for loans or withdrawals until it is revived.
+
+**Can I open more than one PPF account?**
+No. One account per person is the rule. You may open one on behalf of a minor child, but the combined deposit across your account and the minor's is still subject to the same annual ceiling.
+
+**Is PPF better than a fixed deposit?**
+For long-term money in a higher tax slab, usually yes, because FD interest is taxed every year and PPF interest is not. The trade-off is liquidity: an FD can be broken, while PPF locks your money for fifteen years.
+
+**Is PPF better than mutual funds?**
+They answer different questions. PPF is government-backed with a fixed, tax-free return; equity has historically returned more over long periods but with volatility PPF does not have. Most people use PPF as the stable part of a plan rather than the whole of it.
+
+**Is my data saved when I use this calculator?**
+Nothing is uploaded. The calculation runs in your browser, and any figures you enter stay on your device.
+
+**Is this financial advice?**
+No. It is an estimate for planning. Rules, limits and rates change, so confirm the current position with your bank, post office or a qualified adviser before making a decision.
+
+#### Also covered on this page
+
+Calculate your PPF maturity · About PPF · PPF Calculator — plan tax-free long-term savings · What Each Five-Year Extension Adds · How PPF actually works · The 5th of the month rule · The rate is not fixed for fifteen years · Getting money out before fifteen years · Who PPF suits, and who it does not
+
+### Income Tax Calculator
+
+Manual income and deduction entry, compared under the old and new regimes on identical inputs. Progressive slabs with a per-band breakdown, section 87A rebate including marginal relief, surcharge with marginal relief, cess and section 288B rounding. Statutory values are held as versioned per-financial-year configuration with the statute and review date recorded; FY 2024-25 and FY 2025-26 are configured, and selecting an unconfigured year reports the rules as unavailable rather than applying another year's slabs. Does not model capital gains, business income, house property, foreign income or TDS already deducted.
+
+- URL: https://tooladda.online/calculators/manual-tax-calculator.html
+- Page title: Income Tax Calculator India — Old vs New Regime | ToolAdda
+- Category: FinanceApplication
+- Price: free (0 INR)
+- Runs on: Any modern web browser
+- Meta description: Estimate your income tax in India. Enter income and deductions manually, compare the old and new tax regimes side by side, and see the full slab-by-slab breakdown.
+
+#### Features
+
+- Financial year selector with versioned tax rules
+- Old and new regime calculated side by side on the same inputs
+- Progressive slab taxation with a per-slab breakdown
+- Section 87A rebate including marginal relief where it applies
+- Surcharge with marginal relief at each threshold
+- Health and education cess and section 288B rounding
+- Age-based basic exemption under the old regime
+- Section 80C, 80D, 80CCD(1B), 80CCD(2), 80TTA/80TTB and home loan interest with statutory caps
+- Entered versus allowed amounts shown for every deduction
+- Estimated tax impact of the deductions entered
+- Effective tax rate against gross income
+- Copy, share and print the summary
+- Runs entirely client side with no sign-up
+
+#### How to calculate income tax in India
+
+1. **Choose the financial year** — Tax slabs change between years, so select the financial year your income relates to. The calculator shows which year's rules it is applying and when they were last reviewed.
+2. **Enter your income** — Enter annual salary and any other taxable income such as interest. The standard deduction is applied automatically where it is due.
+3. **Enter your deductions** — Add 80C, 80D, NPS, home loan interest and any other eligible deductions. Each is capped at its statutory limit, and both the amount entered and the amount allowed are shown.
+4. **Compare the regimes** — Both regimes are computed on the same figures. Chapter VI-A deductions apply only under the old regime, which is exactly why the comparison matters.
+5. **Read the breakdown** — See the slab-by-slab working, the rebate, any surcharge and the cess, so the final figure is traceable rather than asserted.
+
+#### Frequently asked questions (30)
+
+**What is an income tax calculator?**
+An income tax calculator estimates your tax liability from the income and deductions you enter, applying the slab rates, rebate, surcharge and cess for a chosen financial year. It is a planning aid, not a filing tool and not tax advice.
+
+**How is income tax calculated in India?**
+Total your income, subtract the standard deduction and any eligible deductions to get taxable income, apply the slab rates progressively, subtract the section 87A rebate if it applies, add surcharge if your income crosses a threshold, then add health and education cess on the result.
+
+**What is taxable income?**
+Taxable income is what remains after subtracting the standard deduction and every deduction you are eligible for from your gross income. Slab rates are applied to this figure, not to your gross income.
+
+**What is the difference between gross income and taxable income?**
+Gross income is everything you earned. Taxable income is what is left after deductions. The gap between them is why two people with identical salaries can pay very different amounts of tax.
+
+**What is the old tax regime?**
+The older of the two structures. It has a lower basic exemption limit and higher slab rates, but permits Chapter VI-A deductions such as 80C, 80D and 80CCD(1B) along with home loan interest on a self-occupied property. It also varies the basic exemption by age.
+
+**What is the new tax regime?**
+The default structure, with wider slabs, lower rates and a larger standard deduction, but without most Chapter VI-A deductions. Employer NPS contributions under 80CCD(2) remain available. It does not vary the exemption by age.
+
+**How can I compare the old and new tax regimes?**
+Enter your income and every deduction you actually claim, then read the comparison table. Both regimes are computed from the same inputs, with each applying only the deductions available under it, so the difference reflects your real position rather than a generic example.
+
+**What is a tax slab?**
+A band of income taxed at a particular rate. Slabs are progressive: only the portion of your income that falls inside a band is taxed at that band's rate. Entering a higher slab never means your whole income is taxed at the higher rate.
+
+**How is tax calculated across slabs?**
+Each band taxes only the income falling within it, and the results are added. The slab breakdown on this page shows the amount taxed in each band and the tax it produces, so the arithmetic is visible rather than asserted.
+
+**What is the standard deduction?**
+A flat deduction from salary income that requires no proof or investment. It is applied automatically where it is due, differs between the two regimes, and is capped at your salary — it cannot shelter interest or other non-salary income.
+
+**What is Section 80C?**
+A deduction for specified investments and payments such as PPF, EPF, ELSS, life insurance premiums, home loan principal and children's tuition fees, subject to a combined annual ceiling. Available under the old regime only.
+
+**What is Section 80D?**
+A deduction for health insurance premiums. It has separate limits for yourself and family and for your parents, and each limit is higher once the person insured is a senior citizen. This calculator takes the two amounts separately and applies the correct limit to each.
+
+**What is a tax rebate?**
+The section 87A rebate reduces your tax to nil if taxable income is at or below a threshold that depends on the year and regime. It reduces tax, not income, and is applied before surcharge and cess.
+
+**What is marginal relief on the rebate?**
+Where it applies, marginal relief prevents earning one rupee above the rebate threshold from costing tens of thousands in tax: the tax is capped at the amount by which income exceeds the threshold. Not every regime and year carries it, so this calculator applies it only where it is configured.
+
+**What is surcharge?**
+An additional levy on the tax itself, not on income, that applies once total income crosses defined thresholds. Rates step up in bands, and marginal relief ensures crossing a threshold never costs more in extra tax than the extra income earned.
+
+**What is Health and Education Cess?**
+A percentage charged on the tax after rebate and surcharge — on the tax, not on your income. It is the last thing added before the total is rounded.
+
+**What is the effective tax rate?**
+Final tax divided by gross income. It is always lower than your top slab rate, because only the topmost portion of your income is taxed at that rate and deductions have already reduced the base.
+
+**Can I calculate tax on salary?**
+Yes. Enter annual salary income and the standard deduction is applied automatically. If you also have interest or other taxable income, enter that separately so it is taxed correctly.
+
+**Can I enter deductions manually?**
+Yes — that is what this calculator is for. Each deduction is capped at its statutory limit and the table shows both what you entered and what was actually allowed, so a capped amount is never silently reduced.
+
+**Can I calculate tax for different financial years?**
+Yes, for the years configured in the tool. The year in use, and the date its rules were last reviewed, are shown above the calculator.
+
+**Why does tax change between financial years?**
+Each year's Finance Act can revise slabs, rates, the standard deduction, rebate thresholds and surcharge. That is why the year selector exists and why a calculator without one cannot be trusted.
+
+**What happens if I choose a year the calculator does not have?**
+Nothing is calculated and the tool says the rules are unavailable. It will not fall back to another year's slabs, because a plausible-looking wrong number is worse than no number.
+
+**Does every deduction apply under the new regime?**
+No. Most Chapter VI-A deductions, including 80C, 80D and 80CCD(1B), are unavailable under the new regime. The standard deduction applies, as does the employer NPS contribution under 80CCD(2). The calculator shows entries that are not available rather than hiding them.
+
+**Does the old regime give a higher exemption to senior citizens?**
+Yes. Under the old regime the basic exemption limit is higher for senior citizens and higher again for super senior citizens. The new regime uses one table for everyone. Selecting your age group applies the correct table.
+
+**Is this calculator accurate?**
+The arithmetic is tested against boundary cases and the statutory values are versioned and dated, but accuracy for your situation depends on the configured rules being current and on your income being of the kinds this tool models. It does not handle capital gains, business income, foreign income, relief under section 89 or clubbing provisions.
+
+**Does this calculator handle capital gains?**
+No. Capital gains are taxed at their own rates rather than at slab rates, and surcharge on them is capped differently. Entering them as ordinary income would overstate the tax, so they are deliberately not modelled.
+
+**Does this calculator file my income tax return?**
+No. It estimates tax for planning. Filing happens on the Income Tax Department's e-filing portal.
+
+**Does this calculator provide tax advice?**
+No. It performs arithmetic on figures you supply. It does not determine eligibility, does not recommend a regime and does not account for your full circumstances. Verify with the Income Tax Department or a qualified professional.
+
+**Is my income information uploaded anywhere?**
+No. Every calculation runs in your browser and no request is made. Incomes and deductions are never stored — only the financial year, view and age group you last selected are remembered.
+
+**Is this income tax calculator free?**
+Yes. No sign-up, no limits and no paid tier.
+
+#### Also covered on this page
+
+How the tax is built up · Old regime and new regime · How Much in Deductions Makes the Old Regime Worth It · The complete guide to calculating income tax in India
+
+### GST Calculator
+
+Add GST to a base price or extract it from a tax-inclusive amount, at 0/3/5/12/18/28% or any custom rate, with a CGST+SGST or IGST split, an optional invoice round-off line and Indian number formatting. Arithmetic runs in integer paise so the breakdown always reconciles exactly.
+
+- URL: https://tooladda.online/calculators/gst-calculator.html
+- Page title: GST Calculator India — Add or Remove GST, CGST, SGST & IGST | ToolAdda
+- Category: FinanceApplication
+- Price: free (0 INR)
+- Runs on: Any modern web browser
+- Meta description: Free GST calculator for India. Add or remove GST at 5%, 12%, 18%, 28% or a custom rate, with a CGST, SGST and IGST breakdown that always reconciles to the paisa.
+
+#### Features
+
+- Add GST to a tax-exclusive amount
+- Remove GST from a tax-inclusive amount
+- Preset rates of 0%, 3%, 5%, 12%, 18% and 28% plus any custom rate
+- CGST and SGST split for intra-state supplies
+- IGST for inter-state supplies
+- Breakdown guaranteed to reconcile to the paisa
+- Optional invoice round-off line
+- Side-by-side comparison of the same amount at every slab
+- Indian number formatting with lakh and crore grouping
+- Copy, share, print and shareable link
+- Optional local calculation history
+- Runs entirely in the browser with no sign-up
+
+#### How to calculate GST
+
+1. **Choose add or remove** — Pick Add GST if your amount is a base price before tax, or Remove GST if the amount already includes tax.
+2. **Enter the amount** — Type the amount in rupees. Paise are supported and the calculator formats results in the Indian numbering system.
+3. **Select the GST rate** — Choose 0%, 3%, 5%, 12%, 18% or 28%, or enter any custom rate that applies to your supply.
+4. **Pick the transaction type** — Intra-state splits the tax into CGST and SGST. Inter-state charges the whole amount as IGST.
+5. **Read the breakdown** — The base amount, GST, tax split and total appear immediately, with a check confirming the components add up exactly.
+
+#### Frequently asked questions (24)
+
+**What is a GST calculator?**
+A GST calculator works out the tax portion of a price at a given GST rate. It answers two questions: how much GST to add to a base price, and how much GST is already contained inside a price that includes tax. It applies the rate you choose — it does not decide which rate your supply attracts.
+
+**How do I calculate GST?**
+To add GST, multiply the base amount by the rate and divide by 100, then add the result to the base. To remove GST from a tax-inclusive price, divide the price by 1 plus the rate over 100 to get the base, then subtract that base from the price to get the tax.
+
+**How do I add GST to an amount?**
+GST = base amount × rate ÷ 100, and total = base + GST. On ₹10,000 at 18%, the GST is ₹1,800 and the total is ₹11,800. Select Add GST, enter the base amount and pick the rate.
+
+**How do I remove GST from an amount?**
+Divide the tax-inclusive amount by (1 + rate ÷ 100). At 18%, ₹11,800 ÷ 1.18 = ₹10,000 base, so the GST inside is ₹1,800. Taking 18% of ₹11,800 instead gives ₹2,124, which is wrong — that is the single most common GST calculation error.
+
+**What is GST-inclusive pricing?**
+A GST-inclusive price already contains the tax. The figure on the shelf or the MRP is what the customer pays in total, and the tax has to be extracted from it rather than added to it. Use Remove GST for these amounts.
+
+**What is GST-exclusive pricing?**
+A GST-exclusive price is the base price before tax, common in business-to-business quotes and invoices where GST is shown as a separate line. Use Add GST for these amounts.
+
+**How is CGST calculated?**
+For an intra-state supply the total GST is split in half, with CGST being one half. At 18% GST that means 9% CGST, so ₹1,800 of GST becomes ₹900 CGST. Where the half is an odd number of paise, one component takes the extra paisa so the two still add up to the total tax.
+
+**How is SGST calculated?**
+SGST is the other half of the tax on an intra-state supply — 9% when the GST rate is 18%. In a union territory without its own legislature the same half is charged as UTGST instead, with identical arithmetic.
+
+**How is IGST calculated?**
+For an inter-state supply the whole GST is charged as a single IGST line rather than being split. At 18% on ₹10,000 the IGST is the full ₹1,800. The total the customer pays is identical either way — only the split differs.
+
+**What are the GST rates in India?**
+GST is levied through a small set of slabs, historically 5%, 12%, 18% and 28%, alongside a nil rate and special rates such as 0.25% and 3% for items like rough diamonds and gold. The slab structure has been revised since GST began, so verify the current rate for your specific supply and date rather than relying on any calculator's preset list.
+
+**How do I calculate 18% GST?**
+Multiply the base amount by 0.18. On ₹10,000 that is ₹1,800 GST and ₹11,800 total. To find the 18% GST inside a tax-inclusive price, divide by 1.18 — the tax works out to roughly 15.25% of the inclusive figure, not 18%.
+
+**How do I calculate 5% GST?**
+Multiply the base by 0.05. On ₹10,000 that is ₹500 GST and ₹10,500 total. To extract 5% GST from an inclusive price, divide by 1.05.
+
+**How do I calculate 12% GST?**
+Multiply the base by 0.12. On ₹10,000 that is ₹1,200 GST and ₹11,200 total. To extract it from an inclusive price, divide by 1.12.
+
+**How do I calculate 28% GST?**
+Multiply the base by 0.28. On ₹10,000 that is ₹2,800 GST and ₹12,800 total. Note that some goods in the highest slab also attract compensation cess, which is charged over and above GST and is not included in this calculation.
+
+**How do I calculate GST from a total price?**
+Switch to Remove GST and enter the total. The calculator divides by (1 + rate ÷ 100) to recover the base and reports the difference as the tax. This is the correct method for extracting tax from an MRP or a receipt total.
+
+**Can I calculate GST on decimal amounts?**
+Yes. Paise are fully supported. All arithmetic is done in integer paise rather than decimal fractions, so results never drift into artifacts like 1800.0000000002 and the components always sum exactly to the total.
+
+**Can I use a custom GST rate?**
+Yes. Select Custom and enter any rate between 0% and 100%, including fractional rates such as 0.25% or 7.5%. This is useful for special rates and for modelling a combined rate.
+
+**Why do CGST and SGST sometimes differ by one paisa?**
+Because half of an odd number of paise is not a whole paisa. If the GST is ₹15.25, the halves are ₹7.63 and ₹7.62. Rounding both up would produce ₹15.26 and an invoice that does not foot, so one component takes the extra paisa and the pair still sums to the exact tax.
+
+**What is the round-off line on a GST invoice?**
+Invoice totals are often rounded to the nearest rupee, with the difference shown as a separate round-off line so the arithmetic remains transparent. Enable the round-off option to see the adjustment and the rounded payable amount.
+
+**Does this calculator include compensation cess?**
+No. Compensation cess is charged separately from GST on certain goods and is calculated on its own basis. This tool applies only the single rate you enter. If you need a combined figure, work the cess out separately or enter a combined custom rate.
+
+**Is this GST calculator free?**
+Yes. There is no sign-up, no limit on calculations and no paid tier.
+
+**Does the GST calculator store my data?**
+No. Every calculation runs in your browser and nothing is sent anywhere. Amounts are not saved unless you switch on the optional calculation history, which stores entries in your own browser and can be cleared at any time.
+
+**Can I share a calculation with someone?**
+Yes. Copy gives you an invoice-style text summary, and Copy link gives a URL that reopens the same calculation. The link is only created when you click the button — amounts are never written into the address bar as you type.
+
+**Is this calculator a substitute for professional tax advice?**
+No. It performs arithmetic on the rate you select. It does not classify supplies, determine place of supply, decide whether a transaction is intra-state or inter-state, or establish tax liability. Verify the treatment of your specific transaction with official sources or a qualified tax professional.
+
+#### Also covered on this page
+
+GST calculation formula · GST inclusive vs GST exclusive · GST rate reference · Worked examples · How GST Travels Down a Supply Chain · The complete guide to calculating GST
+
+### Offline Invoice Generator
+
+India-first GST invoice / quotation / proforma / credit-note studio that never uploads. Integer paise (not floats), exclusive or inclusive tax, intra-state CGST+SGST or inter-state IGST, HSN/SAC lines, quantity as milles so 2.5 units is exact, invoice discount, shipping with its own tax, round-off to a whole rupee, amount in Indian lakh/crore words, INR plus USD/EUR/GBP/AED/SGD, three templates, a live A4 preview and a **text-based PDF** (lazy-loaded jsPDF, Print as fallback). Logo is stored only as a `data:` URL; remote image URLs are rejected. JSON backup and local draft autosave. A narrow-scope service worker caches this page only, so it genuinely works offline after the first visit. It is **not** a GSTN e-invoice — no IRN, no QR, no GSTR-1.
+
+- URL: https://tooladda.online/invoice-generator.html
+- Page title: Offline Invoice Generator — GST Invoice & Quotation PDF | ToolAdda
+- Category: BusinessApplication
+- Price: free (0 INR)
+- Runs on: Web
+- Meta description: Free offline invoice generator for India. Build a GST tax invoice, quotation or proforma with CGST/SGST or IGST, live A4 preview and a text-based PDF. No signup, nothing uploaded.
+
+#### Features
+
+- GST tax invoice, quotation, proforma and credit note
+- Exclusive, inclusive or no-tax modes
+- CGST+SGST, IGST or single VAT split
+- Integer paise arithmetic so printed rows always add up
+- HSN/SAC, quantity to three decimals, line discount and tax rate
+- Invoice discount, shipping with its own tax rate, round-off
+- Amount in Indian lakh/crore words
+- INR, USD, EUR, GBP, AED and SGD
+- Live A4 preview with classic, modern and minimal templates
+- Text-based PDF via lazy-loaded jsPDF, plus print fallback
+- JSON backup and local draft autosave
+- Works offline after the first visit
+- Logo stored as a data URL in this browser only
+- No signup, no watermark, nothing uploaded
+
+#### How to generate a GST invoice PDF offline
+
+1. **Fill your business details** — Add your name, address, GSTIN and optional logo. These stay in this browser so the next invoice starts from the same letterhead.
+2. **Add the client** — Enter the bill-to name, address and GSTIN. Place of supply decides whether you later pick CGST+SGST or IGST.
+3. **Add line items** — Description, HSN/SAC, quantity, rate, optional line discount and tax rate. Totals update as you type.
+4. **Choose the GST mode** — Exclusive adds tax on top of the rate. Inclusive extracts tax from a tax-in figure. Intra-state splits CGST and SGST; inter-state uses IGST.
+5. **Download or print** — Download a selectable PDF, print from the live preview, or save a JSON backup. After the first visit the page keeps working offline.
+
+#### Frequently asked questions (14)
+
+**Does this invoice generator work offline?**
+Yes, after the first visit. A narrow-scope service worker caches this page, its engine and the PDF library. Later visits load without a network, and Print still works if the PDF engine was blocked on a previous session.
+
+**Is my invoice data uploaded?**
+No. Line items, GSTINs, bank details and the logo never leave this device. Drafts are stored in your browser's local storage. ToolAdda has no account and no invoice server.
+
+**How is GST calculated?**
+Money is stored as integer paise, not floating-point rupees. Exclusive tax is rounded once per line as round(taxable × rate / 100). Inclusive tax inverts the typed total so taxable + tax always equals what you entered. One half of a CGST/SGST split is subtraction, so the two halves always equal the GST.
+
+**What is the difference between CGST, SGST and IGST?**
+Intra-state supplies (same state GSTIN on both sides) split GST into CGST and SGST. Inter-state supplies use IGST for the whole tax. This tool does not decide place of supply for you — pick Intra-state or Inter-state to match the invoice you are issuing.
+
+**Can I make a quotation or proforma?**
+Yes. Switch the document type to Quotation, Proforma Invoice or Credit Note. The live preview and PDF title change; the arithmetic stays the same.
+
+**How do I add a logo?**
+Choose a PNG, JPEG, WebP, GIF or SVG under 600 KB. It is stored as a data URL in this browser only. Remote image URLs are rejected so a generated PDF cannot phone home.
+
+**Can I download a PDF?**
+Yes. The PDF is drawn with real text, not a screenshot, so amounts stay selectable. jsPDF is loaded from a CDN on the first download and then cached. If that request is blocked, use Print — the live A4 preview prints cleanly.
+
+**Why does the PDF say Rs. instead of ₹?**
+Standard PDF fonts are WinAnsi and have no rupee glyph. The on-screen preview can show ₹; the PDF uses Rs. so the amount never becomes a missing-character box. Indian grouping (1,00,000) is kept.
+
+**What is round-off?**
+When round-off is on, the payable total is snapped to the nearest whole rupee (or dollar, euro, and so on). The difference is printed as its own line so the invoice still reconciles.
+
+**Does it support USD or EUR?**
+Yes. INR, USD, EUR, GBP, AED and SGD. Indian grouping and lakh/crore words apply to INR; the others use international grouping and million/billion words.
+
+**Is this a GST-compliant e-invoice?**
+No. This is a document formatter. It does not register on the GSTN IRP, does not issue an IRN or QR code, and does not file GSTR-1. Businesses that must e-invoice still need the government portal or their accounting software.
+
+**Can I save a draft?**
+Yes. The current invoice autosaves locally. Download JSON for a portable backup you can restore later. Your business letterhead (name, GSTIN, bank, logo) is remembered separately so a new invoice starts with the same header.
+
+**Is this invoice generator free?**
+Yes. Free, no account, no export limit and no watermark.
+
+**How is quantity stored?**
+Quantity is stored as milles (thousandths), so 2.5 units times a rate is exact rather than a repeating binary fraction. Up to three decimal places are kept.
+
+#### Also covered on this page
+
+Invoice details · Live A4 preview · How to generate a GST invoice PDF offline · What this invoice maker actually does · GST on an invoice, without the usual off-by-one paisa · Invoice generator FAQ

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+    <meta name="description" content="Free image background remover. Erase or change any photo's background to transparent, a solid color, or a new image — 100% in your browser, no upload." />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="ToolAdda" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta name="theme-color" content="#4f46e5" />
+    <title>Image Background Remover – Remove or Change Background | ToolAdda</title>
+    <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+    <link rel="canonical" href="https://tooladda.online/image-background-remover.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <meta property="og:title" content="Image Background Remover – Remove or Change Background" />
+    <meta property="og:description" content="Erase or change any photo's background to transparent, a solid color, or a new image. Runs 100% in your browser — no upload, no signup." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tooladda.online/image-background-remover.html" />
+    <meta property="og:site_name" content="ToolAdda" />
+    <meta property="og:image" content="https://tooladda.online/assets/images/og/image-background-remover.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Image Background Remover – Remove or Change Background — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="Image Background Remover – Remove or Change Background — free online tool on ToolAdda, runs in your browser with no sign-up." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Image Background Remover – Remove or Change Background" />
+    <meta name="twitter:description" content="Erase or change any photo's background to transparent, a solid color, or a new image — free and private." />
+    <meta name="twitter:image" content="https://tooladda.online/assets/images/og/image-background-remover.jpg" />
+
+    <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Image Background Remover",
+      "applicationCategory": "PhotoApplication",
+      "operatingSystem": "Any (Web Browser)",
+      "url": "https://tooladda.online/image-background-remover.html",
+      "description": "Free online tool that removes or changes an image's background. Auto-detects the background from the edges inward, with brush tools to refine the result, and lets you replace the background with transparency, a solid color, or another image — entirely in the browser.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "One-click automatic background removal",
+        "Adjustable color tolerance and edge softness",
+        "Manual erase and restore brushes for touch-ups",
+        "Replace background with transparent, solid color, or a custom image",
+        "Undo support",
+        "100% client-side — no image is ever uploaded"
+      ],
+      "publisher": {
+        "@type": "Organization",
+        "name": "ToolAdda",
+        "alternateName": [
+          "Tool Adda",
+          "Tools Adda",
+          "ToolsAdda",
+          "Tooladda",
+          "ToolAdda.online"
+        ],
+        "url": "https://tooladda.online/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does this background remover work without uploading my photo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It reads your image's pixels directly in the browser using the Canvas API and flood-fills outward from the edges to find and remove background-colored regions. Nothing is ever sent to a server, so your photo never leaves your device."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work with any photo, or only plain backgrounds?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It works best with a fairly plain or solid-colored background, such as product photos, ID photos, or pictures taken against a wall or screen. For busy or highly textured backgrounds, use the manual erase and restore brushes to refine the result."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I change the background instead of just removing it?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - keep it transparent, fill it with any solid color, or place a different image behind your subject."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does the auto-remove leave some edges rough?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Increase the tolerance slider if background pixels remain, or increase edge softness for smoother anti-aliased edges. You can also use the erase brush to clean up any leftover spots, or the restore brush to bring back any part of the subject that was removed by mistake."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What image formats can I upload and download?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Upload JPG, PNG, WebP, or most common formats. The result always downloads as a transparency-preserving PNG."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a size limit on the image?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Large photos are automatically scaled to a maximum of 2200px on the longest side for fast, smooth processing. Explore more free tools on ToolAdda: Image Crop Tool , Image Color Picker , Image Compressor , JPG to PNG , and Images to PDF ."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to remove or change an image background",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Upload a photo",
+          "text": "Drag and drop an image or click Browse to select one from your device."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Auto-remove the background",
+          "text": "Click Auto-remove background to flood-fill the background from the edges inward, adjusting tolerance and edge softness as needed."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Refine with the brush",
+          "text": "Switch to the erase or restore brush to clean up any missed spots or bring back part of the subject."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Choose a new background",
+          "text": "Keep it transparent, or replace it with a solid color or another image, then download the PNG."
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Image Background Remover"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+
+    <style>
+      .pdf-merge-shell { padding-top: 0.2rem; }
+      .content-card.pdf-merge-unified-card { margin-top: 0; padding-top: 0.5rem; }
+      .pdf-merge-intro { margin-top: 0; padding-top: 0; }
+      .pdf-merge-heading, .hero-badge { margin-top: 0; }
+      main > .section > .container { padding-top: 0.2rem; }
+      main > .section:first-of-type { padding-top: 1rem; }
+
+      .bgr-canvas-wrap {
+        display: flex;
+        justify-content: center;
+        padding: 0.75rem;
+        border-radius: 0.9rem;
+        border: 1px solid rgba(79, 70, 229, 0.14);
+        background: linear-gradient(45deg, #d7dbe4 25%, transparent 25%), linear-gradient(-45deg, #d7dbe4 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, #d7dbe4 75%), linear-gradient(-45deg, transparent 75%, #d7dbe4 75%);
+        background-color: #eef0f5;
+        background-size: 20px 20px;
+        background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+      }
+      [data-theme="dark"] .bgr-canvas-wrap {
+        background-image: linear-gradient(45deg, #33384a 25%, transparent 25%), linear-gradient(-45deg, #33384a 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, #33384a 75%), linear-gradient(-45deg, transparent 75%, #33384a 75%);
+        background-color: #21263a;
+      }
+      .bgr-canvas-wrap canvas {
+        max-width: 100%;
+        max-height: 480px;
+        height: auto;
+        width: auto;
+        display: block;
+        border-radius: 0.6rem;
+        cursor: crosshair;
+        touch-action: none;
+      }
+
+      .bgr-controls { display: grid; gap: 0.9rem; margin: 1rem 0; }
+      .bgr-slider-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 0.6rem; }
+      .bgr-slider-row label { font-weight: 700; font-size: 0.9rem; color: var(--text); grid-column: 1 / -1; }
+      .bgr-slider-row input[type="range"] { width: 100%; }
+      .bgr-slider-row output { font-weight: 700; color: var(--accent-strong); min-width: 2.4rem; text-align: right; }
+
+      .bgr-button-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+      .bgr-toggle-btn {
+        padding: 0.5rem 0.9rem;
+        border-radius: 999px;
+        border: 1px solid rgba(79, 70, 229, 0.22);
+        background: var(--surface-strong);
+        color: var(--text);
+        font-size: 0.86rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .bgr-toggle-btn.is-active {
+        background: linear-gradient(135deg, #4f46e5, #38bdf8);
+        border-color: transparent;
+        color: #fff;
+      }
+      .bgr-toggle-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+      .bgr-bg-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin-top: 0.6rem; }
+      .bgr-bg-row input[type="color"] { width: 2.6rem; height: 2.4rem; border-radius: 0.6rem; border: 1px solid rgba(79, 70, 229, 0.2); padding: 0; cursor: pointer; }
+
+      .bgr-stats { margin: 0.6rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--accent-strong); }
+      .bgr-hint { margin: 0.3rem 0 0; font-size: 0.85rem; color: var(--text-muted); }
+
+      @media (max-width: 767px) {
+        .bgr-canvas-wrap canvas { max-height: 360px; }
+      }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/image-background-remover.html#webpage",
+      "url": "https://tooladda.online/image-background-remover.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-25",
+      "dateModified": "2026-09-09",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="container navbar">
+        <a class="brand" href="/" aria-label="ToolAdda home">
+          <span class="brand-mark" aria-hidden="true">T</span>
+          <span>ToolAdda</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Home</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="privacy-policy.html">Privacy</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+              <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+              <path d="M3.1 16.9h10.8" />
+              <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+            </svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+          <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+          <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section class="section">
+        <aside class="ta-support" aria-label="Support ToolAdda">
+          <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+        </aside>
+
+        <div class="container">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span>›</span>
+            <a href="/">Image Tools</a>
+            <span>›</span>
+            <span>Image Background Remover</span>
+          </nav>
+
+          <div class="pdf-merge-shell">
+            <div class="content-card pdf-merge-unified-card">
+              <div class="pdf-merge-intro">
+                <div class="pdf-merge-heading">
+                  <p class="hero-badge">🖼️ Image Tools</p>
+                  <h1 class="section-title">Image Background Remover &amp; Changer</h1>
+                  <p>Remove a photo's background automatically, refine it with erase and restore brushes, then replace it with transparency, a solid color, or another image — all in your browser, with nothing ever uploaded.</p>
+                </div>
+              </div>
+
+              <div class="content-card image-tool-panel" data-bg-remover-page>
+                <div class="split-action-bar">
+                  <div>
+                    <p class="tag">Remove &amp; change background</p>
+                    <p class="pdf-helper-text">Upload a photo, auto-remove the background, then refine and download.</p>
+                  </div>
+                  <button class="secondary-btn" type="button" data-file-picker>📁 Choose image</button>
+                </div>
+
+                <input type="file" accept="image/*" hidden data-file-input />
+
+                <div class="pdf-drop-zone" data-drop-zone tabindex="0" role="button" aria-label="Drag and drop an image here or click to browse">
+                  <div class="pdf-drop-zone-icon" aria-hidden="true">🪄</div>
+                  <p class="pdf-drop-zone-title"><strong>Drag &amp; drop a photo here</strong></p>
+                  <p>or click here to browse an image from your device.</p>
+                  <div class="isp-actions">
+                    <button class="pdf-drop-zone-browse" type="button" data-file-picker>📂 Browse image</button>
+                    <!-- Camera + URL import, wired by assets/js/image-source-picker.js -->
+                    <div class="isp-sources" data-image-sources data-isp-noun="photo"></div>
+                  </div>
+                </div>
+
+                <div class="file-preview" data-file-preview hidden>
+                  <div>
+                    <p class="file-preview-label">File name</p>
+                    <p class="file-preview-text" data-file-name></p>
+                  </div>
+                  <div>
+                    <p class="file-preview-label">Original size</p>
+                    <p class="file-preview-text" data-original-size></p>
+                  </div>
+                </div>
+
+                <div class="image-preview-card">
+                  <h3>Preview</h3>
+                  <div class="bgr-canvas-wrap">
+                    <canvas data-preview-canvas></canvas>
+                  </div>
+                  <p class="bgr-stats" data-mask-stats>No background removed yet</p>
+                  <p class="bgr-hint">Tip: hold <strong>Shift</strong> and click a spot on the canvas to flood-fill remove that color from anywhere in the image.</p>
+                </div>
+
+                <div class="bgr-controls">
+                  <div class="bgr-slider-row">
+                    <label for="bgrTolerance">Tolerance — how similar counts as background</label>
+                    <input type="range" id="bgrTolerance" min="0" max="100" value="30" data-tolerance-slider disabled />
+                    <output data-tolerance-value>30</output>
+                  </div>
+                  <div class="bgr-slider-row">
+                    <label for="bgrFeather">Edge softness</label>
+                    <input type="range" id="bgrFeather" min="0" max="60" value="10" data-feather-slider disabled />
+                    <output data-feather-value>10</output>
+                  </div>
+                  <div class="bgr-slider-row">
+                    <label for="bgrBrush">Brush size</label>
+                    <input type="range" id="bgrBrush" min="4" max="120" value="30" data-brush-slider disabled />
+                    <output data-brush-value>30px</output>
+                  </div>
+
+                  <div class="bgr-button-row">
+                    <button class="primary-btn" type="button" data-auto-remove disabled>✨ Auto-remove background</button>
+                    <button class="secondary-btn" type="button" data-undo-btn disabled>↩️ Undo</button>
+                    <button class="secondary-btn" type="button" data-reset-btn>🔄 Reset</button>
+                  </div>
+
+                  <div>
+                    <p class="tag">Brush mode</p>
+                    <div class="bgr-button-row">
+                      <button class="bgr-toggle-btn is-active" type="button" data-brush-mode="remove" disabled>🧽 Erase more</button>
+                      <button class="bgr-toggle-btn" type="button" data-brush-mode="restore" disabled>🖌️ Restore</button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p class="tag">New background</p>
+                    <div class="bgr-button-row">
+                      <button class="bgr-toggle-btn is-active" type="button" data-bg-mode="transparent" disabled>◻️ Transparent</button>
+                      <button class="bgr-toggle-btn" type="button" data-bg-mode="color" disabled>🎨 Solid color</button>
+                      <button class="bgr-toggle-btn" type="button" data-bg-mode="image" disabled>🖼️ Custom image</button>
+                    </div>
+                    <div class="bgr-bg-row" data-bg-color-row hidden>
+                      <input type="color" value="#ffffff" data-bg-color aria-label="Background color" />
+                      <span class="bgr-hint">Pick any solid color to fill the background.</span>
+                    </div>
+                    <div class="bgr-bg-row" data-bg-image-row hidden>
+                      <button class="secondary-btn" type="button" data-bg-image-picker>📁 Choose background image</button>
+                      <input type="file" accept="image/*" hidden data-bg-image-input />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="actions-row">
+                  <button class="primary-btn" type="button" data-download-btn disabled>⬇️ Download PNG</button>
+                  <a class="secondary-btn hidden" data-download-link>Download link</a>
+                </div>
+
+                <div class="message-box hidden" role="status" aria-live="assertive" data-message></div>
+                <div class="loader hidden" data-loader>Processing image...</div>
+              </div>
+
+              <div class="pdf-summary-grid">
+                <div class="pdf-feature-card">
+                  <strong>No uploads, no AI service</strong>
+                  <p>Everything runs locally using pixel-level flood fill — your photo never leaves your device.</p>
+                </div>
+                <div class="pdf-feature-card">
+                  <strong>Auto + manual control</strong>
+                  <p>One click removes the background, then brush tools let you perfect the edges.</p>
+                </div>
+                <div class="pdf-feature-card">
+                  <strong>Any new background</strong>
+                  <p>Keep it transparent, or swap in a solid color or a completely different image.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <section class="section" aria-labelledby="about-bg-remover">
+            <div class="container">
+              <h2 id="about-bg-remover">What is the Image Background Remover?</h2>
+              <p>The ToolAdda <strong>image background remover</strong> is a free tool that erases a photo's background and lets you replace it with transparency, a solid color, or a new image — without an AI model, an account, or a single byte leaving your browser. It works by sampling the colors around the edges of your photo and flood-filling inward, similar to a "magic wand" tool, so it works especially well on product shots, ID photos, logos, and any picture taken against a plain wall or screen.</p>
+
+              <h2>How to remove or change a background</h2>
+              <div class="grid-2">
+                <article class="panel">
+                  <h3>4 easy steps</h3>
+                  <ol>
+                    <li>Upload a photo by dragging it in or clicking <strong>Browse image</strong>.</li>
+                    <li>Click <strong>Auto-remove background</strong>, adjusting tolerance and edge softness as needed.</li>
+                    <li>Switch to the erase or restore brush to clean up any missed spots.</li>
+                    <li>Pick a new background — transparent, solid color, or a custom image — and download the PNG.</li>
+                  </ol>
+                </article>
+                <article class="panel">
+                  <h3>Why use this tool</h3>
+                  <ul>
+                    <li><strong>Completely private</strong> — no image ever leaves your device.</li>
+                    <li><strong>Free &amp; unlimited</strong> — no signup, no watermark, no daily limit.</li>
+                    <li><strong>Precise control</strong> — tolerance, edge softness, and brush tools for a clean cutout.</li>
+                    <li><strong>Flexible output</strong> — transparent PNG, solid color, or a new background image.</li>
+                  </ul>
+                </article>
+              </div>
+
+              <h2>Frequently asked questions</h2>
+              <div class="grid-2">
+                <article class="panel">
+                  <h3>How does this background remover work without uploading my photo?</h3>
+                  <p>It reads pixels directly in the browser with the Canvas API and flood-fills from the edges inward. Nothing is ever sent to a server.</p>
+                </article>
+                <article class="panel">
+                  <h3>Does it work with any photo, or only plain backgrounds?</h3>
+                  <p>It works best with a fairly plain or solid-colored background. For busy backgrounds, use the erase and restore brushes to refine the result.</p>
+                </article>
+                <article class="panel">
+                  <h3>Can I change the background instead of just removing it?</h3>
+                  <p>Yes — keep it transparent, fill it with any solid color, or place a different image behind your subject.</p>
+                </article>
+                <article class="panel">
+                  <h3>Why does the auto-remove leave some edges rough?</h3>
+                  <p>Raise the tolerance slider if background remains, raise edge softness for smoother anti-aliasing, or use the brushes to touch up manually.</p>
+                </article>
+                <article class="panel">
+                  <h3>What image formats can I upload and download?</h3>
+                  <p>Upload JPG, PNG, WebP, or most common formats. The result always downloads as a transparency-preserving PNG.</p>
+                </article>
+                <article class="panel">
+                  <h3>Is there a size limit on the image?</h3>
+                  <p>Large photos are automatically scaled to a maximum of 2200px on the longest side for fast, smooth processing.</p>
+                </article>
+              </div>
+
+              <h2>Related image &amp; PDF tools</h2>
+              <p>Explore more free tools on ToolAdda:
+                <a href="image-crop.html">Image Crop Tool</a>,
+                <a href="image-color-picker.html">Image Color Picker</a>,
+                <a href="image-compressor.html">Image Compressor</a>,
+                <a href="jpg-to-png.html">JPG to PNG</a>, and
+                <a href="images-to-pdf.html">Images to PDF</a>.
+              </p>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+          <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links">
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms.html">Terms</a>
+          </div>
+        </div>
+        <div>
+          <h3>Stay updated</h3>
+          <p>© <span data-year></span> ToolAdda. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/image-toolkit.js"></script>
+    <script src="assets/js/image-background-remover.js"></script>
+    <script src="assets/js/image-source-picker.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/side-ads.js" defer></script>
+    <script src="assets/js/inline-ads.js" data-in-article defer></script>
+  </body>
+</html>

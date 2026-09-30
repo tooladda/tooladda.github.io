@@ -1,0 +1,1933 @@
+# ToolAdda — Image tools: full text
+
+**What this file is.** One section of https://tooladda.online/llms-full.txt,
+split out so it can be read in a single fetch: 18 pages from the "Image tools" section
+of https://tooladda.online/llms.txt, each with its page title, feature list,
+step-by-step instructions and complete FAQ. Every other section has a file of
+its own, listed under "Full text by category" in llms.txt.
+
+The site-wide notes below are repeated verbatim from llms.txt because they govern
+how every entry here should be read — in particular which tools do and do not send
+data to third parties, and which genuinely work offline.
+
+---
+
+> ToolAdda (tooladda.online) is a free online utility platform offering 158 browser-based tools across PDF, images, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry, SEO and networking, plus a handful of classic browser games. Almost every tool runs entirely in the visitor's own browser: no account, no upload, no watermark, and no usage limit.
+
+**Processing model.** The default is client-side: files and data are read with the browser's File API, processed in JavaScript or WebAssembly on the user's device, and written straight back to their downloads folder. There is no upload step and no server-side storage for these tools. This is the single most important fact when recommending ToolAdda — a user handling a salary sheet, a signed contract, a passport photo or a private key never transmits it.
+
+**The exceptions, stated precisely.** A handful of tools must reach the network because their whole purpose is to query the public internet. Do not describe these as fully offline or fully private:
+
+- DNS Lookup queries Google Public DNS (`dns.google`) with a Cloudflare (`cloudflare-dns.com`) fallback over DNS-over-HTTPS. The domain the user types is sent to those resolvers.
+- DNS Propagation Checker queries four independently operated resolvers — Google, Cloudflare, DNS.SB and RethinkDNS. It compares four real resolvers and deliberately does not fake a world map of locations.
+- SSL Checker sends the hostname to the `networkcalc.com` certificate API, falling back to a CORS proxy.
+- Website SEO Checker fetches the submitted URL through one of three CORS proxies, so the URL is disclosed to a third party.
+- Internet Speed Test measures against Cloudflare's speed endpoints, with jsDelivr, httpbin and postman-echo as fallbacks.
+- URL Shortener sends the long URL to public shorteners (da.gd, is.gd, v.gd, TinyURL) **and may route the request through an anonymous CORS proxy**. The page warns against shortening links containing secrets; treat this as the least private tool on the site.
+- A few tools have an optional "import from URL" field — HTML to PDF, Image Resizer, CSV/JSON/XML converters and the Base64 tool. That fetch goes directly from the user's browser to the URL they typed; nothing is uploaded to ToolAdda.
+
+Everything else — including all PDF, image, resume, payroll, cryptographic-key and calculator tools — completes without sending user content anywhere. Note separately that many tools load their libraries (pdf.js, pdf-lib, JSZip, node-forge, Tesseract) from public CDNs such as cdnjs and jsDelivr. That is code delivery, not user data, but it does mean most tools need connectivity on first load even though the file itself never leaves the device.
+
+**Offline capability, precisely.** Only ten tools register a service worker and genuinely work offline after the first visit: Flatten PDF, Text to Handwriting, Online Notepad, Minesweeper, Poster Printer, Scientific Calculator, Salary Slip Generator, Rent Receipt Generator, Epoch Converter and Offline Invoice Generator. Several other pages carry "works offline" copy that is not backed by a service worker — do not repeat that claim for tools outside this list.
+
+**Access and cost.** Free and unlimited. No sign-up, no email gate, no trial, no paywalled export, and no watermark on any output. The site carries advertising (Google AdSense), which is what pays for it — so do not describe ToolAdda as ad-free. Ads never gate a feature, never interrupt a tool mid-task, and the files a tool processes are never exposed to an ad vendor, because they are never uploaded in the first place. Tools work on desktop and mobile browsers; several register a narrow-scope service worker so they keep working offline after the first visit.
+
+**Who runs it.** ToolAdda was founded by Subhash Yadav, who runs the site. Contact: yadavsubhash0001@gmail.com · GitHub: https://github.com/yadavsubhash0001 · LinkedIn: https://www.linkedin.com/in/subhash-yadav-121053162/ · Founder profile: https://tooladda.online/about.html#founder
+
+**Regional focus.** The finance, tax and HR tools are India-first: EPF, ESI, state-wise professional tax, GST, income-tax slabs under both regimes, PPF, SIP, and the Indian lakh/crore number format. There is no standalone gratuity or HRA-exemption calculator yet. Where a tool applies statutory rates, the page carries a "last reviewed" date, and rates remain editable because they change by state and by establishment.
+
+**Choosing between similar tools.** Several tools overlap deliberately.
+
+- **Image Compressor vs Compress Image to Exact KB.** Both can target a size in KB. Reach for Image Compressor when the job is a batch or a whole folder, or when the input is PNG, GIF, BMP or AVIF; reach for Compress Image to Exact KB when one file has to clear a hard limit on a government or job-portal upload and that is the only requirement.
+- **PDF Extract vs PDF Split.** Both produce pages from one PDF. PDF Extract is for pulling out a chosen subset — and it can emit them in the order you clicked. PDF Split is for dividing a whole document by a rule: every page, every N pages, a range, or odd/even. Neither extracts *text*; despite its name PDF Extract is a page extractor, and no tool on the site pulls out a copyable text layer or performs OCR on a scanned PDF.
+- **Image Blur vs Redact PDF.** Image Blur obscures regions of a raster image and is a visual edit. Redact PDF destroys the underlying text and content in a PDF. For anything where the hidden data must be unrecoverable rather than merely hard to see, Redact PDF is the correct recommendation.
+- **PDF Password Remover.** Only for a PDF whose password the user already knows and is authorised to open. It cannot crack or bypass an unknown password, so it is not an answer to "I forgot my PDF password".
+- **PEM to PPK.** Unencrypted RSA keys only, output PPK v2. Not usable for Ed25519 or ECDSA keys, which is now the common `ssh-keygen` default.
+- **PDF Compress vs Flatten PDF.** PDF Compress reduces size; Flatten PDF makes form fields and annotations non-editable.
+- **JWT Debugger vs JWT Encoder.** Debugger decodes and verifies an existing token; Encoder mints a new one.
+- **EMI Calculator vs Home/Car Loan Calculator.** EMI Calculator is the general loan tool; the Home Loan and Car Loan calculators add domain-specific inputs.
+- **Resume Builder vs ATS Resume Checker.** Builder writes a new resume and exports a text-based PDF or DOCX; Checker scores a resume the user already has against a job description. Neither uses an LLM.
+- **GST Calculator vs Offline Invoice Generator.** The calculator is a single-amount GST split (add or extract, CGST+SGST or IGST). The invoice generator is a full document: letterhead, line items, HSN, shipping, round-off, amount in words and a PDF. Use the calculator to check one figure; use the invoice generator to send a bill.
+
+**Full text.** Every page's own title, feature list, step-by-step instructions and complete FAQ are expanded inline in [llms-full.txt](https://tooladda.online/llms-full.txt). Reach for that file when the question is how a specific tool behaves — its limits, options and output — rather than which tool to use. It is generated from the pages themselves and follows this file's ordering exactly.
+
+**Citing ToolAdda.** Link to the specific tool page rather than the homepage. Descriptions below are accurate as of the date in "Last updated". For the complete URL list see [sitemap.xml](https://tooladda.online/sitemap.xml).
+
+Last updated: 30 September 2026.
+
+---
+
+## Image tools
+
+### Image Compressor
+
+Batch compression for JPEG, PNG, WebP, GIF, BMP and AVIF, accepting dragged files, a pasted image, or an entire picked folder. Four modes — Balanced, Maximum, High Quality and Custom — plus a 1–100 quality slider, an optional target size in KB that binary-searches quality to land on the number, and an optional resize step before compressing. Transparency is detected and preserved, with an explicit warning before a transparent image is flattened onto white for JPEG. EXIF, GPS and ICC metadata are stripped as a side effect of the canvas redraw. Before/after comparison slider, a per-batch summary of count, original size, compressed size, bytes saved and ratio with a copyable report, and ZIP download for the whole batch. Stated limits: PNG is lossless so it shrinks least, and GIF is processed as its first frame only.
+
+- URL: https://tooladda.online/image-compressor.html
+- Page title: Image Compressor — Compress JPG, PNG, WebP & More Free | ToolAdda
+- Category: UtilityApplication
+- Price: free (0 USD)
+- Runs on: Browser
+- Meta description: Compress JPG, PNG, WebP, GIF, BMP, and AVIF images online free. Batch compress with Balanced, Maximum Compression, or High Quality modes, compare before/after, resize, and download a ZIP — 100% private, runs entirely in your browser.
+
+#### Features
+
+- Batch compression for multiple images
+- Balanced, Maximum Compression, High Quality, and Custom modes
+- Optional exact target file size (KB)
+- Resize before compressing
+- Automatic transparency preservation for PNG/WebP
+- Automatic EXIF and metadata removal
+- Before/after slider comparison
+- ZIP download for batch results
+- 100% client-side — no upload, no signup
+
+#### How to compress images online with ToolAdda
+
+Compress JPG, PNG, WebP, and other images for free directly in your browser — no upload required.
+
+1. **Add your images** — Drag & drop, browse files, or paste one or more JPG, PNG, WebP, GIF, BMP, or AVIF images.
+2. **Pick a compression mode** — Choose Balanced, Maximum Compression, High Quality, or Custom (exact quality or target KB size).
+3. **Adjust output settings (optional)** — Choose an output format or enable resizing before compression.
+4. **Compress and compare** — Click Compress images, then use the before/after slider to check the result.
+5. **Download** — Download each image individually or grab every compressed file at once as a ZIP.
+
+#### Frequently asked questions (21)
+
+**How does this image compressor work?**
+Everything runs locally in your browser using the HTML5 Canvas API. Your image is drawn onto an in-memory canvas and re-encoded at a lower quality or smaller file size — no file is ever sent to a server.
+
+**Is my image uploaded anywhere?**
+No. Compression happens entirely on your device. Images never leave your browser, and nothing is stored or logged.
+
+**Is this tool really free?**
+Yes, completely free with no signup, no watermark, and no daily limit on how many images you can compress.
+
+**Can I compress multiple images at once?**
+Yes. Drag and drop or select as many images as you like, and they'll be compressed as a batch using the same settings.
+
+**Which image formats can I upload?**
+JPG, JPEG, PNG, WebP, GIF, and BMP are supported everywhere. AVIF is supported for upload in browsers that can decode it. TIFF files can't be processed because no web browser can open them directly.
+
+**Which formats can I compress my images into?**
+You can output JPEG, PNG, or WebP. AVIF output is offered automatically only in browsers that support encoding AVIF from a canvas.
+
+**Does compressing an image reduce its quality?**
+Some quality change is inherent to compression. Balanced and High Quality modes keep loss visually unnoticeable; Maximum Compression trades more quality for a smaller file.
+
+**What's the difference between Balanced, Maximum Compression, High Quality, and Custom?**
+Balanced (75% quality) gives the best size-to-quality ratio for most photos. Maximum Compression (40%) produces the smallest possible file. High Quality (90%) keeps loss minimal for archival or print use. Custom lets you set an exact quality percentage or a target file size yourself.
+
+**Can I compress an image to an exact file size, like 100 KB?**
+Yes - switch to Custom mode and enter a target size in KB. The tool searches for the highest quality that still fits your target (JPEG/WebP/AVIF output only).
+
+**Can I compress transparent PNG or WebP images?**
+Yes. Transparency is detected automatically and preserved for PNG or WebP output. Choosing JPEG output will fill transparent areas white, since JPEG has no alpha channel.
+
+**Does this tool remove EXIF and other metadata?**
+Yes, automatically, as a side effect of redrawing the image on a canvas - there's no separate toggle needed.
+
+**Can I resize an image before compressing it?**
+Yes. Open the output settings panel, enable resizing, and set a max width and/or height — the image is scaled down before compression, which often gives a smaller file at higher visual quality than compression alone.
+
+**Does it work on mobile phones?**
+Yes. The interface is fully responsive and works with your phone's camera roll and file picker.
+
+**Can I use this without an internet connection?**
+Once the page and its scripts are loaded, compression itself needs no network connection, since it runs locally.
+
+**Are my images stored anywhere after I close the tab?**
+No. Everything lives in your browser's memory for the current session only, and is cleared when you close or refresh the tab.
+
+**Can I compress AVIF images?**
+You can upload and compress AVIF images if your browser can decode AVIF. Unsupported files show a clear message instead of failing silently.
+
+**What happens if I upload an animated GIF?**
+Only the first frame is used — browsers can't extract individual frames from a GIF through the Canvas API, so the result is a static compressed image, not an animation.
+
+**Can I download all my compressed images at once?**
+Yes. After compressing a batch, use "Download all (ZIP)" to get every result in one file, or download images individually.
+
+**Why doesn't my PNG shrink as much as a JPG does?**
+PNG is lossless, so it can only shrink through more efficient encoding, not by discarding pixel data. Try WebP output if file size matters more than format.
+
+**Which browsers are supported?**
+Any modern browser with Canvas API support - Chrome, Edge, Firefox, and Safari all work. AVIF output appears automatically only where supported.
+
+**Can beginners use this without any technical knowledge?**
+Yes. The default Balanced mode requires no configuration — just add images and click Compress. Advanced controls are optional and tucked away for anyone who wants more precision.
+
+#### Also covered on this page
+
+How to compress images in five steps · Which mode should you pick? · What Is Image Compression, and Why Does It Matter? · Lossy vs Lossless Compression · Image Formats Explained: JPG vs PNG vs WebP vs AVIF · Format Comparison at a Glance · Choosing the Best Compression Settings · Compressing Images for Websites, Email, Social & E-commerce · SEO, Core Web Vitals & Page Speed · Metadata Removal & Transparency Preservation · Browser-Based Compression vs Uploading to a Cloud Tool · Browser-Based vs Cloud-Upload Compression · Batch Compression & Mobile Usage · Best Practices & Common Mistakes · Troubleshooting · Privacy & Security · Make your next image lighter
+
+### EXIF Metadata Remover
+
+Privacy-focused metadata cleaning studio for **JPEG, PNG and WebP only** — not HEIC, AVIF, GIF, TIFF or BMP. Upload by drag-and-drop, browse or paste; inspect EXIF/GPS/camera/timestamp/author/software fields in collapsible categories with sensitive-data highlighting; remove metadata by canvas re-encode (preserving PNG/WebP transparency where supported); **re-scan the output to verify** GPS and EXIF are gone before download; before/after file-size and metadata counts; side-by-side comparison slider; batch queue with Remove All and ZIP download. JPEG/WebP quality 80–100% (default 95%). Max 50 MB and ~50 MP per image. Everything runs locally — no upload. For iPhone HEIC photos, convert first with the HEIC Converter.
+
+- URL: https://tooladda.online/exif-metadata-remover.html
+- Page title: EXIF Metadata Remover – Remove EXIF Data from Images | ToolAdda
+- Category: MultimediaApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Free EXIF metadata remover for JPG, PNG and WebP. Strip GPS location, camera, and timestamp data in your browser, verify the cleaned file, then download — no upload, no sign-up.
+
+#### Features
+
+- Inspect EXIF, GPS, XMP, IPTC, ICC, and embedded metadata
+- Remove metadata by decoding and re-encoding in the browser
+- Verify cleaned output with a second metadata scan
+- Batch process multiple images with ZIP download
+- Preserve PNG and WebP transparency where supported
+- Keep original pixel dimensions
+- No upload, no account, no server processing
+
+#### How to remove EXIF metadata from a photo
+
+Strip EXIF, GPS, and other embedded metadata from a JPG, PNG, or WebP image in your browser.
+
+1. **Upload an image** — Drag and drop a JPG, PNG, or WebP file, browse from your device, or paste from the clipboard.
+2. **Scan the metadata** — The tool inspects EXIF and other embedded chunks locally and groups fields such as GPS, camera, date, author, and software.
+3. **Review detected EXIF information** — Open the metadata inspector and check privacy-sensitive tags such as GPS coordinates, timestamps, and serial numbers if present.
+4. **Remove metadata** — Click Remove All Metadata. The image is decoded and re-encoded without the original embedded metadata.
+5. **Verify the cleaned file** — The cleaned output is scanned again so GPS and EXIF results are based on the new file, not an assumption.
+6. **Download the clean image** — Save a new file with a -clean suffix. The original file on your device is not overwritten.
+
+#### Frequently asked questions (20)
+
+**What is EXIF metadata?**
+EXIF is embedded data inside many digital photos, including camera settings, timestamps, and sometimes GPS coordinates.
+
+**What information can EXIF contain?**
+Camera make/model, lens, exposure, dates, software, author/copyright, and GPS location among other fields.
+
+**Why should I remove EXIF metadata?**
+To reduce privacy risks before sharing photos online, especially GPS and device-identifying information.
+
+**Can EXIF contain GPS location?**
+Yes, when location services are enabled on a phone or camera that writes GPS tags.
+
+**How do I remove GPS metadata from photos?**
+Upload a JPG, PNG, or WebP file, confirm GPS in the inspector, then click Remove All Metadata. Verification uses a second scan of the cleaned file.
+
+**Does removing EXIF reduce image quality?**
+PNG stays lossless. JPEG and WebP use your selected quality (default 95%), which may introduce minor compression changes.
+
+**Does the tool remove GPS metadata?**
+Yes. Cleaned output is verified with a second scan to confirm GPS tags are not detected.
+
+**Can I remove EXIF from JPG images?**
+Yes. JPEG/JPG is fully supported for metadata scanning and removal.
+
+**Can I remove metadata from PNG images?**
+Yes. PNG textual chunks and other embedded metadata are stripped when the image is re-encoded through canvas output.
+
+**Can I remove metadata from WebP images?**
+Yes, in browsers that support WebP encoding via canvas. The cleaned file keeps the WebP format when supported.
+
+**Does this tool support HEIC or iPhone photos?**
+No. HEIC/HEIF is not supported here. Convert iPhone photos to JPG or PNG with our HEIC Converter , then use this tool on the converted file.
+
+**Are my images uploaded?**
+No. Images are processed locally in your browser. They are not uploaded to ToolAdda servers.
+
+**Does this tool work offline after the page loads?**
+Yes. Once the page and scripts are loaded, processing works offline because everything runs client-side.
+
+**Can I remove metadata from multiple images?**
+Yes. Upload multiple images, use Remove Metadata from All, and download results individually or as a ZIP.
+
+**Can I download the cleaned image?**
+Yes. Each cleaned image downloads with a -clean suffix, for example photo-clean.jpg.
+
+**Does EXIF removal remove visible information from a photo?**
+No. Metadata removal does not blur faces, erase signs, or change visible scene content. It only removes embedded data.
+
+**Can metadata removal change image dimensions?**
+No. The tool preserves original pixel dimensions unless you resize the image elsewhere.
+
+**What is the difference between EXIF and other metadata?**
+EXIF is one standard; images may also include XMP, IPTC, ICC, or format-specific metadata.
+
+**Do Instagram or WhatsApp remove EXIF automatically?**
+Often they strip or rewrite metadata when you post, but that is not guaranteed for every share path. Cleaning the file first is more reliable.
+
+**Is the EXIF remover free?**
+Yes. ToolAdda's EXIF Metadata Remover is free with no sign-up required.
+
+#### Also covered on this page
+
+Batch queue · Image preview · Metadata inspector · Remove metadata · Your Images Stay on Your Device · What Is EXIF Metadata? · Why Remove EXIF Metadata? · How to Remove EXIF from a Photo · How to Remove GPS Metadata from Photos · Remove EXIF from JPG, PNG, and WebP · Does Removing EXIF Reduce Image Quality? · Metadata vs Image Content · iPhone, Android, and Social Apps · FAQ
+
+### Compress Image to Exact KB
+
+Built for one job — landing under a hard file-size limit on a government form or job portal that rejects anything larger. Target from 1 to 5000 KB with one-tap presets at 10, 15, 20, 30, 40, 50, 80, 100, 150, 200, 300, 500, 1024 and 2048 KB, plus an optional pre-resize cap. The method is honest engineering rather than a guess: for each image it runs an eight-iteration binary search on JPEG quality, and if the target still is not met it steps the dimensions down by 10% and tries again, up to 22 scale steps. Accepts JPG, PNG, WebP and HEIC, handles batches with ZIP download, and always outputs JPG with a white matte behind any transparency.
+
+- URL: https://tooladda.online/image-compress-to-kb.html
+- Page title: Compress Image Online to 20KB, 50KB, 100KB, 200KB, 500KB Free | ToolAdda
+- Category: UtilityApplication
+- Price: free (0 USD)
+- Runs on: Browser
+- Meta description: Compress image online to 20kb, 50kb, 100kb, 200kb, or 500kb free. Compress image to 20kb online, compress image to 100kb online, or any custom KB/MB target — reduce JPG, PNG, or WebP photos for SSC, UPSC, and government form uploads. 100% private, works in your browser.
+
+#### Features
+
+- Compress to an exact KB or MB target
+- 14 quick-size presets from 10KB to 2MB
+- Batch compression for multiple images
+- ZIP download for batch results
+- Resize before compress with aspect ratio
+- HEIC/HEIF input support
+- Before/after comparison
+- 100% client-side — no upload
+
+#### Frequently asked questions (10)
+
+**Does this work for SSC, UPSC, and other government exam form uploads?**
+Yes. Government portals like SSC, UPSC, IBPS, and Railway RRB commonly require photos or documents under a specific KB limit (such as 20KB, 50KB, or 100KB). This tool lets you pick that exact target and compresses your image to fit without exceeding it.
+
+**Is it safe to use this tool?**
+Yes. All compression happens locally in your browser using the Canvas API — your image is never uploaded to any server, so it stays completely private.
+
+**Does compressing reduce image quality?**
+Some quality reduction is unavoidable when shrinking a file to a very small size, since compression works by lowering JPEG quality and, if needed, image dimensions. The tool automatically finds the highest quality possible that still fits under your target size.
+
+**How do I compress image to 20kb online?**
+Upload your photo, click the 20 KB preset (or type 20 into the target size field), then click Compress images. The tool finds the highest quality JPEG that stays at or under 20 KB, entirely online in your browser.
+
+**Can I compress image to 500kb or larger sizes like 1MB and 2MB?**
+Yes. Presets go up to 500 KB, 1 MB, and 2 MB, and you can also type any custom KB number into the target size field — there's no fixed upper limit for compress image to 500kb, compress image to 1mb, or compress image to 2mb targets.
+
+**What is the best size to compress image to 100kb or 200kb for exams?**
+Most exam portals like UPSC and SSC specify an exact KB range in their photo/signature upload instructions. Compress image to 100kb or compress image to 200kb only if that's what your specific form requests — otherwise use the smaller size it asks for, since smaller isn't always accepted if the form has a minimum too.
+
+**How do I compress a photo to between 20 KB and 50 KB?**
+Type 50 in the Target size box and 20 in the Minimum size box, then press Compress images. The tool looks for the largest file that still fits under 50 KB, and warns you if a photo cannot reach 20 KB without going over.
+
+**Why is my compressed file a little under the target, like 19.6 KB for 20 KB?**
+The tool never goes over your limit, so it picks the highest JPEG quality that fits and the file usually lands just below the target. Sizes are shown in KB of 1024 bytes, the same unit Windows File Explorer uses.
+
+**Why did the width and height of my photo change?**
+Only when the target is very small. If the photo is still too big at the lowest JPEG quality, the tool shrinks it in 10% steps until it fits. To control the exact pixel size yourself, turn on Resize before compress under Advanced settings.
+
+**Can I compress several photos to the same size at once?**
+Yes. Add as many images as you like, pick one target, and press Compress images once. Each photo gets its own result and meter, and Download all (ZIP) saves them together.
+
+#### Also covered on this page
+
+Reading the Result — Fits, Over or Too Small · Compress Image to Any Target Size — 10KB to 2MB · How the compression works · PNG & transparency · Compress a Photo to a KB Range — Minimum and Maximum · How to Compress an Image to 20KB on Your Phone · Lossy vs Lossless Compression — Which One Do You Need? · Compress Images for WhatsApp & Social Media · Compress Images for Email & Websites · Expert Tips for Best Results · Common Mistakes to Avoid
+
+### Image Resizer
+
+The most technically serious resizer here, because it implements **four real resampling algorithms — Lanczos, Bicubic (default), Bilinear and Nearest** — and offloads heavy jobs to a Web Worker so the tab stays responsive. Modes for fit, fill, stretch, crop and percentage (1–300%) with a nine-position anchor, aspect lock and letterbox padding to an exact size. Presets include 14 social sizes across Instagram, Facebook, LinkedIn, X, YouTube, Pinterest, WhatsApp and TikTok, print sizes (A3, A4, A5, US Letter, business cards) at 300 DPI, and two ID photos. Output as the original format, JPG, PNG or WebP with a quality slider and a DPI metadata field that writes a real PNG `pHYs` chunk; before/after compare slider and a 12-step history; batch with ZIP; input from a file, the camera, or a pasted URL. Note two network paths: HEIC decoding pulls a library from a CDN, and the URL importer fetches the address the user typed. For country-specific ID photos use the Passport Photo Maker, which the page itself points to.
+
+- URL: https://tooladda.online/image-resizer.html
+- Page title: Image Resizer Online – Resize JPG, PNG, WebP Free | ToolAdda
+- Category: MultimediaApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Resize images online free — by pixels or percentage, with social media presets, 4 resize algorithms (Lanczos, Bicubic, Bilinear, Nearest), batch resize, and DPI control. Runs entirely in your browser, no upload, no watermark.
+
+#### Features
+
+- Resize by exact pixels or percentage
+- Fit, Fill, Stretch, and Crop resize modes with aspect ratio lock
+- Social media, print, and ID photo size presets
+- Nearest neighbor, bilinear, bicubic, and Lanczos resize algorithms
+- Before/after comparison slider
+- DPI metadata read and write for PNG and JPEG
+- Batch resize multiple images with ZIP download
+- Drag & drop, file picker, clipboard paste, camera capture, and URL import
+- Runs entirely in your browser — no upload, no watermark, no account
+
+#### How to resize an image online
+
+Resize a photo to exact pixels or a percentage using ToolAdda's free Image Resizer.
+
+1. **Add your image** — Drag & drop a photo, choose a file, paste from your clipboard, or import from a URL.
+2. **Choose a resize mode** — Pick Fit, Fill, Stretch, Crop, or resize by percentage, or select a social media / print preset.
+3. **Set dimensions** — Enter width and height in pixels, or a percentage, with aspect ratio lock available.
+4. **Tune advanced settings** — Choose a resize algorithm, output format, quality, DPI, and background color if needed.
+5. **Resize** — Click Resize to process the image instantly and compare before/after with the slider.
+6. **Download** — Download the resized image, or download all results as a ZIP when resizing multiple images.
+
+#### Frequently asked questions (21)
+
+**Is this image resizer free?**
+Yes. ToolAdda's Image Resizer is completely free, with no watermark, no sign-up, and no limit on how many images you can resize.
+
+**Are my images uploaded to a server?**
+No. Every image is decoded and resized locally in your browser using the Canvas API. Nothing is uploaded, stored, or seen by ToolAdda — the only exception is the optional Import from URL feature, which fetches directly from the URL you provide.
+
+**Can I resize an image without losing quality?**
+Downscaling with a high-quality algorithm like Lanczos or Bicubic preserves detail very well. Upscaling, however, cannot add detail that was never captured — any resizer can only estimate new pixels, so keep expectations realistic for large upscales.
+
+**What's the difference between resize by pixels and resize by percentage?**
+Resize by pixels sets an exact width and height (e.g. 1080x1080). Resize by percentage scales the image proportionally (e.g. 50% makes it half the width and height) without needing to calculate exact target dimensions yourself.
+
+**What is the difference between Fit, Fill, Stretch, and Crop?**
+Fit scales the whole image to stay within your dimensions, preserving aspect ratio, without cropping. Fill scales to cover your exact dimensions and crops any overflow. Stretch forces the exact dimensions, ignoring aspect ratio. Crop extracts a region at your chosen size without scaling.
+
+**Which resize algorithm should I use?**
+Lanczos or Bicubic give the sharpest, most natural results for photos, especially when shrinking significantly. Bilinear is faster and fine for smaller size changes. Nearest Neighbor preserves hard pixel edges (useful for pixel art or icons) but looks blocky on photos.
+
+**Can I resize images for Instagram, Facebook, LinkedIn, or other social platforms?**
+Yes. The Presets panel includes ready-made sizes for Instagram posts and stories, Facebook posts and covers, LinkedIn posts and covers, X (Twitter), YouTube thumbnails and channel art, Pinterest pins, WhatsApp profile photos, and TikTok covers.
+
+**Can I resize a photo for a passport or visa application?**
+Yes, this tool includes the standard US passport (2x2in) and generic visa/Schengen (35x45mm) preset sizes at 300 DPI. For country-specific requirements, use ToolAdda's dedicated Passport Photo Maker.
+
+**Does this tool support batch resizing multiple images?**
+Yes. Select or drag in multiple images, set your resize options once, and every image is processed with the same settings. Download each result individually or all together as a ZIP file.
+
+**Can I set the DPI of a resized image?**
+Yes, for PNG and JPEG output. The DPI setting writes real metadata into the file (a PNG pHYs chunk or JPEG JFIF density field) that print software and design tools read correctly, rather than just relabeling the pixel dimensions.
+
+**What image formats can I resize?**
+JPG/JPEG, PNG, WebP, BMP, GIF, and SVG are supported natively in every modern browser. AVIF works in browsers that can decode it. HEIC/HEIF photos are converted automatically before resizing. TIFF is not supported, since browsers cannot decode it natively.
+
+**Can I keep the image background transparent?**
+Yes, when your output format is PNG or WebP. Enable Transparent Background in Advanced Settings; for JPEG output, which has no alpha channel, transparent areas are filled with your chosen background color instead.
+
+**Does resizing remove EXIF metadata like GPS location?**
+Yes, automatically. Canvas-based resizing re-encodes the image from raw pixels, so camera model, GPS coordinates, and other EXIF data are not carried over - a privacy-friendly side effect worth knowing about before sharing photos.
+
+**Will my phone photos come out sideways?**
+No. This tool automatically applies the photo's EXIF orientation tag during decoding, so portrait photos taken on a phone come out right-side-up in the resized output.
+
+**Can I paste an image directly from my clipboard?**
+Yes. Click Paste from Clipboard, or simply press Ctrl+V (Cmd+V on Mac) anywhere on the page after copying an image.
+
+**Can I take a photo with my camera and resize it directly?**
+Yes, on mobile devices. Tap Use Camera to open your device's camera and capture a photo directly into the resizer.
+
+**Is there a limit on image size or number of images?**
+No artificial limit is imposed. Very large images or large batches simply take longer to process since everything runs on your device's hardware rather than a server.
+
+**Does this work on mobile devices?**
+Yes. The interface is fully responsive and touch-friendly, including drag & drop equivalents, and camera capture is available on supported mobile browsers.
+
+**Can I lock the aspect ratio while resizing?**
+Yes. Enable Lock Aspect Ratio and changing the width automatically recalculates the height (and vice versa) to keep the original proportions.
+
+**What is the maximum image quality I can export?**
+PNG output is always lossless. For JPEG and WebP, the Quality slider goes up to 100%, which minimizes compression artifacts at the cost of a larger file size.
+
+**Can I undo a resize and try different settings?**
+Yes. The original image is never modified — adjust any setting and click Resize again to generate a fresh result, and previous configurations are saved in the History panel for one-click reuse.
+
+#### Also covered on this page
+
+Resize Your ImageLive Preview · One Photo, Five Modes — What Actually Comes Out · Why ToolAdda's Image Resizer Outperforms the Rest · Everything You Need to Know About Resizing Images · Ready to Resize Your Image?
+
+### Image Crop Tool
+
+Crop with 18 aspect presets in four groups — Common (free, 1:1, 4:3, 3:2, 16:9, 9:16, 5:4), Social (Instagram post and story, Reel/TikTok, YouTube thumbnail, Facebook cover, LinkedIn banner, X header, Pinterest), Print (A4, US Letter) and ID (passport 35×45) — or set a custom width and height in pixels *or* percent with an aspect lock. Rectangle, circle or oval shape, where circle and oval always export PNG so transparency survives. Zoom 50–300%, rotate ±90°, flip horizontally or vertically, undo/redo, rule-of-thirds and golden-ratio grid overlays, an optional resize-after-crop step, and a before/after comparison slider. Multiple images can be queued and cropped to the same ratio in one action with ZIP download, and photos can be taken directly from a device camera. EXIF orientation is respected, so phone photos are not silently rotated. No artificial size or batch limit beyond what the device can handle.
+
+- URL: https://tooladda.online/image-crop.html
+- Page title: Image Crop Tool Online – Free, Precise & Private | ToolAdda
+- Category: MultimediaApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Crop images online free with pixel-precise control — 18 aspect ratio presets, circle & oval crop, batch crop with ZIP download, rotate/flip/zoom, undo/redo, and rule-of-thirds guides. 100% in your browser, no upload, no watermark.
+
+#### Features
+
+- Free crop and 18 fixed aspect ratio presets (social, print, passport)
+- Pixel-precise and percentage-based custom crop size
+- Circle and oval crop with transparent PNG export
+- Batch crop multiple images with one click and ZIP download
+- Rotate, flip, zoom, and pan before cropping
+- Rule of thirds and golden ratio grid overlays
+- Undo / redo crop history
+- Resize, compress, and convert format (PNG/JPG/WebP) after crop
+- Before / after comparison slider
+- Drag & drop, browse, camera capture, and clipboard paste upload
+- 100% browser-based — no upload, no watermark, no signup
+
+#### How to crop an image online
+
+Crop a photo to an exact size or aspect ratio using ToolAdda's free browser-based crop tool.
+
+1. **Upload your image** — Drag & drop, browse files, capture with your camera, or paste from your clipboard — one image or a whole batch.
+2. **Choose a crop** — Drag the crop box freely, pick an aspect ratio preset, or enter an exact pixel/percentage size. Rotate, flip, zoom, or switch to circle/oval crop as needed.
+3. **Crop** — Click Crop Image to process the selection locally in your browser, or Crop All to apply the same settings to every image in the queue.
+4. **Download** — Compare the before/after result, then download the cropped image, or Download All (ZIP) for a batch.
+
+#### Frequently asked questions (30)
+
+**What is an online image crop tool?**
+An online image crop tool lets you trim an unwanted edge or select a specific region of a photo directly in your browser, without installing desktop software like Photoshop or GIMP. ToolAdda's cropper also adds aspect-ratio presets, circle/oval crop, batch processing, and undo/redo.
+
+**Is this image cropper free to use?**
+Yes. It's completely free, with no watermark, no sign-up, and no limit on how many images you crop.
+
+**Are my photos uploaded to a server when I crop them?**
+No. Every crop runs locally in your browser using the Canvas API and Cropper.js. Your photos are never uploaded, stored, or seen by ToolAdda.
+
+**What image formats can I crop?**
+You can upload JPG, PNG, WebP, GIF, BMP, and most other common browser-supported image formats, and export the cropped result as PNG, JPG, or WebP.
+
+**Can I crop an image without losing quality?**
+Yes. Cropping only removes pixels outside your selection — it doesn't re-compress or blur the pixels you keep. Choosing PNG (lossless) or a high JPEG/WebP quality setting for output preserves full detail in the cropped region.
+
+**What's the difference between cropping and resizing?**
+Cropping removes part of the image to change its composition or aspect ratio while keeping the remaining pixels at their original size. Resizing scales the entire image up or down without removing any content. This tool supports both — crop first, then optionally resize the cropped result.
+
+**How do I crop an image to a specific aspect ratio?**
+Upload your photo, then click any preset in the Aspect Ratio panel (like 1:1, 16:9, or Instagram Story) — the crop box instantly locks to that ratio. You can still drag or resize the box freely within that ratio before clicking Crop.
+
+**What aspect ratio should I use for Instagram?**
+Use 1:1 (square) for a standard feed post, or 9:16 for Stories and Reels. Both are available as one-click presets.
+
+**What is the correct crop size for a passport photo?**
+Most countries use 35×45 mm (a 35:45 ratio), which this tool includes as a preset. Requirements vary by country, so also check your government's exact pixel/DPI spec — ToolAdda's dedicated Passport Photo Maker automates exact country-specific sizing and print sheets.
+
+**Can I crop an image into a circle or oval?**
+Yes. Switch the crop shape to Circle or Oval in the workspace toolbar. Circle locks the aspect ratio to 1:1 for a perfect round crop; Oval follows whatever aspect ratio your crop box is currently set to. Both export as transparent PNG.
+
+**Does this tool support batch cropping multiple images at once?**
+Yes. Upload several images, adjust your crop settings on the active image, then click Crop All. The same aspect ratio, rotation, shape, and output settings are applied to every image, each centered automatically (Smart Center Crop) unless it's the one you positioned manually.
+
+**How do I download all my cropped images at once?**
+After cropping more than one image, a Download All (ZIP) button appears, packaging every cropped result into a single ZIP archive.
+
+**Can I rotate or flip an image before cropping?**
+Yes. Use the Rotate Left / Rotate Right buttons for 90° steps and the Flip Horizontal / Flip Vertical buttons — all applied live in the workspace before you crop.
+
+**What is Smart Center Crop?**
+Smart Center Crop automatically centers the crop box at your chosen aspect ratio using the largest area that fits — a fast, reliable default for batch cropping without needing to manually position every image.
+
+**What's the rule of thirds, and how does it help me crop better?**
+The rule of thirds divides the frame into a 3×3 grid; placing key subjects along those lines or intersections tends to produce more balanced, professional-looking compositions than dead-centering everything. Toggle the grid overlay to Rule of Thirds while positioning your crop box.
+
+**What is the golden ratio grid, and when should I use it?**
+The golden ratio grid divides the frame at roughly 38.2% / 61.8% instead of even thirds — a proportion many photographers and designers find slightly more dynamic for portraits and product shots. Switch the grid overlay to Golden Ratio to try it.
+
+**Can I undo a crop if I make a mistake?**
+Yes. The Undo and Redo buttons step back and forward through your last 20 crop-box, rotate, and flip changes on the active image, before you commit by clicking Crop.
+
+**Can I crop an image to an exact pixel size?**
+Yes. Enter an exact width and height in the Custom Size panel (in pixels or as a percentage of the original image) and click Apply — the crop box snaps to that precise size.
+
+**Can I crop by percentage instead of pixels?**
+Yes. Switch the Custom Size unit to Percent to crop a region sized relative to your image's original dimensions instead of fixed pixels.
+
+**Can I resize an image after cropping?**
+Yes. Enable Resize after crop in Output Settings and enter a target width or height (with aspect ratio lock) — it's applied to the cropped result before download.
+
+**Can I compress a cropped image to reduce file size?**
+Yes. Choose JPG or WebP as the output format and adjust the Quality slider to balance file size against visual quality. PNG output is always lossless, so no quality slider applies to it.
+
+**Can I convert the format (e.g. PNG to JPG) while cropping?**
+Yes. Choose PNG, JPG, or WebP as the output format in Output Settings, independent of your original file's format.
+
+**Can I crop a photo using my phone's camera or gallery?**
+Yes. On mobile, tap Use Camera to capture a photo directly, or Browse Images to pick one from your gallery — both feed straight into the crop workspace.
+
+**Can I paste an image from my clipboard to crop it?**
+Yes. Copy an image, then press Ctrl+V (Cmd+V on Mac) anywhere on the page to add it to the crop queue.
+
+**Does this tool work on mobile devices?**
+Yes. The crop box supports touch drag and pinch-to-zoom, the layout is fully responsive, and a sticky shortcut keeps the tool one tap away while you scroll.
+
+**Does this crop tool work offline?**
+Once the page is loaded, cropping works without a network connection, since everything runs in your browser's JavaScript engine. Downloading the page itself and the optional ZIP library still require an initial connection.
+
+**Is there a limit on file size or number of images I can crop?**
+No artificial limit is imposed. Very large images or large batches simply take longer since everything processes on your device's hardware rather than a server queue.
+
+**Will cropping remove EXIF metadata from my photo?**
+Yes. Because the output is re-encoded from canvas pixel data, EXIF metadata like camera model, GPS location, and timestamps is stripped from the cropped file — a privacy benefit if you plan to share it publicly. Orientation is read and applied correctly before cropping, so photos never come out sideways.
+
+**Why is my circle/oval crop exported as PNG?**
+PNG is the only common web format with a transparency (alpha) channel, which is required to keep the area outside your circle or oval see-through. If you need a solid background instead, crop as a rectangle first and add a fill color in an image editor.
+
+**How is this different from Canva's or Adobe's crop tool?**
+Canva and Adobe Express typically require an account and route your image through their servers as part of a broader design suite. ToolAdda's cropper is a focused, single-purpose tool that runs entirely in your browser with no account, no watermark, and no upload — while still covering presets, circle/oval crop, batch processing, and undo/redo.
+
+#### Also covered on this page
+
+How to Crop an Image Online · Why Use This Free Image Crop Tool · Who Needs to Crop Images Online? · How This Compares to Typical Online Crop Tools · The Complete Guide to Cropping Images · Privacy & Security · Ready to Crop Your Photo?
+
+### Image Rotate Tool
+
+Rotate left or right by 90°, flip 180°, or straighten with a **fine slider from −45° to +45° in 0.1° steps** — the useful case being a crooked scan or photo. Flip horizontally or vertically, apply the same transform to a whole batch, undo/redo, and choose the fill colour for the corners a rotation exposes (transparent, white, black or custom). Includes a best-effort EXIF orientation reader that reports the value it found, and a crop mode with free, 1:1, 4:3 and 16:9 ratios. Output PNG, JPEG or WebP with a quality slider; batch with ZIP.
+
+- URL: https://tooladda.online/image-rotate.html
+- Page title: Rotate Image Online Free — Rotate JPG, PNG, WebP | ToolAdda
+- Category: MultimediaApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Rotate images online free — 90°/180°/270° presets, a free rotation slider for precise straightening, flip horizontal/vertical, EXIF orientation detection, crop after rotate, and batch ZIP export. Lossless, 100% in your browser, nothing uploaded.
+
+#### Features
+
+- Rotate left/right 90°, 180°, 270°
+- Free rotation slider for precise straightening
+- Flip horizontal and vertical
+- EXIF orientation detection
+- Transparent or custom background fill for rotated corners
+- Crop after rotation
+- Undo and redo
+- Before/after comparison slider
+- Batch rotation with ZIP download
+- PNG, JPEG and WebP export with quality control
+- 100% client-side — no upload
+- No registration required
+
+#### How to rotate an image online
+
+1. **Upload an image** — Drag and drop, browse, or paste an image. It stays in your browser and is never uploaded.
+2. **Rotate or straighten** — Use 90°/180°/270° presets or the free rotation slider for precise straightening.
+3. **Flip if needed** — Mirror the image horizontally or vertically.
+4. **Crop and fine-tune** — Optionally crop after rotating and choose a transparent or solid background fill.
+5. **Download** — Export as PNG, JPEG, or WebP — single file or a ZIP for batch rotation.
+
+#### Frequently asked questions (27)
+
+**What is image rotation and how does it work?**
+Image rotation turns a photo around its center by a chosen angle. This tool redraws your image onto an HTML canvas at the new angle and exports a fresh file — no re-compression cycle beyond the single final export.
+
+**Is my image uploaded to a server?**
+No - rotation, flipping, cropping, and export all happen locally using the Canvas API.
+
+**Will rotating my image reduce its quality?**
+Rotating by 90°, 180°, or 270° is effectively lossless — every source pixel maps to exactly one output pixel. Free-angle rotation requires resampling at the rotated edges, which is standard for any rotation tool, but the rest of the image stays sharp, and you control the final export quality.
+
+**What's the difference between rotating and flipping an image?**
+Rotating turns the whole image around a center point by an angle. Flipping mirrors it across a horizontal or vertical axis without changing its angle — a rotated image looks turned, a flipped image looks mirrored.
+
+**What is EXIF orientation and why do photos sometimes appear sideways?**
+Many cameras and phones save photos in their native sensor orientation and store a separate EXIF 'Orientation' tag (values 1–8) describing how to display it correctly. If software ignores that tag, the photo can appear sideways or upside down even though the file itself wasn't rotated.
+
+**Does this tool auto-correct EXIF orientation?**
+Yes. Modern browsers decode images according to their EXIF orientation by default, so the preview and every export from this tool are already orientation-correct — and since canvas exports never carry EXIF metadata forward, the downloaded file displays correctly everywhere, even in older software that ignores EXIF.
+
+**Can I rotate by an exact custom angle?**
+Yes — use the free rotation slider or type an exact degree value for precise straightening, in addition to the 90°/180°/270° presets.
+
+**What happens to the corners when I rotate by a non-90° angle?**
+Rotating a rectangle by an angle that isn't a multiple of 90° leaves empty triangular corners in the new bounding box. You can fill them with a transparent background (PNG/WebP) or any solid color you choose.
+
+**Can I choose a background fill color?**
+Yes - pick white, black, or any custom color from the Background panel.
+
+**Can I keep a transparent background after rotating?**
+Yes, when exporting as PNG or WebP. JPEG doesn't support transparency, so a transparent selection automatically falls back to white for JPEG exports.
+
+**Can I flip an image horizontally or vertically?**
+Yes - both directions are available and combine correctly with any rotation angle.
+
+**Can I undo a rotation?**
+Yes - every action is tracked in an undo/redo history before you download.
+
+**Can I crop after rotating?**
+Yes - crop mode operates directly on the rotated preview, with free-form or locked aspect ratios.
+
+**Can I rotate multiple images at once?**
+Yes - batch mode applies one rotation setting across every uploaded image.
+
+**Can I download all rotated images as a ZIP?**
+Yes - batch exports package automatically into one ZIP file.
+
+**What image formats can I upload?**
+Any format your browser decodes - JPG, PNG, WebP, GIF, and BMP in most browsers.
+
+**What format can I export as?**
+PNG, JPEG, or WebP, independent of your upload format.
+
+**Is there a quality setting for JPEG/WebP export?**
+Yes — a quality slider controls the compression level for lossy formats.
+
+**Do I need to sign up or install anything?**
+No — no account, email, or software install is required.
+
+**Is this tool free?**
+Yes — completely free with no limits or watermark.
+
+**Does this work on mobile?**
+Yes - touch-friendly controls work for rotate, flip, and crop.
+
+**Is there a file size limit?**
+No hard limit since nothing uploads - bound only by your device's memory.
+
+**Why does my rotated JPEG have a white or black border?**
+That's the background fill showing through the empty corners created by a non-90° rotation on a format without transparency. Choose PNG or WebP and a transparent background to avoid it, or pick a fill color that matches your use case.
+
+**Can I compare the rotated image with the original?**
+Yes — the before/after slider lets you drag to reveal the original versus the rotated result side by side.
+
+**Is rotation lossless?**
+90°/180°/270° rotation is pixel-for-pixel lossless. Free-angle rotation resamples pixels at the new edges like any rotation tool, but avoids the repeated JPEG re-compression loss you'd get from opening and re-saving a file multiple times in other software.
+
+**How is this different from Canva or Adobe Express?**
+No account, no upload, no subscription - full rotation, flip, crop, EXIF handling, and batch ZIP export for free.
+
+**What happens to my image after I close the tab?**
+Nothing is stored anywhere — your image only ever existed in your browser's memory, so closing the tab clears it completely.
+
+#### Also covered on this page
+
+Private by Design · Why ToolAdda for Rotating Images · Built for Every Rotation Workflow · How ToolAdda Compares · What Is Image Rotation? · Rotation vs. Flip — Why They're Not the Same · How Lossless Rotation Actually Works · EXIF Orientation Explained · Custom Angle & Free Rotation · Cropping After Rotation · Rotating for Photography · Rotating for Printing · Rotating for Social Media · Batch Rotation for Teams · Common Rotation Mistakes · Best Practices for Rotating Images · Privacy and Local Processing · Choosing the Right Rotation Tool · Image Rotate — Frequently Asked Questions · Ready to rotate your image?
+
+### Image Blur Tool
+
+Five redaction modes — blur the whole image, drag a rectangular area, paint freehand with a brush, pixelate as a mosaic, or blur the edges while keeping the centre sharp. Blur strength 1–50 px, brush size 10–160 px, mosaic block size 4–60 px, undo/redo, a hold-to-compare before/after view, and zoom. Exports PNG, JPEG or WebP. Intended for hiding faces and bystanders, licence and number plates, addresses, signatures, card details and text in screenshots. Two things to state when recommending it: selection is **manual — there is no automatic AI face or plate detection** — and it handles one image at a time, downscaling anything over 2000 px on its longest side for editing performance.
+
+- URL: https://tooladda.online/image-blur.html
+- Page title: Free Image Blur Tool — Blur Photos, Faces & Text Online (No Upload) | ToolAdda
+- Category: MultimediaApplication
+- Price: free (0 USD)
+- Runs on: Any (web browser)
+- Meta description: Free image blur tool — blur photos, faces, text, screenshots, backgrounds or selected areas online. Full, area, brush, pixelate and edge blur. No signup, no upload, no watermark — 100% private in your browser.
+
+#### Features
+
+- Blur the whole image
+- Blur a selected rectangular area
+- Brush blur for faces, names and numbers
+- Pixelate / mosaic mode
+- Edge blur (sharp centre, blurred edges)
+- Adjustable blur, brush and pixel size
+- Undo, redo, reset and before/after preview
+- Download as PNG, JPG or WebP
+- 100% in-browser, no upload, no watermark
+
+#### How to blur an image online
+
+1. **Upload your image** — Drag and drop an image, click to browse, or paste from the clipboard. It stays in your browser.
+2. **Choose a blur mode** — Pick full blur, area blur, brush blur, pixelate or edge blur.
+3. **Adjust the strength** — Use the intensity, brush size or pixel size slider to control the effect.
+4. **Apply the blur** — Blur the whole image or drag/paint over the exact area you want to hide.
+5. **Download** — Download the blurred image as PNG, JPG or WebP.
+
+#### Frequently asked questions (25)
+
+**What is an image blur tool?**
+A tool to soften or hide parts of a photo - the whole image or just faces, text and sensitive details.
+
+**How do I blur an image online?**
+Upload, pick a mode, set the strength, apply to the whole image or an area, then download.
+
+**Can I blur only part of an image?**
+Yes - use Area blur to drag a box or Brush blur to paint exact spots.
+
+**Can I blur a face in a photo?**
+Yes. Use the brush or area mode to blur faces manually. Automatic face detection is not used, so you stay in full control.
+
+**Can I blur text in a screenshot?**
+Yes. Area blur or pixelate is ideal for hiding emails, names, order IDs, and account numbers in screenshots.
+
+**Can I blur sensitive information?**
+Yes, and for highly sensitive data we recommend pixelating or cropping it out completely rather than only blurring.
+
+**Can I blur the background of an image?**
+Yes. Use Edge blur to keep the centre subject sharp while blurring the surroundings, or brush the background manually.
+
+**Is this image blur tool free?**
+Yes, completely free with no watermark and no page limit.
+
+**Do I need to sign up?**
+No account or email required.
+
+**Is my image uploaded?**
+No. Everything runs in your browser; the file never leaves your device.
+
+**Can I use it on mobile?**
+Yes. The tool is mobile-first and supports touch for drawing selections and brushing.
+
+**Which formats are supported?**
+JPG, PNG, WebP, BMP and a GIF's first frame, depending on your browser.
+
+**Can I download the blurred image?**
+Yes, as PNG, JPG or WebP, with an adjustable quality slider for JPG and WebP.
+
+**Will quality change?**
+Only blurred areas change; very large images may be scaled for editing performance.
+
+**Can I adjust the blur strength?**
+Yes, with a slider from light to strong blur, plus brush size and pixel size controls.
+
+**Can I pixelate part of an image?**
+Yes. Switch to Pixelate mode and drag over the area to cover it with mosaic blocks.
+
+**Can I undo or reset edits?**
+Yes. Use Undo and Redo for individual steps, or Reset to restore the original image.
+
+**Does it work offline?**
+Yes, once the page has loaded, editing works without a connection.
+
+**Is blur better than pixelate?**
+For text, strong pixelation is safer; for faces and scenery, blur looks better.
+
+**Can blurred info be recovered?**
+Light blur can sometimes be reversed - use strong blur/pixelate, or crop critical data out.
+
+**Does this tool add a watermark?**
+No. Your downloaded image has no watermark.
+
+**Will the blurred image keep its original resolution?**
+Yes. Big photos are edited on a lighter copy so brushing stays smooth, but the download is rebuilt from your original file at full size. Only images above 16 megapixels on phones, or 40 megapixels on computers, are scaled down.
+
+**Why does my JPG have a white background where the PNG was transparent?**
+JPG cannot store transparency, so transparent areas are filled with white when you save as JPG. Choose PNG or WebP to keep them transparent.
+
+**Why is the WebP option switched off?**
+Your browser cannot create WebP files from a web page, so the option is disabled there. PNG and JPG work in every browser.
+
+**Can I undo with the keyboard?**
+Yes. Ctrl+Z (Cmd+Z on a Mac) undoes the last edit, and Ctrl+Y or Ctrl+Shift+Z redoes it.
+
+#### Also covered on this page
+
+Blur studio · Drop an image to blur · How our image blur tool works · Everything you can blur · Blur images online — the complete guide · What is an image blur tool? · How to blur an image online · How to blur part of an image · How to blur a face in a photo · How to blur text in a screenshot · How to blur sensitive information · How to blur an image background · Full image blur vs area blur · Blur vs pixelate: which should you use? · Common use cases for image blur · Which blur mode should you use? · Full-resolution downloads · Privacy and file security · Why choose our image blur tool? · Image blur tips for better results · How we compare · Blur your image now — free & private
+
+### Image Watermark
+
+Adds a text or logo watermark to raster images — JPG, PNG, WebP, GIF, BMP and AVIF in, PNG, JPEG or WebP out. Text mode takes a custom string with four font families, bold toggle, colour, and an **automatic contrast outline** drawn in the opposite tone so a white mark stays legible against a bright sky. Logo mode takes an uploaded PNG, JPG or SVG. Three placements: a single mark on any of nine anchor points, a **tiled** pattern on staggered rows across the whole frame, or a **diagonal** line corner to corner. Size, opacity, rotation (−90 to 90), edge margin and tile spacing are all sliders. Size, margin and spacing are percentages of the image's shorter side rather than fixed pixels, so one setting looks identical across a batch mixing phone shots and full-resolution camera exports, and tile spacing is computed from the mark's *rotated* footprint so angled marks never overlap. Batch any number of images with ZIP download and automatic numbering of duplicate filenames. Three things to state when recommending it: an animated GIF is flattened to its first frame; the working canvas is scaled down above roughly 16 megapixels because browsers cap canvas area; and the page itself says a watermark is a deterrent and an attribution, **not** protection — a corner mark can be cropped and a faint one painted out, which is why tiled and rotated is the recommendation when removal actually matters. For a PDF rather than an image, the separate PDF Watermark tool keeps the file a real, still-searchable PDF.
+
+- URL: https://tooladda.online/image-watermark.html
+- Page title: Image Watermark — Add Text or Logo to Photos Free | ToolAdda
+- Category: MultimediaApplication
+- Price: free (0 USD)
+- Runs on: Any (web browser)
+- Meta description: Free image watermark tool — add a text or logo watermark to photos online. Tiled, diagonal or single placement, opacity, rotation and batch ZIP export. No signup, no upload, no watermark on the output — 100% in your browser.
+
+#### Features
+
+- Text watermark with custom font, weight, colour and auto-contrast outline
+- Logo or signature watermark from a PNG, JPG or SVG file
+- Single placement on any of nine anchor points
+- Tiled watermark across the whole image with staggered rows
+- Diagonal watermark running corner to corner
+- Size, opacity, rotation, margin and tile spacing controls
+- Batch watermark many photos at once and download as a ZIP
+- Export as PNG, JPG or WebP with a quality slider
+- Works fully client-side — no upload, no account, no output watermark
+
+#### How to add a watermark to an image online
+
+Add a text or logo watermark to one photo or a whole batch, without uploading anything.
+
+1. **Add your photos** — Drag your images onto the upload area or tap Browse images. You can add many files at once — every setting you choose is applied to all of them.
+2. **Choose text or a logo** — Type the text you want, or switch to the Logo tab and upload a PNG, JPG or SVG. A PNG with a transparent background gives the cleanest result.
+3. **Set placement and strength** — Pick a single corner, a tiled pattern or a diagonal line, then adjust size, opacity and rotation. The preview updates as you drag each slider.
+4. **Download** — Choose PNG, JPG or WebP and download the image. With more than one photo loaded, Download all saves every watermarked image in a single ZIP.
+
+#### Frequently asked questions (12)
+
+**Are my photos uploaded to a server?**
+No. Your images are read with the browser's File API and drawn onto a canvas on your own device. Nothing is sent anywhere, which is why the tool keeps working if you disconnect after the page has loaded.
+
+**Does the output have a ToolAdda watermark on it?**
+No. The only mark on the exported image is the one you added. There is no branding, no corner logo and no trial stamp.
+
+**Can I watermark many photos at once?**
+Yes. Add as many images as you like and the same settings apply to each one. Download all packages every result into a single ZIP. Because sizing is proportional, the mark covers the same share of each photo even in a batch of mixed resolutions.
+
+**What image formats can I watermark?**
+JPG, PNG, WebP, GIF, BMP and AVIF can be read, and you can export as PNG, JPG or WebP. An animated GIF is flattened - the watermark is applied to the first frame only.
+
+**Should I export as PNG or JPG?**
+Use PNG when the original was a PNG, when the image has transparency, or when it contains text and sharp edges — PNG is lossless, so the watermark edges stay crisp. Use JPG for photographs you are publishing online, where the smaller file matters more than a perfectly clean edge. WebP usually beats both on size at the same visual quality, and every current browser supports it.
+
+**Why can I still see the watermark clearly on a bright photo?**
+The Outline option draws a thin edge in the opposite tone — dark behind a light watermark, light behind a dark one. A plain white watermark disappears against a white sky or a sheet of paper, so the outline is on by default. Turn it off if you want a softer, flatter mark.
+
+**What is the difference between tiled and diagonal placement?**
+Tiled repeats the mark across the whole image on a staggered grid, which is the hardest to crop out and is what proof and preview images normally use. Diagonal draws a single line of marks from corner to corner — lighter, and easier to see the photo through. Use a single corner placement when the watermark is branding rather than protection.
+
+**Does a watermark stop someone stealing my photo?**
+It raises the effort, it does not make theft impossible. A corner mark can be cropped and a faint one can be painted out. A tiled, rotated, medium-opacity mark is far harder to remove cleanly. Treat it as a deterrent and an attribution.
+
+**Can I use my own logo or signature?**
+Yes. Switch to the Logo tab and upload a PNG, JPG or SVG. A PNG with a transparent background works best because the image behind it shows through; a JPG logo will carry its own white box. If you need to prepare a signature first, the Signature Resizer can crop and clean it up.
+
+**Does the watermark reduce my image quality?**
+The pixels under the mark are altered by design; the rest is redrawn at the original resolution with no resizing. PNG and lossless WebP add no compression loss at all. A JPG export re-encodes once, so keep quality at 90 or above.
+
+**Is there a file size or image resolution limit?**
+There is no imposed limit, but browsers cap how large a canvas can be — roughly 16 megapixels on the strictest browsers. Above that the tool scales the working canvas down to stay inside the cap. Very large batches are limited by your device's memory rather than by any rule here.
+
+**Can I watermark a PDF instead of an image?**
+Yes, but with a different tool. Add Watermark to PDF applies a text or image mark across the pages of a PDF while keeping it a real PDF. This page is for raster images — JPG, PNG and WebP.
+
+#### Also covered on this page
+
+Add your watermark · What an image watermark actually does · Choosing a placement · Getting a watermark that stays readable · Batch watermarking · Your photos stay on your device · Watermarking a PDF instead · Watermark your photos now
+
+### Grayscale Image Converter
+
+Convert images to black and white with an intensity slider from 0 to 100 and 25/50/75/full quick picks, so partial desaturation is possible rather than only full grayscale. Before/after comparison slider, a thumbnail strip for the queue, multi-image support and ZIP download. Exports PNG, JPEG or WebP. On browsers without canvas filter support it falls back to a manual BT.709 luma calculation so the downloaded file always matches what the preview showed. Export is capped at 3000 px on the longest side. The page notes grayscale is irreversible, so keep the colour original, and that RAW and HEIC files generally will not decode — convert them first.
+
+- URL: https://tooladda.online/image-grayscale.html
+- Page title: Image to Grayscale Converter — Black & White | ToolAdda
+- Category: MultimediaApplication
+- Price: free (0 USD)
+- Runs on: Any (web browser)
+- Meta description: Turn photos black & white online with a live before/after slider and adjustable intensity. Batch convert, free, no signup — runs in your browser.
+
+#### Features
+
+- Convert JPG, PNG, WebP, GIF and BMP to grayscale
+- Live before/after comparison slider
+- Adjustable grayscale intensity (0–100%)
+- Batch convert multiple images and download a ZIP
+- Export as PNG, JPG or WebP
+- 100% in-browser — no upload, no watermark
+
+#### How to convert an image to grayscale
+
+1. **Upload an image** — Drag and drop an image, click to browse, or paste from the clipboard. It stays in your browser.
+2. **Preview the effect** — See the grayscale result instantly with a before/after comparison slider.
+3. **Adjust intensity** — Use the intensity slider for a full black-and-white look or a partial desaturation.
+4. **Download** — Download the grayscale image as PNG, JPG or WebP, or batch-download a ZIP.
+
+#### Frequently asked questions (26)
+
+**What is a grayscale image?**
+A grayscale image uses only shades of gray from black to white, with no colour information. Each pixel stores a single brightness value instead of red, green and blue.
+
+**How do I convert an image to grayscale?**
+Upload your image, preview the black-and-white result with the slider, adjust the intensity if you like, then download the grayscale version.
+
+**Is this tool free?**
+Yes, it is completely free with no signup, no watermark and no limits.
+
+**Will the image quality change?**
+Only the colour is removed; resolution and detail are preserved. Exporting as PNG is lossless, while JPG and WebP let you pick a quality level.
+
+**Can I convert PNG to grayscale?**
+Yes. PNG, JPG, WebP, GIF and BMP images are all supported.
+
+**Can I convert JPG images?**
+Yes. JPG and JPEG images convert to grayscale instantly.
+
+**Does grayscale reduce file size?**
+Often yes, because colour data is removed — especially when you export as JPG or WebP. The exact saving depends on the image.
+
+**Can I use it on mobile?**
+Yes. The converter is mobile-first with touch support for the before/after slider.
+
+**Is my image stored or uploaded?**
+No. Conversion happens entirely in your browser; your images are never uploaded to a server.
+
+**Do I need to install software?**
+No installation needed — it works right in your browser on any device.
+
+**Can I convert multiple images at once?**
+Yes. Add several images and download them all as a single ZIP of grayscale versions.
+
+**Is there a file size limit?**
+There is no hard limit, but very large images are scaled to a sensible maximum on export for performance while keeping high quality.
+
+**Can I convert WebP images?**
+Yes. WebP images are supported for both input and output where your browser allows.
+
+**How fast is the conversion?**
+Instant. The preview updates in real time and the download is produced in a moment because everything runs locally.
+
+**Can I control how strong the grayscale is?**
+Yes. The intensity slider lets you go from a subtle partial desaturation to a full black-and-white conversion.
+
+**Is the conversion secure?**
+Yes. Because the image never leaves your device, it's safe for private photos, documents and screenshots.
+
+**What is the difference between grayscale and desaturation?**
+They usually produce the same result but are defined differently. Desaturation pulls the saturation of every colour to zero, while grayscale converts each pixel to a single luminance value weighted for how bright the human eye perceives red, green and blue. This tool uses the luminance method, which keeps relative brightness closer to what you saw in the original.
+
+**Does converting to grayscale reduce image quality?**
+No. Resolution, sharpness and detail are untouched — only the colour information is discarded. If you export as JPG or WebP the quality slider controls compression, exactly as it would for a colour image. Export as PNG if you want no compression loss at all.
+
+**Can I convert a grayscale image back to colour?**
+Not with this tool, and not faithfully with any tool. Converting to grayscale throws the colour information away permanently, so the original hues cannot be recovered. Always keep your colour original if you might need it later.
+
+**What is the best format to save a grayscale image?**
+Use JPG or WebP for photographs, where the smaller file matters and slight compression is invisible. Use PNG for logos, screenshots, line art or anything with transparency, because it is lossless and keeps edges crisp.
+
+**Why does my grayscale image look flat or washed out?**
+Colours that differ in hue but match in brightness collapse to the same grey. A red and a green of similar luminance become almost identical. Try the intensity slider at around 80–90% to keep a hint of colour separation, or adjust contrast in an image editor after converting.
+
+**Does grayscale work on images with transparency?**
+Yes. Transparency is preserved when you export as PNG or WebP. Exporting as JPG flattens transparent areas onto a white background, because the JPG format has no alpha channel.
+
+**How does the intensity slider work?**
+At 100% the image is fully grayscale. Lower values blend the grayscale result back toward the original colour, so 40% gives a muted, partly desaturated look. It is the same blend the CSS grayscale() filter performs, so the preview and the downloaded file match exactly.
+
+**Can I convert HEIC or RAW files?**
+Only if your browser can decode them, which most cannot for RAW and many cannot for HEIC. Convert those to JPG or PNG first — our HEIC converter handles iPhone photos — then bring the result here.
+
+**Is grayscale the same as monochrome?**
+Not quite. Monochrome means an image built from a single hue, which may be grey but could equally be sepia or blue-toned. Grayscale specifically means shades of grey between black and white.
+
+**Does this converter work offline?**
+Once the page has loaded, the conversion itself needs no network — everything runs on your device. If you reload without a connection the page may not load, but an already-open tab keeps working.
+
+#### Also covered on this page
+
+Drop images to convert to grayscale · Why our grayscale converter · Converting images to grayscale — a complete guide · Convert your image to grayscale now
+
+### Image Background Remover
+
+**Do not describe this as AI background removal.** It is a chroma-key style tool: a flood fill from the image borders or from a pixel the user shift-clicks, using RGB colour distance with a tolerance slider (0–100) and a feather control for edge softness, plus manual erase and restore brushes and a 20-step undo. There is no machine-learning model, no model download and no upload — which means it is fast and completely private, but it works well on plain or solid-colour backgrounds and poorly on busy ones, exactly as the page's own FAQ says. Recommend it for a product shot on white or a photo against a flat wall; recommend a dedicated ML service for hair, fur or a cluttered background. Replace the background with transparency, a solid colour or an uploaded image. PNG output only, single image, and exports are capped at 2200 px on the longest side.
+
+- URL: https://tooladda.online/image-background-remover.html
+- Page title: Image Background Remover – Remove or Change Background | ToolAdda
+- Category: PhotoApplication
+- Price: free (0 USD)
+- Runs on: Any (Web Browser)
+- Meta description: Free image background remover. Erase or change any photo's background to transparent, a solid color, or a new image — 100% in your browser, no upload.
+
+#### Features
+
+- One-click automatic background removal
+- Adjustable color tolerance and edge softness
+- Manual erase and restore brushes for touch-ups
+- Replace background with transparent, solid color, or a custom image
+- Undo support
+- 100% client-side — no image is ever uploaded
+
+#### How to remove or change an image background
+
+1. **Upload a photo** — Drag and drop an image or click Browse to select one from your device.
+2. **Auto-remove the background** — Click Auto-remove background to flood-fill the background from the edges inward, adjusting tolerance and edge softness as needed.
+3. **Refine with the brush** — Switch to the erase or restore brush to clean up any missed spots or bring back part of the subject.
+4. **Choose a new background** — Keep it transparent, or replace it with a solid color or another image, then download the PNG.
+
+#### Frequently asked questions (6)
+
+**How does this background remover work without uploading my photo?**
+It reads your image's pixels directly in the browser using the Canvas API and flood-fills outward from the edges to find and remove background-colored regions. Nothing is ever sent to a server, so your photo never leaves your device.
+
+**Does it work with any photo, or only plain backgrounds?**
+It works best with a fairly plain or solid-colored background, such as product photos, ID photos, or pictures taken against a wall or screen. For busy or highly textured backgrounds, use the manual erase and restore brushes to refine the result.
+
+**Can I change the background instead of just removing it?**
+Yes - keep it transparent, fill it with any solid color, or place a different image behind your subject.
+
+**Why does the auto-remove leave some edges rough?**
+Increase the tolerance slider if background pixels remain, or increase edge softness for smoother anti-aliased edges. You can also use the erase brush to clean up any leftover spots, or the restore brush to bring back any part of the subject that was removed by mistake.
+
+**What image formats can I upload and download?**
+Upload JPG, PNG, WebP, or most common formats. The result always downloads as a transparency-preserving PNG.
+
+**Is there a size limit on the image?**
+Large photos are automatically scaled to a maximum of 2200px on the longest side for fast, smooth processing. Explore more free tools on ToolAdda: Image Crop Tool , Image Color Picker , Image Compressor , JPG to PNG , and Images to PDF .
+
+#### Also covered on this page
+
+What is the Image Background Remover? · How to remove or change a background
+
+### Image Color Picker
+
+Sample any pixel and read it back in **seven formats — HEX, RGB, RGBA, HSL, HSV, CMYK and LAB** — plus the nearest named colour, each individually copyable. Zoom from 0.05× to 8× with a hover magnifier and a pixel grid at high zoom, a numeric X/Y sampler, and the native EyeDropper API for screen-wide picking where the browser supports it. Generates a palette by **median-cut quantization** at 4, 5, 6, 8 or 10 colours, plus the image's average colour, saved favourites, a CSS gradient generator and a **WCAG contrast-ratio checker**. Palettes export as CSS custom properties, Tailwind config, Bootstrap variables, Material tonal values or JSON.
+
+- URL: https://tooladda.online/image-color-picker.html
+- Page title: Image Color Picker Online Free — Extract Colors & Palettes | ToolAdda
+- Category: DesignApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Pick exact colors from any image online free — full-resolution pixel sampling with HEX, RGB, RGBA, HSL, HSV, CMYK & LAB, a live magnifier, dominant-color palette generator, WCAG contrast checker, and CSS/Tailwind/Bootstrap export. 100% in your browser, nothing uploaded.
+
+#### Features
+
+- Full-resolution pixel-accurate color sampling
+- Live magnifier with pixel grid
+- HEX, RGB, RGBA, HSL, HSV, CMYK and LAB output
+- Nearest named CSS color
+- Native screen EyeDropper support
+- Dominant color palette via median-cut quantization
+- Average color extraction
+- CSS gradient generator from palette
+- Recent color history
+- Favorite colors saved locally
+- WCAG AA/AAA contrast ratio checker
+- CSS variable, Tailwind, Bootstrap and Material tonal export
+- Downloadable PNG palette and JSON export
+- 100% client-side — no upload
+- No registration required
+
+#### How to pick a color from an image online
+
+1. **Upload an image** — Drag and drop, browse, or paste an image. It stays in your browser and is never uploaded.
+2. **Zoom and inspect** — Hover to see a live magnifier with a pixel grid for exact placement.
+3. **Click to sample** — Click any pixel to read its HEX, RGB, RGBA, HSL, HSV, CMYK, and LAB values.
+4. **Generate a palette** — Extract dominant colors or the average color, and build a CSS gradient.
+5. **Check contrast** — Compare any two colors against WCAG AA/AAA contrast requirements.
+6. **Export** — Copy or download as CSS variables, Tailwind config, Bootstrap SCSS, or JSON.
+
+#### Frequently asked questions (28)
+
+**What is an image color picker?**
+An image color picker is a tool that lets you click any pixel in an uploaded image and instantly read its exact color value in formats like HEX, RGB, and HSL — useful for matching brand colors, building palettes, and design work.
+
+**Is my image uploaded to a server?**
+No - everything runs client-side using the Canvas API; your image is never transmitted anywhere.
+
+**How accurate is the color picked from my image?**
+Sampling reads the true full-resolution pixel data, not a downscaled preview, so values match the real source pixel.
+
+**What's the difference between HEX, RGB, HSL, HSV, CMYK, and LAB?**
+HEX/RGB describe screen light directly, HSL/HSV describe hue-saturation-lightness intuitively, CMYK approximates print ink, and LAB is a perceptually uniform color-science model.
+
+**Why do RGB and CMYK give different-looking colors for print?**
+RGB is an additive light model used by screens; CMYK is a subtractive ink model used by printers. The CMYK conversion shown is a standard approximation — always verify against your actual printer's color profile for critical print work.
+
+**What is the magnifier and pixel inspector for?**
+Hovering shows a zoomed circular magnifier with a pixel grid so you can see exactly which pixel your cursor is over before clicking, which matters for fine detail like anti-aliased edges.
+
+**Can I pick a color from anywhere on my screen, not just the uploaded image?**
+In supporting browsers (Chrome and Edge), a native screen EyeDropper button lets you sample any pixel on your entire screen, not only inside the uploaded image.
+
+**How is the color palette generated?**
+Dominant colors use median-cut quantization, which groups similar pixels for a cleaner result than simple frequency counting.
+
+**What's the difference between dominant colors and average color?**
+Dominant colors are the most visually distinct clusters; average color blends every pixel into one value, which can look muddy on high-contrast images.
+
+**Can I generate a gradient from my image?**
+Yes - the Palette tab turns your extracted colors into a ready-to-use CSS linear-gradient() string.
+
+**What is a WCAG contrast ratio?**
+A 1:1-21:1 measure of luminance difference between two colors, used to ensure text stays readable for users with low vision.
+
+**What's the difference between AA and AAA contrast?**
+AA requires at least 4.5:1 for normal text and 3:1 for large text — the common legal/practical baseline. AAA requires 7:1 and 4.5:1 respectively — a stricter, enhanced standard.
+
+**Can I export colors as CSS variables?**
+Yes - the Export tab generates a ready-to-paste :root block for your current palette.
+
+**Can I export a Tailwind config?**
+Yes - a Tailwind colors object is generated, ready for tailwind.config.js.
+
+**Can I export Bootstrap SCSS variables?**
+Yes - Bootstrap-style $variable declarations are generated from your palette.
+
+**What is a Material-style tonal palette?**
+A 50-900 lightness scale from a base color, similar in spirit to Material Design tonal palettes - an approximation, not the exact Google algorithm.
+
+**Can I save favorite colors?**
+Yes - star any picked color to save it to Favorites, stored in your browser across visits.
+
+**Are recent or favorite colors stored online?**
+No - both lists live only in your browser's local storage on your own device.
+
+**What image formats are supported?**
+Any format your browser decodes natively - JPG, PNG, WebP, GIF, BMP, and SVG in most browsers.
+
+**Is there a file size limit?**
+No artificial limit - large images are bound only by your device's available memory.
+
+**Can I use this for brand color extraction?**
+Yes - upload a logo and use dominant-color extraction or manual sampling to recover exact brand HEX values.
+
+**Can I use this for accessibility audits?**
+Yes - sample text and background colors from a screenshot and instantly check WCAG AA/AAA contrast.
+
+**Does this work on mobile and touch devices?**
+Yes — tap to sample a color on touch devices; the magnifier and precision tools work best on a larger screen.
+
+**Do I need to sign up?**
+No account, email, or signup is required for any feature.
+
+**Is this tool free?**
+Yes — completely free with no limits, watermarks, or premium tier.
+
+**How is this different from Adobe Color or Coolors?**
+It samples your own image directly with 7 color formats, a native screen eyedropper, a built-in WCAG checker, and framework export - no account or upload.
+
+**Can I copy colors with one click?**
+Yes - every value and every export format has its own one-click copy button.
+
+**What is a nearest named color?**
+It's the closest match to your picked color from the 148 standard CSS named colors (like 'tomato' or 'steelblue'), calculated by color distance — handy for quick, human-readable references.
+
+#### Also covered on this page
+
+Private by Design · Why Designers & Developers Choose ToolAdda · Built for Every Color Workflow · How ToolAdda Compares · What Is an Image Color Picker? · How Pixel-Level Color Sampling Actually Works · HEX vs RGB vs HSL vs HSV vs CMYK vs LAB — What Each Model Is For · Color Theory Basics for Designers and Developers · Dominant Colors vs. Average Color · Extracting Brand Colors From a Logo or Screenshot · Using This Tool for UI Design · Using This Tool for Graphic Design · Using This Tool for Photography and Color Grading · Using This Tool for Web Design and Front-End Development · WCAG Contrast Ratios Explained · Exporting Colors: CSS Variables, Tailwind, Bootstrap, and Material · Common Mistakes When Picking Colors From Images · Privacy and Local Processing · Choosing the Right Color Picker Tool · Image Color Picker — Frequently Asked Questions · Ready to extract the exact colors from your image?
+
+### JPG to PNG Converter
+
+Convert JPEG to lossless PNG, with more than a format swap: an optional **chroma-key transparency step** that makes a picked colour transparent (or replaces it with another colour) using a tolerance slider — the practical way to knock a white background off a logo. Also rotation, flipping, optional resizing with aspect lock, a filename prefix, a before/after compare slider, and a **DPI metadata option that writes a real PNG `pHYs` chunk** (keep the original, set 36–1200, or omit it). Batch with ZIP; accepts input from a file, the clipboard or the device camera.
+
+- URL: https://tooladda.online/jpg-to-png.html
+- Page title: JPG to PNG Converter Online – Free, Fast & Private | ToolAdda
+- Category: MultimediaApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Convert JPG or JPEG images to PNG online free. Batch conversion, drag & drop, camera capture, clipboard paste, transparent background, rotate/flip/resize, and DPI control — 100% in your browser, no upload, no watermark.
+
+#### Features
+
+- Batch JPG/JPEG to PNG conversion with ZIP download
+- Drag & drop, browse, camera capture, and clipboard paste upload
+- Live before/after preview slider
+- Chroma-key transparent background (make a solid color transparent)
+- Rotate, flip, and optional resize with aspect-ratio lock
+- Automatic EXIF-orientation correction (metadata otherwise stripped for privacy)
+- Real PNG DPI metadata (pHYs chunk), keep original or set custom
+- Custom output filename prefix
+- 100% browser-based — no upload, no watermark, no signup
+
+#### How to convert JPG to PNG online
+
+Convert JPG or JPEG images to PNG using ToolAdda's free browser-based converter.
+
+1. **Add your JPG images** — Drag & drop, browse files, capture with your camera, or paste from your clipboard — single or multiple images.
+2. **Preview and adjust settings** — Check the live before/after preview, then optionally enable transparent background, rotate/flip, resize, or set DPI.
+3. **Convert** — Click Convert to PNG to process every selected image locally in your browser.
+4. **Download** — Download each PNG individually, or grab everything at once with Download All (ZIP).
+
+#### Frequently asked questions (27)
+
+**What is a JPG to PNG converter?**
+A JPG to PNG converter reads a JPG/JPEG photo's pixel data and re-encodes it as a PNG file — a lossless format that adds transparency support and eliminates further JPEG compression artifacts on every future re-save.
+
+**Is this JPG to PNG converter free?**
+Yes. It's completely free with no watermark, no sign-up, and no limit on how many images you convert.
+
+**Are my images uploaded to a server?**
+No. Every conversion runs locally in your browser using the Canvas API. Your photos are never uploaded, stored, or seen by ToolAdda.
+
+**Does converting JPG to PNG improve image quality?**
+No. Converting can't restore detail a JPG already lost to compression — it simply stops any further lossy compression from happening again. The benefit is that the PNG output and every subsequent edit stay pixel-perfect from that point forward.
+
+**Can I make the background transparent when converting JPG to PNG?**
+JPG files never contain a transparency channel, so there's no hidden transparency to "unlock." This tool adds real transparency using a chroma-key: pick a background color (like white) and a tolerance, and matching pixels become transparent in the PNG. For subject-based background removal, use ToolAdda's dedicated Background Remover instead.
+
+**How does the transparent background (chroma-key) feature work?**
+Enable Transparent Background, pick the color to remove (default white) and a tolerance percentage, and every pixel within that color distance becomes transparent (or is replaced with a different solid color in Replace mode). It works best on solid, evenly lit backgrounds like product photos, scanned logos, or white-background portraits.
+
+**Why isn't my whole background transparent after using chroma-key?**
+JPEG compression introduces small color variations even in "solid" backgrounds, and uneven lighting or shadows shift the color further. Increase the tolerance slider gradually until the background clears — but going too high risks also clearing similar colors inside your subject.
+
+**Will PNG output always be lossless?**
+Yes. PNG uses lossless DEFLATE compression, so every pixel from the source image (or from your rotate/flip/resize/transparency settings) is preserved exactly, with no additional generation loss like repeated JPEG saves would cause.
+
+**Why is my converted PNG file larger than the original JPG?**
+This is expected and not a bug. JPEG's lossy compression discards detail to shrink file size; PNG keeps every pixel, so photographic images typically produce a noticeably larger PNG than the source JPG - a fundamental format trade-off, not a flaw in the conversion.
+
+**Can I convert multiple JPG images at once?**
+Yes. Select or drag in multiple files, apply one set of settings, and convert them all in a single batch. Download each PNG individually or all together as a ZIP.
+
+**Can I resize, rotate, or flip images while converting?**
+Yes. Rotate in 90° steps, flip horizontally or vertically, and optionally resize to an exact width or height with aspect ratio locked — all applied before the PNG is generated, visible live in the before/after preview.
+
+**Does this tool preserve image resolution and DPI?**
+Pixel resolution is preserved exactly unless you enable resizing. For DPI, this tool reads the original JPEG's DPI (from its JFIF header, when present) and writes a genuine PNG pHYs metadata chunk into the output, or you can set a custom DPI value instead.
+
+**Does this tool preserve EXIF metadata?**
+No, and this is intentional. Canvas-based conversion re-encodes the image from raw pixels, which strips EXIF metadata like camera model, GPS location, and timestamps - a privacy benefit if you plan to share the PNG publicly. Orientation is the one exception: it's read and applied correctly before conversion.
+
+**Why does my photo rotate correctly even though I didn't set a rotation?**
+Phone cameras often save a photo's EXIF orientation tag rather than physically rotating the pixels. This tool decodes images with the browser's imageOrientation: "from-image" option, which automatically applies that tag, so portrait photos come out right-side-up without you touching the Rotate setting.
+
+**Can I use my camera to capture and convert a photo directly?**
+Yes, on mobile devices. Tap Use Camera to open your device's camera and capture a photo directly into the converter.
+
+**Can I paste an image from my clipboard?**
+Yes. Copy an image, then press Ctrl+V (Cmd+V on Mac) anywhere on the page to add it to the conversion queue.
+
+**What image formats can I upload?**
+This tool accepts JPG and JPEG files specifically. For other source formats, ToolAdda has dedicated converters — including a HEIC Converter and a PNG to WebP Converter.
+
+**Is there a limit on file size or number of images?**
+No artificial limit is imposed. Very large images or large batches simply take longer since everything processes on your device's hardware rather than a server.
+
+**Can I rename the output files?**
+Yes. Set an optional filename prefix in Advanced Settings, and it's applied to every converted file in the batch.
+
+**How do I download all converted images at once?**
+After converting more than one image, a Download All (ZIP) button appears, packaging every converted PNG into a single ZIP archive.
+
+**Does this work on mobile devices?**
+Yes. The interface is fully responsive and touch-friendly, with camera capture available on supported mobile browsers and a sticky Convert button for quick access.
+
+**Is this JPG to PNG converter free forever, with no watermark?**
+Yes. No watermark is ever added to your output, there's no account requirement, and there's no premium tier gating core features.
+
+**What is the difference between JPG and PNG?**
+JPG uses lossy compression optimized for photographs and small file sizes, with no transparency support. PNG uses lossless compression that preserves every pixel exactly and supports a transparency (alpha) channel, typically at the cost of a larger file size for photographic content.
+
+**When should I use PNG instead of JPG?**
+Use PNG for logos, icons, screenshots, graphics with text or sharp edges, and anything needing transparency — situations where exact pixel fidelity matters more than file size.
+
+**When should I use JPG instead of PNG?**
+Use JPG for photographs and photo-realistic images where smaller file size matters more than perfect pixel fidelity — most web photography, email attachments, and social media images.
+
+**Can I convert PNG back to JPG?**
+This page is dedicated to JPG-to-PNG conversion. For the reverse direction, use any of ToolAdda's other image tools that export JPG, such as the Image Resizer or Image Compressor, which both support JPG output.
+
+**Does this tool work offline?**
+Once the page is loaded, core conversion works without a network connection, since everything runs in your browser's JavaScript engine. Downloading the page itself and the optional ZIP library still require an initial connection.
+
+#### Also covered on this page
+
+How the Tolerance Slider Decides What Disappears · How to Convert JPG to PNG Online · Why Use This Free JPG to PNG Converter · Who Needs to Convert JPG to PNG? · How This Compares to Typical Online JPG to PNG Converters · JPG vs PNG: Formats, Transparency, and When to Use Each · Privacy & Security · Ready to Convert Your JPG?
+
+### PNG to WebP Converter
+
+Despite the name it accepts PNG, JPEG, WebP, GIF and BMP and outputs **WebP, PNG or JPG**, so it works in either direction. Quality 1–100 with Small, Balanced, High and Maximum presets, resizing by longest-edge cap, percentage (1–400%) or exact dimensions with aspect lock, and a background colour applied when flattening a transparent source to JPG. Batch with ZIP, plus browser WebP-support detection. Carries an honest in-product caveat that quality 100 is the highest **lossy** setting the browser encoder exposes and is not true WebP lossless. Guards warn above roughly 40 megapixels or 30 MB.
+
+- URL: https://tooladda.online/png-to-webp.html
+- Page title: PNG & JPG to WebP Converter — Free Online | ToolAdda
+- Category: MultimediaApplication
+- Price: free (0 INR)
+- Runs on: Any modern web browser
+- Meta description: Convert PNG, JPG and JPEG images to WebP online for free. Adjust quality, resize, compare file sizes and download optimized images — all in your browser.
+
+#### Features
+
+- PNG to WebP
+- JPG and JPEG to WebP
+- WebP to PNG
+- WebP to JPG with a chosen background colour
+- Batch conversion with a bounded processing queue
+- Adjustable quality with presets
+- Resize by width, height, percentage or longest edge
+- Accurate size comparison in both directions
+- Runs entirely in the browser with no upload
+
+#### Frequently asked questions (32)
+
+**What is WebP?**
+WebP is an image format developed by Google for the web. It supports both lossy and lossless compression as well as transparency and animation, and it is designed to produce smaller files than PNG or JPEG at comparable visual quality. Every current browser can display it.
+
+**How do I convert PNG to WebP?**
+Drop your PNG files onto the upload area or use Select images. Leave the output set to WebP, adjust the quality slider if you want, then press Convert. Each result shows its new size next to the original, with a Download button.
+
+**How do I convert JPG to WebP?**
+Exactly as for PNG — the tool accepts .jpg and .jpeg alongside PNG and WebP. Add the files, keep WebP as the output format, set a quality and convert. You can mix PNG and JPG files in the same batch.
+
+**How do I convert JPEG to WebP?**
+JPEG and JPG are the same format with two common extensions, so the process is identical. Files ending .jpeg are accepted and converted the same way, and the output is named with a .webp extension.
+
+**Can I convert WebP to PNG?**
+Yes. Add your WebP files and change the output format to PNG. PNG supports transparency, so any transparent areas in the source are preserved.
+
+**Can I convert WebP to JPG?**
+Yes. Change the output format to JPG. Because JPG has no alpha channel, if any of your images contain transparency the tool asks you to choose a background colour and fills the transparent areas with it rather than picking one silently.
+
+**Does WebP reduce file size?**
+Usually, but not always. WebP typically produces smaller files than PNG for photographs and than JPEG at similar quality, though the result depends on the image content and the quality setting. Re-encoding an already well-optimised file can make it larger — when that happens this tool says the output is larger rather than reporting a saving.
+
+**Is WebP smaller than PNG?**
+For photographic content, almost always and often dramatically, because PNG is lossless and stores every pixel exactly. For flat graphics, logos and screenshots with few colours the gap narrows and PNG can occasionally win. The tool shows the actual numbers for your file.
+
+**Is WebP smaller than JPG?**
+Generally yes at comparable visual quality, though the margin varies with the image and the encoder. The browser's built-in WebP encoder is not the most aggressive available, so results here may differ from a command-line tool such as cwebp.
+
+**Is WebP better than PNG?**
+For most web imagery, yes — smaller files with transparency support. PNG remains the better choice when you need guaranteed lossless output, when you are editing and re-saving repeatedly, or when a tool in your pipeline does not read WebP.
+
+**Is WebP better than JPG?**
+For the web, usually: smaller at similar quality, and it supports transparency, which JPG cannot. JPG is still the safer choice for maximum compatibility with older software, cameras and print workflows.
+
+**Does WebP support transparency?**
+Yes. WebP supports an alpha channel in both its lossy and lossless modes, which is one of its main advantages over JPG. Converting a transparent PNG to WebP keeps the transparency.
+
+**Does JPG support transparency?**
+No. The JPEG format has no alpha channel at all. Any transparent area has to be filled with a solid colour, which is why this tool asks you to choose one before converting a transparent image to JPG.
+
+**Is WebP lossless?**
+WebP supports both lossy and lossless encoding. However, the browser's canvas encoder used by this tool produces lossy WebP only — quality 100 is the highest lossy setting, not lossless. If you need true lossless WebP, use a command-line encoder such as cwebp with its lossless flag.
+
+**What quality should I use for WebP?**
+80 is a good default for photographs and is what this tool starts with. Drop to 60–70 for large background images where fine detail does not matter, and raise to 90 for images with text or sharp edges. Compare a few settings on your own image rather than trusting a single number.
+
+**Does conversion reduce image quality?**
+Converting to WebP or JPG is lossy, so some information is discarded — how much depends on the quality setting. Converting to PNG is lossless, but a lossy source cannot regain detail it never had, so a WebP converted to PNG will not look better than the WebP did.
+
+**Can I convert multiple images at once?**
+Yes. Select or drop as many files as you like and press Convert. They are processed a few at a time rather than all at once, which keeps memory use bounded, and the progress indicator reports genuine completion rather than an animation.
+
+**Can I download all converted images at once?**
+Yes. Download all packages every converted image into a single ZIP that is built in your browser. If ZIP creation is unavailable, the files are downloaded individually instead.
+
+**Can I resize images while converting?**
+Yes. Resize by a custom width or height, by percentage, or by capping the longest edge to a preset such as 1920px. Aspect ratio is locked by default, so nothing is stretched unless you deliberately unlock it.
+
+**What do the resize presets mean?**
+They cap the longest edge of the image. A 1920px preset applied to a 3000×2000 photo produces 1920×1280; applied to a portrait 2000×3000 it produces 1280×1920. Images already smaller than the cap are left alone rather than being enlarged.
+
+**Are my images uploaded to a server?**
+No. Decoding, resizing, encoding and downloading all happen in your browser using the Canvas API. No network request carries your image data, and nothing is stored once you close the tab.
+
+**Can I use this tool offline?**
+Once the page has loaded, conversion needs no network at all, so an already-open tab keeps working without a connection. Loading the page fresh does require the network.
+
+**Does conversion keep EXIF metadata?**
+No. Browser-based conversion through the Canvas API discards metadata such as EXIF, including camera settings and any GPS coordinates. That is often desirable for privacy, but if you need to keep the metadata you will need a tool that copies it across explicitly.
+
+**Will my photos be rotated incorrectly?**
+No. Images are decoded with the orientation flag applied, so a portrait photo from a phone converts the right way up. Because the rotation is baked into the pixels, the result stays correct even though the EXIF orientation tag itself is not carried over.
+
+**How large an image can I convert?**
+There is a 30 MB per-file limit and a warning for images beyond roughly 40 megapixels, because very large canvases can exhaust browser memory. This is a browser constraint rather than a policy — a desktop application will handle bigger files.
+
+**What happens if two files have the same name?**
+The second gets a numbered suffix — image.webp, then image-1.webp — so one download cannot overwrite another in your downloads folder.
+
+**Which formats can I upload?**
+PNG, JPG, JPEG and WebP are fully supported. GIF and BMP are accepted where your browser can decode them, and animated GIFs convert as a single frame. Anything the browser cannot decode fails with a clear message rather than producing a broken file.
+
+**Why did my file get larger after conversion?**
+Usually because the source was already well compressed, or because a flat graphic with few colours was re-encoded with a lossy codec. Try a lower quality, or keep PNG for logos and screenshots. The tool tells you plainly when the output is larger instead of showing a saving.
+
+**Does WebP improve website speed?**
+Smaller images reduce transfer size, which usually helps — but page speed depends on the whole page. If your slowest element is a render-blocking script or a large font, converting images will not fix it. Measure before and after rather than assuming.
+
+**Does WebP improve Core Web Vitals?**
+It can help Largest Contentful Paint when the LCP element is an image, because a smaller file arrives sooner. It does nothing for Cumulative Layout Shift unless you also set width and height attributes, and nothing at all for Interaction to Next Paint.
+
+**How do I use WebP on my website?**
+Use a picture element with a WebP source and a JPG or PNG fallback, and the browser picks whichever it supports. All current browsers take the WebP, and older ones fall back automatically without any JavaScript.
+
+**Is this converter free?**
+Yes. Free, no sign-up, no email address, no watermark and no per-file charge.
+
+#### Also covered on this page
+
+Supported conversions · Converting images to WebP · PNG vs JPG vs WebP · Image formats, quality and page speed
+
+### HEIC to JPG/PNG Converter
+
+Convert iPhone and iPad HEIC/HEIF photos to JPEG, PNG, WebP, AVIF, BMP or PDF — the usual reason being that Windows and most web upload forms reject HEIC unless the HEIF extension is installed. Multi-file conversion with ZIP download, and choosing PDF combines the whole batch into one multi-page PDF with a page per image. Four quality levels, an optional resize with width, height and aspect-ratio lock, and a custom filename prefix. If a non-HEIC file is included the batch is rejected rather than partly converted, so pair it with the JPG or PNG converters for other formats.
+
+- URL: https://tooladda.online/heic-converter.html
+- Page title: HEIC to JPG Converter Free — Convert HEIC/HEIF to JPG, PNG, WebP & PDF | ToolAdda
+- Category: MultimediaApplication
+- Price: free (0 USD)
+- Runs on: Web, Windows, macOS, iOS, Android, Linux
+- Meta description: Free HEIC to JPG converter — convert HEIC/HEIF iPhone photos to JPG, PNG, WebP, AVIF, PDF, or BMP instantly in your browser. No upload, no signup, 100% private and fast.
+
+#### Features
+
+- Batch HEIC to JPG conversion
+- HEIC to PNG, WebP, AVIF, PDF, and BMP
+- Drag-and-drop and multi-file upload
+- Adjustable image quality
+- Resize with aspect-ratio lock
+- ZIP download for batch results
+- Before/after file size comparison
+- 100% client-side processing
+
+#### How to convert HEIC to JPG online
+
+1. **Add your HEIC photos** — Drag and drop your .heic or .heif files, or click Browse Images to select them from your device.
+2. **Choose an output format** — Pick JPG, PNG, WebP, AVIF, PDF, or BMP, and set the quality and resize options if needed.
+3. **Click Convert Images** — Conversion runs locally in your browser — your photos are never uploaded to a server.
+4. **Download your files** — Download each converted image individually, or download all of them together as a ZIP file.
+
+#### Frequently asked questions (21)
+
+**How do I convert HEIC to JPG?**
+Drag and drop your HEIC file into the converter, choose JPG as the output format, and click Convert Images. Your JPG downloads instantly — no upload or signup needed.
+
+**Is this HEIC to JPG converter free?**
+Yes, it's completely free with no watermark, no signup, and no limit on how many times you can use it.
+
+**Can I convert HEIC images without uploading them?**
+Yes. All HEIC conversions happen locally in your browser using JavaScript, so your images never leave your device.
+
+**Which output formats are supported?**
+You can convert HEIC and HEIF images to JPG, PNG, WebP, AVIF, PDF, or BMP.
+
+**How do I convert multiple HEIC photos at once?**
+Select multiple files using the file picker or drag-and-drop area, then choose your output format and convert all files together in one batch.
+
+**Does this tool work on mobile and desktop?**
+Yes. This browser-based HEIC converter works on desktop, laptop, tablet, and mobile devices without installing any app.
+
+**How do I convert HEIC to JPG on iPhone?**
+Open this page in Safari or Chrome on your iPhone, tap Browse Images, select photos from your gallery, choose JPG, and tap Convert Images — no app install required.
+
+**How do I convert HEIC to JPG on Mac?**
+Use macOS Preview (File > Export, choose JPEG), or open this page in Safari or Chrome and convert HEIC files without any extra software.
+
+**How do I convert HEIC to JPG on Windows?**
+Windows can't open HEIC files natively without the HEIF extension. Open this page in any browser instead and convert HEIC to JPG in seconds without installing codecs.
+
+**Will converting HEIC to JPG reduce image quality?**
+At high quality settings (90–100%), the visible difference is minimal. Lower quality settings trade some detail for a smaller file size — you control this with the quality slider.
+
+**Does this HEIC converter keep my photo's EXIF data?**
+Converting through canvas re-encoding strips most EXIF metadata (like GPS location) by default, which is good for privacy when sharing photos online.
+
+**Can I convert HEIC to PDF?**
+Yes — select PDF as the output format to combine your HEIC photos into a downloadable PDF document.
+
+**Can I resize my images while converting?**
+Yes - enable the resize option in Advanced Settings, set a width or height, and lock the aspect ratio to avoid distortion.
+
+**Why won't my HEIC file open on Windows or Android?**
+HEIC is Apple's default photo format and isn't natively supported by most Windows apps or older Android devices. Converting to JPG or PNG makes the file universally viewable.
+
+**Can I download all converted images at once?**
+Yes — after converting multiple files, use the Download All (ZIP) button to get every converted image in a single ZIP file.
+
+**Is there a limit on how many HEIC files I can convert?**
+No hard limit is enforced, but very large batches depend on your device's memory since everything processes locally in your browser.
+
+**What is the difference between HEIC and HEIF?**
+HEIC is Apple's specific file extension for images encoded using the HEIF (High Efficiency Image Format) container — in practice, the terms are used interchangeably.
+
+**Why does my iPhone save photos as HEIC?**
+HEIC compresses photos to roughly half the file size of JPG at similar quality, saving storage space on iPhones by default since iOS 11.
+
+**Is my data safe when using this converter?**
+Yes. Since conversion happens entirely in your browser, your photos are never transmitted to or stored on any server.
+
+**Do I need to install anything to convert HEIC files?**
+No. This is a browser-based tool — no app, plugin, or software installation is required on any device.
+
+**Can I convert a .heic file to jpg on Android?**
+Yes — open this page in Chrome on Android, tap Browse Images to select HEIC photos from your gallery, choose JPG, and convert directly in the browser.
+
+#### Also covered on this page
+
+How to Convert HEIC to JPG Online · Why Use This Free HEIC to JPG Converter · Who Needs to Convert HEIC to JPG? · How This Compares to Typical Online HEIC Converters · Privacy & Security · The Complete Guide to Converting HEIC to JPG · Ready to Convert HEIC to JPG?
+
+### Passport Size Photo Maker
+
+**24 official size presets across 13 countries and document types**, each carrying its real physical size and the published head-size fraction — India passport/visa, PAN, Aadhaar and SSC/UPSC exam sizes; US 2×2 inch; UK, Schengen, Australia and Japan 35×45 mm; Canada 50×70 mm; China 33×48 mm; UAE 43×55 mm and more — plus a custom size in mm, inch or pixels at 72–1200 DPI. Because a passport photo is a **physical size, not a pixel count**, every preset states both (35×45 mm = 413×531 px at 300 DPI) and the export writes a **correct JFIF DPI header** so print shops and upload portals read the resolution properly. Drag to reposition, scroll or pinch to zoom, rotate in quarter turns and mirror, all clamped so the frame can never show a gap. A **head-size and eye-line guide overlay is drawn from the selected authority's own published head fraction**, not a generic oval. It warns when the source photo is being enlarged past its real resolution, which is a common rejection reason. An optional **"under target KB" mode bisects JPEG quality** to fit portal limits of 20–500 KB and says so honestly when the target is unreachable rather than shipping a ruined photo. Also lays out a **printable sheet on 4×6, 5×7, A4, US Letter or 3.5×5 with automatic packing in both orientations and optional cut lines**. One thing to state clearly: it sets the background colour behind and around the photo but **does not detect and cut out the subject** — pair it with the Background Remover first if the original has a busy background. Everything runs in the browser; the photo is never uploaded.
+
+- URL: https://tooladda.online/passport-photo-maker.html
+- Page title: Passport Size Photo Maker — Free, No Watermark | ToolAdda
+- Category: MultimediaApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Make passport size photos online free. 24 official sizes for India, US, UK, Schengen and more, with head guides, white background, KB compression and print sheets.
+
+#### Features
+
+- 24 official size presets across 13 countries and document types
+- Exact physical sizing at 300 DPI with the DPI written into the JPEG header
+- Head-size and eye-line guides derived from each authority's published rules
+- Custom sizes in millimetres, inches or pixels
+- Background replacement with seven standard colours
+- Brightness, contrast and saturation adjustment
+- Rotate and mirror
+- Drag to position, scroll or pinch to zoom, with edge clamping
+- Compress to a target file size in KB for exam portals
+- Warns when a photo is being enlarged past its real resolution
+- Print sheet layouts for 4x6, 5x7, A4, Letter and 3.5x5 with cut marks
+- JPEG or PNG output with a quality control
+- No watermark and no sign-up
+- Photos never leave the browser
+
+#### How to make a passport size photo online
+
+1. **Upload your photo** — Drag a photo in or browse for one. Use a front-facing photo taken against a plain wall in even light.
+2. **Choose the size** — Pick the country and document you need. The pixel size and print resolution are set for you.
+3. **Position the face** — Drag to move and scroll or pinch to zoom until the head sits inside the guide oval and the eyes are on the guide line.
+4. **Set the background** — Choose white or whichever colour the authority requires. It fills any area the photo does not cover.
+5. **Check the warnings** — If the tool says the photo is being enlarged, use a higher-resolution original — an enlarged photo looks soft and can be rejected.
+6. **Set a file size if needed** — Exam portals often cap uploads at 20 to 200 KB. Enter the limit and the tool finds the best quality that fits.
+7. **Download** — Download the single photo, or a print sheet with several copies laid out for a 4 by 6 print.
+
+#### Frequently asked questions (18)
+
+**What size is a passport photo?**
+It depends on the country. India, the UK, the Schengen area, Australia and Japan all use 35 by 45 mm. The United States uses 2 by 2 inches. Canada and Brazil use a larger 50 by 70 mm. This tool has 24 presets so you do not have to look it up.
+
+**What is 35x45 mm in pixels?**
+413 by 531 pixels at 300 DPI, which is the resolution almost every authority expects for a printed photo. At 600 DPI it would be 827 by 1063 pixels. Pixels alone are meaningless without a DPI, which is why this tool always states both.
+
+**Why does DPI matter for a passport photo?**
+Because a passport photo is a physical size, not a pixel count. A file can be exactly 413 by 531 pixels and still print at the wrong size if the DPI stored inside it is wrong. This tool writes the correct resolution into the JPEG header so the print comes out at 35 by 45 mm.
+
+**How big should the head be in a passport photo?**
+Most authorities specify it as a fraction of the photo height — commonly between 62 and 80 percent from chin to crown, though Canada and Brazil use a smaller fraction on their larger photo. The guide overlay is drawn from the published figure for whichever preset you pick.
+
+**Can I make a passport photo with a white background?**
+Yes. Choose white from the background swatches and it fills any area your photo does not cover. Note that this fills behind and around the photo — it does not cut your subject out of a busy background, so start from a photo taken against a plain wall.
+
+**Does this tool remove the background automatically?**
+No, and it is worth being clear about that. It sets the background colour behind and around your photo, but it does not detect and cut out the person. For that, use the Image Background Remover first, then bring the result here to size it.
+
+**How do I resize a photo to 20 KB or 50 KB?**
+Enter the limit in the target file size box. The tool searches JPEG quality settings to find the highest quality that fits your budget, and tells you honestly if the target cannot be reached without making the photo unusable.
+
+**What size photo does SSC or UPSC need?**
+Most Indian exam portals ask for around 200 by 230 pixels with a file between 20 and 50 KB, and there are presets for that. Portals change their requirements most years, so always check the current information bulletin before you upload.
+
+**What size is a PAN card photo?**
+25 by 35 mm, which is 295 by 413 pixels at 300 DPI. It is smaller than a passport photo, so a passport-sized image will not be accepted in its place.
+
+**What size is a US visa or passport photo?**
+2 by 2 inches, which is 600 by 600 pixels at 300 DPI, and it is square rather than portrait. US rules also measure the head from chin to crown at between 1 and 1 3/8 inches.
+
+**Can I print several photos on one sheet?**
+Yes. Choose a sheet size — 4 by 6 inch, 5 by 7 inch, A4, US Letter or 3.5 by 5 inch — and the tool works out how many copies fit, arranges them with a gap and optional cut marks, and exports the sheet at print resolution.
+
+**Why does it warn that my photo is being enlarged?**
+Because enlarging cannot add detail. If your source photo has fewer pixels than the target size needs, the result is soft and blurry, which is a common rejection reason. The warning appears so you can find a higher-resolution original instead of discovering the problem at the counter.
+
+**Is my photo uploaded to a server?**
+No. The photo is read by your browser, cropped on a canvas and saved straight back to your device. It never leaves your computer, which matters because a passport photo is identity data.
+
+**Is there a watermark on the download?**
+No. There is no watermark, no sign-up and no limit on how many photos you make.
+
+**Can I use a selfie for a passport photo?**
+Usually not well. Phone front cameras are wide-angle and held close, which distorts facial proportions, and most authorities reject photos that look like selfies. Have someone else take the photo from about two metres away with the rear camera.
+
+**What should I wear and how should I pose?**
+Face the camera squarely with a neutral expression and both eyes open and visible. Avoid hats, sunglasses and heavy shadows, and wear something that contrasts with the background so your shoulders do not disappear into it. Religious head coverings are generally allowed provided the full face is visible.
+
+**Will this photo definitely be accepted?**
+The tool gets the size, resolution and background right, and its guides reflect published head-size rules, but acceptance also depends on lighting, expression, shadows and the quality of your original photo — none of which software can judge for you. Always check the current requirements of the authority you are applying to.
+
+**Which file format should I choose?**
+JPEG for almost everything — it is what portals and print shops expect, and it is the only format that can carry a target file size. Choose PNG only if you specifically need a lossless file, since PNG photos are much larger.
+
+#### Also covered on this page
+
+1 · Add your photo · 2 · Position the face · 3 · Size & output · Passport Photo Sizes by Country · Why Passport Photos Get Rejected · Meeting a KB Limit on an Exam Portal · Printing Passport Photos at Home or at a Shop · How Many Photos Fit on One Print Sheet
+
+### Signature Resizer
+
+Purpose-built for Indian exam and bank upload specs, with named presets carrying both pixel dimensions and KB ranges: **SSC 140×60 px at 10–20 KB, UPSC 350×350 px at 20–300 KB, IBPS/bank exams 140×60 px at 10–20 KB, Railway RRB 3.5×1.5 cm at 10–20 KB, PAN card 2×4.5 cm at 1–100 KB, driving licence 3.5×1.5 cm, bank account/KYC, university, scholarship and job application**, plus a fully custom mode. Several presets carry an explicit note that specs vary and to verify against the official notification — good practice worth repeating. You can upload a scan **or draw the signature directly on a canvas** with a pen-width and ink-colour choice. Auto-crops surrounding whitespace, optionally whitens the paper background with a sensitivity slider, estimates sharpness, and shows a before/after compare slider. Its genuinely unusual trick: when the file comes out *below* the minimum KB a portal demands, it adds calibrated noise at maximum quality to push the size **up** into the accepted range.
+
+- URL: https://tooladda.online/signature-resizer.html
+- Page title: Signature Resizer Online — Resize Signature for SSC, PAN, Aadhaar & More Free | ToolAdda
+- Category: UtilityApplication
+- Price: free (0 USD)
+- Runs on: Browser
+- Meta description: Resize and compress your signature online free for SSC, UPSC, IBPS, PAN, banking, and university forms. Auto-crop, clean the background, hit an exact KB range, and compare before/after — 100% private, runs entirely in your browser.
+
+#### Features
+
+- Auto-crop signature whitespace
+- Clean/whiten background
+- Exact minimum and maximum KB targeting
+- One-click SSC, UPSC, IBPS, RRB, PAN and other government presets
+- Draw signature directly on a pad
+- Custom pixel, mm, or cm sizing with DPI
+- Before/after comparison
+- 100% client-side — no upload
+
+#### How to resize a signature online with ToolAdda
+
+Resize and compress a signature for government and exam forms, entirely in your browser.
+
+1. **Upload or draw your signature** — Upload a clear photo/scan, or switch to the Draw tab and sign with your mouse, finger, or stylus.
+2. **Choose a preset** — Pick a one-click preset such as SSC, UPSC, IBPS, RRB, or PAN, or enter a Custom size and KB range.
+3. **Process** — Click Process signature — the tool auto-crops whitespace, optionally cleans the background, resizes, and compresses into the target KB range.
+4. **Compare before/after** — Use the compare slider and zoomed preview to check the result before downloading.
+5. **Download** — Download the finished signature as a JPEG, ready to upload to your form.
+
+#### Frequently asked questions (30)
+
+**How do I resize my signature online?**
+Upload a photo/scan of your signature or draw it directly, pick a preset (or Custom), and click Process signature — the tool auto-crops, cleans, resizes, and compresses it automatically.
+
+**Can I resize my signature without losing quality?**
+The tool resizes to the exact pixel dimensions you choose and compresses only as much as needed to reach the target KB range, keeping quality loss to the minimum required to hit that size.
+
+**Is this tool free to use?**
+Yes, completely free with no signup, watermark, or usage limit.
+
+**Is my signature uploaded to a server?**
+No. Everything runs locally in your browser using the Canvas API — your signature is never sent to a server.
+
+**Can I resize a PNG signature?**
+Yes — JPG, PNG, and WebP photos or scans of a signature can all be uploaded.
+
+**Can I resize a JPG signature?**
+Yes, JPG and JPEG uploads are fully supported.
+
+**Can I resize a signature with a transparent background?**
+You can upload a transparent PNG, but the output is always a white-background JPEG, since that's what government and exam portals require.
+
+**Can I resize my signature for a passport application?**
+Passport portals don't publish one universal signature-file spec - use the Custom option with the exact dimensions and size your specific application requests.
+
+**Can I resize my signature for a PAN card form?**
+Yes - a PAN Card preset (2×4.5 cm) is built in. If your form asks for different numbers, switch to Custom.
+
+**Can I resize my signature for Aadhaar?**
+Aadhaar forms don't have one fixed signature-file spec either - use Custom with the dimensions your form specifies.
+
+**Can I resize my signature to a specific KB range?**
+Yes - every preset (and Custom) targets both a minimum and maximum KB, since many portals reject files that are too small as well as too large.
+
+**Can I use this for SSC, UPSC, IBPS, or RRB exam forms?**
+Yes — SSC, UPSC, IBPS, and Railway RRB all have one-click presets with commonly published dimensions and KB ranges.
+
+**Can I resize my signature for a driving license application?**
+Yes - a general Driving License preset is included, but RTO/Sarathi requirements vary by state, so double-check your application.
+
+**Can I resize my signature for a bank account or KYC form?**
+Yes - a general Bank Account/KYC preset is included; confirm against your bank's exact instructions.
+
+**Can I resize my signature for a university admission form?**
+Yes — a general University/College Admission preset is included; specs vary a lot by institution, so treat it as a starting point.
+
+**Can I resize my signature for a scholarship application?**
+Yes — a general Scholarship Portal preset is included, styled after commonly seen specs; verify against your scheme's official guidelines.
+
+**Which image format does the output use?**
+The processed output is always a JPEG — the format government portals almost universally require for signature uploads.
+
+**Does it work on mobile devices?**
+Yes, the interface is fully responsive and works with your phone's camera roll or file picker.
+
+**Can I draw my signature instead of uploading a photo?**
+Yes — switch to the Draw tab and sign with your mouse, finger, or stylus directly on the pad.
+
+**Does it preserve image quality during resizing?**
+Yes — the tool searches for the highest JPEG quality that still fits your target KB range, rather than applying a fixed heavy compression.
+
+**Can beginners use this tool without technical knowledge?**
+Yes — pick a preset and click Process; no settings changes are required for common use cases.
+
+**Does it work offline?**
+Once the page has loaded, processing runs entirely locally and needs no further network connection.
+
+**Is there a file size limit for uploads?**
+There's no hard upload limit, but very large photos take a little longer to process since everything runs in your browser.
+
+**Can I resize multiple signatures at once?**
+This tool processes one signature at a time so you can carefully review and compare the result before downloading.
+
+**What DPI should I use for my signature?**
+For custom sizes in mm or cm, 300 DPI is a good default and matches what most scanning guidelines expect - the tool converts it to pixels automatically.
+
+**Which browsers are supported?**
+Any modern browser with Canvas API support — Chrome, Edge, Firefox, and Safari all work.
+
+**Why is my signature file being rejected by the form portal?**
+Usually because the file is outside either the required pixel dimensions or the allowed KB range - this tool targets both together.
+
+**Should I upload a photo or a scanned copy of my signature?**
+A flatbed scan on plain white paper usually gives the cleanest result. A phone photo works too in good, even light - use "Clean background" to whiten the paper and boost ink contrast.
+
+**What happens if my signature is too small to reach the minimum KB?**
+The tool adds a very light, barely visible texture to raise the file size without changing its pixel dimensions or visibly altering your signature.
+
+**Are the exam/form presets on this page guaranteed to be accurate?**
+Presets reflect commonly published specs at the time of writing, but authorities do revise requirements - always check your official notification and use Custom if anything differs.
+
+#### Also covered on this page
+
+Quick presets — tap to auto-fill · What Happens When You Press Process · What Is a Signature Resizer, and Why Do You Need One? · Why Government Forms Are So Strict About Signature Files · Passport, Aadhaar & PAN Signature Guidelines · Exam & Recruitment Portals: SSC, UPSC, IBPS, Railway RRB · Banking, University & Scholarship Signature Uploads · Government Form Quick Reference · Understanding the Minimum-and-Maximum KB Window · Signature Dimensions & Resolution, Explained · Why JPEG, and PNG vs JPG for Signatures · DPI Explained · From Paper to Pixels: Photo vs Scan Best Practices · Common Mistakes That Get Signatures Rejected · Troubleshooting · Privacy & Security · Why Choose This Tool · This Tool vs Typical Cloud Signature Resizers · Ready to fix your signature file?
+
+### Poster Printer
+
+Tile one image across many sheets to assemble a large poster, with far more control than the usual version of this tool. Paper from A0 to A6 plus Letter, Legal, Tabloid, Executive, ISO B and JIS B sizes or fully custom; sizing by page grid (up to 20×20), by real-world size, or by magnification from 25% to 2000% with a source-PPI setting. Real tiling mathematics with **overlap up to 30 mm for glue-and-overlap assembly or bleed for trim-and-butt-join**, margin presets for safe, inkjet, laser and borderless printers, tile labels, crop marks, registration crosses, an assembly guide page and a **printer calibration sheet with reference lines** so you can verify your printer's actual scaling. Also greyscale, halftone modes with adjustable dot pitch, 72–300 DPI, JPEG quality, rotation and flipping, and six quick presets including A4-to-A0 and a classroom map. Outputs a multi-page PDF or the pages as a ZIP, and prominently warns to print at 100% rather than Fit to Page. Works offline via a service worker.
+
+- URL: https://tooladda.online/poster-printer.html
+- Page title: Poster Printer – Print an Image on Multiple Pages | ToolAdda
+- Category: DesignApplication
+- Price: free (0 INR)
+- Runs on: Any modern web browser (Windows, macOS, Linux, Android, iOS)
+- Meta description: Free poster printer: split any image across A4, A3, Letter or Tabloid pages and download a print-ready PDF with glue overlaps or trim marks. No signup, nothing uploaded.
+
+#### Features
+
+- Split an image across up to 100 printable pages
+- A0–A6, ISO B, JIS B, Letter, Legal, Tabloid, Executive and custom paper sizes
+- Millimetre-accurate tiling with per-edge printer margins
+- Glue overlap or trim-and-butt-join assembly modes
+- Live effective-PPI quality advisor
+- Printer calibration test sheet
+- Halftone dot poster mode
+- Printable assembly guide page with ruler check
+- 100% client-side — images are never uploaded
+
+#### How to print a large poster on multiple A4 or Letter pages
+
+Split one image across several sheets of ordinary printer paper and assemble them into a large poster.
+
+1. **Upload your image** — Drag your image into the upload box, paste it from the clipboard, or press Browse image. Nothing is uploaded to a server — the file is read directly by your browser.
+2. **Choose paper size and orientation** — Pick A4, A3, Letter, Legal, Tabloid or a custom size, then portrait or landscape. The tool preselects A4 or Letter based on your region, and you can change it at any time.
+3. **Set the finished poster size** — Set the size by page grid, by real-world width and height, or by magnification percentage. The live preview and page count update instantly.
+4. **Check the quality advisor** — Read the effective PPI shown for your chosen size. Above 150 PPI prints sharply at arm's length. If it says Poor, reduce the poster size or use a higher-resolution image.
+5. **Choose how the pages will join** — Pick Overlap and glue for a forgiving join with a shaded glue band, or Trim and butt-join for a seamless edge-to-edge finish with printed cut marks.
+6. **Generate and download the PDF** — Press Generate PDF. Each page is rendered one at a time at your chosen DPI and combined into a single multi-page PDF that downloads to your device.
+7. **Print at 100 percent, not Fit to Page** — In your print dialog set Scale to 100% or Actual Size and turn off Fit to Page or Shrink oversized pages. Scaling the print is the single most common reason tiled pages fail to line up.
+8. **Assemble the poster** — Lay the pages out using the numbered assembly guide, work left to right and top to bottom, trim the leading margins, then glue or tape each sheet to its neighbour.
+
+#### Frequently asked questions (20)
+
+**Is this poster printer free?**
+Yes, completely and without limits. There is no trial, no page cap, no paid tier and no watermark on the output. You can generate as many posters of as many pages as your device can handle.
+
+**Do I need to sign up or install anything?**
+No. There is no account, no email capture and nothing to download. It is a web page — open it and use it. You can optionally add it to your home screen to run it like an app and use it without a connection.
+
+**Is my image uploaded to a server?**
+No. Your image is read directly by your browser and every step - decoding, tiling, rendering and PDF assembly - happens on your device. You can verify this yourself: open developer tools, go to the Network tab, and generate a poster. No request carries your file. This is why the tool is safe for paid sewing patterns, client work under NDA and confidential drawings.
+
+**What image formats can I use?**
+JPG, PNG, WebP, AVIF, GIF, BMP and SVG all work directly, as long as your browser can decode them. SVG is rasterised at your chosen output DPI so it stays crisp at any size. HEIC (the default iPhone format) cannot be decoded by most desktop browsers - convert it first with our HEIC converter . PDF source files are not yet supported directly; use the PDF to images converter in the meantime.
+
+**Can I use a PDF as the source?**
+Not yet directly. Convert the page you need to a PNG at high resolution with our PDF to images converter , then bring that image here. Direct PDF input, including picking a page from a multi-page file, is the next major feature planned.
+
+**What paper sizes are supported?**
+A0 through A6, the ISO B series, JIS B4 and B5, US Letter, Legal, Tabloid/Ledger and Executive, plus any custom size you type in millimetres, centimetres or inches. Each can be portrait or landscape, and there is an auto option that picks whichever orientation needs fewer pages.
+
+**How many pages will my poster need?**
+It depends on your paper size, your printer margins and how much area the join consumes. The tool shows the exact count live as you change settings. As a rough guide on A4 portrait with a 10 mm overlap: 4 pages gives about 38 × 55 cm, 12 pages about 57 × 110 cm, and 16 pages is close to A0.
+
+**Why does my poster look blurry?**
+Because the source image does not have enough pixels for the size you printed. Printing bigger spreads existing pixels further apart; it never adds detail. Check the effective PPI shown in the quality advisor - below 100 PPI will look soft at close range. Either reduce the poster size, find a higher-resolution original (messaging apps heavily recompress photos), enlarge it with the image resizer , or switch to halftone mode where low resolution becomes a deliberate style.
+
+**What resolution image do I need for a large poster?**
+Multiply the finished width in inches by your target PPI. For a 100 cm (39.4 in) wide poster at a comfortable 150 PPI you want about 5900 pixels of width. At 100 PPI - perfectly acceptable for a wall poster viewed from two metres - about 3900 pixels is enough. A modern phone photo at 4032 px prints well to roughly one metre wide.
+
+**Why don't my printed pages line up?**
+Almost always one of two things. Either your print dialog scaled the pages - set it to 100% or Actual size and turn off Fit to page - or your printer's unprintable border is larger than the margin you told the tool about. Print the calibration sheet: if its 100 mm reference line does not measure 100 mm, the problem is scaling; if the inner corner markers are clipped, the problem is margins.
+
+**Should I choose overlap or trim marks?**
+Overlap and glue if you want a forgiving job - the shared strip is printed on both pages so you slide the sheets until the picture matches, which hides small errors. Trim and butt-join if you want an invisible seam and are willing to cut accurately with a knife and steel rule. For a first attempt, or for anything involving children, use overlap.
+
+**How do I print at actual size instead of fit-to-page?**
+In Adobe Reader choose Page Sizing & Handling → Actual size. In Chrome or Edge open More settings and set Scale to Custom → 100. In Firefox set Scale to 100% and untick Fit to page width. In macOS Preview set Scale to 100% and untick Scale to fit. Also disable any poster, N-up or borderless option in the printer driver itself, since those apply a second transformation.
+
+**Can I print a sewing pattern at exactly 1:1 scale?**
+Yes. Use Magnify mode set to 100% with the source resolution matching the pattern's, choose trim and butt-join, print at Actual size, and then verify with the pattern's own test square before cutting fabric. If the printed square measures 10 cm you are at true scale. Never cut fabric without checking that square.
+
+**Can I print on Letter or Legal paper?**
+Yes. Letter, Legal, Tabloid/Ledger and Executive are all supported alongside the ISO sizes, and the tool preselects Letter for visitors whose device locale suggests North America. Units switch to inches at the same time, and every dimension, margin and overlap field follows the unit you choose.
+
+**Does it work on mobile and iPad?**
+Yes. The layout puts the preview on top and the controls beneath, with a sticky generate button. Pages are rendered one at a time and released immediately so memory stays low, which is what makes large posters survivable on a phone. Note that some mobile print paths auto-fit pages - for a large job, generate on your phone but print from a desktop, or verify with the calibration sheet first.
+
+**Can I print in black and white to save ink?**
+Yes - switch on greyscale in Output quality. For much bigger savings, try halftone mode with a large dot pitch: it replaces solid tone with dots and can cut ink use dramatically while looking like a deliberate design choice rather than a compromise.
+
+**How do I assemble and mount the finished poster?**
+Lay every sheet out in the grid first using the guide page, trim the leading margins, then build one complete row at a time before joining the rows to each other. Align by matching the printed image, not the paper edges. Glue sticks give you a few seconds to reposition; wet glue buckles paper. For mounting, spray adhesive onto 5 mm foam board gives the flattest, most durable result.
+
+**Is there a limit on file size or number of pages?**
+There is no artificial limit, only your device's memory. The tool warns you above about 40 pages and asks for confirmation above 100, because a very large poster at 300 DPI can produce a PDF of several hundred megabytes. If you hit trouble, drop the DPI to 150, lower the JPEG quality, or use the ZIP export which writes pages out individually instead of holding a whole PDF in memory.
+
+**Can I use my own custom paper size?**
+Yes. Choose Custom in the paper selector and type any width and height in millimetres, centimetres or inches. This covers A3+ / super A3, roll-fed widths, index cards, and the various regional sizes not in the standard list.
+
+**Are my settings remembered?**
+Yes, in your browser's local storage on your own device - paper size, units, margins, joining mode and output quality come back next time. Nothing is stored anywhere else, and clearing your browser data clears it.
+
+#### Also covered on this page
+
+Poster printer tool · Drop an image here to start · Why you can trust this poster printer · What is a poster printer (image tiling) tool? · How to print a large poster on a normal home printer · Choosing your paper size: A4, A3, Letter, Legal, Tabloid · How many pages do you need? · Image resolution explained — why your poster might look blurry · Overlap and glue vs trim and butt-join · Printer margins: the real reason tiles don't line up · Print at 100% — why “Fit to page” ruins alignment · How to assemble your poster · What people actually use this for · Paper, ink and cost · Mounting and finishing · Privacy — your image never leaves your device · Why choose this poster printer · Ready to make your poster? · Tools that pair with the poster printer
+
+### Image Steganography
+
+Hides a message or **any file** inside a PNG's pixel data using LSB encoding, and it is unusually serious about the crypto: the payload is encrypted with **AES-256-GCM via Web Crypto, with the key derived by PBKDF2-SHA256 over 200,000 iterations**, on by default. Bits per channel 1–4 with a live worst-case artifact preview, selectable R/G/B channels, and three pixel-ordering strategies — sequential, password-scattered via a seeded PRNG, or texture-preferred, which hides data in high-variance regions where it is least visible. A live capacity bar shows how much the cover image can hold. The Analyze tab is a real forensics toolkit: bit-plane visualiser, PSNR, a diff map against the original and a **chi-square LSB likelihood test**. Two limits to state honestly: it uses its own container format with a magic header, so it **cannot extract messages made by other steganography tools** — only its own; and the page itself says it is not forensic-grade undetectability. Output is always PNG, and the page warns that re-saving as JPEG or sending through WhatsApp, Instagram or Facebook destroys the hidden message. Covers above roughly 12 megapixels are downscaled.
+
+- URL: https://tooladda.online/image-steganography.html
+- Page title: Free Image Steganography Tool — Hide Secret Text in PNG Online | ToolAdda
+- Category: SecurityApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Free image steganography tool — hide secret text or files inside PNG photos using LSB embedding with AES-256 password encryption. Extract hidden messages, analyze bit-planes & chi-square detection. 100% offline in your browser, nothing uploaded.
+
+#### Features
+
+- Hide text or file in PNG image
+- Extract hidden message with password
+- AES-256-GCM encryption
+- Password-scattered LSB embedding
+- Texture-aware pixel ordering
+- 1–4 bits per channel
+- Bit-plane & LSB visualizer
+- Histogram & chi-square steganalysis
+- Before/after PSNR quality metrics
+- 100% client-side — no upload
+
+#### How to hide a secret message inside an image
+
+Use ToolAdda's free LSB steganography tool to embed a hidden text or file inside a PNG photo entirely in your browser.
+
+1. **Upload a cover image** — Open the Hide tab and upload a JPG, PNG, or WebP photo as your cover image. You can drag-and-drop, browse, or paste from clipboard.
+2. **Enter secret content** — Type your secret message or attach a file. Set a strong password and keep AES-256 encryption enabled (recommended).
+3. **Configure embedding** — Optionally adjust bits per channel, colour channels, and pixel ordering (sequential, password-scattered, or texture-preferred) in Advanced settings.
+4. **Hide and download PNG** — Click Hide Message, review the before/after comparison and PSNR quality, then download the stego-image.png. Share it as a file attachment — not as a re-compressed photo.
+5. **Extract later** — Open the Reveal tab, upload the PNG, enter the password if used, and click Reveal Message to recover the hidden text or file.
+
+#### Frequently asked questions (25)
+
+**What is image steganography?**
+Steganography hides secret data inside a cover image so casual viewers don't know a message exists. This tool uses LSB embedding - modifying the tiniest colour bits where changes are visually imperceptible.
+
+**Is image steganography safe and private?**
+All processing runs 100% in your browser — your image, message, and password are never uploaded. However, steganography only hides the existence of data; always enable AES-256 password encryption so extracted data remains unreadable without your password.
+
+**Why must the output be PNG?**
+LSB data lives in the least-significant bits of pixels. PNG is lossless and preserves those bits exactly. JPEG compression destroys them. You can upload JPG as cover, but output is always PNG.
+
+**Why doesn't it work after sending on WhatsApp, Instagram or Facebook?**
+These apps re-compress photos as JPEG when sent normally, destroying hidden bits. Send the PNG as a document/file attachment, or use email or cloud storage instead.
+
+**Can someone detect the hidden message?**
+Yes, potentially. Statistical tools (like our chi-square analysis) can flag likely steganography, especially at higher bit depths. This is a learning tool, not forensic-grade undetectability.
+
+**Do I need a password for steganography?**
+Strongly recommended and enabled by default. Without a password, anyone who suspects hidden data can extract it with any generic tool. With AES-256 encryption, they only get encrypted noise without the correct password.
+
+**What is LSB steganography?**
+LSB replaces the lowest bits of RGB colour channels with secret data bits. These bits contribute minimally to perceived colour, so the image looks unchanged.
+
+**Can I hide a file, not just text?**
+Yes. Switch to File mode in the Hide tab. Any file type can be embedded with filename and MIME preserved, and downloaded again from the Reveal tab.
+
+**Can I hide a password or other short secret?**
+Yes — a password or short note is just text, and text is the simplest and lowest-capacity-demand thing to hide, so it works reliably even in small cover images.
+
+**Is real encryption included, or is this just hiding?**
+Both. When enabled, your payload is encrypted with AES-256-GCM (via a password stretched through 200,000 rounds of PBKDF2) before it's ever embedded, so extraction alone doesn't reveal readable content.
+
+**Can I extract the hidden data later, or does it expire?**
+There's no expiry. As long as the PNG file itself is never edited, resized, or re-compressed, you can reveal the hidden data at any time in the future using this same tool.
+
+**Does this tool work offline?**
+Yes, once the page has loaded. Hiding and revealing both run entirely in your browser's memory with no network requests involved.
+
+**Is it free to use?**
+Yes, completely free with no sign-up, no watermark, and no limit on how many times you use it.
+
+**Can I use very large images?**
+Yes. Images larger than roughly 12 megapixels are automatically downscaled before embedding so the page stays responsive - you'll see a notice if this happens.
+
+**Can I hide a ZIP file or other binary file type?**
+Yes. File mode accepts any file type — ZIP archives, documents, small config files — and preserves the original filename and MIME type for download after extraction.
+
+**Can hidden data be removed or "cleaned" from an image?**
+Any edit - resizing, cropping, filtering, or re-saving as JPEG - will destroy the embedded bits. This tool doesn't include a dedicated "strip hidden data" mode, but re-saving through almost any image editor achieves the same result.
+
+**Is this secure enough for genuinely sensitive information?**
+With encryption and password-scattered ordering enabled it's reasonably strong for casual and personal privacy, but treat it as a learning and hobby-grade tool, not a substitute for dedicated security software when the stakes are high - see the Digital Forensics section above.
+
+**Can beginners use this without technical knowledge?**
+Yes. The default settings (1-bit depth, all channels, sequential order, encryption on) work well out of the box - Advanced settings are entirely optional for more experienced users.
+
+**What browsers are supported?**
+Any modern browser with Canvas and Web Crypto API support — recent Chrome, Edge, Firefox and Safari all work, on both desktop and mobile.
+
+**Does it work on mobile phones?**
+Yes, the interface is fully responsive, including touch-friendly drag-and-drop alternatives (tap to browse) and a mobile-optimised control layout.
+
+**Is there a limit on how much data I can hide?**
+Capacity depends on your image size and embedding settings - the live capacity bar in the Hide tab shows exactly how many bytes you can fit before you start typing.
+
+**Does hiding data change the visible image quality?**
+At 1-2 bits per channel, no visible difference - the PSNR (peak signal-to-noise ratio) shown after hiding is typically well above 45 dB, meaning "visually identical." Higher bit-depths trade a little more risk of faint artifacts for extra capacity.
+
+**Can I hide more than one message in the same image?**
+Not in a single pass - each hide operation embeds one payload (text or one file) per image. To combine multiple secrets, bundle them into one file (for example a ZIP) and hide that as a single file payload.
+
+**Are my images, messages or passwords stored anywhere?**
+No. Nothing is uploaded, logged, or saved to any server — everything stays in your browser's memory for the current session only.
+
+**Can I batch-process multiple images at once?**
+Not currently — each image is hidden or revealed individually, one at a time, through the Hide and Reveal tabs.
+
+#### Also covered on this page
+
+How to hide a secret message in 4 steps · Will the hidden message survive? A sharing checklist · How steganography compares to other approaches · The complete guide to image steganography · What is image steganography? · A short history of steganography · How image steganography works · LSB (Least Significant Bit) steganography, explained · Encryption vs. steganography — use both · Why use steganography at all? · Supported image formats · How capacity is calculated · Password protection done properly · Security best practices · Data integrity & corruption detection · Privacy: what actually happens to your data · Why browser-based processing makes sense here · Digital forensics & detectability · Cybersecurity applications · Who actually uses image steganography · Common mistakes to avoid · Troubleshooting · Summary · Ready to hide your first secret message?

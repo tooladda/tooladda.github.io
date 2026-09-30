@@ -1,0 +1,2138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This page carries no ads: it is a
+       full-screen editor with no site header or footer, so the AdSense
+       loader is deliberately absent. The consent defaults still run because
+       analytics and the consent banner in assets/js/app.js read them, and
+       the ad_* signals stay denied for anything Google may check. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+<meta name="description" content="Free online notepad with auto-save, live Markdown preview, multi-note sidebar, tags, version history, and export to MD/HTML/PDF/DOCX/ZIP. No login — notes stay in your browser with offline PWA support." />
+<title>Online Notepad — Free Auto-Save Markdown Editor, No Login | ToolAdda</title>
+<link rel="stylesheet" href="assets/css/style.css" />
+<link rel="manifest" href="online-notepad-manifest.json" />
+<link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+<style>
+  html,body{min-height:100%;margin:0;}
+  body.np-page{
+    background:
+      radial-gradient(circle at 8% 0%,rgba(79,70,229,.12),transparent 32%),
+      radial-gradient(circle at 92% 8%,rgba(124,58,237,.1),transparent 28%),
+      var(--bg);
+  }
+
+  .np-app{
+    display:grid;
+    grid-template-columns:300px 1fr;
+    grid-template-rows:auto 1fr auto;
+    grid-template-areas:"top top" "sidebar main" "status status";
+    height:100vh;min-height:560px;
+    color:var(--text);
+    box-shadow:0 0 0 1px rgba(79,70,229,.06);
+  }
+  .np-app.is-zen{grid-template-columns:1fr;grid-template-areas:"main";}
+  .np-app.is-zen .np-sidebar,.np-app.is-zen .np-topbar,.np-app.is-zen .np-statusbar{display:none;}
+
+  /* ── Topbar ── */
+  .np-topbar{
+    grid-area:top;display:flex;flex-direction:column;gap:0.5rem;
+    padding:0.55rem 0.85rem 0.65rem;
+    border-bottom:1px solid rgba(79,70,229,.1);
+    background:rgba(255,255,255,.88);
+    backdrop-filter:blur(16px);
+    z-index:30;
+  }
+  [data-theme="dark"] .np-topbar,[data-theme="oled"] .np-topbar{background:rgba(12,18,32,.92);}
+  [data-theme="sepia"] .np-topbar{background:rgba(237,224,196,.92);}
+
+  .np-topbar-row{display:flex;align-items:center;gap:0.5rem;min-width:0;}
+  .np-topbar-row--primary{flex-wrap:wrap;}
+  .np-topbar-row--format{overflow-x:auto;padding-bottom:0.1rem;scrollbar-width:thin;}
+
+  .np-brand{display:inline-flex;align-items:center;gap:0.45rem;flex-shrink:0;text-decoration:none;color:var(--text);}
+  .np-brand-text{display:flex;flex-direction:column;line-height:1.15;font-weight:900;font-size:0.9rem;}
+  .np-brand-text small{font-size:0.62rem;font-weight:700;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;margin-top:0.08rem;}
+  .np-brand-mark{display:inline-grid;place-items:center;width:1.75rem;height:1.75rem;border-radius:10px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;font-size:0.72rem;font-weight:900;box-shadow:0 4px 14px rgba(79,70,229,.3);flex-shrink:0;}
+    display:inline-flex;padding:0.22rem;border-radius:999px;
+    background:var(--surface-strong);border:1px solid var(--border);
+    margin-left:auto;
+  }
+  .np-view-switch button{
+    border:none;background:transparent;color:var(--text-muted);
+    padding:0.38rem 0.9rem;border-radius:999px;
+    font-size:0.76rem;font-weight:800;cursor:pointer;font-family:inherit;
+    transition:color .15s,background .15s,box-shadow .15s;
+  }
+  .np-view-switch button:hover{color:var(--text);}
+  .np-view-switch button.is-active{
+    background:linear-gradient(135deg,var(--accent),#7c3aed);
+    color:#fff;box-shadow:0 4px 14px rgba(79,70,229,.28);
+  }
+
+  .np-topbar-actions{display:flex;align-items:center;gap:0.25rem;flex-shrink:0;}
+  .np-topbar-actions .np-tbtn{padding:0.4rem 0.55rem;}
+
+  .np-toolbar{display:flex;gap:0.35rem;flex-wrap:nowrap;min-width:max-content;}
+  .np-toolbar-group{display:flex;gap:0.15rem;padding:0.18rem;border-radius:12px;background:var(--surface-strong);border:1px solid var(--border);}
+  .np-tbtn{
+    border:1px solid transparent;background:transparent;color:var(--text);
+    border-radius:8px;padding:0.38rem 0.58rem;cursor:pointer;
+    font-size:0.82rem;white-space:nowrap;font-family:inherit;
+    transition:background .15s,border-color .15s,transform .1s;
+  }
+  .np-tbtn:hover{background:var(--accent-soft);border-color:rgba(79,70,229,.18);}
+  .np-tbtn:active{transform:scale(.96);}
+  .np-tbtn.is-active{background:linear-gradient(135deg,var(--accent),#7c3aed);color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(79,70,229,.25);}
+  .np-tbtn-icon{min-width:2.1rem;}
+
+  .np-save-indicator{
+    font-size:0.72rem;font-weight:700;white-space:nowrap;
+    padding:0.3rem 0.65rem;border-radius:999px;
+    background:var(--surface-strong);border:1px solid var(--border);
+    display:inline-flex;align-items:center;gap:0.35rem;flex-shrink:0;
+  }
+  .np-save-indicator::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--text-muted);}
+  .np-save-indicator.is-saving{color:#a16207;border-color:rgba(234,179,8,.35);background:rgba(234,179,8,.1);}
+  .np-save-indicator.is-saving::before{background:#eab308;animation:npPulse 1s infinite;}
+  .np-save-indicator.is-saved{color:#15803d;border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.08);}
+  .np-save-indicator.is-saved::before{background:#22c55e;}
+  .np-save-indicator.is-error{color:#b91c1c;border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.08);}
+  .np-save-indicator.is-error::before{background:#ef4444;}
+  @keyframes npPulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+  /* ── Sidebar ── */
+  .np-sidebar{
+    grid-area:sidebar;display:flex;flex-direction:column;overflow:hidden;
+    border-right:1px solid rgba(79,70,229,.1);
+    background:rgba(255,255,255,.78);backdrop-filter:blur(14px);
+  }
+  [data-theme="dark"] .np-sidebar,[data-theme="oled"] .np-sidebar{background:rgba(12,18,32,.88);}
+  [data-theme="sepia"] .np-sidebar{background:rgba(237,224,196,.85);}
+
+  .np-sidebar-brand{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0.75rem 0.85rem 0.45rem;gap:0.5rem;
+  }
+  .np-sidebar-brand strong{font-size:0.92rem;font-weight:900;}
+  .np-sidebar-brand span{font-size:0.72rem;color:var(--text-muted);display:block;margin-top:0.1rem;}
+
+  .np-new-note-btn{
+    border:none;border-radius:10px;padding:0.45rem 0.75rem;cursor:pointer;
+    background:linear-gradient(135deg,var(--accent),#7c3aed);color:#fff;
+    font-size:0.78rem;font-weight:800;font-family:inherit;
+    box-shadow:0 4px 14px rgba(79,70,229,.28);white-space:nowrap;
+  }
+  .np-new-note-btn:hover{filter:brightness(1.05);}
+
+  .np-search-wrap{
+    display:flex;align-items:center;gap:0.45rem;margin:0 0.75rem 0.55rem;
+    padding:0.45rem 0.65rem;border-radius:12px;
+    border:1px solid var(--border);background:var(--surface-strong);
+  }
+  .np-search-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+  .np-search-wrap span{opacity:.55;font-size:0.9rem;}
+  .np-search-wrap input{flex:1;border:0;background:transparent;color:var(--text);font-size:0.84rem;font-family:inherit;outline:none;min-width:0;}
+
+  .np-sidebar-tabs{display:flex;gap:0.35rem;padding:0 0.75rem 0.55rem;}
+  .np-sidebar-tabs button{
+    flex:1;border:1px solid var(--border);background:var(--surface-strong);color:var(--text);
+    border-radius:10px;padding:0.38rem;font-size:0.74rem;font-weight:800;cursor:pointer;font-family:inherit;
+  }
+  .np-sidebar-tabs button.is-active{background:linear-gradient(135deg,var(--accent),#7c3aed);color:#fff;border-color:transparent;}
+
+  .np-sidebar-sort{padding:0 0.75rem 0.55rem;}
+  .np-sidebar-sort select{
+    width:100%;border:1px solid var(--border);background:var(--surface-strong);color:var(--text);
+    border-radius:10px;padding:0.4rem 0.55rem;font-size:0.76rem;font-weight:600;font-family:inherit;
+  }
+
+  .np-note-list{flex:1;overflow-y:auto;scrollbar-width:thin;padding:0.25rem 0.5rem;}
+  .np-note-empty{
+    margin:1.5rem 0.75rem;padding:1.25rem 1rem;text-align:center;
+    border:1px dashed var(--border);border-radius:16px;color:var(--text-muted);font-size:0.84rem;line-height:1.55;
+  }
+  .np-note-empty strong{display:block;color:var(--text);margin-bottom:0.35rem;font-size:0.92rem;}
+
+  .np-note-item{
+    padding:0.75rem 0.8rem;margin-bottom:0.35rem;border-radius:14px;
+    border:1px solid transparent;cursor:pointer;position:relative;
+    transition:background .12s,border-color .12s,transform .12s;
+  }
+  .np-note-item:hover{background:var(--surface-strong);border-color:var(--border);}
+  .np-note-item.is-active{
+    background:linear-gradient(135deg,rgba(79,70,229,.12),rgba(124,58,237,.08));
+    border-color:rgba(79,70,229,.25);
+    box-shadow:0 4px 16px rgba(79,70,229,.1);
+  }
+  .np-note-item .title{font-weight:800;font-size:0.86rem;display:flex;align-items:center;gap:0.3rem;flex-wrap:wrap;padding-right:3.5rem;}
+  .np-note-item .snippet{font-size:0.75rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:0.2rem;}
+  .np-note-item .meta{font-size:0.67rem;color:var(--text-muted);margin-top:0.25rem;opacity:.85;}
+  .np-note-item .np-note-actions{position:absolute;right:0.4rem;top:0.4rem;display:none;gap:0.15rem;}
+  .np-note-item:hover .np-note-actions{display:flex;}
+  .np-note-actions button{border:1px solid var(--border);background:var(--surface);border-radius:7px;padding:0.2rem 0.4rem;cursor:pointer;font-size:0.7rem;}
+  .np-note-item mark{background:#fde68a;color:#111;border-radius:3px;padding:0 2px;}
+  .np-tag-chip{display:inline-block;background:var(--accent-soft);color:var(--accent-strong);border-radius:999px;padding:0.05rem 0.45rem;font-size:0.65rem;margin-left:0.15rem;font-weight:800;}
+
+  .np-sidebar-foot{
+    padding:0.6rem 0.75rem;border-top:1px solid var(--border);
+    font-size:0.72rem;color:var(--text-muted);
+    display:flex;justify-content:space-between;align-items:center;gap:0.5rem;
+    background:rgba(255,255,255,.5);
+  }
+  [data-theme="dark"] .np-sidebar-foot{background:rgba(0,0,0,.2);}
+  .np-backup-btn{
+    border:1px solid var(--border);background:var(--surface-strong);color:var(--text);
+    border-radius:10px;padding:0.35rem 0.65rem;cursor:pointer;font-size:0.74rem;font-weight:700;font-family:inherit;
+  }
+  .np-backup-btn:hover{border-color:var(--accent);background:var(--accent-soft);}
+
+  /* ── Editor / Preview ── */
+  .np-main{grid-area:main;display:grid;grid-template-columns:1fr;overflow:hidden;position:relative;background:var(--bg);}
+  .np-main.is-split{grid-template-columns:1fr 1fr;}
+  .np-main.is-split-stacked{grid-template-rows:1fr 1fr;grid-template-columns:1fr;}
+  .np-pane{overflow:hidden;position:relative;min-height:0;display:flex;flex-direction:column;}
+
+  .np-pane-head{
+    flex-shrink:0;display:flex;align-items:center;gap:0.4rem;
+    padding:0.45rem 0.85rem;font-size:0.72rem;font-weight:800;
+    letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);
+    border-bottom:1px solid var(--border);background:rgba(255,255,255,.55);
+  }
+  [data-theme="dark"] .np-pane-head,[data-theme="oled"] .np-pane-head{background:rgba(15,23,42,.55);}
+  .np-pane-head-dot{width:7px;height:7px;border-radius:50%;}
+  .np-pane-head--write .np-pane-head-dot{background:linear-gradient(135deg,#4f46e5,#7c3aed);}
+  .np-pane-head--preview .np-pane-head-dot{background:linear-gradient(135deg,#10b981,#06b6d4);}
+
+  .np-editor-pane{border-right:1px solid rgba(79,70,229,.1);}
+  .np-main.is-split-stacked .np-editor-pane{border-right:none;border-bottom:1px solid rgba(79,70,229,.1);}
+
+  .np-editor-wrap{flex:1;position:relative;display:flex;overflow:hidden;min-height:0;}
+  .np-linegutter{
+    width:2.75rem;text-align:right;padding:1rem 0.45rem;
+    font-family:ui-monospace,monospace;color:var(--text-muted);
+    font-size:0.82rem;line-height:1.65;overflow:hidden;user-select:none;
+    background:var(--surface);border-right:1px solid var(--border);white-space:pre;
+  }
+  textarea.np-textarea{
+    flex:1;border:none;outline:none;resize:none;
+    padding:1.15rem 1.35rem;background:var(--bg);color:var(--text);
+    font-size:1.02rem;line-height:1.7;font-family:inherit;min-height:0;
+  }
+  textarea.np-textarea::placeholder{color:var(--text-muted);opacity:.75;}
+  textarea.np-textarea.is-mono{font-family:ui-monospace,monospace;font-size:0.94rem;}
+  textarea.np-textarea.is-nowrap{white-space:pre;overflow-x:auto;}
+  .np-editor-wrap.width-narrow textarea.np-textarea{max-width:640px;margin:0 auto;}
+  .np-editor-wrap.width-medium textarea.np-textarea{max-width:900px;margin:0 auto;}
+
+  .np-preview-pane-wrap{display:flex;flex-direction:column;min-height:0;overflow:hidden;}
+  .np-preview-pane{flex:1;overflow:auto;padding:1.15rem 1.4rem;line-height:1.75;font-size:0.98rem;}
+  .np-preview-pane h1{font-size:1.75rem;margin:0 0 0.75rem;line-height:1.2;}
+  .np-preview-pane h2{font-size:1.35rem;margin:1.1rem 0 0.5rem;}
+  .np-preview-pane h3{font-size:1.12rem;margin:0.9rem 0 0.4rem;}
+  .np-preview-pane p{margin:0.65rem 0;}
+  .np-preview-pane ul,.np-preview-pane ol{padding-left:1.35rem;margin:0.5rem 0;}
+  .np-preview-pane table{border-collapse:collapse;width:100%;margin:0.85rem 0;font-size:0.9rem;}
+  .np-preview-pane table th{background:var(--accent-soft);font-weight:800;}
+  .np-preview-pane table th,.np-preview-pane table td{border:1px solid var(--border);padding:0.5rem 0.7rem;}
+  .np-preview-pane pre{background:#1e293b;color:#e2e8f0;border-radius:12px;padding:0.9rem 1rem;overflow-x:auto;border:none;font-size:0.86rem;}
+  [data-theme="dark"] .np-preview-pane pre{background:#0f172a;}
+  .np-preview-pane code{font-family:ui-monospace,monospace;font-size:0.88em;background:var(--accent-soft);padding:0.12rem 0.35rem;border-radius:5px;}
+  .np-preview-pane pre code{background:transparent;padding:0;}
+  .np-preview-pane blockquote{
+    border-left:4px solid var(--accent);margin:0.85rem 0;padding:0.35rem 1rem;
+    color:var(--text-muted);background:var(--accent-soft);border-radius:0 12px 12px 0;
+  }
+  .np-preview-pane input[type="checkbox"]{margin-right:0.45rem;accent-color:var(--accent);width:1rem;height:1rem;}
+  .np-preview-pane a{color:var(--accent-strong);font-weight:600;}
+  .np-preview-pane hr{border:none;border-top:1px solid var(--border);margin:1.25rem 0;}
+
+  /* ── Status bar ── */
+  .np-statusbar{
+    grid-area:status;display:flex;align-items:center;gap:0.65rem;flex-wrap:wrap;
+    padding:0.42rem 1rem;border-top:1px solid rgba(79,70,229,.1);
+    background:rgba(255,255,255,.82);backdrop-filter:blur(12px);
+    font-size:0.72rem;color:var(--text-muted);
+  }
+  [data-theme="dark"] .np-statusbar,[data-theme="oled"] .np-statusbar{background:rgba(12,18,32,.9);}
+  .np-statusbar > span:not(.np-offline-badge){display:inline-flex;align-items:center;gap:0.35rem;}
+  .np-statusbar > span:not(.np-offline-badge):not(:last-child)::after{
+    content:"";width:3px;height:3px;border-radius:50%;background:var(--border);margin-left:0.65rem;
+  }
+  .np-stat-words{font-weight:800;color:var(--text);}
+
+  .np-toc{
+    position:absolute;top:2.5rem;right:0.65rem;
+    background:rgba(255,255,255,.95);border:1px solid var(--border);
+    border-radius:14px;padding:0.6rem 0.8rem;max-width:220px;max-height:50vh;
+    overflow:auto;font-size:0.75rem;
+    box-shadow:0 12px 36px rgba(15,23,42,.14);z-index:5;
+  }
+  [data-theme="dark"] .np-toc{background:rgba(15,23,42,.95);}
+  .np-toc a{display:block;color:var(--text);text-decoration:none;padding:0.2rem 0;font-weight:600;}
+  .np-toc a:hover{color:var(--accent);}
+
+  .np-typewriter textarea.np-textarea{padding-top:38vh;padding-bottom:38vh;}
+  .np-focus-overlay{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,rgba(0,0,0,.28),transparent 28%,transparent 72%,rgba(0,0,0,.28));display:none;}
+
+  .np-modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:1000;padding:1rem;}
+  .np-modal{background:var(--surface);border-radius:22px;padding:1.35rem;max-width:560px;width:100%;max-height:85vh;overflow:auto;box-shadow:0 28px 80px rgba(15,23,42,.4);border:1px solid var(--border);}
+  .np-modal h2{margin-top:0;font-size:1.15rem;font-weight:900;}
+  .np-modal .row{display:flex;gap:0.5rem;margin:0.6rem 0;flex-wrap:wrap;align-items:center;}
+  .np-modal input,.np-modal select{border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:10px;padding:0.5rem 0.7rem;font-size:0.88rem;font-family:inherit;}
+  .np-diff-add{background:rgba(34,197,94,.18);}
+  .np-diff-del{background:rgba(239,68,68,.18);text-decoration:line-through;}
+  .np-version-item{border:1px solid var(--border);border-radius:12px;padding:0.6rem 0.8rem;margin-bottom:0.45rem;cursor:pointer;font-size:0.82rem;transition:border-color .15s,background .15s;}
+  .np-version-item:hover{border-color:var(--accent);background:var(--accent-soft);}
+
+  .np-offline-badge{font-size:0.68rem;background:rgba(34,197,94,.12);color:#166534;border-radius:999px;padding:0.22rem 0.65rem;font-weight:800;border:1px solid rgba(34,197,94,.22);margin-left:auto;}
+  [data-theme="dark"] .np-offline-badge{color:#86efac;}
+
+  .np-sidebar-backdrop{
+    display:none;position:fixed;inset:0;background:rgba(15,23,42,.45);
+    backdrop-filter:blur(2px);z-index:499;
+  }
+  .np-sidebar-backdrop.is-visible{display:block;}
+
+  [data-theme="sepia"]{--bg:#f4ecd8;--surface:#ede0c4;--surface-strong:#e6d7b8;--text:#433422;--text-muted:#7a6a52;--border:#d8c8a4;}
+  [data-theme="oled"]{--bg:#000;--surface:#0a0a0a;--surface-strong:#141414;--text:#e5e5e5;--text-muted:#8a8a8a;--border:#242424;}
+
+  /* SEO */
+  .np-seo{max-width:960px;margin:0 auto;padding:3rem 1.25rem 4rem;border-top:1px solid var(--border);}
+  .np-seo .np-seo-badge{display:inline-flex;padding:.32rem .75rem;border-radius:999px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.65rem;background:linear-gradient(135deg,var(--accent),#7c3aed);color:#fff;}
+  .np-seo h1{margin:0 0 .75rem;font-size:clamp(1.5rem,3.5vw,2rem);font-weight:900;}
+  .np-seo h2{margin:1.75rem 0 .65rem;font-size:1.15rem;font-weight:800;}
+  .np-seo p,.np-seo li{color:var(--text-muted);line-height:1.7;font-size:.94rem;}
+  .np-seo-feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.65rem;margin:1.1rem 0;}
+  .np-seo-chip{padding:.8rem .95rem;border-radius:14px;border:1px solid var(--border);background:var(--surface);font-size:.86rem;line-height:1.5;}
+  .np-seo-chip strong{display:block;color:var(--text);margin-bottom:.15rem;}
+  .np-seo-related{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:1rem;}
+  .np-seo-related a{display:inline-flex;padding:.42rem .85rem;border-radius:999px;border:1px solid var(--border);background:var(--surface-strong);color:var(--text);font-size:.84rem;font-weight:600;text-decoration:none;}
+  .np-seo-related a:hover{border-color:var(--accent);background:var(--accent-soft);}
+
+  @media (max-width: 960px) {
+    .np-app{grid-template-columns:1fr;}
+    .np-view-switch{margin-left:0;}
+  }
+  @media (max-width: 860px) {
+    .np-app{grid-template-areas:"top" "main" "status";}
+    .np-sidebar{
+      position:fixed;left:0;top:0;bottom:0;width:88vw;max-width:340px;z-index:500;
+      transform:translateX(-105%);transition:transform .25s cubic-bezier(.4,0,.2,1);
+      box-shadow:0 24px 80px rgba(15,23,42,.35);
+    }
+    .np-sidebar.is-open{transform:translateX(0);}
+    .np-main.is-split{grid-template-columns:1fr;grid-template-rows:1fr 1fr;}
+    .np-topbar-row--format .np-toolbar{flex-wrap:wrap;}
+  }
+</style>
+
+<meta name="theme-color" content="#4f46e5" />
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+<meta name="author" content="ToolAdda" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="X-Content-Type-Options" content="nosniff" />
+<link rel="canonical" href="https://tooladda.online/online-notepad.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+<meta property="og:title" content="Online Notepad — Free Auto-Save Markdown Editor, No Login | ToolAdda" />
+<meta property="og:description" content="Private Markdown notepad with auto-save, multi-note sidebar, live preview, version history, and export to MD/HTML/PDF/DOCX. Works offline — no account required." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://tooladda.online/online-notepad.html" />
+<meta property="og:site_name" content="ToolAdda" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:image" content="https://tooladda.online/assets/images/og/online-notepad.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Online Notepad — Free Auto-Save Markdown Editor, No Login — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="Online Notepad — Free Auto-Save Markdown Editor, No Login — free online tool on ToolAdda, runs in your browser with no sign-up." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Online Notepad — Free Auto-Save Markdown Editor | ToolAdda" />
+<meta name="twitter:description" content="Auto-saving Markdown notepad with live preview, multi-note sidebar, and offline PWA — no login, nothing uploaded." />
+<meta name="twitter:image" content="https://tooladda.online/assets/images/og/online-notepad.jpg" />
+
+<script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://tooladda.online/#website",
+      "name": "ToolAdda",
+      "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+      "url": "https://tooladda.online/",
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+      "url": "https://tooladda.online/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tooladda.online/assets/images/logo.svg"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/online-notepad.html#webpage",
+      "url": "https://tooladda.online/online-notepad.html",
+      "name": "Online Notepad — Free Auto-Save Markdown Editor, No Login | ToolAdda",
+      "description": "Free online notepad with auto-save, live Markdown preview, multi-note sidebar, tags, version history, and export options. Private, offline-capable, no account.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://tooladda.online/online-notepad.html#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://tooladda.online/online-notepad.html#softwareapplication"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://tooladda.online/online-notepad.html#softwareapplication",
+      "name": "Online Notepad",
+      "url": "https://tooladda.online/online-notepad.html",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "Web",
+      "description": "Free Markdown notepad with auto-save, live preview, multi-note management, tags, version history, and export to Markdown, HTML, PDF, DOCX, and ZIP. Stored locally in IndexedDB — no server upload.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Auto-save with rolling backups",
+        "Live Markdown preview (GFM, math, code, mermaid)",
+        "Multi-note sidebar with search, tags, and trash",
+        "Export to .md, .txt, .html, PDF, .docx, and ZIP",
+        "Version history with diff view",
+        "Offline PWA with service worker",
+        "Zen mode, typewriter mode, focus mode",
+        "Share note via compressed URL hash",
+        "Import .md/.txt files and JSON backups"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tooladda.online/online-notepad.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Online Notepad"
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to use the online notepad",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Start writing",
+          "text": "Open the notepad and type in the editor — your note saves automatically as you go. Markdown formatting is supported."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Preview Markdown",
+          "text": "Switch to Split or Preview view to see rendered headings, lists, code blocks, and task checklists."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Manage notes",
+          "text": "Create multiple notes from the sidebar, search, pin favourites, and organize with #tags in your text."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Export or backup",
+          "text": "Export a single note as .md, .html, or PDF, or download a full ZIP/JSON backup from the sidebar."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do I need an account to use this notepad?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. There is nothing to sign up for. Your notes are written to your own browser's storage as you type, so the editor works the moment the page loads."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where are my notes stored?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In your browser's own storage on the device you are using, using IndexedDB. They are not uploaded to us and there is no server copy, which is also why they do not appear on your other devices."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are my notes saved automatically?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, as you type. There is no save button to remember and no risk of losing work by closing the tab, provided you are not in a private window."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will my notes still be there tomorrow?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, in the same browser on the same device. They survive closing the tab and restarting the machine. They will not survive clearing your browsing data, and they do not exist in a different browser."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What deletes my notes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Three things: clearing your browsing or site data, using a private or incognito window that you then close, and switching to a different browser or device. None of those are recoverable, which is what the backup export is for."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I back up my notes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use the sidebar's backup export — a ZIP of Markdown files, or a full JSON archive you can import again later. For anything you would be upset to lose, do that: on-device storage is private, but it is not a backup."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use it offline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. After your first visit a service worker caches the app, so it opens and keeps auto-saving with no connection at all."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I have to learn Markdown?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. You can type plain text and ignore the formatting entirely. Markdown is there if you want it — a handful of characters that turn text into headings, lists and links in the preview as you write."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What Markdown does it support?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The common set: headings with #, bold with **, italics with *, bulleted and numbered lists, checklists, links, inline code, fenced code blocks, quotes, images and GFM tables — plus KaTeX maths and Mermaid diagrams. The preview updates live as you type."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why use Markdown instead of a normal editor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because it is portable. The same characters work in GitHub, Notion, Obsidian, Reddit and Discord, so a note written here pastes into any of them without reformatting. It also keeps you writing instead of fiddling with fonts."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I keep more than one note?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The sidebar holds all your notes, with search, #tags, pinning, sorting and a trash for anything you delete by accident."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it count words for me?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The status bar shows words, characters, lines and an estimated reading time as you type, along with your cursor position."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a limit on how much I can write?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The practical limit is your browser's storage quota, which is generous — several megabytes of text, or many thousands of pages of notes. You are very unlikely to reach it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can other people see what I write?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The text never leaves your browser, so there is nothing for us or anyone else to read. That is the main reason to use a local editor for anything sensitive."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Completely. No sign-up, no subscription, no note limit and no watermark on anything you export."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/online-notepad.html#webpage",
+      "url": "https://tooladda.online/online-notepad.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-27",
+      "dateModified": "2026-09-24",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="np-page no-side-ad-squeeze">
+<a class="skip-link" href="#np-editor">Skip to editor</a>
+<div class="np-sidebar-backdrop" data-np-sidebar-backdrop aria-hidden="true"></div>
+<div class="np-app" data-np-app>
+  <aside class="np-sidebar" data-np-sidebar>
+    <div class="np-sidebar-brand">
+      <div>
+        <strong>My Notes</strong>
+        <span data-np-note-count>0 notes</span>
+      </div>
+      <button type="button" class="np-new-note-btn" data-np-new-note title="New note">+ New</button>
+    </div>
+    <div class="np-search-wrap">
+      <span aria-hidden="true">🔍</span>
+      <input type="search" placeholder="Search notes…" data-np-search aria-label="Search notes" />
+    </div>
+    <div class="np-sidebar-tabs">
+      <button type="button" class="is-active" data-np-view-tab="notes">Notes</button>
+      <button type="button" data-np-view-tab="trash">Trash</button>
+    </div>
+    <div class="np-sidebar-sort">
+      <select data-np-sort-mode aria-label="Sort notes">
+        <option value="modified">Last modified</option>
+        <option value="created">Date created</option>
+        <option value="title">Title A-Z</option>
+        <option value="manual">Manual order</option>
+      </select>
+    </div>
+    <div class="np-note-list" data-np-note-list></div>
+    <div class="np-sidebar-foot">
+      <span>Stored locally · private</span>
+      <button type="button" class="np-backup-btn" data-np-open-export-all>⬇ Backup</button>
+    </div>
+  </aside>
+
+  <header class="np-topbar">
+    <div class="np-topbar-row np-topbar-row--primary">
+      <button type="button" class="np-tbtn np-tbtn-icon" data-np-toggle-sidebar title="Notes sidebar" aria-label="Toggle notes sidebar">☰</button>
+      <a class="np-brand" href="/">
+        <span class="np-brand-mark" aria-hidden="true">T</span>
+        <span class="np-brand-text">Notepad<small>ToolAdda</small></span>
+      </a>
+      <span class="np-save-indicator is-saved" data-np-save-indicator aria-live="polite">Saved</span>
+      <div class="np-view-switch" role="tablist" aria-label="Editor view">
+        <button type="button" data-np-view="editor" role="tab">Write</button>
+        <button type="button" data-np-view="split" role="tab" class="is-active">Split</button>
+        <button type="button" data-np-view="preview" role="tab">Preview</button>
+      </div>
+      <div class="np-topbar-actions" data-np-topbar-actions>
+        <a class="ta-donate ta-donate-compact" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" title="Buy me a coffee" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+            <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+            <path d="M3.1 16.9h10.8" />
+            <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+          </svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+        <button type="button" class="np-tbtn" data-np-open-settings title="Settings">⚙️</button>
+        <button type="button" class="np-tbtn" data-np-open-versions title="Version history">🕘</button>
+        <button type="button" class="np-tbtn" data-np-open-share title="Share link">🔗</button>
+        <button type="button" class="np-tbtn" data-np-toggle-zen title="Zen mode (Esc)">⛶</button>
+      </div>
+    </div>
+    <div class="np-topbar-row np-topbar-row--format">
+      <div class="np-toolbar" data-np-toolbar>
+        <div class="np-toolbar-group" aria-label="Text formatting">
+          <button type="button" class="np-tbtn" data-np-fmt="bold" title="Bold (Ctrl+B)"><strong>B</strong></button>
+          <button type="button" class="np-tbtn" data-np-fmt="italic" title="Italic (Ctrl+I)"><em>I</em></button>
+          <button type="button" class="np-tbtn" data-np-fmt="h1" title="Heading 1">H1</button>
+          <button type="button" class="np-tbtn" data-np-fmt="h2" title="Heading 2">H2</button>
+          <button type="button" class="np-tbtn" data-np-fmt="link" title="Link (Ctrl+K)">🔗</button>
+          <button type="button" class="np-tbtn" data-np-fmt="code" title="Code (Ctrl+Shift+K)">&lt;/&gt;</button>
+        </div>
+        <div class="np-toolbar-group" aria-label="Lists and blocks">
+          <button type="button" class="np-tbtn" data-np-fmt="quote" title="Quote">❝</button>
+          <button type="button" class="np-tbtn" data-np-fmt="ul" title="Bulleted list">•</button>
+          <button type="button" class="np-tbtn" data-np-fmt="ol" title="Numbered list">1.</button>
+          <button type="button" class="np-tbtn" data-np-fmt="task" title="Task list">☑</button>
+          <button type="button" class="np-tbtn" data-np-open-table title="Insert table">▦</button>
+          <button type="button" class="np-tbtn" data-np-fmt="hr" title="Horizontal rule">―</button>
+        </div>
+        <div class="np-toolbar-group" aria-label="Tools">
+          <button type="button" class="np-tbtn" data-np-fmt="image" title="Image">🖼️</button>
+          <button type="button" class="np-tbtn" data-np-open-find title="Find &amp; replace (Ctrl+Shift+F)">🔍</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="np-main is-split" data-np-main>
+    <section class="np-pane np-editor-pane" data-np-editor-pane id="np-editor">
+      <div class="np-pane-head np-pane-head--write"><span class="np-pane-head-dot"></span> Write</div>
+      <div class="np-editor-wrap width-full" data-np-editor-wrap>
+        <div class="np-linegutter hidden" data-np-linegutter aria-hidden="true"></div>
+        <textarea class="np-textarea" data-np-textarea placeholder="Start typing…  **bold**  _italic_  # heading  - [ ] task" spellcheck="true" aria-label="Note editor"></textarea>
+        <div class="np-focus-overlay" data-np-focus-overlay></div>
+      </div>
+    </section>
+    <section class="np-pane np-preview-pane-wrap" data-np-preview-pane-wrap>
+      <div class="np-pane-head np-pane-head--preview"><span class="np-pane-head-dot"></span> Preview</div>
+      <div class="np-preview-pane" data-np-preview-pane aria-label="Markdown preview"></div>
+    </section>
+    </main>
+
+  <div class="np-statusbar" data-np-statusbar>
+    <span class="np-stat-words" data-np-stat-words>0 words</span>
+    <span data-np-stat-chars>0 characters</span>
+    <span data-np-stat-lines>0 lines</span>
+    <span data-np-stat-reading>&lt;1 min read</span>
+    <span data-np-stat-cursor>Ln 1, Col 1</span>
+    <span class="np-offline-badge hidden" data-np-offline-badge>✓ Offline ready</span>
+  </div>
+</div>
+
+<section class="np-seo" id="about-notepad" aria-labelledby="np-seo-title">
+  <p class="np-seo-badge">Free · Private · Offline</p>
+  <h1 id="np-seo-title">Online Notepad — Free Auto-Save Markdown Editor</h1>
+  <p>A private, distraction-free notepad with live Markdown preview, multi-note management, and full offline support. Your notes are stored only in this browser using IndexedDB — no account, no server, nothing ever uploaded.</p>
+
+  <h2>Features</h2>
+  <div class="np-seo-feature-grid">
+    <div class="np-seo-chip"><strong>⚡ Auto-save</strong>Every keystroke saves locally with rolling backups every ~20 seconds.</div>
+    <div class="np-seo-chip"><strong>📝 Live Markdown</strong>GFM tables, task lists, code highlighting, KaTeX math, and Mermaid diagrams.</div>
+    <div class="np-seo-chip"><strong>📂 Multi-note</strong>Sidebar with search, tags, pin, trash, sort, and duplicate.</div>
+    <div class="np-seo-chip"><strong>⬇️ Export</strong>.md, .txt, .html, PDF print, .docx, ZIP backup, and JSON restore.</div>
+    <div class="np-seo-chip"><strong>🕘 Version history</strong>Compare and restore earlier snapshots with word-level diff.</div>
+    <div class="np-seo-chip"><strong>📴 Offline PWA</strong>Works without internet after first load via service worker cache.</div>
+  </div>
+
+  <h2>How to use</h2>
+  <ol>
+    <li>Type in the editor — notes save automatically as you write.</li>
+    <li>Use <strong>Split</strong> or <strong>Preview</strong> to see rendered Markdown.</li>
+    <li>Create notes with ➕, organize with <code>#tags</code>, export backups from the sidebar.</li>
+    <li>Press <kbd>Ctrl</kbd>+<kbd>S</kbd> to force-save, <kbd>Ctrl</kbd>+<kbd>/</kbd> to cycle views.</li>
+  </ol>
+
+
+<style>
+  /* Guide section shared by the expanded tool pages. Prefix: tg- */
+  .tg { margin: 2.4rem 0 0; }
+  .tg-section { margin-top: 2.2rem; }
+  .tg-section h2 {
+    margin: 0 0 .8rem; font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+    font-weight: 900; letter-spacing: -.015em; color: var(--text);
+  }
+  .tg-section h3 { margin: 1.2rem 0 .4rem; font-size: 1rem; font-weight: 800; color: var(--text); }
+  .tg p, .tg li { color: var(--text-muted); line-height: 1.75; font-size: .94rem; }
+  .tg p { margin: 0 0 .85rem; }
+  .tg ul, .tg ol { margin: 0 0 .9rem; padding-left: 1.2rem; display: grid; gap: .42rem; }
+  .tg strong { color: var(--text); }
+  .tg code {
+    font-family: ui-monospace, Consolas, monospace; font-size: .86em;
+    padding: .12rem .34rem; border-radius: 5px;
+    background: var(--surface-strong); border: 1px solid var(--border); color: var(--accent);
+  }
+  .tg-grid { display: grid; gap: .7rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+  .tg-card { border: 1px solid var(--border); border-radius: 15px; background: var(--surface); padding: .95rem 1.05rem; }
+  .tg-card strong { display: block; margin-bottom: .3rem; font-size: .93rem; }
+  .tg-card p { margin: 0; font-size: .86rem; }
+  .tg-tablewrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; margin: .3rem 0 1rem; }
+  .tg-table { width: 100%; border-collapse: collapse; font-size: .89rem; min-width: 430px; }
+  .tg-table th, .tg-table td { padding: .58rem .85rem; text-align: left; border-bottom: 1px solid var(--border); }
+  .tg-table th { background: var(--surface-strong); font-size: .72rem; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+  .tg-table td { color: var(--text-muted); }
+  .tg-table td:first-child { color: var(--text); font-weight: 700; }
+  .tg-table tr:last-child td { border-bottom: 0; }
+  .tg-faq-grid { display: grid; gap: .55rem; }
+  .tg-faq { border: 1px solid var(--border); border-radius: 14px; background: var(--surface); padding: .8rem 1rem; }
+  .tg-faq summary { cursor: pointer; font-size: .92rem; font-weight: 700; color: var(--text); }
+  .tg-faq p { margin: .55rem 0 0; font-size: .88rem; }
+</style>
+<div class="tg">
+  <section class="tg-section" aria-labelledby="tg-why-h">
+    <h2 id="tg-why-h">A notepad that does not want your account</h2>
+    <p>
+      Most note apps begin by asking you to sign up. This one begins with a cursor. Your notes
+      are written to your own browser's storage as you type, which means there is no account
+      to create, no sync to configure and no company holding your text.
+    </p>
+    <p>
+      That is the trade, stated plainly: <strong>your notes live on this device, in this
+      browser</strong>. They survive closing the tab, restarting the machine and going
+      offline. They do not follow you to your phone, and clearing your browser data removes
+      them. Use the backup button if a note matters.
+    </p>
+  </section>
+
+  <section class="tg-section" aria-labelledby="tg-markdown-h">
+    <h2 id="tg-markdown-h">Markdown, if you want it</h2>
+    <p>
+      You can ignore Markdown entirely and just type. But if you know the handful of
+      characters below, the preview turns plain text into a formatted document as you write:
+    </p>
+    <div class="tg-tablewrap">
+      <table class="tg-table">
+        <thead><tr><th scope="col">Type</th><th scope="col">Get</th></tr></thead>
+        <tbody>
+          <tr><td><code># Heading</code></td><td>A large heading (<code>##</code> for smaller)</td></tr>
+          <tr><td><code>**bold**</code></td><td>Bold text</td></tr>
+          <tr><td><code>*italic*</code></td><td>Italic text</td></tr>
+          <tr><td><code>- item</code></td><td>A bulleted list</td></tr>
+          <tr><td><code>1. item</code></td><td>A numbered list</td></tr>
+          <tr><td><code>- [ ] task</code></td><td>A checklist item</td></tr>
+          <tr><td><code>[text](url)</code></td><td>A link</td></tr>
+          <tr><td><code>`code`</code></td><td>Inline code</td></tr>
+          <tr><td><code>&gt; quote</code></td><td>A blockquote</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Markdown is worth the ten minutes it takes to learn because it is portable. The same
+      characters work in GitHub, Notion, Obsidian, Reddit and Discord, so notes written here
+      paste anywhere without reformatting.
+    </p>
+  </section>
+
+  <section class="tg-section" aria-labelledby="tg-uses-h">
+    <h2 id="tg-uses-h">What people actually use it for</h2>
+    <div class="tg-grid">
+      <div class="tg-card"><strong>A scratchpad</strong><p>Somewhere to paste text while you move it between two other places, without polluting a real document.</p></div>
+      <div class="tg-card"><strong>Meeting notes</strong><p>Type in plain text, use checklists for actions, and copy the Markdown straight into your team's tools.</p></div>
+      <div class="tg-card"><strong>Drafting</strong><p>Writing without a formatting toolbar removes the temptation to fiddle with fonts instead of writing.</p></div>
+      <div class="tg-card"><strong>Sensitive text</strong><p>Anything you would rather not paste into a cloud editor. It never leaves the browser.</p></div>
+    </div>
+  </section>
+
+  <section class="tg-section" aria-labelledby="tg-safety-h">
+    <h2 id="tg-safety-h">Keeping your notes safe</h2>
+    <p>
+      On-device storage is private, but it is not a backup. Three things will remove your notes,
+      and none of them are recoverable:
+    </p>
+    <ul>
+      <li><strong>Clearing browsing data</strong> &mdash; site data is deleted along with cookies and cache.</li>
+      <li><strong>Private or incognito windows</strong> &mdash; everything is discarded when the window closes.</li>
+      <li><strong>A different browser or device</strong> &mdash; storage is per-browser, so notes written in Chrome are not in Firefox.</li>
+    </ul>
+    <p>
+      The backup button exports your notes as a file. For anything you would be upset to lose,
+      export it &mdash; the same advice applies to any local-only editor.
+    </p>
+  </section>
+
+  <section class="tg-section" aria-labelledby="tg-faq-h">
+    <h2 id="tg-faq-h">Frequently asked questions</h2>
+    <div class="tg-faq-grid">
+      <details class="tg-faq">
+        <summary><strong>Do I need an account to use this notepad?</strong></summary>
+        <p>No. There is nothing to sign up for. Your notes are written to your own browser's storage as you type, so the editor works the moment the page loads.</p>
+      </details>
+      <details class="tg-faq">
+        <summary><strong>Where are my notes stored?</strong></summary>
+        <p>In your browser's own storage on the device you are using, using IndexedDB. They are not uploaded to us and there is no server copy, which is also why they do not appear on your other devices.</p>
+      </details>
+      <details class="tg-faq">
+        <summary><strong>Are my notes saved automatically?</strong></summary>
+        <p>Yes, as you type. There is no save button to remember and no risk of losing work by closing the tab, provided you are not in a private window.</p>
+      </details>
+      <details class="tg-faq">
+        <summary><strong>Will my notes still be there tomorrow?</strong></summary>
+        <p>Yes, in the same browser on the same device. They survive closing the tab and restarting the machine. They will not survive clearing your browsing data, and they do not exist in a different browser.</p>
+      </details>
+      <details class="tg-faq">
+        <summary><strong>What deletes my notes?</strong></summary>
+        <p>Three things: clearing your browsing or site data, using a private or incognito window that you then close, and switching to a different browser or device. None of those are recoverable, which is what the backup export is for.</p>
+      </details>
+      <details class="tg-faq">
+        <summary><strong>How do I back up my notes?</strong></summary>
+        <p>Use the sidebar's backup export — a ZIP of Markdown files, or a full JSON archive you can import again later. For anything you would be upset to lose, do that: on-device storage is private, but it is not a backup.</p>
+      </details>
+      <details class="tg-faq">
+        <summary><strong>Can I use it offline?</strong></summary>
+        <p>Yes. After your first visit a service worker caches the app, so it opens and keeps auto-saving with no connection at all.</p>
+      </details>
+      <details class="tg-faq">
+        <summary><strong>Do I have to learn Markdown?</strong></summary>
+        <p>No. You can type plain text and ignore the formatting entirely. Markdown is there if you want it — a handful of characters that turn text into headings, lists and links in the preview as you write.</p>
+      </details>
+      <details class="tg-faq">
+        <summary><strong>What Markdown does it support?</strong></summary>
+        <p>The common set: headings with #, bold with **, italics with *, bulleted and numbered lists, checklists, links, inline code, fenced code blocks, quotes, images and GFM tables — plus KaTeX maths and Mermaid diagrams. The preview updates live as you type.</p>
+      </details>
+      <details class="tg-faq">
+        <summary><strong>Why use Markdown instead of a normal editor?</strong></summary>
+        <p>Because it is portable. The same characters work in GitHub, Notion, Obsidian, Reddit and Discord, so a note written here pastes into any of them without reformatting. It also keeps you writing instead of fiddling with fonts.</p>
+      </details>
+      <details class="tg-faq">
+        <summary><strong>Can I keep more than one note?</strong></summary>
+        <p>Yes. The sidebar holds all your notes, with search, #tags, pinning, sorting and a trash for anything you delete by accident.</p>
+      </details>
+      <details class="tg-faq">
+        <summary><strong>Does it count words for me?</strong></summary>
+        <p>Yes. The status bar shows words, characters, lines and an estimated reading time as you type, along with your cursor position.</p>
+      </details>
+      <details class="tg-faq">
+        <summary><strong>Is there a limit on how much I can write?</strong></summary>
+        <p>The practical limit is your browser's storage quota, which is generous — several megabytes of text, or many thousands of pages of notes. You are very unlikely to reach it.</p>
+      </details>
+      <details class="tg-faq">
+        <summary><strong>Can other people see what I write?</strong></summary>
+        <p>No. The text never leaves your browser, so there is nothing for us or anyone else to read. That is the main reason to use a local editor for anything sensitive.</p>
+      </details>
+      <details class="tg-faq">
+        <summary><strong>Is it free?</strong></summary>
+        <p>Completely. No sign-up, no subscription, no note limit and no watermark on anything you export.</p>
+      </details>
+    </div>
+  </section>
+</div>
+
+  <h2>Related tools</h2>
+  <!-- data-static-related keeps app.js from appending its own related-tools grid: <main> on this
+       page is the editor's split pane, not an article, so an injected card grid lands inside the
+       editor. This row already covers the same job. -->
+  <div class="np-seo-related" data-static-related>
+    <a href="markdown-to-html.html">Markdown to HTML</a>
+    <a href="text-tools/character-counter.html">Character Counter</a>
+    <a href="text-tools/fancy-font-generator.html">Fancy Font Generator</a>
+    <a href="text-to-handwriting.html">Text to Handwriting</a>
+    <a href="online-teleprompter.html">Online Teleprompter</a>
+    <a href="/">All ToolAdda tools</a>
+  </div>
+</section>
+
+  
+
+<!-- Generic modal host -->
+<div class="np-modal-backdrop hidden" data-np-modal-backdrop role="dialog" aria-modal="true">
+  <div class="np-modal" data-np-modal-body></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.5/purify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/turndown/7.1.2/turndown.min.js"></script>
+<!-- Deliberately loaded before this page's own script. app.js also writes data-theme on <html>,
+     but from a different key (tooladda-theme) than this page (np-theme) and it only knows
+     light/dark. Running it first lets the notepad's applyTheme() have the last word, so a saved
+     oled or sepia theme survives the page load. -->
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ============================================================
+     PURE LOGIC (verified independently in Node before transplant)
+     ============================================================ */
+  function debounce(fn, delay) {
+    var timer = null;
+    var d = function () { var args = arguments, ctx = this; clearTimeout(timer); timer = setTimeout(function () { fn.apply(ctx, args); }, delay); };
+    d.flush = function () { clearTimeout(timer); timer = null; fn(); };
+    d.cancel = function () { clearTimeout(timer); timer = null; };
+    return d;
+  }
+  function pushBackupSnapshot(backups, snapshot, maxCount) {
+    var out = backups.slice(); out.push(snapshot);
+    if (out.length > maxCount) out = out.slice(out.length - maxCount);
+    return out;
+  }
+  function mostRecentValidBackup(backups, validator) { for (var i = backups.length - 1; i >= 0; i--) { if (validator(backups[i])) return backups[i]; } return null; }
+  function safeParseNotesState(raw, backups, validator) {
+    try { var parsed = JSON.parse(raw); if (validator(parsed)) return { data: parsed, recovered: false }; } catch (e) {}
+    var backup = mostRecentValidBackup(backups, validator);
+    if (backup) return { data: backup, recovered: true };
+    return { data: null, recovered: false, failed: true };
+  }
+  function createNote(id, now) { return { id: id, title: 'Untitled note', content: '', tags: [], pinned: false, createdAt: now, modifiedAt: now, deletedAt: null, order: now }; }
+  function autoTitleFromContent(content) {
+    var lines = content.split('\n');
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim(); if (!line) continue;
+      var heading = /^#{1,6}\s+(.+)/.exec(line);
+      if (heading) return heading[1].trim().slice(0, 80);
+      return line.slice(0, 80);
+    }
+    return 'Untitled note';
+  }
+  function extractTags(content) {
+    var matches = content.match(/(^|\s)#([a-zA-Z0-9_-]+)/g) || [];
+    var tags = matches.map(function (m) { return m.trim().slice(1).toLowerCase(); });
+    return Array.from(new Set(tags));
+  }
+  function updateNoteContent(note, content, now) {
+    var updated = Object.assign({}, note);
+    updated.content = content; updated.title = autoTitleFromContent(content); updated.tags = extractTags(content); updated.modifiedAt = now;
+    return updated;
+  }
+  function softDeleteNote(note, now) { return Object.assign({}, note, { deletedAt: now }); }
+  function restoreNote(note) { return Object.assign({}, note, { deletedAt: null }); }
+  function isExpiredFromTrash(note, now, trashDays) { if (!note.deletedAt) return false; return (now - note.deletedAt) > trashDays * 24 * 60 * 60 * 1000; }
+  function duplicateNote(note, newId, now) { return Object.assign({}, note, { id: newId, title: note.title + ' (copy)', pinned: false, createdAt: now, modifiedAt: now, deletedAt: null, order: now }); }
+  function sortNotes(notes, mode) {
+    var arr = notes.slice();
+    function byPinnedThen(cmp) { return arr.sort(function (a, b) { if (!!b.pinned !== !!a.pinned) return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0); return cmp(a, b); }); }
+    if (mode === 'modified') return byPinnedThen(function (a, b) { return b.modifiedAt - a.modifiedAt; });
+    if (mode === 'created') return byPinnedThen(function (a, b) { return b.createdAt - a.createdAt; });
+    if (mode === 'title') return byPinnedThen(function (a, b) { return a.title.localeCompare(b.title); });
+    if (mode === 'manual') return byPinnedThen(function (a, b) { return a.order - b.order; });
+    return arr;
+  }
+  function searchNotes(notes, query) { if (!query) return notes; var q = query.toLowerCase(); return notes.filter(function (n) { return n.title.toLowerCase().indexOf(q) !== -1 || n.content.toLowerCase().indexOf(q) !== -1; }); }
+  function filterByTag(notes, tag) { if (!tag) return notes; return notes.filter(function (n) { return n.tags.indexOf(tag) !== -1; }); }
+  function computeStats(content) {
+    var chars = content.length, charsNoSpace = content.replace(/\s/g, '').length;
+    var words = (content.match(/\S+/g) || []).length;
+    var lines = content.length ? content.split('\n').length : 0;
+    var paragraphs = content.split(/\n\s*\n/).filter(function (p) { return p.trim().length; }).length;
+    var readingTimeMin = Math.max(1, Math.round(words / 200));
+    return { chars: chars, charsNoSpace: charsNoSpace, words: words, lines: lines, paragraphs: paragraphs, readingTimeMin: readingTimeMin };
+  }
+  function lineColumnFromIndex(content, index) { var upto = content.slice(0, index); var lines = upto.split('\n'); return { line: lines.length, column: lines[lines.length - 1].length + 1 }; }
+  function extractHeadings(content) {
+    var lines = content.split('\n'), headings = [], inFence = false;
+    lines.forEach(function (line, i) {
+      if (/^```/.test(line.trim())) { inFence = !inFence; return; }
+      if (inFence) return;
+      var m = /^(#{1,6})\s+(.+)/.exec(line);
+      if (m) headings.push({ level: m[1].length, text: m[2].trim(), line: i });
+    });
+    return headings;
+  }
+  function slugify(text) { return text.toLowerCase().replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-'); }
+  function toggleTaskAtLine(content, lineIndex) {
+    var lines = content.split('\n'); if (lineIndex < 0 || lineIndex >= lines.length) return content;
+    var line = lines[lineIndex];
+    var unchecked = /^(\s*[-*+]\s+)\[ \](.*)$/, checked = /^(\s*[-*+]\s+)\[[xX]\](.*)$/;
+    if (unchecked.test(line)) lines[lineIndex] = line.replace(unchecked, '$1[x]$2');
+    else if (checked.test(line)) lines[lineIndex] = line.replace(checked, '$1[ ]$2');
+    return lines.join('\n');
+  }
+  function computeListContinuation(content, cursorIndex) {
+    var before = content.slice(0, cursorIndex);
+    var lineStart = before.lastIndexOf('\n') + 1;
+    var currentLine = before.slice(lineStart);
+    var bulletMatch = /^(\s*)([-*+])\s+(.*)$/.exec(currentLine);
+    var numberedMatch = /^(\s*)(\d+)([.)])\s+(.*)$/.exec(currentLine);
+    var taskMatch = /^(\s*)([-*+])\s+\[([ xX])\]\s+(.*)$/.exec(currentLine);
+    if (taskMatch) { if (taskMatch[4].trim() === '') return { removeLine: true, lineStart: lineStart }; return { insert: '\n' + taskMatch[1] + taskMatch[2] + ' [ ] ' }; }
+    if (bulletMatch) { if (bulletMatch[3].trim() === '') return { removeLine: true, lineStart: lineStart }; return { insert: '\n' + bulletMatch[1] + bulletMatch[2] + ' ' }; }
+    if (numberedMatch) { if (numberedMatch[4].trim() === '') return { removeLine: true, lineStart: lineStart }; var nextNum = parseInt(numberedMatch[2], 10) + 1; return { insert: '\n' + numberedMatch[1] + nextNum + numberedMatch[3] + ' ' }; }
+    return null;
+  }
+  var PAIR_MAP = { '(': ')', '[': ']', '{': '}', '"': '"', "'": "'", '`': '`' };
+  function computeAutoPairWrap(selectedText, openChar) { var close = PAIR_MAP[openChar]; if (!close) return null; return openChar + selectedText + close; }
+  function computeWrapSelection(content, selStart, selEnd, prefix, suffix) {
+    suffix = suffix === undefined ? prefix : suffix;
+    var selected = content.slice(selStart, selEnd), before = content.slice(0, selStart), after = content.slice(selEnd);
+    if (selected.slice(0, prefix.length) === prefix && selected.slice(selected.length - suffix.length) === suffix && selected.length >= prefix.length + suffix.length) {
+      var unwrapped = selected.slice(prefix.length, selected.length - suffix.length);
+      return { newContent: before + unwrapped + after, newSelStart: selStart, newSelEnd: selStart + unwrapped.length };
+    }
+    var newText = prefix + selected + suffix;
+    return { newContent: before + newText + after, newSelStart: selStart + prefix.length, newSelEnd: selStart + prefix.length + selected.length };
+  }
+  function computeIndentLines(content, selStart, selEnd, outdent, indentUnit) {
+    indentUnit = indentUnit || '  ';
+    var lineStart = content.lastIndexOf('\n', selStart - 1) + 1;
+    var lineEndSearch = content.indexOf('\n', selEnd);
+    var lineEnd = lineEndSearch === -1 ? content.length : lineEndSearch;
+    var block = content.slice(lineStart, lineEnd);
+    var lines = block.split('\n');
+    var delta = 0, firstDelta = 0;
+    var newLines = lines.map(function (line, i) {
+      if (!outdent) { if (i === 0) firstDelta = indentUnit.length; delta += indentUnit.length; return indentUnit + line; }
+      var removed = 0;
+      var newLine = line.replace(new RegExp('^(' + indentUnit + '|\\t| {1,' + indentUnit.length + '})'), function (m) { removed = m.length; return ''; });
+      if (i === 0) firstDelta = -removed;
+      delta -= removed;
+      return newLine;
+    });
+    var newBlock = newLines.join('\n');
+    return { newContent: content.slice(0, lineStart) + newBlock + content.slice(lineEnd), newSelStart: Math.max(lineStart, selStart + firstDelta), newSelEnd: selEnd + delta };
+  }
+  function isLikelyUrl(text) { return /^(https?:\/\/|www\.)\S+$/i.test(text.trim()); }
+  function computePasteUrlOverSelection(content, selStart, selEnd, pastedUrl) {
+    var selected = content.slice(selStart, selEnd); if (!selected) return null;
+    var md = '[' + selected + '](' + pastedUrl.trim() + ')';
+    return { newContent: content.slice(0, selStart) + md + content.slice(selEnd), newSelStart: selStart, newSelEnd: selStart + md.length };
+  }
+  function buildMarkdownTable(rows, cols) {
+    var header = '|' + new Array(cols).fill(' Header ').join('|') + '|';
+    var sep = '|' + new Array(cols).fill(' --- ').join('|') + '|';
+    var bodyRows = []; for (var r = 0; r < rows; r++) bodyRows.push('|' + new Array(cols).fill(' Cell ').join('|') + '|');
+    return [header, sep].concat(bodyRows).join('\n');
+  }
+  function formatMarkdownTable(tableText) {
+    var lines = tableText.split('\n').filter(function (l) { return l.trim().length; });
+    var rows = lines.map(function (line) { var trimmed = line.trim().replace(/^\||\|$/g, ''); return trimmed.split('|').map(function (c) { return c.trim(); }); });
+    var colCount = Math.max.apply(null, rows.map(function (r) { return r.length; }));
+    var widths = new Array(colCount).fill(3);
+    rows.forEach(function (row, ri) { if (ri === 1) return; row.forEach(function (cell, ci) { widths[ci] = Math.max(widths[ci], cell.length); }); });
+    var out = rows.map(function (row, ri) {
+      var cells = [];
+      for (var ci = 0; ci < colCount; ci++) { var cell = row[ci] || ''; if (ri === 1) cells.push('-'.repeat(Math.max(3, widths[ci]))); else cells.push(cell + ' '.repeat(Math.max(0, widths[ci] - cell.length))); }
+      return '| ' + cells.join(' | ') + ' |';
+    });
+    return out.join('\n');
+  }
+
+  // Myers word-diff for version-history comparisons (adapted from the compare-pdfs tool built earlier this session)
+  function myersDiff(a, b) {
+    var N = a.length, M = b.length, MAX = N + M, offset = MAX;
+    var v = new Array(2 * MAX + 1).fill(0), trace = [];
+    for (var d = 0; d <= MAX; d++) {
+      trace.push(v.slice());
+      for (var k = -d; k <= d; k += 2) {
+        var x;
+        if (k === -d || (k !== d && v[offset + k - 1] < v[offset + k + 1])) x = v[offset + k + 1]; else x = v[offset + k - 1] + 1;
+        var y = x - k;
+        while (x < N && y < M && a[x] === b[y]) { x++; y++; }
+        v[offset + k] = x;
+        if (x >= N && y >= M) { return backtrack(trace, a, b, offset); }
+      }
+    }
+    return [];
+  }
+  function backtrack(trace, a, b, offset) {
+    var x = a.length, y = b.length, ops = [];
+    for (var d = trace.length - 1; d >= 0; d--) {
+      var v = trace[d], k = x - y, prevK;
+      if (k === -d || (k !== d && v[offset + k - 1] < v[offset + k + 1])) prevK = k + 1; else prevK = k - 1;
+      var prevX = v[offset + prevK], prevY = prevX - prevK;
+      while (x > prevX && y > prevY) { ops.unshift({ type: 'equal', aIndex: x - 1, bIndex: y - 1 }); x--; y--; }
+      if (d > 0) { if (x === prevX) { ops.unshift({ type: 'insert', bIndex: y - 1, text: b[y - 1] }); y--; } else { ops.unshift({ type: 'delete', aIndex: x - 1, text: a[x - 1] }); x--; } }
+    }
+    return ops;
+  }
+  function wordDiff(textA, textB) {
+    var wa = textA.split(/(\s+)/), wb = textB.split(/(\s+)/);
+    return myersDiff(wa, wb).map(function (op) { return { type: op.type, text: op.type === 'insert' ? wb[op.bIndex] : wa[op.aIndex] }; });
+  }
+
+  if (typeof document === 'undefined' || !document.getElementById) {
+    if (typeof module !== 'undefined') module.exports = { debounce, pushBackupSnapshot, mostRecentValidBackup, safeParseNotesState, createNote, autoTitleFromContent, extractTags, updateNoteContent, softDeleteNote, restoreNote, isExpiredFromTrash, duplicateNote, sortNotes, searchNotes, filterByTag, computeStats, lineColumnFromIndex, extractHeadings, slugify, toggleTaskAtLine, computeListContinuation, computeAutoPairWrap, computeWrapSelection, computeIndentLines, isLikelyUrl, computePasteUrlOverSelection, buildMarkdownTable, formatMarkdownTable, myersDiff, wordDiff };
+    return;
+  }
+
+  /* ============================================================
+     IndexedDB persistence layer
+     ============================================================ */
+  var DB_NAME = 'tooladda-notepad-db', DB_VERSION = 1, STORE_NOTES = 'notes', STORE_BACKUPS = 'backups';
+  var dbPromise = new Promise(function (resolve, reject) {
+    var req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = function (e) {
+      var db = e.target.result;
+      if (!db.objectStoreNames.contains(STORE_NOTES)) db.createObjectStore(STORE_NOTES, { keyPath: 'id' });
+      if (!db.objectStoreNames.contains(STORE_BACKUPS)) db.createObjectStore(STORE_BACKUPS, { keyPath: 'seq', autoIncrement: true });
+    };
+    req.onsuccess = function (e) { resolve(e.target.result); };
+    req.onerror = function () { reject(req.error); };
+  });
+  function idbTx(storeName, mode) { return dbPromise.then(function (db) { return db.transaction(storeName, mode).objectStore(storeName); }); }
+  function idbGetAll(storeName) { return idbTx(storeName, 'readonly').then(function (store) { return new Promise(function (res, rej) { var r = store.getAll(); r.onsuccess = function () { res(r.result); }; r.onerror = function () { rej(r.error); }; }); }); }
+  function idbPut(storeName, value) { return idbTx(storeName, 'readwrite').then(function (store) { return new Promise(function (res, rej) { var r = store.put(value); r.onsuccess = function () { res(r.result); }; r.onerror = function () { rej(r.error); }; }); }); }
+  function idbDelete(storeName, key) { return idbTx(storeName, 'readwrite').then(function (store) { return new Promise(function (res, rej) { var r = store.delete(key); r.onsuccess = function () { res(); }; r.onerror = function () { rej(r.error); }; }); }); }
+
+  function isValidNote(n) { return n && typeof n.id === 'string' && typeof n.content === 'string' && typeof n.title === 'string'; }
+
+  /* ============================================================
+     App state & bootstrapping
+     ============================================================ */
+  var LS = { get: function (k, d) { try { var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+  var MAX_BACKUPS = 20, TRASH_DAYS = 30;
+  var state = {
+    notes: [], activeId: null, viewTab: 'notes', sortMode: LS.get('np-sort-mode', 'modified'),
+    viewMode: LS.get('np-view-mode', 'split'), zen: false, typewriter: LS.get('np-typewriter', false), focusMode: LS.get('np-focus-mode', false),
+    fontMono: LS.get('np-font-mono', false), fontSize: LS.get('np-font-size', 16), lineHeight: LS.get('np-line-height', 1.6),
+    editorWidth: LS.get('np-editor-width', 'full'), wordWrap: LS.get('np-word-wrap', true), showLineNumbers: LS.get('np-line-numbers', false),
+    theme: LS.get('np-theme', 'system'), lockNote: false, wordGoal: LS.get('np-word-goal', 0), saveTimer: null, lastSaveAt: null
+  };
+
+  function nowMs() { return Date.now(); }
+  function genId() { return 'n' + nowMs().toString(36) + Math.random().toString(36).slice(2, 8); }
+
+  var root = document.documentElement;
+  function applyTheme() {
+    var t = state.theme;
+    if (t === 'system') { root.removeAttribute('data-theme'); return; }
+    root.setAttribute('data-theme', t === 'light' ? '' : t);
+    if (t === 'light') root.removeAttribute('data-theme');
+  }
+
+  function getActiveNote() { return state.notes.find(function (n) { return n.id === state.activeId; }) || null; }
+  function activeNotes() { return state.notes.filter(function (n) { return !n.deletedAt; }); }
+  function trashedNotes() { return state.notes.filter(function (n) { return n.deletedAt; }); }
+
+  var saveIndicator = document.querySelector('[data-np-save-indicator]');
+  function setSaveIndicator(mode, text) {
+    saveIndicator.className = 'np-save-indicator is-' + mode;
+    saveIndicator.textContent = text;
+  }
+  var savedAgoInterval = null;
+  function startSavedAgoTicker() {
+    clearInterval(savedAgoInterval);
+    savedAgoInterval = setInterval(function () {
+      if (!state.lastSaveAt) return;
+      var secs = Math.round((nowMs() - state.lastSaveAt) / 1000);
+      if (secs < 2) setSaveIndicator('saved', 'Saved');
+      else if (secs < 60) setSaveIndicator('saved', 'Saved ' + secs + 's ago');
+      else setSaveIndicator('saved', 'Saved ' + Math.round(secs / 60) + 'm ago');
+    }, 1000);
+  }
+
+  var pendingSave = false;
+  function persistActiveNote() {
+    var note = getActiveNote(); if (!note || state.lockNote) return Promise.resolve();
+    setSaveIndicator('saving', 'Saving…');
+    pendingSave = true;
+    return idbPut(STORE_NOTES, note).then(function () {
+      pendingSave = false; state.lastSaveAt = nowMs(); setSaveIndicator('saved', 'Saved');
+      maybeSnapshotBackup();
+    }).catch(function (err) {
+      pendingSave = false; setSaveIndicator('error', 'Save failed — retrying…');
+      console.error('Notepad save failed:', err);
+    });
+  }
+  var debouncedSave = debounce(persistActiveNote, 300);
+
+  var lastBackupAt = 0;
+  function maybeSnapshotBackup() {
+    if (nowMs() - lastBackupAt < 20000) return; // snapshot at most every ~20s to keep backups meaningful, not every keystroke
+    lastBackupAt = nowMs();
+    var snapshot = { ts: nowMs(), notes: state.notes.map(function (n) { return Object.assign({}, n); }) };
+    idbGetAll(STORE_BACKUPS).then(function (backups) {
+      var updated = pushBackupSnapshot(backups, snapshot, MAX_BACKUPS);
+      // simplistic rewrite: clear + rewrite (backups store is small, this is fine)
+      return dbPromise.then(function (db) {
+        var tx = db.transaction(STORE_BACKUPS, 'readwrite'); var store = tx.objectStore(STORE_BACKUPS);
+        store.clear();
+        updated.forEach(function (b) { store.add(b); });
+      });
+    }).catch(function (e) { console.error('backup snapshot failed', e); });
+  }
+
+  function editContent(newContent) {
+    var note = getActiveNote(); if (!note) return;
+    if (note.content === newContent) return;
+    var updated = updateNoteContent(note, newContent, nowMs());
+    state.notes = state.notes.map(function (n) { return n.id === updated.id ? updated : n; });
+    renderSidebarList();
+    updatePreview();
+    updateStats();
+    setSaveIndicator('saving', 'Saving…');
+    debouncedSave();
+  }
+
+  /* ============================================================
+     Bootstrapping: load notes, recover from corruption if needed
+     ============================================================ */
+  function boot() {
+    idbGetAll(STORE_NOTES).then(function (notes) {
+      var valid = notes.filter(isValidNote);
+      if (valid.length !== notes.length) {
+        console.warn('Some notes failed validation and were skipped.');
+      }
+      if (!notes.length) {
+        return idbGetAll(STORE_BACKUPS).then(function (backups) {
+          var validator = function (snap) { return snap && Array.isArray(snap.notes); };
+          var backup = mostRecentValidBackup(backups, validator);
+          if (backup) {
+            state.notes = backup.notes;
+            showToast('Recovered your notes from an automatic backup (' + new Date(backup.ts).toLocaleString() + ').');
+            return Promise.all(state.notes.map(function (n) { return idbPut(STORE_NOTES, n); }));
+          }
+          state.notes = [];
+        });
+      }
+      state.notes = valid;
+    }).catch(function (err) {
+      console.error('Failed to load notes from IndexedDB:', err);
+      showToast('Could not open note storage. If this persists, your browser may be blocking IndexedDB (e.g. private browsing).');
+    }).then(function () {
+      // expire old trash
+      var expired = state.notes.filter(function (n) { return isExpiredFromTrash(n, nowMs(), TRASH_DAYS); });
+      expired.forEach(function (n) { idbDelete(STORE_NOTES, n.id); });
+      state.notes = state.notes.filter(function (n) { return !isExpiredFromTrash(n, nowMs(), TRASH_DAYS); });
+
+      var urlParams = new URLSearchParams(location.search);
+      if (location.hash && location.hash.length > 1 && !urlParams.has('new')) {
+        tryLoadFromShareHash();
+      }
+      if (urlParams.has('new') || !activeNotes().length) {
+        var note = createNote(genId(), nowMs());
+        if (!urlParams.has('new') && activeNotes().length === 0 && !state.notes.length) {
+          note.content = '# Welcome to your Notepad\n\nStart typing — this note saves automatically as you go.\n\nTry **bold**, _italic_, a [link](https://tooladda.online), or a checklist:\n\n- [ ] Write something\n- [ ] Try the Markdown preview (top right)\n- [ ] Export a backup from the sidebar\n';
+        }
+        state.notes.push(note);
+        state.activeId = note.id;
+        idbPut(STORE_NOTES, note);
+      } else {
+        state.activeId = LS.get('np-last-active-id', null);
+        if (!state.activeId || !state.notes.some(function (n) { return n.id === state.activeId && !n.deletedAt; })) {
+          var firstActive = sortNotes(activeNotes(), state.sortMode)[0];
+          state.activeId = firstActive ? firstActive.id : null;
+        }
+      }
+      applyTheme();
+      applyEditorPrefs();
+      setViewMode(state.viewMode);
+      applyResponsiveSplit();
+      startSavedAgoTicker();
+      renderSidebarList();
+      loadActiveNoteIntoEditor();
+      updatePreview();
+      updateStats();
+      registerServiceWorker();
+      checkBackupNudge();
+    });
+  }
+
+  function tryLoadFromShareHash() {
+    try {
+      var compressed = location.hash.slice(1);
+      var decompressed = LZString.decompressFromEncodedURIComponent(compressed);
+      if (decompressed) {
+        var note = createNote(genId(), nowMs());
+        note = updateNoteContent(note, decompressed, nowMs());
+        state.notes.push(note);
+        state.activeId = note.id;
+        history.replaceState(null, '', location.pathname);
+        showToast('Loaded a shared note from the link.');
+      }
+    } catch (e) { console.error('Failed to load shared note from hash:', e); }
+  }
+
+  /* ============================================================
+     Sidebar rendering
+     ============================================================ */
+  var searchInput = document.querySelector('[data-np-search]');
+  var noteListEl = document.querySelector('[data-np-note-list]');
+  function highlightMatch(text, query) {
+    if (!query) return escapeHtml(text);
+    var idx = text.toLowerCase().indexOf(query.toLowerCase());
+    if (idx === -1) return escapeHtml(text);
+    return escapeHtml(text.slice(0, idx)) + '<mark>' + escapeHtml(text.slice(idx, idx + query.length)) + '</mark>' + escapeHtml(text.slice(idx + query.length));
+  }
+  function escapeHtml(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+  function renderSidebarList() {
+    var query = searchInput.value.trim();
+    var pool = state.viewTab === 'trash' ? trashedNotes() : searchNotes(activeNotes(), query);
+    if (state.viewTab !== 'trash') pool = sortNotes(pool, state.sortMode);
+    noteListEl.innerHTML = '';
+    if (!pool.length) {
+      var empty = document.createElement('div');
+      empty.className = 'np-note-empty';
+      empty.innerHTML = state.viewTab === 'trash'
+        ? '<strong>Trash is empty</strong>Deleted notes appear here for 30 days.'
+        : (query ? '<strong>No matches</strong>Try a different search term.' : '<strong>No notes yet</strong>Click <b>+ New</b> to create your first note.');
+      noteListEl.appendChild(empty);
+    }
+    pool.forEach(function (note) {
+      var item = document.createElement('div');
+      item.className = 'np-note-item' + (note.id === state.activeId ? ' is-active' : '');
+      var snippetSrc = note.content.replace(/[#*_`>\-\[\]]/g, '').trim().slice(0, 100);
+      var tagsHtml = note.tags.slice(0, 3).map(function (t) { return '<span class="np-tag-chip">#' + escapeHtml(t) + '</span>'; }).join('');
+      item.innerHTML =
+        '<div class="title">' + (note.pinned ? '📌 ' : '') + highlightMatch(note.title, query) + tagsHtml + '</div>' +
+        '<div class="snippet">' + highlightMatch(snippetSrc, query) + '</div>' +
+        '<div class="meta">' + new Date(note.modifiedAt).toLocaleString() + '</div>' +
+        '<div class="np-note-actions">' +
+        (state.viewTab === 'trash'
+          ? '<button type="button" data-act="restore" title="Restore">↩️</button><button type="button" data-act="purge" title="Delete forever">🗑️</button>'
+          : '<button type="button" data-act="pin" title="Pin">📌</button><button type="button" data-act="dup" title="Duplicate">⧉</button><button type="button" data-act="del" title="Delete">🗑️</button>') +
+        '</div>';
+      item.addEventListener('click', function (e) {
+        var actBtn = e.target.closest('[data-act]');
+        if (actBtn) { e.stopPropagation(); handleNoteAction(note.id, actBtn.getAttribute('data-act')); return; }
+        if (state.viewTab === 'trash') return;
+        state.activeId = note.id; LS.set('np-last-active-id', note.id);
+        loadActiveNoteIntoEditor(); updatePreview(); updateStats(); renderSidebarList();
+        if (window.innerWidth <= 860) setSidebarOpen(false);
+      });
+      noteListEl.appendChild(item);
+    });
+    document.querySelectorAll('[data-np-note-count]').forEach(function (el) {
+      el.textContent = activeNotes().length + ' note' + (activeNotes().length === 1 ? '' : 's');
+    });
+  }
+
+  function setSidebarOpen(open) {
+    var sidebar = document.querySelector('[data-np-sidebar]');
+    var backdrop = document.querySelector('[data-np-sidebar-backdrop]');
+    sidebar.classList.toggle('is-open', open);
+    if (backdrop) backdrop.classList.toggle('is-visible', open);
+  }
+
+  function handleNoteAction(id, action) {
+    var note = state.notes.find(function (n) { return n.id === id; });
+    if (!note) return;
+    if (action === 'pin') { note.pinned = !note.pinned; idbPut(STORE_NOTES, note); }
+    if (action === 'dup') { var dup = duplicateNote(note, genId(), nowMs()); state.notes.push(dup); idbPut(STORE_NOTES, dup); }
+    if (action === 'del') {
+      var deleted = softDeleteNote(note, nowMs());
+      state.notes = state.notes.map(function (n) { return n.id === id ? deleted : n; });
+      idbPut(STORE_NOTES, deleted);
+      if (state.activeId === id) { var next = sortNotes(activeNotes(), state.sortMode)[0]; state.activeId = next ? next.id : null; loadActiveNoteIntoEditor(); }
+      showToast('Note moved to trash.', { label: 'Undo', onClick: function () { var restored = restoreNote(deleted); state.notes = state.notes.map(function (n) { return n.id === id ? restored : n; }); idbPut(STORE_NOTES, restored); renderSidebarList(); } });
+    }
+    if (action === 'restore') { var restored = restoreNote(note); state.notes = state.notes.map(function (n) { return n.id === id ? restored : n; }); idbPut(STORE_NOTES, restored); }
+    if (action === 'purge') { state.notes = state.notes.filter(function (n) { return n.id !== id; }); idbDelete(STORE_NOTES, id); }
+    renderSidebarList();
+  }
+
+  document.querySelector('[data-np-new-note]').addEventListener('click', function () {
+    var note = createNote(genId(), nowMs());
+    state.notes.push(note); state.activeId = note.id; LS.set('np-last-active-id', note.id);
+    idbPut(STORE_NOTES, note);
+    state.viewTab = 'notes';
+    Array.from(document.querySelectorAll('[data-np-view-tab]')).forEach(function (b) { b.classList.toggle('is-active', b.getAttribute('data-np-view-tab') === 'notes'); });
+    renderSidebarList(); loadActiveNoteIntoEditor(); updatePreview(); updateStats();
+    document.querySelector('[data-np-textarea]').focus();
+    if (window.innerWidth <= 860) setSidebarOpen(false);
+  });
+  searchInput.addEventListener('input', renderSidebarList);
+  Array.from(document.querySelectorAll('[data-np-view-tab]')).forEach(function (btn) {
+    btn.addEventListener('click', function () { state.viewTab = btn.getAttribute('data-np-view-tab'); Array.from(document.querySelectorAll('[data-np-view-tab]')).forEach(function (b) { b.classList.toggle('is-active', b === btn); }); renderSidebarList(); });
+  });
+  document.querySelector('[data-np-sort-mode]').value = state.sortMode;
+  document.querySelector('[data-np-sort-mode]').addEventListener('change', function (e) { state.sortMode = e.target.value; LS.set('np-sort-mode', state.sortMode); renderSidebarList(); });
+  document.querySelector('[data-np-toggle-sidebar]').addEventListener('click', function () {
+    var sidebar = document.querySelector('[data-np-sidebar]');
+    setSidebarOpen(!sidebar.classList.contains('is-open'));
+  });
+  var sidebarBackdrop = document.querySelector('[data-np-sidebar-backdrop]');
+  if (sidebarBackdrop) {
+    sidebarBackdrop.addEventListener('click', function () { setSidebarOpen(false); });
+  }
+
+  /* ============================================================
+     Editor <-> preview
+     ============================================================ */
+  var textarea = document.querySelector('[data-np-textarea]');
+  var previewPane = document.querySelector('[data-np-preview-pane]');
+  var lineGutter = document.querySelector('[data-np-linegutter]');
+
+  function loadActiveNoteIntoEditor() {
+    var note = getActiveNote();
+    textarea.value = note ? note.content : '';
+    textarea.readOnly = state.lockNote;
+    updateLineGutter();
+  }
+  textarea.addEventListener('input', function () { editContent(textarea.value); updateLineGutter(); updateCursorStat(); });
+  textarea.addEventListener('keyup', updateCursorStat);
+  textarea.addEventListener('click', updateCursorStat);
+  textarea.addEventListener('blur', function () { debouncedSave.flush(); });
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') debouncedSave.flush(); });
+  window.addEventListener('beforeunload', function (e) { if (pendingSave) { debouncedSave.flush(); e.preventDefault(); e.returnValue = ''; } });
+
+  var marked_ = window.marked;
+  if (marked_) {
+    marked_.setOptions({ gfm: true, breaks: false });
+  }
+  var hljsLoaded = false, katexLoaded = false, mermaidLoaded = false;
+  function loadScriptOnce(src) { return new Promise(function (res, rej) { var s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); }); }
+  function loadStyleOnce(href) { if (document.querySelector('link[href="' + href + '"]')) return; var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = href; document.head.appendChild(l); }
+
+  function renderPreviewHtml(md) {
+    var html = marked_ ? marked_.parse(md) : escapeHtml(md);
+    var clean = window.DOMPurify ? DOMPurify.sanitize(html, { ADD_ATTR: ['target'] }) : html;
+    return clean;
+  }
+
+  var updatePreviewDebounced = debounce(function () {
+    var note = getActiveNote();
+    var md = note ? note.content : '';
+    previewPane.innerHTML = renderPreviewHtml(md);
+    // clickable task checkboxes that write back to source
+    Array.from(previewPane.querySelectorAll('input[type="checkbox"]')).forEach(function (cb, idx) {
+      cb.disabled = false;
+      cb.addEventListener('change', function () {
+        var lines = getActiveNote().content.split('\n');
+        var taskLines = []; lines.forEach(function (l, i) { if (/^\s*[-*+]\s+\[[ xX]\]/.test(l)) taskLines.push(i); });
+        if (taskLines[idx] !== undefined) { editContent(toggleTaskAtLine(getActiveNote().content, taskLines[idx])); loadActiveNoteIntoEditor(); }
+      });
+    });
+    renderTOC(md);
+    maybeLoadCodeHighlighting(md);
+    maybeLoadMath(md);
+    maybeLoadMermaid(md);
+  }, 150);
+  function updatePreview() { updatePreviewDebounced(); }
+
+  function maybeLoadCodeHighlighting(md) {
+    if (!/```/.test(md)) return;
+    var proceed = function () { Array.from(previewPane.querySelectorAll('pre code')).forEach(function (block) { if (window.hljs) hljs.highlightElement(block); }); };
+    if (hljsLoaded) { proceed(); return; }
+    hljsLoaded = true;
+    loadStyleOnce('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css');
+    loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js').then(proceed).catch(function () {});
+  }
+  function maybeLoadMath(md) {
+    if (!/\$[^$\n]+\$|\$\$[\s\S]+?\$\$/.test(md)) return;
+    var proceed = function () {
+      if (!window.katex) return;
+      var walker = document.createTreeWalker(previewPane, NodeFilter.SHOW_TEXT);
+      var textNodes = []; var n; while ((n = walker.nextNode())) textNodes.push(n);
+      textNodes.forEach(function (node) {
+        if (!/\$/.test(node.nodeValue)) return;
+        var frag = document.createDocumentFragment();
+        var parts = node.nodeValue.split(/(\$\$[^$]+\$\$|\$[^$]+\$)/g);
+        parts.forEach(function (part) {
+          if (/^\$\$[^$]+\$\$$/.test(part)) { var span = document.createElement('span'); try { katex.render(part.slice(2, -2), span, { displayMode: true, throwOnError: false }); } catch (e) { span.textContent = part; } frag.appendChild(span); }
+          else if (/^\$[^$]+\$$/.test(part)) { var span2 = document.createElement('span'); try { katex.render(part.slice(1, -1), span2, { displayMode: false, throwOnError: false }); } catch (e) { span2.textContent = part; } frag.appendChild(span2); }
+          else frag.appendChild(document.createTextNode(part));
+        });
+        node.parentNode.replaceChild(frag, node);
+      });
+    };
+    if (katexLoaded) { proceed(); return; }
+    katexLoaded = true;
+    loadStyleOnce('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.10/katex.min.css');
+    loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.10/katex.min.js').then(proceed).catch(function () {});
+  }
+  function maybeLoadMermaid(md) {
+    if (!/```mermaid/.test(md)) return;
+    var proceed = function () {
+      if (!window.mermaid) return;
+      var blocks = Array.from(previewPane.querySelectorAll('pre code.language-mermaid'));
+      blocks.forEach(function (block, i) {
+        var container = document.createElement('div'); container.className = 'mermaid'; container.textContent = block.textContent;
+        block.parentNode.replaceWith(container);
+      });
+      try { mermaid.initialize({ startOnLoad: false, theme: 'default' }); mermaid.run({ nodes: previewPane.querySelectorAll('.mermaid') }); } catch (e) { console.error(e); }
+    };
+    if (mermaidLoaded) { proceed(); return; }
+    mermaidLoaded = true;
+    loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js').then(proceed).catch(function () {});
+  }
+
+  function renderTOC(md) {
+    var existing = document.querySelector('[data-np-toc]'); if (existing) existing.remove();
+    var headings = extractHeadings(md);
+    if (!headings.length || state.viewMode === 'editor') return;
+    var box = document.createElement('div'); box.className = 'np-toc'; box.setAttribute('data-np-toc', '1');
+    box.innerHTML = '<strong style="font-size:0.75rem;text-transform:uppercase;color:var(--text-muted);">Contents</strong>';
+    headings.forEach(function (h) {
+      var a = document.createElement('a'); a.textContent = h.text; a.style.paddingLeft = ((h.level - 1) * 0.6) + 'rem'; a.href = '#toc-' + slugify(h.text);
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        var target = Array.from(previewPane.querySelectorAll('h1,h2,h3,h4,h5,h6')).find(function (el) { return el.textContent.trim() === h.text; });
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      box.appendChild(a);
+    });
+    document.querySelector('[data-np-main]').appendChild(box);
+  }
+
+  function updateLineGutter() {
+    if (!state.showLineNumbers) { lineGutter.classList.add('hidden'); return; }
+    lineGutter.classList.remove('hidden');
+    var count = textarea.value.split('\n').length;
+    var nums = []; for (var i = 1; i <= count; i++) nums.push(i);
+    lineGutter.textContent = nums.join('\n');
+  }
+  textarea.addEventListener('scroll', function () { lineGutter.scrollTop = textarea.scrollTop; syncScrollToPreview(); });
+  function syncScrollToPreview() {
+    if (state.viewMode !== 'split' && state.viewMode !== 'split-stacked') return;
+    var ratio = textarea.scrollTop / Math.max(1, (textarea.scrollHeight - textarea.clientHeight));
+    previewPane.scrollTop = ratio * (previewPane.scrollHeight - previewPane.clientHeight);
+  }
+
+  function updateStats() {
+    var note = getActiveNote(); var content = note ? note.content : '';
+    var s = computeStats(content);
+    document.querySelector('[data-np-stat-words]').textContent = s.words + ' words';
+    document.querySelector('[data-np-stat-chars]').textContent = s.chars + ' characters';
+    document.querySelector('[data-np-stat-lines]').textContent = s.lines + ' lines';
+    document.querySelector('[data-np-stat-reading]').textContent = s.readingTimeMin + ' min read';
+    var existingGoal = document.querySelector('[data-np-goal-inline]');
+    if (existingGoal) existingGoal.remove();
+    if (state.wordGoal > 0) {
+      var pct = Math.min(100, Math.round((s.words / state.wordGoal) * 100));
+      var goalEl = document.querySelector('[data-np-stat-reading]');
+      goalEl.insertAdjacentHTML('afterend', '<span data-np-goal-inline> · Goal: ' + s.words + '/' + state.wordGoal + ' (' + pct + '%)</span>');
+    }
+  }
+  function updateCursorStat() {
+    var pos = lineColumnFromIndex(textarea.value, textarea.selectionStart);
+    document.querySelector('[data-np-stat-cursor]').textContent = 'Ln ' + pos.line + ', Col ' + pos.column;
+  }
+
+  /* ============================================================
+     Toolbar formatting actions
+     ============================================================ */
+  var FMT_MAP = {
+    bold: ['**', '**'], italic: ['_', '_'], code: ['`', '`'], quote: ['> ', ''], h1: ['# ', ''], h2: ['## ', ''],
+    ul: ['- ', ''], ol: ['1. ', ''], task: ['- [ ] ', ''], hr: ['\n---\n', '']
+  };
+  function applyFormat(kind) {
+    var start = textarea.selectionStart, end = textarea.selectionEnd;
+    var content = textarea.value;
+    if (kind === 'link' || kind === 'image') {
+      var selected = content.slice(start, end);
+      var md = kind === 'image' ? '![' + (selected || 'alt text') + '](url)' : '[' + (selected || 'link text') + '](url)';
+      var newContent = content.slice(0, start) + md + content.slice(end);
+      textarea.value = newContent;
+      var urlStart = start + md.indexOf('(') + 1;
+      textarea.setSelectionRange(urlStart, urlStart + 3);
+      editContent(newContent); textarea.focus(); return;
+    }
+    if (kind === 'hr') {
+      var newC = content.slice(0, start) + '\n---\n' + content.slice(end);
+      textarea.value = newC; editContent(newC); textarea.focus(); return;
+    }
+    if (['h1', 'h2', 'quote', 'ul', 'ol', 'task'].indexOf(kind) !== -1) {
+      var lineStart = content.lastIndexOf('\n', start - 1) + 1;
+      var prefix = FMT_MAP[kind][0];
+      var already = content.slice(lineStart, lineStart + prefix.length) === prefix;
+      var newContent2 = already ? content.slice(0, lineStart) + content.slice(lineStart + prefix.length) : content.slice(0, lineStart) + prefix + content.slice(lineStart);
+      var delta = already ? -prefix.length : prefix.length;
+      textarea.value = newContent2;
+      textarea.setSelectionRange(start + delta, end + delta);
+      editContent(newContent2); textarea.focus(); return;
+    }
+    var pair = FMT_MAP[kind]; if (!pair) return;
+    var res = computeWrapSelection(content, start, end, pair[0], pair[1] || pair[0]);
+    textarea.value = res.newContent;
+    textarea.setSelectionRange(res.newSelStart, res.newSelEnd);
+    editContent(res.newContent); textarea.focus();
+  }
+  Array.from(document.querySelectorAll('[data-np-fmt]')).forEach(function (btn) { btn.addEventListener('click', function () { applyFormat(btn.getAttribute('data-np-fmt')); }); });
+
+  /* ============================================================
+     Keyboard shortcuts, smart lists, auto-pair, tab indent
+     ============================================================ */
+  textarea.addEventListener('keydown', function (e) {
+    var mod = e.ctrlKey || e.metaKey;
+    if (mod && e.key.toLowerCase() === 'b') { e.preventDefault(); applyFormat('bold'); return; }
+    if (mod && e.key.toLowerCase() === 'i') { e.preventDefault(); applyFormat('italic'); return; }
+    if (mod && e.key.toLowerCase() === 'k' && !e.shiftKey) { e.preventDefault(); applyFormat('link'); return; }
+    if (mod && e.shiftKey && e.key.toLowerCase() === 'k') { e.preventDefault(); applyFormat('code'); return; }
+    if (mod && e.key === '/') { e.preventDefault(); cycleViewMode(); return; }
+    if (mod && e.key.toLowerCase() === 's') { e.preventDefault(); debouncedSave.flush(); showToast('Saved.'); return; }
+    if (mod && !e.shiftKey && e.key.toLowerCase() === 'f') { e.preventDefault(); openFindReplace(false); return; }
+    if (mod && e.shiftKey && e.key.toLowerCase() === 'f') { e.preventDefault(); openFindReplace(true); return; }
+
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var res = computeIndentLines(textarea.value, textarea.selectionStart, textarea.selectionEnd, e.shiftKey, '  ');
+      textarea.value = res.newContent; textarea.setSelectionRange(res.newSelStart, res.newSelEnd); editContent(res.newContent);
+      return;
+    }
+    if (e.key === 'Enter' && textarea.selectionStart === textarea.selectionEnd) {
+      var lc = computeListContinuation(textarea.value, textarea.selectionStart);
+      if (lc) {
+        e.preventDefault();
+        if (lc.removeLine) {
+          var content = textarea.value;
+          var lineEndSearch = content.indexOf('\n', textarea.selectionStart);
+          var lineEnd = lineEndSearch === -1 ? content.length : lineEndSearch;
+          var newContent = content.slice(0, lc.lineStart) + content.slice(lineEnd);
+          textarea.value = newContent; textarea.setSelectionRange(lc.lineStart, lc.lineStart); editContent(newContent);
+        } else {
+          var pos = textarea.selectionStart;
+          var newContent2 = textarea.value.slice(0, pos) + lc.insert + textarea.value.slice(pos);
+          textarea.value = newContent2;
+          textarea.setSelectionRange(pos + lc.insert.length, pos + lc.insert.length);
+          editContent(newContent2);
+        }
+        return;
+      }
+    }
+    var openChars = ['(', '[', '{', '"', "'", '`'];
+    if (openChars.indexOf(e.key) !== -1 && textarea.selectionStart !== textarea.selectionEnd) {
+      e.preventDefault();
+      var s = textarea.selectionStart, en = textarea.selectionEnd;
+      var wrapped = computeAutoPairWrap(textarea.value.slice(s, en), e.key);
+      var newContent3 = textarea.value.slice(0, s) + wrapped + textarea.value.slice(en);
+      textarea.value = newContent3; textarea.setSelectionRange(s + 1, s + 1 + (en - s));
+      editContent(newContent3);
+      return;
+    }
+  });
+  textarea.addEventListener('paste', function (e) {
+    var text = (e.clipboardData || window.clipboardData).getData('text/plain');
+    var html = (e.clipboardData || window.clipboardData).getData('text/html');
+    var start = textarea.selectionStart, end = textarea.selectionEnd;
+    if (text && isLikelyUrl(text) && start !== end) {
+      e.preventDefault();
+      var res = computePasteUrlOverSelection(textarea.value, start, end, text);
+      textarea.value = res.newContent; textarea.setSelectionRange(res.newSelStart, res.newSelEnd); editContent(res.newContent);
+      return;
+    }
+    if (html && window.TurndownService && !text.trim().match(/^\s*[-#*]/)) {
+      try {
+        var td = new TurndownService({ headingStyle: 'atx', codeBlockStyle: 'fenced' });
+        var md = td.turndown(html);
+        if (md && md.length > 4) {
+          e.preventDefault();
+          var newContent = textarea.value.slice(0, start) + md + textarea.value.slice(end);
+          textarea.value = newContent; textarea.setSelectionRange(start + md.length, start + md.length); editContent(newContent);
+          return;
+        }
+      } catch (err) {}
+    }
+    var items = (e.clipboardData || {}).items || [];
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf('image') !== -1) {
+        e.preventDefault();
+        var file = items[i].getAsFile();
+        var reader = new FileReader();
+        reader.onload = function () {
+          var dataUri = reader.result;
+          if (file.size > 500 * 1024) showToast('Pasted image is ' + Math.round(file.size / 1024) + 'KB — large embedded images bloat note size.');
+          var md2 = '![pasted image](' + dataUri + ')';
+          var s2 = textarea.selectionStart;
+          var newContent2 = textarea.value.slice(0, s2) + md2 + textarea.value.slice(textarea.selectionEnd);
+          textarea.value = newContent2; editContent(newContent2);
+        };
+        reader.readAsDataURL(file);
+        return;
+      }
+    }
+  });
+
+  /* ============================================================
+     View modes: editor / split / preview / split-stacked, zen, typewriter, focus
+     ============================================================ */
+  var mainEl = document.querySelector('[data-np-main]');
+  var previewWrap = document.querySelector('[data-np-preview-pane-wrap]');
+  var VIEW_CYCLE = ['editor', 'split', 'preview'];
+  function cycleViewMode() { var idx = VIEW_CYCLE.indexOf(state.viewMode); setViewMode(VIEW_CYCLE[(idx + 1) % VIEW_CYCLE.length]); }
+  function setViewMode(mode) {
+    state.viewMode = mode; LS.set('np-view-mode', mode);
+    mainEl.className = 'np-main' + (mode === 'split' ? ' is-split' : mode === 'split-stacked' ? ' is-split-stacked' : '');
+    document.querySelector('[data-np-editor-pane]').style.display = mode === 'preview' ? 'none' : '';
+    if (previewWrap) previewWrap.style.display = mode === 'editor' ? 'none' : '';
+    Array.from(document.querySelectorAll('[data-np-view]')).forEach(function (b) { b.classList.toggle('is-active', b.getAttribute('data-np-view') === mode); });
+    updatePreview();
+  }
+  Array.from(document.querySelectorAll('[data-np-view]')).forEach(function (btn) { btn.addEventListener('click', function () { setViewMode(btn.getAttribute('data-np-view')); }); });
+  function applyResponsiveSplit() { if (window.innerWidth < 860 && state.viewMode === 'split') setViewMode('split-stacked'); }
+  window.addEventListener('resize', applyResponsiveSplit);
+
+  document.querySelector('[data-np-toggle-zen]').addEventListener('click', function () {
+    state.zen = !state.zen;
+    document.querySelector('[data-np-app]').classList.toggle('is-zen', state.zen);
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && state.zen) { state.zen = false; document.querySelector('[data-np-app]').classList.remove('is-zen'); } });
+
+  function applyEditorPrefs() {
+    textarea.classList.toggle('is-mono', state.fontMono);
+    textarea.classList.toggle('is-nowrap', !state.wordWrap);
+    textarea.style.fontSize = state.fontSize + 'px';
+    textarea.style.lineHeight = state.lineHeight;
+    textarea.spellcheck = LS.get('np-spellcheck', true);
+    document.querySelector('[data-np-editor-wrap]').className = 'np-editor-wrap width-' + state.editorWidth;
+    document.querySelector('[data-np-app]').classList.toggle('np-typewriter', state.typewriter);
+    document.querySelector('[data-np-focus-overlay]').style.display = state.focusMode ? 'block' : 'none';
+    updateLineGutter();
+  }
+
+  /* ============================================================
+     Toast / notifications
+     ============================================================ */
+  function showToast(message, action) {
+    var el = document.createElement('div');
+    el.style.cssText = 'position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);background:var(--surface-strong);border:1px solid var(--border);border-radius:10px;padding:0.6rem 1rem;box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:2000;font-size:0.85rem;display:flex;gap:0.7rem;align-items:center;color:var(--text);';
+    el.textContent = message;
+    if (action) { var btn = document.createElement('button'); btn.textContent = action.label; btn.style.cssText = 'border:none;background:var(--accent);color:#fff;border-radius:6px;padding:0.25rem 0.6rem;cursor:pointer;'; btn.onclick = function () { action.onClick(); el.remove(); }; el.appendChild(btn); }
+    document.body.appendChild(el);
+    setTimeout(function () { el.remove(); }, action ? 8000 : 3000);
+  }
+
+  /* ============================================================
+     Modal system (settings / table / find-replace / versions / share / export)
+     ============================================================ */
+  var modalBackdrop = document.querySelector('[data-np-modal-backdrop]');
+  var modalBody = document.querySelector('[data-np-modal-body]');
+  function openModal(html, onOpen) { modalBody.innerHTML = html; modalBackdrop.classList.remove('hidden'); if (onOpen) onOpen(modalBody); }
+  function closeModal() { modalBackdrop.classList.add('hidden'); modalBody.innerHTML = ''; }
+  modalBackdrop.addEventListener('click', function (e) { if (e.target === modalBackdrop) closeModal(); });
+
+  document.querySelector('[data-np-open-settings]').addEventListener('click', function () {
+    openModal(
+      '<h2>Settings</h2>' +
+      '<div class="row"><label>Theme <select data-set-theme><option value="system">Follow system</option><option value="light">Light</option><option value="dark">Dark</option><option value="sepia">Sepia</option><option value="oled">True black (OLED)</option></select></label></div>' +
+      '<div class="row"><label><input type="checkbox" data-set-mono /> Monospace font</label><label><input type="checkbox" data-set-wrap /> Word wrap</label><label><input type="checkbox" data-set-linenum /> Line numbers</label></div>' +
+      '<div class="row"><label>Font size <input type="number" min="10" max="32" data-set-fontsize style="width:70px;" /></label><label>Line height <input type="number" min="1" max="3" step="0.1" data-set-lineheight style="width:70px;" /></label></div>' +
+      '<div class="row"><label>Editor width <select data-set-width><option value="narrow">Narrow</option><option value="medium">Medium</option><option value="full">Full</option></select></label></div>' +
+      '<div class="row"><label><input type="checkbox" data-set-typewriter /> Typewriter mode</label><label><input type="checkbox" data-set-focus /> Focus mode</label><label><input type="checkbox" data-set-spellcheck /> Spellcheck</label></div>' +
+      '<div class="row"><label><input type="checkbox" data-set-lock /> Read-only / lock this note</label></div>' +
+      '<div class="row"><label>Word goal <input type="number" min="0" data-set-goal style="width:90px;" /></label></div>' +
+      '<div class="row" style="justify-content:flex-end;"><button class="primary-btn" type="button" data-close-modal>Done</button></div>',
+      function (body) {
+        body.querySelector('[data-set-theme]').value = state.theme;
+        body.querySelector('[data-set-mono]').checked = state.fontMono;
+        body.querySelector('[data-set-wrap]').checked = state.wordWrap;
+        body.querySelector('[data-set-linenum]').checked = state.showLineNumbers;
+        body.querySelector('[data-set-fontsize]').value = state.fontSize;
+        body.querySelector('[data-set-lineheight]').value = state.lineHeight;
+        body.querySelector('[data-set-width]').value = state.editorWidth;
+        body.querySelector('[data-set-typewriter]').checked = state.typewriter;
+        body.querySelector('[data-set-focus]').checked = state.focusMode;
+        body.querySelector('[data-set-spellcheck]').checked = LS.get('np-spellcheck', true);
+        body.querySelector('[data-set-lock]').checked = state.lockNote;
+        body.querySelector('[data-set-goal]').value = state.wordGoal;
+        body.querySelector('[data-set-theme]').addEventListener('change', function (e) { state.theme = e.target.value; LS.set('np-theme', state.theme); applyTheme(); });
+        body.querySelector('[data-set-mono]').addEventListener('change', function (e) { state.fontMono = e.target.checked; LS.set('np-font-mono', state.fontMono); applyEditorPrefs(); });
+        body.querySelector('[data-set-wrap]').addEventListener('change', function (e) { state.wordWrap = e.target.checked; LS.set('np-word-wrap', state.wordWrap); applyEditorPrefs(); });
+        body.querySelector('[data-set-linenum]').addEventListener('change', function (e) { state.showLineNumbers = e.target.checked; LS.set('np-line-numbers', state.showLineNumbers); applyEditorPrefs(); });
+        body.querySelector('[data-set-fontsize]').addEventListener('change', function (e) { state.fontSize = parseInt(e.target.value, 10) || 16; LS.set('np-font-size', state.fontSize); applyEditorPrefs(); });
+        body.querySelector('[data-set-lineheight]').addEventListener('change', function (e) { state.lineHeight = parseFloat(e.target.value) || 1.6; LS.set('np-line-height', state.lineHeight); applyEditorPrefs(); });
+        body.querySelector('[data-set-width]').addEventListener('change', function (e) { state.editorWidth = e.target.value; LS.set('np-editor-width', state.editorWidth); applyEditorPrefs(); });
+        body.querySelector('[data-set-typewriter]').addEventListener('change', function (e) { state.typewriter = e.target.checked; LS.set('np-typewriter', state.typewriter); applyEditorPrefs(); });
+        body.querySelector('[data-set-focus]').addEventListener('change', function (e) { state.focusMode = e.target.checked; LS.set('np-focus-mode', state.focusMode); applyEditorPrefs(); });
+        body.querySelector('[data-set-spellcheck]').addEventListener('change', function (e) { LS.set('np-spellcheck', e.target.checked); applyEditorPrefs(); });
+        body.querySelector('[data-set-lock]').addEventListener('change', function (e) { state.lockNote = e.target.checked; loadActiveNoteIntoEditor(); });
+        body.querySelector('[data-set-goal]').addEventListener('change', function (e) { state.wordGoal = parseInt(e.target.value, 10) || 0; LS.set('np-word-goal', state.wordGoal); updateStats(); });
+        body.querySelector('[data-close-modal]').addEventListener('click', closeModal);
+      }
+    );
+  });
+
+  document.querySelector('[data-np-open-table]').addEventListener('click', function () {
+    openModal(
+      '<h2>Insert table</h2><div class="row"><label>Rows <input type="number" value="3" min="1" data-tbl-rows style="width:70px;" /></label><label>Columns <input type="number" value="3" min="1" data-tbl-cols style="width:70px;" /></label></div>' +
+      '<div class="row" style="justify-content:flex-end;"><button class="secondary-btn" type="button" data-close-modal>Cancel</button><button class="primary-btn" type="button" data-tbl-insert>Insert</button></div>',
+      function (body) {
+        body.querySelector('[data-tbl-insert]').addEventListener('click', function () {
+          var rows = parseInt(body.querySelector('[data-tbl-rows]').value, 10) || 3;
+          var cols = parseInt(body.querySelector('[data-tbl-cols]').value, 10) || 3;
+          var md = buildMarkdownTable(rows, cols);
+          var pos = textarea.selectionStart;
+          var newContent = textarea.value.slice(0, pos) + md + '\n' + textarea.value.slice(pos);
+          textarea.value = newContent; editContent(newContent);
+          closeModal();
+        });
+        body.querySelector('[data-close-modal]').addEventListener('click', closeModal);
+      }
+    );
+  });
+
+  function openFindReplace(showReplace) {
+    openModal(
+      '<h2>Find' + (showReplace ? ' &amp; replace' : '') + '</h2>' +
+      '<div class="row"><input type="text" placeholder="Find..." data-fr-find style="flex:1;" /><label><input type="checkbox" data-fr-regex /> Regex</label></div>' +
+      (showReplace ? '<div class="row"><input type="text" placeholder="Replace with..." data-fr-replace style="flex:1;" /></div>' : '') +
+      '<p class="stg-hint" data-fr-count style="font-size:0.8rem;color:var(--text-muted);">0 matches</p>' +
+      '<div class="row" style="justify-content:flex-end;"><button class="secondary-btn" type="button" data-close-modal>Close</button>' + (showReplace ? '<button class="primary-btn" type="button" data-fr-replace-all>Replace all</button>' : '<button class="primary-btn" type="button" data-fr-next>Find next</button>') + '</div>',
+      function (body) {
+        function getRegex() {
+          var find = body.querySelector('[data-fr-find]').value; if (!find) return null;
+          var isRegex = body.querySelector('[data-fr-regex]').checked;
+          try { return new RegExp(isRegex ? find : find.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'); } catch (e) { return null; }
+        }
+        function updateCount() { var re = getRegex(); var count = re ? (textarea.value.match(re) || []).length : 0; body.querySelector('[data-fr-count]').textContent = count + ' matches'; }
+        body.querySelector('[data-fr-find]').addEventListener('input', updateCount);
+        var nextBtn = body.querySelector('[data-fr-next]');
+        if (nextBtn) nextBtn.addEventListener('click', function () {
+          var re = getRegex(); if (!re) return;
+          re.lastIndex = textarea.selectionEnd;
+          var m = re.exec(textarea.value);
+          if (!m) { re.lastIndex = 0; m = re.exec(textarea.value); }
+          if (m) { textarea.focus(); textarea.setSelectionRange(m.index, m.index + m[0].length); }
+        });
+        var replaceAllBtn = body.querySelector('[data-fr-replace-all]');
+        if (replaceAllBtn) replaceAllBtn.addEventListener('click', function () {
+          var re = getRegex(); if (!re) return;
+          var replacement = body.querySelector('[data-fr-replace]').value;
+          var newContent = textarea.value.replace(re, replacement);
+          textarea.value = newContent; editContent(newContent);
+          closeModal(); showToast('Replaced all matches.');
+        });
+        body.querySelector('[data-close-modal]').addEventListener('click', closeModal);
+      }
+    );
+  }
+  document.querySelector('[data-np-open-find]').addEventListener('click', function () { openFindReplace(true); });
+
+  document.querySelector('[data-np-open-share]').addEventListener('click', function () {
+    var note = getActiveNote(); if (!note) return;
+    var compressed = LZString.compressToEncodedURIComponent(note.content);
+    var url = location.origin + location.pathname + '#' + compressed;
+    var lenWarning = url.length > 6000 ? '<p class="stg-hint" style="color:#ef4444;">⚠️ This note is long — the resulting link is ' + url.length.toLocaleString() + ' characters, which may not work in all browsers/apps. Consider exporting a file instead for long notes.</p>' : '';
+    openModal(
+      '<h2>Share via link</h2><p class="stg-hint">Anyone with this link can read this note — the content is embedded directly in the URL, compressed. Nothing is uploaded to a server.</p>' + lenWarning +
+      '<div class="row"><input type="text" readonly value="' + escapeHtml(url) + '" style="flex:1;" data-share-url /><button class="secondary-btn" type="button" data-share-copy>📋 Copy</button></div>' +
+      '<div class="row" style="justify-content:flex-end;"><button class="secondary-btn" type="button" data-close-modal>Close</button></div>',
+      function (body) {
+        body.querySelector('[data-share-copy]').addEventListener('click', function () { navigator.clipboard.writeText(url).then(function () { showToast('Link copied.'); }); });
+        body.querySelector('[data-close-modal]').addEventListener('click', closeModal);
+      }
+    );
+  });
+
+  /* ============================================================
+     Version history (local snapshots taken from the backups store)
+     ============================================================ */
+  document.querySelector('[data-np-open-versions]').addEventListener('click', function () {
+    var note = getActiveNote(); if (!note) return;
+    idbGetAll(STORE_BACKUPS).then(function (backups) {
+      var relevant = backups.filter(function (b) { return b.notes.some(function (n) { return n.id === note.id; }); }).sort(function (a, b) { return b.ts - a.ts; });
+      var listHtml = relevant.length ? relevant.map(function (b, i) {
+        var snapNote = b.notes.find(function (n) { return n.id === note.id; });
+        return '<div class="np-version-item" data-version-idx="' + i + '"><strong>' + new Date(b.ts).toLocaleString() + '</strong><br>' + escapeHtml(snapNote.content.slice(0, 80)) + (snapNote.content.length > 80 ? '…' : '') + '</div>';
+      }).join('') : '<p class="stg-hint">No earlier versions saved yet for this note — snapshots are taken automatically roughly every 20 seconds while you edit.</p>';
+      openModal(
+        '<h2>Version history</h2>' + listHtml + '<div class="row" style="justify-content:flex-end;"><button class="secondary-btn" type="button" data-close-modal>Close</button></div>',
+        function (body) {
+          Array.from(body.querySelectorAll('[data-version-idx]')).forEach(function (el) {
+            el.addEventListener('click', function () {
+              var idx = parseInt(el.getAttribute('data-version-idx'), 10);
+              var snapNote = relevant[idx].notes.find(function (n) { return n.id === note.id; });
+              var diff = wordDiff(note.content, snapNote.content);
+              var diffHtml = diff.map(function (op) {
+                if (op.type === 'equal') return escapeHtml(op.text);
+                if (op.type === 'insert') return '<span class="np-diff-add">' + escapeHtml(op.text) + '</span>';
+                return '<span class="np-diff-del">' + escapeHtml(op.text) + '</span>';
+              }).join('');
+              openModal(
+                '<h2>Compare with ' + new Date(relevant[idx].ts).toLocaleString() + '</h2>' +
+                '<p class="stg-hint">Green = present in this old version but not current; red = removed since. (Diff shown relative to current → old version.)</p>' +
+                '<div class="np-result-text" style="white-space:pre-wrap;font-family:monospace;font-size:0.82rem;max-height:300px;overflow:auto;border:1px solid var(--border);border-radius:8px;padding:0.7rem;">' + diffHtml + '</div>' +
+                '<div class="row" style="justify-content:flex-end;"><button class="secondary-btn" type="button" data-close-modal>Close</button><button class="primary-btn" type="button" data-restore-version>⏮️ Restore this version</button></div>',
+                function (b2) {
+                  b2.querySelector('[data-restore-version]').addEventListener('click', function () {
+                    textarea.value = snapNote.content; editContent(snapNote.content); loadActiveNoteIntoEditor(); updatePreview();
+                    closeModal(); showToast('Version restored.');
+                  });
+                  b2.querySelector('[data-close-modal]').addEventListener('click', closeModal);
+                }
+              );
+            });
+          });
+          body.querySelector('[data-close-modal]').addEventListener('click', closeModal);
+        }
+      );
+    });
+  });
+
+  /* ============================================================
+     Import / export
+     ============================================================ */
+  function downloadBlob(blob, filename) { var url = URL.createObjectURL(blob); var a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }
+  function buildStandaloneHtml(title, bodyHtml) {
+    return '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + escapeHtml(title) + '</title><style>body{font-family:Georgia,serif;max-width:760px;margin:2rem auto;padding:0 1rem;line-height:1.7;color:#1f2937;} pre{background:#f3f4f6;padding:0.8rem;border-radius:8px;overflow-x:auto;} code{font-family:monospace;} table{border-collapse:collapse;} table td,table th{border:1px solid #ddd;padding:6px 10px;} blockquote{border-left:3px solid #999;margin-left:0;padding-left:1rem;color:#555;}</style></head><body>' + bodyHtml + '</body></html>';
+  }
+  function buildMinimalDocx(title, plainText) {
+    // Hand-built, valid minimal OOXML .docx (paragraph-per-line, no rich formatting) — avoids pulling in another CDN library.
+    var paragraphs = plainText.split('\n').map(function (line) { return '<w:p><w:r><w:t xml:space="preserve">' + escapeXml(line) + '</w:t></w:r></w:p>'; }).join('');
+    var documentXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>' + paragraphs + '<w:sectPr/></w:body></w:document>';
+    var contentTypes = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>';
+    var rels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>';
+    var zip = new JSZip();
+    zip.file('[Content_Types].xml', contentTypes);
+    zip.folder('_rels').file('.rels', rels);
+    zip.folder('word').file('document.xml', documentXml);
+    return zip.generateAsync({ type: 'blob', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+  }
+  function escapeXml(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c]; }); }
+
+  function requireJSZip() {
+    if (typeof window.JSZip === 'undefined') {
+      showToast('ZIP/DOCX export needs JSZip — check your connection and reload.');
+      return false;
+    }
+    return true;
+  }
+
+  document.querySelector('[data-np-topbar-actions]').insertAdjacentHTML('afterbegin', '<button type="button" class="np-tbtn" data-np-open-export title="Export note">⬇ Export</button>');
+  document.querySelector('[data-np-open-export]').addEventListener('click', function () {
+    var note = getActiveNote(); if (!note) return;
+    openModal(
+      '<h2>Export "' + escapeHtml(note.title) + '"</h2>' +
+      '<div class="row"><button class="secondary-btn" type="button" data-exp="md">.md</button><button class="secondary-btn" type="button" data-exp="txt">.txt</button><button class="secondary-btn" type="button" data-exp="html">.html</button><button class="secondary-btn" type="button" data-exp="pdf">Print / PDF</button><button class="secondary-btn" type="button" data-exp="docx">.docx</button></div>' +
+      '<div class="row" style="justify-content:flex-end;"><button class="secondary-btn" type="button" data-close-modal>Close</button></div>',
+      function (body) {
+        body.querySelectorAll('[data-exp]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var kind = btn.getAttribute('data-exp');
+            var base = (note.title || 'note').replace(/[\\/:*?"<>|]/g, '_');
+            if (kind === 'md') downloadBlob(new Blob([note.content], { type: 'text/markdown' }), base + '.md');
+            if (kind === 'txt') downloadBlob(new Blob([note.content], { type: 'text/plain' }), base + '.txt');
+            if (kind === 'html') downloadBlob(new Blob([buildStandaloneHtml(note.title, renderPreviewHtml(note.content))], { type: 'text/html' }), base + '.html');
+            if (kind === 'docx') {
+              if (!requireJSZip()) return;
+              buildMinimalDocx(note.title, note.content).then(function (blob) { downloadBlob(blob, base + '.docx'); });
+            }
+            if (kind === 'pdf') { var w = window.open('', '_blank'); w.document.write(buildStandaloneHtml(note.title, renderPreviewHtml(note.content))); w.document.close(); w.focus(); setTimeout(function () { w.print(); }, 300); }
+            closeModal();
+          });
+        });
+        body.querySelector('[data-close-modal]').addEventListener('click', closeModal);
+      }
+    );
+  });
+
+  document.querySelector('[data-np-open-export-all]').addEventListener('click', function () {
+    openModal(
+      '<h2>Backup all notes</h2>' +
+      '<div class="row"><button class="secondary-btn" type="button" data-exp-all="zip">⬇️ .zip of all notes (.md)</button><button class="secondary-btn" type="button" data-exp-all="json">⬇️ Full JSON backup</button></div>' +
+      '<p class="stg-group-title" style="margin-top:1rem;">Import</p>' +
+      '<div class="row"><input type="file" multiple accept=".md,.txt,.json" data-import-input /></div>' +
+      '<p class="stg-hint">Import .md/.txt files as new notes, or a JSON backup file exported from here to restore everything.</p>' +
+      '<div class="row" style="justify-content:flex-end;"><button class="secondary-btn" type="button" data-close-modal>Close</button></div>',
+      function (body) {
+        body.querySelector('[data-exp-all="zip"]').addEventListener('click', function () {
+          if (!requireJSZip()) return;
+          var zip = new JSZip();
+          activeNotes().forEach(function (n) { zip.file((n.title || 'untitled').replace(/[\\/:*?"<>|]/g, '_') + '-' + n.id.slice(0, 6) + '.md', n.content); });
+          zip.generateAsync({ type: 'blob' }).then(function (blob) { downloadBlob(blob, 'notepad-backup-' + new Date().toISOString().slice(0, 10) + '.zip'); LS.set('np-has-exported', true); });
+        });
+        body.querySelector('[data-exp-all="json"]').addEventListener('click', function () {
+          var json = JSON.stringify({ exportedAt: nowMs(), notes: activeNotes() }, null, 2);
+          downloadBlob(new Blob([json], { type: 'application/json' }), 'notepad-backup-' + new Date().toISOString().slice(0, 10) + '.json');
+          LS.set('np-has-exported', true);
+        });
+        body.querySelector('[data-import-input]').addEventListener('change', function (e) {
+          Array.from(e.target.files).forEach(function (file) {
+            var reader = new FileReader();
+            reader.onload = function () {
+              if (file.name.endsWith('.json')) {
+                try {
+                  var parsed = JSON.parse(reader.result);
+                  if (parsed && Array.isArray(parsed.notes)) {
+                    parsed.notes.forEach(function (n) { var restored = Object.assign(createNote(genId(), nowMs()), n, { id: genId() }); state.notes.push(restored); idbPut(STORE_NOTES, restored); });
+                    renderSidebarList(); showToast('Imported ' + parsed.notes.length + ' notes from backup.');
+                  }
+                } catch (err) { showToast('That JSON file could not be read as a backup.'); }
+              } else {
+                var note = createNote(genId(), nowMs());
+                note = updateNoteContent(note, reader.result, nowMs());
+                state.notes.push(note); idbPut(STORE_NOTES, note);
+                renderSidebarList();
+              }
+            };
+            reader.readAsText(file);
+          });
+          closeModal(); showToast('Import complete.');
+        });
+        body.querySelector('[data-close-modal]').addEventListener('click', closeModal);
+      }
+    );
+  });
+
+  function checkBackupNudge() {
+    if (LS.get('np-has-exported', false)) return;
+    if (activeNotes().length >= 5) {
+      showToast('You have ' + activeNotes().length + ' notes with no backup exported yet — your notes only live in this browser. Consider downloading a backup.', { label: 'Backup now', onClick: function () { document.querySelector('[data-np-open-export-all]').click(); } });
+    }
+  }
+
+  /* ============================================================
+     PWA: service worker registration + offline badge
+     ============================================================ */
+  function registerServiceWorker() {
+    if (!('serviceWorker' in navigator)) return;
+    navigator.serviceWorker.register('/online-notepad-sw.js', { scope: '/online-notepad.html' }).then(function (reg) {
+      reg.addEventListener('updatefound', function () {});
+      if (navigator.serviceWorker.controller) document.querySelector('[data-np-offline-badge]').classList.remove('hidden');
+      navigator.serviceWorker.ready.then(function () { document.querySelector('[data-np-offline-badge]').classList.remove('hidden'); });
+    }).catch(function (err) { console.error('Service worker registration failed:', err); });
+  }
+
+  boot();
+})();
+</script>
+  <script src="assets/js/side-ads.js" defer></script>
+  <script src="assets/js/inline-ads.js" data-in-article defer></script>
+</body>
+</html>

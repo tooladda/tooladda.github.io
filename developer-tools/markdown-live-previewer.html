@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+  <title>Markdown Live Previewer — Write &amp; Preview Markdown Online | ToolAdda</title>
+  <meta name="description" content="Free Markdown live previewer with a split-screen editor. Type Markdown on the left and see the rendered result instantly on the right, with a document outline, README-style GitHub rendering, word count and export. Runs entirely in your browser." />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="author" content="ToolAdda" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="theme-color" content="#047857" />
+  <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="canonical" href="https://tooladda.online/developer-tools/markdown-live-previewer.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+
+  <meta property="og:title" content="Markdown Live Previewer — Write &amp; Preview Markdown Online" />
+  <meta property="og:description" content="Split-screen Markdown editor with instant preview, document outline, GitHub-style rendering and export. 100% browser-based." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tooladda.online/developer-tools/markdown-live-previewer.html" />
+  <meta property="og:site_name" content="ToolAdda" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:image" content="https://tooladda.online/assets/images/og/developer-tools-markdown-live-previewer.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:alt" content="Markdown Live Previewer on ToolAdda — Markdown source on the left, rendered preview on the right." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Markdown Live Previewer — Write &amp; Preview Markdown Online" />
+  <meta name="twitter:description" content="Type Markdown and watch it render instantly. Outline, stats, GitHub alerts, TXT/HTML export — all in the browser." />
+  <meta name="twitter:image" content="https://tooladda.online/assets/images/og/developer-tools-markdown-live-previewer.png" />
+  <meta name="twitter:image:alt" content="Markdown Live Previewer on ToolAdda — Markdown source on the left, rendered preview on the right." />
+
+  <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://tooladda.online/#website",
+      "name": "ToolAdda",
+      "alternateName": [
+        "Tool Adda",
+        "Tools Adda",
+        "ToolsAdda",
+        "Tooladda",
+        "ToolAdda.online"
+      ],
+      "url": "https://tooladda.online/",
+      "inLanguage": "en",
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "alternateName": [
+        "Tool Adda",
+        "Tools Adda",
+        "ToolsAdda",
+        "Tooladda",
+        "ToolAdda.online"
+      ],
+      "url": "https://tooladda.online/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tooladda.online/assets/images/logo.svg"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/developer-tools/markdown-live-previewer.html#webpage",
+      "url": "https://tooladda.online/developer-tools/markdown-live-previewer.html",
+      "name": "Markdown Live Previewer — Write & Preview Markdown Online",
+      "description": "A split-screen Markdown live previewer: write Markdown on the left and see the rendered document on the right, with an outline, statistics and export options.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://tooladda.online/developer-tools/markdown-live-previewer.html#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://tooladda.online/developer-tools/markdown-live-previewer.html#app"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tooladda.online/developer-tools/markdown-live-previewer.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Developer Tools",
+          "item": "https://tooladda.online/#search-tools"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Markdown Live Previewer"
+        }
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://tooladda.online/developer-tools/markdown-live-previewer.html#app",
+      "name": "Markdown Live Previewer",
+      "url": "https://tooladda.online/developer-tools/markdown-live-previewer.html",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "browserRequirements": "Any modern browser. No plugins required.",
+      "description": "A browser-based Markdown live previewer and writing environment. Renders GitHub-flavored Markdown as you type, builds a document outline, counts words and reading time, and exports Markdown or standalone HTML. Raw HTML in the source is escaped, so the preview cannot execute injected scripts.",
+      "inLanguage": "en",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Split-screen editor with live preview",
+        "GitHub-flavored Markdown: tables, task lists, strikethrough, autolinks",
+        "GitHub alert blocks such as NOTE, TIP and WARNING",
+        "Automatic document outline with jump-to-heading",
+        "Word count, character count and reading time",
+        "Task list progress meter",
+        "Formatting toolbar and keyboard shortcuts",
+        "Synchronised scrolling between source and preview",
+        "Write-only, split and read-only view modes",
+        "Import a Markdown file by picker or drag and drop",
+        "Export Markdown or a standalone styled HTML file",
+        "Print or save the preview as PDF",
+        "Automatic draft saving in the browser",
+        "Raw HTML is escaped and URLs are allow-listed",
+        "Runs entirely client side"
+      ],
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to preview Markdown online",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Open the previewer",
+          "text": "Load the Markdown Live Previewer. A sample document appears so you can see the layout straight away."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Add your Markdown",
+          "text": "Type or paste Markdown into the left pane, or drag a .md file onto the workspace to import it."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Read the live preview",
+          "text": "The right pane re-renders as you type. Use the outline to jump between headings and the stats bar to track length."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Export the result",
+          "text": "Copy the Markdown or HTML, download a .md or standalone .html file, or print the preview to PDF."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a Markdown live previewer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A split-screen editor that shows the Markdown source on one side and the rendered document on the other, updating as you type, so you can see exactly how your text will look before you publish it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this Markdown previewer free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. It is free, needs no account and has no usage limits."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does my Markdown get uploaded anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Parsing and rendering happen in your browser. Your text is never sent to a server, and the only copy kept is the draft in your own browser storage."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I preview a GitHub README?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The renderer supports GitHub-flavored Markdown - tables, task lists, strikethrough, autolinks and alert blocks such as [!NOTE] and [!WARNING] - so a README renders close to how GitHub displays it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What Markdown syntax is supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Headings, paragraphs, bold, italic, strikethrough, highlight, inline code, fenced code blocks with a language label, blockquotes, nested lists, task lists, tables with column alignment, horizontal rules, links, reference links, images, autolinks and hard line breaks."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I open a .md file?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Press Import to choose a file, or drag a .md file onto the workspace. The file is read locally by your browser and never uploaded."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I download the rendered HTML?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Download .html produces a standalone file with the styling embedded, so it opens correctly on its own. You can also copy the HTML to the clipboard."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I save the preview as a PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Press Print / PDF and choose Save as PDF in your browser's print dialog. The print layout shows only the rendered document - no editor, no navigation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my work saved if I close the tab?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The document is saved to local storage as you type and restored next time you open the page in the same browser. Clearing site data removes it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between this and the Markdown to HTML converter?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "This page is a writing and reading environment - draft, preview, navigate, export. The Markdown to HTML converter is aimed at getting the HTML source out so you can paste it into a template or CMS."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are keyboard shortcuts supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes: Ctrl / ⌘ with B for bold, I for italic, K for a link and E for inline code. Tab inserts an indent instead of moving focus out of the editor."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the preview scroll with the editor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, in split view the panes scroll together in proportion. Untick Sync scroll to move them independently."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use it on a phone?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. On small screens the panes stack, and the Write and Read buttons switch between the editor and the preview at full width."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is HTML inside my Markdown rendered?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Raw HTML is escaped and shown as literal text. That is deliberate: a document from an untrusted source cannot run scripts in your browser through the preview."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the document outline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A table of contents built automatically from your headings. Every heading also gets a unique anchor id, and clicking an outline entry scrolls the preview to that section."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is reading time calculated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "From the word count of the prose at roughly 220 words per minute, rounded to the nearest minute. Code blocks are excluded because they are not read at prose speed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work offline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Once the page has loaded, no network connection is needed to write, preview or export."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is Markdown?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A plain-text formatting syntax created by John Gruber in 2004. Simple marks such as # for a heading and ** for bold keep the source readable while still describing structure, which is why it is used for READMEs, documentation, notes and static site content."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I preview tables and task lists?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Pipe tables with column alignment and task lists both render, and completed tasks feed the progress meter in the statistics bar."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does my heading anchor have a number after it?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "When two headings would produce the same anchor, the later one gets a numeric suffix such as -1 so every id in the document stays unique."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+
+  <style>
+    /* =====================================================================
+       Markdown Live Previewer — page-scoped design tokens.
+       Prefix: mdp-  (nothing leaks into the shared stylesheet)
+       ===================================================================== */
+    .mdp-page {
+      --mdp-surface: #ffffff;
+      --mdp-raised: #f8f8f6;
+      --mdp-sunken: #f1f1ee;
+      --mdp-paper: #fffefb;
+      --mdp-border: rgba(28, 32, 30, .11);
+      --mdp-border-strong: rgba(28, 32, 30, .18);
+      --mdp-text: #16201c;
+      --mdp-text-2: #3d4a45;
+      --mdp-muted: #6d7a74;
+      --mdp-accent: #047857;
+      --mdp-accent-deep: #065f46;
+      --mdp-accent-soft: rgba(4, 120, 87, .10);
+      --mdp-accent-line: rgba(4, 120, 87, .26);
+      --mdp-danger: #b91c1c;
+      --mdp-danger-soft: rgba(185, 28, 28, .09);
+      --mdp-info: #1d4ed8;
+      --mdp-warn: #b45309;
+      --mdp-grid: rgba(28, 32, 30, .05);
+      --mdp-shadow: 0 1px 2px rgba(20, 30, 26, .04), 0 16px 40px rgba(20, 30, 26, .07);
+      --mdp-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --mdp-r-lg: 18px;
+      --mdp-r-md: 11px;
+      --mdp-r-sm: 7px;
+      color: var(--mdp-text);
+    }
+
+    [data-theme="dark"] .mdp-page {
+      --mdp-surface: #0f1714;
+      --mdp-raised: #0b1210;
+      --mdp-sunken: #070d0b;
+      --mdp-paper: #0d1512;
+      --mdp-border: rgba(148, 174, 164, .16);
+      --mdp-border-strong: rgba(148, 174, 164, .27);
+      --mdp-text: #e9f1ed;
+      --mdp-text-2: #bccbc5;
+      --mdp-muted: #8ba098;
+      --mdp-accent: #34d399;
+      --mdp-accent-deep: #6ee7b7;
+      --mdp-accent-soft: rgba(52, 211, 153, .13);
+      --mdp-accent-line: rgba(52, 211, 153, .30);
+      --mdp-danger: #f87171;
+      --mdp-danger-soft: rgba(248, 113, 113, .12);
+      --mdp-info: #60a5fa;
+      --mdp-warn: #fbbf24;
+      --mdp-grid: rgba(148, 174, 164, .06);
+      --mdp-shadow: 0 18px 46px rgba(0, 0, 0, .45);
+    }
+
+    /* ---------- page shell ---------- */
+    html:has(body.mdp-page-shell) { background-color: #eef6f2; }
+    html[data-theme="dark"]:has(body.mdp-page-shell) { background-color: #0a100e; }
+    .mdp-page-shell {
+      --pg-bg: #eef6f2;
+      --pg-dot: rgba(4, 120, 87, .20);
+    }
+    [data-theme="dark"] .mdp-page-shell {
+      --pg-bg: #0a100e;
+      --pg-dot: rgba(52, 211, 153, .14);
+    }
+    body.mdp-page-shell {
+      position: relative;
+      isolation: isolate;
+      background-color: transparent !important;
+      background-image:
+        radial-gradient(920px 480px at 6% -8%, rgba(4, 120, 87, .10), transparent 58%),
+        radial-gradient(780px 420px at 100% 0%, rgba(16, 185, 129, .08), transparent 52%),
+        radial-gradient(640px 340px at 50% 100%, rgba(4, 120, 87, .06), transparent 55%) !important;
+      background-size: auto, auto, auto !important;
+      background-repeat: no-repeat, no-repeat, no-repeat !important;
+      background-attachment: scroll !important;
+      --accent: #047857;
+      --accent-strong: #065f46;
+      --accent-soft: rgba(4, 120, 87, .14);
+    }
+    body.mdp-page-shell::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-color: var(--pg-bg);
+      background-image: radial-gradient(circle, var(--pg-dot) 1px, transparent 1px);
+      background-size: 18px 18px;
+      background-repeat: repeat;
+    }
+    [data-theme="dark"] body.mdp-page-shell {
+      background-image:
+        radial-gradient(920px 480px at 6% -8%, rgba(52, 211, 153, .12), transparent 58%),
+        radial-gradient(780px 420px at 100% 0%, rgba(16, 185, 129, .08), transparent 52%),
+        radial-gradient(640px 340px at 50% 100%, rgba(4, 120, 87, .07), transparent 55%) !important;
+      --accent: #34d399;
+      --accent-strong: #6ee7b7;
+      --accent-soft: rgba(52, 211, 153, .14);
+    }
+    .mdp-page-shell .navbar {
+      border-color: rgba(4, 120, 87, .14) !important;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, .95) inset, 0 16px 48px rgba(4, 120, 87, .10), 0 4px 12px rgba(15, 23, 42, .05) !important;
+    }
+    [data-theme="dark"] .mdp-page-shell .navbar { border-color: rgba(52, 211, 153, .2) !important; }
+    .mdp-page-shell .brand-mark {
+      background: linear-gradient(145deg, #047857, #065f46, #34d399) !important;
+      box-shadow: 0 8px 22px rgba(4, 120, 87, .35) !important;
+    }
+    .mdp-page-shell .nav-links { background: rgba(4, 120, 87, .05) !important; border-color: rgba(4, 120, 87, .08) !important; }
+    .mdp-page-shell .icon-btn { border-color: rgba(4, 120, 87, .12) !important; }
+    .mdp-page-shell a:not(.btn):not(.nav-tools-cta):not(.primary-btn):not(.mdp-hero-btn):not(.mdp-btn):not(.related-tool-card) { color: var(--mdp-accent); }
+    .mdp-page-shell .site-footer a:not(.btn) { color: var(--mdp-accent); }
+    .mdp-page-shell .content-card { background: var(--mdp-surface); border-color: var(--mdp-border-strong); }
+    .mdp-page-shell .pdf-feature-card { border-color: var(--mdp-border-strong); background: var(--mdp-surface); }
+    .mdp-page-shell .pdf-feature-card strong { color: var(--mdp-accent); }
+    .mdp-page-shell .related-tools-section { border-color: var(--mdp-border-strong); background: var(--mdp-surface); }
+    .mdp-page-shell .related-tool-card:hover { border-color: var(--mdp-accent); box-shadow: 0 12px 28px rgba(4, 120, 87, .12); }
+
+    .mdp-page { padding: 1.5rem 0 3.5rem; }
+    /* 1180px: isse side banner ads (assets/js/side-ads.js) gutters me fit ho jate hain. */
+    .mdp-wrap { width: min(1180px, calc(100% - 2rem)); margin: 0 auto; }
+    .mdp-page :focus-visible { outline: 2px solid var(--mdp-accent); outline-offset: 2px; border-radius: 4px; }
+    .mdp-page [id] { scroll-margin-top: 6.5rem; }
+    .mdp-sronly {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+
+    /* ---------- breadcrumb + hero ---------- */
+    .mdp-crumb {
+      display: flex; flex-wrap: wrap; align-items: center; gap: .45rem;
+      font-size: .82rem; color: var(--mdp-muted); margin-bottom: 1rem;
+    }
+    .mdp-crumb a { color: var(--mdp-text-2); text-decoration: none; }
+    .mdp-crumb a:hover { color: var(--mdp-accent); text-decoration: underline; }
+    .mdp-crumb [aria-current] { color: var(--mdp-text); font-weight: 600; }
+
+    .mdp-hero {
+      display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+      gap: 1.5rem; align-items: center; margin-bottom: 1.5rem;
+      padding: 1.1rem 1.2rem 1.15rem;
+      border: 1px solid var(--mdp-border-strong);
+      border-radius: var(--mdp-r-lg);
+      background: linear-gradient(180deg, var(--mdp-surface), color-mix(in srgb, var(--mdp-sunken) 38%, var(--mdp-surface)));
+      box-shadow: var(--mdp-shadow);
+      position: relative; overflow: hidden;
+    }
+    .mdp-hero::before {
+      content: "";
+      position: absolute; inset: 0 auto auto 0; width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--mdp-accent), #10b981, var(--mdp-accent-deep));
+      opacity: .92;
+    }
+    .mdp-hero::after {
+      content: "";
+      position: absolute; right: -3rem; top: -3rem; width: 10rem; height: 10rem;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--mdp-accent-soft), transparent 68%);
+      pointer-events: none;
+    }
+    .mdp-hero > * { position: relative; z-index: 1; }
+    @media (max-width: 900px) { .mdp-hero { grid-template-columns: 1fr; gap: 1.25rem; } }
+    @media (max-width: 900px) { .mdp-hero__mock { display: none !important; } }
+    .mdp-eyebrow {
+      display: inline-flex; align-items: center; gap: .45rem; margin: 0 0 .7rem;
+      font-family: var(--mdp-mono); font-size: .68rem; font-weight: 800;
+      letter-spacing: .12em; text-transform: uppercase; color: var(--mdp-accent-deep);
+      padding: .28rem .68rem; border-radius: 999px;
+      background: var(--mdp-accent-soft); border: 1px solid var(--mdp-accent-line);
+    }
+    .mdp-h1 {
+      margin: 0 0 .55rem; font-size: clamp(1.85rem, 4.4vw, 2.7rem);
+      font-weight: 800; line-height: 1.1; letter-spacing: -.022em; color: var(--mdp-text);
+    }
+    .mdp-lede { margin: 0; max-width: 62ch; color: var(--mdp-text-2); font-size: 1.02rem; line-height: 1.65; }
+    .mdp-badges { display: flex; flex-wrap: wrap; gap: .4rem; margin: .9rem 0 0; padding: 0; list-style: none; }
+    .mdp-badges li {
+      display: inline-flex; align-items: center; gap: .35rem;
+      font-size: .78rem; font-weight: 700; color: var(--mdp-text-2);
+      padding: .32rem .68rem; border-radius: 999px;
+      border: 1px solid var(--mdp-border-strong); background: var(--mdp-surface);
+    }
+    .mdp-badges svg { width: 13px; height: 13px; color: var(--mdp-accent); flex: none; }
+    .mdp-hero-cta { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .85rem; }
+    a.mdp-hero-btn {
+      padding: .58rem 1rem; font-size: .86rem; font-weight: 750;
+      text-decoration: none; border-radius: var(--mdp-r-sm);
+      display: inline-flex; align-items: center; justify-content: center; gap: .35rem;
+      transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
+    }
+    a.mdp-hero-btn--primary {
+      background: linear-gradient(135deg, var(--mdp-accent), var(--mdp-accent-deep)) !important;
+      color: #fff !important; -webkit-text-fill-color: #fff;
+      border: 1px solid rgba(255, 255, 255, .16);
+      box-shadow: 0 6px 18px rgba(4, 120, 87, .28);
+    }
+    a.mdp-hero-btn--primary:hover { filter: brightness(1.04); transform: translateY(-1px); }
+    [data-theme="dark"] a.mdp-hero-btn--primary { color: #04231a !important; -webkit-text-fill-color: #04231a; }
+    a.mdp-hero-btn--ghost {
+      background: var(--mdp-surface) !important; color: var(--mdp-text) !important;
+      -webkit-text-fill-color: var(--mdp-text);
+      border: 1px solid var(--mdp-border-strong);
+    }
+    a.mdp-hero-btn--ghost:hover { border-color: var(--mdp-accent); background: var(--mdp-accent-soft) !important; transform: translateY(-1px); }
+    @media (max-width: 520px) { .mdp-hero-cta a.mdp-hero-btn { flex: 1 1 100%; justify-content: center; } }
+
+    .mdp-hero__mock {
+      border: 1px solid var(--mdp-border-strong); border-radius: var(--mdp-r-lg);
+      background: var(--mdp-surface); overflow: hidden; box-shadow: var(--mdp-shadow);
+    }
+    .mdp-hero__mock-bar {
+      padding: .45rem .65rem; border-bottom: 1px solid var(--mdp-border);
+      background: var(--mdp-raised); font-family: var(--mdp-mono); font-size: .62rem;
+      letter-spacing: .12em; text-transform: uppercase; color: var(--mdp-muted);
+    }
+    .mdp-hero__mock-grid { display: grid; grid-template-columns: 1fr 1fr; min-height: 7.5rem; }
+    .mdp-hero__mock-src {
+      padding: .65rem .75rem; border-right: 1px solid var(--mdp-border);
+      font-family: var(--mdp-mono); font-size: .72rem; line-height: 1.55; color: var(--mdp-text-2);
+      background: var(--mdp-paper);
+    }
+    .mdp-hero__mock-prev {
+      padding: .65rem .75rem; font-size: .78rem; line-height: 1.55; color: var(--mdp-text);
+      background: var(--mdp-surface);
+    }
+    .mdp-hero__mock-prev strong { display: block; font-size: .92rem; margin-bottom: .25rem; color: var(--mdp-accent); }
+
+    /* ---------- shared controls ---------- */
+    .mdp-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .35rem;
+      font: inherit; font-weight: 650; line-height: 1; white-space: nowrap;
+      padding: .58rem .9rem; border-radius: var(--mdp-r-md);
+      border: 1px solid transparent; cursor: pointer;
+      transition: background .15s, border-color .15s, color .15s, transform .12s, box-shadow .15s;
+    }
+    .mdp-btn:active { transform: translateY(1px); }
+    .mdp-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .mdp-btn--primary {
+      background: linear-gradient(135deg, var(--mdp-accent), var(--mdp-accent-deep));
+      color: #fff; box-shadow: 0 6px 16px -8px var(--mdp-accent);
+    }
+    .mdp-btn--primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 12px 24px -10px var(--mdp-accent); }
+    [data-theme="dark"] .mdp-btn--primary { color: #04231a; background: linear-gradient(135deg, var(--mdp-accent-deep), var(--mdp-accent)); }
+    .mdp-btn--ghost { background: var(--mdp-surface); color: var(--mdp-text-2); border-color: var(--mdp-border-strong); }
+    .mdp-btn--ghost:hover:not(:disabled) { background: var(--mdp-accent-soft); color: var(--mdp-text); border-color: var(--mdp-accent-line); }
+    .mdp-btn--sm { padding: .42rem .7rem; font-size: .82rem; border-radius: var(--mdp-r-sm); }
+    .mdp-btn.is-done { color: var(--mdp-accent); border-color: var(--mdp-accent); background: var(--mdp-accent-soft); }
+
+    .mdp-check { display: inline-flex; align-items: center; gap: .45rem; font-size: .84rem; color: var(--mdp-text-2); cursor: pointer; white-space: nowrap; }
+    .mdp-check input { width: 1rem; height: 1rem; accent-color: var(--mdp-accent); cursor: pointer; }
+
+    /* ---------- the desk ---------- */
+    .mdp-desk {
+      position: relative; border: 1px solid var(--mdp-border-strong);
+      border-radius: var(--mdp-r-lg); background: var(--mdp-surface);
+      box-shadow: var(--mdp-shadow), 0 0 0 1px rgba(4, 120, 87, .04);
+      overflow: clip;
+      scroll-margin-top: 5.5rem;
+    }
+    .mdp-desk::before {
+      content: ""; position: absolute; inset: 0 0 auto; height: 3px; z-index: 3;
+      background: linear-gradient(90deg, var(--mdp-accent), #10b981, var(--mdp-accent-deep));
+      opacity: .88;
+    }
+
+    .mdp-bar {
+      display: flex; align-items: center; gap: .6rem; flex-wrap: wrap;
+      padding: .6rem .9rem; border-bottom: 1px solid var(--mdp-border);
+      background-color: var(--mdp-raised);
+      background-image: radial-gradient(var(--mdp-border) .9px, transparent .9px);
+      background-size: 11px 11px;
+    }
+    .mdp-bar__title {
+      margin: 0; font-family: var(--mdp-mono); font-size: .66rem; font-weight: 700;
+      letter-spacing: .16em; text-transform: uppercase; color: var(--mdp-text-2);
+    }
+    .mdp-chip {
+      display: inline-flex; align-items: center; gap: .3rem; white-space: nowrap;
+      font-size: .71rem; font-weight: 650; color: var(--mdp-accent);
+      background: var(--mdp-accent-soft); border: 1px solid var(--mdp-accent-line);
+      padding: .22rem .55rem; border-radius: 999px;
+    }
+    .mdp-bar__spacer { flex: 1 1 auto; }
+
+    /* segmented view switch */
+    .mdp-modes {
+      display: inline-flex; padding: 2px; gap: 2px; border-radius: var(--mdp-r-md);
+      background: var(--mdp-sunken); border: 1px solid var(--mdp-border);
+    }
+    .mdp-modes button {
+      font: inherit; font-size: .8rem; font-weight: 650; color: var(--mdp-muted);
+      padding: .34rem .7rem; border: 0; border-radius: calc(var(--mdp-r-md) - 3px);
+      background: none; cursor: pointer; transition: background .15s, color .15s;
+    }
+    .mdp-modes button:hover { color: var(--mdp-text); }
+    .mdp-modes button.is-active { background: var(--mdp-surface); color: var(--mdp-accent); box-shadow: 0 1px 2px rgba(0, 0, 0, .08); }
+
+    /* formatting toolbar */
+    .mdp-toolbar {
+      display: flex; flex-wrap: wrap; gap: .2rem; align-items: center;
+      padding: .45rem .9rem; border-bottom: 1px solid var(--mdp-border);
+      background: var(--mdp-surface);
+    }
+    .mdp-toolbar button {
+      font: inherit; font-size: .8rem; font-weight: 650; color: var(--mdp-text-2);
+      min-width: 2rem; height: 2rem; padding: 0 .5rem;
+      border: 1px solid transparent; border-radius: var(--mdp-r-sm);
+      background: none; cursor: pointer; transition: background .13s, color .13s, border-color .13s;
+    }
+    .mdp-toolbar button:hover { background: var(--mdp-accent-soft); color: var(--mdp-accent); border-color: var(--mdp-accent-line); }
+    .mdp-toolbar .mdp-sep { width: 1px; height: 1.3rem; background: var(--mdp-border-strong); margin: 0 .3rem; }
+    .mdp-toolbar b { font-weight: 800; }
+    .mdp-toolbar i { font-style: italic; font-family: Georgia, serif; }
+    .mdp-toolbar s { text-decoration: line-through; }
+    .mdp-toolbar code { font-family: var(--mdp-mono); font-size: .82em; }
+
+    /* workspace */
+    .mdp-workspace {
+      position: relative; display: grid; grid-template-columns: 1fr 1fr;
+      min-height: 520px; background: var(--mdp-surface);
+    }
+    .mdp-workspace.is-dropping::after {
+      content: "Drop your .md file to import";
+      position: absolute; inset: .5rem; z-index: 5;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; color: var(--mdp-accent);
+      background: var(--mdp-accent-soft); border: 2px dashed var(--mdp-accent);
+      border-radius: var(--mdp-r-md); pointer-events: none;
+    }
+    .mdp-workspace.is-fullscreen { min-height: 100vh; background: var(--mdp-surface); }
+
+    [data-mode="write"] .mdp-workspace { grid-template-columns: 1fr; }
+    [data-mode="write"] #mdPreviewPane { display: none; }
+    [data-mode="read"] .mdp-workspace { grid-template-columns: 1fr; }
+    [data-mode="read"] #mdEditorPane { display: none; }
+    [data-mode="read"] .mdp-toolbar { display: none; }
+
+    .mdp-pane { display: flex; flex-direction: column; min-width: 0; overflow: auto; max-height: 70vh; overscroll-behavior: auto; -webkit-overflow-scrolling: touch; }
+    .mdp-pane__head {
+      position: sticky; top: 0; z-index: 2;
+      display: flex; align-items: center; justify-content: space-between; gap: .6rem;
+      padding: .4rem .9rem; border-bottom: 1px solid var(--mdp-border);
+      background: var(--mdp-raised);
+      font-family: var(--mdp-mono); font-size: .63rem; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase; color: var(--mdp-muted);
+    }
+    #mdEditorPane { border-right: 1px solid var(--mdp-border); }
+    [data-mode="write"] #mdEditorPane, [data-mode="read"] #mdPreviewPane { border-right: 0; }
+    @media (max-width: 820px) {
+      .mdp-workspace { grid-template-columns: 1fr; }
+      #mdEditorPane { border-right: 0; border-bottom: 1px solid var(--mdp-border); }
+      .mdp-pane { max-height: 55vh; }
+    }
+
+    .mdp-editor {
+      flex: 1 1 auto; width: 100%; min-height: 460px; resize: none;
+      padding: 1rem 1.1rem; border: 0; outline: none;
+      background: var(--mdp-paper); color: var(--mdp-text);
+      font-family: var(--mdp-mono); font-size: .92rem; line-height: 1.72;
+      tab-size: 2; -moz-tab-size: 2;
+    }
+    .mdp-editor::placeholder { color: var(--mdp-muted); }
+
+    .mdp-preview {
+      flex: 1 1 auto; padding: 1.2rem 1.4rem; min-height: 460px;
+      color: var(--mdp-text); line-height: 1.72; overflow-wrap: break-word;
+    }
+    .mdp-empty {
+      padding: 3rem 1.2rem; text-align: center; color: var(--mdp-muted);
+    }
+    .mdp-empty strong { display: block; color: var(--mdp-text); font-size: 1rem; margin-bottom: .3rem; }
+
+    /* ---------- rendered markdown ---------- */
+    .mdp-preview > *:first-child { margin-top: 0; }
+    .mdp-preview h1, .mdp-preview h2, .mdp-preview h3,
+    .mdp-preview h4, .mdp-preview h5, .mdp-preview h6 {
+      margin: 1.6em 0 .5em; line-height: 1.25; font-weight: 700; color: var(--mdp-text);
+      letter-spacing: -.01em;
+    }
+    .mdp-preview h1 { font-size: 1.7rem; padding-bottom: .3rem; border-bottom: 1px solid var(--mdp-border); }
+    .mdp-preview h2 { font-size: 1.35rem; padding-bottom: .25rem; border-bottom: 1px solid var(--mdp-border); }
+    .mdp-preview h3 { font-size: 1.13rem; }
+    .mdp-preview h4 { font-size: 1rem; }
+    .mdp-preview h5, .mdp-preview h6 { font-size: .9rem; color: var(--mdp-text-2); }
+    .mdp-preview p { margin: 0 0 1em; }
+    .mdp-preview a { color: var(--mdp-accent); text-decoration: underline; text-underline-offset: 2px; }
+    .mdp-preview strong { font-weight: 700; color: var(--mdp-text); }
+    .mdp-preview del { color: var(--mdp-muted); }
+    .mdp-preview mark { background: var(--mdp-accent-soft); color: inherit; padding: 0 .2em; border-radius: 3px; }
+    .mdp-preview code {
+      font-family: var(--mdp-mono); font-size: .87em; padding: .12em .35em;
+      border-radius: 5px; background: var(--mdp-sunken); color: var(--mdp-text);
+    }
+    .mdp-preview pre {
+      position: relative; margin: 0 0 1em; padding: .95rem 1rem; border-radius: var(--mdp-r-md);
+      background: #0d1117; color: #e6edf3; overflow-x: auto;
+      border: 1px solid var(--mdp-border-strong);
+    }
+    .mdp-preview pre code { background: none; color: inherit; padding: 0; font-size: .85rem; line-height: 1.6; }
+    /* In dark mode the shared #0d1117 sits too close to the page surface,
+       so the code panel gets its own darker ground. */
+    [data-theme="dark"] .mdp-preview pre { background: #050b09; }
+    .mdp-preview pre[data-lang]:not([data-lang=""])::before {
+      content: attr(data-lang); position: absolute; top: .45rem; right: .6rem;
+      font-family: var(--mdp-mono); font-size: .62rem; letter-spacing: .1em;
+      text-transform: uppercase; color: #8b949e;
+    }
+    .mdp-preview blockquote {
+      margin: 0 0 1em; padding: .5rem 1rem; color: var(--mdp-text-2);
+      border-left: 4px solid var(--mdp-border-strong); background: var(--mdp-raised);
+      border-radius: 0 var(--mdp-r-sm) var(--mdp-r-sm) 0;
+    }
+    .mdp-preview blockquote p:last-child { margin-bottom: 0; }
+    .mdp-preview ul, .mdp-preview ol { margin: 0 0 1em; padding-left: 1.5rem; }
+    .mdp-preview li { margin-bottom: .3em; }
+    .mdp-preview li > ul, .mdp-preview li > ol { margin-top: .3em; margin-bottom: 0; }
+    .mdp-preview hr { border: 0; border-top: 1px solid var(--mdp-border-strong); margin: 1.6em 0; }
+    .mdp-preview img { max-width: 100%; border-radius: var(--mdp-r-sm); }
+    .md-tablewrap { overflow-x: auto; margin: 0 0 1em; }
+    .mdp-preview table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+    .mdp-preview th, .mdp-preview td { border: 1px solid var(--mdp-border-strong); padding: .45rem .7rem; }
+    .mdp-preview th { background: var(--mdp-raised); font-weight: 700; text-align: left; }
+    .md-tasklist { list-style: none; padding-left: .3rem; }
+    .md-task { display: flex; align-items: flex-start; gap: .5rem; }
+    .md-task input { margin-top: .38rem; accent-color: var(--mdp-accent); }
+    .md-task.is-done { color: var(--mdp-muted); }
+    .md-alert { border-left-width: 4px; border-left-style: solid; background: var(--mdp-raised); }
+    .md-alert__label { font-weight: 700; margin: 0 0 .3rem; font-size: .85rem; letter-spacing: .02em; }
+    .md-alert--note { border-left-color: var(--mdp-info); }
+    .md-alert--note .md-alert__label { color: var(--mdp-info); }
+    .md-alert--tip { border-left-color: var(--mdp-accent); }
+    .md-alert--tip .md-alert__label { color: var(--mdp-accent); }
+    .md-alert--important { border-left-color: #7c3aed; }
+    .md-alert--important .md-alert__label { color: #7c3aed; }
+    [data-theme="dark"] .md-alert--important { border-left-color: #a78bfa; }
+    [data-theme="dark"] .md-alert--important .md-alert__label { color: #a78bfa; }
+    .md-alert--warning { border-left-color: var(--mdp-warn); }
+    .md-alert--warning .md-alert__label { color: var(--mdp-warn); }
+    .md-alert--caution { border-left-color: var(--mdp-danger); }
+    .md-alert--caution .md-alert__label { color: var(--mdp-danger); }
+
+    /* ---------- footer bar: stats + actions ---------- */
+    .mdp-footbar {
+      display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .9rem;
+      padding: .6rem .9rem; border-top: 1px solid var(--mdp-border); background: var(--mdp-raised);
+    }
+    .mdp-stats { display: flex; flex-wrap: wrap; gap: .45rem .9rem; align-items: center; }
+    .mdp-stat { display: inline-flex; align-items: baseline; gap: .3rem; font-size: .78rem; color: var(--mdp-muted); }
+    .mdp-stat b { font-family: var(--mdp-mono); font-size: .88rem; font-weight: 700; color: var(--mdp-text); }
+    .mdp-meter {
+      position: relative; width: 68px; height: 6px; border-radius: 999px;
+      background: var(--mdp-sunken); overflow: hidden; border: 1px solid var(--mdp-border);
+    }
+    .mdp-meter__fill { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--mdp-accent); transition: width .25s; }
+    .mdp-actions { display: flex; flex-wrap: wrap; gap: .35rem; margin-left: auto; }
+    @media (max-width: 760px) { .mdp-actions { margin-left: 0; width: 100%; } .mdp-actions .mdp-btn { flex: 1 1 auto; } }
+
+    .mdp-status {
+      margin: .8rem 0 0; padding: .55rem .8rem; border-radius: var(--mdp-r-md);
+      font-size: .85rem; font-weight: 600;
+      border: 1px solid var(--mdp-border-strong); background: var(--mdp-surface); color: var(--mdp-text-2);
+    }
+    .mdp-status[data-tone="success"] { color: var(--mdp-accent); background: var(--mdp-accent-soft); border-color: var(--mdp-accent-line); }
+    .mdp-status[data-tone="error"] { color: var(--mdp-danger); background: var(--mdp-danger-soft); border-color: var(--mdp-danger-soft); }
+
+    @media (max-width: 768px) { body.mdp-page-shell { overflow-x: hidden; } }
+
+    .mdp-layout { display: block; }
+    .mdp-page kbd {
+      font-family: var(--mdp-mono); font-size: .7rem; padding: .1rem .32rem;
+      border: 1px solid var(--mdp-border-strong); border-bottom-width: 2px;
+      border-radius: 4px; background: var(--mdp-raised); color: var(--mdp-text-2);
+    }
+
+    /* ---------- content sections ---------- */
+    .mdp-section { margin-top: 2.75rem; }
+    .mdp-section__head { margin-bottom: 1.1rem; }
+    .mdp-section__head .mdp-h2::before {
+      content: ""; display: block; width: 26px; height: 3px; border-radius: 3px; margin-bottom: .6rem;
+      background: linear-gradient(90deg, var(--mdp-accent), var(--mdp-accent-deep));
+    }
+    .mdp-h2 { margin: 0 0 .35rem; font-size: clamp(1.3rem, 2.6vw, 1.7rem); font-weight: 750; letter-spacing: -.015em; color: var(--mdp-text); }
+    .mdp-h3 { margin: 1.4rem 0 .45rem; font-size: 1.03rem; font-weight: 700; color: var(--mdp-text); }
+    .mdp-sub { margin: 0; color: var(--mdp-muted); font-size: .93rem; max-width: 72ch; }
+    .mdp-card {
+      border: 1px solid var(--mdp-border-strong); border-radius: var(--mdp-r-lg);
+      background: var(--mdp-surface); padding: 1.25rem; box-shadow: var(--mdp-shadow);
+    }
+    .mdp-prose { color: var(--mdp-text-2); line-height: 1.72; }
+    .mdp-card.mdp-prose > p, .mdp-card.mdp-prose > ul, .mdp-card.mdp-prose > ol { max-width: 74ch; }
+    .mdp-prose p { margin: 0 0 .9rem; }
+    .mdp-prose ul, .mdp-prose ol { margin: 0 0 .9rem; padding-left: 1.15rem; }
+    .mdp-prose li { margin-bottom: .35rem; }
+    .mdp-prose code {
+      font-family: var(--mdp-mono); font-size: .88em; padding: .1em .32em;
+      border-radius: 4px; background: var(--mdp-accent-soft); color: var(--mdp-accent-deep);
+    }
+    .mdp-prose a { color: var(--mdp-accent); text-decoration: underline; text-underline-offset: 2px; }
+    .mdp-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.25rem; }
+    @media (max-width: 860px) { .mdp-split { grid-template-columns: 1fr; } }
+
+    .mdp-scroll {
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      overscroll-behavior-y: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid var(--mdp-border-strong);
+      border-radius: var(--mdp-r-lg);
+      background: var(--mdp-surface);
+    }
+    .mdp-table { width: 100%; border-collapse: collapse; font-size: .88rem; min-width: 620px; }
+    .mdp-table th, .mdp-table td { padding: .65rem .85rem; text-align: left; border-bottom: 1px solid var(--mdp-border); vertical-align: top; }
+    .mdp-table thead th {
+      font-family: var(--mdp-mono); font-size: .64rem; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--mdp-muted); background: var(--mdp-raised); white-space: nowrap;
+    }
+    .mdp-table tbody td:first-child { font-family: var(--mdp-mono); color: var(--mdp-accent); white-space: nowrap; }
+    .mdp-table td { color: var(--mdp-text-2); }
+    .mdp-table tbody tr:last-child td { border-bottom: 0; }
+
+    .mdp-grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem; }
+    @media (max-width: 860px) { .mdp-grid3 { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 520px) { .mdp-grid3 { grid-template-columns: 1fr; } }
+    .mdp-tile { padding: .85rem .95rem; border: 1px solid var(--mdp-border); border-radius: var(--mdp-r-md); background: var(--mdp-surface); }
+    .mdp-tile strong { display: block; font-size: .92rem; color: var(--mdp-text); margin-bottom: .2rem; }
+    .mdp-tile span { font-size: .83rem; color: var(--mdp-muted); line-height: 1.55; }
+
+    .mdp-faq { display: grid; gap: .5rem; }
+    .mdp-faq details {
+      border: 1px solid var(--mdp-border); border-radius: var(--mdp-r-md);
+      background: var(--mdp-surface); padding: .75rem .95rem; transition: border-color .15s, box-shadow .15s;
+    }
+    .mdp-faq details:hover { border-color: var(--mdp-accent-line); }
+    .mdp-faq details[open] { border-color: var(--mdp-accent-line); box-shadow: inset 3px 0 0 var(--mdp-accent); }
+    .mdp-faq summary {
+      cursor: pointer; font-weight: 650; font-size: .95rem; color: var(--mdp-text);
+      list-style: none; display: flex; justify-content: space-between; gap: 1rem; align-items: center;
+    }
+    .mdp-faq summary::-webkit-details-marker { display: none; }
+    .mdp-faq summary::after {
+      content: "+"; flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center;
+      width: 1.4rem; height: 1.4rem; border-radius: 50%; font-family: var(--mdp-mono); font-size: .95rem; line-height: 1;
+      color: var(--mdp-accent); background: var(--mdp-accent-soft); border: 1px solid var(--mdp-accent-line);
+    }
+    .mdp-faq details[open] summary::after { content: "−"; }
+    .mdp-faq p { margin: .6rem 0 0; font-size: .89rem; line-height: 1.65; color: var(--mdp-text-2); }
+
+    .mdp-related { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .6rem; }
+    @media (max-width: 900px) { .mdp-related { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 520px) { .mdp-related { grid-template-columns: 1fr; } }
+    .mdp-related a {
+      display: block; padding: .8rem .9rem; border-radius: var(--mdp-r-md);
+      border: 1px solid var(--mdp-border); background: var(--mdp-surface);
+      text-decoration: none; transition: border-color .16s, transform .16s, box-shadow .16s;
+    }
+    .mdp-related a:hover { border-color: var(--mdp-accent); transform: translateY(-2px); box-shadow: 0 10px 22px -14px var(--mdp-accent); }
+    .mdp-related strong { display: block; font-size: .9rem; color: var(--mdp-text); margin-bottom: .15rem; }
+    .mdp-related a:hover strong { color: var(--mdp-accent); }
+    .mdp-related span { font-size: .79rem; color: var(--mdp-muted); line-height: 1.5; }
+
+    .mdp-callout {
+      display: flex; flex-wrap: wrap; align-items: center; gap: .75rem;
+      margin-top: 1rem; padding: .9rem 1.1rem; border-radius: var(--mdp-r-md);
+      border: 1px solid var(--mdp-accent-line); background: var(--mdp-accent-soft);
+      font-size: .9rem; color: var(--mdp-text-2);
+    }
+    .mdp-callout a { color: var(--mdp-accent); font-weight: 650; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .mdp-page *, .mdp-page *::before, .mdp-page *::after {
+        animation-duration: .001ms !important; transition-duration: .001ms !important;
+      }
+      .mdp-related a:hover, .mdp-btn--primary:hover:not(:disabled), a.mdp-hero-btn:hover { transform: none; }
+    }
+
+    /* ---------- print: the rendered document only ---------- */
+    @media print {
+      .site-header, .site-footer, .skip-link, .mdp-crumb, .mdp-hero, .mdp-bar,
+      .mdp-toolbar, .mdp-footbar, .mdp-status, .mdp-section, .mdp-callout,
+      #mdEditorPane, .mdp-pane__head { display: none !important; }
+      .mdp-page { padding: 0; }
+      .mdp-layout { display: block; }
+      .mdp-desk { border: 0; box-shadow: none; }
+      .mdp-desk::before { display: none; }
+      .mdp-workspace { display: block; min-height: 0; }
+      .mdp-pane { max-height: none; overflow: visible; display: block; }
+      .mdp-preview { padding: 0; min-height: 0; color: #000; }
+      .mdp-preview pre { background: #f4f4f4; color: #111; border: 1px solid #ccc; }
+      .mdp-preview a { color: #000; text-decoration: underline; }
+    }
+    /* =====================================================================
+       2026-09 redesign: "open spread". Split view is a book lying open: the
+       Markdown on a ruled draft page, the preview on a clean printed page,
+       a shaded spine between them, the bar as the book's green cloth band
+       and the stats as the page foot. The emerald stays; the ground is
+       linen instead of dots.
+       ===================================================================== */
+    body.os-page { --pg-bg: #f3f0e8; --pg-dot: transparent; --os-cloth: #0f3d30; --os-cloth-2: #0b2f25; --os-cloth-ink: #e9f3ee; --os-draft: #fffcf3;
+      --os-rule: rgba(29, 78, 216, .09); --os-print: #ffffff; --os-edge: rgba(60, 50, 30, .16); --os-spine: rgba(40, 30, 10, .16); }
+    [data-theme="dark"] body.os-page { --pg-bg: #0b0f0d; --os-cloth: #0d2a21; --os-cloth-2: #081d17; --os-draft: #11140f; --os-rule: rgba(147, 197, 253, .07);
+      --os-print: #0f1513; --os-edge: rgba(200, 220, 210, .14); --os-spine: rgba(0, 0, 0, .5); }
+    html:has(body.os-page) { background-color: #f3f0e8; }
+    html[data-theme="dark"]:has(body.os-page) { background-color: #0b0f0d; }
+    body.os-page::before { background-image: repeating-linear-gradient(45deg, rgba(90, 75, 40, .035) 0 1px, transparent 1px 7px), repeating-linear-gradient(-45deg, rgba(90, 75, 40, .035) 0 1px, transparent 1px 7px); background-size: auto; }
+    [data-theme="dark"] body.os-page::before { background-image: repeating-linear-gradient(45deg, rgba(200, 220, 210, .025) 0 1px, transparent 1px 7px), repeating-linear-gradient(-45deg, rgba(200, 220, 210, .025) 0 1px, transparent 1px 7px); }
+    body.os-page a.ta-donate, body.os-page a.ta-donate:hover { color: #14213d !important; }
+
+    /* side rails from 1280 (style.css only starts this page's squeeze at 1315) */
+    @media (min-width: 1280px) {
+      body.os-page:not(.no-side-ad-squeeze) .mdp-wrap { max-width: min(1180px, calc(100% - 356px)); }
+      body.os-page:not(.no-side-ad-squeeze) :is(.container, .ta-support):not(.mdp-wrap) { max-width: min(1120px, calc(100% - 356px)); }
+    }
+    @media (min-width: 1280px) and (max-width: 1490px) { body.os-page .brand-tagline { display: none; } }
+
+    /* ---------- cover ---------- */
+    .os-cover { display: grid; gap: 1rem; align-items: center; margin: 0 0 1.1rem; }
+    .os-page .os-cover .mdp-eyebrow { margin-bottom: .6rem; }
+    .os-page .os-title { margin: 0; line-height: 1.04; letter-spacing: -.03em; }
+    .os-t1 { display: block; font: 800 clamp(1.1rem, .9rem + 1vw, 1.5rem)/1.2 var(--mdp-mono); color: var(--mdp-accent); letter-spacing: 0; }
+    .os-t1::before { content: "# "; opacity: .55; }
+    .os-t2 { display: block; margin-top: .15rem; font: 800 clamp(2rem, 1.3rem + 2.9vw, 3.1rem)/1.04 Georgia, "Times New Roman", serif; color: var(--mdp-text); letter-spacing: -.02em; }
+    .os-book { display: none; }
+    @media (min-width: 900px) {
+      .os-cover { grid-template-columns: minmax(0, 1fr) 430px; gap: 2rem; }
+      .os-book { display: grid; grid-template-columns: 1fr 1fr; position: relative; border-radius: 6px 6px 10px 10px; background: var(--os-cloth);
+        padding: 7px 7px 10px; box-shadow: 0 22px 40px -26px rgba(40, 30, 10, .6); }
+    }
+    .os-book__page { min-height: 150px; padding: .75rem .85rem; font-size: .74rem; line-height: 1.55; }
+    .os-book__src { border-radius: 4px 0 0 4px; background: var(--os-draft); color: var(--mdp-text-2); font-family: var(--mdp-mono); white-space: pre-line;
+      box-shadow: inset -14px 0 14px -14px var(--os-spine); background-image: linear-gradient(transparent calc(1.55em - 1px), var(--os-rule) 0); background-size: 100% 1.55em; background-position: 0 .75rem; }
+    .os-book__src b { color: var(--mdp-accent); font-weight: 700; }
+    .os-book__out { border-radius: 0 4px 4px 0; background: var(--os-print); color: var(--mdp-text); box-shadow: inset 14px 0 14px -14px var(--os-spine); }
+    .os-book__out .os-h { margin: 0 0 .35rem; font: 700 1rem/1.2 Georgia, serif; padding-bottom: .2rem; border-bottom: 1px solid var(--mdp-border); }
+    .os-book__out p { margin: 0 0 .35rem; }
+    .os-book__out ul { margin: 0; padding-left: .2rem; list-style: none; }
+    .os-book__out li { display: flex; gap: .35rem; align-items: center; }
+    .os-book__out input { margin: 0; accent-color: var(--mdp-accent); }
+    .os-book__foot { grid-column: 1 / -1; display: flex; justify-content: space-between; padding: .35rem .3rem 0; font: 600 .62rem var(--mdp-mono); color: var(--os-cloth-ink); letter-spacing: .08em; text-transform: uppercase; }
+
+    /* ---------- the desk as a book ---------- */
+    .os-layout { display: grid; gap: 1rem; grid-template-columns: minmax(0, 1fr); align-items: start; }
+    .os-deskcq { container: osdesk / inline-size; min-width: 0; }
+    .os-page .mdp-desk { border-radius: 12px; border-color: var(--os-cloth); background: var(--os-print);
+      box-shadow: 0 3px 0 -1px var(--os-print), 0 4px 0 -1px var(--os-edge), 0 7px 0 -3px var(--os-print), 0 8px 0 -3px var(--os-edge), 0 34px 60px -40px rgba(40, 30, 10, .55); }
+    .os-page .mdp-desk::before { display: none; }
+    /* the cloth band */
+    .os-page .mdp-bar { background: linear-gradient(180deg, var(--os-cloth), var(--os-cloth-2)); border-bottom-color: #07251c; }
+    .os-page .mdp-bar__title { color: var(--os-cloth-ink); }
+    .os-page .mdp-bar .mdp-chip { background: rgba(255, 255, 255, .08); border-color: rgba(255, 255, 255, .18); color: #a7f3d0; }
+    .os-page .mdp-bar .mdp-modes { background: rgba(0, 0, 0, .25); border-color: rgba(255, 255, 255, .12); }
+    .os-page .mdp-bar .mdp-modes button { color: #bfd9ce; }
+    .os-page .mdp-bar .mdp-modes button:hover { color: #fff; }
+    .os-page .mdp-bar .mdp-modes button.is-active { background: var(--os-draft); color: var(--os-cloth); }
+    [data-theme="dark"] .os-page .mdp-bar .mdp-modes button.is-active { background: #d1fae5; color: #06261d; }
+    .os-page .mdp-bar .mdp-check { color: var(--os-cloth-ink); }
+    .os-page .mdp-bar .mdp-btn--ghost { background: rgba(255, 255, 255, .08); border-color: rgba(255, 255, 255, .2); color: var(--os-cloth-ink); }
+    .os-page .mdp-bar .mdp-btn--ghost:hover { background: rgba(255, 255, 255, .16); color: #fff; }
+    .os-page .mdp-toolbar { background: var(--os-draft); }
+    /* running heads */
+    .os-page .mdp-pane__head { font: italic 500 .74rem/1.4 Georgia, serif; letter-spacing: .02em; text-transform: none; background: var(--os-draft); }
+    #mdPreviewPane .mdp-pane__head { background: var(--os-print); }
+    /* the draft page, ruled; the lines scroll with the text */
+    .os-page .mdp-editor { background: linear-gradient(transparent calc(100% - 1px), var(--os-rule) 0) 0 1rem / 100% 1.72em local, var(--os-draft); }
+    .os-page .mdp-preview { background: var(--os-print); }
+    /* the spine, while the two pages face each other */
+    .os-page .mdp-workspace { background: var(--os-print); }
+    @container osdesk (min-width: 600px) {
+      .os-page [data-mode="split"] #mdEditorPane { border-right: 1px solid var(--os-edge); box-shadow: inset -22px 0 22px -22px var(--os-spine); }
+      .os-page [data-mode="split"] #mdPreviewPane { box-shadow: inset 22px 0 22px -22px var(--os-spine); }
+    }
+    /* on a narrow desk the pages stack (the viewport rule stacks only below 820px) */
+    @container osdesk (max-width: 599px) {
+      .os-page .mdp-workspace { grid-template-columns: 1fr; }
+      .os-page #mdEditorPane { border-right: 0; border-bottom: 1px solid var(--mdp-border); }
+      .os-page .mdp-pane { max-height: 55vh; }
+    }
+    /* full screen restores the facing pages whatever the desk width */
+    .os-page [data-mode="split"] .mdp-workspace:fullscreen { grid-template-columns: 1fr 1fr; }
+    .os-page .mdp-workspace:fullscreen .mdp-pane { max-height: none; }
+    .os-page .mdp-workspace:fullscreen > .os-ad-in { display: none; }
+    /* the foot of the page */
+    .os-page .mdp-footbar { background: var(--os-draft); border-top: 1px solid var(--os-edge); }
+    .os-page .mdp-stat b { color: var(--mdp-accent); }
+
+    /* ---------- ads ----------
+       Phones: one slot between the Markdown page and the preview (after the
+       preview in Read mode). From 700px: one slot in its own column beside
+       the desk. A hidden slot never loads (inline-ads.js waits for it to be
+       on screen). */
+    .os-layout > .os-deskcq { grid-area: 1 / 1; }
+    .os-page .os-ad-side { display: none; }
+    .os-page .os-ad-in { padding: .9rem 0 1rem; border-bottom: 1px solid var(--mdp-border); background: var(--os-draft); text-align: center; }
+    .os-page [data-mode="read"] .os-ad-in { order: 2; border-bottom: 0; border-top: 1px solid var(--mdp-border); }
+    .os-page [data-mode="read"] #mdPreviewPane { order: 1; }
+    body.os-page .os-ad-in .ta-inline-ad, body.os-page .os-ad-side .ta-inline-ad { display: block !important; margin: 0 auto !important; }
+    @media (min-width: 700px) {
+      .os-layout { grid-template-columns: minmax(0, 1fr) 300px; gap: 1.4rem; }
+      .os-page .os-ad-in { display: none; }
+      .os-page .os-ad-side { display: block; grid-area: 1 / 2; position: sticky; top: calc(var(--header-overlap, 5.5rem) + .5rem); text-align: center; }
+    }
+
+    /* ---------- below the tool ---------- */
+    .os-after { margin: 1.1rem 0 0; padding: 1.1rem 1.25rem; border: 1px solid var(--mdp-border-strong); border-radius: var(--mdp-r-lg); background: var(--mdp-surface); }
+    .os-page .os-after .mdp-badges { margin-top: .8rem; }
+    .os-page .os-after .mdp-hero-cta { margin-top: .8rem; }
+
+    /* ---------- new section ---------- */
+    .os-page .os-ext .mdp-table td:nth-child(2) { color: var(--mdp-text); }
+    .os-page .os-ext .mdp-table td:first-child { white-space: pre; }
+    .os-page .os-ext .os-out { font-weight: 650; }
+    @media (max-width: 640px) {
+      .os-page .os-ext .mdp-scroll { border: 0; background: none; overflow: visible; }
+      .os-page .os-ext .mdp-table { min-width: 0; }
+      .os-ext .mdp-table, .os-ext .mdp-table tbody, .os-ext .mdp-table tr, .os-ext .mdp-table td { display: block; }
+      .os-ext .mdp-table thead { display: none; }
+      .os-page .os-ext .mdp-table tr { margin-bottom: .55rem; padding: .7rem .8rem; border: 1px solid var(--mdp-border-strong); border-radius: var(--mdp-r-md); background: var(--mdp-surface); }
+      .os-page .os-ext .mdp-table td { padding: .12rem 0; border: 0; }
+      .os-page .os-ext .mdp-table td:first-child { white-space: pre-wrap; }
+    }
+
+    @media print { .os-page .os-ad-in, .os-page .os-ad-side, .os-page .os-cover, .os-page .os-after { display: none !important; } }
+
+    /* ---------- phones ---------- */
+    @media (max-width: 699px) {
+      .os-page .mdp-page { padding-top: .7rem; }
+      .os-page .mdp-crumb, .os-page .os-cover .mdp-eyebrow, .os-page .mdp-bar .mdp-chip, .os-page .mdp-bar .mdp-check { display: none; }
+      .os-cover { margin-bottom: .8rem; }
+      .os-page .mdp-bar { padding: .5rem .7rem; gap: .45rem; }
+      .os-page .mdp-bar .mdp-modes { order: 5; flex: 1 1 100%; display: grid; grid-template-columns: repeat(3, 1fr); }
+      /* one scrolling row of formatting buttons */
+      .os-page .mdp-toolbar { flex-wrap: nowrap; overflow-x: auto; padding: .35rem .6rem; scrollbar-width: thin; }
+      .os-page .mdp-toolbar button { flex: none; }
+      .os-page #mdEditorPane { max-height: none; }
+      .os-page .mdp-editor { min-height: 0; height: 190px; flex: none; resize: vertical; }
+      /* dragging a file in is a desktop gesture */
+      .os-page #mdEditorPane .mdp-pane__head { display: none; }
+    }
+  </style>
+      <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 4, 120, 87; }
+      [data-theme="dark"] { --pca: 52, 211, 153; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 52, 211, 153; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/developer-tools/markdown-live-previewer.html#webpage",
+      "url": "https://tooladda.online/developer-tools/markdown-live-previewer.html",
+      "inLanguage": "en",
+      "datePublished": "2026-08-15",
+      "dateModified": "2026-09-22",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="mdp-page-shell os-page">
+  <a class="skip-link" href="#mdDesk">Skip to the editor</a>
+
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/">Home</a><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../privacy-policy.html">Privacy</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+            <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+            <path d="M3.1 16.9h10.8" />
+            <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+          </svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+        <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <div class="mdp-page" id="mdLab" data-mode="split">
+      <aside class="ta-support" aria-label="Support ToolAdda">
+        <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+        <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+      </aside>
+
+      <div class="mdp-wrap">
+
+        <nav class="mdp-crumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">/</span>
+          <a href="/#search-tools">Developer Tools</a><span aria-hidden="true">/</span>
+          <span aria-current="page">Markdown Live Previewer</span>
+        </nav>
+
+        <!-- Cover: the headline; from 900px a small open book - the Markdown on
+             the left page and, on the right, what the previewer's engine renders
+             from it (decorative). The introduction follows the tool. -->
+        <header class="os-cover">
+          <div>
+          <p class="mdp-eyebrow">Free · Browser-based · GFM</p>
+            <h1 class="mdp-h1 os-title"><span class="os-t1">Markdown</span> <span class="os-t2">Live Previewer</span></h1>
+          </div>
+          <div class="os-book" aria-hidden="true">
+            <div class="os-book__page os-book__src"><b>#</b> Notes
+<b>**</b>Bold<b>**</b> and <b>_</b>italic<b>_</b> text.
+
+<b>- [x]</b> Draft the intro
+<b>- [ ]</b> Review</div>
+            <div class="os-book__page os-book__out"><p class="os-h">Notes</p><p><strong>Bold</strong> and <em>italic</em> text.</p><ul class="md-tasklist"><li class="md-task is-done"><input type="checkbox" disabled checked /> Draft the intro</li><li class="md-task"><input type="checkbox" disabled /> Review</li></ul></div>
+            <div class="os-book__foot"><span>notes.md</span><span>preview</span></div>
+          </div>
+        </header>
+
+        <!-- The desk and, from 700px, the ad in its own column beside it -
+             never above the tool. The desk is unchanged inside: every control
+             keeps its id for markdown-live-previewer.js. -->
+        <div class="mdp-layout os-layout">
+          <div class="os-deskcq">
+            <!-- ================= THE DESK ================= -->
+            <section class="mdp-desk" id="mdDesk" aria-labelledby="desk-heading">
+              <div class="mdp-bar">
+                <h2 class="mdp-bar__title" id="desk-heading">Markdown Previewer</h2>
+                <span class="mdp-chip">🔒 Nothing leaves your browser</span>
+                <span class="mdp-bar__spacer"></span>
+                <div class="mdp-modes" id="mdModes" role="group" aria-label="View mode">
+                  <button type="button" data-mode="write" aria-pressed="false">Write</button>
+                  <button type="button" data-mode="split" aria-pressed="true">Split</button>
+                  <button type="button" data-mode="read" aria-pressed="false">Read</button>
+                </div>
+                <label class="mdp-check" for="mdSync">
+                  <input type="checkbox" id="mdSync" checked />
+                  <span>Sync scroll</span>
+                </label>
+                <button class="mdp-btn mdp-btn--ghost mdp-btn--sm" id="mdFullscreen" type="button" aria-pressed="false">Fullscreen</button>
+              </div>
+
+              <div class="mdp-toolbar" id="mdToolbar" role="toolbar" aria-label="Formatting">
+                <button type="button" data-action="h1" title="Heading 1" aria-label="Heading 1">H1</button>
+                <button type="button" data-action="h2" title="Heading 2" aria-label="Heading 2">H2</button>
+                <button type="button" data-action="h3" title="Heading 3" aria-label="Heading 3">H3</button>
+                <span class="mdp-sep" aria-hidden="true"></span>
+                <button type="button" data-action="bold" title="Bold (Ctrl+B)" aria-label="Bold"><b>B</b></button>
+                <button type="button" data-action="italic" title="Italic (Ctrl+I)" aria-label="Italic"><i>I</i></button>
+                <button type="button" data-action="strike" title="Strikethrough" aria-label="Strikethrough"><s>S</s></button>
+                <button type="button" data-action="code" title="Inline code (Ctrl+E)" aria-label="Inline code"><code>&lt;/&gt;</code></button>
+                <span class="mdp-sep" aria-hidden="true"></span>
+                <button type="button" data-action="link" title="Link (Ctrl+K)" aria-label="Insert link">Link</button>
+                <button type="button" data-action="image" title="Image" aria-label="Insert image">Image</button>
+                <span class="mdp-sep" aria-hidden="true"></span>
+                <button type="button" data-action="ul" title="Bullet list" aria-label="Bullet list">• List</button>
+                <button type="button" data-action="ol" title="Numbered list" aria-label="Numbered list">1. List</button>
+                <button type="button" data-action="task" title="Task list" aria-label="Task list">☑ Task</button>
+                <span class="mdp-sep" aria-hidden="true"></span>
+                <button type="button" data-action="quote" title="Blockquote" aria-label="Blockquote">&gt; Quote</button>
+                <button type="button" data-action="codeblock" title="Code block" aria-label="Code block">Code block</button>
+                <button type="button" data-action="table" title="Table" aria-label="Insert table">Table</button>
+                <button type="button" data-action="hr" title="Horizontal rule" aria-label="Horizontal rule">HR</button>
+              </div>
+
+              <div class="mdp-workspace" id="mdWorkspace">
+                <div class="mdp-pane" id="mdEditorPane">
+                  <div class="mdp-pane__head"><span>Markdown</span><span>Drag a .md file to import</span></div>
+                  <label class="mdp-sronly" for="mdEditor">Markdown source</label>
+                  <textarea class="mdp-editor" id="mdEditor" spellcheck="true"
+                    placeholder="# Start typing Markdown…" autocomplete="off"></textarea>
+                </div>
+
+              <!-- Ad on phones: between the Markdown page and the preview (after
+                   the preview in Read mode). Hidden from 700px, where the slot
+                   beside the desk takes over; a hidden slot never loads. -->
+              <div class="os-ad-in">
+                <div class="ta-inline-ad" data-unit="inline"></div>
+              </div>
+
+                <div class="mdp-pane" id="mdPreviewPane">
+                  <div class="mdp-pane__head"><span>Preview</span><span>Live</span></div>
+                  <div class="mdp-empty" id="mdEmptyState" hidden>
+                    <strong>Nothing to preview yet.</strong>
+                    <span>Type Markdown in the editor, or load the sample document.</span>
+                  </div>
+                  <article class="mdp-preview" id="mdPreview" aria-live="off"></article>
+                </div>
+              </div>
+
+              <div class="mdp-footbar">
+                <div class="mdp-stats">
+                  <span class="mdp-stat"><b id="mdStatWords">0</b> words</span>
+                  <span class="mdp-stat"><b id="mdStatChars">0</b> chars</span>
+                  <span class="mdp-stat"><b id="mdStatRead">0 min</b> read</span>
+                  <span class="mdp-stat"><b id="mdStatHeadings">0</b> headings</span>
+                  <span class="mdp-stat"><b id="mdStatLinks">0</b> links</span>
+                  <span class="mdp-stat"><b id="mdStatImages">0</b> images</span>
+                  <span class="mdp-stat"><b id="mdStatCode">0</b> code</span>
+                  <span class="mdp-stat">
+                    <b id="mdStatTasks">0</b> tasks
+                    <span class="mdp-meter" id="mdTaskMeter" role="progressbar"
+                          aria-label="Task list progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden>
+                      <span class="mdp-meter__fill" id="mdTaskFill"></span>
+                    </span>
+                  </span>
+                </div>
+                <div class="mdp-actions">
+                  <button class="mdp-btn mdp-btn--ghost mdp-btn--sm" id="mdSample" type="button">Sample</button>
+                  <button class="mdp-btn mdp-btn--ghost mdp-btn--sm" id="mdImport" type="button">Import .md</button>
+                  <input type="file" id="mdFile" accept=".md,.markdown,.mdown,.txt,text/markdown,text/plain" class="mdp-sronly" />
+                  <button class="mdp-btn mdp-btn--ghost mdp-btn--sm" id="mdCopyMarkdown" type="button">Copy Markdown</button>
+                  <button class="mdp-btn mdp-btn--ghost mdp-btn--sm" id="mdCopyHtml" type="button">Copy HTML</button>
+                  <button class="mdp-btn mdp-btn--ghost mdp-btn--sm" id="mdDownloadMd" type="button">Download .md</button>
+                  <button class="mdp-btn mdp-btn--ghost mdp-btn--sm" id="mdDownloadHtml" type="button">Download .html</button>
+                  <button class="mdp-btn mdp-btn--ghost mdp-btn--sm" id="mdPrint" type="button">Print / PDF</button>
+                  <button class="mdp-btn mdp-btn--ghost mdp-btn--sm" id="mdClear" type="button">Clear</button>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- Ad from 700px: one 300x250 beside the desk. -->
+          <div class="os-ad-side">
+            <div class="ta-inline-ad" data-unit="inline"></div>
+          </div>
+        </div>
+
+        <div class="os-after">
+          <p class="mdp-lede">
+            Write Markdown on the left and watch it render on the right, instantly. Built for READMEs,
+            documentation and notes — with word count, GitHub-style rendering and one-click export.
+          </p>
+          <ul class="mdp-badges">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>Live preview</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.5 17.5 9 18v4"/></svg>GitHub flavored</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Nothing uploaded</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Export MD &amp; HTML</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>Autosaves draft</li>
+          </ul>
+            <div class="mdp-hero-cta">
+              <a class="mdp-hero-btn mdp-hero-btn--ghost" href="../markdown-to-html.html">Convert to HTML</a>
+            </div>
+        </div>
+
+        <section class="content-card" style="margin-top:1.5rem" aria-labelledby="mdp-howto-h">
+          <h2 class="section-title" id="mdp-howto-h">Preview Markdown in Seconds</h2>
+          <div class="grid-2" style="margin-top:.75rem">
+            <div class="pdf-feature-card"><strong>1. Write or import</strong><p>Type in the editor, paste Markdown, or drag a .md file onto the workspace.</p></div>
+            <div class="pdf-feature-card"><strong>2. Watch the preview</strong><p>The right pane re-renders as you type with GitHub-flavored Markdown support.</p></div>
+            <div class="pdf-feature-card"><strong>3. Switch views</strong><p>Use Write, Split or Read mode. Toggle sync scroll to move panes together.</p></div>
+            <div class="pdf-feature-card"><strong>4. Export</strong><p>Copy Markdown or HTML, download .md/.html files, or print the preview as PDF.</p></div>
+          </div>
+        </section>
+
+        <p class="mdp-status" id="mdStatus" data-tone="info" hidden></p>
+        <p class="mdp-sronly" id="mdLive" role="status" aria-live="polite"></p>
+
+        <div class="mdp-callout">
+          <span>Just need the HTML source to paste into a template or CMS?</span>
+          <a href="../markdown-to-html.html">Use the Markdown to HTML converter →</a>
+        </div>
+
+        <!-- ================= ANSWER FIRST ================= -->
+        <section class="mdp-section" aria-labelledby="what-heading">
+          <div class="mdp-card mdp-prose">
+            <h2 class="mdp-h2" id="what-heading">What is this tool?</h2>
+            <p>
+              This <strong>Markdown live previewer</strong> is a split-screen writing environment. You type Markdown in
+              the left pane and the right pane re-renders as you type, so you can see the finished document before you
+              publish it. It reads GitHub-flavored Markdown — tables, task lists, fenced code, strikethrough, autolinks
+              and alert blocks — which makes it a quick way to check a README before pushing.
+            </p>
+            <p>
+              Everything runs in your browser. Your text is never uploaded, and the only copy that is kept is the draft
+              saved in your own browser storage, which you can wipe with the Clear button.
+            </p>
+          </div>
+        </section>
+
+        <!-- ================= SYNTAX REFERENCE ================= -->
+        <section class="mdp-section" aria-labelledby="syntax-heading">
+          <div class="mdp-section__head">
+            <h2 class="mdp-h2" id="syntax-heading">Markdown syntax cheat sheet</h2>
+            <p class="mdp-sub">Every construct in this table is supported by the previewer above. Paste any of it into the editor to see it render.</p>
+          </div>
+          <div class="mdp-scroll">
+            <table class="mdp-table">
+              <thead>
+                <tr><th scope="col">You write</th><th scope="col">You get</th><th scope="col">Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td># Heading 1</td><td>A top-level heading</td><td>One to six <code>#</code> marks set the level. Each heading gets an anchor id.</td></tr>
+                <tr><td>**bold**</td><td>Bold text</td><td><code>__bold__</code> works too.</td></tr>
+                <tr><td>_italic_</td><td>Italic text</td><td><code>*italic*</code> is equivalent.</td></tr>
+                <tr><td>***both***</td><td>Bold and italic</td><td>Three marks combine the two.</td></tr>
+                <tr><td>~~struck~~</td><td>Struck-through text</td><td>GitHub-flavored extension.</td></tr>
+                <tr><td>`code`</td><td>Inline code</td><td>Backticks keep the contents literal — Markdown inside is not parsed.</td></tr>
+                <tr><td>```js … ```</td><td>A fenced code block</td><td>The word after the fence labels the language.</td></tr>
+                <tr><td>&gt; quote</td><td>A blockquote</td><td>Nest them by repeating <code>&gt;</code>.</td></tr>
+                <tr><td>- item</td><td>A bullet list</td><td><code>*</code> and <code>+</code> also start bullets. Indent two spaces to nest.</td></tr>
+                <tr><td>1. item</td><td>A numbered list</td><td>Starting at another number is preserved.</td></tr>
+                <tr><td>- [x] done</td><td>A task list</td><td>Checked items feed the progress meter.</td></tr>
+                <tr><td>[text](url)</td><td>A link</td><td>Add a title with <code>[t](url "Title")</code>.</td></tr>
+                <tr><td>![alt](url)</td><td>An image</td><td>Images load lazily in the preview.</td></tr>
+                <tr><td>| a | b |</td><td>A table</td><td>The row under the header sets alignment with <code>:---</code>, <code>:---:</code> or <code>---:</code>.</td></tr>
+                <tr><td>---</td><td>A horizontal rule</td><td>Three or more dashes, asterisks or underscores.</td></tr>
+                <tr><td>&gt; [!NOTE]</td><td>A GitHub alert</td><td>Also TIP, IMPORTANT, WARNING and CAUTION.</td></tr>
+                <tr><td>two spaces + Enter</td><td>A line break</td><td>A trailing backslash does the same.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- NEW SECTION -->
+        <section class="mdp-section os-ext" aria-labelledby="os-edge-heading">
+          <div class="mdp-section__head">
+            <h2 class="mdp-h2" id="os-edge-heading">Edge Cases: What This Previewer Does With Them</h2>
+            <p class="mdp-sub">Markdown renderers agree on the basics and differ at the edges. Each line below was typed into the editor above; the middle column is what the preview showed. (&crarr; is Enter, &middot; is a space.)</p>
+          </div>
+          <div class="mdp-scroll">
+            <table class="mdp-table">
+              <thead>
+                <tr><th scope="col">You type</th><th scope="col">The preview shows</th><th scope="col">Why it matters</th></tr>
+              </thead>
+              <tbody>
+                <tr data-md="snake_case_name" data-expect="&lt;p&gt;snake_case_name&lt;/p&gt;"><td>snake_case_name</td><td class="os-out">The name, as typed</td><td>Underscores inside a word are not emphasis, so file and variable names survive.</td></tr>
+                <tr data-md="line one
+line two" data-expect="&lt;p&gt;line one\s+line two&lt;/p&gt;"><td>line one↵
+line two</td><td class="os-out">One line: &ldquo;line one line two&rdquo;</td><td>A single Enter joins the lines. End the line with two spaces or a backslash for a break.</td></tr>
+                <tr data-md="    indented code" data-expect="&lt;p&gt;\s*indented code&lt;/p&gt;"><td>····indented code</td><td class="os-out">Ordinary text, not a code block</td><td>Only fenced blocks (<code>```</code>) become code here. GitHub also treats a four-space indent as code.</td></tr>
+                <tr data-md="Press &lt;kbd&gt;Ctrl&lt;/kbd&gt;" data-expect="&amp;lt;kbd&amp;gt;Ctrl&amp;lt;/kbd&amp;gt;"><td>Press &lt;kbd&gt;Ctrl&lt;/kbd&gt;</td><td class="os-out">The tags themselves, as text</td><td>Raw HTML is shown, never interpreted. GitHub would draw this one as a key.</td></tr>
+                <tr data-md="&lt;script&gt;alert(1)&lt;/script&gt;" data-expect="&amp;lt;script&amp;gt;alert\(1\)&amp;lt;/script&amp;gt;"><td>&lt;script&gt;alert(1)&lt;/script&gt;</td><td class="os-out">The tags as text; nothing runs</td><td>Safe for Markdown you did not write.</td></tr>
+                <tr data-md="Visit https://example.com" data-expect="&lt;a href=&quot;https://example.com&quot;[^&gt;]*target=&quot;_blank&quot;"><td>Visit https://example.com</td><td class="os-out">A link, opening in a new tab</td><td>Bare web addresses are linked without brackets.</td></tr>
+                <tr data-md="1) first
+2) second" data-expect="&lt;ol&gt;&lt;li&gt;first&lt;/li&gt;&lt;li&gt;second&lt;/li&gt;&lt;/ol&gt;"><td>1) first↵
+2) second</td><td class="os-out">A numbered list</td><td>A closing bracket works like a full stop after the number.</td></tr>
+                <tr data-md="Title
+---" data-expect="&lt;h2 id=&quot;title&quot;&gt;Title&lt;/h2&gt;"><td>Title↵
+---</td><td class="os-out">A heading, not a line</td><td>Dashes directly under text underline it into a heading. Leave a blank line first to get a rule.</td></tr>
+                <tr data-md="a==mark==b" data-expect="a&lt;mark&gt;mark&lt;/mark&gt;b"><td>a==mark==b</td><td class="os-out">Highlighted text</td><td>An extension: GitHub leaves the equals signs.</td></tr>
+                <tr data-md="Footnote[^1]" data-expect="&lt;p&gt;Footnote\[\^1\]&lt;/p&gt;"><td>Footnote[^1]</td><td class="os-out">As typed</td><td>Footnotes are not supported here; GitHub renders them.</td></tr>
+                <tr data-md="H~2~O" data-expect="&lt;p&gt;H~2~O&lt;/p&gt;"><td>H~2~O</td><td class="os-out">As typed</td><td>Single tildes are not subscript; two (<code>~~x~~</code>) strike through.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ================= EXPLAINERS ================= -->
+        <section class="mdp-section" aria-labelledby="about-md-heading">
+          <div class="mdp-split">
+            <div class="mdp-card mdp-prose">
+              <h2 class="mdp-h2" id="about-md-heading">What is Markdown?</h2>
+              <p>
+                Markdown is a plain-text formatting syntax created by John Gruber in 2004. The idea is that the source
+                should stay readable: <code>**bold**</code> looks emphatic even before it is rendered, and
+                <code># Heading</code> reads as a heading in a terminal, a diff or an email.
+              </p>
+              <p>
+                Because it is just text, Markdown works well with version control — a documentation change shows up as a
+                clean line-by-line diff, which is not true of binary word-processor formats. That is why it became the
+                default for READMEs, changelogs, static site content, issue trackers and note-taking apps.
+              </p>
+              <h3 class="mdp-h3">Flavors of Markdown</h3>
+              <p>
+                The original spec left gaps, so implementations diverged. <strong>CommonMark</strong> is the strict
+                specification that pinned down the ambiguous cases. <strong>GitHub Flavored Markdown</strong> (GFM)
+                builds on CommonMark and adds tables, task lists, strikethrough and autolinks. This previewer follows
+                GFM conventions, which is what most people mean by "Markdown" today.
+              </p>
+            </div>
+
+            <div class="mdp-card mdp-prose">
+              <h2 class="mdp-h2">Why preview before you publish?</h2>
+              <p>
+                Markdown is forgiving to write and easy to get subtly wrong. A live preview catches the classics:
+              </p>
+              <ul>
+                <li>A list that never starts because the <code>-</code> has no space after it.</li>
+                <li>A table that stays plain text because the <code>| --- |</code> separator row is missing.</li>
+                <li>A code fence that swallows the rest of the document because it was never closed.</li>
+                <li>Headings that skip a level, which hurts both readability and accessibility.</li>
+                <li>A link whose closing parenthesis is missing, leaving raw syntax on the page.</li>
+              </ul>
+              <p>
+                Seeing the rendered result next to the source means you find these in a second, instead of after you
+                have pushed the commit.
+              </p>
+              <h3 class="mdp-h3">Is raw HTML rendered?</h3>
+              <p>
+                No — and that is deliberate. Raw HTML in the source is escaped and displayed as literal text, so opening
+                a Markdown file from an untrusted source cannot run scripts in your browser. Link and image
+                destinations are checked against an allow-list of URL schemes for the same reason.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= USE CASES ================= -->
+        <section class="mdp-section" aria-labelledby="uses-heading">
+          <div class="mdp-section__head">
+            <h2 class="mdp-h2" id="uses-heading">What people use it for</h2>
+            <p class="mdp-sub">Any moment you need to see the rendered shape of a document before it goes anywhere.</p>
+          </div>
+          <div class="mdp-grid3">
+            <div class="mdp-tile"><strong>README previews</strong><span>Check how a project README will look on GitHub before you commit it.</span></div>
+            <div class="mdp-tile"><strong>Documentation</strong><span>Draft docs pages and confirm the heading structure reads well.</span></div>
+            <div class="mdp-tile"><strong>Reading .md files</strong><span>Open a Markdown file someone sent you and read it formatted, not raw.</span></div>
+            <div class="mdp-tile"><strong>Blog drafts</strong><span>Write posts for a static site generator and watch the layout as you type.</span></div>
+            <div class="mdp-tile"><strong>Release notes</strong><span>Build a changelog with lists and links, then export or print it.</span></div>
+            <div class="mdp-tile"><strong>Long-form notes</strong><span>Draft structured notes with headings, lists and code blocks.</span></div>
+            <div class="mdp-tile"><strong>Learning Markdown</strong><span>Type a construct from the cheat sheet and see the result immediately.</span></div>
+            <div class="mdp-tile"><strong>Issue and PR bodies</strong><span>Compose a long issue with tables and task lists before pasting it in.</span></div>
+            <div class="mdp-tile"><strong>Sharing as HTML</strong><span>Export a standalone HTML file that opens correctly on its own.</span></div>
+          </div>
+        </section>
+
+        <!-- ================= HOW TO ================= -->
+        <section class="mdp-section" aria-labelledby="howto-heading">
+          <div class="mdp-split">
+            <div class="mdp-card mdp-prose">
+              <h2 class="mdp-h2" id="howto-heading">How to use the previewer</h2>
+              <ul>
+                <li>Type or paste Markdown into the left pane — the preview follows as you type.</li>
+                <li>Drag a <code>.md</code> file anywhere onto the workspace, or press <strong>Import .md</strong>.</li>
+                <li>Use <strong>Write</strong>, <strong>Split</strong> and <strong>Read</strong> to change how much of the screen each pane gets.</li>
+                <li>Turn off <strong>Sync scroll</strong> if you would rather move the panes independently.</li>
+                <li>Export with <strong>Download .md</strong>, <strong>Download .html</strong> or <strong>Print / PDF</strong>.</li>
+              </ul>
+              <h3 class="mdp-h3">Keyboard shortcuts</h3>
+              <ul>
+                <li><kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>B</kbd> — bold</li>
+                <li><kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>I</kbd> — italic</li>
+                <li><kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>K</kbd> — link</li>
+                <li><kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>E</kbd> — inline code</li>
+                <li><kbd>Tab</kbd> — indent inside the editor</li>
+              </ul>
+            </div>
+
+            <div class="mdp-card mdp-prose">
+              <h2 class="mdp-h2">Previewer or converter?</h2>
+              <p>ToolAdda has two Markdown tools, and they answer different questions.</p>
+              <ul>
+                <li>
+                  <strong>This page</strong> is for <em>writing and reading</em>. You draft a document, watch the word count,
+                  and export or print the finished thing.
+                </li>
+                <li>
+                  <strong><a href="../markdown-to-html.html">Markdown to HTML</a></strong> is for <em>getting the code
+                  out</em>. Use it when you need the HTML source to drop into a template, a CMS field or an email.
+                </li>
+              </ul>
+              <p>
+                Both run entirely in the browser and both use the same safety rules, so pick whichever matches what you
+                are trying to do.
+              </p>
+              <h3 class="mdp-h3">Does it save my work?</h3>
+              <p>
+                Yes. The document is written to your browser's local storage as you type and restored the next time you
+                open the page in the same browser. It is device-local: it does not sync, and clearing site data removes
+                it. Press <strong>Clear</strong> to wipe it deliberately.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= FAQ ================= -->
+        <section class="mdp-section" aria-labelledby="faq-heading">
+          <div class="mdp-section__head">
+            <h2 class="mdp-h2" id="faq-heading">Frequently asked questions</h2>
+          </div>
+          <div class="mdp-faq">
+            <details>
+              <summary>What is a Markdown live previewer?</summary>
+              <p>A split-screen editor that shows the Markdown source on one side and the rendered document on the other, updating as you type, so you can see exactly how your text will look before you publish it.</p>
+            </details>
+            <details>
+              <summary>Is this Markdown previewer free?</summary>
+              <p>Yes. It is free, needs no account and has no usage limits.</p>
+            </details>
+            <details>
+              <summary>Does my Markdown get uploaded anywhere?</summary>
+              <p>No. Parsing and rendering happen in your browser. Your text is never sent to a server, and the only copy kept is the draft in your own browser storage.</p>
+            </details>
+            <details>
+              <summary>Can I preview a GitHub README?</summary>
+              <p>Yes. The renderer supports GitHub-flavored Markdown — tables, task lists, strikethrough, autolinks and alert blocks such as <code>[!NOTE]</code> and <code>[!WARNING]</code> — so a README renders close to how GitHub displays it.</p>
+            </details>
+            <details>
+              <summary>What Markdown syntax is supported?</summary>
+              <p>Headings, paragraphs, bold, italic, strikethrough, highlight, inline code, fenced code blocks with a language label, blockquotes, nested lists, task lists, tables with column alignment, horizontal rules, links, reference links, images, autolinks and hard line breaks.</p>
+            </details>
+            <details>
+              <summary>Can I open a .md file?</summary>
+              <p>Yes. Press Import to choose a file, or drag a <code>.md</code> file onto the workspace. The file is read locally by your browser and never uploaded.</p>
+            </details>
+            <details>
+              <summary>Can I download the rendered HTML?</summary>
+              <p>Yes. Download .html produces a standalone file with the styling embedded, so it opens correctly on its own. You can also copy the HTML to the clipboard.</p>
+            </details>
+            <details>
+              <summary>Can I save the preview as a PDF?</summary>
+              <p>Yes. Press Print / PDF and choose Save as PDF in your browser's print dialog. The print layout shows only the rendered document — no editor, no navigation.</p>
+            </details>
+            <details>
+              <summary>Is my work saved if I close the tab?</summary>
+              <p>The document is saved to local storage as you type and restored next time you open the page in the same browser. Clearing site data removes it.</p>
+            </details>
+            <details>
+              <summary>What is the difference between this and the Markdown to HTML converter?</summary>
+              <p>This page is a writing and reading environment — draft, preview, navigate, export. The <a href="../markdown-to-html.html">Markdown to HTML converter</a> is aimed at getting the HTML source out so you can paste it into a template or CMS.</p>
+            </details>
+            <details>
+              <summary>Are keyboard shortcuts supported?</summary>
+              <p>Yes: <kbd>Ctrl</kbd>/<kbd>⌘</kbd> with <kbd>B</kbd> for bold, <kbd>I</kbd> for italic, <kbd>K</kbd> for a link and <kbd>E</kbd> for inline code. <kbd>Tab</kbd> inserts an indent instead of moving focus out of the editor.</p>
+            </details>
+            <details>
+              <summary>Does the preview scroll with the editor?</summary>
+              <p>Yes, in split view the panes scroll together in proportion. Untick Sync scroll to move them independently.</p>
+            </details>
+            <details>
+              <summary>Can I use it on a phone?</summary>
+              <p>Yes. On small screens the panes stack, and the Write and Read buttons switch between the editor and the preview at full width.</p>
+            </details>
+            <details>
+              <summary>Is HTML inside my Markdown rendered?</summary>
+              <p>No. Raw HTML is escaped and shown as literal text. That is deliberate: a document from an untrusted source cannot run scripts in your browser through the preview.</p>
+            </details>
+            <details>
+              <summary>What is the document outline?</summary>
+              <p>A table of contents built automatically from your headings. Every heading also gets a unique anchor id, and clicking an outline entry scrolls the preview to that section.</p>
+            </details>
+            <details>
+              <summary>How is reading time calculated?</summary>
+              <p>From the word count of the prose at roughly 220 words per minute, rounded to the nearest minute. Code blocks are excluded because they are not read at prose speed.</p>
+            </details>
+            <details>
+              <summary>Does it work offline?</summary>
+              <p>Yes. Once the page has loaded, no network connection is needed to write, preview or export.</p>
+            </details>
+            <details>
+              <summary>What is Markdown?</summary>
+              <p>A plain-text formatting syntax created by John Gruber in 2004. Simple marks such as <code>#</code> for a heading and <code>**</code> for bold keep the source readable while still describing structure, which is why it is used for READMEs, documentation, notes and static site content.</p>
+            </details>
+            <details>
+              <summary>Can I preview tables and task lists?</summary>
+              <p>Yes. Pipe tables with column alignment and task lists both render, and completed tasks feed the progress meter in the statistics bar.</p>
+            </details>
+            <details>
+              <summary>Why does my heading anchor have a number after it?</summary>
+              <p>When two headings would produce the same anchor, the later one gets a numeric suffix such as <code>-1</code> so every id in the document stays unique.</p>
+            </details>
+          </div>
+        </section>
+
+        <!-- ================= RELATED ================= -->
+        <section class="mdp-section" aria-labelledby="related-heading">
+          <aside class="related-tools-section" aria-label="Related developer tools">
+            <div class="related-tools-section__header">
+              <div>
+                <p class="related-tools-eyebrow">Related tools</p>
+                <h2 class="related-tools-title" id="related-heading">More writing &amp; developer utilities</h2>
+              </div>
+            </div>
+            <div class="related-tools-grid">
+              <a class="related-tool-card" href="../markdown-to-html.html"><div class="related-tool-icon">MD</div><div><strong>Markdown to HTML</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Convert Markdown and copy clean HTML</span></div></a>
+              <a class="related-tool-card" href="markdown-to-notion.html"><div class="related-tool-icon">N</div><div><strong>Markdown to Notion</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Move Markdown into Notion-ready blocks</span></div></a>
+              <a class="related-tool-card" href="json-formatter.html"><div class="related-tool-icon">{ }</div><div><strong>JSON Formatter</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Format and validate JSON payloads</span></div></a>
+              <a class="related-tool-card" href="../text-tools/character-counter.html"><div class="related-tool-icon">Aa</div><div><strong>Character Counter</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Count words and characters against limits</span></div></a>
+              <a class="related-tool-card" href="../regex-tester.html"><div class="related-tool-icon">.*</div><div><strong>Regex Tester</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Test search-and-replace patterns</span></div></a>
+              <a class="related-tool-card" href="../html-to-pdf.html"><div class="related-tool-icon">PDF</div><div><strong>HTML to PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Turn exported HTML into a PDF</span></div></a>
+            </div>
+          </aside>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+      </div>
+      <div>
+        <h3>Explore</h3>
+        <div class="footer-links">
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../privacy-policy.html">Privacy Policy</a>
+          <a href="../terms.html">Terms</a>
+        </div>
+      </div>
+      <div>
+        <h3>Stay updated</h3>
+        <p>© <span data-year></span> ToolAdda. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/js/markdown-engine.js" defer></script>
+  <script src="../assets/js/markdown-live-previewer.js" defer></script>
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/side-ads.js" defer></script>
+  <script src="../assets/js/inline-ads.js" data-in-article defer></script>
+</body>
+</html>

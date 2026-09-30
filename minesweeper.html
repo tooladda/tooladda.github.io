@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+<title>Play Minesweeper Online — Free, No Download | ToolAdda</title>
+<meta name="description" content="Play Minesweeper online free — beginner to expert boards, custom sizes, mobile and keyboard controls. No download, no signup, best times saved on your device." />
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+<meta name="author" content="ToolAdda" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="X-Content-Type-Options" content="nosniff" />
+<meta name="theme-color" content="#4f46e5" />
+<link rel="canonical" href="https://tooladda.online/minesweeper.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+<link rel="alternate" hreflang="en" href="https://tooladda.online/minesweeper.html" />
+<link rel="alternate" hreflang="x-default" href="https://tooladda.online/minesweeper.html" />
+<link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+<link rel="manifest" href="/minesweeper-manifest.json" />
+
+<meta property="og:title" content="Play Minesweeper Online — Free, No Download" />
+<meta property="og:description" content="Classic Minesweeper in your browser. Beginner to expert, custom boards, chording, full keyboard play, mobile long-press flags. Free, no signup, works offline." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://tooladda.online/minesweeper.html" />
+<meta property="og:site_name" content="ToolAdda" />
+<meta property="og:locale" content="en" />
+<meta property="og:image" content="https://tooladda.online/assets/images/og/minesweeper.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:alt" content="A Minesweeper board mid-game with revealed numbered cells, red flags on suspected mines, a mine counter and a timer." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Play Minesweeper Online — Free, No Download" />
+<meta name="twitter:description" content="Classic Minesweeper in your browser. Beginner to expert, custom boards, chording, keyboard play. Free, no signup." />
+<meta name="twitter:image" content="https://tooladda.online/assets/images/og/minesweeper.jpg" />
+<meta name="twitter:image:alt" content="A Minesweeper board mid-game with revealed numbered cells, red flags on suspected mines, a mine counter and a timer." />
+
+<link rel="stylesheet" href="assets/css/style.css" />
+<style>
+/* ======================================================================
+   Minesweeper — page shell + design tokens.
+   ====================================================================== */
+.ms-page{
+  --ms-bg:#e8eeec;--ms-grad:radial-gradient(920px 480px at 6% -8%,rgba(74,143,130,.09),transparent 58%),radial-gradient(780px 420px at 100% 0%,rgba(106,173,150,.07),transparent 52%),radial-gradient(640px 340px at 50% 100%,rgba(82,152,127,.06),transparent 55%);
+  --ms-surface:#f7faf9;--ms-sunken:#e2eae7;--ms-text:#1e2b28;--ms-muted:#5a6b66;
+  --ms-border:rgba(30,43,40,.1);--ms-border2:rgba(30,43,40,.16);
+  --ms-accent:#4a8f82;--ms-accent2:#2f6b61;--ms-soft:rgba(74,143,130,.12);
+  --ms-brand:linear-gradient(135deg,#4a8f82 0%,#52987f 52%,#6aad96 100%);
+  --ms-lcd-bg:#1a2421;--ms-lcd-text:#7dffb0;--ms-lcd-dim:#4a6358;
+  --ms-sh:0 1px 2px rgba(30,43,40,.05),0 8px 28px rgba(74,143,130,.1),0 20px 48px rgba(30,43,40,.06);
+  --ms-focus:0 0 0 3px rgba(74,143,130,.28);
+}
+[data-theme="dark"] .ms-page{
+  --ms-bg:#0f1413;--ms-grad:radial-gradient(920px 480px at 6% -8%,rgba(109,179,168,.1),transparent 58%),radial-gradient(780px 420px at 100% 0%,rgba(82,152,127,.08),transparent 52%),radial-gradient(640px 340px at 50% 100%,rgba(74,143,130,.06),transparent 55%);
+  --ms-surface:#1a2220;--ms-sunken:#141a19;--ms-text:#e8eeec;--ms-muted:#9aa8a3;
+  --ms-border:rgba(168,184,178,.14);--ms-border2:rgba(168,184,178,.22);
+  --ms-accent:#6db3a8;--ms-accent2:#9fd4cc;--ms-soft:rgba(109,179,168,.14);
+  --ms-brand:linear-gradient(135deg,#5a9e92 0%,#6aad96 52%,#8ec9bf 100%);
+  --ms-lcd-bg:#0a100e;--ms-lcd-text:#6ef0a8;--ms-lcd-dim:#3d5249;
+  --ms-sh:0 1px 2px rgba(0,0,0,.28),0 8px 28px rgba(0,0,0,.32),0 20px 48px rgba(0,0,0,.22);
+  --ms-focus:0 0 0 3px rgba(109,179,168,.34);
+}
+body.ms-page{background:var(--ms-bg)!important;background-image:var(--ms-grad)!important;background-attachment:fixed!important;color:var(--ms-text)!important}
+.ms-page .section{color:var(--ms-text)}
+.ms-page .content-card,.ms-page .faq-section,.ms-page .cta-section{background:var(--ms-surface);border-color:var(--ms-border)}
+.ms-page .section-title{color:var(--ms-text)}
+
+/* ---------- hero ---------- */
+.ms-hero{margin-bottom:1rem;padding:1rem 1.1rem 1.05rem;border:1px solid var(--ms-border);border-radius:18px;
+  background:linear-gradient(180deg,var(--ms-surface),color-mix(in srgb,var(--ms-sunken) 35%,var(--ms-surface)));
+  box-shadow:var(--ms-sh);position:relative;overflow:hidden}
+.ms-hero::before{content:"";position:absolute;inset:0 auto auto 0;width:100%;height:3px;background:var(--ms-brand);opacity:.95}
+.ms-top{display:grid;gap:.65rem;margin:0}
+.ms-h1{font-size:clamp(1.35rem,3.2vw,1.85rem);margin:0;letter-spacing:-.025em;font-weight:800;color:var(--ms-text)}
+.ms-lede{margin:0;color:var(--ms-muted);font-size:.93rem;max-width:66ch;line-height:1.55}
+.ms-badges{display:flex;flex-wrap:wrap;gap:.35rem;margin:0;padding:0;list-style:none}
+.ms-badge{font-size:.71rem;font-weight:700;padding:.28rem .62rem;border-radius:999px;
+  border:1px solid var(--ms-border);background:color-mix(in srgb,var(--ms-surface) 88%,var(--ms-soft));
+  color:var(--ms-muted);white-space:nowrap}
+.ms-hero-cta{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.15rem}
+.ms-cta{min-height:44px;padding:.52rem 1rem;font-size:.86rem;font-weight:750;text-decoration:none;
+  border-radius:11px;display:inline-flex;align-items:center;justify-content:center;gap:.35rem;
+  transition:transform .18s cubic-bezier(.32,.72,0,1),box-shadow .18s,filter .18s,border-color .18s}
+.ms-cta-primary{background:var(--ms-brand)!important;color:#fff!important;-webkit-text-fill-color:#fff;
+  border:1px solid rgba(255,255,255,.18);box-shadow:0 6px 18px rgba(74,143,130,.28)}
+.ms-cta-primary:hover{filter:brightness(1.03);transform:translateY(-1px);box-shadow:0 10px 24px rgba(74,143,130,.36)}
+.ms-cta-ghost{background:var(--ms-surface)!important;color:var(--ms-text)!important;-webkit-text-fill-color:var(--ms-text);
+  border:1px solid var(--ms-border2)}
+.ms-cta-ghost:hover{border-color:var(--ms-accent);background:var(--ms-soft)!important;transform:translateY(-1px)}
+@media(max-width:520px){.ms-hero-cta .ms-cta{flex:1 1 100%;justify-content:center}}
+
+/* ---------- game card ---------- */
+.ms-game{border:1px solid var(--ms-border);border-radius:20px;padding:1rem;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--ms-surface) 96%,var(--ms-soft)),var(--ms-surface));
+  box-shadow:var(--ms-sh);scroll-margin-top:5.5rem}
+.ms-game::before{content:"";display:block;height:3px;margin:-1rem -1rem 1rem;border-radius:20px 20px 0 0;background:var(--ms-brand)}
+
+.ms{
+  --ms-r:16px; --ms-r-sm:10px;
+  --ms-edge:var(--ms-border2);
+  --ms-panel:var(--ms-surface);
+  --ms-sunk:var(--ms-sunken);
+  --cell:38px;
+  --cell-hidden:linear-gradient(165deg,#b8ccc4 0%,#9eb5ab 55%,#8aa399 100%);
+  --cell-hidden-hover:linear-gradient(165deg,#c5d8d0 0%,#adbfb6 55%,#97aca3 100%);
+  --cell-open:#f4f8f6;
+  --cell-open-alt:#e8f0ec;
+  --cell-line:rgba(74,143,130,.32);
+  --cell-bevel:rgba(255,255,255,.75);
+  --cell-shade:rgba(47,107,97,.42);
+  --mine:#dc2626; --mine-hit:#b91c1c; --flag:#e11d48; --wrong:#f97316;
+  --n1:#2563eb; --n2:#15803d; --n3:#dc2626; --n4:#7c3aed;
+  --n5:#b45309; --n6:#0f766e; --n7:#1f2937; --n8:#64748b;
+  --ease:cubic-bezier(.32,.72,0,1);
+  --lift:0 1px 2px rgba(30,43,40,.06),0 10px 26px -14px rgba(74,143,130,.22);
+}
+[data-theme="dark"] .ms{
+  --cell-hidden:linear-gradient(165deg,#4a5c56 0%,#3a4a45 55%,#2e3c38 100%);
+  --cell-hidden-hover:linear-gradient(165deg,#556860 0%,#445550 55%,#384642 100%);
+  --cell-open:#8fa399; --cell-open-alt:#82968f;
+  --cell-line:rgba(158,200,185,.28);
+  --cell-bevel:rgba(255,255,255,.22);
+  --cell-shade:rgba(0,0,0,.55);
+  --n1:#7dabff; --n2:#5cd68a; --n3:#ff8a8a; --n4:#c4a5ff;
+  --n5:#f0c674; --n6:#5ed4c4; --n7:#e2e8f0; --n8:#a3aec2;
+  --mine:#f87171; --mine-hit:#ef4444; --flag:#fb7185; --wrong:#fb923c;
+}
+
+/* ---------- difficulty rail ---------- */
+.ms-diffs{display:flex;gap:.32rem;padding:.32rem;border-radius:999px;border:1px solid var(--ms-edge);
+  background:var(--ms-sunk);overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.ms-diffs::-webkit-scrollbar{display:none}
+.ms-diff{flex:1 0 auto;border:1px solid transparent;background:transparent;color:var(--ms-muted);cursor:pointer;
+  border-radius:999px;padding:.48rem .9rem;min-height:44px;font-weight:800;font-size:.79rem;
+  white-space:nowrap;display:inline-flex;flex-direction:column;align-items:center;gap:.06rem;
+  transition:background .18s var(--ease),color .18s var(--ease),border-color .18s var(--ease),transform .16s var(--ease)}
+.ms-diff small{font-weight:650;font-size:.62rem;opacity:.88;letter-spacing:.02em}
+.ms-diff:hover{color:var(--ms-text);background:color-mix(in srgb,var(--ms-surface) 70%,transparent);border-color:var(--ms-border)}
+.ms-diff[aria-pressed="true"]{background:var(--ms-brand);color:#fff;border-color:transparent;
+  box-shadow:0 6px 16px -6px rgba(74,143,130,.55);transform:translateY(-1px)}
+.ms-diff[aria-pressed="true"] small{opacity:.92}
+.ms-diff:focus-visible{outline:0;box-shadow:var(--ms-focus)}
+
+/* ---------- HUD ---------- */
+.ms-hud{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:.65rem;
+  padding:.65rem .85rem;border-radius:var(--ms-r);border:1px solid var(--ms-edge);
+  background:linear-gradient(180deg,color-mix(in srgb,var(--ms-panel) 92%,var(--ms-sunk)),var(--ms-panel));
+  box-shadow:var(--lift),inset 0 1px 0 rgba(255,255,255,.6);margin:.75rem 0}
+[data-theme="dark"] .ms-hud{box-shadow:var(--lift),inset 0 1px 0 rgba(255,255,255,.04)}
+.ms-read{display:inline-flex;align-items:center;gap:.38rem;font-variant-numeric:tabular-nums;
+  font-weight:800;font-size:1.18rem;letter-spacing:.06em;color:var(--ms-lcd-text);
+  padding:.38rem .65rem;border-radius:10px;background:var(--ms-lcd-bg);
+  border:1px solid rgba(0,0,0,.35);box-shadow:inset 0 2px 6px rgba(0,0,0,.35),0 1px 0 rgba(255,255,255,.08);
+  min-width:5.6ch;justify-content:center;font-family:ui-monospace,'Cascadia Code','Segoe UI Mono',monospace}
+.ms-read span[aria-hidden]{font-size:.92rem;line-height:1;filter:grayscale(.15)}
+.ms-hud>*:last-child{justify-self:end}
+.ms-face{width:56px;height:56px;border-radius:14px;border:2px solid var(--ms-border2);cursor:pointer;
+  background:linear-gradient(180deg,var(--ms-surface),var(--ms-sunk));font-size:1.65rem;line-height:1;
+  display:grid;place-items:center;box-shadow:0 3px 0 color-mix(in srgb,var(--ms-border2) 80%,transparent),var(--lift);
+  transition:transform .16s var(--ease),background .16s var(--ease),box-shadow .16s var(--ease)}
+.ms-face:hover{background:var(--ms-soft);transform:translateY(-2px);box-shadow:0 4px 0 color-mix(in srgb,var(--ms-accent) 40%,transparent),var(--lift)}
+.ms-face:active{transform:translateY(1px) scale(.97);box-shadow:0 1px 0 var(--ms-border2)}
+.ms-face:focus-visible{outline:0;box-shadow:var(--ms-focus),var(--lift)}
+
+/* ---------- board ---------- */
+.ms-stage{position:relative;border-radius:var(--ms-r);border:1px solid var(--ms-edge);
+  background:var(--ms-lcd-bg);padding:.6rem;overflow:auto;overscroll-behavior:contain;
+  max-height:min(72vh,760px);display:grid;place-items:center;
+  box-shadow:inset 0 2px 12px rgba(0,0,0,.28),0 1px 0 rgba(255,255,255,.05)}
+.ms-board{display:flex;flex-direction:column;gap:2px;user-select:none;-webkit-user-select:none;
+  touch-action:manipulation;margin:auto}
+.ms-row{display:flex;gap:2px}
+.ms-cell{width:var(--cell);height:var(--cell);flex:0 0 auto;border:0;padding:0;margin:0;cursor:pointer;
+  border-radius:4px;background:var(--cell-hidden);position:relative;
+  font-weight:800;font-size:calc(var(--cell) * .56);line-height:1;color:transparent;
+  display:grid;place-items:center;font-variant-numeric:tabular-nums;
+  box-shadow:inset 0 2px 0 var(--cell-bevel),inset 0 -2.5px 0 var(--cell-shade),
+             inset 2px 0 0 rgba(255,255,255,.28),inset -2px 0 0 rgba(47,107,97,.18),
+             0 2px 4px rgba(0,0,0,.22);
+  -webkit-tap-highlight-color:transparent;
+  transition:background .12s var(--ease),box-shadow .12s var(--ease),transform .1s var(--ease)}
+@media (hover:hover){ .ms-cell:not(.is-open):hover{background:var(--cell-hidden-hover)} }
+.ms-cell:active:not(.is-open){transform:scale(.94);box-shadow:inset 0 1px 0 var(--cell-bevel),inset 0 -1px 0 var(--cell-shade),0 1px 2px rgba(0,0,0,.15)}
+.ms-cell:focus-visible{outline:0;box-shadow:0 0 0 3px var(--ms-accent),inset 0 2px 0 var(--cell-bevel),inset 0 -2.5px 0 var(--cell-shade);z-index:2}
+.ms-cell.is-open{background:var(--cell-open);border-radius:3px;cursor:default;
+  box-shadow:inset 0 0 0 1.5px var(--cell-line),inset 0 1px 4px rgba(0,0,0,.06);
+  transform:none}
+.ms-cell.is-open.alt{background:var(--cell-open-alt)}
+[data-theme="dark"] .ms-cell.is-open{box-shadow:inset 0 0 0 1.5px var(--cell-line),inset 0 1px 5px rgba(0,0,0,.18)}
+[data-theme="dark"] .ms-cell:not(.is-open){box-shadow:inset 0 2px 0 var(--cell-bevel),inset 0 -2.5px 0 var(--cell-shade),
+             inset 2px 0 0 rgba(255,255,255,.12),inset -2px 0 0 rgba(0,0,0,.25),
+             0 2px 5px rgba(0,0,0,.35)}
+.ms-cell.is-open[data-n]{color:var(--n1)}
+.ms-cell[data-n="1"]{color:var(--n1)} .ms-cell[data-n="2"]{color:var(--n2)}
+.ms-cell[data-n="3"]{color:var(--n3)} .ms-cell[data-n="4"]{color:var(--n4)}
+.ms-cell[data-n="5"]{color:var(--n5)} .ms-cell[data-n="6"]{color:var(--n6)}
+.ms-cell[data-n="7"]{color:var(--n7)} .ms-cell[data-n="8"]{color:var(--n8)}
+.ms-cell.is-flag,.ms-cell.is-qm{color:var(--flag);font-size:calc(var(--cell) * .5)}
+.ms-cell.is-qm{color:var(--text-muted)}
+.ms-cell.is-mine{background:var(--cell-open);color:var(--mine);font-size:calc(var(--cell) * .52)}
+.ms-cell.is-hit{background:var(--mine-hit);color:#fff;box-shadow:inset 0 0 0 2px var(--mine)}
+.ms-cell.is-wrong{color:var(--wrong)}
+.ms-cell.is-wrong::after{content:"";position:absolute;inset:14%;
+  background:linear-gradient(45deg,transparent 44%,var(--wrong) 44%,var(--wrong) 56%,transparent 56%),
+             linear-gradient(-45deg,transparent 44%,var(--wrong) 44%,var(--wrong) 56%,transparent 56%)}
+.ms-cell.pop{animation:ms-pop .18s var(--ease)}
+@keyframes ms-pop{from{transform:scale(.82);opacity:.5}to{transform:scale(1);opacity:1}}
+.ms-board.is-over .ms-cell{cursor:default}
+
+/* ---------- toolbar under the board ---------- */
+.ms-bar{display:flex;flex-wrap:wrap;gap:.45rem;align-items:center;justify-content:center;margin-top:.8rem;
+  padding:.55rem;border-radius:14px;border:1px dashed var(--ms-border);background:color-mix(in srgb,var(--ms-sunk) 50%,transparent)}
+.ms-btn{border:1px solid var(--ms-edge);background:var(--ms-panel);color:var(--ms-text);cursor:pointer;
+  border-radius:var(--ms-r-sm);padding:.5rem .85rem;min-height:44px;font-weight:750;font-size:.81rem;
+  display:inline-flex;align-items:center;justify-content:center;gap:.35rem;
+  transition:border-color .18s var(--ease),background .18s var(--ease),color .18s var(--ease),transform .16s var(--ease),box-shadow .16s}
+.ms-btn:hover{border-color:var(--ms-accent);color:var(--ms-accent2);background:var(--ms-soft);transform:translateY(-1px)}
+.ms-btn:focus-visible{outline:0;box-shadow:var(--ms-focus)}
+.ms-btn[aria-pressed="true"],.ms-btn[aria-expanded="true"]{background:var(--ms-brand);border-color:transparent;color:#fff;box-shadow:0 4px 14px -4px rgba(74,143,130,.45)}
+.ms-zoom{display:inline-flex;align-items:center;border:1px solid var(--ms-edge);border-radius:var(--ms-r-sm);
+  background:var(--ms-panel);overflow:hidden;box-shadow:0 1px 0 rgba(255,255,255,.5) inset}
+.ms-zoom button{border:0;background:transparent;color:var(--ms-text);cursor:pointer;
+  width:42px;height:44px;font-size:1.05rem;font-weight:800;transition:background .15s,color .15s}
+.ms-zoom button:hover{background:var(--ms-soft);color:var(--ms-accent2)}
+.ms-zoom button:focus-visible{outline:0;box-shadow:inset var(--ms-focus)}
+.ms-zoom span{font-size:.73rem;font-weight:750;color:var(--ms-muted);padding:0 .35rem;
+  min-width:4.4ch;text-align:center;font-variant-numeric:tabular-nums}
+.ms-tip{margin:.55rem 0 0;text-align:center;font-size:.74rem;color:var(--ms-muted);font-weight:650}
+.ms-tip kbd{font:inherit;font-size:.7rem;font-weight:800;border:1px solid var(--ms-edge);border-bottom-width:2px;
+  border-radius:5px;padding:.08rem .35rem;background:var(--ms-surface);color:var(--ms-text);white-space:nowrap}
+
+/* ---------- result banner (inline, never blocks the board) ---------- */
+.ms-result{margin-top:.75rem;border-radius:var(--ms-r);border:1px solid var(--ms-edge);
+  background:var(--ms-panel);padding:.85rem 1rem;display:flex;flex-wrap:wrap;gap:.6rem .9rem;
+  align-items:center;justify-content:space-between;box-shadow:var(--lift);
+  animation:ms-slide .28s var(--ease)}
+@keyframes ms-slide{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.ms-result[hidden]{display:none}
+.ms-result.win{border-color:rgba(45,122,84,.45);background:linear-gradient(135deg,rgba(74,143,130,.14),transparent 60%),var(--ms-panel)}
+.ms-result.lose{border-color:rgba(220,38,38,.42);background:linear-gradient(135deg,rgba(239,68,68,.11),transparent 60%),var(--ms-panel)}
+.ms-result h2{margin:0 0 .12rem;font-size:1.05rem;font-weight:800;color:var(--ms-text)}
+.ms-result p{margin:0;font-size:.84rem;color:var(--ms-muted)}
+.ms-result .pb{display:inline-block;margin-left:.35rem;font-weight:800;color:var(--ms-accent2)}
+[data-theme="dark"] .ms-result .pb{color:#86efac}
+.ms-result-actions{display:flex;gap:.45rem;flex-wrap:wrap}
+
+/* ---------- custom / stats / help panels ---------- */
+.ms-panel{margin-top:.75rem;border:1px solid var(--ms-edge);border-radius:var(--ms-r);
+  background:var(--ms-panel);padding:1rem;scroll-margin-top:5.5rem;
+  animation:ms-panel-in .28s var(--ease)}
+@keyframes ms-panel-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.ms-panel[hidden]{display:none}
+.ms-panel[data-panel="custom"]{border-color:color-mix(in srgb,var(--ms-accent) 35%,var(--ms-edge));
+  background:linear-gradient(180deg,color-mix(in srgb,var(--ms-soft) 40%,var(--ms-panel)),var(--ms-panel))}
+.ms-panel h3{margin:0 0 .7rem;font-size:.78rem;font-weight:800;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ms-muted)}
+.ms-fields{display:flex;flex-wrap:wrap;gap:.7rem;align-items:flex-end}
+.ms-field{display:flex;flex-direction:column;gap:.3rem;flex:1 1 110px;min-width:0}
+.ms-field label{font-size:.78rem;font-weight:750}
+.ms-field input{border:1px solid var(--ms-edge);background:var(--ms-surface);color:var(--ms-text);
+  border-radius:var(--ms-r-sm);padding:.55rem .65rem;min-height:44px;font-size:.92rem;width:100%;
+  transition:border-color .15s,box-shadow .15s}
+.ms-field input:focus-visible{outline:0;border-color:var(--ms-accent);box-shadow:var(--ms-focus)}
+.ms-field input[aria-invalid="true"]{border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.16)}
+.ms-err{font-size:.78rem;color:#b91c1c;font-weight:700;margin:.55rem 0 0;min-height:1.1em}
+[data-theme="dark"] .ms-err{color:#fca5a5}
+.ms-est{font-size:.78rem;color:var(--text-muted);margin:.5rem 0 0}
+.ms-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:.5rem}
+.ms-stat{border:1px solid var(--ms-edge);border-radius:var(--ms-r-sm);padding:.55rem .5rem;
+  text-align:center;background:var(--ms-surface);min-width:0;
+  transition:transform .16s var(--ease),border-color .16s}
+.ms-stat:hover{border-color:color-mix(in srgb,var(--ms-accent) 35%,var(--ms-edge));transform:translateY(-1px)}
+.ms-stat b{display:block;font-size:1.15rem;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.2;color:var(--ms-text)}
+.ms-stat span{font-size:.66rem;font-weight:750;color:var(--ms-muted);text-transform:uppercase;letter-spacing:.04em}
+.ms-keys{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.4rem .9rem;
+  font-size:.82rem;margin:0;padding:0;list-style:none}
+.ms-keys li{display:flex;gap:.5rem;align-items:center;color:var(--text-muted)}
+kbd{font:inherit;font-size:.74rem;font-weight:800;border:1px solid var(--ms-edge);border-bottom-width:2px;
+  border-radius:5px;padding:.1rem .4rem;background:var(--bg);color:var(--text);white-space:nowrap}
+
+/* ---------- content ---------- */
+.ms-prose{max-width:76ch}
+.ms-prose h2{margin-top:2.2rem;letter-spacing:-.01em}
+.ms-prose h3{margin-top:1.4rem;font-size:1.04rem}
+.ms-tw{overflow-x:auto;border:1px solid var(--ms-edge);border-radius:var(--ms-r);margin:1.1rem 0}
+.ms-t{border-collapse:collapse;width:100%;min-width:520px;font-size:.87rem}
+.ms-t th,.ms-t td{border-bottom:1px solid var(--ms-edge);padding:.6rem .75rem;text-align:left;vertical-align:top}
+.ms-t th{background:var(--accent-soft);font-weight:800;color:var(--accent-strong)}
+.ms-t tbody tr:last-child td{border-bottom:0}
+.ms-callout{border-left:4px solid var(--accent);background:var(--accent-soft);padding:.85rem 1rem;
+  border-radius:0 var(--ms-r-sm) var(--ms-r-sm) 0;margin:1.1rem 0;font-size:.92rem}
+.ms-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:.65rem;margin:1rem 0}
+.ms-tool{display:block;border:1px solid var(--ms-edge);border-radius:var(--ms-r-sm);padding:.75rem .85rem;
+  background:var(--ms-panel);text-decoration:none;color:var(--text);
+  transition:transform .2s var(--ease),border-color .2s var(--ease)}
+a.ms-tool:hover{border-color:var(--accent);transform:translateY(-2px)}
+.ms-tool strong{display:block;color:var(--accent-strong);font-size:.89rem}
+.ms-tool span{font-size:.78rem;color:var(--text-muted)}
+.ms-vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* mini board used as an inline diagram in the strategy content */
+.ms-mini{display:inline-grid;gap:2px;vertical-align:middle;margin:.35rem .4rem .35rem 0}
+.ms-mini i{width:26px;height:26px;border-radius:4px;display:grid;place-items:center;font-style:normal;
+  font-weight:800;font-size:.78rem;background:var(--cell-hidden);
+  box-shadow:inset 0 1px 0 var(--cell-bevel),inset 0 -1px 0 var(--cell-shade)}
+.ms-mini i.o{background:var(--cell-open);box-shadow:inset 0 0 0 1px var(--cell-line)}
+.ms-mini i.f{color:var(--flag)}
+.ms-mini i[data-n="1"]{color:var(--n1)} .ms-mini i[data-n="2"]{color:var(--n2)}
+.ms-mini i[data-n="3"]{color:var(--n3)}
+
+@media (max-width:560px){
+  .ms-hero{padding:.85rem .9rem}
+  .ms-game{padding:.75rem;border-radius:16px}
+  .ms-hud{grid-template-columns:1fr auto 1fr;padding:.5rem .55rem}
+  .ms-read{font-size:1rem;padding:.28rem .45rem;min-width:4.8ch}
+  .ms-face{width:48px;height:48px;font-size:1.4rem}
+  .ms-stage{padding:.4rem;max-height:none}
+  .ms-tip{font-size:.7rem;line-height:1.5}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .ms-cell:active:not(.is-open),.ms-face:hover,a.ms-tool:hover{transform:none}
+}
+@media print{.site-header,.site-footer,.ms-stage,.ms-bar,.ms-hud,.ms-diffs{display:none!important}}
+
+/* ---------- navbar — sage theme, layout unchanged ---------- */
+body.ms-page{background:var(--ms-bg)!important;background-image:var(--ms-grad)!important;background-attachment:fixed!important;color:var(--ms-text)!important}
+.ms-page a:not(.btn):not(.nav-tools-cta):not(.primary-btn):not(.ms-cta){color:var(--ms-accent)}
+.ms-page .site-footer a:not(.btn){color:var(--ms-accent)}
+.ms-page a.btn-primary,.ms-page a.btn.btn-primary,.ms-page .primary-btn{background:var(--ms-brand)!important;color:#fff!important;-webkit-text-fill-color:#fff!important}
+.ms-page .nav-tools-cta,.ms-page a.nav-tools-cta,.ms-page .primary-btn.nav-tools-cta{background:linear-gradient(135deg,#4a8f82 0%,#52987f 100%)!important;color:#fff!important;box-shadow:0 8px 24px rgba(74,143,130,.32)!important;border:1px solid rgba(255,255,255,.2)!important}
+.ms-page .nav-tools-cta:hover,.ms-page a.nav-tools-cta:hover,.ms-page .primary-btn.nav-tools-cta:hover{box-shadow:0 12px 32px rgba(74,143,130,.4)!important;filter:brightness(1.04)}
+.ms-page .navbar{border-color:rgba(74,143,130,.14)!important;box-shadow:0 1px 0 rgba(255,255,255,.95) inset,0 16px 48px rgba(74,143,130,.11),0 4px 12px rgba(15,23,42,.05)!important}
+.ms-page .site-header--scrolled .navbar{border-color:rgba(74,143,130,.2)!important;box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 20px 56px rgba(74,143,130,.14),0 6px 16px rgba(15,23,42,.07)!important}
+[data-theme="dark"] .ms-page .navbar{border-color:rgba(109,179,168,.2)!important;box-shadow:0 1px 0 rgba(255,255,255,.05) inset,0 16px 48px rgba(0,0,0,.35),0 0 0 1px rgba(109,179,168,.06) inset!important}
+.ms-page .navbar::before{background:linear-gradient(135deg,rgba(74,143,130,.45),rgba(82,152,127,.25),rgba(106,173,150,.35),rgba(61,139,122,.25))!important}
+.ms-page .brand-mark{background:linear-gradient(145deg,#4a8f82 0%,#52987f 48%,#6aad96 100%)!important;box-shadow:0 8px 22px rgba(74,143,130,.38)!important}
+.ms-page .brand>span:last-child{background:linear-gradient(135deg,#2f6b61 0%,#4a8f82 50%,#52987f 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;color:transparent!important}
+[data-theme="dark"] .ms-page .brand>span:last-child{background:linear-gradient(135deg,#e8eeec 0%,#9fd4cc 50%,#8ec9bf 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;color:transparent!important}
+.ms-page .nav-links{background:rgba(74,143,130,.04)!important;border-color:rgba(74,143,130,.08)!important}
+[data-theme="dark"] .ms-page .nav-links{background:rgba(109,179,168,.08)!important;border-color:rgba(109,179,168,.12)!important}
+.ms-page .icon-btn{border-color:rgba(74,143,130,.12)!important}
+@media(max-width:768px){
+  .ms-page .site-header + #main-content > :first-child:not(.home-hero-wrap){padding-top:calc(var(--header-overlap) + .05rem)!important}
+}
+</style>
+
+<script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {"@type":"WebSite","@id":"https://tooladda.online/#website","name":"ToolAdda","alternateName":["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],"url":"https://tooladda.online/","inLanguage":"en","publisher":{"@id":"https://tooladda.online/#organization"}},
+    {"@type":"Organization","@id":"https://tooladda.online/#organization","name":"ToolAdda","alternateName":["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],"url":"https://tooladda.online/","logo":{"@type":"ImageObject","url":"https://tooladda.online/assets/images/logo.svg"}},
+    {"@type":"WebPage","@id":"https://tooladda.online/minesweeper.html#webpage","url":"https://tooladda.online/minesweeper.html","name":"Play Minesweeper Online — Free, No Download","description":"Free browser Minesweeper with beginner, intermediate, expert and custom boards, chording, full keyboard play and local statistics.","inLanguage":"en","isPartOf":{"@id":"https://tooladda.online/#website"},"breadcrumb":{"@id":"https://tooladda.online/minesweeper.html#breadcrumb"},"mainEntity":{"@id":"https://tooladda.online/minesweeper.html#app"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://tooladda.online/assets/images/og/minesweeper.jpg","width":1200,"height":630}},
+    {"@type":"BreadcrumbList","@id":"https://tooladda.online/minesweeper.html#breadcrumb","itemListElement":[
+      {"@type":"ListItem","position":1,"name":"Home","item":"https://tooladda.online/"},
+      {"@type":"ListItem","position":2,"name":"Games","item":"https://tooladda.online/#games"},
+      {"@type":"ListItem","position":3,"name":"Minesweeper"}
+    ]},
+    {"@type":"VideoGame","@id":"https://tooladda.online/minesweeper.html#app",
+     "name":"Minesweeper","url":"https://tooladda.online/minesweeper.html",
+     "applicationCategory":"GameApplication","genre":["Puzzle","Logic"],
+     "gamePlatform":"Web browser","playMode":"SinglePlayer",
+     "operatingSystem":"Any modern web browser (Windows, macOS, Linux, Android, iOS)",
+     "browserRequirements":"Requires JavaScript",
+     "description":"Classic Minesweeper played in the browser. Beginner, intermediate, expert and custom boards; guaranteed-safe first click; chording; full keyboard control; long-press flagging on touch devices; statistics stored only on the player's own device.",
+     "inLanguage":"en","isAccessibleForFree":true,"datePublished":"2025-07-19","dateModified":"2026-08-09",
+     "offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},
+     "publisher":{"@id":"https://tooladda.online/#organization"}},
+    {"@type":"HowTo","@id":"https://tooladda.online/minesweeper.html#howto",
+     "name":"How to play Minesweeper","description":"Clear every square that does not hide a mine, using the numbers to work out where the mines are.",
+     "totalTime":"PT3M",
+     "step":[
+      {"@type":"HowToStep","position":1,"name":"Click any square to start","text":"Your first click is always safe — mines are placed after it, never underneath it or its eight neighbours. The timer starts on this click.","url":"https://tooladda.online/minesweeper.html#how-to-play"},
+      {"@type":"HowToStep","position":2,"name":"Read the numbers","text":"A number tells you how many of the eight squares touching it contain mines. A blank square has none, so its neighbours open automatically.","url":"https://tooladda.online/minesweeper.html#numbers"},
+      {"@type":"HowToStep","position":3,"name":"Flag the mines you have worked out","text":"Right-click on desktop, or long-press on a phone, to place a flag. Flags stop you clicking a square by accident and let you use chording.","url":"https://tooladda.online/minesweeper.html#flags"},
+      {"@type":"HowToStep","position":4,"name":"Use chording to move faster","text":"Click a revealed number that already has the right count of flags around it and every remaining neighbour opens at once.","url":"https://tooladda.online/minesweeper.html#chording"},
+      {"@type":"HowToStep","position":5,"name":"Clear every safe square to win","text":"You win when every square without a mine is open. You do not need to flag all the mines.","url":"https://tooladda.online/minesweeper.html#how-to-win"}
+     ]}
+  ]
+}
+</script>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/minesweeper.html#webpage",
+      "url": "https://tooladda.online/minesweeper.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-01",
+      "dateModified": "2026-08-29",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="ms-page">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header">
+  <div class="container navbar">
+    <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+    <nav class="nav-links" aria-label="Primary"><a href="/">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy</a></nav>
+    <div class="nav-actions">
+      <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+        <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+          <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+          <path d="M3.1 16.9h10.8" />
+          <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+        </svg>
+        <span class="ta-donate-label">Buy me a coffee</span>
+      </a>
+      <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+      <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+<section class="section">
+  <aside class="ta-support" aria-label="Support ToolAdda">
+    <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+    <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+    <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+      <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+      <span class="ta-donate-label">Buy me a coffee</span>
+    </a>
+  </aside>
+
+  <div class="container ms">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span aria-hidden="true">›</span>
+      <a href="/#games">Games</a><span aria-hidden="true">›</span>
+      <span aria-current="page">Minesweeper</span>
+    </nav>
+
+    <!-- ================= GAME ================= -->
+    <div class="ms-hero">
+      <div class="ms-top">
+        <h1 class="ms-h1">Play Minesweeper Online</h1>
+        <p class="ms-lede">Classic Minesweeper, free and in your browser. Your first click is always safe. Left-click to open, right-click or long-press to flag, and click a finished number to chord.</p>
+        <ul class="ms-badges">
+          <li class="ms-badge">✅ Free forever</li>
+          <li class="ms-badge">🚫 No download</li>
+          <li class="ms-badge">🙅 No signup</li>
+          <li class="ms-badge">📱 Works on mobile</li>
+          <li class="ms-badge">⌨️ Full keyboard play</li>
+          <li class="ms-badge">📶 Plays offline</li>
+        </ul>
+        <div class="ms-hero-cta">
+          <a class="ms-cta ms-cta-primary" href="#tool">▶ Play now</a>
+          <a class="ms-cta ms-cta-ghost" href="sudoku-game.html">🧩 Try Sudoku</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="ms-game" id="tool" data-ms>
+      <div class="ms-diffs" role="group" aria-label="Difficulty" data-diffs></div>
+
+      <div class="ms-hud">
+        <span class="ms-read" data-mines-read>
+          <span aria-hidden="true">💣</span><span data-mines>010</span>
+          <span class="ms-vh" data-mines-sr>10 mines remaining</span>
+        </span>
+        <button type="button" class="ms-face" data-face aria-label="New game. Current state: ready">🙂</button>
+        <span class="ms-read">
+          <span aria-hidden="true">⏱</span><span data-timer>000</span>
+          <span class="ms-vh">seconds elapsed</span>
+        </span>
+      </div>
+
+      <div class="ms-stage" data-stage>
+        <div class="ms-board" role="grid" aria-label="Minesweeper board" data-board></div>
+      </div>
+
+      <div class="ms-bar">
+        <button type="button" class="ms-btn" data-flagmode aria-pressed="false">
+          <span aria-hidden="true">🚩</span> Flag mode
+        </button>
+        <div class="ms-zoom" role="group" aria-label="Board zoom">
+          <button type="button" data-zoom="-1" aria-label="Zoom out">−</button>
+          <span data-zoomlabel>38px</span>
+          <button type="button" data-zoom="1" aria-label="Zoom in">+</button>
+          <button type="button" data-zoom="0" aria-label="Fit board to screen">⤢</button>
+        </div>
+        <button type="button" class="ms-btn" data-toggle="custom" aria-expanded="false" aria-controls="ms-custom">⚙️ Custom</button>
+        <button type="button" class="ms-btn" data-toggle="stats" aria-expanded="false" aria-controls="ms-stats">📊 Stats</button>
+        <button type="button" class="ms-btn" data-toggle="help" aria-expanded="false" aria-controls="ms-help">⌨️ Controls</button>
+      </div>
+      <p class="ms-tip" aria-hidden="true">Quick keys: <kbd>R</kbd> new game · <kbd>F</kbd> flag · <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> difficulty · <kbd>Esc</kbd> close panels</p>
+
+      <!-- result banner: inline, so the board stays visible and replay is one click -->
+      <div class="ms-result" data-result hidden></div>
+
+      <div class="ms-panel" id="ms-custom" data-panel="custom" hidden>
+        <h3>Custom board</h3>
+        <div class="ms-fields">
+          <div class="ms-field">
+            <label for="msRows">Rows</label>
+            <input type="number" id="msRows" inputmode="numeric" min="5" max="40" value="12" />
+          </div>
+          <div class="ms-field">
+            <label for="msCols">Columns</label>
+            <input type="number" id="msCols" inputmode="numeric" min="5" max="60" value="12" />
+          </div>
+          <div class="ms-field">
+            <label for="msMines">Mines</label>
+            <input type="number" id="msMines" inputmode="numeric" min="1" max="999" value="24" />
+          </div>
+          <button type="button" class="ms-btn" data-startcustom>▶ Start custom game</button>
+        </div>
+        <p class="ms-est" data-custom-est></p>
+        <p class="ms-err" role="alert" data-custom-err></p>
+      </div>
+
+      <div class="ms-panel" id="ms-stats" data-panel="stats" hidden>
+        <h3>Your statistics <span style="font-weight:650;text-transform:none;letter-spacing:0">— stored only on this device</span></h3>
+        <div class="ms-stats" data-statgrid></div>
+        <div class="ms-bar" style="justify-content:flex-start;margin-top:.75rem">
+          <button type="button" class="ms-btn" data-clearstats>🗑️ Clear statistics</button>
+        </div>
+      </div>
+
+      <div class="ms-panel" id="ms-help" data-panel="help" hidden>
+        <h3>Controls</h3>
+        <ul class="ms-keys">
+          <li><kbd>Click</kbd> Open a square</li>
+          <li><kbd>Right-click</kbd> Flag / unflag</li>
+          <li><kbd>Long-press</kbd> Flag on touch</li>
+          <li><kbd>Click a number</kbd> Chord</li>
+          <li><kbd>← ↑ → ↓</kbd> Move</li>
+          <li><kbd>Enter</kbd> / <kbd>Space</kbd> Open or chord</li>
+          <li><kbd>F</kbd> Flag</li>
+          <li><kbd>R</kbd> New game</li>
+          <li><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> Difficulty</li>
+          <li><kbd>Esc</kbd> Close panels</li>
+        </ul>
+      </div>
+
+      <p class="ms-vh" role="status" aria-live="polite" data-live></p>
+      <p class="ms-vh" role="status" aria-live="assertive" data-live-end></p>
+    </div>
+    <!-- ================= /GAME ================= -->
+
+    <!-- ================= CONTENT ================= -->
+    <section class="content-card" style="margin-top:1.5rem">
+      <h2 class="section-title">Free, private, and yours to keep</h2>
+      <div class="ms-tools">
+        <div class="ms-tool"><strong>💸 Free forever</strong><span>No account, no trial, no paid tier, and no limit on games. Play as many games as you like.</span></div>
+        <div class="ms-tool"><strong>🚫 Nothing to download</strong><span>It is a web page. No installer, no extension, no app store.</span></div>
+        <div class="ms-tool"><strong>🔒 Your games stay on your device</strong><span>Board state, times and statistics live in your browser's local storage and are never sent anywhere. Open DevTools → Network and play a full game: nothing leaves.</span></div>
+        <div class="ms-tool"><strong>📶 Plays offline</strong><span>A service worker caches the page after your first visit, so it keeps working on a plane or with no signal.</span></div>
+        <div class="ms-tool"><strong>⌨️ Fully keyboard playable</strong><span>Arrow keys move, Enter opens or chords, F flags. A complete game without touching a mouse.</span></div>
+        <div class="ms-tool"><strong>📱 Real mobile controls</strong><span>Long-press to flag, tap a finished number to chord, pinch-free zoom controls for big boards.</span></div>
+      </div>
+    </section>
+
+    <article class="content-card ms-prose" style="margin-top:1.5rem">
+
+      <h2 id="what-is">What is Minesweeper?</h2>
+      <p>Minesweeper is a logic puzzle played on a grid. Some squares hide mines; most do not. Every square you open safely shows a number telling you how many of the eight squares around it are mined. Your job is to open every square that is <em>not</em> a mine, using nothing but those numbers.</p>
+      <p>It is not a game of luck, despite its reputation. On a typical board the overwhelming majority of moves are forced — there is exactly one square that logic proves is safe, and finding it is the whole game. Guessing is a last resort, and good players guess far less often than beginners assume.</p>
+      <p>The version most people remember shipped with Windows from 1990 onward, but the idea is older: it descends from 1980s games like <em>Mined-Out</em> and <em>Cube</em>. What Microsoft added was the three-difficulty structure and the flag, and those have stuck for thirty-five years.</p>
+
+      <h2 id="how-to-play">How to play Minesweeper</h2>
+      <ol>
+        <li><strong>Click anywhere to start.</strong> The first click is always safe — mines are placed <em>after</em> it, never under it or its eight neighbours. The timer starts on this click.</li>
+        <li><strong>Read the numbers.</strong> A <span style="color:var(--n1);font-weight:800">1</span> means exactly one of the eight touching squares is mined. A blank square touches no mines at all, so the board opens the whole empty region around it automatically.</li>
+        <li><strong>Flag what you can prove.</strong> Right-click on a computer, long-press on a phone. Flags stop you clicking a square by accident and unlock chording.</li>
+        <li><strong>Chord to move fast.</strong> Click a number that already has the right count of flags around it and every remaining neighbour opens at once.</li>
+        <li><strong>Clear every safe square to win.</strong> You do not need to flag all the mines — the game ends the moment the last non-mine square is open.</li>
+      </ol>
+
+      <h2 id="rules">Minesweeper rules</h2>
+      <ul>
+        <li>Every square is either a mine or safe. There is nothing else.</li>
+        <li>A revealed number counts mines in the eight surrounding squares, including diagonals.</li>
+        <li>Opening a mine ends the game immediately.</li>
+        <li>Flags are your notes. They do nothing mechanically except block accidental clicks and feed chording; flagging a square wrongly costs you nothing until you chord on it.</li>
+        <li>You win when every non-mine square is open, flagged or not.</li>
+        <li>The mine counter shows <em>mines minus flags placed</em>, not mines actually remaining. Place a wrong flag and it lies to you.</li>
+      </ul>
+
+      <h2 id="numbers">What do the numbers mean?</h2>
+      <p>This is the single thing beginners get wrong. The number is not a distance and it is not a direction — it is a count of mines in the eight squares that touch it, diagonals included. A square in the middle of the board has eight neighbours; on an edge it has five; in a corner, three.</p>
+      <div class="ms-tw">
+        <table class="ms-t">
+          <caption class="ms-vh">What each Minesweeper number means and what to do about it</caption>
+          <thead><tr><th scope="col">Number</th><th scope="col">Means</th><th scope="col">Typical action</th></tr></thead>
+          <tbody>
+            <tr><th scope="row" style="color:var(--n1)">1</th><td>One mine in the eight neighbours</td><td>The most useful number on the board. A 1 with exactly one unopened neighbour has found its mine.</td></tr>
+            <tr><th scope="row" style="color:var(--n2)">2</th><td>Two mines</td><td>Pairs with a neighbouring 1 to solve the classic 1-2 pattern.</td></tr>
+            <tr><th scope="row" style="color:var(--n3)">3</th><td>Three mines</td><td>Common along walls. A 3 on an edge with three unopened neighbours is fully determined.</td></tr>
+            <tr><th scope="row" style="color:var(--n4)">4</th><td>Four mines</td><td>Usually appears in dense clusters. Count carefully before chording.</td></tr>
+            <tr><th scope="row" style="color:var(--n5)">5</th><td>Five mines</td><td>Rare outside Expert. Often means the remaining unopened neighbours are all mines.</td></tr>
+            <tr><th scope="row" style="color:var(--n6)">6</th><td>Six mines</td><td>Very rare. With only six or seven neighbours left, nearly everything around it is mined.</td></tr>
+            <tr><th scope="row" style="color:var(--n7)">7</th><td>Seven mines</td><td>Almost always fully determined: seven of eight neighbours are mines.</td></tr>
+            <tr><th scope="row" style="color:var(--n8)">8</th><td>Eight mines</td><td>Every single neighbour is a mine. Flag all eight and move on.</td></tr>
+            <tr><th scope="row">blank</th><td>No mines touching</td><td>Nothing to decide — the board opens the whole connected empty area for you.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="flags">What flags are for</h2>
+      <p>A flag is a note to yourself. The game does not check it, reward it, or require it. Placing a flag does exactly two things: it stops that square being opened by a stray click, and it counts toward chording.</p>
+      <p>That second point is why strong players flag aggressively in some situations and barely at all in others. If you intend to chord a number, you must flag its mines first. If you are simply reading the board, flags cost time. Speed players on Beginner often finish with almost no flags placed at all.</p>
+      <p>Press the flag again to cycle to a question mark — a useful "I think this is a mine but I am not certain" marker — and once more to clear it.</p>
+
+      <h2 id="first-click">How the first click works</h2>
+      <p>On this board the first click is guaranteed safe, and so are its eight neighbours where the board has room to spare them. That is not a courtesy; it is how the board is built. The grid is empty until you click, and only then are mines scattered into the remaining squares. There is no way to lose on move one.</p>
+      <p>Because the whole 3×3 pocket around your first click is kept clear, that click almost always opens a blank region rather than a lone number, which gives you something to reason from immediately. On a maximum-density custom board where sparing nine squares is impossible, the guarantee shrinks to the clicked square itself — the tool tells you this rather than quietly failing.</p>
+      <div class="ms-callout"><strong>What this does not guarantee:</strong> that the board is solvable without a guess. Generating provably no-guess boards is a much harder problem — it means running a solver during generation and rejecting boards that require a coin flip. It is on our roadmap, and we would rather say so than claim it.</div>
+
+      <h2 id="difficulty">Minesweeper difficulty levels</h2>
+      <p>The three classic sizes have been standard since the early nineties, and the mine <em>density</em> is what actually makes them harder — not the size.</p>
+      <div class="ms-tw">
+        <table class="ms-t">
+          <caption class="ms-vh">Minesweeper difficulty comparison</caption>
+          <thead><tr><th scope="col">Difficulty</th><th scope="col">Board</th><th scope="col">Mines</th><th scope="col">Density</th><th scope="col">Recommended for</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Beginner</th><td>9 × 9 (81)</td><td>10</td><td>12.3%</td><td>Learning the numbers. A good game takes 10–40 seconds.</td></tr>
+            <tr><th scope="row">Intermediate</th><td>16 × 16 (256)</td><td>40</td><td>15.6%</td><td>Once you can clear Beginner reliably. 40–150 seconds.</td></tr>
+            <tr><th scope="row">Expert</th><td>16 × 30 (480)</td><td>99</td><td>20.6%</td><td>The standard competitive board. Under 100 seconds is strong.</td></tr>
+            <tr><th scope="row">Evil</th><td>20 × 30 (600)</td><td>145</td><td>24.2%</td><td>Denser than Expert. Expect to be forced into guesses.</td></tr>
+            <tr><th scope="row">Custom</th><td>5×5 up to 40×60</td><td>your choice</td><td>your choice</td><td>Practising a specific density, or a quick 8×8 on a phone.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Notice the jump from Beginner to Expert is not really about the extra 399 squares — it is that roughly one square in five is mined instead of one in eight. Denser boards produce more ambiguous configurations, which is where guessing creeps in.</p>
+
+      <h2 id="controls">Minesweeper controls</h2>
+      <div class="ms-tw">
+        <table class="ms-t">
+          <caption class="ms-vh">Minesweeper controls on desktop, mobile and keyboard</caption>
+          <thead><tr><th scope="col">Action</th><th scope="col">Desktop</th><th scope="col">Mobile</th><th scope="col">Keyboard</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Open a square</th><td>Left click</td><td>Tap</td><td><kbd>Enter</kbd> or <kbd>Space</kbd></td></tr>
+            <tr><th scope="row">Flag a mine</th><td>Right click</td><td>Long-press, or Flag mode + tap</td><td><kbd>F</kbd></td></tr>
+            <tr><th scope="row">Chord</th><td>Click a finished number, or middle click</td><td>Tap a finished number</td><td><kbd>Enter</kbd> on a number</td></tr>
+            <tr><th scope="row">Move around</th><td>Mouse</td><td>Touch</td><td><kbd>←</kbd><kbd>↑</kbd><kbd>→</kbd><kbd>↓</kbd>, <kbd>Home</kbd>, <kbd>End</kbd></td></tr>
+            <tr><th scope="row">New game</th><td>Click the face</td><td>Tap the face</td><td><kbd>R</kbd></td></tr>
+            <tr><th scope="row">Change difficulty</th><td>Difficulty buttons</td><td>Difficulty buttons</td><td><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="chording">Chording — the technique that halves your time</h2>
+      <p>Chording is the single biggest speed improvement available, and most casual players have never heard of it. If a revealed number already has exactly that many flags around it, then by definition every <em>other</em> neighbour is safe. Clicking that number opens them all at once.</p>
+      <p>A 3 with three flags around it and four unopened neighbours: one click opens the fourth. On a full Expert board this turns hundreds of individual clicks into a few dozen. It is also the reason to flag at all.</p>
+      <p>The safety rail matters: if the flags do <em>not</em> match the number, chording does nothing and the cell gives a small nudge animation rather than detonating something. But if you have flagged wrongly and the count happens to match, chording will open a mine. Chording is exactly as reliable as your flags.</p>
+      <p>On this board, chording on touch is simply <strong>tapping a revealed number</strong> — since tapping an already-open square has no other meaning, no extra mode or gesture is needed.</p>
+
+      <h2 id="strategy">Minesweeper strategy for beginners</h2>
+      <h3>Start in a corner</h3>
+      <p>Corner and edge squares have fewer neighbours — three and five instead of eight — so the numbers there constrain far fewer possibilities and are much easier to solve. Opening in a corner also tends to reveal a larger blank region, because blank areas propagate outward.</p>
+      <h3>The 1-1 rule</h3>
+      <p>Two adjacent 1s along a wall, with unopened squares in front of them: the mine is in the square they <em>share</em>, and the outer squares are safe. This one pattern will carry you through most of Beginner.</p>
+      <p style="text-align:center">
+        <span class="ms-mini" style="grid-template-columns:repeat(3,26px)" aria-hidden="true">
+          <i class="o" data-n="1">1</i><i class="o" data-n="1">1</i><i class="o">·</i>
+          <i></i><i></i><i></i>
+        </span>
+      </p>
+      <h3>The 1-2-1 pattern</h3>
+      <p>A row reading 1-2-1 with three unopened squares beneath: mines sit under the two 1s, and the square under the 2 is safe. It looks backwards the first time you see it, and it is always true.</p>
+      <h3>Count before you click</h3>
+      <p>Every mistake in Minesweeper is a counting mistake. Before opening anything, find one number and check whether its unopened neighbours are already fully explained. If the count of unopened neighbours equals the number minus the flags already placed, all of them are mines.</p>
+      <h3>Two rules that solve most of the board</h3>
+      <ul>
+        <li><strong>If a number equals its unopened neighbour count</strong> (minus flags), every one of those neighbours is a mine.</li>
+        <li><strong>If a number equals its flag count</strong>, every other neighbour is safe — chord it.</li>
+      </ul>
+      <p>Apply those two alternately and you will solve the great majority of any board without a single guess.</p>
+
+      <h2 id="advanced">Advanced strategy: subsets and probability</h2>
+      <h3>The subset rule</h3>
+      <p>When one number's unopened neighbours are a subset of another's, you can subtract them. If a 2 covers squares {A, B, C} and a 1 covers {A, B}, then the 1 accounts for one mine among A and B, so C must be a mine. This single technique resolves most situations that look like they need a guess.</p>
+      <h3>Counting the endgame</h3>
+      <p>Late in a game the mine counter becomes a genuine constraint. If three mines remain and one region can only hold two, the third is somewhere specific. Players who finish Expert consistently are doing global counting, not just local pattern reading.</p>
+      <h3>When you truly must guess</h3>
+      <p>Sometimes the board offers no forced move. Then:</p>
+      <ul>
+        <li><strong>Prefer the lower probability.</strong> A square constrained by a 1 with three unopened neighbours is a 1-in-3 risk; an untouched square in open space is roughly the global density, often better.</li>
+        <li><strong>Prefer corners and edges</strong> when probabilities tie — they generate more information when they turn out safe.</li>
+        <li><strong>Guess early, not late.</strong> A guess with 90% of the board left costs less than one with three squares to go.</li>
+      </ul>
+      <p>Roughly speaking, a well-played Expert game will still be lost to a forced guess a meaningful fraction of the time. That is a property of the puzzle, not a failure of your play.</p>
+
+      <h2 id="mistakes">Common mistakes to avoid</h2>
+      <ul>
+        <li><strong>Trusting the mine counter.</strong> It shows mines minus flags. One wrong flag and every count you do afterwards is wrong.</li>
+        <li><strong>Chording on unverified flags.</strong> The most common way experienced players lose. Chording trusts your flags absolutely.</li>
+        <li><strong>Forgetting diagonals.</strong> Eight neighbours, not four. This is the beginner error.</li>
+        <li><strong>Flagging everything.</strong> Flags cost time and only pay off when you chord. If you are not going to chord that number, do not flag it.</li>
+        <li><strong>Grinding a stuck corner.</strong> If a region will not resolve, open a fresh area. New information often solves the old region for free.</li>
+      </ul>
+
+      <h2 id="speed">How to get faster</h2>
+      <p>Speed comes from three things, in order: chording, not flagging unnecessarily, and reading patterns without consciously counting. Play Beginner repeatedly until 1-1 and 1-2-1 are instant recognition rather than deliberate arithmetic — that transfers directly to bigger boards.</p>
+      <p>Do not chase Expert times before Intermediate is comfortable. The board is the same puzzle; only the density changes. If you want to time yourself away from the game, our <a href="online-notepad.html">online notepad</a> is handy for jotting session notes, and the <a href="typing-speed-test.html">typing speed test</a> scratches a similar "beat your own number" itch.</p>
+
+      <h2 id="mobile">Minesweeper on mobile</h2>
+      <p>Most Minesweeper sites are desktop games that happen to load on a phone. The two things that break are flagging — there is no right click — and board size.</p>
+      <p>Here, <strong>long-press flags</strong>. Press and hold a square for about a third of a second and it flags, with a short vibration where the device supports it. Sliding your finger more than a few pixels cancels it, so scrolling the board never drops a flag by accident, and the browser's own text-selection and context menus are suppressed on the board. If you prefer an explicit mode, the <strong>Flag mode</strong> button switches tapping to flagging.</p>
+      <p>For board size, Expert on a phone is 30 columns wide, and squeezing that into 360 pixels gives 11-pixel cells nobody can hit. Instead the board keeps a usable cell size and the stage scrolls, with zoom controls and a fit-to-screen button. You always know which square you are touching.</p>
+
+      <h2 id="keyboard">Keyboard controls and accessibility</h2>
+      <p>The board is a real ARIA grid of real buttons, so it works with a keyboard and with a screen reader. Arrow keys move a cursor, <kbd>Enter</kbd> opens or chords, <kbd>F</kbd> flags, <kbd>R</kbd> starts a new game. Only the focused square is in the tab order — a roving tabindex — so <kbd>Tab</kbd> takes you past the board rather than through 480 separate stops.</p>
+      <p>Each square announces its position and state: <em>"Row 3 column 5, 2 adjacent mines"</em>, <em>"Row 3 column 5, flagged"</em>, <em>"Row 3 column 5, hidden"</em>. Opening a large blank region does not announce hundreds of cells — that would be unusable. Instead you read the board by moving through it, and a status region announces only what matters: game start, and the win or loss result.</p>
+      <p>For anyone who cannot use a mouse, this is a complete way to play: move to a square, read what it says, decide, act. It is slower than sighted mouse play, as any grid game is, but it is genuinely playable rather than nominally accessible.</p>
+
+      <h2 id="how-to-win">How to win at Minesweeper</h2>
+      <p>You win when every square without a mine is open. Flags are irrelevant to the win condition — you can finish with zero flags placed, or with every flag in the wrong place, as long as the safe squares are all open.</p>
+      <p>Practically, winning consistently means: open a corner, expand the blank region, apply the two counting rules until they stop yielding, then use subset subtraction, then use the global mine count in the endgame, and only then guess — as early as possible and at the best available odds.</p>
+
+      <h2 id="stats">Your statistics</h2>
+      <p>The game keeps games played, games won, win rate, best time, current streak and best streak — separately for each difficulty, because an Expert best time next to a Beginner one is meaningless. All of it is stored in your browser's local storage on this device only. Nothing is uploaded, there is no account, and no other device or person can see it. Clearing your browser data clears it, and there is a <em>Clear statistics</em> button with a confirmation if you want to reset deliberately.</p>
+
+      <h2 id="privacy">Privacy</h2>
+      <p>The entire game runs in your browser. Board generation, mine placement, your clicks, your times and your statistics never leave your device — there is no server component to send them to. You can verify it: open your browser's developer tools, switch to the Network tab, and play a full game. You will see the page's own files load once and nothing after that.</p>
+      <p>The only thing stored is a single local-storage entry holding your statistics and your zoom preference. Details are in our <a href="privacy-policy.html">privacy policy</a>.</p>
+
+      <h2 id="related">More games and tools</h2>
+      <p>If you like Minesweeper's flavour of pure deduction, <a href="sudoku-game.html">Sudoku</a> is the closest relative on the site — same "prove it before you place it" discipline, no hidden information at all. For something faster, <a href="game-2048.html">2048</a> and <a href="snake-game.html">Snake</a> are one-hand games that work well on a phone, and <a href="tic-tac-toe.html">Tic Tac Toe</a> is the quickest possible reset between Minesweeper attempts.</p>
+      <div class="ms-tools">
+        <a class="ms-tool" href="sudoku-game.html"><strong>Sudoku</strong><span>Pure logic, no hidden information</span></a>
+        <a class="ms-tool" href="game-2048.html"><strong>2048</strong><span>One-thumb number puzzle</span></a>
+        <a class="ms-tool" href="snake-game.html"><strong>Snake</strong><span>The classic reflex game</span></a>
+        <a class="ms-tool" href="tic-tac-toe.html"><strong>Tic Tac Toe</strong><span>Fastest possible round</span></a>
+        <a class="ms-tool" href="ludo-game.html"><strong>Ludo</strong><span>Play with friends on one device</span></a>
+        <a class="ms-tool" href="typing-speed-test.html"><strong>Typing Speed Test</strong><span>Another beat-your-own-score loop</span></a>
+        <a class="ms-tool" href="random-name-picker.html"><strong>Random Name Picker</strong><span>Decide who goes first</span></a>
+        <a class="ms-tool" href="online-notepad.html"><strong>Online Notepad</strong><span>Jot notes without leaving the tab</span></a>
+      </div>
+    </article>
+
+    <section class="content-card faq-section" id="faq" style="margin-top:1.5rem">
+      <h2 class="section-title">Frequently asked questions</h2>
+      <div class="grid-2">
+        <details class="faq-item"><summary><strong>What is Minesweeper?</strong></summary><p>A logic puzzle on a grid. Some squares hide mines. Each safe square you open shows how many of its eight neighbours are mined, and you use those numbers to work out where the rest of the mines are. You win by opening every square that is not a mine.</p></details>
+        <details class="faq-item"><summary><strong>How do I play Minesweeper?</strong></summary><p>Click any square to start — the first click is always safe. Read the numbers to deduce where mines are, right-click (or long-press on a phone) to flag them, and keep opening squares you can prove are safe. Clear every non-mine square to win.</p></details>
+        <details class="faq-item"><summary><strong>Is this Minesweeper game free?</strong></summary><p>Yes, completely. No account, no trial, no paid tier, and no limit on games.</p></details>
+        <details class="faq-item"><summary><strong>Does it work on mobile?</strong></summary><p>Yes, and it is built for it rather than merely tolerating it. Tap to open, long-press to flag, tap a finished number to chord. Large boards keep a usable cell size and scroll, with zoom and fit-to-screen controls, instead of shrinking to unhittable specks.</p></details>
+        <details class="faq-item"><summary><strong>Do I need to download anything?</strong></summary><p>No. It is a web page — nothing to install, no extension, no app store. You can add it to your home screen if you want it to open like an app.</p></details>
+        <details class="faq-item"><summary><strong>What do the numbers mean?</strong></summary><p>A number counts the mines in the eight squares touching it, diagonals included. A 3 means exactly three of its neighbours are mined. A blank square touches no mines at all, which is why the board automatically opens the whole empty region around it.</p></details>
+        <details class="faq-item"><summary><strong>How do I flag a mine?</strong></summary><p>Right-click on a computer, long-press for about a third of a second on a phone or tablet, or press <kbd>F</kbd> on the keyboard. There is also a Flag mode button that switches tapping to flagging. Flag again for a question mark, and once more to clear.</p></details>
+        <details class="faq-item"><summary><strong>Can I play Minesweeper with a keyboard?</strong></summary><p>Yes, completely. Arrow keys move between squares, <kbd>Enter</kbd> or <kbd>Space</kbd> opens (or chords on a revealed number), <kbd>F</kbd> flags, <kbd>R</kbd> starts a new game, and <kbd>1</kbd>/<kbd>2</kbd>/<kbd>3</kbd> switch difficulty. Only the focused square is in the tab order, so <kbd>Tab</kbd> skips past the board rather than stepping through every cell.</p></details>
+        <details class="faq-item"><summary><strong>What happens if I click a mine?</strong></summary><p>The game ends. The board reveals every mine, highlights the one you hit in red, and crosses out any flags you placed on safe squares — so you can see exactly where your reasoning went wrong. The timer stops and a Play again button appears immediately.</p></details>
+        <details class="faq-item"><summary><strong>Is the first click safe?</strong></summary><p>Always. Mines are placed after your first click, never underneath it, and the eight squares around it are kept clear too wherever the board has room to spare them. That means your opening click almost always reveals a useful blank region rather than a lone number.</p></details>
+        <details class="faq-item"><summary><strong>How do I win Minesweeper?</strong></summary><p>Open every square that does not contain a mine. You do not need to flag the mines — the game ends the moment the last safe square is revealed, however many flags you have placed.</p></details>
+        <details class="faq-item"><summary><strong>What is chording?</strong></summary><p>Clicking a revealed number that already has the right count of flags around it, which opens all its remaining neighbours at once. It is the biggest speed gain in the game. On touch, simply tap a revealed number. If the flags do not match the number nothing happens, so a mistimed chord is harmless — but if your flags are wrong and the count happens to match, it will open a mine.</p></details>
+        <details class="faq-item"><summary><strong>What is the best Minesweeper strategy?</strong></summary><p>Open a corner first — corners have three neighbours instead of eight, so their numbers are far easier to solve. Then alternate two rules: if a number equals its unopened neighbour count, those are all mines; if a number equals its flag count, the rest are safe and you can chord. When those stop yielding, use subset subtraction, then the global mine count. Guess only when nothing is forced, and guess early rather than late.</p></details>
+        <details class="faq-item"><summary><strong>What is beginner mode?</strong></summary><p>A 9×9 board with 10 mines — about 12% density. It is the right place to learn the numbers and the 1-1 and 1-2-1 patterns. A good game takes 10 to 40 seconds.</p></details>
+        <details class="faq-item"><summary><strong>What is expert mode?</strong></summary><p>A 16×30 board with 99 mines, the standard competitive size. Density jumps to about 21%, which is what really makes it hard — roughly one square in five is mined instead of one in eight. Finishing under 100 seconds is a strong result.</p></details>
+        <details class="faq-item"><summary><strong>Can I create a custom board?</strong></summary><p>Yes. Open the Custom panel and set rows (5–40), columns (5–60) and mines. The tool validates your numbers as you type, shows the resulting mine density with a plain-language difficulty estimate, and refuses configurations that cannot work — such as more mines than there are squares to put them in.</p></details>
+        <details class="faq-item"><summary><strong>Are my statistics saved?</strong></summary><p>Yes, in your browser's local storage on this device, separately for each difficulty. Games played, wins, win rate, best time, current streak and best streak. There is a Clear statistics button with a confirmation if you want to reset them.</p></details>
+        <details class="faq-item"><summary><strong>Is my gameplay uploaded anywhere?</strong></summary><p>No. There is no server component to send it to. Board generation, your moves, your times and your statistics all happen and stay in your browser. Open developer tools, go to the Network tab and play a full game — you will see the page's own files load once and nothing afterwards.</p></details>
+        <details class="faq-item"><summary><strong>Can I play offline?</strong></summary><p>Yes, after your first visit. A service worker caches the page, so it keeps working with no connection — on a plane, on the underground, or on a patchy mobile signal.</p></details>
+        <details class="faq-item"><summary><strong>Does Minesweeper require an account?</strong></summary><p>No. There is no signup, no email, and no login. Open the page and play.</p></details>
+        <details class="faq-item"><summary><strong>Is every board solvable without guessing?</strong></summary><p>No, and any site claiming otherwise without running a solver during generation is guessing too. Mines are placed randomly after your first click, so some boards contain positions where two squares are genuinely indistinguishable and you must pick one. Guaranteed no-guess generation requires solving each candidate board before serving it; it is on our roadmap and we would rather tell you than pretend.</p></details>
+      </div>
+    </section>
+
+    <section class="cta-section content-card" style="margin-top:1.5rem;text-align:center">
+      <h2 class="section-title">Ready for another game?</h2>
+      <p>Free, unlimited, no signup, and nothing leaves your browser. Scroll back up and click any square — the first one is always safe.</p>
+      <p><a class="primary-btn" href="#tool">💣 Play Minesweeper</a></p>
+    </section>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": "https://tooladda.online/minesweeper.html#faq",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Minesweeper?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A logic puzzle on a grid. Some squares hide mines. Each safe square you open shows how many of its eight neighbours are mined, and you use those numbers to work out where the rest of the mines are. You win by opening every square that is not a mine."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I play Minesweeper?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Click any square to start - the first click is always safe. Read the numbers to deduce where mines are, right-click (or long-press on a phone) to flag them, and keep opening squares you can prove are safe. Clear every non-mine square to win."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this Minesweeper game free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, completely. No account, no trial, no paid tier, and no limit on games."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work on mobile?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, and it is built for it rather than merely tolerating it. Tap to open, long-press to flag, tap a finished number to chord. Large boards keep a usable cell size and scroll, with zoom and fit-to-screen controls, instead of shrinking to unhittable specks."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to download anything?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It is a web page — nothing to install, no extension, no app store. You can add it to your home screen if you want it to open like an app."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What do the numbers mean?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A number counts the mines in the eight squares touching it, diagonals included. A 3 means exactly three of its neighbours are mined. A blank square touches no mines at all, which is why the board automatically opens the whole empty region around it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I flag a mine?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Right-click on a computer, long-press for about a third of a second on a phone or tablet, or press F on the keyboard. There is also a Flag mode button that switches tapping to flagging. Flag again for a question mark, and once more to clear."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I play Minesweeper with a keyboard?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, completely. Arrow keys move between squares, Enter or Space opens (or chords on a revealed number), F flags, R starts a new game, and 1 / 2 / 3 switch difficulty. Only the focused square is in the tab order, so Tab skips past the board rather than stepping through every cell."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if I click a mine?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The game ends. The board reveals every mine, highlights the one you hit in red, and crosses out any flags you placed on safe squares - so you can see exactly where your reasoning went wrong. The timer stops and a Play again button appears immediately."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the first click safe?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Always. Mines are placed after your first click, never underneath it, and the eight squares around it are kept clear too wherever the board has room to spare them. That means your opening click almost always reveals a useful blank region rather than a lone number."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I win Minesweeper?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Open every square that does not contain a mine. You do not need to flag the mines — the game ends the moment the last safe square is revealed, however many flags you have placed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is chording?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Clicking a revealed number that already has the right count of flags around it, which opens all its remaining neighbours at once. It is the biggest speed gain in the game. On touch, simply tap a revealed number. If the flags do not match the number nothing happens, so a mistimed chord is harmless - but if your flags are wrong and the count happens to match, it will open a mine."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the best Minesweeper strategy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Open a corner first - corners have three neighbours instead of eight, so their numbers are far easier to solve. Then alternate two rules: if a number equals its unopened neighbour count, those are all mines; if a number equals its flag count, the rest are safe and you can chord. When those stop yielding, use subset subtraction, then the global mine count. Guess only when nothing is forced, and guess early rather than late."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is beginner mode?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A 9×9 board with 10 mines - about 12% density. It is the right place to learn the numbers and the 1-1 and 1-2-1 patterns. A good game takes 10 to 40 seconds."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is expert mode?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A 16×30 board with 99 mines, the standard competitive size. Density jumps to about 21%, which is what really makes it hard - roughly one square in five is mined instead of one in eight. Finishing under 100 seconds is a strong result."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I create a custom board?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Open the Custom panel and set rows (5-40), columns (5-60) and mines. The tool validates your numbers as you type, shows the resulting mine density with a plain-language difficulty estimate, and refuses configurations that cannot work - such as more mines than there are squares to put them in."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are my statistics saved?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, in your browser's local storage on this device, separately for each difficulty. Games played, wins, win rate, best time, current streak and best streak. There is a Clear statistics button with a confirmation if you want to reset them."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my gameplay uploaded anywhere?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. There is no server component to send it to. Board generation, your moves, your times and your statistics all happen and stay in your browser. Open developer tools, go to the Network tab and play a full game - you will see the page's own files load once and nothing afterwards."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I play offline?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, after your first visit. A service worker caches the page, so it keeps working with no connection - on a plane, on the underground, or on a patchy mobile signal."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Minesweeper require an account?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. There is no signup, no email, and no login. Open the page and play."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is every board solvable without guessing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No, and any site claiming otherwise without running a solver during generation is guessing too. Mines are placed randomly after your first click, so some boards contain positions where two squares are genuinely indistinguishable and you must pick one. Guaranteed no-guess generation requires solving each candidate board before serving it; it is on our roadmap and we would rather tell you than pretend."
+      }
+    }
+  ]
+}
+  </script>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a><p>ToolAdda (also known as Tool Adda or Tools Adda) — premium utility tools for modern workflows.</p></div>
+    <div><h3>Explore</h3><div class="footer-links"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms</a></div></div>
+    <div><h3>Stay updated</h3><p>© <span data-year></span> ToolAdda. All rights reserved.</p></div>
+  </div>
+</footer>
+
+<script src="assets/js/app.js" defer></script>
+<script>
+(function () {
+'use strict';
+
+/* ============================================================
+   1. CONFIGURATION — every user-visible string lives here so a
+   future translation is one object, not a hunt through the code.
+   ============================================================ */
+var T = {
+  ready:'Ready', playing:'Playing', won:'You win!', lost:'Game over',
+  minesLeft:function(n){ return n + ' mines remaining'; },
+  win:function(t,d){ return 'Cleared ' + d + ' in ' + t + ' seconds.'; },
+  lose:'You hit a mine. The board is revealed — wrong flags are crossed out.',
+  pb:'New personal best!',
+  again:'Play again', changeDiff:'Change difficulty',
+  cellSR:function(r,c,s){ return 'Row ' + r + ' column ' + c + ', ' + s; },
+  hidden:'hidden', flagged:'flagged', question:'question mark',
+  empty:'empty', mines:function(n){ return n + ' adjacent ' + (n===1?'mine':'mines'); },
+  mine:'mine', wrongFlag:'wrong flag',
+  errRows:'Rows must be between 5 and 40.',
+  errCols:'Columns must be between 5 and 60.',
+  errMines:function(max){ return 'Mines must be between 1 and ' + max + ' for this board size.'; },
+  errBig:'That board is larger than 2400 cells and would be slow. Try a smaller one.',
+  cleared:'Statistics cleared.'
+};
+
+var DIFF = [
+  { id:'beginner',     label:'Beginner',     rows:9,  cols:9,  mines:10, note:'9×9 · 10' },
+  { id:'intermediate', label:'Intermediate', rows:16, cols:16, mines:40, note:'16×16 · 40' },
+  { id:'expert',       label:'Expert',       rows:16, cols:30, mines:99, note:'16×30 · 99' },
+  { id:'evil',         label:'Evil',         rows:20, cols:30, mines:145,note:'20×30 · 145' }
+];
+var LIMITS = { minR:5, maxR:40, minC:5, maxC:60, maxCells:2400, safeZone:9 };
+var STORE = 'ta.ms.v2';
+var CELL_MIN = 20, CELL_MAX = 56;
+
+/* ============================================================
+   2. GAME STATE
+   Board data lives in flat typed arrays indexed r*cols+c. That is
+   the whole reason large boards stay fast: no nested arrays, no
+   per-move allocation, no full-board rebuilds.
+   ============================================================ */
+var HIDDEN = 0, OPEN = 1, FLAG = 2, QM = 3;
+
+var G = {
+  status:'ready', diff:'beginner', rows:9, cols:9, mines:10,
+  mine:null, adj:null, cell:null,
+  opened:0, flags:0,
+  startedAt:0, endedAt:0, elapsed:0,
+  seed:0, rand:null,
+  cursor:0, placed:false, hitIndex:-1,
+  flagMode:false, cellPx:38
+};
+var stats = loadStats();
+
+function $(s,r){ return (r||document).querySelector(s); }
+function $$(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
+function clamp(v,a,b){ return Math.min(b,Math.max(a,v)); }
+function pad3(n){ n = Math.max(0, Math.min(999, n|0)); return n<10?'00'+n : n<100?'0'+n : ''+n; }
+
+var root = $('[data-ms]');
+if (!root) return;
+var boardEl = $('[data-board]', root);
+var stageEl = $('[data-stage]', root);
+var cellEls = [];   // index -> button, built once per board
+
+/* ---------- seedable RNG so daily/shared boards can be added
+   later without touching any other part of the engine ---------- */
+function mulberry32(a){
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    var t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/* ============================================================
+   3. BOARD GENERATION
+   ============================================================ */
+function idx(r,c){ return r*G.cols + c; }
+function inside(r,c){ return r>=0 && r<G.rows && c>=0 && c<G.cols; }
+
+/* Neighbour offsets are recomputed per board, not per click. */
+function forEachNeighbour(i, fn){
+  var r = (i / G.cols) | 0, c = i % G.cols;
+  for (var dr=-1; dr<=1; dr++){
+    for (var dc=-1; dc<=1; dc++){
+      if (!dr && !dc) continue;
+      var nr = r+dr, nc = c+dc;
+      if (nr<0 || nr>=G.rows || nc<0 || nc>=G.cols) continue;
+      fn(nr*G.cols + nc, nr, nc);
+    }
+  }
+}
+
+function newBoard(rows, cols, mines, diffId, seed){
+  G.rows = rows; G.cols = cols; G.mines = mines; G.diff = diffId;
+  var n = rows*cols;
+  G.mine = new Uint8Array(n);
+  G.adj  = new Uint8Array(n);
+  G.cell = new Uint8Array(n);
+  G.opened = 0; G.flags = 0; G.placed = false; G.hitIndex = -1;
+  G.status = 'ready'; G.startedAt = 0; G.endedAt = 0; G.elapsed = 0;
+  G.cursor = 0;
+  G.seed = (seed === undefined || seed === null) ? (Math.random()*4294967296)>>>0 : seed>>>0;
+  G.rand = mulberry32(G.seed);
+  stopTimer();
+  buildDom();
+  syncAll();
+  announce(T.ready + '. ' + rows + ' by ' + cols + ' board, ' + mines + ' mines.');
+}
+
+/* Mines are placed AFTER the first click, using a partial
+   Fisher–Yates shuffle over the eligible cells.
+   The old build used rejection sampling ("pick a random cell until
+   you have enough"), which never terminates when the mine count
+   exceeds the number of eligible cells — a reachable browser freeze
+   on small custom boards. A shuffle cannot loop: it makes exactly
+   one pass and is O(n). */
+function placeMines(firstIndex){
+  var n = G.rows*G.cols;
+  var safe = new Uint8Array(n);
+  safe[firstIndex] = 1;
+  forEachNeighbour(firstIndex, function(j){ safe[j] = 1; });
+
+  var pool = [], i;
+  for (i=0; i<n; i++) if (!safe[i]) pool.push(i);
+
+  // If the board is so dense that the full 3×3 pocket cannot be
+  // spared, shrink the guarantee to the clicked cell itself, which
+  // is the part players actually rely on.
+  if (pool.length < G.mines){
+    pool.length = 0;
+    for (i=0; i<n; i++) if (i !== firstIndex) pool.push(i);
+  }
+  var take = Math.min(G.mines, pool.length);
+  for (i=0; i<take; i++){
+    var j = i + Math.floor(G.rand() * (pool.length - i));
+    var tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp;
+    G.mine[pool[i]] = 1;
+  }
+  G.mines = take;
+
+  for (i=0; i<n; i++){
+    if (G.mine[i]) continue;
+    var count = 0;
+    forEachNeighbour(i, function(j){ if (G.mine[j]) count++; });
+    G.adj[i] = count;
+  }
+  G.placed = true;
+}
+
+/* ============================================================
+   4. GAME ENGINE
+   Every mutation collects the indices it touched, so rendering
+   only ever walks the cells that actually changed.
+   ============================================================ */
+var dirty = [];
+function mark(i){ dirty.push(i); }
+
+function open(i){
+  if (G.status === 'won' || G.status === 'lost') return;
+  if (G.cell[i] === OPEN || G.cell[i] === FLAG) return;
+
+  if (!G.placed){ placeMines(i); startPlay(); }
+
+  if (G.mine[i]){
+    G.cell[i] = OPEN; G.hitIndex = i;
+    endGame(false);
+    return;
+  }
+  flood(i);
+  flushDirty();
+  updateCounters();
+  if (G.opened === G.rows*G.cols - G.mines) endGame(true);
+}
+
+/* Iterative flood fill. A stack, not recursion — a 40×60 board of
+   mostly blanks would blow the call stack otherwise. Only blank
+   (zero-adjacent) cells enqueue their neighbours, so mines can
+   never enter the queue. */
+function flood(start){
+  var stack = [start];
+  while (stack.length){
+    var i = stack.pop();
+    if (G.cell[i] === OPEN || G.cell[i] === FLAG) continue;
+    if (G.cell[i] === QM) { /* question marks do not block opening */ }
+    G.cell[i] = OPEN; G.opened++; mark(i);
+    if (G.adj[i] !== 0) continue;
+    forEachNeighbour(i, function(j){
+      if (G.cell[j] !== OPEN && G.cell[j] !== FLAG) stack.push(j);
+    });
+  }
+}
+
+function cycleFlag(i){
+  if (G.status === 'won' || G.status === 'lost') return;
+  if (G.cell[i] === OPEN) return;
+  if (!G.placed) startPlay();              // flagging first also starts the clock
+  if (G.cell[i] === HIDDEN){ G.cell[i] = FLAG; G.flags++; }
+  else if (G.cell[i] === FLAG){ G.cell[i] = QM; G.flags--; }
+  else { G.cell[i] = HIDDEN; }
+  mark(i); flushDirty(); updateCounters();
+}
+
+/* Chording: opening every remaining neighbour of a satisfied number.
+   Desktop = click or middle-click a revealed number. Touch = simply
+   tap it, since tapping an open cell has no other meaning. */
+function chord(i){
+  if (G.status === 'won' || G.status === 'lost') return;
+  if (G.cell[i] !== OPEN || G.adj[i] === 0) return;
+  var flags = 0, targets = [];
+  forEachNeighbour(i, function(j){
+    if (G.cell[j] === FLAG) flags++;
+    else if (G.cell[j] !== OPEN) targets.push(j);
+  });
+  if (flags !== G.adj[i] || !targets.length){
+    var el = cellEls[i];
+    if (el){ el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
+    return;
+  }
+  for (var k=0; k<targets.length; k++){
+    var t = targets[k];
+    if (G.mine[t]){ G.cell[t] = OPEN; G.hitIndex = t; endGame(false); return; }
+  }
+  for (k=0; k<targets.length; k++) flood(targets[k]);
+  flushDirty(); updateCounters();
+  if (G.opened === G.rows*G.cols - G.mines) endGame(true);
+}
+
+function startPlay(){
+  G.status = 'playing';
+  G.startedAt = Date.now();
+  startTimer();
+  setFace('🙂', T.playing);
+}
+
+function endGame(won){
+  G.status = won ? 'won' : 'lost';
+  G.endedAt = Date.now();
+  G.elapsed = elapsedSeconds();
+  stopTimer();
+  boardEl.classList.add('is-over');
+
+  var n = G.rows*G.cols, i;
+  if (won){
+    // flag every remaining mine so the finished board reads cleanly
+    for (i=0;i<n;i++) if (G.mine[i] && G.cell[i] !== OPEN){ G.cell[i] = FLAG; mark(i); }
+    G.flags = G.mines;
+  } else {
+    for (i=0;i<n;i++){
+      if (G.mine[i] && G.cell[i] !== FLAG){ mark(i); }
+      else if (!G.mine[i] && G.cell[i] === FLAG){ mark(i); }
+    }
+  }
+  flushDirty(); updateCounters();
+  setFace(won ? '😎' : '😵', won ? T.won : T.lost);
+  var pb = recordResult(won);
+  showResult(won, pb);
+  $('[data-live-end]', root).textContent =
+    won ? T.won + ' ' + T.win(G.elapsed, diffLabel()) + (pb ? ' ' + T.pb : '')
+        : T.lost + '. ' + T.lose;
+}
+
+/* ============================================================
+   5. RENDERING — build once, patch only what changed
+   ============================================================ */
+function buildDom(){
+  var frag = document.createDocumentFragment();
+  cellEls = new Array(G.rows*G.cols);
+  boardEl.classList.remove('is-over');
+  for (var r=0; r<G.rows; r++){
+    var row = document.createElement('div');
+    row.className = 'ms-row'; row.setAttribute('role','row');
+    for (var c=0; c<G.cols; c++){
+      var i = idx(r,c);
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'ms-cell';
+      b.setAttribute('role','gridcell');
+      b.dataset.i = i;
+      b.tabIndex = -1;                       // roving tabindex, see focusCell()
+      cellEls[i] = b;
+      row.appendChild(b);
+    }
+    frag.appendChild(row);
+  }
+  boardEl.textContent = '';
+  boardEl.appendChild(frag);
+  if (cellEls[0]) cellEls[0].tabIndex = 0;
+  fitBoard();
+}
+
+function paint(i){
+  var el = cellEls[i]; if (!el) return;
+  var s = G.cell[i], over = (G.status === 'won' || G.status === 'lost');
+  var cls = 'ms-cell', txt = '', n = '', sr;
+
+  if (s === OPEN && !G.mine[i]){
+    cls += ' is-open';
+    if (((i/G.cols|0) + (i%G.cols)) % 2) cls += ' alt';
+    if (G.adj[i] > 0){ txt = String(G.adj[i]); n = txt; sr = T.mines(G.adj[i]); }
+    else sr = T.empty;
+  } else if (over && G.mine[i] && s !== FLAG){
+    cls += ' is-mine' + (i === G.hitIndex ? ' is-hit' : '');
+    txt = '💣'; sr = T.mine;
+  } else if (over && !G.mine[i] && s === FLAG){
+    cls += ' is-wrong'; txt = '🚩'; sr = T.wrongFlag;
+  } else if (s === FLAG){
+    cls += ' is-flag'; txt = '🚩'; sr = T.flagged;
+  } else if (s === QM){
+    cls += ' is-qm'; txt = '?'; sr = T.question;
+  } else {
+    sr = T.hidden;
+  }
+
+  el.className = cls;
+  if (n) el.dataset.n = n; else delete el.dataset.n;
+  if (el.textContent !== txt) el.textContent = txt;
+  el.setAttribute('aria-label', T.cellSR((i/G.cols|0)+1, (i%G.cols)+1, sr));
+  el.setAttribute('aria-disabled', over ? 'true' : 'false');
+}
+
+function flushDirty(){
+  for (var k=0; k<dirty.length; k++) paint(dirty[k]);
+  dirty.length = 0;
+}
+function syncAll(){
+  for (var i=0; i<G.rows*G.cols; i++) paint(i);
+  updateCounters(); renderDiffs(); renderStats(); hideResult();
+  setFace('🙂', T.ready);
+  focusCell(G.cursor, false);
+}
+
+function updateCounters(){
+  var left = G.mines - G.flags;
+  $('[data-mines]', root).textContent = (left < 0 ? '-' : '') + pad3(Math.abs(left));
+  $('[data-mines-sr]', root).textContent = T.minesLeft(left);
+}
+
+function setFace(emoji, label){
+  var f = $('[data-face]', root);
+  f.textContent = emoji;
+  f.setAttribute('aria-label', 'New game. Current state: ' + label);
+}
+
+/* ============================================================
+   6. TIMER — wall-clock based, so it cannot drift, and it never
+   triggers a board re-render (it writes one text node).
+   ============================================================ */
+var tick = 0;
+function elapsedSeconds(){
+  if (!G.startedAt) return 0;
+  return Math.min(999, Math.floor(((G.endedAt || Date.now()) - G.startedAt) / 1000));
+}
+function startTimer(){
+  stopTimer();
+  tick = setInterval(function(){
+    $('[data-timer]', root).textContent = pad3(elapsedSeconds());
+  }, 250);
+}
+function stopTimer(){
+  if (tick) clearInterval(tick);
+  tick = 0;
+  $('[data-timer]', root).textContent = pad3(elapsedSeconds());
+}
+
+/* ============================================================
+   7. INPUT — one delegated listener set on the board, not four
+   listeners per cell. The old build attached 4 listeners to every
+   cell and rebuilt the whole board after each click: 1,920 listener
+   allocations per move on Expert, and focus was destroyed each time.
+   ============================================================ */
+var press = { i:-1, x:0, y:0, t:0, timer:0, long:false, id:-1 };
+
+function cellIndexFrom(ev){
+  var el = ev.target.closest ? ev.target.closest('.ms-cell') : null;
+  return el ? +el.dataset.i : -1;
+}
+function cancelPress(){
+  if (press.timer) clearTimeout(press.timer);
+  press.timer = 0; press.i = -1; press.id = -1;
+}
+
+boardEl.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+
+boardEl.addEventListener('pointerdown', function(e){
+  var i = cellIndexFrom(e);
+  if (i < 0) return;
+  if (e.pointerType === 'mouse'){
+    if (e.button === 2){ e.preventDefault(); cycleFlag(i); return; }
+    if (e.button === 1){ e.preventDefault(); chord(i); return; }
+    if (e.button !== 0) return;
+    press.i = i; press.long = false;
+    return;
+  }
+  // touch / pen: long-press flags, and we track movement so that
+  // scrolling the board never drops a flag.
+  press.i = i; press.long = false; press.id = e.pointerId;
+  press.x = e.clientX; press.y = e.clientY; press.t = Date.now();
+  press.timer = setTimeout(function(){
+    press.long = true; press.timer = 0;
+    cycleFlag(i);
+    if (navigator.vibrate) { try { navigator.vibrate(18); } catch(err){} }
+  }, 380);
+});
+
+boardEl.addEventListener('pointermove', function(e){
+  if (press.i < 0 || !press.timer) return;
+  if (Math.abs(e.clientX - press.x) > 10 || Math.abs(e.clientY - press.y) > 10) cancelPress();
+});
+
+boardEl.addEventListener('pointerup', function(e){
+  var i = cellIndexFrom(e);
+  var wasLong = press.long, pressed = press.i;
+  cancelPress(); press.long = false;
+  if (i < 0 || i !== pressed) return;
+  if (wasLong) { e.preventDefault(); return; }      // long-press already flagged
+  if (e.pointerType === 'mouse' && e.button !== 0) return;
+  act(i);
+});
+boardEl.addEventListener('pointercancel', function(){ cancelPress(); press.long = false; });
+boardEl.addEventListener('pointerleave', function(){ cancelPress(); });
+// Buttons still emit click for assistive tech and for Enter/Space.
+boardEl.addEventListener('click', function(e){ e.preventDefault(); });
+
+function act(i){
+  focusCell(i, false);
+  if (G.cell[i] === OPEN) chord(i);
+  else if (G.flagMode) cycleFlag(i);
+  else open(i);
+}
+
+/* ---------- keyboard ---------- */
+function focusCell(i, doFocus){
+  i = clamp(i, 0, G.rows*G.cols - 1);
+  if (cellEls[G.cursor]) cellEls[G.cursor].tabIndex = -1;
+  G.cursor = i;
+  if (cellEls[i]){
+    cellEls[i].tabIndex = 0;
+    if (doFocus !== false) cellEls[i].focus();
+  }
+}
+
+root.addEventListener('keydown', function(e){
+  var t = e.target;
+  if (t.tagName === 'INPUT') return;                 // never steal typing
+  var onBoard = t.classList && t.classList.contains('ms-cell');
+  var k = e.key, r = (G.cursor / G.cols) | 0, c = G.cursor % G.cols;
+
+  if (onBoard){
+    if (k === 'ArrowUp'){ e.preventDefault(); focusCell(idx(Math.max(0,r-1), c)); return; }
+    if (k === 'ArrowDown'){ e.preventDefault(); focusCell(idx(Math.min(G.rows-1,r+1), c)); return; }
+    if (k === 'ArrowLeft'){ e.preventDefault(); focusCell(idx(r, Math.max(0,c-1))); return; }
+    if (k === 'ArrowRight'){ e.preventDefault(); focusCell(idx(r, Math.min(G.cols-1,c+1))); return; }
+    if (k === 'Home'){ e.preventDefault(); focusCell(idx(r,0)); return; }
+    if (k === 'End'){ e.preventDefault(); focusCell(idx(r,G.cols-1)); return; }
+    if (k === 'Enter' || k === ' '){ e.preventDefault(); act(G.cursor); describeCell(G.cursor); return; }
+    if (k === 'f' || k === 'F'){ e.preventDefault(); cycleFlag(G.cursor); describeCell(G.cursor); return; }
+  }
+  if (k === 'r' || k === 'R'){ e.preventDefault(); restart(); }
+  else if (k === '1'){ setDiff('beginner'); }
+  else if (k === '2'){ setDiff('intermediate'); }
+  else if (k === '3'){ setDiff('expert'); }
+  else if (k === 'Escape'){ closePanels(); }
+});
+
+/* Screen-reader users get the cell they just acted on, on demand —
+   not a running commentary of every cell the flood fill opened. */
+function describeCell(i){
+  var el = cellEls[i];
+  if (el) announce(el.getAttribute('aria-label'));
+}
+var liveTimer = 0;
+function announce(msg){
+  clearTimeout(liveTimer);
+  liveTimer = setTimeout(function(){ $('[data-live]', root).textContent = msg; }, 120);
+}
+
+/* ============================================================
+   8. DIFFICULTY, CUSTOM BOARDS, ZOOM
+   ============================================================ */
+function diffLabel(){
+  for (var i=0;i<DIFF.length;i++) if (DIFF[i].id === G.diff) return DIFF[i].label;
+  return 'Custom ' + G.rows + '×' + G.cols;
+}
+function renderDiffs(){
+  var host = $('[data-diffs]', root);
+  if (!host.childNodes.length){
+    DIFF.forEach(function(d){
+      var b = document.createElement('button');
+      b.type='button'; b.className='ms-diff'; b.dataset.diff=d.id;
+      b.innerHTML = d.label + '<small>' + d.note + '</small>';
+      b.addEventListener('click', function(){ setDiff(d.id); });
+      host.appendChild(b);
+    });
+    var cb = document.createElement('button');
+    cb.type='button'; cb.className='ms-diff'; cb.dataset.diff='custom';
+    cb.innerHTML = 'Custom<small>your size</small>';
+    cb.addEventListener('click', function(){ openPanel('custom'); });
+    host.appendChild(cb);
+  }
+  $$('[data-diff]', host).forEach(function(b){
+    b.setAttribute('aria-pressed', String(b.dataset.diff === G.diff));
+  });
+}
+function setDiff(id){
+  var d = null;
+  for (var i=0;i<DIFF.length;i++) if (DIFF[i].id === id) d = DIFF[i];
+  if (!d) return;
+  save();
+  newBoard(d.rows, d.cols, d.mines, d.id);
+}
+function restart(){
+  var d = null;
+  for (var i=0;i<DIFF.length;i++) if (DIFF[i].id === G.diff) d = DIFF[i];
+  if (d) newBoard(d.rows, d.cols, d.mines, d.id);
+  else newBoard(G.rows, G.cols, G.mines, 'custom');
+}
+
+function validateCustom(rows, cols, mines){
+  if (!(rows >= LIMITS.minR && rows <= LIMITS.maxR)) return T.errRows;
+  if (!(cols >= LIMITS.minC && cols <= LIMITS.maxC)) return T.errCols;
+  if (rows*cols > LIMITS.maxCells) return T.errBig;
+  var max = rows*cols - LIMITS.safeZone;      // always leave room for the safe pocket
+  if (!(mines >= 1 && mines <= max)) return T.errMines(max);
+  return null;
+}
+function customEstimate(rows, cols, mines){
+  var density = mines / (rows*cols);
+  var word = density < 0.13 ? 'Gentle' : density < 0.17 ? 'Classic' : density < 0.21 ? 'Hard' : 'Brutal';
+  return rows + '×' + cols + ' · ' + mines + ' mines · ' + Math.round(density*100) +
+         '% density — ' + word + '. (Beginner is 12%, Expert is 21%.)';
+}
+function wireCustom(){
+  var R = $('#msRows'), C = $('#msCols'), M = $('#msMines');
+  var err = $('[data-custom-err]', root), est = $('[data-custom-est]', root);
+  function check(){
+    var r = +R.value|0, c = +C.value|0, m = +M.value|0;
+    var msg = validateCustom(r,c,m);
+    err.textContent = msg || '';
+    [R,C,M].forEach(function(el){ el.setAttribute('aria-invalid', msg ? 'true':'false'); });
+    est.textContent = msg ? '' : customEstimate(r,c,m);
+    return msg ? null : {r:r,c:c,m:m};
+  }
+  [R,C,M].forEach(function(el){ el.addEventListener('input', check); });
+  $('[data-startcustom]', root).addEventListener('click', function(){
+    var ok = check();
+    if (!ok){ err.focus && err.focus(); return; }
+    save();
+    newBoard(ok.r, ok.c, ok.m, 'custom');
+    closePanels();
+  });
+  check();
+}
+
+function fitBoard(){
+  var avail = stageEl.clientWidth - 18;
+  var per = Math.floor((avail - (G.cols-1)*2) / G.cols);
+  G.cellPx = clamp(per, CELL_MIN, CELL_MAX);
+  applyZoom();
+}
+function applyZoom(){
+  root.style.setProperty('--cell', G.cellPx + 'px');
+  $('[data-zoomlabel]', root).textContent = G.cellPx + 'px';
+}
+$$('[data-zoom]', root).forEach(function(b){
+  b.addEventListener('click', function(){
+    var d = +b.dataset.zoom;
+    if (d === 0){ fitBoard(); return; }
+    G.cellPx = clamp(G.cellPx + d*4, CELL_MIN, CELL_MAX);
+    applyZoom(); save();
+  });
+});
+
+/* ============================================================
+   9. RESULT BANNER + STATISTICS (local only)
+   ============================================================ */
+function showResult(won, pb){
+  var el = $('[data-result]', root);
+  el.className = 'ms-result ' + (won ? 'win' : 'lose');
+  el.hidden = false;
+  el.innerHTML = '';
+  var left = document.createElement('div');
+  var h = document.createElement('h2');
+  h.textContent = won ? '🎉 ' + T.won : '💥 ' + T.lost;
+  var p = document.createElement('p');
+  p.textContent = won ? T.win(G.elapsed, diffLabel()) : T.lose;
+  if (won && pb){
+    var b = document.createElement('span'); b.className='pb'; b.textContent = T.pb;
+    p.appendChild(b);
+  }
+  left.appendChild(h); left.appendChild(p);
+  var acts = document.createElement('div');
+  acts.className = 'ms-result-actions';
+  var again = document.createElement('button');
+  again.type='button'; again.className='ms-btn'; again.textContent = '▶ ' + T.again;
+  again.addEventListener('click', function(){ restart(); boardEl.focus && focusCell(0); });
+  var chg = document.createElement('button');
+  chg.type='button'; chg.className='ms-btn'; chg.textContent = T.changeDiff;
+  chg.addEventListener('click', function(){
+    $('[data-diffs]', root).scrollIntoView({block:'nearest'});
+    var f = $('[data-diff]', root); if (f) f.focus();
+  });
+  acts.appendChild(again); acts.appendChild(chg);
+  el.appendChild(left); el.appendChild(acts);
+  if (won) confetti();
+}
+function hideResult(){ var el = $('[data-result]', root); el.hidden = true; el.innerHTML=''; }
+
+function loadStats(){
+  try {
+    var raw = localStorage.getItem(STORE);
+    var o = raw ? JSON.parse(raw) : null;
+    return (o && o.stats) ? o.stats : {};
+  } catch(e){ return {}; }
+}
+function save(){
+  try {
+    localStorage.setItem(STORE, JSON.stringify({ stats:stats, cellPx:G.cellPx, diff:G.diff }));
+  } catch(e){ /* private mode or full quota — the game still plays */ }
+}
+function statKey(){ return G.diff === 'custom' ? 'custom' : G.diff; }
+
+function recordResult(won){
+  var k = statKey();
+  var s = stats[k] || (stats[k] = { played:0, won:0, best:0, streak:0, bestStreak:0 });
+  s.played++;
+  var pb = false;
+  if (won){
+    s.won++; s.streak++;
+    if (s.streak > s.bestStreak) s.bestStreak = s.streak;
+    if (!s.best || G.elapsed < s.best){ s.best = G.elapsed; pb = s.played > 1; }
+  } else { s.streak = 0; }
+  save(); renderStats();
+  return pb;
+}
+function renderStats(){
+  var host = $('[data-statgrid]', root);
+  var s = stats[statKey()] || { played:0, won:0, best:0, streak:0, bestStreak:0 };
+  var rate = s.played ? Math.round(s.won / s.played * 100) : 0;
+  var items = [
+    [s.played, 'Played'], [s.won, 'Won'], [rate + '%', 'Win rate'],
+    [s.best ? s.best + 's' : '—', 'Best time'], [s.streak, 'Streak'], [s.bestStreak, 'Best streak']
+  ];
+  host.innerHTML = '';
+  items.forEach(function(it){
+    var d = document.createElement('div');
+    d.className = 'ms-stat';
+    var b = document.createElement('b'); b.textContent = it[0];
+    var sp = document.createElement('span'); sp.textContent = it[1];
+    d.appendChild(b); d.appendChild(sp); host.appendChild(d);
+  });
+}
+$('[data-clearstats]', root).addEventListener('click', function(){
+  if (!confirm('Clear all saved statistics on this device? This cannot be undone.')) return;
+  stats = {}; save(); renderStats();
+  announce(T.cleared);
+});
+
+/* Confetti: ~20 spans, removed after the animation. No library. */
+function confetti(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var layer = document.createElement('div');
+  layer.className = 'confetti-layer';
+  layer.style.cssText = 'position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:4';
+  stageEl.style.position = 'relative';
+  stageEl.appendChild(layer);
+  var cols = ['#4f46e5','#16a34a','#f59e0b','#ef4444','#8b5cf6'];
+  for (var i=0;i<20;i++){
+    var p = document.createElement('span');
+    p.style.cssText = 'position:absolute;top:-16px;width:8px;height:13px;border-radius:2px;left:'+
+      (Math.random()*100)+'%;background:'+cols[i%cols.length]+
+      ';animation:ms-fall 1.9s ease-out forwards;animation-delay:'+(Math.random()*.25)+'s';
+    p.style.setProperty('--dx', ((Math.random()-.5)*200)+'px');
+    layer.appendChild(p);
+  }
+  setTimeout(function(){ layer.remove(); }, 2400);
+}
+
+/* ============================================================
+   10. PANELS + INIT
+   ============================================================ */
+function closePanels(){
+  $$('[data-panel]', root).forEach(function(p){ p.hidden = true; });
+  $$('[data-toggle]', root).forEach(function(b){ b.setAttribute('aria-expanded','false'); });
+}
+function openPanel(name){
+  var panel = $('[data-panel="'+name+'"]', root);
+  var wasOpen = !panel.hidden;
+  closePanels();
+  if (wasOpen) return;
+  panel.hidden = false;
+  var btn = $('[data-toggle="'+name+'"]', root);
+  if (btn) btn.setAttribute('aria-expanded','true');
+  requestAnimationFrame(function(){
+    panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+    if (name === 'custom'){
+      var first = $('#msRows');
+      if (first) first.focus({ preventScroll:true });
+    }
+  });
+}
+$$('[data-toggle]', root).forEach(function(b){
+  b.addEventListener('click', function(){ openPanel(b.dataset.toggle); });
+});
+$('[data-face]', root).addEventListener('click', restart);
+$('[data-flagmode]', root).addEventListener('click', function(){
+  G.flagMode = !G.flagMode;
+  this.setAttribute('aria-pressed', String(G.flagMode));
+  announce(G.flagMode ? 'Flag mode on. Tapping a square places a flag.' : 'Flag mode off. Tapping a square opens it.');
+});
+
+var rz;
+window.addEventListener('resize', function(){ clearTimeout(rz); rz = setTimeout(fitBoard, 150); });
+
+(function init(){
+  try {
+    var raw = localStorage.getItem(STORE);
+    if (raw){
+      var o = JSON.parse(raw);
+      if (o.cellPx) G.cellPx = clamp(o.cellPx, CELL_MIN, CELL_MAX);
+      if (o.diff) G.diff = o.diff;
+    }
+  } catch(e){}
+  wireCustom();
+  var d = DIFF[0];
+  for (var i=0;i<DIFF.length;i++) if (DIFF[i].id === G.diff) d = DIFF[i];
+  newBoard(d.rows, d.cols, d.mines, d.id);
+})();
+
+if ('serviceWorker' in navigator){
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('/minesweeper-sw.js', { scope: '/minesweeper.html' }).catch(function(){});
+  });
+}
+})();
+</script>
+<style>@keyframes ms-fall{to{transform:translate3d(var(--dx),110vh,0) rotate(680deg);opacity:0}}</style>
+  <script src="assets/js/side-ads.js" defer></script>
+  <script src="assets/js/inline-ads.js" data-in-article defer></script>
+</body>
+</html>

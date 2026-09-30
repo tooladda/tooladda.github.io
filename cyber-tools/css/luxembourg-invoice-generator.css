@@ -1,0 +1,1011 @@
+/* ============================================================================
+   Luxembourg Invoice Generator
+   Prefix: lxi-
+   Accent: fiscal navy #24356b, with Luxembourg sky #2f86c9 as the highlight
+
+   COLOUR INTENT. Three of the four hue families on this page are already
+   spoken for by meaning rather than decoration: green says a checksum
+   passed, amber says look at this, red says the invoice is not valid as it
+   stands. A decorative accent drawn from any of them competes with a verdict
+   the user needs to read, so the theme is built entirely in the cool range
+   and leaves warm colour to mean something.
+
+   Navy carries the fiscal-document register the tool is aiming at, and the
+   sky blue is a nod to the Luxembourg flag — used sparingly, on the eyebrow
+   rule, gradients and small highlights, never on anything load-bearing.
+
+   Layout intent: a two-column studio. The form on the left, a live A4 sheet
+   on the right, so a change to a VAT number or a supply type is visible on
+   the document immediately rather than after a "generate" step.
+
+   The sheet is deliberately exempt from the site's dark theme. Paper is
+   white, the PDF will be white, and a dark preview of a light document
+   teaches the user the wrong thing about what they are about to send. Every
+   other surface follows the theme.
+
+   On a phone the two columns cannot coexist, so they become tabs: Edit and
+   Preview, with Edit first.
+   ============================================================================ */
+
+.lxi-page {
+  --lxi-accent: #24356b;
+  --lxi-accent-deep: #16224a;
+  --lxi-accent-soft: rgba(36, 53, 107, .075);
+  --lxi-accent-line: rgba(36, 53, 107, .2);
+
+  /* Decorative only. Kept separate from --lxi-warn so a gradient can never
+     be mistaken for a warning; the two used to be the same hex. */
+  --lxi-sky: #2f86c9;
+  --lxi-sky-soft: rgba(47, 134, 201, .1);
+
+  --lxi-bg: #eef1f7;
+  --lxi-grad:
+    radial-gradient(920px 480px at 4% -12%, rgba(36, 53, 107, .11), transparent 60%),
+    radial-gradient(780px 420px at 100% -4%, rgba(47, 134, 201, .1), transparent 56%);
+
+  --lxi-surface: #ffffff;
+  --lxi-soft: #f4f6fb;
+  --lxi-text: #14192e;
+  --lxi-text-2: #515c78;
+  --lxi-text-3: #7e88a3;
+  --lxi-border: #dee3ee;
+  --lxi-border-strong: #bcc5da;
+
+  --lxi-ok: #0f7b4f;
+  --lxi-ok-soft: rgba(15, 123, 79, .1);
+  --lxi-warn: #9a6212;
+  --lxi-warn-soft: rgba(154, 98, 18, .12);
+  --lxi-danger: #b42318;
+  --lxi-danger-soft: rgba(180, 35, 24, .09);
+
+  --lxi-r-lg: 18px;
+  --lxi-r-md: 12px;
+  --lxi-r-sm: 8px;
+  --lxi-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Two shadows rather than one: a tight contact shadow that reads as the
+     card touching the page, and a wide soft one that gives it height. A
+     single blur has to choose between the two and looks like neither. */
+  --lxi-shadow: 0 1px 2px rgba(20, 25, 46, .05), 0 12px 32px rgba(20, 25, 46, .07);
+  --lxi-shadow-lift: 0 2px 4px rgba(20, 25, 46, .06), 0 18px 44px rgba(20, 25, 46, .11);
+  --lxi-ring: 0 0 0 4px rgba(36, 53, 107, .14);
+
+  background: var(--lxi-bg) !important;
+  /* Not background-attachment: fixed — that repaints the whole page on every
+     scroll frame and made scrolling judder. The glow sits at the top anyway. */
+  background-image: var(--lxi-grad) !important;
+  background-repeat: no-repeat !important;
+  color: var(--lxi-text);
+}
+
+[data-theme="dark"] .lxi-page {
+  /* Navy cannot stay navy on a dark ground — it disappears. The accent
+     inverts to the light end of the same hue so the page still reads as the
+     same colour family rather than becoming a different tool at night. */
+  --lxi-accent: #9db8ee;
+  --lxi-accent-deep: #c6d7f8;
+  --lxi-accent-soft: rgba(157, 184, 238, .13);
+  --lxi-accent-line: rgba(157, 184, 238, .3);
+
+  --lxi-sky: #6cb6e8;
+  --lxi-sky-soft: rgba(108, 182, 232, .13);
+
+  --lxi-bg: #080d1a;
+  --lxi-grad:
+    radial-gradient(920px 480px at 4% -12%, rgba(157, 184, 238, .1), transparent 60%),
+    radial-gradient(780px 420px at 100% -4%, rgba(108, 182, 232, .07), transparent 56%);
+
+  --lxi-surface: #111a2e;
+  --lxi-soft: #17203a;
+  --lxi-text: #e9edf9;
+  --lxi-text-2: #a6b2cd;
+  --lxi-text-3: #7b87a4;
+  --lxi-border: #232e4c;
+  --lxi-border-strong: #33405f;
+
+  --lxi-ok: #4ade80;
+  --lxi-ok-soft: rgba(74, 222, 128, .12);
+  --lxi-warn: #fbbf24;
+  --lxi-warn-soft: rgba(251, 191, 36, .12);
+  --lxi-danger: #f87171;
+  --lxi-danger-soft: rgba(248, 113, 113, .12);
+
+  --lxi-shadow: 0 1px 2px rgba(0, 0, 0, .34), 0 12px 32px rgba(0, 0, 0, .42);
+  --lxi-shadow-lift: 0 2px 6px rgba(0, 0, 0, .4), 0 20px 48px rgba(0, 0, 0, .5);
+  --lxi-ring: 0 0 0 4px rgba(157, 184, 238, .2);
+}
+
+/* ---------------------------------------------------------------- shell -- */
+
+/* Same width as the site's .container, so the page lines up with the header
+   above it and leaves the desktop gutters free for the side banners. */
+.lxi-wrap {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: calc(var(--header-overlap, 5.5rem) + 1rem) 0 4rem;
+}
+
+.lxi-crumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  align-items: center;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--lxi-text-3);
+  margin-bottom: 1rem;
+}
+.lxi-crumb a { color: var(--lxi-text-2); }
+.lxi-crumb a:hover { color: var(--lxi-accent); text-decoration: underline; }
+
+/* ------------------------------------------------------------------ hero -
+
+   The hero is the one place on the page that is allowed to be loud. It runs
+   full-bleed and stays dark in BOTH themes, which does two things: it gives
+   the tool an identity the moment it loads, and it fixes the old problem
+   where the light theme opened on a white card sitting on grey — correct,
+   and completely forgettable.
+
+   Everything below it stays quiet, because that is where the work happens.
+   -------------------------------------------------------------------------- */
+
+.lxi-hero {
+  position: relative;
+  isolation: isolate;
+  border-radius: var(--lxi-r-lg);
+  padding: clamp(2rem, 5vw, 3.5rem) clamp(1.25rem, 3vw, 2.75rem) clamp(1.75rem, 4vw, 2.75rem);
+  margin-bottom: 1.5rem;
+  color: #eef2ff;
+  overflow: hidden;
+  background:
+    radial-gradient(1100px 520px at 12% -20%, rgba(47, 134, 201, .5), transparent 62%),
+    radial-gradient(760px 460px at 88% 4%, rgba(99, 91, 214, .42), transparent 60%),
+    radial-gradient(620px 380px at 62% 110%, rgba(38, 166, 208, .3), transparent 62%),
+    linear-gradient(150deg, #101a38, #16224a 46%, #0d1530);
+  box-shadow: 0 24px 60px rgba(12, 20, 46, .3);
+}
+
+/* A fine grid, faded out towards the bottom. It reads as drafting paper
+   rather than decoration, which is the register an invoice tool wants. */
+.lxi-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, .05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .05) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 78%);
+          mask-image: linear-gradient(180deg, #000 0%, transparent 78%);
+}
+
+.lxi-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  margin: 0 0 1rem;
+  padding: .4rem .9rem .4rem .65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(158, 190, 255, .34);
+  background: rgba(126, 165, 245, .14);
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #cfe0ff;
+}
+.lxi-eyebrow::before {
+  content: "";
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #7fb2f0, #5ee0e0);
+}
+
+.lxi-h1 {
+  margin: 0 0 .9rem;
+  max-width: 26ch;
+  font-size: clamp(1.9rem, 4.4vw, 3.1rem);
+  line-height: 1.08;
+  letter-spacing: -.03em;
+  color: #ffffff;
+}
+/* The qualifier carries the promise, so it gets the colour and the rest of
+   the sentence stays white — a gradient across the whole headline would cost
+   contrast on the half that is doing the plain work of naming the tool. */
+.lxi-h1 .lxi-h1__accent {
+  display: block;
+  background: linear-gradient(96deg, #8dd0ff, #b8a5ff 52%, #7ef0dc);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+
+.lxi-lede {
+  margin: 0;
+  max-width: 64ch;
+  color: #b9c6e8;
+  font-size: clamp(.97rem, 1.5vw, 1.08rem);
+  line-height: 1.65;
+}
+.lxi-lede em { color: #dbe5ff; font-style: italic; }
+
+.lxi-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  font-size: .82rem;
+  font-weight: 700;
+  color: #d3ddf5;
+}
+.lxi-trust li {
+  border: 1px solid rgba(160, 190, 250, .26);
+  background: rgba(143, 176, 240, .12);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+  border-radius: 999px;
+  padding: .44rem .9rem;
+}
+
+/* ---------------------------------------------------------------- tabs --- */
+
+/* Only visible on narrow screens, where the two panes cannot sit together. */
+.lxi-tabs {
+  display: none;
+  gap: .4rem;
+  background: var(--lxi-surface);
+  border: 1px solid var(--lxi-border);
+  border-radius: 999px;
+  padding: .3rem;
+  margin-bottom: 1rem;
+}
+.lxi-tabs button {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  border-radius: 999px;
+  padding: .55rem .8rem;
+  font-weight: 800;
+  font-size: .88rem;
+  color: var(--lxi-text-2);
+  cursor: pointer;
+}
+.lxi-tabs button { transition: background .16s ease, color .16s ease; }
+.lxi-tabs button[aria-pressed="true"] {
+  background: linear-gradient(140deg, var(--lxi-accent), var(--lxi-accent-deep));
+  color: #fff;
+}
+[data-theme="dark"] .lxi-tabs button[aria-pressed="true"] { color: #0d1428; }
+
+/* --------------------------------------------------------------- studio -- */
+
+.lxi-studio {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.lxi-panel {
+  background:
+    linear-gradient(180deg, var(--lxi-accent-soft), transparent 88px),
+    var(--lxi-surface);
+  border: 1px solid var(--lxi-border);
+  border-radius: var(--lxi-r-lg);
+  box-shadow: var(--lxi-shadow);
+  padding: clamp(1rem, 2.2vw, 1.5rem);
+  margin-bottom: 1.25rem;
+  transition: box-shadow .22s ease, border-color .22s ease;
+}
+/* Focus-within rather than hover: the panel you are typing in is the one
+   worth lifting, and that also works for keyboard and touch, where hover
+   either does not exist or sticks. */
+.lxi-panel:focus-within {
+  box-shadow: var(--lxi-shadow-lift);
+  border-color: var(--lxi-accent-line);
+}
+
+.lxi-panel__title {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  margin: 0 0 .3rem;
+  font-size: 1.05rem;
+  letter-spacing: -.01em;
+}
+.lxi-panel__title::before {
+  content: "";
+  flex: none;
+  width: 4px;
+  height: 1.05em;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--lxi-accent), var(--lxi-sky));
+}
+.lxi-panel__note {
+  margin: 0 0 1rem;
+  font-size: .86rem;
+  color: var(--lxi-text-2);
+}
+
+.lxi-h3 {
+  margin: 1.5rem 0 .7rem;
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--lxi-text-3);
+  border-top: 1px solid var(--lxi-border);
+  padding-top: 1.1rem;
+}
+.lxi-h3:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+
+/* ---------------------------------------------------------------- form --- */
+
+.lxi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .85rem;
+}
+.lxi-field { display: flex; flex-direction: column; gap: .32rem; min-width: 0; }
+.lxi-field--wide { grid-column: 1 / -1; }
+
+.lxi-label {
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .01em;
+  color: var(--lxi-text-2);
+}
+
+.lxi-input,
+.lxi-select,
+.lxi-textarea {
+  width: 100%;
+  border: 1px solid var(--lxi-border-strong);
+  border-radius: var(--lxi-r-sm);
+  background: var(--lxi-soft);
+  color: var(--lxi-text);
+  padding: .55rem .65rem;
+  font-size: .92rem;
+}
+.lxi-textarea { resize: vertical; min-height: 74px; line-height: 1.45; }
+.lxi-input, .lxi-select, .lxi-textarea {
+  transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
+}
+.lxi-input:hover, .lxi-select:hover, .lxi-textarea:hover { border-color: var(--lxi-border-strong); }
+.lxi-input:focus-visible,
+.lxi-select:focus-visible,
+.lxi-textarea:focus-visible {
+  outline: none;
+  border-color: var(--lxi-accent);
+  box-shadow: var(--lxi-ring);
+  background: var(--lxi-surface);
+}
+.lxi-input--mono { font-family: var(--lxi-mono); letter-spacing: .04em; }
+
+.lxi-hint { font-size: .76rem; color: var(--lxi-text-3); line-height: 1.4; }
+/* A hint that is reporting a live verdict rather than describing the field
+   earns a colour; the plain descriptive state deliberately keeps none. */
+.lxi-hint[data-level="good"] { color: var(--lxi-ok); font-weight: 700; }
+.lxi-hint[data-level="warn"] { color: var(--lxi-warn); font-weight: 700; }
+.lxi-hint[data-level="bad"]  { color: var(--lxi-danger); font-weight: 700; }
+
+/* ---- logo picker ---- */
+.lxi-logo-row { display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; }
+.lxi-input--file { flex: 1 1 14rem; padding: .45rem .6rem; font-size: .82rem; }
+/* style.css sets a global `img { display: block }`, and an author rule beats
+   the user-agent's `[hidden] { display: none }` — so without this the empty
+   preview box sits there before any logo is picked. */
+.lxi-logo-row [hidden] { display: none !important; }
+.lxi-logo-preview {
+  width: 3.2rem; height: 3.2rem;
+  object-fit: contain;
+  border: 1px solid var(--lxi-line);
+  border-radius: 8px;
+  padding: .25rem;
+  background: #fff;
+}
+.lxi-btn--small { padding: .35rem .7rem; font-size: .78rem; }
+
+/* ---- switch ---- */
+.lxi-switch {
+  display: flex; align-items: center; gap: .6rem;
+  font-size: .86rem; font-weight: 700;
+  color: var(--lxi-text-1);
+  cursor: pointer;
+}
+.lxi-switch input { width: 1.05rem; height: 1.05rem; accent-color: var(--lxi-accent); cursor: pointer; }
+
+/* Validation feedback under the VAT and IBAN fields. The three states are
+   genuinely different — a checksum that passes is not the same claim as a
+   shape that looks right — so they do not share a colour. */
+.lxi-check {
+  display: flex;
+  align-items: flex-start;
+  gap: .4rem;
+  font-size: .76rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.lxi-check[data-level="verified"] { color: var(--lxi-ok); }
+.lxi-check[data-level="format"] { color: var(--lxi-warn); }
+.lxi-check[data-level="invalid"] { color: var(--lxi-danger); }
+.lxi-check[data-level="empty"] { display: none; }
+.lxi-check::before { font-weight: 900; }
+.lxi-check[data-level="verified"]::before { content: "✓"; }
+.lxi-check[data-level="format"]::before { content: "≈"; }
+.lxi-check[data-level="invalid"]::before { content: "✕"; }
+
+/* --------------------------------------------------------------- lines --- */
+
+.lxi-lines { display: flex; flex-direction: column; gap: .6rem; }
+
+/* Two rows: the description gets the full width with the remove button beside
+   it, and the numbers sit underneath with the line total at the end. One row
+   of seven columns did not fit a half-width column — the total spilled out of
+   the card and the description was cut to a word. */
+.lxi-line {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, .9fr) minmax(0, 1.2fr) minmax(0, .9fr) minmax(0, 1fr) minmax(5.6rem, auto);
+  gap: .5rem .45rem;
+  align-items: end;
+  padding: .6rem;
+  border: 1px solid var(--lxi-border);
+  border-radius: var(--lxi-r-md);
+  background: var(--lxi-soft);
+}
+.lxi-line .lxi-label { font-size: .68rem; }
+.lxi-line .lxi-input,
+.lxi-line .lxi-select { background: var(--lxi-surface); padding: .42rem .5rem; font-size: .86rem; height: 2.35rem; }
+
+.lxi-line .lxi-field--desc { grid-column: 1 / 6; grid-row: 1; }
+.lxi-line .lxi-remove { grid-column: 6; grid-row: 1; justify-self: end; }
+.lxi-line .lxi-line__total { grid-column: 6; grid-row: 2; }
+
+.lxi-line__total {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  font-size: .86rem;
+  text-align: right;
+  padding-bottom: .48rem;
+  white-space: nowrap;
+}
+
+.lxi-remove {
+  border: 1px solid var(--lxi-border-strong);
+  background: var(--lxi-surface);
+  color: var(--lxi-text-3);
+  border-radius: var(--lxi-r-sm);
+  width: 2rem;
+  height: 2.15rem;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+.lxi-remove:hover { color: var(--lxi-danger); border-color: var(--lxi-danger); }
+
+/* -------------------------------------------------------------- actions -- */
+
+/* Download across the top, the four secondary actions in a 2 x 2 grid under
+   it, so no button is left alone on a second row. */
+.lxi-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .5rem;
+  margin: 0 0 1rem;
+}
+.lxi-actions .lxi-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .35rem;
+  text-align: center;
+}
+.lxi-actions .lxi-btn--primary { grid-column: 1 / -1; padding: .7rem 1rem; font-size: .95rem; }
+
+.lxi-btn {
+  border-radius: 999px;
+  border: 1px solid var(--lxi-border-strong);
+  background: var(--lxi-surface);
+  color: var(--lxi-text);
+  font-weight: 800;
+  font-size: .87rem;
+  padding: .55rem 1rem;
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease,
+              border-color .16s ease, background .16s ease, color .16s ease;
+}
+.lxi-btn:hover {
+  border-color: var(--lxi-accent);
+  color: var(--lxi-accent);
+  background: var(--lxi-accent-soft);
+  transform: translateY(-1px);
+}
+.lxi-btn:active { transform: translateY(0); }
+.lxi-btn:focus-visible { outline: 2px solid var(--lxi-accent); outline-offset: 2px; }
+.lxi-btn[disabled] { opacity: .55; cursor: progress; transform: none; }
+
+/* The download is the end of the job, so it is the only filled control on
+   the page — everything else stays quiet so this one reads as the finish. */
+.lxi-btn--primary {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #2f4a8f, #1b2a5c 62%, #16224a);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(36, 53, 107, .3), 0 8px 24px rgba(36, 53, 107, .2);
+}
+/* A light sweep that crosses once on hover. It runs on transform only, so it
+   stays on the compositor and cannot cost a frame in the form beside it. */
+.lxi-btn--primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-120%);
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .3), transparent);
+}
+.lxi-btn--primary:hover::after { transform: translateX(120%); transition: transform .7s ease; }
+.lxi-btn--primary:hover {
+  background: linear-gradient(140deg, var(--lxi-accent-deep), var(--lxi-accent-deep));
+  border-color: var(--lxi-accent-deep);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(36, 53, 107, .34);
+}
+[data-theme="dark"] .lxi-btn--primary {
+  /* The light-end accent needs dark text on it, and the navy glow would be
+     invisible against the dark ground. */
+  color: #0d1428;
+  box-shadow: 0 2px 12px rgba(157, 184, 238, .22);
+}
+[data-theme="dark"] .lxi-btn--primary:hover { color: #0d1428; box-shadow: 0 6px 20px rgba(157, 184, 238, .3); }
+
+.lxi-btn--ghost { background: transparent; }
+.lxi-btn--ghost:hover { background: var(--lxi-accent-soft); }
+
+.lxi-status {
+  margin: -.4rem 0 .8rem;
+  font-size: .84rem;
+  font-weight: 700;
+  min-height: 1.2em;
+}
+.lxi-status[data-tone="good"] { color: var(--lxi-ok); }
+.lxi-status[data-tone="bad"] { color: var(--lxi-danger); }
+.lxi-status[data-tone="info"] { color: var(--lxi-text-2); }
+
+/* ------------------------------------------------------------ warnings --- */
+
+.lxi-warnings { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: .45rem; }
+.lxi-warning {
+  display: flex;
+  gap: .5rem;
+  align-items: flex-start;
+  font-size: .83rem;
+  line-height: 1.45;
+  border-radius: var(--lxi-r-sm);
+  border: 1px solid transparent;
+  border-left-width: 3px;
+  padding: .5rem .65rem;
+}
+.lxi-warning[data-level="error"] {
+  background: var(--lxi-danger-soft);
+  border-left-color: var(--lxi-danger);
+  color: var(--lxi-text);
+}
+.lxi-warning[data-level="info"] {
+  background: var(--lxi-accent-soft);
+  border-left-color: var(--lxi-accent);
+  color: var(--lxi-text);
+}
+.lxi-warning b { font-weight: 900; }
+
+.lxi-clean {
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  font-size: .85rem;
+  font-weight: 800;
+  color: var(--lxi-ok);
+  background: var(--lxi-ok-soft);
+  border-radius: var(--lxi-r-sm);
+  padding: .55rem .7rem;
+  margin-bottom: 1rem;
+}
+
+/* ------------------------------------------------------------- preview --- */
+
+/* The whole column sticks just under the site header (which overlaps the
+   page), so the banner under the preview travels with it instead of being
+   slid over by a sticky panel. */
+.lxi-col--preview { position: sticky; top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+.lxi-col--preview .ta-mb-ad { margin-top: 0; }
+
+/* The stage is deliberately DARK in both themes. A white sheet on a near-white
+   panel has no edge — the eye cannot tell the document from the container, and
+   the one thing this whole column exists to show is the document. On a deep
+   ground the paper separates instantly and reads as an object.
+
+   It also means the preview looks the same by day and by night, which matters
+   here: what is on the stage is what will print. */
+.lxi-stage {
+  background:
+    radial-gradient(700px 300px at 50% -12%, rgba(90, 130, 210, .28), transparent 66%),
+    linear-gradient(168deg, #1a2648, #131c38 60%, #0f1730);
+  border: 1px solid rgba(120, 150, 210, .2);
+  border-radius: var(--lxi-r-md);
+  /* Side padding wider than the 6mm stacked-paper hint, so it is not cut off. */
+  padding: 1.4rem 1.6rem 2rem;
+  /* The sheet is always scaled to fit (fitSheet), so nothing needs a
+     scrollbar; hidden also keeps the stacked-paper hint from making one. */
+  overflow: hidden;
+  box-shadow: inset 0 2px 10px rgba(6, 12, 30, .4);
+}
+
+/* The sheet is a fixed A4 width scaled to fit its column, so the preview is
+   a true proportional view of the printed page rather than a reflow of it. */
+.lxi-fit { transform-origin: top left; margin: 0 auto; }
+
+.lxi-sheet {
+  position: relative;
+  width: 210mm;
+  min-height: 297mm;
+  background: #ffffff;
+  color: #17222b;
+  /* Three stacked shadows: contact, lift, and a wide ambient pool. One blur
+     has to average the three and ends up looking like a grey halo. */
+  box-shadow:
+    0 1px 2px rgba(4, 8, 22, .5),
+    0 12px 30px rgba(4, 8, 22, .45),
+    0 34px 80px rgba(4, 8, 22, .4);
+  padding: 16mm 15mm;
+  font-size: 9.6pt;
+  line-height: 1.5;
+  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+}
+/* A hint of further sheets underneath. Pure decoration, and it is removed
+   for print so it can never appear on the actual document. */
+.lxi-sheet::before,
+.lxi-sheet::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  background: #ffffff;
+  border-radius: 2px;
+}
+.lxi-sheet::before {
+  inset: auto -3mm -3mm -3mm;
+  height: 12mm;
+  box-shadow: 0 8px 18px rgba(4, 8, 22, .35);
+  opacity: .55;
+}
+.lxi-sheet::after {
+  inset: auto -6mm -6mm -6mm;
+  height: 12mm;
+  box-shadow: 0 10px 20px rgba(4, 8, 22, .3);
+  opacity: .32;
+}
+
+/* Paper stays paper in dark mode. See the note at the top of this file. */
+[data-theme="dark"] .lxi-sheet { background: #ffffff; color: #17222b; }
+
+.lxi-sheet__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10mm;
+  align-items: flex-start;
+  border-bottom: 2px solid var(--lxi-doc-accent, #24356b);
+  padding-bottom: 5mm;
+  margin-bottom: 6mm;
+}
+.lxi-sheet__logo {
+  display: block;
+  max-width: 40mm;
+  max-height: 18mm;
+  width: auto; height: auto;
+  margin-bottom: 3mm;
+}
+.lxi-sheet__doctype {
+  margin: 0 0 1mm;
+  font-size: 20pt;
+  font-weight: 900;
+  letter-spacing: -.01em;
+  color: var(--lxi-doc-accent, #24356b);
+  line-height: 1.05;
+}
+.lxi-sheet__meta { text-align: right; font-size: 8.8pt; min-width: 52mm; }
+.lxi-sheet__meta dl { display: grid; grid-template-columns: auto auto; gap: .8mm 4mm; margin: 0; justify-content: end; }
+.lxi-sheet__meta dt { color: #5c6b76; }
+.lxi-sheet__meta dd { margin: 0; font-weight: 700; }
+
+.lxi-sheet__parties {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8mm;
+  margin-bottom: 6mm;
+}
+.lxi-party__label {
+  font-size: 7.4pt;
+  font-weight: 900;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #7b8b96;
+  margin: 0 0 1.5mm;
+}
+.lxi-party__name { font-weight: 900; font-size: 10.6pt; margin: 0 0 1mm; }
+.lxi-party__lines { margin: 0; white-space: pre-line; color: #3b4a55; }
+.lxi-party__ids { margin: 2mm 0 0; font-size: 8.4pt; color: #3b4a55; }
+.lxi-party__ids span { display: block; }
+
+.lxi-sheet__supply {
+  font-size: 8.4pt;
+  font-weight: 800;
+  color: var(--lxi-doc-accent, #24356b);
+  background: color-mix(in srgb, var(--lxi-doc-accent, #24356b) 8%, #ffffff);
+  border-radius: 3px;
+  padding: 2mm 3mm;
+  margin-bottom: 5mm;
+}
+
+.lxi-sheet table { width: 100%; border-collapse: collapse; }
+
+.lxi-items { margin-bottom: 5mm; font-size: 8.8pt; }
+.lxi-items th {
+  text-align: left;
+  font-size: 7.4pt;
+  font-weight: 900;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: #6c7c87;
+  border-bottom: 1px solid #d6dee4;
+  padding: 0 2mm 1.6mm 0;
+}
+.lxi-items td { padding: 1.8mm 2mm 1.8mm 0; border-bottom: 1px solid #eef2f5; vertical-align: top; }
+.lxi-items .lxi-num { text-align: right; padding-right: 0; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.lxi-items .lxi-desc { font-weight: 600; }
+
+.lxi-sheet__foot { display: grid; grid-template-columns: 1fr 78mm; gap: 8mm; align-items: start; }
+
+.lxi-vatsum { font-size: 8.2pt; }
+.lxi-vatsum caption {
+  text-align: left;
+  font-size: 7.4pt;
+  font-weight: 900;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: #6c7c87;
+  padding-bottom: 1.4mm;
+}
+.lxi-vatsum th, .lxi-vatsum td { padding: 1.1mm 2mm 1.1mm 0; border-bottom: 1px solid #eef2f5; }
+.lxi-vatsum th { text-align: left; font-weight: 700; color: #5c6b76; }
+.lxi-vatsum td { text-align: right; font-variant-numeric: tabular-nums; }
+
+.lxi-totals { font-size: 9.2pt; }
+.lxi-totals th { text-align: left; font-weight: 600; color: #4a5b66; padding: 1.2mm 0; }
+.lxi-totals td { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; padding: 1.2mm 0; }
+.lxi-totals tr.is-total th, .lxi-totals tr.is-total td {
+  border-top: 1.5px solid var(--lxi-doc-accent, #24356b);
+  font-size: 11.5pt;
+  font-weight: 900;
+  padding-top: 2mm;
+  color: var(--lxi-doc-accent, #24356b);
+}
+
+.lxi-sheet__mention {
+  margin: 6mm 0 0;
+  font-size: 8.4pt;
+  font-weight: 700;
+  border: 1px solid var(--lxi-doc-accent, #24356b);
+  border-radius: 3px;
+  padding: 2.5mm 3mm;
+  color: #26333d;
+}
+
+.lxi-sheet__blocks { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; margin-top: 6mm; font-size: 8.4pt; }
+.lxi-block h4 {
+  margin: 0 0 1.5mm;
+  font-size: 7.4pt;
+  font-weight: 900;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: #7b8b96;
+}
+/* The payment block becomes two columns when it carries a QR, so the code
+   sits beside the IBAN it encodes rather than under it. */
+.lxi-block--withqr { display: grid; grid-template-columns: 1fr auto; gap: 4mm; align-items: start; }
+.lxi-block--withqr h4 { grid-column: 1 / -1; }
+.lxi-sheet__qr { text-align: center; line-height: 1.25; }
+/* Width and height are set inline from the module count - see
+   qrMillimetres() - because a denser code needs a bigger box to stay
+   scannable. The fallback here only matters if that never runs. */
+.lxi-sheet__qr img { display: block; width: 24mm; height: 24mm; }
+.lxi-sheet__qr span { display: block; margin-top: 1mm; font-size: 6.6pt; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; color: #6c7c87; }
+.lxi-sheet__qr small { display: block; font-size: 6pt; color: #93a2ac; }
+
+.lxi-block p { margin: 0; white-space: pre-line; color: #3b4a55; }
+.lxi-block dl { display: grid; grid-template-columns: auto 1fr; gap: .6mm 3mm; margin: 0; }
+.lxi-block dt { color: #6c7c87; }
+.lxi-block dd { margin: 0; font-weight: 700; font-family: var(--lxi-mono); font-size: 8pt; }
+
+.lxi-sheet__footer {
+  margin-top: 8mm;
+  padding-top: 3mm;
+  border-top: 1px solid #e3e9ed;
+  font-size: 7.6pt;
+  color: #8b9aa4;
+}
+
+/* ---------------------------------------------------------- article -- */
+
+.lxi-disclaimer {
+  margin: 1.5rem 0 0;
+  padding: .9rem 1.1rem;
+  border-radius: var(--lxi-r-md);
+  border: 1px solid var(--lxi-border);
+  border-left: 3px solid var(--lxi-warn);
+  background: var(--lxi-warn-soft);
+  font-size: .84rem;
+  line-height: 1.55;
+  color: var(--lxi-text-2);
+  max-width: 88ch;
+}
+.lxi-disclaimer strong { color: var(--lxi-text); }
+
+.lxi-section { padding: 2.2rem 0 0; }
+
+.lxi-h2 {
+  position: relative;
+  margin: 0 0 .95rem;
+  padding-top: .9rem;
+  font-size: clamp(1.25rem, 2.4vw, 1.65rem);
+  letter-spacing: -.015em;
+  color: var(--lxi-text);
+}
+.lxi-h2::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 42px;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--lxi-accent), var(--lxi-sky));
+}
+
+.lxi-prose p,
+.lxi-prose li {
+  color: var(--lxi-text-2);
+  font-size: .95rem;
+  line-height: 1.7;
+}
+.lxi-prose p { margin: 0 0 .9rem; max-width: 74ch; }
+.lxi-prose ul { margin: 0 0 .9rem; padding-left: 1.15rem; max-width: 74ch; }
+.lxi-prose li { margin-bottom: .4rem; }
+.lxi-prose strong { color: var(--lxi-text); }
+.lxi-prose em { color: var(--lxi-text); font-style: italic; }
+.lxi-prose code {
+  font-family: var(--lxi-mono);
+  font-size: .88em;
+  background: var(--lxi-accent-soft);
+  color: var(--lxi-accent);
+  border-radius: 4px;
+  padding: .1em .35em;
+}
+
+.lxi-faq { display: grid; gap: .55rem; max-width: 88ch; }
+.lxi-faq-item {
+  border: 1px solid var(--lxi-border);
+  border-radius: var(--lxi-r-md);
+  background: var(--lxi-surface);
+  padding: .1rem .95rem;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+.lxi-faq-item:hover { border-color: var(--lxi-border-strong); }
+.lxi-faq-item[open] {
+  border-color: var(--lxi-accent-line);
+  box-shadow: var(--lxi-shadow);
+}
+.lxi-faq-item summary {
+  cursor: pointer;
+  font-weight: 800;
+  font-size: .92rem;
+  padding: .8rem 0;
+  color: var(--lxi-text);
+}
+.lxi-faq-item summary:focus-visible { outline: 2px solid var(--lxi-accent); outline-offset: 2px; }
+.lxi-faq-item[open] summary { color: var(--lxi-accent); }
+.lxi-faq-item p {
+  margin: 0 0 .9rem;
+  font-size: .9rem;
+  line-height: 1.65;
+  color: var(--lxi-text-2);
+}
+
+/* ---------------------------------------------------------- responsive -- */
+
+@media (max-width: 1080px) {
+  .lxi-studio { grid-template-columns: minmax(0, 1fr); }
+  .lxi-tabs { display: flex; }
+  .lxi-col--preview { position: static; }
+  .lxi-studio[data-tab="edit"] .lxi-col--preview { display: none; }
+  .lxi-studio[data-tab="preview"] .lxi-col--edit { display: none; }
+}
+
+@media (max-width: 760px) {
+  /* The hero earns its height on a wide screen. On a phone it was pushing
+     the first field about a screen and a half down, so it tightens: less
+     padding, smaller chips that fit two per row, and a lede that stops
+     before it becomes the whole viewport. The claims all stay — they are
+     what the page is selling — they just stop being a column. */
+  .lxi-hero { padding: 1.5rem 1.15rem 1.35rem; }
+  .lxi-h1 { font-size: clamp(1.55rem, 7.4vw, 2rem); }
+  .lxi-lede { font-size: .92rem; line-height: 1.55; }
+  .lxi-trust { gap: .4rem; margin-top: 1.1rem; }
+  .lxi-trust li { font-size: .73rem; padding: .34rem .6rem; }
+
+  .lxi-grid { grid-template-columns: minmax(0, 1fr); }
+  .lxi-line { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lxi-line .lxi-field--desc,
+  .lxi-line .lxi-remove,
+  .lxi-line .lxi-line__total { grid-row: auto; }
+  .lxi-line .lxi-field--desc { grid-column: 1 / -1; }
+  .lxi-line .lxi-line__total { grid-column: 1; text-align: left; padding-bottom: .55rem; }
+  .lxi-line .lxi-remove { grid-column: 2; justify-self: end; }
+}
+
+/* --------------------------------------------------------------- print -- */
+
+@media print {
+  .site-header, .site-footer, .lxi-crumb, .lxi-hero, .lxi-tabs,
+  .lxi-col--edit, .lxi-section, .lxi-disclaimer, .lxi-status,
+  .related-tools-section, .skip-link { display: none !important; }
+
+  body.lxi-page, body.lxi-page::before { background: #fff !important; }
+  .lxi-wrap { width: auto; padding: 0; }
+  .lxi-studio { display: block; }
+  .lxi-col--preview { display: block !important; position: static; }
+  .lxi-panel--preview { position: static; box-shadow: none; border: 0; padding: 0; margin: 0; }
+  .lxi-panel--preview .lxi-panel__title,
+  .lxi-panel--preview .lxi-panel__note,
+  .lxi-panel--preview .lxi-actions { display: none !important; }
+  .lxi-stage { border: 0; padding: 0; background: #fff; overflow: visible; }
+  .lxi-fit { transform: none !important; width: auto !important; height: auto !important; }
+  .lxi-sheet { box-shadow: none; width: auto; min-height: 0; padding: 0; }
+  /* The stacked-paper hint is a screen affordance; on paper it would print
+     as two grey bands under the invoice. */
+  .lxi-sheet::before, .lxi-sheet::after { display: none; }
+  .lxi-section { animation: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+/* Content sections rise as they enter. Scroll-driven animation needs no JS
+   and no observer; where the browser does not support it the @supports guard
+   means sections simply start visible, which is the correct fallback. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .lxi-section {
+      animation: lxi-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 42%;
+    }
+  }
+}
+@keyframes lxi-rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* The lifts and fades above are decoration. Anyone who has asked the system
+   to stop moving things gets the same layout without them. */
+@media (prefers-reduced-motion: reduce) {
+  .lxi-page *,
+  .lxi-page *::before,
+  .lxi-page *::after {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+  }
+  .lxi-btn:hover { transform: none; }
+}
+
+@page { size: A4; margin: 14mm; }

@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+    <meta name="description" content="Free responsive design tester and mobile view simulator. Preview any website at real iPhone, Android, iPad and desktop viewport sizes, rotate, zoom and compare devices side by side." />
+    <title>Responsive Design Tester — Mobile, Tablet &amp; Desktop Preview | ToolAdda</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <meta name="theme-color" content="#7c3aed" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="ToolAdda" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <link rel="canonical" href="https://tooladda.online/developer-tools/responsive-design-tester.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+    <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta property="og:title" content="Responsive Design Tester — Mobile, Tablet &amp; Desktop Preview | ToolAdda" />
+    <meta property="og:description" content="Preview any website at real device viewport sizes — iPhone, Android, iPad, laptop and desktop. Rotate, zoom, compare devices side by side, or scan a QR code to open it on your phone." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tooladda.online/developer-tools/responsive-design-tester.html" />
+    <meta property="og:site_name" content="ToolAdda" />
+    <meta property="og:image" content="https://tooladda.online/assets/images/og/developer-tools-responsive-design-tester.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content="Responsive Design Tester — free developer tool on ToolAdda, previews any site at real device viewport sizes in your browser." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Responsive Design Tester — Mobile, Tablet &amp; Desktop Preview | ToolAdda" />
+    <meta name="twitter:description" content="Preview any website at real device viewport sizes — iPhone, Android, iPad, laptop and desktop. Rotate, zoom, compare devices, or scan a QR to open it on your phone." />
+    <meta name="twitter:image" content="https://tooladda.online/assets/images/og/developer-tools-responsive-design-tester.jpg" />
+    <meta name="twitter:image:alt" content="Responsive Design Tester — free developer tool on ToolAdda, previews any site at real device viewport sizes in your browser." />
+
+    <style id="rdt-styles">
+      /* ============================================================
+         Responsive Design Tester — page-scoped design system.
+
+         A violet workbench with a cyan signal colour. The stage is the
+         darkest surface on the page in BOTH themes on purpose: the thing
+         being judged is the site inside the frame, so the chrome recedes
+         and nothing competes with the preview for attention.
+
+         Violet is unused elsewhere on the site — the JSON pages are
+         steel blue and orange, the CSS tools fuchsia and lime, the media
+         tools amber.
+
+         Layout note: the control rail and every group inside it use
+         minmax(0,1fr) / min-width:0. Grid and flex items default to
+         min-width:auto, which let the longest device option set the
+         select's intrinsic width and drag the whole 296px rail into a
+         horizontal scroll.
+         ============================================================ */
+
+      .rdt-page {
+        --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+        --r-sm: 9px; --r-md: 13px; --r-lg: 20px;
+
+        --app-bg: #f6f4ff;
+        --surface: #ffffff;
+        --surface-raised: #fbfaff;
+        --surface-sunken: #f2eeff;
+        --surface-hover: #ebe5ff;
+        --stage-bg: #1b1830;
+        --stage-grid: rgba(255, 255, 255, .05);
+        --text-primary: #191331;
+        --text-secondary: #494068;
+        --muted: #6f6693;
+        --border: rgba(25, 19, 49, .11);
+        --border-strong: rgba(25, 19, 49, .2);
+
+        --accent: #7c3aed;
+        --accent-deep: #6522d6;
+        --accent-soft: rgba(124, 58, 237, .09);
+        --accent-grad: linear-gradient(135deg, #8b5cf6, #6d28d9);
+        --signal: #0891b2;
+
+        --info: #5b21b6;
+        --info-soft: rgba(124, 58, 237, .09);
+        --warning: #9a4a06;
+        --warning-soft: rgba(217, 119, 6, .11);
+        --danger: #b3261e;
+        --danger-soft: rgba(179, 38, 30, .09);
+        --success: #15803d;
+        --focus: #7c3aed;
+
+        --pg-dot: rgba(124, 58, 237, .17);
+        --ring: 0 0 0 3px rgba(124, 58, 237, .22);
+        --panel-shadow: 0 1px 2px rgba(25, 19, 49, .05), 0 18px 44px rgba(25, 19, 49, .09);
+        --lift: 0 2px 6px rgba(25, 19, 49, .1);
+
+        color: var(--text-primary);
+        /* Dot field over the two corner glows. background-size has to be listed
+           per layer in the same order: the glows size themselves, the dots tile
+           at 18px to match the pattern used elsewhere on the site. */
+        background-color: var(--app-bg);
+        background-image:
+          radial-gradient(760px 420px at 8% -6%, rgba(124, 58, 237, .1), transparent 62%),
+          radial-gradient(640px 380px at 98% 2%, rgba(8, 145, 178, .07), transparent 58%),
+          radial-gradient(circle, var(--pg-dot) 1px, transparent 1px);
+        background-size: auto, auto, 18px 18px;
+        background-attachment: fixed, fixed, fixed;
+        padding-bottom: 3rem;
+      }
+
+      [data-theme="dark"] .rdt-page {
+        --app-bg: #0e0b1a; --surface: #191331; --surface-raised: #1e1739; --surface-sunken: #150f2c;
+        --surface-hover: #2a2050; --stage-bg: #08060f; --stage-grid: rgba(255, 255, 255, .045);
+        --text-primary: #f3effd; --text-secondary: #c8bee4; --muted: #9186b6;
+        --border: rgba(243, 239, 253, .12); --border-strong: rgba(243, 239, 253, .22);
+        --accent: #a78bfa; --accent-deep: #c4b5fd; --accent-soft: rgba(167, 139, 250, .14);
+        --accent-grad: linear-gradient(135deg, #a78bfa, #7c3aed);
+        --signal: #67e8f9;
+        --info: #c4b5fd; --info-soft: rgba(167, 139, 250, .12);
+        --warning: #fbbf24; --warning-soft: rgba(251, 191, 36, .13);
+        --danger: #fca5a5; --danger-soft: rgba(248, 113, 113, .12);
+        --success: #4ade80;
+        --pg-dot: rgba(167, 139, 250, .15);
+        --ring: 0 0 0 3px rgba(167, 139, 250, .3);
+        --panel-shadow: 0 1px 2px rgba(0, 0, 0, .45), 0 20px 50px rgba(0, 0, 0, .55);
+        --lift: 0 2px 8px rgba(0, 0, 0, .45);
+      }
+      @media (prefers-color-scheme: dark) {
+        html:not([data-theme="light"]) .rdt-page {
+          --app-bg: #0e0b1a; --surface: #191331; --surface-raised: #1e1739; --surface-sunken: #150f2c;
+          --surface-hover: #2a2050; --stage-bg: #08060f; --stage-grid: rgba(255, 255, 255, .045);
+          --text-primary: #f3effd; --text-secondary: #c8bee4; --muted: #9186b6;
+          --border: rgba(243, 239, 253, .12); --border-strong: rgba(243, 239, 253, .22);
+          --accent: #a78bfa; --accent-deep: #c4b5fd; --accent-soft: rgba(167, 139, 250, .14);
+          --accent-grad: linear-gradient(135deg, #a78bfa, #7c3aed);
+          --signal: #67e8f9;
+          --info: #c4b5fd; --info-soft: rgba(167, 139, 250, .12);
+          --warning: #fbbf24; --warning-soft: rgba(251, 191, 36, .13);
+          --danger: #fca5a5; --danger-soft: rgba(248, 113, 113, .12);
+          --success: #4ade80;
+          --pg-dot: rgba(167, 139, 250, .15);
+        --ring: 0 0 0 3px rgba(167, 139, 250, .3);
+          --panel-shadow: 0 1px 2px rgba(0, 0, 0, .45), 0 20px 50px rgba(0, 0, 0, .55);
+          --lift: 0 2px 8px rgba(0, 0, 0, .45);
+        }
+      }
+
+      /* 1180px: isse side banner ads (side-ads.js) gutters me fit ho jate hain. */
+      .rdt-wrap { max-width: 1180px; margin: 0 auto; padding: 1.4rem 1rem 0; }
+
+      .rdt-crumb { font-size: .82rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin-bottom: 1rem; }
+      .rdt-crumb a { color: var(--accent); text-decoration: none; }
+      .rdt-crumb a:hover { text-decoration: underline; }
+
+      .rdt-hero { margin-bottom: 1.3rem; }
+      .rdt-eyebrow { display: inline-block; font-size: .7rem; font-weight: 800; letter-spacing: .09em; text-transform: uppercase;
+        color: #fff; background: var(--accent-grad); border-radius: 999px; padding: .34rem .85rem;
+        box-shadow: 0 6px 16px -6px rgba(124, 58, 237, .6); }
+      [data-theme="dark"] .rdt-eyebrow { color: #17092e; }
+      .rdt-h1 { font-size: clamp(1.65rem, 4vw, 2.5rem); line-height: 1.12; margin: .65rem 0 .5rem; letter-spacing: -.025em; }
+      .rdt-lede { color: var(--text-secondary); max-width: 68ch; margin: 0; font-size: 1.02rem; line-height: 1.62; }
+      .rdt-trust { list-style: none; display: flex; flex-wrap: wrap; gap: .45rem; padding: 0; margin: .95rem 0 0; }
+      .rdt-trust li { font-size: .76rem; font-weight: 700; color: var(--text-secondary);
+        background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: .33rem .8rem; box-shadow: var(--lift); }
+
+      /* ---------- console ---------- */
+      .rdt-console { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg);
+        box-shadow: var(--panel-shadow); overflow: hidden; }
+
+      .rdt-bar { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; justify-content: space-between;
+        padding: .8rem 1rem; background: var(--surface-raised); border-bottom: 1px solid var(--border); }
+      .rdt-bar__title { margin: 0; font-weight: 800; font-size: .95rem; letter-spacing: -.01em; }
+      .rdt-privacy { font-size: .78rem; color: var(--muted); }
+
+      .rdt-modes { display: flex; gap: .25rem; background: var(--surface-sunken); border: 1px solid var(--border);
+        border-radius: 999px; padding: .22rem; }
+      .rdt-mode { border: 0; background: transparent; color: var(--text-secondary); font: inherit; font-size: .82rem; font-weight: 700;
+        padding: .4rem 1rem; border-radius: 999px; cursor: pointer; transition: background .16s ease, color .16s ease; }
+      .rdt-mode:hover { color: var(--accent-deep); }
+      .rdt-mode[aria-pressed="true"] { background: var(--surface); color: var(--accent-deep); box-shadow: var(--lift); }
+
+      /* ---------- control rail ---------- */
+      .rdt-body { display: grid; grid-template-columns: 296px minmax(0, 1fr); align-items: stretch; }
+      .rdt-side {
+        border-right: 1px solid var(--border); background: var(--surface-raised);
+        max-height: 80vh; overflow-y: auto; overflow-x: hidden;
+        display: grid; grid-template-columns: minmax(0, 1fr); align-content: start;
+        scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent;
+      }
+      .rdt-side::-webkit-scrollbar { width: 10px; }
+      .rdt-side::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 99px; border: 3px solid var(--surface-raised); }
+      .rdt-side::-webkit-scrollbar-track { background: transparent; }
+      .rdt-main { display: flex; flex-direction: column; min-width: 0; }
+
+      .rdt-group { min-width: 0; padding: .9rem 1rem; border-bottom: 1px solid var(--border);
+        display: grid; grid-template-columns: minmax(0, 1fr); gap: .5rem; align-content: start; }
+      .rdt-group:last-child { border-bottom: 0; }
+      .rdt-label { display: flex; align-items: center; gap: .4rem; font-size: .7rem; font-weight: 800;
+        letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+      .rdt-label::before { content: ""; width: 3px; height: .78rem; border-radius: 2px; background: var(--accent-grad); flex: 0 0 auto; }
+      .rdt-label em { font-style: normal; font-weight: 600; text-transform: none; letter-spacing: 0; color: var(--muted); opacity: .85; }
+      .rdt-hint { margin: 0; font-size: .74rem; color: var(--muted); }
+      .rdt-hint code { font-family: var(--mono); font-size: .95em; color: var(--accent-deep); }
+      .rdt-inline { display: flex; gap: .4rem; align-items: center; flex-wrap: wrap; min-width: 0; }
+      .rdt-x { color: var(--muted); font-size: .85rem; }
+      .rdt-full { width: 100%; }
+
+      .rdt-urlrow { display: flex; gap: .4rem; min-width: 0; }
+      .rdt-input, .rdt-select, .rdt-num, .rdt-textarea { max-width: 100%; }
+      .rdt-input { flex: 1 1 auto; min-width: 0; font: inherit; font-size: .88rem; padding: .6rem .8rem; border-radius: var(--r-sm);
+        border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-primary);
+        transition: border-color .16s ease, box-shadow .16s ease; }
+      .rdt-input::placeholder { color: var(--muted); opacity: .8; }
+      .rdt-input:focus-visible, .rdt-select:focus-visible, .rdt-num:focus-visible, .rdt-textarea:focus-visible {
+        outline: none; border-color: var(--accent); box-shadow: var(--ring); }
+
+      .rdt-select, .rdt-num { min-width: 0; font: inherit; font-size: .83rem; padding: .5rem .55rem; border-radius: var(--r-sm);
+        border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-primary);
+        transition: border-color .16s ease, box-shadow .16s ease; }
+      .rdt-num { width: 4.6rem; flex: 0 1 4.6rem; }
+      .rdt-check { display: inline-flex; align-items: center; gap: .45rem; font-size: .82rem; font-weight: 600;
+        color: var(--text-secondary); cursor: pointer; user-select: none; }
+      .rdt-check input { accent-color: var(--accent); width: 15px; height: 15px; }
+      .rdt-field { display: inline-flex; align-items: center; gap: .35rem; font-size: .8rem; color: var(--text-secondary); font-weight: 600; min-width: 0; }
+
+      .rdt-btn { font: inherit; font-weight: 700; font-size: .85rem; padding: .58rem 1rem; border-radius: var(--r-sm);
+        border: 1px solid transparent; cursor: pointer; background: var(--accent-grad); color: #fff; white-space: nowrap;
+        box-shadow: 0 6px 16px -8px rgba(124, 58, 237, .75);
+        transition: transform .12s ease, box-shadow .16s ease, background .16s ease, border-color .16s ease; }
+      .rdt-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 22px -10px rgba(124, 58, 237, .85); }
+      .rdt-btn:active { transform: translateY(0); }
+      [data-theme="dark"] .rdt-btn { color: #17092e; }
+      /* The dark rule above is for the filled button; ghost and pressed buttons sit on dark surfaces. */
+      [data-theme="dark"] .rdt-btn--ghost { color: var(--text-primary); }
+      [data-theme="dark"] .rdt-btn--ghost:hover { color: var(--accent-deep); }
+      [data-theme="dark"] .rdt-btn[aria-pressed="true"] { color: var(--accent-deep); }
+      .rdt-btn--ghost { background: var(--surface); color: var(--text-primary); border-color: var(--border-strong); box-shadow: none; }
+      .rdt-btn--ghost:hover { background: var(--surface-hover); border-color: var(--accent); color: var(--accent-deep); box-shadow: var(--lift); }
+      .rdt-btn:focus-visible { outline: none; box-shadow: var(--ring); }
+      .rdt-btn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-deep); border-color: var(--accent); }
+      .rdt-btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; }
+
+      .rdt-actions { display: flex; flex-wrap: wrap; gap: .4rem; min-width: 0; }
+      .rdt-actions .rdt-btn { flex: 1 1 8.5rem; min-width: 0; font-size: .79rem; padding: .5rem .6rem; white-space: normal; }
+      /* Reset is the one destructive control here, so it reads as one. */
+      .rdt-actions .rdt-btn[data-rdt-reset]:hover { border-color: var(--danger); color: var(--danger); background: var(--danger-soft); }
+
+      .rdt-cmp-list { display: grid; grid-template-columns: 1fr 1fr; gap: .3rem .6rem; max-height: 200px; overflow-y: auto;
+        scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+      .rdt-cmp-opt { display: inline-flex; align-items: center; gap: .3rem; font-size: .76rem; color: var(--text-secondary);
+        cursor: pointer; min-width: 0; }
+      .rdt-cmp-opt span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .rdt-cmp-opt input { accent-color: var(--accent); flex: 0 0 auto; }
+
+      .rdt-textarea { width: 100%; min-height: 190px; resize: vertical; font-family: var(--mono); font-size: .8rem; line-height: 1.55;
+        padding: .7rem .75rem; border-radius: var(--r-sm); border: 1px solid var(--border-strong);
+        background: #0d0a1c; color: #ddd4f7; }
+      .rdt-textarea::placeholder { color: #6c619a; }
+
+      .rdt-qr { justify-items: center; text-align: center; }
+      .rdt-qr svg { width: 168px; height: 168px; background: #fff; padding: 9px; border-radius: var(--r-md); box-shadow: var(--lift); }
+      .rdt-qr p { margin: 0; font-size: .73rem; color: var(--text-secondary); word-break: break-all; }
+      .rdt-qr .rdt-label { justify-self: start; }
+
+      /* ---------- readout + status ---------- */
+      .rdt-readout { display: flex; flex-wrap: wrap; gap: .35rem; padding: .6rem 1rem; background: var(--surface-raised);
+        border-bottom: 1px solid var(--border); min-height: 1.3rem; }
+      .rdt-chip { font-family: var(--mono); font-size: .72rem; color: var(--text-secondary);
+        background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: .24rem .62rem; }
+      .rdt-chip b { color: var(--signal); font-weight: 700; }
+
+      .rdt-status { margin: 0; padding: .7rem 1rem .7rem .85rem; font-size: .85rem; line-height: 1.55;
+        border-bottom: 1px solid var(--border); border-left: 3px solid currentColor; }
+      .rdt-status code { font-family: var(--mono); font-size: .82em; background: rgba(127, 127, 127, .16); padding: .1em .35em; border-radius: 4px; }
+      .rdt-status.is-info { background: var(--info-soft); color: var(--info); }
+      .rdt-status.is-warn { background: var(--warning-soft); color: var(--warning); }
+
+      /* ---------- stage ---------- */
+      .rdt-stage {
+        flex: 1 1 auto; min-height: 520px; max-height: 80vh; overflow: auto; padding: 1.3rem;
+        background-color: var(--stage-bg);
+        background-image:
+          radial-gradient(900px 500px at 50% -10%, rgba(124, 58, 237, .16), transparent 70%),
+          linear-gradient(var(--stage-grid) 1px, transparent 1px),
+          linear-gradient(90deg, var(--stage-grid) 1px, transparent 1px);
+        background-size: auto, 24px 24px, 24px 24px;
+        display: flex; align-items: flex-start; justify-content: center;
+        scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, .18) transparent;
+      }
+      .rdt-stage::-webkit-scrollbar { width: 11px; height: 11px; }
+      .rdt-stage::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, .16); border-radius: 99px; border: 3px solid transparent; background-clip: content-box; }
+      .rdt-stage::-webkit-scrollbar-track { background: transparent; }
+
+      .rdt-empty { color: #bfb6e2; max-width: 42ch; text-align: center; margin: auto; font-size: .92rem; line-height: 1.62;
+        background: rgba(255, 255, 255, .04); border: 1px solid rgba(255, 255, 255, .1); border-radius: var(--r-lg); padding: 1.5rem 1.4rem; }
+      .rdt-empty strong { color: #fff; }
+      .rdt-empty p { margin: 0 0 .6rem; }
+      .rdt-empty p:last-child { margin-bottom: 0; }
+      .rdt-empty em { color: #d7cdf5; font-style: normal; font-weight: 700; }
+
+      .rdt-slot { position: relative; flex: 0 0 auto; }
+      .rdt-shell { position: relative; transform-origin: top left; background: #fff; border-radius: 4px; overflow: hidden; }
+      /* content-box is load-bearing, not a style choice. The global reset is
+         border-box, which would make the 12px bezel eat INTO the declared width —
+         a 390px iPhone would render its page at 366px and the tool would be
+         quietly lying about the one number it exists to get right. The bezel has
+         to grow outward, so the shell opts out of the reset and the JS adds the
+         same 12px back when it measures and scales. */
+      .rdt-shell.is-framed { box-sizing: content-box; border-radius: 32px; padding: 12px;
+        background: linear-gradient(160deg, #2a2340, #14101f 60%);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, .09), 0 0 0 3px #241d38,
+                    0 30px 70px -22px rgba(0, 0, 0, .8); }
+      .rdt-screen { width: 100%; height: 100%; overflow: hidden; background: #fff; border-radius: 3px; }
+      .rdt-shell.is-framed .rdt-screen { border-radius: 21px; }
+      .rdt-frame { width: 100%; height: 100%; border: 0; display: block; background: #fff; }
+
+      /* Notch: cosmetic only, and never over the content area — it sits in the
+         bezel padding so it cannot hide part of the page being tested. */
+      .rdt-bezel--top { position: absolute; top: 3px; left: 50%; transform: translateX(-50%);
+        width: 34%; height: 6px; border-radius: 0 0 9px 9px; background: #3a3157; }
+      .rdt-shell.has-notch .rdt-bezel--top { width: 42%; height: 9px; background: #0c0a14;
+        box-shadow: inset 0 -1px 0 rgba(255, 255, 255, .08); }
+
+      .rdt-compare { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-start; justify-content: center; }
+      .rdt-cmp-cell { margin: 0; display: grid; gap: .55rem; justify-items: center; }
+      .rdt-cmp-cell figcaption { display: grid; gap: .12rem; justify-items: center; font-size: .75rem; color: #bfb6e2; }
+      .rdt-cmp-cell figcaption strong { color: #fff; }
+      .rdt-cmp-cell figcaption span { font-family: var(--mono); font-size: .72rem; color: #9d92c9; }
+
+      /* ---------- content sections ---------- */
+      .rdt-section { margin-top: 2.2rem; background: var(--surface); border: 1px solid var(--border);
+        border-radius: var(--r-lg); padding: 1.5rem; box-shadow: var(--panel-shadow); }
+      .rdt-h2 { font-size: clamp(1.2rem, 2.6vw, 1.6rem); margin: 0 0 .9rem; letter-spacing: -.015em; }
+      .rdt-h3 { font-size: 1.02rem; margin: 1.4rem 0 .45rem; }
+      .rdt-section p { color: var(--text-secondary); line-height: 1.7; margin: 0 0 .8rem; max-width: 76ch; }
+      .rdt-section ul, .rdt-section ol { color: var(--text-secondary); line-height: 1.7; padding-left: 1.15rem; margin: 0 0 .8rem; max-width: 76ch; }
+      .rdt-section li { margin-bottom: .38rem; }
+      .rdt-section li::marker { color: var(--accent); }
+      .rdt-section code { font-family: var(--mono); font-size: .85em; background: var(--accent-soft); color: var(--accent-deep); padding: .13em .4em; border-radius: 5px; }
+      .rdt-section a { color: var(--accent); }
+
+      .rdt-answers { display: grid; gap: .8rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+      .rdt-answer { background: var(--surface-raised); border: 1px solid var(--border); border-radius: var(--r-md);
+        padding: .95rem 1rem; border-top: 3px solid var(--accent); }
+      .rdt-answer h3 { margin: 0 0 .3rem; font-size: .92rem; }
+      .rdt-answer p { margin: 0; font-size: .86rem; }
+
+      .rdt-tablewrap { overflow-x: auto; margin-bottom: .9rem; border: 1px solid var(--border); border-radius: var(--r-md); }
+      .rdt-table { width: 100%; border-collapse: collapse; font-size: .85rem; min-width: 460px; }
+      .rdt-table th, .rdt-table td { text-align: left; padding: .55rem .75rem; border-bottom: 1px solid var(--border); }
+      .rdt-table thead th { background: var(--surface-sunken); font-size: .72rem; text-transform: uppercase;
+        letter-spacing: .06em; color: var(--muted); font-weight: 800; }
+      .rdt-table tbody tr:last-child td { border-bottom: 0; }
+      .rdt-table tbody tr:hover { background: var(--accent-soft); }
+      .rdt-table td { color: var(--text-secondary); }
+      .rdt-table td:first-child { color: var(--text-primary); font-weight: 600; }
+      .rdt-table code { font-family: var(--mono); color: var(--signal); background: none; padding: 0; }
+
+      .rdt-faq { display: grid; gap: .5rem; }
+      .rdt-faq details { background: var(--surface-raised); border: 1px solid var(--border); border-radius: var(--r-md);
+        padding: .8rem 1rem; transition: border-color .16s ease; }
+      .rdt-faq details[open] { border-color: var(--accent); }
+      .rdt-faq summary { cursor: pointer; font-weight: 700; font-size: .92rem; color: var(--text-primary); }
+      .rdt-faq summary::marker { color: var(--accent); }
+      .rdt-faq p { margin: .55rem 0 0; font-size: .88rem; }
+
+      .rdt-related { display: grid; gap: .6rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+      .rdt-related a { display: grid; gap: .18rem; text-decoration: none; background: var(--surface-raised);
+        border: 1px solid var(--border); border-radius: var(--r-md); padding: .8rem .95rem;
+        transition: transform .14s ease, border-color .16s ease, box-shadow .16s ease; }
+      .rdt-related a:hover { background: var(--surface-hover); border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--lift); }
+      .rdt-related strong { color: var(--text-primary); font-size: .9rem; }
+      .rdt-related span { color: var(--muted); font-size: .8rem; }
+
+      .rdt-disclaimer { margin: 1.6rem 0 0; font-size: .82rem; color: var(--muted); line-height: 1.62; max-width: 82ch; }
+      .rdt-disclaimer code { font-family: var(--mono); }
+
+      .rdt-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+      /* Below this the rail cannot hold a usable control and a preview at once,
+         so it becomes a normal stack: controls first, because you need the URL
+         box before there is anything to look at. */
+      @media (max-width: 900px) {
+        .rdt-body { grid-template-columns: minmax(0, 1fr); }
+        .rdt-side { border-right: 0; border-bottom: 1px solid var(--border); max-height: none; overflow: visible; }
+        .rdt-group { padding: .75rem 1rem; }
+        .rdt-cmp-list { grid-template-columns: 1fr 1fr 1fr; max-height: 150px; }
+      }
+
+      @media (max-width: 720px) {
+        .rdt-cmp-list { grid-template-columns: 1fr 1fr; }
+        .rdt-stage { min-height: 400px; padding: .85rem; }
+        .rdt-section { padding: 1.15rem; }
+        .rdt-bar { gap: .5rem; }
+        .rdt-privacy { order: 3; flex-basis: 100%; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .rdt-btn, .rdt-mode, .rdt-related a, .rdt-input, .rdt-select, .rdt-num, .rdt-faq details { transition: none; }
+        .rdt-btn:hover, .rdt-related a:hover { transform: none; }
+      }
+    </style>
+
+    <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://tooladda.online/#website",
+      "name": "ToolAdda",
+      "alternateName": [
+        "Tool Adda",
+        "Tools Adda",
+        "ToolsAdda",
+        "Tooladda",
+        "ToolAdda.online"
+      ],
+      "url": "https://tooladda.online/",
+      "inLanguage": "en",
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "alternateName": [
+        "Tool Adda",
+        "Tools Adda",
+        "ToolsAdda",
+        "Tooladda",
+        "ToolAdda.online"
+      ],
+      "url": "https://tooladda.online/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tooladda.online/assets/images/logo.svg"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/developer-tools/responsive-design-tester.html#webpage",
+      "url": "https://tooladda.online/developer-tools/responsive-design-tester.html",
+      "name": "Responsive Design Tester — Mobile, Tablet & Desktop Preview",
+      "description": "Preview any website at real device viewport sizes. Rotate, zoom, compare devices side by side, open a real window at the exact size, or scan a QR code to test on a phone.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://tooladda.online/developer-tools/responsive-design-tester.html#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://tooladda.online/developer-tools/responsive-design-tester.html#app"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tooladda.online/developer-tools/responsive-design-tester.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Developer Tools",
+          "item": "https://tooladda.online/#developer"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Responsive Design Tester"
+        }
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://tooladda.online/developer-tools/responsive-design-tester.html#app",
+      "name": "Responsive Design Tester",
+      "alternateName": [
+        "Mobile View Simulator",
+        "Responsive Design Checker",
+        "Mobile Viewer"
+      ],
+      "url": "https://tooladda.online/developer-tools/responsive-design-tester.html",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any modern web browser",
+      "description": "Loads a site in a real iframe sized to an exact CSS viewport, so the page's own media queries fire. 30 device presets across phones, tablets, laptops and desktops, portrait and landscape, custom sizes, side-by-side comparison, a real popup window at the device size for sites that refuse framing, and a QR code for testing on a physical phone.",
+      "featureList": [
+        "30 device presets with real CSS viewport sizes and device pixel ratios",
+        "Portrait and landscape rotation",
+        "Custom width and height in CSS pixels",
+        "Side-by-side comparison of up to six devices",
+        "Tailwind and Bootstrap breakpoint readout for the current width",
+        "Paste HTML and preview markup without hosting it",
+        "Open a real browser window at the exact device size",
+        "QR code to open the same URL on a physical phone",
+        "Shareable link that restores the URL, device and orientation"
+      ],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "isAccessibleForFree": true,
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://tooladda.online/developer-tools/responsive-design-tester.html#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why does a website show a blank frame?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because it sends an X-Frame-Options or CSP frame-ancestors header telling browsers not to display it inside a frame. It is a deliberate anti-clickjacking measure and no browser-based tool can override it. Use Open at this size for a real window, or the QR code to open it on a phone."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this the same as testing on a real phone?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It is the same viewport, not the same device. The layout is genuine - media queries fire at the real width - which catches most responsive bugs. It cannot reproduce the phone's browser engine, touch behaviour, network speed or font rendering. Use it as the fast first pass and confirm on hardware."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you upload the URL or the page anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The preview is an ordinary iframe rendered by your browser, so the request goes straight from your machine to the site, exactly as if you had typed the address. ToolAdda has no server that could receive the URL, the page or the pasted HTML."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I preview localhost or a staging site?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, provided your own browser can reach it - type localhost:3000 and it loads from your machine. One caveat: this page is HTTPS, so an http:// address is blocked as mixed content and looks like a framing refusal. Open at this size is unaffected."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why are the pixel sizes smaller than the phone's advertised resolution?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because CSS pixels are not hardware pixels. An iPhone 15 Pro Max has a 1290-pixel-wide panel but reports a 430 CSS pixel viewport, because it packs three hardware pixels into each CSS pixel. Media queries respond to the CSS width, so 430 is the number that matters for layout. The device pixel ratio shown next to each preset is the multiplier, and it is what decides which image a srcset picks."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can it take screenshots?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No, and any browser-only tool claiming otherwise is either using a server or capturing a screenshot of something other than the framed site. The same-origin policy stops this page from reading the pixels of a cross-origin frame. Your operating system's own screenshot shortcut captures the preview perfectly well."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+      <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 124, 58, 237; }
+      [data-theme="dark"] { --pca: 167, 139, 250; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 167, 139, 250; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/developer-tools/responsive-design-tester.html#webpage",
+      "url": "https://tooladda.online/developer-tools/responsive-design-tester.html",
+      "inLanguage": "en",
+      "datePublished": "2026-09-10",
+      "dateModified": "2026-09-22",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="container navbar">
+        <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../privacy-policy.html">Privacy</a>
+        </nav>
+        <div class="nav-actions"><a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee"><svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg><span class="ta-donate-label">Buy me a coffee</span></a><button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button><button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button></div>
+      </div>
+    </header>
+
+    <main id="main-content" class="rdt-page">
+      <div class="rdt-wrap">
+        <aside class="ta-support" aria-label="Support ToolAdda">
+          <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+        </aside>
+
+
+        <nav class="rdt-crumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">/</span><a href="/#developer">Developer Tools</a><span aria-hidden="true">/</span><span>Responsive Design Tester</span>
+        </nav>
+
+        <div class="rdt-hero">
+          <span class="rdt-eyebrow">Developer Tool</span>
+          <h1 class="rdt-h1">Responsive Design Tester</h1>
+          <p class="rdt-lede">Preview any website at a real device viewport — iPhone, Android, iPad, laptop or desktop. The page genuinely lays out at that width, so its own media queries fire and you see what the phone would see. Rotate it, zoom it, or line several devices up side by side.</p>
+          <ul class="rdt-trust">
+            <li>Free</li>
+            <li>No signup</li>
+            <li>30 device presets</li>
+            <li>Real viewport sizes</li>
+            <li>Nothing uploaded</li>
+          </ul>
+        </div>
+
+        <!-- ============ WORKSPACE ============ -->
+        <section class="rdt-console" data-rdt-root aria-label="Responsive design tester">
+          <div class="rdt-bar">
+            <p class="rdt-bar__title">Device preview</p>
+            <div class="rdt-modes" role="group" aria-label="Preview source">
+              <button type="button" class="rdt-mode" data-rdt-mode="url" aria-pressed="true">Live URL</button>
+              <button type="button" class="rdt-mode" data-rdt-mode="html" aria-pressed="false">Paste HTML</button>
+            </div>
+            <span class="rdt-privacy">🔒 Rendered by your browser — nothing reaches our servers</span>
+          </div>
+
+          <!-- Controls live in a rail beside the stage rather than stacked above
+               it. Stacked, the preview started four blocks down the page and you
+               had to scroll to it after every single change. -->
+          <div class="rdt-body">
+            <div class="rdt-side">
+
+              <div class="rdt-group" data-rdt-url-panel>
+                <form data-rdt-form>
+                  <label class="rdt-label" for="rdtUrl">Website address</label>
+                  <div class="rdt-urlrow">
+                    <input class="rdt-input" id="rdtUrl" type="text" data-rdt-url inputmode="url" autocomplete="url"
+                           placeholder="example.com" />
+                    <button type="submit" class="rdt-btn" data-rdt-go>Go</button>
+                  </div>
+                  <p class="rdt-hint">Try <code>example.com</code> or <code>localhost:3000</code></p>
+                </form>
+              </div>
+
+              <div class="rdt-group" data-rdt-html-panel hidden>
+                <label class="rdt-label" for="rdtHtml">HTML to preview</label>
+                <textarea class="rdt-textarea" id="rdtHtml" data-rdt-html-input spellcheck="false"
+                  placeholder="&lt;!doctype html&gt;&#10;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&#10;&lt;h1&gt;Hello&lt;/h1&gt;"></textarea>
+                <button type="button" class="rdt-btn rdt-full" data-rdt-html-run>Render</button>
+              </div>
+
+              <div class="rdt-group">
+                <label class="rdt-label" for="rdtDevice">Device</label>
+                <select class="rdt-select rdt-full" id="rdtDevice" data-rdt-device></select>
+                <div class="rdt-inline">
+                  <button type="button" class="rdt-btn rdt-btn--ghost" data-rdt-rotate aria-pressed="false" title="Rotate — shortcut: R">⟲ Rotate</button>
+                  <label class="rdt-field" for="rdtZoom"><span class="rdt-sr">Zoom</span>
+                    <select class="rdt-select" id="rdtZoom" data-rdt-zoom>
+                      <option value="fit">Fit</option>
+                      <option value="1">100%</option>
+                      <option value="0.75">75%</option>
+                      <option value="0.5">50%</option>
+                      <option value="0.33">33%</option>
+                    </select>
+                  </label>
+                </div>
+                <label class="rdt-check"><input type="checkbox" data-rdt-frame checked /> Device frame</label>
+                <label class="rdt-check"><input type="checkbox" data-rdt-compare /> Compare devices</label>
+              </div>
+
+              <div class="rdt-group">
+                <label class="rdt-label" for="rdtCw">Custom size</label>
+                <div class="rdt-inline">
+                  <input class="rdt-num" id="rdtCw" type="number" min="200" max="4000" step="1" placeholder="W" data-rdt-cw />
+                  <span aria-hidden="true" class="rdt-x">×</span>
+                  <label class="rdt-sr" for="rdtCh">Custom height</label>
+                  <input class="rdt-num" id="rdtCh" type="number" min="200" max="4000" step="1" placeholder="H" data-rdt-ch />
+                  <button type="button" class="rdt-btn rdt-btn--ghost" data-rdt-custom-go>Apply</button>
+                </div>
+              </div>
+
+              <div class="rdt-group" data-rdt-cmp-panel hidden>
+                <span class="rdt-label">Devices to compare <em>— up to six</em></span>
+                <div class="rdt-cmp-list" data-rdt-cmp-list></div>
+              </div>
+
+              <div class="rdt-group">
+                <span class="rdt-label">Actions</span>
+                <div class="rdt-actions">
+                  <button type="button" class="rdt-btn rdt-btn--ghost" data-rdt-reload>↻ Reload</button>
+                  <button type="button" class="rdt-btn rdt-btn--ghost" data-rdt-popup title="Opens a real window at the device size — works even on sites that refuse to be framed">⧉ Open at size</button>
+                  <button type="button" class="rdt-btn rdt-btn--ghost" data-rdt-qr-btn aria-pressed="false" title="Show a QR code to open this URL on your phone">▦ QR code</button>
+                  <button type="button" class="rdt-btn rdt-btn--ghost" data-rdt-share>🔗 Share link</button>
+                  <button type="button" class="rdt-btn rdt-btn--ghost" data-rdt-reset title="Clear the URL and put every setting back to its default">✕ Reset all</button>
+                </div>
+              </div>
+
+              <div class="rdt-group rdt-qr" data-rdt-qr hidden>
+                <span class="rdt-label">Scan to open on your phone</span>
+                <div data-rdt-qr-out></div>
+                <p data-rdt-qr-url></p>
+                <button type="button" class="rdt-btn rdt-btn--ghost rdt-full" data-rdt-qr-close>Hide QR code</button>
+              </div>
+
+            </div>
+
+            <div class="rdt-main">
+              <div class="rdt-readout" data-rdt-readout aria-live="polite"></div>
+              <p class="rdt-status" data-rdt-status hidden></p>
+              <div class="rdt-stage" data-rdt-stage></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ QUICK ANSWERS ============ -->
+        <section class="rdt-section" aria-labelledby="rdt-answers-heading">
+          <h2 class="rdt-h2" id="rdt-answers-heading">Straight answers</h2>
+          <div class="rdt-answers">
+            <div class="rdt-answer">
+              <h3>Is this a real viewport?</h3>
+              <p>Yes. The frame is set to the exact CSS width, so the page's own media queries fire. It is not a scaled screenshot.</p>
+            </div>
+            <div class="rdt-answer">
+              <h3>Why do some sites not load?</h3>
+              <p>They send <code>X-Frame-Options</code> or a CSP <code>frame-ancestors</code> rule. No browser tool can bypass that — use the popup or QR instead.</p>
+            </div>
+            <div class="rdt-answer">
+              <h3>Does anything get uploaded?</h3>
+              <p>No. Your browser fetches the site directly. ToolAdda has no server that could see the URL or the page.</p>
+            </div>
+            <div class="rdt-answer">
+              <h3>Can I test localhost?</h3>
+              <p>Yes, if your machine can reach it. Note that <code>http://</code> in an HTTPS page is blocked as mixed content — the popup still works.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ HOW TO ============ -->
+        <section class="rdt-section" aria-labelledby="rdt-how-heading">
+          <h2 class="rdt-h2" id="rdt-how-heading">How to test a site</h2>
+          <ol>
+            <li><strong>Paste the address.</strong> Just the domain is fine — <code>example.com</code> becomes <code>https://example.com</code> automatically. Local servers work too: type <code>localhost:3000</code> and it is fetched from your own machine.</li>
+            <li><strong>Pick a device.</strong> The list is grouped into phones, tablets, and laptops and desktops, and every entry shows its real CSS viewport size. If the device you need is missing, type any width and height into the custom fields.</li>
+            <li><strong>Rotate and zoom.</strong> Rotate swaps width and height, which is the fastest way to catch the landscape bugs nobody tests for. Zoom is purely visual — the page inside still believes it is the full device width, so scaling to 50% to fit a laptop screen does not change a single media query.</li>
+            <li><strong>Compare.</strong> Tick <em>Compare devices</em> to line up to six viewports next to each other. This is where a broken breakpoint becomes obvious: the layout that works at 390 and at 1440 is often the one that falls apart at 768.</li>
+            <li><strong>Share what you found.</strong> <em>Copy share link</em> produces a URL carrying the site, device and orientation, so a colleague opens the exact view you are looking at.</li>
+          </ol>
+
+          <h3 class="rdt-h3">Testing markup you have not deployed yet</h3>
+          <p>Switch to <strong>Paste HTML</strong> and drop in a full document or a fragment. It renders in the same device frames without needing a server, a tunnel or a deploy — useful for checking an email template, a component, or a layout you are still writing. This mode never hits the framing wall, because nothing is being fetched from another origin.</p>
+          <p>The pasted markup runs in a sandboxed frame with its own opaque origin. Its scripts execute so you can test interactive components, but it cannot read this page, its storage or its cookies.</p>
+        </section>
+
+        <!-- ============ DEVICE REFERENCE ============ -->
+        <section class="rdt-section" aria-labelledby="rdt-sizes-heading">
+          <h2 class="rdt-h2" id="rdt-sizes-heading">Device viewport sizes reference</h2>
+          <p>These are CSS viewport widths — the number a media query actually compares against — not panel resolutions. The device pixel ratio is the multiplier between the two, and it decides which image a <code>srcset</code> serves.</p>
+          <div class="rdt-tablewrap">
+            <table class="rdt-table">
+              <thead><tr><th>Device</th><th>CSS viewport</th><th>DPR</th><th>Panel pixels</th></tr></thead>
+              <tbody>
+                <tr><td>iPhone SE (3rd gen)</td><td><code>375 × 667</code></td><td>2</td><td>750 × 1334</td></tr>
+                <tr><td>iPhone 13 / 14</td><td><code>390 × 844</code></td><td>3</td><td>1170 × 2532</td></tr>
+                <tr><td>iPhone 15 / 16</td><td><code>393 × 852</code></td><td>3</td><td>1179 × 2556</td></tr>
+                <tr><td>iPhone 15 / 16 Pro Max</td><td><code>430 × 932</code></td><td>3</td><td>1290 × 2796</td></tr>
+                <tr><td>Galaxy S22 / S24</td><td><code>360 × 780</code></td><td>3</td><td>1080 × 2340</td></tr>
+                <tr><td>Galaxy S23 Ultra</td><td><code>384 × 824</code></td><td>3.75</td><td>1440 × 3088</td></tr>
+                <tr><td>Pixel 7 / 7 Pro</td><td><code>412 × 915</code></td><td>2.625</td><td>1080 × 2400</td></tr>
+                <tr><td>Galaxy Z Fold (open)</td><td><code>768 × 812</code></td><td>2.6</td><td>1812 × 2176</td></tr>
+                <tr><td>iPad mini</td><td><code>768 × 1024</code></td><td>2</td><td>1536 × 2048</td></tr>
+                <tr><td>iPad Air</td><td><code>820 × 1180</code></td><td>2</td><td>1640 × 2360</td></tr>
+                <tr><td>iPad Pro 12.9"</td><td><code>1024 × 1366</code></td><td>2</td><td>2048 × 2732</td></tr>
+                <tr><td>Laptop</td><td><code>1366 × 768</code></td><td>1</td><td>1366 × 768</td></tr>
+                <tr><td>MacBook Pro 16"</td><td><code>1728 × 1117</code></td><td>2</td><td>3456 × 2234</td></tr>
+                <tr><td>Desktop FHD</td><td><code>1920 × 1080</code></td><td>1</td><td>1920 × 1080</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>The readout above the preview also names the <strong>Tailwind</strong> and <strong>Bootstrap</strong> breakpoint the current width falls into, so you can tell at a glance whether you are testing the <code>md</code> layout or the <code>lg</code> one instead of doing the arithmetic in your head.</p>
+        </section>
+
+        <!-- ============ GUIDE ============ -->
+        <section class="rdt-section" aria-labelledby="rdt-guide-heading">
+          <h2 class="rdt-h2" id="rdt-guide-heading">What a viewport preview can and cannot tell you</h2>
+          <p>A device preview is a layout instrument. Set the width to 390 pixels and the page inside genuinely believes it is 390 pixels wide: <code>@media (max-width: 480px)</code> matches, container queries resolve, <code>vw</code> units compute against the real number, and a grid that was told to collapse below <code>md</code> collapses. That covers the large majority of responsive bugs, and it catches them in seconds rather than after a deploy.</p>
+
+          <h3 class="rdt-h3">What it genuinely catches</h3>
+          <ul>
+            <li><strong>Horizontal overflow.</strong> The single most common mobile bug: one element with a fixed width or a stubborn <code>min-width</code> wider than the screen, and the whole page scrolls sideways. At a real narrow viewport it is immediately visible.</li>
+            <li><strong>Breakpoint gaps.</strong> Layouts are usually tested at phone width and desktop width. The failures hide in between — around 768 and 1024, where a three-column grid has not yet collapsed but no longer fits.</li>
+            <li><strong>Landscape.</strong> Rotate a phone and the viewport becomes short rather than narrow. Anything relying on <code>100vh</code>, or a sticky header plus a sticky footer, tends to break here first.</li>
+            <li><strong>Text and tap targets.</strong> Copy that reflows to nine words per line, or buttons that end up too small or too close together, show up at the real width.</li>
+            <li><strong>Foldables and small phones.</strong> 344 pixels on a closed Z Flip and 768 on an open Z Fold are both genuinely awkward, and almost nobody tests them.</li>
+          </ul>
+
+          <h3 class="rdt-h3">What it cannot do — and why</h3>
+          <p>Being clear about the limits is the difference between a useful tool and a misleading one:</p>
+          <ul>
+            <li><strong>It is not Safari on iOS.</strong> The preview uses your own browser engine. A rendering bug specific to WebKit, or to a particular Android WebView, will not reproduce here. Nothing running inside Chrome can genuinely emulate another engine.</li>
+            <li><strong>Touch is not simulated.</strong> You are still using a mouse. Hover states, <code>:active</code> behaviour, momentum scrolling and gesture handling all behave like a desktop.</li>
+            <li><strong>Performance is your machine's.</strong> The page loads over your connection with your CPU. It says nothing about how it will feel on a mid-range phone on a slow network.</li>
+            <li><strong>Screenshots are impossible.</strong> The same-origin policy prevents this page from reading the pixels inside a cross-origin frame. Any browser-only tool offering to screenshot an arbitrary site is doing it on a server. Your operating system's screenshot shortcut works fine.</li>
+          </ul>
+          <p>Treat it as the fast first pass that catches most problems, then confirm on real hardware — which is exactly what the QR code button is for.</p>
+
+          <h3 class="rdt-h3">Why some sites refuse to load</h3>
+          <p>If the preview stays blank, the site is almost certainly sending one of these:</p>
+          <ul>
+            <li><code>X-Frame-Options: DENY</code> or <code>SAMEORIGIN</code></li>
+            <li><code>Content-Security-Policy: frame-ancestors 'none'</code></li>
+          </ul>
+          <p>Both exist to prevent clickjacking — an attacker framing a real banking page invisibly over their own buttons. The browser enforces the refusal, and there is no client-side trick that gets around it; that is the entire point of the header. Google, Facebook, most banks, GitHub and X all set it.</p>
+          <p>Tools that do preview those sites are running a server-side proxy: their backend fetches the page, strips the header, and serves you a copy. That works, but it means the URL and every response pass through somebody else's machine. This tool has no server at all, so it takes the honest route instead and gives you two things that work on <em>any</em> site:</p>
+          <ul>
+            <li><strong>Open at this size</strong> launches a genuine browser window at the exact device dimensions. A window is a top-level browsing context, so framing headers simply do not apply — every site opens.</li>
+            <li><strong>QR code</strong> puts the address on the phone in your hand, which is the only truly authoritative test anyway.</li>
+          </ul>
+        </section>
+
+        <!-- ============ FAQ ============ -->
+        <section class="rdt-section" aria-labelledby="rdt-faq-heading">
+          <h2 class="rdt-h2" id="rdt-faq-heading">Frequently asked questions</h2>
+          <div class="rdt-faq">
+            <details>
+              <summary>Why does a website show a blank frame?</summary>
+              <p>Because it sends an <code>X-Frame-Options</code> or CSP <code>frame-ancestors</code> header telling browsers not to display it inside a frame. It is a deliberate anti-clickjacking measure and no browser-based tool can override it. Use <em>Open at this size</em> for a real window, or the QR code to open it on a phone.</p>
+            </details>
+            <details>
+              <summary>Is this the same as testing on a real phone?</summary>
+              <p>It is the same viewport, not the same device. The layout is genuine — media queries fire at the real width — which catches most responsive bugs. It cannot reproduce the phone's browser engine, touch behaviour, network speed or font rendering. Use it as the fast first pass and confirm on hardware.</p>
+            </details>
+            <details>
+              <summary>Do you upload the URL or the page anywhere?</summary>
+              <p>No. The preview is an ordinary iframe rendered by your browser, so the request goes straight from your machine to the site, exactly as if you had typed the address. ToolAdda has no server that could receive the URL, the page or the pasted HTML.</p>
+            </details>
+            <details>
+              <summary>Can I preview localhost or a staging site?</summary>
+              <p>Yes, provided your own browser can reach it — type <code>localhost:3000</code> and it loads from your machine. One caveat: this page is HTTPS, so an <code>http://</code> address is blocked as mixed content and looks like a framing refusal. <em>Open at this size</em> is unaffected.</p>
+            </details>
+            <details>
+              <summary>Why is an iPhone 15 Pro Max only 430 pixels wide?</summary>
+              <p>Because CSS pixels are not hardware pixels. The panel is 1290 pixels across, but the phone reports a 430 pixel viewport and packs three hardware pixels into each CSS pixel. Media queries respond to the CSS width, so 430 is the number that matters for layout. The DPR shown beside each preset is that multiplier, and it decides which <code>srcset</code> image is served.</p>
+            </details>
+            <details>
+              <summary>Can it take a screenshot of the preview?</summary>
+              <p>No. The same-origin policy stops this page from reading the pixels of a cross-origin frame, so a browser-only tool cannot capture one. Anything that offers this is capturing it on a server. Your operating system's screenshot shortcut captures the preview perfectly well.</p>
+            </details>
+            <details>
+              <summary>Does zooming out change the test?</summary>
+              <p>No, and that is the point. Zoom is a visual transform on the outside of the frame. The page inside still reports the full device width, so scaling a 1920 pixel desktop view down to fit your laptop does not shift a single breakpoint.</p>
+            </details>
+            <details>
+              <summary>Does it remember my last URL and device?</summary>
+              <p>Yes, in your browser's local storage on this device only. It never leaves your machine, and clearing your browser data removes it. A shared link always takes priority over the stored values.</p>
+            </details>
+          </div>
+        </section>
+
+        <!-- ============ RELATED ============ -->
+        <section class="rdt-section" aria-labelledby="rdt-related-heading">
+          <h2 class="rdt-h2" id="rdt-related-heading">Related tools</h2>
+          <div class="rdt-related">
+            <a href="../css-tools/css-flexbox-grid-playground.html"><strong>CSS Flexbox &amp; Grid Playground</strong><span>Build and debug the layout you are testing.</span></a>
+            <a href="../website-seo-checker.html"><strong>Website SEO Checker</strong><span>Audit meta tags, headings and technical SEO.</span></a>
+            <a href="../qr-code-generator.html"><strong>QR Code Generator</strong><span>Make a scannable code for any link.</span></a>
+            <a href="../screen-ruler.html"><strong>Screen Ruler</strong><span>Measure anything on screen in pixels.</span></a>
+            <a href="../css-tools/shadow-generator.html"><strong>CSS Shadow Generator</strong><span>Design box and text shadows visually.</span></a>
+            <a href="../developer-tools/markdown-live-previewer.html"><strong>Markdown Live Previewer</strong><span>Write Markdown and see it render live.</span></a>
+          </div>
+        </section>
+
+        <p class="rdt-disclaimer">
+          This tester runs entirely in your browser. The preview is a standard <code>&lt;iframe&gt;</code>, so the request for the site you enter goes directly from your machine to that site — ToolAdda operates no server and never sees the address, the page, or any HTML you paste. Device dimensions are the CSS viewport sizes those devices report; a preview reproduces layout faithfully but not a device's browser engine, touch behaviour or performance, so treat real hardware as the final word.
+        </p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+          <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links"><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../privacy-policy.html">Privacy</a><a href="../terms.html">Terms</a></div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/qrcode-generator.min.js"></script>
+    <script src="../assets/js/responsive-design-tester.js"></script>
+    <script src="../assets/js/side-ads.js" defer></script>
+    <script src="../assets/js/inline-ads.js" data-in-article defer></script>
+  </body>
+</html>

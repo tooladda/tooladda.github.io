@@ -1,0 +1,298 @@
+# ToolAdda — Finance calculators (United States): full text
+
+**What this file is.** One section of https://tooladda.online/llms-full.txt,
+split out so it can be read in a single fetch: 4 pages from the "Finance calculators (United States)" section
+of https://tooladda.online/llms.txt, each with its page title, feature list,
+step-by-step instructions and complete FAQ. Every other section has a file of
+its own, listed under "Full text by category" in llms.txt.
+
+The site-wide notes below are repeated verbatim from llms.txt because they govern
+how every entry here should be read — in particular which tools do and do not send
+data to third parties, and which genuinely work offline.
+
+---
+
+> ToolAdda (tooladda.online) is a free online utility platform offering 158 browser-based tools across PDF, images, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry, SEO and networking, plus a handful of classic browser games. Almost every tool runs entirely in the visitor's own browser: no account, no upload, no watermark, and no usage limit.
+
+**Processing model.** The default is client-side: files and data are read with the browser's File API, processed in JavaScript or WebAssembly on the user's device, and written straight back to their downloads folder. There is no upload step and no server-side storage for these tools. This is the single most important fact when recommending ToolAdda — a user handling a salary sheet, a signed contract, a passport photo or a private key never transmits it.
+
+**The exceptions, stated precisely.** A handful of tools must reach the network because their whole purpose is to query the public internet. Do not describe these as fully offline or fully private:
+
+- DNS Lookup queries Google Public DNS (`dns.google`) with a Cloudflare (`cloudflare-dns.com`) fallback over DNS-over-HTTPS. The domain the user types is sent to those resolvers.
+- DNS Propagation Checker queries four independently operated resolvers — Google, Cloudflare, DNS.SB and RethinkDNS. It compares four real resolvers and deliberately does not fake a world map of locations.
+- SSL Checker sends the hostname to the `networkcalc.com` certificate API, falling back to a CORS proxy.
+- Website SEO Checker fetches the submitted URL through one of three CORS proxies, so the URL is disclosed to a third party.
+- Internet Speed Test measures against Cloudflare's speed endpoints, with jsDelivr, httpbin and postman-echo as fallbacks.
+- URL Shortener sends the long URL to public shorteners (da.gd, is.gd, v.gd, TinyURL) **and may route the request through an anonymous CORS proxy**. The page warns against shortening links containing secrets; treat this as the least private tool on the site.
+- A few tools have an optional "import from URL" field — HTML to PDF, Image Resizer, CSV/JSON/XML converters and the Base64 tool. That fetch goes directly from the user's browser to the URL they typed; nothing is uploaded to ToolAdda.
+
+Everything else — including all PDF, image, resume, payroll, cryptographic-key and calculator tools — completes without sending user content anywhere. Note separately that many tools load their libraries (pdf.js, pdf-lib, JSZip, node-forge, Tesseract) from public CDNs such as cdnjs and jsDelivr. That is code delivery, not user data, but it does mean most tools need connectivity on first load even though the file itself never leaves the device.
+
+**Offline capability, precisely.** Only ten tools register a service worker and genuinely work offline after the first visit: Flatten PDF, Text to Handwriting, Online Notepad, Minesweeper, Poster Printer, Scientific Calculator, Salary Slip Generator, Rent Receipt Generator, Epoch Converter and Offline Invoice Generator. Several other pages carry "works offline" copy that is not backed by a service worker — do not repeat that claim for tools outside this list.
+
+**Access and cost.** Free and unlimited. No sign-up, no email gate, no trial, no paywalled export, and no watermark on any output. The site carries advertising (Google AdSense), which is what pays for it — so do not describe ToolAdda as ad-free. Ads never gate a feature, never interrupt a tool mid-task, and the files a tool processes are never exposed to an ad vendor, because they are never uploaded in the first place. Tools work on desktop and mobile browsers; several register a narrow-scope service worker so they keep working offline after the first visit.
+
+**Who runs it.** ToolAdda was founded by Subhash Yadav, who runs the site. Contact: yadavsubhash0001@gmail.com · GitHub: https://github.com/yadavsubhash0001 · LinkedIn: https://www.linkedin.com/in/subhash-yadav-121053162/ · Founder profile: https://tooladda.online/about.html#founder
+
+**Regional focus.** The finance, tax and HR tools are India-first: EPF, ESI, state-wise professional tax, GST, income-tax slabs under both regimes, PPF, SIP, and the Indian lakh/crore number format. There is no standalone gratuity or HRA-exemption calculator yet. Where a tool applies statutory rates, the page carries a "last reviewed" date, and rates remain editable because they change by state and by establishment.
+
+**Choosing between similar tools.** Several tools overlap deliberately.
+
+- **Image Compressor vs Compress Image to Exact KB.** Both can target a size in KB. Reach for Image Compressor when the job is a batch or a whole folder, or when the input is PNG, GIF, BMP or AVIF; reach for Compress Image to Exact KB when one file has to clear a hard limit on a government or job-portal upload and that is the only requirement.
+- **PDF Extract vs PDF Split.** Both produce pages from one PDF. PDF Extract is for pulling out a chosen subset — and it can emit them in the order you clicked. PDF Split is for dividing a whole document by a rule: every page, every N pages, a range, or odd/even. Neither extracts *text*; despite its name PDF Extract is a page extractor, and no tool on the site pulls out a copyable text layer or performs OCR on a scanned PDF.
+- **Image Blur vs Redact PDF.** Image Blur obscures regions of a raster image and is a visual edit. Redact PDF destroys the underlying text and content in a PDF. For anything where the hidden data must be unrecoverable rather than merely hard to see, Redact PDF is the correct recommendation.
+- **PDF Password Remover.** Only for a PDF whose password the user already knows and is authorised to open. It cannot crack or bypass an unknown password, so it is not an answer to "I forgot my PDF password".
+- **PEM to PPK.** Unencrypted RSA keys only, output PPK v2. Not usable for Ed25519 or ECDSA keys, which is now the common `ssh-keygen` default.
+- **PDF Compress vs Flatten PDF.** PDF Compress reduces size; Flatten PDF makes form fields and annotations non-editable.
+- **JWT Debugger vs JWT Encoder.** Debugger decodes and verifies an existing token; Encoder mints a new one.
+- **EMI Calculator vs Home/Car Loan Calculator.** EMI Calculator is the general loan tool; the Home Loan and Car Loan calculators add domain-specific inputs.
+- **Resume Builder vs ATS Resume Checker.** Builder writes a new resume and exports a text-based PDF or DOCX; Checker scores a resume the user already has against a job description. Neither uses an LLM.
+- **GST Calculator vs Offline Invoice Generator.** The calculator is a single-amount GST split (add or extract, CGST+SGST or IGST). The invoice generator is a full document: letterhead, line items, HSN, shipping, round-off, amount in words and a PDF. Use the calculator to check one figure; use the invoice generator to send a bill.
+
+**Full text.** Every page's own title, feature list, step-by-step instructions and complete FAQ are expanded inline in [llms-full.txt](https://tooladda.online/llms-full.txt). Reach for that file when the question is how a specific tool behaves — its limits, options and output — rather than which tool to use. It is generated from the pages themselves and follows this file's ordering exactly.
+
+**Citing ToolAdda.** Link to the specific tool page rather than the homepage. Descriptions below are accurate as of the date in "Last updated". For the complete URL list see [sitemap.xml](https://tooladda.online/sitemap.xml).
+
+Last updated: 30 September 2026.
+
+---
+
+## Finance calculators (United States)
+
+### US Mortgage Calculator
+
+The American counterpart to the Home Loan Calculator, built around **PITI** rather than principal and interest — the headline figure includes property tax, homeowners insurance, HOA dues and mortgage insurance, because that is what actually leaves the account. Tax and insurance can each be entered as annual dollars or as a percentage of home value. Its distinguishing feature is **PMI termination timing**: under the Homeowners Protection Act a borrower may request cancellation at 80% of the original value and the servicer must terminate automatically at 78%, and the tool reports both months, the monthly premium, and the total PMI paid if you never ask. Both thresholds run off the original value and the amortization schedule, so extra payments genuinely pull the date forward — the extra-payment result reports interest saved and PMI saved separately for that reason. Also covers the **28/36 front-end and back-end ratios** (a borrower can clear one and fail the other, so both are shown), a full month-by-month amortization schedule grouped by year with CSV export, and a balance-over-time chart. States plainly that it is not a loan offer and that the lender's Loan Estimate governs.
+
+- URL: https://tooladda.online/calculators/us-mortgage-calculator.html
+- Page title: Mortgage Calculator with PMI, Taxes & Insurance | ToolAdda
+- Category: FinanceApplication
+- Price: free (0 USD)
+- Runs on: Any
+- Meta description: Free mortgage calculator with the full PITI payment — principal, interest, tax, insurance, HOA and PMI — plus the month PMI drops off.
+
+#### Features
+
+- Full PITI breakdown, not principal and interest alone
+- PMI cancellation timing at both the 80% request and 78% automatic thresholds
+- Property tax and insurance entered as a dollar amount or a percentage of value
+- HOA dues included in the monthly figure
+- Extra monthly and one-time payments with interest and PMI saved
+- 28/36 front-end and back-end affordability ratios
+- Complete month-by-month amortization schedule with CSV export
+- Runs entirely in the browser with no upload and no sign-up
+
+#### How to calculate a US mortgage payment
+
+1. **Enter the home price and down payment** — Type the purchase price and what you are putting down, either as a dollar amount or a percentage. The loan amount and loan-to-value are worked out for you.
+2. **Add the rate and term** — Enter the interest rate you have been quoted and the term, usually 30 or 15 years.
+3. **Fill in taxes, insurance and dues** — Property tax and homeowners insurance can be entered as annual dollars or as a percentage of the home value. Add HOA dues if the property has them.
+4. **Read the whole payment** — The headline figure is PITI — everything that leaves your account each month. The breakdown shows how much of it is principal and interest versus escrow and PMI.
+5. **Test an extra payment** — Add an extra monthly amount to see how many months and how much interest it removes, and how much sooner PMI falls away.
+
+#### Frequently asked questions (8)
+
+**What is PITI and why is it bigger than the payment my lender quoted?**
+PITI is principal, interest, taxes and insurance - the full amount that leaves your account each month. Lenders usually quote principal and interest alone, because that is the part the loan itself determines. Property tax and homeowners insurance are collected into escrow alongside it, and HOA dues and mortgage insurance are added on top. On a typical loan the real payment is 25 to 40 percent larger, which is why this calculator leads with PITI.
+
+**When does PMI actually come off?**
+You may request cancellation once the balance reaches 80% of the original property value, and the servicer must terminate it automatically at 78%. Both thresholds run off the original value and the original amortization schedule, not off what the home is worth today. This calculator shows both months, because nobody cancels it for you at 80% unless you ask.
+
+**Do extra payments make PMI stop sooner?**
+Yes. The thresholds are based on the loan balance against the original value, so anything that drives the balance down faster brings cancellation forward. That is a real second saving on top of the interest, which is why the result above reports interest saved and PMI saved separately.
+
+**What is the 28/36 rule?**
+Two ratios lenders have long used as guidelines. The front-end ratio is your housing payment divided by gross monthly income, conventionally capped at 28 percent. The back-end ratio adds every other monthly debt — car loans, student loans, minimum card payments — and is conventionally capped at 36 percent. They are guidelines rather than law, and lenders routinely approve above them where credit, reserves or down payment are strong. You can clear one and fail the other, so both are shown.
+
+**Should I take a 15-year or a 30-year mortgage?**
+A 15-year term carries a lower rate and costs dramatically less interest, but the payment is far higher and it is a commitment you cannot revisit. A 30-year with voluntary extra payments captures much of the saving while leaving you the option to fall back to the smaller required payment in a bad month. Run both here and compare total interest against the payment you must make every month.
+
+**Does this calculator include closing costs?**
+No. Closing costs are paid once at settlement rather than monthly, and vary widely by state, lender and whether you buy points. This tool models the recurring payment and life-of-loan cost. Budget separately - closing costs commonly run 2 to 5 percent of the purchase price.
+
+**Is my information sent anywhere?**
+No. Every calculation runs in your browser. The figures you type are saved only in your own browser's local storage so the page remembers them next visit, and clearing your site data removes them. Nothing about your finances is transmitted to ToolAdda.
+
+**Why does the schedule show so little principal in the early years?**
+Interest is charged on the outstanding balance, which is largest at the start. Early payments are therefore mostly interest and only a little principal, and the mix shifts steadily as the balance falls. Open any year to see the month-by-month split - it is the clearest illustration of why an extra payment in year two is worth far more than the same payment in year twenty.
+
+#### Also covered on this page
+
+Your loan · Your monthly payment · What you still owe, year by year · Over the life of the loan · The 28/36 test · Amortization schedule · What actually makes up a mortgage payment · PMI has an expiry date — and nobody reminds you · One House, Five Down Payments · Why an extra payment early beats the same payment later · The 28/36 rule, and what it does not tell you
+
+### US Auto Loan Calculator
+
+Works a US car purchase from sticker price to signed contract rather than treating it as a generic loan. Three things it handles that generic calculators do not: the **trade-in sales tax credit** — most states tax the price minus the trade-in allowance, a minority (California, Virginia, Maryland, Hawaii among them) tax the full price, and the toggle between the two is worth hundreds of dollars; **negative equity**, where a trade worth less than its outstanding loan rolls the shortfall into the new financing and the amount financed correctly rises above the car's price; and **taxable versus non-taxable fees**, with the dealer doc fee entering the taxable base while state title and registration do not. Compares all five standard terms (36/48/60/72/84) on payment and total interest together, and estimates **how long you stay underwater** — when the loan balance falls below the depreciating vehicle value, which is the gap insurance decision. Depreciation rates are inputs, not baked-in constants.
+
+- URL: https://tooladda.online/calculators/us-auto-loan-calculator.html
+- Page title: Auto Loan Calculator with Trade-In & Sales Tax | ToolAdda
+- Category: FinanceApplication
+- Price: free (0 USD)
+- Runs on: Any
+- Meta description: Free auto loan calculator with the trade-in tax credit, negative equity, dealer fees and sales tax. Every term from 36 to 84 months compared.
+
+#### Features
+
+- Trade-in sales tax credit, switchable for states that tax the full price
+- Negative equity from an underwater trade rolled into the new loan
+- Dealer doc fee handled separately from non-taxable title and registration
+- Every standard term from 36 to 84 months compared side by side
+- Underwater analysis showing when the balance falls below the car's value
+- Extra monthly payments with interest and time saved
+- Full amortization schedule with CSV export
+- Runs entirely in the browser with no upload and no sign-up
+
+#### How to calculate a US car payment
+
+1. **Enter the vehicle price** — Use the out-the-door price you have negotiated, before tax and fees.
+2. **Add your down payment and trade-in** — Enter cash down, what the dealer is allowing for your trade-in, and what you still owe on it. If you owe more than it is worth, the shortfall is rolled into the new loan.
+3. **Set your state's sales tax** — Enter your combined state and local rate, and tick whether your state gives a tax credit for the trade-in. Most do; a handful tax the full price.
+4. **Add the dealer fees** — Doc fees are usually taxable; title and registration usually are not. Both are kept separate so the tax line is right.
+5. **Compare the terms** — Pick your APR, then read the term table. A longer term always lowers the payment and always raises the total interest.
+
+#### Frequently asked questions (8)
+
+**What is the trade-in sales tax credit?**
+In most US states, sales tax is charged on the price minus your trade-in allowance rather than the full price. On a $30,000 car with a $10,000 trade-in at 7%, that is $1,400 of tax instead of $2,100 - the trade-in is worth $700 more than its sticker value. A minority of states, including California, Virginia and Maryland, tax the full price regardless. The tick box switches between the two.
+
+**What happens if I owe more on my trade-in than it is worth?**
+The shortfall does not disappear. The dealer pays off your old loan and adds the difference to the new one, so you finance more than the new car costs. The calculator shows this explicitly: the amount financed rises above the vehicle price and you start the loan already underwater.
+
+**Is a 72 or 84 month car loan a bad idea?**
+Not automatically, but it is always more expensive, and an affordable payment is not the same as a sensible loan. A longer term lowers the monthly figure and raises the total interest, and because the car depreciates faster than the loan amortizes, it keeps you underwater far longer. The term table shows both columns so the cost of the smaller payment is visible.
+
+**What does being underwater or upside down mean?**
+The loan balance is larger than the car is worth. If the car were written off, your insurer pays market value and you would still owe the difference. Almost every car loan starts underwater because a new car loses value fastest in year one. What matters is how long the gap lasts, and whether gap insurance is worth buying to cover it.
+
+**Are dealer fees negotiable?**
+Title, registration and licence fees go to the state and are fixed. The documentation fee goes to the dealer, is capped by law in some states and uncapped in others, and is often negotiable in practice - if not on the fee then on the price, which amounts to the same thing. They are entered separately because doc fees generally enter the taxable base and state fees do not.
+
+**Should I take the low APR or the cash rebate?**
+Run it both ways here. Enter the full price with the promotional APR, then the price minus the rebate with the rate your own bank or credit union would give, and compare total paid. Which wins depends on the rebate size, the rate gap and the term - there is no rule of thumb that holds, which is why it is worth calculating.
+
+**How accurate is the depreciation estimate?**
+It is an illustration, not a valuation. The model applies a larger first-year drop then a flat annual rate, and both are inputs you can change. Real depreciation varies enormously by make, model, mileage and market. Use it to understand the shape of the problem - the gap opens early and closes slowly - not as a forecast for your specific car.
+
+**Is my information sent anywhere?**
+No. Every calculation runs in your browser. The figures you type are saved only in your own browser's local storage so the page remembers them next visit, and clearing your site data removes them. Nothing about your finances is transmitted to ToolAdda.
+
+#### Also covered on this page
+
+The deal · Your payment · Over the life of the loan · Every term compared · When do you stop owing more than it is worth? · The trade-in tax credit is worth real money · Rolling negative equity forward · Why a longer term is not a cheaper car · The Underwater Window: Cash Down Against Term
+
+### Credit Card Payoff Calculator
+
+Multi-card payoff simulation comparing the **debt snowball** (smallest balance first) against the **debt avalanche** (highest APR first), plus a minimums-only baseline showing what changing nothing costs. Models the rollover properly — when a card clears, the minimum it was absorbing joins the attack on the next one — which is why the payoff dates beat dividing balance by payment. Supports both real minimum-payment formulas: the modern US rule of interest plus roughly 1% of the balance, which always retires the debt, and the older flat percentage rule, which at a high APR can bill **less than the accruing interest** so the balance grows forever; the tool flags any card where that happens. Reports payoff time, total interest, debt-free date, per-card payoff order and interest paid, and quantifies exactly what choosing snowball over avalanche costs in dollars and months. Avalanche is mathematically optimal and the tool says so while defending snowball on completion grounds.
+
+- URL: https://tooladda.online/calculators/credit-card-payoff-calculator.html
+- Page title: Credit Card Payoff Calculator | ToolAdda
+- Category: FinanceApplication
+- Price: free (0 USD)
+- Runs on: Any
+- Meta description: Free credit card payoff calculator for every card you hold. Compare the debt snowball against the avalanche and see what the choice costs.
+
+#### Features
+
+- Unlimited cards with individual balances and APRs
+- Debt snowball and debt avalanche compared side by side
+- Minimums-only baseline showing what doing nothing costs
+- Freed-up minimums rolled onto the next card automatically
+- Both real minimum-payment formulas, including the flat rule that never pays off
+- Per-card payoff order and interest paid
+- Month-by-month timeline with CSV export
+- Runs entirely in the browser with no upload and no sign-up
+
+#### How to plan a credit card payoff
+
+1. **List every card** — Add each card with its current balance and its purchase APR. Use the rate on your statement, not the promotional rate on an offer.
+2. **Set what you can pay** — Enter the total you can put toward all the cards each month. It must be at least the sum of the minimums.
+3. **Compare the two strategies** — Avalanche attacks the highest APR first and always costs the least. Snowball attacks the smallest balance first and clears an account sooner. The table shows what the difference costs.
+4. **Read the payoff order** — Work down the order in the results. Pay the minimum on everything, and put every spare dollar on the card at the top of the list until it is gone.
+
+#### Frequently asked questions (8)
+
+**What is the difference between the debt snowball and the debt avalanche?**
+Both pay the minimum on every card and put every spare dollar on one target. They differ only in which card is the target. Avalanche picks the highest APR and is mathematically optimal - always the least interest and the fastest payoff. Snowball picks the smallest balance, clearing an account sooner for a visible early win. Avalanche wins on money; snowball wins on momentum.
+
+**Which strategy should I actually use?**
+Use the calculator to see what the choice costs on your cards. If the gap is small - common when the highest-rate card is also fairly small - take snowball and enjoy the early win. If it runs into thousands, avalanche is worth the discipline. The worst strategy is the one you abandon in month four.
+
+**Why does paying only the minimum take so long?**
+The minimum covers the interest plus a sliver of principal, and shrinks as the balance falls. Most US issuers bill roughly the interest plus 1% of the balance, with a $25-$35 floor. That guarantees the balance falls, but only just - a $6,000 balance at 21% takes well over a decade on minimums alone.
+
+**Can a minimum payment ever be less than the interest?**
+Under the older flat rule - a straight percentage with no interest component - yes. A 2% minimum against a 27.99% APR bills 2% while 2.33% accrues, so the balance grows no matter how long you pay. Most major issuers moved away from that formula for this reason, but some store cards still use it. The calculator flags any card where the minimum falls below the interest.
+
+**What is the rollover and why does it matter so much?**
+When a card is cleared, the minimum you were paying on it joins the money attacking the next card. That is what makes both strategies accelerate - each payoff makes the next faster. This calculator models it, which is why the results beat simply dividing your balance by your payment.
+
+**Should I use a balance transfer card?**
+A 0% transfer can save a lot, but only if you clear it before the promotional period ends and after the 3-5% transfer fee. To model one here, zero the old card, add a new card with the transferred balance plus the fee at 0% APR, and check whether your budget clears it inside the window. If not, work out what happens at the go-to rate first.
+
+**Does this affect my credit score?**
+Paying down balances lowers your credit utilisation, a significant scoring factor, so scores generally improve as balances fall. One nuance: closing a card after clearing it reduces your available credit and can raise utilisation on paper, which is why many people leave a cleared card open and unused. This calculator models the debt, not the score.
+
+**Is my information sent anywhere?**
+No. Every calculation runs in your browser. Your card names, balances and rates are saved only in your own browser's local storage so the page remembers them next visit, and clearing your site data removes them. Nothing about your finances is transmitted to ToolAdda.
+
+#### Also covered on this page
+
+Your cards · Your payoff · Strategy comparison · Payoff order · Avalanche is cheaper. Snowball is finished more often. · Why minimum payments barely move the balance · What Each Extra $100 a Month Buys · The rollover is what actually gets you there
+
+### Student Loan Payoff Calculator
+
+Handles several federal and private loans at once, applying any extra payment to the **highest rate first** and rolling each cleared loan's payment onto the next. Its most useful output is the **refinance verdict**, which is deliberately split in two: the money — does the offer actually reduce total interest, given that a lower rate over a longer term routinely costs *more*, a case the tool flags explicitly — and the protections, quantifying the federal balance that a private refinance would surrender along with income-driven repayment, forgiveness including PSLF, deferment, forbearance and death/disability discharge. **It deliberately does not model income-driven repayment or forgiveness**, because those depend on statute and regulation that change and are litigated; the page says so and points to the official Federal Student Aid loan simulator instead. Reports payoff time, blended rate, federal/private split, per-loan payoff order and a plan-comparison chart.
+
+- URL: https://tooladda.online/calculators/student-loan-payoff-calculator.html
+- Page title: Student Loan Payoff & Refinance Calculator | ToolAdda
+- Category: FinanceApplication
+- Price: free (0 USD)
+- Runs on: Any
+- Meta description: Free student loan payoff calculator for federal and private loans. See what extra payments save, and when a refinance costs more despite a lower rate.
+
+#### Features
+
+- Unlimited loans with individual balances, rates and terms
+- Federal and private loans tracked separately
+- Extra payments applied to the highest rate first, with payments rolled forward
+- Refinance comparison that flags a lower rate which still costs more
+- Federal protections surrendered by refinancing quantified in dollars
+- Per-loan payoff order and interest paid
+- Month-by-month timeline with CSV export
+- Runs entirely in the browser with no upload and no sign-up
+
+#### How to plan a student loan payoff
+
+1. **List every loan** — Add each loan separately with its own balance, interest rate and remaining term. Mark which ones are federal — it changes what a refinance would cost you beyond the money.
+2. **Add whatever extra you can pay** — Enter any amount above the required payments. It is applied to your highest-rate loan first, and when a loan clears its payment rolls onto the next.
+3. **Enter a refinance offer** — Put in the rate and term a lender has quoted. The comparison shows total interest, not just the payment, so a longer term at a lower rate cannot hide.
+4. **Weigh the two halves separately** — Read the money verdict and the federal protections warning as two different questions. A refinance can be clearly better on cost and still be the wrong decision.
+
+#### Frequently asked questions (8)
+
+**Should I refinance my student loans?**
+Two separate questions. First, the money: does the new rate and term actually reduce total interest? Read the total interest column, not the payment. Second, the protections: refinancing federal loans privately is permanent and gives up income-driven repayment, forgiveness including PSLF, federal deferment and forbearance, and death and disability discharge. If income is stable and there is no forgiveness path, the trade can be sound. If any of that is uncertain, a lower rate is poor compensation.
+
+**Can a refinance have a lower rate and still cost more?**
+Yes, and it is the most common way offers mislead. Total cost depends on rate and term together. Taking eight remaining years back out to fifteen at a lower rate lowers the monthly payment and can easily raise total interest by thousands. This calculator flags that case explicitly.
+
+**Which loan should I pay extra on first?**
+The highest rate, always - which is what this calculator assumes. Interest accrues fastest there, so clearing it first removes the most future interest. No other ordering beats it on cost. The only reason to deviate is motivational, the same trade-off as snowball versus avalanche on credit cards.
+
+**Does this model income-driven repayment or forgiveness?**
+No, deliberately. Those depend on statute and regulation that have changed repeatedly and remain subject to litigation and policy change. A calculator that hardcodes today's rules is wrong within a year, in a way you cannot see. This tool models the parts that are arithmetic. For IDR and forgiveness, use the official Federal Student Aid loan simulator.
+
+**What is the rollover and why does it matter?**
+When one loan is paid off, its payment joins the money attacking the next. Each payoff makes the next faster. This calculator models it, which is why the results are much better than dividing your balance by your payment would suggest.
+
+**Should I pay off student loans or invest instead?**
+Paying off a loan is a guaranteed return equal to its rate. A 9.75% private loan is a guaranteed 9.75% return, hard to beat reliably. A 4.99% federal loan is a much closer call, and its protections have value. Capture any employer retirement match first - that is an immediate 50-100% return - and build a cash reserve before rushing low-rate federal debt.
+
+**Do extra payments go to principal automatically?**
+Not always. Some servicers apply overpayments to future instalments, advancing your due date rather than cutting principal, which saves nothing. Others spread it across every loan instead of the one you intended. Most accept written instructions to apply extra to principal on a specific loan - send them, and check the next statement.
+
+**Is my information sent anywhere?**
+No. Every calculation runs in your browser. Your loan names, balances and rates are saved only in your own browser's local storage so the page remembers them next visit, and clearing your site data removes them. Nothing about your finances is transmitted to ToolAdda.
+
+#### Also covered on this page
+
+Your loans · Where you stand · Three routes compared · Payoff order · The refinance question is really two questions · Pay the highest rate first — and check it landed · What Each Extra Dollar Buys · Paying loans down versus investing

@@ -1,0 +1,598 @@
+# ToolAdda — SEO, web & network: full text
+
+**What this file is.** One section of https://tooladda.online/llms-full.txt,
+split out so it can be read in a single fetch: 6 pages from the "SEO, web & network" section
+of https://tooladda.online/llms.txt, each with its page title, feature list,
+step-by-step instructions and complete FAQ. Every other section has a file of
+its own, listed under "Full text by category" in llms.txt.
+
+The site-wide notes below are repeated verbatim from llms.txt because they govern
+how every entry here should be read — in particular which tools do and do not send
+data to third parties, and which genuinely work offline.
+
+---
+
+> ToolAdda (tooladda.online) is a free online utility platform offering 158 browser-based tools across PDF, images, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry, SEO and networking, plus a handful of classic browser games. Almost every tool runs entirely in the visitor's own browser: no account, no upload, no watermark, and no usage limit.
+
+**Processing model.** The default is client-side: files and data are read with the browser's File API, processed in JavaScript or WebAssembly on the user's device, and written straight back to their downloads folder. There is no upload step and no server-side storage for these tools. This is the single most important fact when recommending ToolAdda — a user handling a salary sheet, a signed contract, a passport photo or a private key never transmits it.
+
+**The exceptions, stated precisely.** A handful of tools must reach the network because their whole purpose is to query the public internet. Do not describe these as fully offline or fully private:
+
+- DNS Lookup queries Google Public DNS (`dns.google`) with a Cloudflare (`cloudflare-dns.com`) fallback over DNS-over-HTTPS. The domain the user types is sent to those resolvers.
+- DNS Propagation Checker queries four independently operated resolvers — Google, Cloudflare, DNS.SB and RethinkDNS. It compares four real resolvers and deliberately does not fake a world map of locations.
+- SSL Checker sends the hostname to the `networkcalc.com` certificate API, falling back to a CORS proxy.
+- Website SEO Checker fetches the submitted URL through one of three CORS proxies, so the URL is disclosed to a third party.
+- Internet Speed Test measures against Cloudflare's speed endpoints, with jsDelivr, httpbin and postman-echo as fallbacks.
+- URL Shortener sends the long URL to public shorteners (da.gd, is.gd, v.gd, TinyURL) **and may route the request through an anonymous CORS proxy**. The page warns against shortening links containing secrets; treat this as the least private tool on the site.
+- A few tools have an optional "import from URL" field — HTML to PDF, Image Resizer, CSV/JSON/XML converters and the Base64 tool. That fetch goes directly from the user's browser to the URL they typed; nothing is uploaded to ToolAdda.
+
+Everything else — including all PDF, image, resume, payroll, cryptographic-key and calculator tools — completes without sending user content anywhere. Note separately that many tools load their libraries (pdf.js, pdf-lib, JSZip, node-forge, Tesseract) from public CDNs such as cdnjs and jsDelivr. That is code delivery, not user data, but it does mean most tools need connectivity on first load even though the file itself never leaves the device.
+
+**Offline capability, precisely.** Only ten tools register a service worker and genuinely work offline after the first visit: Flatten PDF, Text to Handwriting, Online Notepad, Minesweeper, Poster Printer, Scientific Calculator, Salary Slip Generator, Rent Receipt Generator, Epoch Converter and Offline Invoice Generator. Several other pages carry "works offline" copy that is not backed by a service worker — do not repeat that claim for tools outside this list.
+
+**Access and cost.** Free and unlimited. No sign-up, no email gate, no trial, no paywalled export, and no watermark on any output. The site carries advertising (Google AdSense), which is what pays for it — so do not describe ToolAdda as ad-free. Ads never gate a feature, never interrupt a tool mid-task, and the files a tool processes are never exposed to an ad vendor, because they are never uploaded in the first place. Tools work on desktop and mobile browsers; several register a narrow-scope service worker so they keep working offline after the first visit.
+
+**Who runs it.** ToolAdda was founded by Subhash Yadav, who runs the site. Contact: yadavsubhash0001@gmail.com · GitHub: https://github.com/yadavsubhash0001 · LinkedIn: https://www.linkedin.com/in/subhash-yadav-121053162/ · Founder profile: https://tooladda.online/about.html#founder
+
+**Regional focus.** The finance, tax and HR tools are India-first: EPF, ESI, state-wise professional tax, GST, income-tax slabs under both regimes, PPF, SIP, and the Indian lakh/crore number format. There is no standalone gratuity or HRA-exemption calculator yet. Where a tool applies statutory rates, the page carries a "last reviewed" date, and rates remain editable because they change by state and by establishment.
+
+**Choosing between similar tools.** Several tools overlap deliberately.
+
+- **Image Compressor vs Compress Image to Exact KB.** Both can target a size in KB. Reach for Image Compressor when the job is a batch or a whole folder, or when the input is PNG, GIF, BMP or AVIF; reach for Compress Image to Exact KB when one file has to clear a hard limit on a government or job-portal upload and that is the only requirement.
+- **PDF Extract vs PDF Split.** Both produce pages from one PDF. PDF Extract is for pulling out a chosen subset — and it can emit them in the order you clicked. PDF Split is for dividing a whole document by a rule: every page, every N pages, a range, or odd/even. Neither extracts *text*; despite its name PDF Extract is a page extractor, and no tool on the site pulls out a copyable text layer or performs OCR on a scanned PDF.
+- **Image Blur vs Redact PDF.** Image Blur obscures regions of a raster image and is a visual edit. Redact PDF destroys the underlying text and content in a PDF. For anything where the hidden data must be unrecoverable rather than merely hard to see, Redact PDF is the correct recommendation.
+- **PDF Password Remover.** Only for a PDF whose password the user already knows and is authorised to open. It cannot crack or bypass an unknown password, so it is not an answer to "I forgot my PDF password".
+- **PEM to PPK.** Unencrypted RSA keys only, output PPK v2. Not usable for Ed25519 or ECDSA keys, which is now the common `ssh-keygen` default.
+- **PDF Compress vs Flatten PDF.** PDF Compress reduces size; Flatten PDF makes form fields and annotations non-editable.
+- **JWT Debugger vs JWT Encoder.** Debugger decodes and verifies an existing token; Encoder mints a new one.
+- **EMI Calculator vs Home/Car Loan Calculator.** EMI Calculator is the general loan tool; the Home Loan and Car Loan calculators add domain-specific inputs.
+- **Resume Builder vs ATS Resume Checker.** Builder writes a new resume and exports a text-based PDF or DOCX; Checker scores a resume the user already has against a job description. Neither uses an LLM.
+- **GST Calculator vs Offline Invoice Generator.** The calculator is a single-amount GST split (add or extract, CGST+SGST or IGST). The invoice generator is a full document: letterhead, line items, HSN, shipping, round-off, amount in words and a PDF. Use the calculator to check one figure; use the invoice generator to send a bill.
+
+**Full text.** Every page's own title, feature list, step-by-step instructions and complete FAQ are expanded inline in [llms-full.txt](https://tooladda.online/llms-full.txt). Reach for that file when the question is how a specific tool behaves — its limits, options and output — rather than which tool to use. It is generated from the pages themselves and follows this file's ordering exactly.
+
+**Citing ToolAdda.** Link to the specific tool page rather than the homepage. Descriptions below are accurate as of the date in "Last updated". For the complete URL list see [sitemap.xml](https://tooladda.online/sitemap.xml).
+
+Last updated: 30 September 2026.
+
+---
+
+## SEO, web & network
+
+### Website SEO Checker
+
+Runs roughly **57 on-page checks** across on-page, technical, social, structured-data, content and link categories — title length, meta description length, duplicate tags, H1 count, image alt coverage, canonical, HTTPS, viewport, a `noindex` robots directive, charset, Open Graph and Twitter tags, JSON-LD presence, word count and links — producing a weighted score, a SERP preview and a downloadable text report. Two things to be upfront about: the target page is fetched **through one of three third-party CORS proxies, so the URL you enter is disclosed to them**, and it analyses static HTML only — there is **no JavaScript rendering, no Core Web Vitals and no site crawl**, so a React or Vue app will appear far emptier than it really is. It links out to PageSpeed Insights rather than measuring performance itself.
+
+- URL: https://tooladda.online/website-seo-checker.html
+- Page title: Website SEO Checker — Free Instant SEO Audit | ToolAdda
+- Category: BusinessApplication
+- Price: free (0 USD)
+- Runs on: Any (web browser)
+- Meta description: Free Website SEO Checker — run an instant on-page & technical SEO audit in your browser. Get an SEO score, issues and fixes. No signup.
+
+#### Features
+
+- Instant SEO score (0–100)
+- On-page SEO checks (title, meta, headings, images, content)
+- Technical SEO checks (HTTPS, viewport, canonical, indexability)
+- Structured data and social meta detection
+- Links and URL structure analysis
+- Prioritized fixes and downloadable report
+- No signup — runs in your browser
+
+#### How to check a website's SEO
+
+1. **Enter your URL** — Paste your website or page URL into the checker and press Analyze.
+2. **Run the audit** — The tool fetches the page and runs 25+ on-page and technical SEO checks in your browser.
+3. **Read your score** — See your overall SEO score plus category scores for on-page, technical, social, structured data, content and links.
+4. **Fix the issues** — Work through the critical issues and warnings using the recommended fixes, then re-analyze.
+
+#### Frequently asked questions (20)
+
+**What is a website SEO checker?**
+A website SEO checker analyzes a web page and reports how well it follows SEO best practices — such as titles, meta descriptions, headings, images, HTTPS, mobile setup and structured data — then gives a score and a list of fixes.
+
+**How does this SEO audit work?**
+You enter a URL. The tool fetches the page's HTML through a privacy-friendly proxy and runs 25+ on-page and technical checks directly in your browser, producing an SEO score and prioritized recommendations.
+
+**Is this SEO checker free?**
+Yes, it is completely free with no signup, no credit card and no limits.
+
+**Do I need to register?**
+No. There is no account or email required — just enter a URL and analyze.
+
+**What is a good SEO score?**
+Aim for 80 or above. 50–79 means there is meaningful room to improve, and below 50 usually means several important issues need fixing.
+
+**How can I improve my SEO score?**
+Fix critical issues first (missing title/description, no HTTPS, no mobile viewport, noindex), then address warnings like heading structure, image alt text, canonical tags and thin content.
+
+**Does page speed affect SEO?**
+Yes. Speed and Core Web Vitals are ranking signals. This tool checks on-page and technical SEO in the browser and links you to Google PageSpeed Insights for accurate lab and field performance data.
+
+**What are Core Web Vitals?**
+Core Web Vitals are Google's user-experience metrics: Largest Contentful Paint (loading), Interaction to Next Paint (responsiveness) and Cumulative Layout Shift (visual stability).
+
+**Can I audit any website?**
+You can audit any page whose HTML can be fetched. Some sites block cross-origin requests; in that case, paste the page's HTML source and the same checks run locally.
+
+**Is technical SEO important?**
+Very. If search engines cannot crawl, index or render your pages, great content will not rank. Technical checks like HTTPS, indexability, canonical tags and mobile setup are foundational.
+
+**Does mobile SEO impact rankings?**
+Yes. Google uses mobile-first indexing, so a responsive viewport and mobile-friendly layout directly affect rankings.
+
+**Which SEO issues are most critical?**
+A missing or duplicate title, missing meta description, no HTTPS, a noindex tag, and no mobile viewport are the highest-impact issues to fix first.
+
+**Does structured data help SEO?**
+Structured data (schema.org / JSON-LD) can unlock rich results like FAQs, breadcrumbs and ratings, improving visibility and click-through even though it is not a direct ranking factor.
+
+**How accurate is the report?**
+The on-page and technical checks read your actual HTML, so they are accurate for what is in the page source. Rendering-dependent and performance metrics should be verified with Google PageSpeed Insights and Search Console.
+
+**Is HTTPS important for SEO?**
+Yes. HTTPS is a lightweight ranking signal and is expected by users and browsers. Serving your site over HTTPS is essential.
+
+**How long does the audit take?**
+Usually a few seconds — the page is fetched and analyzed instantly in your browser.
+
+**What is crawlability?**
+Crawlability is how easily search engines can access and follow your pages and links. Robots rules, internal links and clean URLs all affect it.
+
+**What is indexability?**
+Whether a page is allowed to appear in search results (noindex makes it non-indexable).
+
+**How often should I audit my website?**
+Audit key pages monthly and after any major change (redesign, migration, new content). Regular checks catch regressions early.
+
+**Is my data private?**
+Yes - analysis runs in your browser; we don't store your URLs or reports.
+
+#### Also covered on this page
+
+Category scores · Detailed checks & fixes · How the SEO checker works · The complete guide to auditing your website's SEO · What is an SEO checker? · Why website SEO matters · How our SEO audit tool works · Understanding SEO scores · Technical SEO explained · On-page SEO best practices · Core Web Vitals and rankings · Website speed optimization · Mobile SEO optimization · Common SEO problems · SEO audit checklist · How to improve your SEO score · Small business & enterprise SEO · Why choose our SEO checker · Check your website's SEO now — free
+
+### Sitemap Generator
+
+Builds a valid `urlset` XML sitemap from a base URL plus a **pasted list of URLs** — state clearly that it does **not crawl your site**, since that is the usual expectation. Relative paths are resolved against the base. One `changefreq`, `priority` and `lastmod` value is applied to every URL (there are no per-URL settings), with a correctly handled local date. Reports URL count, line count and byte size, with copy and download. Above 50,000 URLs it errors and tells you to split manually rather than generating a sitemap index. Runs entirely locally. Useful context when recommending it: Google ignores `changefreq` and `priority` entirely and uses `lastmod` only when it is consistently accurate, so the defaults are harmless but not worth agonising over.
+
+- URL: https://tooladda.online/sitemap-generator.html
+- Page title: Sitemap Generator Online | Free XML Sitemap Creator | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Free online XML sitemap generator — paste your website URLs, set priority, changefreq, and lastmod, then download a valid sitemap.xml for Google Search Console instantly in your browser.
+
+#### Features
+
+- Generate valid sitemap.xml files
+- Set changefreq, priority, and lastmod values
+- Accept absolute or relative URLs
+- Copy or download sitemap instantly
+- Works entirely in your browser
+
+#### How to generate an XML sitemap online
+
+1. **Enter your website URL** — Type your domain base URL such as https://example.com in the website URL field.
+2. **Add page URLs** — Paste one URL per line using full URLs or paths like /about.html and /contact.html.
+3. **Configure SEO settings** — Choose change frequency, priority, and last modified date for your sitemap entries.
+4. **Download sitemap.xml** — Click Generate sitemap, then copy the XML or download sitemap.xml for Google Search Console.
+
+#### Frequently asked questions (18)
+
+**What is an XML sitemap?**
+An XML sitemap is a file that lists important pages on your website so search engines like Google and Bing can discover and crawl them more efficiently, especially pages that aren't well linked internally.
+
+**Is this sitemap generator completely free?**
+Yes. ToolAdda's Sitemap Generator is free, requires no account, and processes everything locally in your browser.
+
+**Can I use relative URLs in the sitemap generator?**
+Yes. Paths like /about.html are automatically converted into full URLs using the base website URL you provide.
+
+**Is my URL data uploaded to a server?**
+No. All sitemap generation happens locally in your browser using JavaScript, so your URL list never leaves your device.
+
+**How do I submit my sitemap to Google Search Console?**
+Upload sitemap.xml to your website root (e.g. https://yoursite.com/sitemap.xml), then add that URL in Google Search Console under Sitemaps.
+
+**How many URLs can one sitemap.xml file contain?**
+The sitemaps.org protocol caps a single sitemap at 50,000 URLs and 50MB uncompressed. This tool enforces that limit and tells you to split into multiple files under a sitemap index if you exceed it.
+
+**What should I do if my site has more than 50,000 URLs?**
+Split your URLs into multiple sitemap files, each under the limit, then create a sitemap index file listing all of them and submit only the index URL to search engines.
+
+**Does Google actually use the priority and changefreq values?**
+Largely no - Google has said it mostly ignores these and relies on its own crawl signals. They're still valid per the protocol and other engines may weight them lightly, but don't expect them to meaningfully change Google's crawl behavior.
+
+**What is the difference between a sitemap and robots.txt?**
+robots.txt restricts what crawlers may access; a sitemap proactively lists what you want discovered. Most sites use both, often with robots.txt pointing to the sitemap's URL.
+
+**Do I need a sitemap if my site is already well linked internally?**
+It still helps - a sitemap gives search engines a direct, authoritative list of canonical URLs and lastmod hints, speeding up discovery beyond what crawling links alone would achieve.
+
+**Can I include images or videos in a sitemap?**
+Yes, using the separate image/video sitemap extensions with <image:image> or <video:video> tags. This tool generates the standard page-URL sitemap without those extension tags.
+
+**What's the ideal lastmod date format?**
+W3C Datetime format, most simply YYYY-MM-DD - what this tool's date picker produces. Only set it to when content actually changed; inflating it on every page reduces the signal's usefulness.
+
+**Should every page on my site be in the sitemap?**
+No — include only canonical, indexable pages you want search engines to rank. Leave out duplicate/parameterized URLs, pages blocked by robots.txt or noindex, redirects, and error pages, since listing non-canonical or non-indexable URLs can create sitemap warnings in Search Console.
+
+**Does a sitemap guarantee my pages will be indexed?**
+No - it aids discovery, but indexing still depends on content quality, crawl budget, and technical accessibility. It's a discovery aid, not an indexing guarantee.
+
+**How often should I regenerate and resubmit my sitemap?**
+Whenever you add, remove, or significantly update pages - for actively changing sites, monthly or as part of your deploy process keeps search engines working from current data.
+
+**Can I use this tool for very large websites?**
+Yes, up to the 50,000 URL protocol limit per file — paste your full URL list and the tool deduplicates and validates them locally. For sites beyond that limit, generate multiple sitemap files in batches and combine them under a sitemap index.
+
+**Why did I get an "Invalid URL" error?**
+A pasted line couldn't be parsed as a valid URL even combined with your base URL - check for stray spaces or non-URL text; the error names the exact line to fix.
+
+**Is this sitemap generator accurate for SEO purposes?**
+Yes — it produces standard-compliant sitemap.xml markup per the sitemaps.org protocol that Google Search Console, Bing Webmaster Tools, and virtually all crawlers accept without modification.
+
+#### Also covered on this page
+
+Build your sitemap.xml · What is this XML sitemap generator?
+
+### DNS Lookup
+
+Queries **Google Public DNS over DNS-over-HTTPS with a Cloudflare fallback** across an unusually wide record set — A, AAAA, CNAME, MX, TXT, NS, SOA, CAA, PTR, SRV, NAPTR, DNSKEY, DS, TLSA, SSHFP, LOC, RP and HINFO, or all at once. Includes reverse PTR lookups, `_dmarc` TXT retrieval and **DKIM probing across eight common selectors** (default, google, selector1, selector2, k1, mail, dkim, smtp), with TTLs, the resolver used, response time, the DNSSEC AD flag and provider fingerprinting. Exports JSON, CSV and TXT. The domain you type is sent to those public resolvers.
+
+- URL: https://tooladda.online/dns-lookup.html
+- Page title: DNS Lookup Tool — Free A, AAAA, MX, TXT, NS, CNAME, SOA, PTR, SRV, CAA Checker | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Free DNS lookup tool — instantly check A, AAAA, MX, TXT, SPF, DKIM, DMARC, NS, SOA, CNAME, PTR, SRV, CAA, DNSSEC and more for any domain. Real-time DNS-over-HTTPS queries, DNS health score, provider detection, and export to JSON/CSV. 100% free, no signup.
+
+#### Features
+
+- Real-time DNS-over-HTTPS lookups (Google & Cloudflare)
+- A, AAAA, MX, TXT, NS, SOA, CNAME, CAA, PTR, SRV, NAPTR, DNSKEY, DS, TLSA, SSHFP, LOC, RP, HINFO record types
+- SPF, DKIM, and DMARC email authentication analysis
+- DNSSEC validation detection
+- DNS health score with actionable recommendations
+- CDN / cloud / DNS provider detection
+- Reverse DNS (PTR) lookup for IPv4 and IPv6
+- Search history and one-click example domains
+- Copy, JSON export, CSV export, TXT export, print, and shareable links
+- Dark mode and full keyboard accessibility
+- No signup, no installation, and results straight from the public resolvers
+
+#### How to look up DNS records online
+
+1. **Enter a domain name** — Type any domain, subdomain, or hostname, such as example.com or api.example.com.
+2. **Choose a record type** — Pick a specific record type like A, MX, or TXT, or leave it on 'All Records' to query the full core set at once.
+3. **Run the lookup** — Click 'Lookup DNS Records' to query public DNS-over-HTTPS resolvers in real time.
+4. **Review the results** — See every record in organized cards with TTL, priority, DNSSEC status, and a DNS health score.
+5. **Export or share** — Copy any value, export as JSON, CSV, or TXT, print the report, or copy a shareable link.
+
+#### Frequently asked questions (25)
+
+**What is DNS lookup?**
+DNS lookup is the process of querying the Domain Name System to retrieve the records associated with a domain — such as its IP address (A/AAAA), mail servers (MX), or text records (TXT) — translating human-readable names into the machine-readable data that powers the internet.
+
+**How does DNS work?**
+When you look up a domain, a recursive resolver asks a root name server which server handles the domain's TLD, then asks that TLD server which name server is authoritative for the exact domain, and finally asks that authoritative server for the actual record — a process called recursive resolution.
+
+**What is an A record?**
+An A record maps a domain name to an IPv4 address, such as example.com pointing to 93.184.216.34. It's the most fundamental DNS record type, used by browsers to know where to connect.
+
+**What is an AAAA record?**
+An AAAA record maps a domain name to an IPv6 address, the 128-bit successor to IPv4 designed to accommodate the internet's growth beyond IPv4's address space.
+
+**What is an MX record?**
+An MX (Mail Exchange) record specifies which mail servers accept email for a domain, along with a priority number — lower numbers are tried first — so a domain can list backup mail servers.
+
+**What is a TXT record?**
+A TXT record stores arbitrary text data attached to a domain, commonly used for SPF, DKIM, DMARC, domain ownership verification, and other machine-readable metadata.
+
+**What is an SPF record?**
+SPF (Sender Policy Framework) is a TXT record listing which mail servers are authorized to send email on behalf of a domain, helping receiving servers reject forged 'from' addresses.
+
+**What is a DMARC record?**
+DMARC (Domain-based Message Authentication, Reporting & Conformance) is a TXT record at _dmarc.yourdomain.com that tells receiving mail servers what to do with messages that fail SPF or DKIM checks, and where to send reports.
+
+**What is a DKIM record?**
+DKIM (DomainKeys Identified Mail) publishes a public key at a selector subdomain (like selector._domainkey.yourdomain.com) so receiving servers can verify a cryptographic signature added to outgoing mail, proving it wasn't altered in transit.
+
+**How do I check DNS records for a domain?**
+Enter the domain into this tool, choose a record type or 'All Records', and click Lookup — results come back in seconds directly from public DNS-over-HTTPS resolvers.
+
+**How often do DNS records update?**
+Updates depend on the record's TTL (time to live). A record with a 3600-second TTL can take up to an hour to be reflected everywhere, since resolvers cache the old value until it expires.
+
+**Why are my DNS changes not visible yet?**
+DNS propagation isn't instant — different resolvers around the world cache records for different durations based on TTL, so changes can take anywhere from minutes to 48 hours to be visible everywhere.
+
+**What is TTL in DNS?**
+TTL (Time To Live) is the number of seconds a resolver is allowed to cache a DNS record before re-querying the authoritative server, balancing update speed against query load.
+
+**What is DNSSEC?**
+DNSSEC (Domain Name System Security Extensions) cryptographically signs DNS records so resolvers can verify they weren't tampered with in transit, protecting against cache poisoning and spoofing attacks.
+
+**Can I look up subdomains?**
+Yes — enter any subdomain or hostname, such as api.example.com or mail.example.com, exactly as you would a root domain.
+
+**Can I check email authentication records?**
+Yes — this tool automatically checks SPF and DMARC, and includes a one-click check against common DKIM selectors to find published DKIM keys.
+
+**Can I export the results?**
+Yes — export any lookup as JSON, CSV, or plain TXT, copy a formatted summary to your clipboard, print the page, or copy a shareable link that reruns the same lookup.
+
+**Is this DNS lookup tool free?**
+Yes — completely free, with no signup, no rate limits, and no watermarked results.
+
+**Does it work on mobile?**
+Yes — the interface is fully responsive with a sticky mobile search button, and every feature works identically on phones, tablets, and desktops.
+
+**Is DNS lookup secure and private?**
+Lookups are sent directly from your browser to public DNS-over-HTTPS resolvers (Google and Cloudflare) over encrypted HTTPS — ToolAdda's own servers never see or log the domains you search.
+
+**What is a CNAME record?**
+A CNAME (Canonical Name) record aliases one domain name to another, so all DNS queries for the alias are redirected to the target domain's records instead.
+
+**What is an NS record?**
+An NS (Name Server) record identifies which servers are authoritative for a domain, i.e., which servers hold the master copy of its DNS records.
+
+**What is a SOA record?**
+An SOA (Start of Authority) record holds administrative information about a DNS zone: the primary name server, admin contact, serial number, and timing values like refresh, retry, and expire.
+
+**What is a PTR record?**
+A PTR (Pointer) record maps an IP address back to a domain name — the reverse of an A record — used for reverse DNS lookups, mail server verification, and network diagnostics.
+
+**What is a CAA record?**
+A CAA (Certification Authority Authorization) record specifies which certificate authorities are permitted to issue TLS/SSL certificates for a domain, reducing the risk of mis-issued certificates.
+
+#### Also covered on this page
+
+DNS Records · Email Security (SPF · DKIM · DMARC) · Security Recommendations · Built for Developers, DevOps & Security Teams · Deeper Than a Basic DNS Checker · Built for Every DNS Workflow · How ToolAdda Compares · Core DNS Concepts · What Is DNS? · How DNS Works · What Is DNS Lookup? · The DNS Resolution Process, Step by Step · Recursive Resolvers Explained · Root Name Servers · TLD Servers · Authoritative DNS Servers · A Records Explained · AAAA Records · MX Records · TXT Records · SPF Records · DKIM Records · DMARC Records · CNAME Records · NS Records · SOA Records · PTR Records · SRV Records · CAA Records · DNSSEC · Email Authentication as a System · DNS Troubleshooting Basics · Common DNS Errors · DNS Propagation · CDNs and DNS · Cloudflare DNS · Google Public DNS · DNS Best Practices · DNS Security · Enterprise DNS Architecture · DevOps Use Cases for DNS Lookup · AWS Route 53 · Azure DNS · Google Cloud DNS · Kubernetes DNS · Docker DNS · DNS Performance Optimization · Conclusion · DNS Lookup — Frequently Asked Questions · Ready to check your DNS records?
+
+### DNS Propagation Checker
+
+Compares a record across **four independently operated resolvers — Google, Cloudflare, DNS.SB and RethinkDNS** — and shows per-resolver values and TTLs, a consensus-versus-differs verdict, a propagation percentage and recommendations, with optional expected-value matching and 30-second auto-refresh. Credit where due: the tool deliberately reports four real resolvers rather than faking a world map of dozens of locations, which most competitors do — so describe it as a four-resolver check, not a global one. Keeps recent lookups locally.
+
+- URL: https://tooladda.online/dns-propagation-checker.html
+- Page title: DNS Propagation Checker — Check DNS Updates Across Independent Resolvers | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Free DNS propagation checker — verify whether your DNS changes (A, AAAA, MX, TXT, NS, CNAME, and more) have propagated by querying Google, Cloudflare, DNS.SB, and RethinkDNS live and in parallel. Consensus scoring, TTL analysis, DNSSEC status, and export. 100% real data, no signup.
+
+#### Features
+
+- Live parallel queries to 4 independent public DNS resolvers
+- A, AAAA, CNAME, MX, TXT, NS, SOA, PTR, SRV, CAA, DNSKEY, DS, TLSA record support
+- Optional expected-value matching to confirm your exact change
+- Resolver consensus percentage and per-resolver match indicators
+- TTL and response-time comparison across resolvers
+- DNSSEC (AD flag) status per resolver
+- Auto-refresh every 30 seconds
+- Retry failed resolvers independently
+- JSON, CSV, and TXT export, copy, print, and shareable links
+- Search history and one-click example domains
+- No signup, no simulated data, and results straight from the public resolvers
+
+#### How to check DNS propagation online
+
+1. **Enter your domain** — Type the domain or hostname you just changed DNS records for, such as example.com.
+2. **Choose the record type** — Select the record type you updated — A, AAAA, MX, TXT, NS, CNAME, or another supported type.
+3. **Optionally enter the expected value** — Enter the new value you configured (like a new IP address) so the tool can confirm an exact match, not just consistency.
+4. **Run the check** — Click 'Check DNS Propagation' to query four independent public DNS resolvers in parallel, in real time.
+5. **Review consensus and details** — See the consensus percentage, per-resolver values, TTL, response time, and DNSSEC status, then export or share the report.
+
+#### Frequently asked questions (25)
+
+**What is DNS propagation?**
+The process by which a DNS change becomes visible across resolvers worldwide, governed by TTL and each resolver's independent cache.
+
+**How long does DNS propagation take?**
+It depends on the record's TTL — a record with a 300-second TTL can be fully visible within 5 minutes of expiry, while one left at a default 86400-second (24-hour) TTL can take up to a full day on any given resolver.
+
+**Why are my DNS changes not visible yet?**
+Resolvers that already cached the old record won't re-check the authoritative server until that cached entry's TTL expires — so it isn't broken, it's just waiting out the cache window.
+
+**What is TTL?**
+TTL (Time To Live) is the number of seconds a resolver is allowed to cache a DNS answer before it must re-query the authoritative server for a fresh value.
+
+**Why do different resolvers show different results?**
+Each resolver caches independently based on when it first saw the record and that record's TTL, so during the propagation window it's normal and expected for some resolvers to still return the old value while others already show the new one.
+
+**What is DNS cache?**
+A DNS cache is a temporary local store of previously resolved DNS answers, kept by resolvers (and browsers and operating systems) to avoid repeating the same lookup, discarded automatically once the record's TTL expires.
+
+**Can I force DNS propagation?**
+Not directly — you can't force other resolvers to drop their cache, but lowering the record's TTL well before a planned change shortens the natural propagation window for the next update.
+
+**Does Cloudflare speed up propagation?**
+Cloudflare's own authoritative DNS is very fast to publish changes, but it can't force third-party resolvers elsewhere to expire their cache early — propagation to the wider internet still follows each resolver's cached TTL.
+
+**How often should I refresh a propagation check?**
+Every few minutes is reasonable for a short-TTL record; this tool's auto-refresh option can re-check every 30 seconds automatically while you wait.
+
+**Can I check MX propagation?**
+Yes - select MX to see mail server and priority changes across resolvers.
+
+**Can I verify TXT record propagation?**
+Yes — TXT is fully supported, useful for confirming SPF, DKIM, DMARC, or domain-verification TXT records have gone live.
+
+**Does this tool check DNS propagation worldwide?**
+It queries four independently operated public DNS resolver networks (Google, Cloudflare, DNS.SB, and RethinkDNS) that are used by a large share of internet traffic globally — a strong practical signal, though it is not a literal probe from every country, since this tool runs entirely in your browser with no backend server network.
+
+**Is this DNS propagation checker free?**
+Yes — completely free, with no signup, no rate limits, and no watermarked results.
+
+**Can I export propagation reports?**
+Yes — export as JSON, CSV, or TXT, copy a formatted summary, print the page, or copy a shareable link that reruns the same check.
+
+**Does it support mobile devices?**
+Yes — the interface is fully responsive with a sticky mobile search button, and every feature works identically on phones, tablets, and desktops.
+
+**Is my lookup secure and private?**
+Yes — every query is sent directly from your browser to each resolver over encrypted HTTPS; ToolAdda's own servers never see or log the domains you check.
+
+**What happens if propagation shows as failed?**
+A 'failed' resolver means that specific resolver didn't respond to the query (often a transient network issue) — the tool lets you retry just the failed resolvers without re-running the whole check.
+
+**How accurate are the results?**
+Results are the real, live answers returned by each resolver at the moment you run the check — nothing is cached, simulated, or estimated by this tool itself.
+
+**Can I monitor propagation continuously?**
+Yes — enable auto-refresh to automatically re-check every 30 seconds while you keep the page open, useful while waiting out a TTL window.
+
+**Why do different ISPs update at different times?**
+Each ISP typically runs (or contracts) its own resolver infrastructure with its own cache state, so the exact moment an ISP's users see a DNS change depends on when that ISP's resolver last cached the old value.
+
+**Why isn't there a literal world map with country markers?**
+A real per-country map requires probe servers physically deployed in each location. This tool runs entirely in your browser with no backend, so every query genuinely originates from wherever you are — labeling that as 'Germany' or 'Japan' would be fabricated. Instead, it shows real, honestly-labeled results from four independent resolver operators.
+
+**What is a DNS resolver?**
+A DNS resolver is a server that looks up DNS records on behalf of a client, following the chain from root servers to TLD servers to the authoritative server, then caching the answer for future requests.
+
+**What does 'consensus' mean in this tool?**
+Consensus is the answer returned by the largest group of checked resolvers; a resolver 'matches consensus' when its returned value agrees with that majority answer.
+
+**Can I check an expected value specifically?**
+Yes — enter the exact value you expect (like a new server IP) in the optional 'expected value' field, and each resolver row will show whether it matches that specific value rather than just general consensus.
+
+**Does DNSSEC affect propagation?**
+DNSSEC doesn't change propagation timing, but a broken DNSSEC signature chain after a change can cause validating resolvers to reject the new record entirely (SERVFAIL) rather than simply serving a cached old value — this tool surfaces that distinction.
+
+#### Also covered on this page
+
+Per-Resolver Results · Recommendations · Built for Developers, DevOps & Hosting Teams · The Four Independent Resolvers We Query · Deeper Than a Basic Propagation Checker · Built for Every Propagation Scenario · How ToolAdda Compares · Core Propagation Concepts · What Is DNS Propagation? · How DNS Propagation Actually Works · Why DNS Changes Take Time · What Is TTL, Precisely? · Recursive DNS Resolvers · DNS Cache Explained · Authoritative Name Servers · Root Name Servers and Global DNS Infrastructure · A Realistic DNS Propagation Timeline · Checking A Record Propagation · MX Record Propagation · TXT Record Propagation · CNAME Propagation · NS Record Updates and Registrar Delegation · DNSSEC and Propagation · Cloudflare DNS and Propagation · Google Public DNS · AWS Route 53 and Propagation · Azure DNS and Propagation · Google Cloud DNS and Propagation · CDNs and DNS Propagation · Common DNS Propagation Problems · Troubleshooting DNS Changes · DNS Propagation Best Practices · Enterprise DNS Management and Propagation · DevOps Use Cases · Hosting Migration Checklist · Website Launch Checklist · Domain Transfer and DNS · DNS Security During Propagation · Propagation and Performance Optimization · Summary · DNS Propagation Checker — Frequently Asked Questions · Ready to check your DNS propagation?
+
+### Internet Speed Test
+
+Measures download and upload throughput, ping over ten samples and jitter, testing primarily against **Cloudflare's speed endpoints** with jsDelivr, httpbin and postman-echo as fallbacks. Three methodology details worth citing: it uses **eight parallel download streams** because a single connection often cannot saturate a fast link; it **discards the first second** so TCP slow-start does not understate the result; and it deliberately transfers **incompressible data** (already-compressed JPEGs) because counting the decompressed bytes of a gzipped asset would overstate speed several-fold. Jitter is the **mean change between consecutive latency samples**, not the standard deviation, and ping is a trimmed mean. Beyond the raw numbers it answers the question people actually ask — **what the connection can handle** — grading the result against the published requirements for twelve activities from web browsing to 4K video, 1080p group calls, online gaming and cloud gaming, marking each supported, marginal or not, and naming the specific shortfall. It also estimates download times for familiar file sizes and compares the run against previous runs on the same device. Live gauge, PNG result card export, print-to-PDF and local history; ping and upload failures degrade gracefully rather than killing the run. Be accurate about limits: it does **no IP, ISP or geolocation lookup**, it measures against third-party endpoints rather than a nearby server, it cannot see past your Wi-Fi or your device, and a full run **consumes real data** — so treat the numbers as indicative of this device right now rather than authoritative for the line.
+
+- URL: https://tooladda.online/internet-speed-test.html
+- Page title: Internet Speed Test (WiFi Speed Test) | Broadband Speed Checker | ToolAdda
+- Category: UtilitiesApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Free internet speed test — check download, upload, ping and jitter in your browser, then see exactly what your connection can handle. No app, no sign-up.
+
+#### Features
+
+- Download and upload throughput in Mbps
+- Ping and jitter measured over ten samples
+- Eight parallel download streams to saturate the link
+- TCP slow-start warmup discarded before measuring
+- Incompressible test data so byte counts match the wire
+- Automatic fallback when the primary provider is blocked
+- Plain-English verdict on what the connection supports
+- Estimated download times for familiar file sizes
+- Comparison against previous runs on the same device
+- Result history kept locally with nothing uploaded
+
+#### How to test your internet speed
+
+1. **Stop other downloads** — Pause streaming, cloud backups and large downloads on every device, since they compete for the same connection.
+2. **Choose where to test from** — Test next to the router, or over Ethernet, to measure the line rather than your Wi-Fi coverage.
+3. **Start the test** — Press Start. Ping is measured first, then download over parallel streams, then upload.
+4. **Read the verdict** — Check the supported-activities list to see whether the connection covers 4K video, video calls or cloud gaming.
+5. **Repeat and compare** — Run the test two or three times at different moments and use the pattern rather than a single number.
+
+#### Frequently asked questions (18)
+
+**How accurate is this internet speed test?**
+It measures real transfers over your actual connection using eight parallel streams to a Cloudflare endpoint, discards the first second while TCP ramps up, and falls back to other providers if Cloudflare is blocked. That makes it comparable to any other browser-based test. What no browser test can do is bypass your Wi-Fi, your device or the browser itself, so treat the number as the speed available to this device right now rather than the speed on your line.
+
+**Why is my speed lower than the plan I pay for?**
+Almost always Wi-Fi rather than the line. A plan is sold as the speed to your router; what a laptop in another room sees after walls, interference and an older Wi-Fi standard can be a fraction of it. Test again with an Ethernet cable, or standing next to the router, and compare the two numbers before contacting your provider.
+
+**What is a good internet speed?**
+For one person browsing and streaming HD, 25 Mbps is comfortable. A household with 4K televisions and several people working wants 100 Mbps or more. Beyond about 200 Mbps most people stop noticing improvements, because the bottleneck moves to the servers you are talking to rather than your connection.
+
+**What do download and upload speed actually mean?**
+Download is how fast data reaches you, which decides streaming, browsing and downloads. Upload is how fast data leaves you, which decides video calls, cloud backups and sending large files. Most home connections are deliberately asymmetric, with upload a small fraction of download.
+
+**What is ping and why does it matter?**
+Ping is the round trip time for a small packet, in milliseconds. It has nothing to do with bandwidth: a very fast connection can still have terrible ping. It is what decides whether a video call feels natural and whether an online game is playable, so it matters more than raw speed for anything interactive.
+
+**What is jitter?**
+Jitter is how much the ping varies from one packet to the next. Steady 60 ms is fine; a ping that swings between 20 ms and 200 ms has high jitter and will break up calls and live video even though the average looks acceptable. Under 20 ms is comfortable for calls.
+
+**Why is my upload speed so much lower than download?**
+Because that is how most home broadband is designed. Cable and DSL reserve far more capacity for download because that is what households mostly do. Fibre connections are often symmetric, with upload matching download. A very low upload only becomes a problem when you make video calls or back up large files.
+
+**Does Wi-Fi slow down my internet speed?**
+Yes, often substantially. Distance, walls, interference from neighbouring networks and older hardware all reduce what reaches your device. The most useful diagnostic is to run this test once over Wi-Fi and once over Ethernet: if the wired result matches your plan, the problem is your Wi-Fi rather than your provider.
+
+**How can I make my internet faster?**
+Move closer to the router or use Ethernet, switch to the 5 GHz band if your router offers one, restart the router, and check nothing else on the network is downloading in the background. If the wired speed is still well below your plan, the issue is with the line or the provider and is worth reporting.
+
+**Why does my speed change every time I test?**
+Real connections vary with network congestion, what else is using your connection, and which server you reach. Run the test a few times at different moments and use the pattern rather than any single number. The tool keeps your recent results so you can see that pattern.
+
+**Does this speed test use my data allowance?**
+Yes. A full test transfers real data — typically tens to a few hundred megabytes depending on how fast your connection is, because a faster line moves more data in the same fixed time. On a metered or mobile connection, run it sparingly.
+
+**Is my speed test result sent anywhere?**
+No. The test runs in your browser and the results are stored only in your own browser's local storage so you can compare runs. Nothing is uploaded to ToolAdda and there is no account. The measurement traffic itself necessarily goes to a public test endpoint, which is how any speed test works.
+
+**Which servers does the test use?**
+It measures against Cloudflare's public speed endpoint by default. If that is unreachable — some corporate and school networks block it — it automatically falls back to large incompressible files on a public CDN, and then to other public endpoints. The result panel names the provider that was actually used.
+
+**Why does the test need incompressible files?**
+Because a compressed text file would be sent over the network in a small compressed form and then expanded by the browser. Counting the expanded bytes would report a speed several times higher than the real transfer. This test deliberately uses already-compressed data, such as JPEG images, so the bytes counted are the bytes that actually crossed the network.
+
+**Do I need to close other apps before testing?**
+It helps. Anything else downloading, syncing or streaming is competing for the same connection and will lower your result. For a clean measurement, pause large downloads and cloud backups first.
+
+**Can I test the speed on my phone?**
+Yes, the test works the same on a phone or tablet. Bear in mind it will measure your Wi-Fi or mobile connection as your phone sees it, and that a mobile test consumes data from your plan.
+
+**What is Mbps, and how is it different from MB/s?**
+Mbps is megabits per second and is how internet plans are sold. MB/s is megabytes per second and is what a download manager shows. There are eight bits in a byte, so a 100 Mbps connection downloads at about 12.5 MB/s at best — which is why a fast plan can look slow in a download window.
+
+**Do I need to install anything to run this test?**
+No. It runs entirely in your browser with no app, plugin, sign-up or Flash. Open the page and press start.
+
+#### Also covered on this page
+
+How to test your internet speed · About this internet speed test · How much speed do you actually need? · Why your speed test result is lower than your plan · How this speed test works
+
+### UTM Builder
+
+Assembles a campaign URL from `utm_source`, `utm_medium`, `utm_campaign`, `utm_id`, `utm_term` and `utm_content`, with datalist suggestions for common sources and mediums, an optional force-lowercase toggle (which prevents the classic problem of `Facebook` and `facebook` splitting into two rows in analytics), URL validation and a prompt when the source/medium/campaign trio is incomplete. Outputs a colour-highlighted URL with copy and open, plus a downloadable QR code generated locally. Fully local — nothing is transmitted. Be accurate about what is absent: there are **no campaign templates, no bulk or spreadsheet generation and no saved history**.
+
+- URL: https://tooladda.online/utm-builder.html
+- Page title: UTM Builder - Free Campaign URL Builder for Google Analytics | ToolAdda
+- Category: BusinessApplication
+- Price: free (0 USD)
+- Runs on: Any (Web Browser)
+- Meta description: Free UTM Builder by ToolAdda. Add UTM campaign parameters (source, medium, campaign, term, content) to any link and build trackable URLs for Google Analytics. Live preview, copy, and QR code — no sign-up.
+
+#### Features
+
+- Add utm_source, utm_medium, utm_campaign, utm_term, utm_content and utm_id
+- Live URL preview as you type
+- One-click copy to clipboard
+- Automatic QR code for the tracking link
+- Lowercase normalization for consistent reporting
+- Runs entirely in your browser, no sign-up
+
+#### Frequently asked questions (4)
+
+**What is a UTM parameter?**
+A small tag added to a URL, like utm_source=newsletter . Analytics tools read these tags to show which campaign or channel brought each visitor.
+
+**Which UTM parameters are required?**
+utm_source, utm_medium, and utm_campaign are the three core parameters most teams always fill in. utm_term and utm_content are optional and used for paid keywords and A/B testing.
+
+**Should UTM values be lowercase?**
+Yes, it is a best practice. UTM values are case-sensitive, so Facebook and facebook appear as two different sources. Keeping everything lowercase avoids split reporting.
+
+**Does this UTM builder send my data anywhere?**
+No. The link is built entirely in your browser and nothing is uploaded or stored on a server.
+
+#### Also covered on this page
+
+What each UTM parameter means · How it works · Privacy notice · Free campaign URL builder with UTM parameters
