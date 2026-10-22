@@ -1,0 +1,560 @@
+# ToolAdda — QR codes & barcodes: full text
+
+**What this file is.** One section of https://tooladda.online/llms-full.txt,
+split out so it can be read in a single fetch: 4 pages from the "QR codes & barcodes" section
+of https://tooladda.online/llms.txt, each with its page title, feature list,
+step-by-step instructions and complete FAQ. Every other section has a file of
+its own, listed under "Full text by category" in llms.txt.
+
+The site-wide notes below are repeated verbatim from llms.txt because they govern
+how every entry here should be read — in particular which tools do and do not send
+data to third parties, and which genuinely work offline.
+
+---
+
+> ToolAdda (tooladda.online) is a free online utility platform offering 158 browser-based tools across PDF, images, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry, SEO and networking, plus a handful of classic browser games. Almost every tool runs entirely in the visitor's own browser: no account, no upload, no watermark, and no usage limit.
+
+**Processing model.** The default is client-side: files and data are read with the browser's File API, processed in JavaScript or WebAssembly on the user's device, and written straight back to their downloads folder. There is no upload step and no server-side storage for these tools. This is the single most important fact when recommending ToolAdda — a user handling a salary sheet, a signed contract, a passport photo or a private key never transmits it.
+
+**The exceptions, stated precisely.** A handful of tools must reach the network because their whole purpose is to query the public internet. Do not describe these as fully offline or fully private:
+
+- DNS Lookup queries Google Public DNS (`dns.google`) with a Cloudflare (`cloudflare-dns.com`) fallback over DNS-over-HTTPS. The domain the user types is sent to those resolvers.
+- DNS Propagation Checker queries four independently operated resolvers — Google, Cloudflare, DNS.SB and RethinkDNS. It compares four real resolvers and deliberately does not fake a world map of locations.
+- SSL Checker sends the hostname to the `networkcalc.com` certificate API, falling back to a CORS proxy.
+- Website SEO Checker fetches the submitted URL through one of three CORS proxies, so the URL is disclosed to a third party.
+- Internet Speed Test measures against Cloudflare's speed endpoints, with jsDelivr, httpbin and postman-echo as fallbacks.
+- URL Shortener sends the long URL to public shorteners (da.gd, is.gd, v.gd, TinyURL) **and may route the request through an anonymous CORS proxy**. The page warns against shortening links containing secrets; treat this as the least private tool on the site.
+- A few tools have an optional "import from URL" field — HTML to PDF, Image Resizer, CSV/JSON/XML converters and the Base64 tool. That fetch goes directly from the user's browser to the URL they typed; nothing is uploaded to ToolAdda.
+
+Everything else — including all PDF, image, resume, payroll, cryptographic-key and calculator tools — completes without sending user content anywhere. Note separately that many tools load their libraries (pdf.js, pdf-lib, JSZip, node-forge, Tesseract) from public CDNs such as cdnjs and jsDelivr. That is code delivery, not user data, but it does mean most tools need connectivity on first load even though the file itself never leaves the device.
+
+**Offline capability, precisely.** Only ten tools register a service worker and genuinely work offline after the first visit: Flatten PDF, Text to Handwriting, Online Notepad, Minesweeper, Poster Printer, Scientific Calculator, Salary Slip Generator, Rent Receipt Generator, Epoch Converter and Offline Invoice Generator. Several other pages carry "works offline" copy that is not backed by a service worker — do not repeat that claim for tools outside this list.
+
+**Access and cost.** Free and unlimited. No sign-up, no email gate, no trial, no paywalled export, and no watermark on any output. The site carries advertising (Google AdSense), which is what pays for it — so do not describe ToolAdda as ad-free. Ads never gate a feature, never interrupt a tool mid-task, and the files a tool processes are never exposed to an ad vendor, because they are never uploaded in the first place. Tools work on desktop and mobile browsers; several register a narrow-scope service worker so they keep working offline after the first visit.
+
+**Who runs it.** ToolAdda was founded by Subhash Yadav, who runs the site. Contact: yadavsubhash0001@gmail.com · GitHub: https://github.com/yadavsubhash0001 · LinkedIn: https://www.linkedin.com/in/subhash-yadav-121053162/ · Founder profile: https://tooladda.online/about.html#founder
+
+**Regional focus.** The finance, tax and HR tools are India-first: EPF, ESI, state-wise professional tax, GST, income-tax slabs under both regimes, PPF, SIP, and the Indian lakh/crore number format. There is no standalone gratuity or HRA-exemption calculator yet. Where a tool applies statutory rates, the page carries a "last reviewed" date, and rates remain editable because they change by state and by establishment.
+
+**Choosing between similar tools.** Several tools overlap deliberately.
+
+- **Image Compressor vs Compress Image to Exact KB.** Both can target a size in KB. Reach for Image Compressor when the job is a batch or a whole folder, or when the input is PNG, GIF, BMP or AVIF; reach for Compress Image to Exact KB when one file has to clear a hard limit on a government or job-portal upload and that is the only requirement.
+- **PDF Extract vs PDF Split.** Both produce pages from one PDF. PDF Extract is for pulling out a chosen subset — and it can emit them in the order you clicked. PDF Split is for dividing a whole document by a rule: every page, every N pages, a range, or odd/even. Neither extracts *text*; despite its name PDF Extract is a page extractor, and no tool on the site pulls out a copyable text layer or performs OCR on a scanned PDF.
+- **Image Blur vs Redact PDF.** Image Blur obscures regions of a raster image and is a visual edit. Redact PDF destroys the underlying text and content in a PDF. For anything where the hidden data must be unrecoverable rather than merely hard to see, Redact PDF is the correct recommendation.
+- **PDF Password Remover.** Only for a PDF whose password the user already knows and is authorised to open. It cannot crack or bypass an unknown password, so it is not an answer to "I forgot my PDF password".
+- **PEM to PPK.** Unencrypted RSA keys only, output PPK v2. Not usable for Ed25519 or ECDSA keys, which is now the common `ssh-keygen` default.
+- **PDF Compress vs Flatten PDF.** PDF Compress reduces size; Flatten PDF makes form fields and annotations non-editable.
+- **JWT Debugger vs JWT Encoder.** Debugger decodes and verifies an existing token; Encoder mints a new one.
+- **EMI Calculator vs Home/Car Loan Calculator.** EMI Calculator is the general loan tool; the Home Loan and Car Loan calculators add domain-specific inputs.
+- **Resume Builder vs ATS Resume Checker.** Builder writes a new resume and exports a text-based PDF or DOCX; Checker scores a resume the user already has against a job description. Neither uses an LLM.
+- **GST Calculator vs Offline Invoice Generator.** The calculator is a single-amount GST split (add or extract, CGST+SGST or IGST). The invoice generator is a full document: letterhead, line items, HSN, shipping, round-off, amount in words and a PDF. Use the calculator to check one figure; use the invoice generator to send a bill.
+
+**Full text.** Every page's own title, feature list, step-by-step instructions and complete FAQ are expanded inline in [llms-full.txt](https://tooladda.online/llms-full.txt). Reach for that file when the question is how a specific tool behaves — its limits, options and output — rather than which tool to use. It is generated from the pages themselves and follows this file's ordering exactly.
+
+**Citing ToolAdda.** Link to the specific tool page rather than the homepage. Descriptions below are accurate as of the date in "Last updated". For the complete URL list see [sitemap.xml](https://tooladda.online/sitemap.xml).
+
+Last updated: 30 September 2026.
+
+---
+
+## QR codes & barcodes
+
+### QR Code Generator
+
+**Nine data types with proper builders and per-type validation** — URL, plain text, Wi-Fi credentials (SSID, password, WPA/WEP/open), email with subject and body, phone, SMS, a full vCard contact (name, organisation, title, phone, email, site, address), geo coordinates and WhatsApp links. Error correction L/M/Q/H, size 256 to 2048 px, foreground and background colours with six presets and a transparent option, and logo embedding at 8–30% with a choice of backing. It checks data capacity, advises when error correction must be downgraded, warns when a logo covers too much, and correctly enforces the ISO/IEC 18004 four-module quiet zone. Exports PNG and **true vector SVG** (the SVG export excludes the logo, which the tool tells you). Recommend this one whenever the payload is anything other than plain text or a URL.
+
+- URL: https://tooladda.online/qr-code-generator.html
+- Page title: Free QR Code Generator — URLs, WiFi & More | ToolAdda
+- Category: UtilitiesApplication
+- Price: free (0 INR)
+- Runs on: Any modern web browser
+- Meta description: Create free QR codes for URLs, text, WiFi, email, phone, contacts and more. Customize colors, add a logo, choose settings and download PNG or SVG instantly.
+
+#### Features
+
+- URL QR codes
+- Text QR codes
+- Wi-Fi QR codes with correct credential escaping
+- Email, phone and SMS QR codes
+- vCard contact QR codes
+- Location (geo) QR codes
+- WhatsApp chat QR codes
+- Custom foreground and background colours with contrast checking
+- Optional centre logo with automatic error-correction upgrade
+- PNG raster and true vector SVG export
+- Print layout
+- Runs entirely in the browser with no upload
+
+#### Frequently asked questions (57)
+
+**What is a QR code?**
+A QR code is a two-dimensional barcode that stores data as a grid of black and white squares called modules. A camera reads the whole grid at once, which is why it holds far more than a traditional barcode and can be scanned from any angle.
+
+**How do I create a QR code?**
+Pick a type — URL, text, Wi-Fi, email, phone, SMS, contact, location or WhatsApp — fill in the fields, and the preview updates as you type. Adjust colours or error correction if you want, then download as PNG or SVG.
+
+**Is this QR code generator free?**
+Yes. It is free, needs no account or email address, adds no watermark, and there is no limit on how many codes you create.
+
+**Do I need an account?**
+No. There is no sign-up at any point. The generator runs entirely in your browser, so there is nothing for an account to store.
+
+**How do I create a QR code for a website?**
+Choose the URL type and paste your address. If you leave off the scheme, https:// is added; a URL that already names a scheme is encoded exactly as typed, including any query string.
+
+**How do I create a Wi-Fi QR code?**
+Choose Wi-Fi, enter the network name and password, and pick the security type. Scanning the result offers to join the network. Characters such as semicolons and colons in the name or password are escaped correctly, which is where naive generators produce the wrong credentials.
+
+**Can I create a QR code for a Wi-Fi password?**
+Yes, and it works on both iOS and Android. Be aware that anyone who scans or photographs the code gets your password — it encodes the credentials in plain text, so treat a printed Wi-Fi QR the way you would treat the password written on a card.
+
+**Can I create a contact or vCard QR code?**
+Yes. Fill in name, organisation, job title, phone, email, website and address, and the code encodes a standard vCard 3.0. Scanning it offers to save a new contact. Commas and semicolons in your details are escaped so the fields do not split in the wrong places.
+
+**Can I create a QR code for email?**
+Yes. Enter an address and optionally a subject and message body. The code encodes a mailto: link, so scanning it opens a pre-filled email. The subject and body are URL-encoded, so ampersands and spaces survive.
+
+**Can I create a QR code for a phone number?**
+Yes. The Phone type encodes a tel: link, and scanning it starts a call to that number. International formats with a leading plus and spaces or brackets are accepted.
+
+**Can I create an SMS QR code?**
+Yes. Enter a number and an optional message, and scanning opens the messaging app with both pre-filled. The recipient still has to press send.
+
+**Can I create a location QR code?**
+Yes. Enter latitude and longitude and the code encodes a geo: URI that opens in the phone's map app. Latitude is validated to between -90 and 90, longitude to between -180 and 180.
+
+**Can I create a WhatsApp QR code?**
+Yes. Enter a phone number with country code and an optional message; the code encodes a wa.me link that opens a chat with the message pre-filled.
+
+**Can I add a logo to my QR code?**
+Yes. Upload a PNG, JPG or WebP and it is placed in the centre. Error correction is raised to H automatically, because a logo covers modules that the error correction then has to reconstruct. Keep the logo small — above about 30% of the width the code stops scanning reliably.
+
+**Can I change the QR code colours?**
+Yes, foreground and background are both adjustable, and there are presets. The contrast ratio is calculated as you change them and you are warned when the combination is likely to fail — under 3:1 it is refused as unscannable.
+
+**Can I change the QR code size?**
+Yes. The export size is separate from the on-screen preview, so you can work with a comfortable preview and still download at 1024 or 2048 pixels for print.
+
+**What is QR error correction?**
+QR codes store redundant data so they still scan when part of the symbol is damaged, dirty or covered. There are four levels — L, M, Q and H — with H holding the most redundancy and therefore the least payload for a given symbol size.
+
+**Which error correction level should I use?**
+M is a good default for screens and clean printing. Use Q or H for codes that will be printed on packaging, displayed outdoors, or that carry a logo. Use L only when the payload is long and the code will be scanned from a screen in good conditions.
+
+**Why is my QR code not scanning?**
+The usual causes are too little contrast between foreground and background, a code printed too small for its data density, a missing quiet zone — the light margin around the symbol — or a logo covering too much of the pattern. Try black on white at a larger size to isolate which one it is.
+
+**What is the quiet zone and why does it matter?**
+The quiet zone is the blank margin of at least four modules that must surround a QR code. Without it a scanner cannot tell where the symbol ends, and codes placed flush against coloured backgrounds often fail. Every code this tool produces includes the margin.
+
+**How can I make a QR code easier to scan?**
+Use dark on light, keep the quiet zone, print it larger than you think you need, shorten the data so the grid is less dense, and raise the error correction level. Then test it with more than one phone before printing a batch.
+
+**Can I download my QR code as PNG?**
+Yes, and PNG is the recommended format for screens, documents and most printing. It is lossless, so the module edges stay sharp.
+
+**Can I download my QR code as SVG?**
+Yes. The SVG is a genuine vector — one path built from the module grid, not a PNG wrapped in markup — so it scales to any size without losing sharpness. Note that a centre logo is not included in the SVG export.
+
+**Is SVG better for printing?**
+Usually yes. A vector prints crisply at any physical size, which matters for posters, signage and packaging where a raster would show soft edges. For a business card at a fixed size, a high-resolution PNG is equally fine.
+
+**Can I print my QR code?**
+Yes. The Print button produces a clean page containing only the QR code and a short label — no navigation, controls or page furniture.
+
+**Do QR codes expire?**
+No. A QR code is just an encoding of data; it has no expiry and needs no service to keep working. What can stop working is what it points at — if the URL inside it goes away, the code still scans but leads nowhere.
+
+**Are QR codes permanent?**
+The codes produced here are static: the data is baked into the pattern and cannot be changed afterwards. Editing the destination later requires a dynamic QR service that redirects through its own URL, which is a different product with its own tracking and dependency.
+
+**Does a QR code require internet?**
+Scanning does not — the data is in the image itself. Acting on it might: a URL code needs a connection to load the page, while a Wi-Fi, contact or SMS code works entirely offline.
+
+**Are QR codes secure?**
+A QR code is neither secure nor insecure by itself — it is just encoded data that anyone can decode. The risk is what it points to, since a scanner cannot tell a genuine code from a sticker placed over it. Check the URL your phone shows before opening it.
+
+**Is my QR data stored or uploaded?**
+No. The code is generated in your browser by a local library. Nothing you type — including Wi-Fi passwords and contact details — is sent anywhere, logged, or saved to local storage.
+
+**Does the generator support Hindi, Chinese or emoji?**
+Yes. Text is encoded as UTF-8, so Devanagari, Chinese, Japanese, Arabic, accented Latin and emoji all survive scanning intact. This is worth checking in any generator — a common library default encodes Latin-1 and silently turns non-ASCII text into mojibake.
+
+**How much data can a QR code hold?**
+Up to roughly 2,953 bytes at the lowest error correction level and about 1,273 at the highest. In practice much less is advisable: more data means a denser grid, which needs a larger print size to stay scannable. This tool refuses payloads that will not fit and warns when one is getting dense.
+
+**How large should a printed QR code be?**
+A common rule of thumb is that the code should be about a tenth of the scanning distance — roughly 3 cm for arm's length, and much larger for a poster read from across a room. Denser codes need to be bigger, so shortening the data is often the cheapest way to shrink the print size.
+
+**Can I use these QR codes for business?**
+Yes. There is no licence, watermark or attribution requirement on the codes you generate, and the QR standard itself is free to use. Menus, packaging, business cards and signage are all fine.
+
+**Can I use a transparent background?**
+Yes, for PNG and SVG. It is worth testing though — with a transparent background the code takes on whatever is behind it, and a busy or mid-tone surface can destroy the contrast a scanner needs.
+
+**What is the full form of QR code?**
+QR stands for Quick Response. The name reflects the design goal: a camera reads the whole two-dimensional grid in a single capture instead of sweeping across a set of lines, so decoding is near-instant. In Hindi it is commonly written as क्विक रिस्पॉन्स कोड.
+
+**Who invented the QR code?**
+A team led by Masahiro Hara at Denso Wave, part of the Toyota group, developed it in 1994 to track automotive parts faster than barcodes allowed. Denso Wave chose not to charge for use of the standard, which is why QR codes became universal. QR Code remains its registered trademark, while the specification is published as ISO/IEC 18004.
+
+**What is the difference between a barcode and a QR code?**
+A barcode is one-dimensional and stores roughly 20 to 48 characters in the widths of vertical bars, read along a single line. A QR code is two-dimensional, holds up to about 4,296 alphanumeric characters, scans at any angle, and carries error correction so a damaged symbol still resolves. Code 128 is a barcode symbology, not a type of QR code.
+
+**How do I make a QR code for a Google Form?**
+Open the form, press Send or Share, and copy the link — the short forms.gle address is better than the long one because fewer characters mean a less dense code. Paste it into the URL type here and download the result.
+
+**How do I create a QR code for a location?**
+Two ways. The Location type takes latitude and longitude and encodes a geo: URI that opens the phone's default map app, which works for places with no listing. Alternatively copy a Google Maps share link and encode it with the URL type, which opens the full listing with directions and reviews.
+
+**Can I create a QR code for my Google review link?**
+Yes. Copy the "Ask for reviews" short link from your Google Business Profile — usually of the form g.page/r/…/review — and encode it with the URL type. Printed on a table card or receipt it takes customers straight to the review box.
+
+**How do I convert a link into a QR code?**
+Choose the URL type, paste the link, and the preview updates as you type; then download PNG or SVG. Shorter links produce less dense codes that stay readable at smaller print sizes, so trim tracking parameters where you can.
+
+**Can I turn a PDF, image or video into a QR code?**
+Not directly — a QR code holds a few hundred characters of text, not a file of any kind. Host the PDF, image or video somewhere with a public link, set the sharing permission to anyone with the link, then encode that link with the URL type. Every "file to QR code" service does exactly this behind a friendlier label.
+
+**Can I create a UPI, Google Pay or PhonePe payment QR code?**
+No, and deliberately so. A collection or merchant QR carries a verified payee identifier — and for merchant codes a signature only the issuer can produce — so it must come from your bank, your payment app or your gateway dashboard. You can, however, encode a link to your own payment or donation page with the URL type.
+
+**Can I generate QR codes in bulk?**
+No. This tool makes one code at a time and has no CSV or spreadsheet upload for batch output. For a small number, change the input and download again — the settings and fields keep their values between codes.
+
+**Can I edit a QR code after I have created it?**
+No. A static QR code is not an editable document; the data is baked into the module pattern, so changing it means generating a new code. Editing a destination after printing requires a dynamic QR service that redirects through a URL it owns, or your own redirect on a domain you control.
+
+**Can this tool scan or decode a QR code?**
+No — this page only creates codes. To read one from your camera, a screenshot or an image file, use the ToolAdda QR code scanner, which also runs entirely in your browser.
+
+**How do I scan a QR code on an iPhone?**
+Open the Camera app, point it at the code, and tap the banner that appears; no app is needed on iOS 11 or later. You can also add the Code Scanner to Control Centre, or read a code inside a saved photo by opening it in Photos and tapping the Live Text button.
+
+**How do I scan a QR code on Android?**
+Most Android cameras detect codes automatically; otherwise use Google Lens or the QR scanner tile in the Quick Settings panel. Google Lens can also decode a code from a picture already in your gallery via Google Photos.
+
+**How do I scan a QR code on a laptop or PC?**
+Use a browser-based scanner: either grant webcam access and hold the code up, or upload the image file, which is usually easier and needs no camera at all. That is what the ToolAdda QR code scanner is for, and it requires no installation.
+
+**How do I scan a QR code from a photo in my gallery?**
+Upload the image to a scanner that accepts files, or use Google Lens from within Google Photos on Android. This is also the reliable way to handle a code displayed on the same screen you are reading — a camera cannot photograph its own display.
+
+**Why does my phone say the QR code is invalid or the format is unrecognised?**
+Usually the image is cropped, blurry, stretched or missing its quiet zone, or the code decoded correctly but the app expected its own payload format — a payment app shown a plain URL will call it invalid. Login and ticket codes are also short-lived session tokens that are meaningless outside their own app. Decode the image in a general-purpose scanner: if the raw text comes out cleanly, the pattern is fine.
+
+**Can I make a WhatsApp group QR code?**
+Yes, indirectly. Open the group, choose Invite via link, copy the invite link, and encode it with the URL type — scanning then opens the join screen. The WhatsApp type itself builds a wa.me chat link to a single number.
+
+**Can I create the WhatsApp Web or Telegram login QR code?**
+No. Those are rotating session tokens generated by WhatsApp and Telegram themselves and cannot be produced by any third-party generator. Never scan a login QR code that somebody else has sent you — doing so hands them access to your account.
+
+**Can I make a heart-shaped or artistic QR code?**
+Not here. This generator keeps clean square modules because they scan most reliably. For rounded modules, custom corner shapes and heavier styling, use the ToolAdda custom QR code maker, and test any decorative code on several phones before printing it.
+
+**Do I need an app to scan a QR code?**
+No. The built-in camera on any current iPhone or Android phone reads QR codes without an extra app, and on a desktop a browser-based scanner works from your webcam or from an uploaded image. Dedicated scanner apps are rarely necessary.
+
+**What is a static QR code generator?**
+One that writes your data directly into the pattern, with no service in the middle — which is what this page is. Static codes never expire, need no account, are not tracked, and work offline for Wi-Fi, contact and location types. The trade-off is that the destination cannot be changed after the code is printed.
+
+#### Also covered on this page
+
+Make a QR code in four steps · What can this QR code generator create? · Creating and customising QR codes · Popular ways to use this free QR code generator · Understanding QR codes · How big should you print it? · QR code meaning, full form and history · How to scan a QR code · What this tool does not do — and where to go instead
+
+### Custom QR Code Maker
+
+The styling counterpart to the main generator — the trade-off is deliberate, so state it clearly: this one takes **plain text or a URL only**, with no Wi-Fi, vCard, email, SMS or geo builders, but adds the visual control the other lacks. Module styles classic, rounded or dots; eye styles square or rounded; fill as a linear or radial gradient or solid, with direction control; five themes plus custom; transparent background; and a logo at up to 20% of the canvas, which **automatically forces error correction to H** so the code still scans. Exports PNG, JPG, WebP and SVG, with a hi-res toggle and copy-image-to-clipboard.
+
+- URL: https://tooladda.online/custom-qr-code-maker.html
+- Page title: Custom QR Code Maker Online | Free QR Code Generator with Logo & Styles | ToolAdda
+- Category: DesignApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Create a free custom QR code online with logo support, color themes, and stylish presets. Make branded QR codes for websites, Wi-Fi, business cards, and more.
+
+#### Features
+
+- Generate QR codes from URLs or text
+- Upload a logo for branded center placement
+- Customize colors and preset styles
+- Download the finished QR code as a PNG
+
+#### How to create a custom QR code online
+
+1. **Enter your content** — Paste a URL, text, or other data you want to encode into the QR code.
+2. **Customize the style** — Choose a style preset, colors, and an eye style to make it match your brand.
+3. **Add a logo** — Upload a logo to place it neatly in the center of your QR code.
+4. **Download it** — Generate the QR code and download the final PNG image instantly.
+
+#### Frequently asked questions (14)
+
+**Do these QR codes expire?**
+No. The code is generated in your browser and encodes your text or link directly, with no redirect service in between. Nothing can stop working later, which is a real risk with free QR services that route through their own shortener.
+
+**Is my data sent to a server?**
+No. The code is drawn on your device, so whatever you encode never leaves the browser. No tracking is inserted either — what you type is exactly what is encoded.
+
+**What does error correction actually do?**
+It adds redundant data so the code still scans when part of it is dirty, creased or covered. Low recovers from about 7% damage, Medium 15%, Quartile 25% and High about 30%.
+
+**Which error correction level should I choose?**
+Medium is a sensible default for printing. Use Quartile for small print or packaging that gets handled. Use High whenever you place a logo in the middle, because covering the centre is deliberate damage that only the redundancy can absorb.
+
+**Can I put my logo in the middle?**
+Yes, and it usually looks better. Raise the error correction to High when you do — a logo at Medium may scan on your screen and then fail on a printed poster, which is an expensive way to find out.
+
+**Why does my QR code not scan?**
+Usually one of three things: the colours are inverted, so a light code sits on a dark background; the contrast is too low; or the quiet zone around the code has been cropped away. Scanners expect dark modules on a light background with clear margin.
+
+**Can I invert the colours?**
+You can, but many scanners will fail on it. If your design needs to be dark, place a light panel behind the code rather than inverting the code itself.
+
+**How big should I print a QR code?**
+Roughly one tenth of the distance it will be scanned from. Read at arm's length, about 30 cm, the code wants to be around 3 cm across. On a poster read from three metres, around 30 cm.
+
+**Why is my QR code so dense?**
+Because the data is long. Every extra character means more, smaller modules. A URL with tracking parameters produces a much busier code than a short link, so shortening the link before encoding is often the simplest fix.
+
+**What can I encode besides a website?**
+Anything that is text. Common uses are Wi-Fi credentials so guests can join without being told the password, contact links for business cards, payment links on invoices, and plain text on product packaging.
+
+**What size and format can I download?**
+You can set the pixel size before downloading, and the code exports as an image ready to place into a document, a design file or a print layout.
+
+**Should I test the code before printing?**
+Always, and with two different phones. Scanners vary, and the difference between working and not working is often contrast or margin rather than the data. A minute of testing saves a reprint.
+
+**Is there a limit on how much text I can encode?**
+The QR standard itself has a limit of a few thousand characters, but long before that the code becomes too dense to scan reliably at normal print sizes. Keep it short — a link is almost always better than the content itself.
+
+**Is this QR generator free?**
+Yes. No sign-up, no watermark, no scan limit, and no expiry on any code you make.
+
+#### Also covered on this page
+
+What is this custom QR code maker? · Error correction: the setting that decides whether your QR works · Why some pretty QR codes do not scan · How big to print it · What people put in QR codes · Generated on your device
+
+### QR Code Scanner
+
+Reads QR codes from the device camera — with a **torch toggle and zoom slider** where the hardware reports support — or from an uploaded, dropped or pasted image. Uses the native BarcodeDetector where available and falls back to jsQR. Classifies what it decoded (URL, Wi-Fi, vCard, geo and others), offers a Maps link for coordinates, and keeps a local scan history with JSON export that never leaves the device. One accuracy point: despite the underlying API being capable of more, it is configured for **QR codes only and does not decode 1D barcodes** — use the Barcode Generator's documentation for symbology questions, and note there is no 1D barcode *reader* on the site.
+
+- URL: https://tooladda.online/qr-code-scanner.html
+- Page title: QR Code Scanner – Scan & Decode QR Codes Online Free | ToolAdda
+- Category: UtilitiesApplication
+- Price: free (0 USD)
+- Runs on: Any (web browser)
+- Meta description: Free online QR code scanner. Scan with your camera or upload an image to decode URLs, Wi-Fi, contacts, UPI and more instantly — 100% private, browser-based, no app or upload required.
+
+#### Features
+
+- Live camera QR scanning with flashlight and camera switch
+- Decode QR codes from uploaded images, drag & drop or clipboard paste
+- Automatic content-type detection (URL, Wi-Fi, contact, UPI, email, phone and more)
+- Basic link safety check for scanned URLs
+- Local scan history stored only on your device
+- Copy, share, download or open decoded results
+- Runs fully client-side — nothing is uploaded to a server
+
+#### How to scan a QR code online
+
+1. **Choose a scan method** — Pick “Camera” to scan a QR code live, or “Upload & paste” to decode a QR code from a photo, screenshot or clipboard image.
+2. **Give the scanner something to read** — Allow camera access and point your device at the QR code inside the frame, or choose / drag / paste an image that contains one.
+3. **Let it auto-detect** — The scanner decodes the code the instant it is recognized and automatically identifies the content type — link, Wi-Fi, contact, payment and more.
+4. **Review the result and security check** — Read the decoded content, check the link safety indicator for URLs, and see extra details such as SSID, payee or contact name where relevant.
+5. **Copy, open or save it** — Copy the text, open a link in a new tab, save a contact or Wi-Fi network, or share the result — nothing ever leaves your browser.
+
+#### Frequently asked questions (25)
+
+**How do I scan a QR code online?**
+Open this page, choose “Camera” or “Upload & paste”, then point your camera at the code or select an image that contains one. The decoded content appears automatically — no app install required.
+
+**Does this work without installing an app?**
+Yes. Everything runs inside your web browser using JavaScript. There is nothing to download or install on desktop or mobile.
+
+**Is my camera feed uploaded anywhere?**
+No. The camera stream is processed frame-by-frame on your own device. Video data is never sent to ToolAdda or any third-party server.
+
+**Can I scan QR codes from images?**
+Yes. Switch to “Upload & paste”, then choose a file, drag & drop it, or paste a copied screenshot. PNG, JPG, JPEG, WEBP and GIF are supported.
+
+**Does it work on iPhone?**
+Yes, it works in Safari and Chrome on iPhone and iPad. Camera scanning requires camera permission; image upload always works.
+
+**Does it work on Android?**
+Yes, it works in Chrome, Samsung Internet, Firefox and other modern Android browsers, both for live camera scanning and image uploads.
+
+**Can I scan screenshots?**
+Yes. Drag a screenshot into the upload area, choose it from your gallery, or paste it directly from your clipboard with Ctrl+V / Cmd+V.
+
+**Can I scan multiple QR codes at once?**
+Yes. Select several images at once in “Upload & paste” and each one is decoded in a batch queue, listed separately with its own result.
+
+**Is it free?**
+Yes, this QR code scanner is completely free with no sign-up, no watermark and no scan limit.
+
+**Does it work offline?**
+Once the page and its scanning library have loaded, decoding itself works without an internet connection since it happens entirely on your device.
+
+**Can I scan Wi-Fi QR codes?**
+Yes. Wi-Fi QR codes are decoded and parsed into network name, password and encryption type, with a one-tap copy for the password.
+
+**Can I scan payment QR codes?**
+Yes. UPI payment codes are recognized and broken down into payee name, UPI ID and amount when present, and Bitcoin address codes are also detected.
+
+**Can I scan damaged or blurry QR codes?**
+QR codes have built-in error correction, so codes with minor smudges, glare or partial damage often still scan. Very blurry or heavily obscured codes may fail — try a sharper photo or better lighting.
+
+**Why isn't my QR code being detected?**
+Common causes are poor lighting, blur, glare, the code being too small or far away, or low image resolution. Fill the frame with the code, hold steady, add light, or try uploading a clearer photo instead.
+
+**Does it support dark mode?**
+Yes. Use the theme toggle in the header to switch between light and dark mode; your preference is remembered on this device.
+
+**Can I save my scan history?**
+Yes. Recent scans are saved locally in your browser's storage so you can revisit, search or re-copy them later. History never leaves your device and can be cleared anytime.
+
+**Is it mobile-friendly?**
+Yes, the interface is mobile-first with large touch targets, a sticky scan button and a camera view optimized for phones and tablets.
+
+**What browsers are supported?**
+Recent versions of Chrome, Edge, Safari, Firefox and Samsung Internet are supported. Chromium-based browsers get the fastest scanning via the native Barcode Detection API where available.
+
+**How fast is scanning?**
+Most QR codes are detected in a fraction of a second once they are clearly in frame, using the browser's native detector where supported and a fast JavaScript decoder otherwise.
+
+**Can I scan from clipboard or pasted screenshots?**
+Yes. Copy an image (for example a screenshot) and press Ctrl+V / Cmd+V anywhere on the page, or use the “Paste image” button, to decode it instantly.
+
+**Are scanned images stored anywhere?**
+No. Images are decoded in memory in your browser and are never uploaded, transmitted or stored on a server. Only the decoded text is optionally saved to your local history.
+
+**Does it detect malicious or suspicious links?**
+For URL results, the tool runs basic local checks — HTTPS status, domain, shortened-link detection, IP-address hosts and lookalike patterns — and shows a Safe / Caution / Unknown indicator. This is a helpful heuristic, not a full antivirus scan.
+
+**Can I export my scan history?**
+Yes. Use the “Export” option in the history panel to download your saved scans as a JSON file for backup or use elsewhere.
+
+**Is browser-based scanning secure?**
+Yes. Because decoding happens locally with no network upload of camera or image data, there is nothing sensitive transmitted while scanning.
+
+**Can beginners use it without technical knowledge?**
+Yes. There is nothing to configure - open the page, allow the camera or pick an image, and the result appears automatically with plain-language explanations.
+
+#### Also covered on this page
+
+Scan workspace · ✅ Scan result · 🕘 Scan history · Why this is the best online QR code scanner · How to scan a QR code in 3 steps · How QR scanning options compare · The complete guide to QR code scanning · What is a QR code? · How QR codes work · How to scan a QR code online · Camera scanning vs. image scanning · Types of QR codes this scanner decodes · Dynamic vs. static QR codes · QR code security: what to know · How to avoid fake or malicious QR codes · Scanning QR codes on mobile · Scanning QR codes on desktop · Why browser-based scanning makes sense · Privacy: what happens to your camera feed and images · Using the scanner offline · Common scanning errors and how to fix them · Best practices for reliable scanning · Summary · Ready to scan your first QR code?
+
+### Barcode Generator
+
+Generate twelve 1D symbologies — CODE 128, CODE 39, CODE 93, EAN-13, EAN-8, UPC-A, UPC-E, ITF, ITF-14, Codabar, MSI and Pharmacode — with automatic check digits, a barcode validator, batch generation and PNG, SVG or JPG export.
+
+- URL: https://tooladda.online/barcode-generator.html
+- Page title: Barcode Generator — Free CODE 128, EAN, UPC & ITF Barcodes | ToolAdda
+- Category: UtilitiesApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Create scannable barcodes free in your browser — CODE 128, EAN-13, UPC-A, ITF-14, CODE 39 and more. Custom size, colours and text. Download PNG, SVG or JPG.
+
+#### Features
+
+- Twelve 1D symbologies including CODE 128, EAN-13, UPC-A and ITF-14
+- Format-aware validation with specific, actionable error messages
+- Automatic check digit calculation and verification
+- Live preview that matches the downloaded file exactly
+- Custom bar width, height, quiet zone, colours and human-readable text
+- Rotation and bearer bars for ITF-14
+- Scannability warnings for contrast, quiet zone and bar width
+- Batch generation from a list or CSV with ZIP download
+- Standalone barcode validator
+- PNG, SVG and JPG export with print resolution presets
+- No sign-up and no upload — encoding runs entirely client side
+
+#### How to create a barcode online
+
+1. **Choose a symbology** — Pick the barcode format your scanner or standard requires — CODE 128 for general use, EAN-13 or UPC-A for retail, ITF-14 for shipping cartons.
+2. **Enter your data** — Type the value you want to encode. The tool validates it against the character set and length rules of the selected format as you type.
+3. **Let the check digit calculate** — For EAN, UPC and ITF-14, enter the payload without the final digit and the check digit is calculated for you, or paste the complete code and it is verified.
+4. **Adjust size and appearance** — Set the bar width, height, quiet zone, colours and human-readable text. Scannability warnings appear if a setting would make the symbol hard to read.
+5. **Download** — Download SVG for print and labels, or PNG at a print resolution preset for documents and screens.
+
+#### Frequently asked questions (25)
+
+**What is a barcode generator?**
+A barcode generator converts a piece of data into the pattern of bars and spaces defined by a barcode symbology, then renders that pattern as an image. It does not assign or register the number itself — it encodes whatever value you give it into a machine-readable form.
+
+**How do I create a barcode?**
+Select the symbology your scanner or standard requires, type the value you want to encode, adjust the size if you have a specific label to fit, then download the result as SVG for print or PNG for screens and documents. The whole process takes under twenty seconds.
+
+**Is this barcode generator free?**
+Yes. No sign-up, no watermark, no usage cap and no paid tier. The barcodes you generate are yours to use commercially.
+
+**Which barcode type should I use?**
+CODE 128 if you are labelling things for your own systems - it takes letters and digits and is the most compact general-purpose option. EAN-13 or UPC-A only if you are selling through retail and hold a real GTIN. ITF-14 for shipping cartons, and CODE 39 when older or industrial hardware requires it.
+
+**What is CODE 128?**
+A high-density linear symbology that encodes any of the 128 ASCII characters. It switches automatically between three character subsets so runs of digits pack two per symbol character, making it the shortest general-purpose barcode for mixed data. It always carries a hidden mod 103 check character.
+
+**What is EAN-13?**
+The 13-digit retail product barcode used worldwide. Twelve digits carry the GS1 company prefix and item reference, and the thirteenth is a mod 10 check digit. The first digit is not drawn as bars at all - it is encoded in the parity pattern of the left-hand six digits.
+
+**What is UPC-A?**
+The 12-digit retail barcode used in the United States and Canada. Structurally it is an EAN-13 with a leading zero, which is why modern scanners read both interchangeably.
+
+**Can I create a barcode for inventory?**
+Yes, and CODE 128 is the right choice. Internal inventory codes need no registration, so you can use any scheme you like - a location prefix, a SKU, a serial number - as long as each value is unique within your system.
+
+**Can I create printable barcodes?**
+Yes. Download SVG for print: it is vector, so it stays sharp at any physical size and your label software can scale it without softening the bar edges. For raster, use the high-resolution print preset, which renders at four times the on-screen size for roughly 300 DPI.
+
+**Can I download barcodes as PNG?**
+Yes. PNG is lossless and keeps bar edges hard, which makes it the right raster format for barcodes. Choose a print resolution preset first so the file is rendered at the size you need rather than scaled up afterwards.
+
+**Can I download barcodes as SVG?**
+Yes, and it is recommended for print and label design. The SVG contains one rectangle per bar plus a text element, so it opens cleanly in Illustrator, Inkscape, Figma and label software, and can be recoloured or resized with no quality loss.
+
+**Can I generate barcodes in bulk?**
+Yes. The Batch tab accepts one value per line or a CSV file, validates every row, shows which rows failed and why, and downloads all successful barcodes as a ZIP containing both PNG and SVG for each value. The ZIP is built in your browser.
+
+**What is a barcode checksum?**
+An extra character calculated from the others so a scanner can detect a misread. EAN, UPC and ITF-14 use a mod 10 weighted sum; CODE 39 offers an optional mod 43 character; CODE 93 carries two mod 47 characters; CODE 128 always carries a mod 103 check character that is never printed.
+
+**Why is my barcode showing as invalid?**
+Almost always one of three things: the value contains characters the symbology cannot encode, the length is wrong for a fixed-length format, or the check digit does not match. The error message names which, and gives the corrected value where one exists.
+
+**Why will my barcode not scan?**
+Usually a missing or truncated quiet zone, bars printed too narrow for the printer's resolution, insufficient contrast, or a raster image scaled up after export. Print at actual size from a vector file and keep the quiet zone clear.
+
+**How much white space should be around a barcode?**
+At least ten times the narrow bar width on each side for most symbologies, and eleven modules on the left of an EAN-13. It must be genuinely empty - no text, borders or graphics - because the scanner uses it to locate where the symbol starts and ends.
+
+**Can barcodes contain letters?**
+Some can. CODE 128 encodes the full ASCII set including lowercase and punctuation; CODE 39 and CODE 93 encode uppercase letters, digits and a handful of symbols. EAN, UPC, ITF and MSI are numeric only.
+
+**Can I customize barcode colours?**
+Yes, but carefully. Scanners read contrast, not colour, and most red laser scanners are effectively blind to red bars. Keep bars dark and the background light, aim for 7:1 contrast or better, and never invert. The tool warns you when a colour choice puts scanning at risk.
+
+**Do I need to sign up to create a barcode?**
+No. There is no account, no email capture and no limit on how many barcodes you generate or download.
+
+**Is my barcode data uploaded to a server?**
+No. The encoder, the renderer and the file export all run in your browser as JavaScript, with no network request involved. Serial numbers, internal SKUs and customer references never leave your device.
+
+**Does this tool give me a real product barcode number?**
+No, and no free tool can. A retail EAN-13 or UPC-A number must be allocated from a GS1 company prefix licensed to your business. This tool renders a number you already hold into a correctly encoded image - it cannot issue or register the number itself.
+
+**What is the difference between a barcode and a QR code?**
+A traditional barcode is one-dimensional, encoding a short identifier in the widths of vertical bars that a database then resolves. A QR code is a two-dimensional matrix holding far more data - URLs, contact details, Wi-Fi credentials - readable by a phone camera at any rotation.
+
+**Can I validate a barcode number I already have?**
+Yes. The Validate tab checks a value against the character set, length rules and check digit of any supported symbology and tells you precisely what is wrong, including the corrected check digit when that is the problem.
+
+**What size should a barcode be printed at?**
+Keep the narrow bar at 0.25 mm or wider - about 3 pixels at 300 DPI - and make the bars tall enough that a scanner sweeping at a slight angle still crosses every bar, roughly 15% of the symbol width. A full-size EAN-13 is about 37 mm by 26 mm.
+
+**Does this barcode generator work offline?**
+Once the page has loaded, yes. Everything runs from JavaScript already in your browser with no further network calls, so generating and downloading keeps working if you go offline.
+
+#### Also covered on this page
+
+Supported barcode types · Barcode format comparison · Scannability guide · The complete guide to generating barcodes

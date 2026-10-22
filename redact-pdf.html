@@ -1,0 +1,1795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+  <title>Redact PDF Online Free — Remove Sensitive Data | ToolAdda</title>
+  <meta name="description" content="Redact PDF online free — permanently black out names, emails, phone numbers and IDs. Manual, search and OCR redaction. Nothing ever uploaded." />
+  <meta name="author" content="ToolAdda" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="theme-color" content="#1a1714" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#11100e" media="(prefers-color-scheme: dark)" />
+  <meta name="format-detection" content="telephone=no" />
+  <link rel="canonical" href="https://tooladda.online/redact-pdf.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+  <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Perf: PDF/OCR engines load only after a file is chosen -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    /* Redact PDF — "the case file".
+       Redaction is a black marker on paper. The cover is a manila folder with a
+       specimen page whose fields get blacked out, every section title sits on a
+       marker bar, and the one action colour is the marker itself: ink black,
+       flipping to paper in dark mode. Stamp red is decoration only (the
+       REDACTED stamp) and never carries meaning — errors have --rd-bad. */
+    body.rd-page {
+      --rd-desk: #eeebe4;
+      --rd-card: #fffdf9;
+      --rd-well: #f7f4ee;
+      --rd-folder: #f1e3bb;
+      --rd-folder-line: rgba(122, 92, 30, .24);
+      --rd-paper: #fffdf8;
+      --rd-line: rgba(33, 29, 24, .12);
+      --rd-line-2: rgba(33, 29, 24, .24);
+      --rd-ink: #1a1714;
+      --rd-ink-2: #3b352e;
+      --rd-mute: #675e54;
+      --rd-bar: #161310;
+      --rd-bar-hover: #37302a;
+      --rd-bar-ink: #fffdf9;
+      --rd-bar-soft: rgba(22, 19, 16, .06);
+      --rd-stamp: #b42318;
+      --rd-link: #9a2a17;
+      --rd-good: #15803d;
+      --rd-good-soft: rgba(21, 128, 61, .1);
+      --rd-bad: #b91c1c;
+      --rd-bad-soft: rgba(185, 28, 28, .08);
+      --rd-thumb-bg: #e9e5dc;
+      --rd-shadow: 0 1px 0 rgba(33, 29, 24, .05), 0 18px 40px -26px rgba(33, 29, 24, .5);
+      --accent: var(--rd-ink);
+      --accent-soft: var(--rd-bar-soft);
+      background: var(--rd-desk);
+    }
+    [data-theme="dark"] body.rd-page {
+      --rd-desk: #11100e;
+      --rd-card: #1a1815;
+      --rd-well: #151310;
+      --rd-folder: #2a241a;
+      --rd-folder-line: rgba(232, 208, 146, .18);
+      --rd-line: rgba(244, 238, 226, .1);
+      --rd-line-2: rgba(244, 238, 226, .2);
+      --rd-ink: #f5f0e6;
+      --rd-ink-2: #d9d1c3;
+      --rd-mute: #a99f90;
+      --rd-bar: #efe5cb;
+      --rd-bar-hover: #fffaf0;
+      --rd-bar-ink: #16130f;
+      --rd-bar-soft: rgba(239, 229, 203, .08);
+      --rd-stamp: #f87171;
+      --rd-link: #f5a88f;
+      --rd-good: #4ade80;
+      --rd-good-soft: rgba(74, 222, 128, .1);
+      --rd-bad: #fca5a5;
+      --rd-bad-soft: rgba(252, 165, 165, .1);
+      --rd-thumb-bg: #25221c;
+      --rd-shadow: 0 1px 0 rgba(0, 0, 0, .4), 0 20px 44px -26px rgba(0, 0, 0, .9);
+    }
+    /* the script toggles the hidden attribute; keep it winning over display rules */
+    body.rd-page [hidden] { display: none !important; }
+    #redact-tool, .rd-result { scroll-margin-top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+
+    .rd-shell { padding: .6rem 0 3rem; }
+    .rd-page .breadcrumb { margin: .35rem 0 .9rem; font-size: .86rem; }
+    .rd-page .breadcrumb a { color: var(--rd-ink); font-weight: 700; text-decoration: underline; text-decoration-color: var(--rd-line-2); text-underline-offset: 3px; }
+
+    /* ---------- buttons ---------- */
+    .rd-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .45rem;
+      min-height: 2.75rem; padding: .6rem 1.1rem; border-radius: 10px; border: 1px solid transparent;
+      font: inherit; font-size: .92rem; font-weight: 800; line-height: 1.2; text-decoration: none; cursor: pointer;
+      transition: background-color .15s, border-color .15s, color .15s, transform .1s;
+    }
+    .rd-btn svg { width: 18px; height: 18px; flex: none; }
+    .rd-btn:active:not(:disabled) { transform: translateY(1px); }
+    .rd-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .rd-btn--primary { background: var(--rd-bar); color: var(--rd-bar-ink); border-color: var(--rd-bar); box-shadow: 0 1px 0 rgba(0, 0, 0, .12); }
+    .rd-btn--primary:hover:not(:disabled) { background: var(--rd-bar-hover); border-color: var(--rd-bar-hover); color: var(--rd-bar-ink); }
+    .rd-btn--ghost { background: var(--rd-card); color: var(--rd-ink); border-color: var(--rd-line-2); }
+    .rd-btn--ghost:hover:not(:disabled) { border-color: var(--rd-ink); background: var(--rd-bar-soft); color: var(--rd-ink); }
+    .rd-btn--sm { min-height: 2.3rem; padding: .35rem .75rem; font-size: .82rem; border-radius: 8px; }
+    .rd-btn--sm svg { width: 16px; height: 16px; }
+    .rd-btn--lg { min-height: 3.1rem; padding-inline: 1.5rem; font-size: 1rem; }
+    .rd-btn--block { width: 100%; }
+    .rd-icon-btn {
+      display: inline-grid; place-items: center; width: 2.3rem; height: 2.3rem; padding: 0; border-radius: 8px;
+      border: 1px solid var(--rd-line-2); background: var(--rd-card); color: var(--rd-ink); font: inherit; cursor: pointer;
+    }
+    .rd-icon-btn svg { width: 16px; height: 16px; }
+    .rd-icon-btn:hover:not(:disabled) { border-color: var(--rd-ink); background: var(--rd-bar-soft); }
+    .rd-icon-btn:disabled { opacity: .4; cursor: not-allowed; }
+    .rd-page :is(.rd-btn, .rd-icon-btn, .rd-mode-btn, .rd-preset-chip, .rd-queue-chip, .rd-color-swatch, .rd-thumb, .rd-thumb-actions button,
+      .rd-mark-del, .rd-related a, .rd-faq summary, .rd-intro a):focus-visible,
+    .rd-page .rd-panel :is(input, select):focus-visible {
+      outline: 2px solid var(--rd-ink); outline-offset: 2px;
+    }
+
+    /* ---------- top: cover, tool, ad ----------
+       Under 980px a single column: cover, tool, ad, then the lead and the
+       badges, so a phone reaches the drop zone straight after the headline.
+       From 980px the cover and lead sit beside the tool; once a PDF is open
+       (.is-editing) the tool takes the full width. The ad always follows it. */
+    .rd-top { display: grid; gap: 1rem; align-items: start; grid-template-areas: "cover" "tool" "ad" "intro" "extras"; }
+    .rd-top > * { min-width: 0; }
+    .rd-cover { grid-area: cover; }
+    .rd-intro { grid-area: intro; }
+    .rd-tool-card { grid-area: tool; }
+    .rd-ad-zone { grid-area: ad; }
+    .rd-extras { grid-area: extras; }
+    /* From 900px the ad sits straight under the tool in the right column, so
+       it is in the first screen on a laptop; the cover spans both rows beside
+       them. Once a PDF is open the tool and the ad take the full width. */
+    @media (min-width: 900px) {
+      .rd-top {
+        grid-template-columns: minmax(0, .9fr) minmax(0, 1.25fr);
+        grid-template-rows: auto 1fr auto auto;
+        grid-template-areas: "cover tool" "cover ad" "intro intro" "extras extras";
+        column-gap: 1.25rem;
+      }
+      .rd-top.is-editing { grid-template-rows: auto auto auto auto; grid-template-areas: "tool tool" "ad ad" "cover intro" "extras extras"; }
+    }
+    /* Tablets: the cover on top, then the tool with the 300x250 beside it, so
+       the ad is in the first screen without sitting above the tool. */
+    @media (min-width: 700px) and (max-width: 899px) {
+      .rd-top:not(.is-editing) { grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "cover cover" "tool ad" "intro intro" "extras extras"; column-gap: 1rem; }
+    }
+
+    /* ---------- cover: a manila case file ---------- */
+    .rd-cover {
+      position: relative; margin-top: 16px; padding: 1.45rem 1.35rem 1.3rem; border-radius: 4px 14px 14px 14px;
+      background: var(--rd-folder); border: 1px solid var(--rd-folder-line); box-shadow: var(--rd-shadow);
+    }
+    /* the folder tab; it paints over the cover's own top border */
+    .rd-cover::before {
+      content: ""; position: absolute; left: -1px; top: -16px; width: min(46%, 13rem); height: 17px;
+      border-radius: 10px 12px 0 0; background: var(--rd-folder); border: 1px solid var(--rd-folder-line); border-bottom: 0;
+    }
+    .rd-stamp {
+      position: absolute; top: .95rem; right: 1rem; padding: .18rem .5rem; border: 2px solid currentColor; border-radius: 4px;
+      color: var(--rd-stamp); font: 900 .7rem/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .16em;
+      text-transform: uppercase; transform: rotate(7deg); opacity: .85; pointer-events: none;
+    }
+    .rd-badge {
+      display: inline-flex; align-items: center; gap: .35rem; margin: 0 0 .75rem; padding: .28rem .62rem; border-radius: 6px;
+      background: var(--rd-card); border: 1px solid var(--rd-line-2); color: var(--rd-ink); font-size: .72rem; font-weight: 900; letter-spacing: .05em; text-transform: uppercase;
+    }
+    .rd-title { margin: 0; color: var(--rd-ink); font-size: clamp(1.7rem, 1.1rem + 2.4vw, 2.35rem); font-weight: 900; line-height: 1.1; letter-spacing: -.025em; }
+
+    /* specimen page: each field is blacked out in turn. The sample values are
+       drawn from data-t by CSS, so they are decoration, not page text. The
+       page is paper in both themes, as a real printout would be. */
+    .rd-specimen {
+      margin: 1rem 0 1.05rem; padding: .65rem .85rem .7rem; border-radius: 8px; background: var(--rd-paper);
+      border: 1px solid rgba(33, 29, 24, .14); box-shadow: 0 12px 24px -18px rgba(33, 29, 24, .6); color: #2a2520;
+    }
+    .rd-spec-head {
+      display: flex; justify-content: space-between; gap: .5rem; margin-bottom: .45rem; padding-bottom: .4rem;
+      border-bottom: 1px dashed rgba(33, 29, 24, .2); font: 700 .66rem/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #6b6258;
+    }
+    .rd-spec-row { display: grid; grid-template-columns: 3.9rem minmax(0, 1fr); align-items: center; gap: .5rem; padding: .2rem 0; }
+    .rd-spec-row .k { font: 800 .62rem/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; color: #7a7064; }
+    .rd-spec-row .v { position: relative; justify-self: start; max-width: 100%; padding: 0 3px; overflow: hidden; white-space: nowrap; font-size: .82rem; font-weight: 700; line-height: 1.45; }
+    .rd-spec-row .v::before { content: attr(data-t); }
+    .rd-spec-row:not(.is-kept) .v::after {
+      content: ""; position: absolute; inset: 1px 0; border-radius: 2px; background: #111;
+      transform-origin: left center; animation: rd-mark .45s cubic-bezier(.3, .7, .2, 1) var(--d, .4s) both;
+    }
+    @keyframes rd-mark { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    .rd-trust-inline { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .rd-trust-inline span {
+      display: inline-flex; align-items: center; gap: .3rem; padding: .3rem .6rem; border-radius: 8px;
+      background: var(--rd-card); border: 1px solid var(--rd-line); color: var(--rd-ink-2); font-size: .78rem; font-weight: 700;
+    }
+    .rd-trust-inline span:first-child { background: var(--rd-good-soft); border-color: rgba(21, 128, 61, .25); color: var(--rd-good); }
+
+    .rd-intro { padding: .15rem .2rem 0; }
+    /* Full width under the cover and tool before upload: the lead on the left,
+       the "how true redaction works" note on the right. */
+    @media (min-width: 900px) {
+      .rd-top:not(.is-editing) .rd-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+      .rd-top:not(.is-editing) .rd-intro .rd-honest { margin: 0; }
+    }
+    .rd-lead { margin: 0; padding-left: .85rem; border-left: 4px solid var(--rd-bar); color: var(--rd-ink-2); font-size: .96rem; line-height: 1.68; }
+    .rd-privacy {
+      margin: .85rem 0 0; padding: .6rem .8rem; border-radius: 10px; background: var(--rd-good-soft); border: 1px solid rgba(21, 128, 61, .22);
+      color: var(--rd-good); font-size: .86rem; font-weight: 700; line-height: 1.5;
+    }
+    .rd-next { margin: .7rem 0 0; font-size: .86rem; color: var(--rd-mute); }
+    .rd-intro a { color: var(--rd-link); font-weight: 800; text-decoration: underline; text-underline-offset: 2px; }
+
+    .rd-extras { display: grid; gap: .8rem; }
+    .rd-badges { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; }
+    .rd-badge-card { display: flex; align-items: center; gap: .6rem; min-width: 0; padding: .7rem .75rem; border-radius: 10px; background: var(--rd-card); border: 1px solid var(--rd-line); }
+    .rd-badge-card .ic { flex: none; font-size: 1.2rem; }
+    .rd-badge-card strong { display: block; font-size: .82rem; line-height: 1.3; color: var(--rd-ink); }
+    .rd-badge-card span:not(.ic) { display: block; font-size: .74rem; line-height: 1.35; color: var(--rd-mute); }
+
+    /* ---------- tool card ---------- */
+    .rd-tool-card {
+      position: relative; padding: 1.1rem; border-radius: 14px; background: var(--rd-card);
+      border: 1px solid var(--rd-line); border-top: 4px solid var(--rd-bar); box-shadow: var(--rd-shadow);
+    }
+    .rd-flow { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .35rem; margin: 0 0 .9rem; padding: 0; list-style: none; }
+    /* Before upload the strip only says "step 1"; hiding it keeps the tool
+       short enough for the ad under it to reach the first screen. */
+    .rd-tool-card:not([data-editing]) .rd-flow { display: none; }
+    .rd-flow li {
+      display: flex; flex-direction: column; align-items: center; gap: .2rem; min-width: 0; padding: .4rem .25rem; border-radius: 8px;
+      background: var(--rd-well); border: 1px solid var(--rd-line); color: var(--rd-mute); text-align: center;
+      font-size: .7rem; font-weight: 850; line-height: 1.2; transition: background-color .2s, border-color .2s, color .2s;
+    }
+    .rd-flow li span { display: inline-grid; place-items: center; flex: none; width: 1.3rem; height: 1.3rem; border-radius: 50%; background: var(--rd-line); color: var(--rd-ink-2); font-size: .66rem; }
+    .rd-flow li.is-active { background: var(--rd-bar-soft); border-color: var(--rd-ink); color: var(--rd-ink); }
+    .rd-flow li.is-active span { background: var(--rd-bar); color: var(--rd-bar-ink); }
+    .rd-flow li.is-done { color: var(--rd-good); }
+    .rd-flow li.is-done span { background: var(--rd-good); color: var(--rd-card); }
+
+    .rd-drop {
+      display: grid; justify-items: center; gap: .3rem; padding: 1.4rem 1rem 1.25rem; text-align: center; cursor: pointer;
+      border: 2px dashed var(--rd-line-2); border-radius: 12px; background: var(--rd-well); transition: border-color .15s, background-color .15s;
+    }
+    .rd-drop:hover, .rd-drop.is-drag { border-color: var(--rd-ink); background: var(--rd-bar-soft); }
+    .rd-drop-art { width: 120px; height: 92px; margin-bottom: .1rem; overflow: visible; }
+    .rd-drop-art .sheet { fill: #fffdf8; stroke: #3b352e; stroke-width: 1.6; stroke-linejoin: round; }
+    .rd-drop-art .ln { stroke: rgba(33, 29, 24, .2); stroke-width: 3; stroke-linecap: round; }
+    .rd-drop-art .bar { fill: #111; transform-box: fill-box; transform-origin: left center; animation: rd-bar 5s ease-in-out infinite; }
+    .rd-drop-art .pen { animation: rd-pen 5s ease-in-out infinite; }
+    .rd-drop-art .pen-body { fill: #2b2622; stroke: var(--rd-line-2); stroke-width: 1; }
+    .rd-drop-art .pen-cap { fill: var(--rd-stamp); }
+    .rd-drop-art .pen-tip { fill: #111; }
+    @keyframes rd-bar { 0%, 14% { transform: scaleX(0); } 46%, 80% { transform: scaleX(1); } 92%, 100% { transform: scaleX(0); } }
+    @keyframes rd-pen { 0%, 14% { transform: translateX(0); opacity: 1; } 46%, 74% { transform: translateX(32px); opacity: 1; } 84% { transform: translateX(32px); opacity: 0; } 92% { transform: translateX(0); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
+    .rd-drop-title { margin: .15rem 0 0; font-size: 1.12rem; font-weight: 900; line-height: 1.3; color: var(--rd-ink); }
+    .rd-drop-sub { margin: 0; max-width: 34rem; font-size: .88rem; line-height: 1.5; color: var(--rd-mute); }
+    .rd-drop .rd-btn { margin-top: .6rem; min-width: 12rem; }
+    .rd-drop-meta { margin: .45rem 0 0; max-width: 34rem; font-size: .76rem; line-height: 1.5; color: var(--rd-mute); }
+    /* Where it has the width, the drop zone is one row, art beside the text,
+       which roughly halves its height. 700-899px puts it in a narrow column
+       beside the ad, so it stays stacked there. */
+    @media (min-width: 560px) and (max-width: 699px), (min-width: 900px) {
+      .rd-drop { grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: 1.2rem; row-gap: .25rem; justify-items: start; padding: 1.15rem 1.25rem; text-align: left; }
+      .rd-drop-art { grid-row: 1 / span 4; width: 104px; height: 80px; margin: 0; }
+      .rd-drop .rd-btn { margin-top: .4rem; }
+      .rd-drop-meta { margin-top: .25rem; }
+    }
+
+    .rd-msg { margin-top: .75rem; padding: .6rem .8rem; border-radius: 10px; font-size: .88rem; font-weight: 700; line-height: 1.45; background: var(--rd-well); color: var(--rd-ink-2); border: 1px solid var(--rd-line); }
+    .rd-msg.success { background: var(--rd-good-soft); color: var(--rd-good); border-color: rgba(21, 128, 61, .25); }
+    .rd-msg.error { background: var(--rd-bad-soft); color: var(--rd-bad); border-color: rgba(185, 28, 28, .25); }
+    [data-editor-root] > .rd-filebar { margin-top: .1rem; }
+
+    .rd-honest {
+      display: flex; align-items: flex-start; gap: .6rem; margin: .85rem 0 0; padding: .75rem .85rem; border-radius: 10px;
+      background: var(--rd-well); border: 1px solid var(--rd-line); border-left: 4px solid var(--rd-bar);
+      color: var(--rd-ink-2); font-size: .82rem; line-height: 1.6;
+    }
+    .rd-honest svg { flex: none; width: 20px; height: 20px; margin-top: .1rem; color: var(--rd-ink); }
+    .rd-honest strong { color: var(--rd-ink); }
+
+    /* ---------- editor ---------- */
+    .rd-filebar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem .9rem; margin: 0 0 .8rem; padding: .7rem .75rem; border-radius: 12px; background: var(--rd-well); border: 1px solid var(--rd-line); }
+    .rd-file { display: flex; align-items: center; gap: .6rem; min-width: 0; flex: 1 1 14rem; }
+    .rd-file-ic { display: grid; place-items: center; flex: none; width: 38px; height: 38px; border-radius: 9px; background: var(--rd-bar); color: var(--rd-bar-ink); }
+    .rd-file-ic svg { width: 20px; height: 20px; }
+    .rd-file [data-file-summary] { min-width: 0; font-size: .82rem; font-weight: 700; line-height: 1.45; color: var(--rd-mute); overflow-wrap: anywhere; }
+    .rd-file [data-file-summary] strong { display: block; font-size: .92rem; font-weight: 900; color: var(--rd-ink); }
+    .rd-file-actions { display: flex; flex-wrap: wrap; gap: .4rem; }
+
+    .rd-queue { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 .8rem; }
+    .rd-queue-chip {
+      max-width: 100%; min-height: 2.2rem; padding: .35rem .75rem; border-radius: 999px; border: 1px solid var(--rd-line-2); background: var(--rd-card);
+      color: var(--rd-ink); font: inherit; font-size: .8rem; font-weight: 800; cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .rd-queue-chip.is-active { background: var(--rd-bar); border-color: var(--rd-bar); color: var(--rd-bar-ink); }
+    .rd-queue-chip .cnt { opacity: .7; font-weight: 700; }
+
+    .rd-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: .9rem; align-items: start; min-width: 0; }
+    .rd-sidebar { display: flex; flex-direction: column; gap: .75rem; min-width: 0; }
+    .rd-stage-col { display: flex; flex-direction: column; gap: .7rem; min-width: 0; order: -1; }
+    @media (min-width: 900px) {
+      .rd-layout { grid-template-columns: minmax(250px, 300px) minmax(0, 1fr); gap: 1rem; }
+      .rd-stage-col { order: 0; }
+    }
+    /* the page preview stays in view while the side panels scroll past it */
+    @media (min-width: 900px) and (min-height: 700px) {
+      .rd-stage-col { position: sticky; top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+    }
+
+    .rd-panel { padding: .85rem; border-radius: 12px; background: var(--rd-well); border: 1px solid var(--rd-line); min-width: 0; }
+    .rd-panel-title {
+      display: flex; align-items: center; gap: .4rem; margin: 0 0 .65rem; padding-bottom: .45rem; border-bottom: 1px dashed var(--rd-line-2);
+      font-size: .7rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--rd-ink);
+    }
+    .rd-panel-title::before { content: ""; flex: none; width: 14px; height: 6px; border-radius: 1px; background: var(--rd-bar); }
+    .rd-panel-title + .rd-panel-title, .rd-panel .rd-panel-title--gap { margin-top: .9rem; }
+    .rd-preset-hint { margin: -.25rem 0 .65rem; font-size: .76rem; line-height: 1.5; color: var(--rd-mute); }
+    .rd-tab-panel { display: none; }
+    .rd-tab-panel.is-active { display: block; }
+
+    .rd-mode-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .4rem; }
+    .rd-mode-btn {
+      display: flex; align-items: center; gap: .45rem; min-height: 2.8rem; padding: .5rem .6rem; border-radius: 10px;
+      border: 1px solid var(--rd-line-2); background: var(--rd-card); color: var(--rd-ink); font: inherit; font-size: .8rem; font-weight: 800; text-align: left; cursor: pointer;
+      transition: border-color .15s, background-color .15s, color .15s;
+    }
+    .rd-mode-btn svg { flex: none; width: 18px; height: 18px; }
+    .rd-mode-btn:hover { border-color: var(--rd-ink); }
+    .rd-mode-btn.is-active { background: var(--rd-bar); border-color: var(--rd-bar); color: var(--rd-bar-ink); }
+
+    .rd-preset-row { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .7rem; }
+    .rd-preset-chip {
+      min-height: 2.1rem; padding: .3rem .7rem; border-radius: 999px; border: 1px solid var(--rd-line-2); background: var(--rd-card);
+      color: var(--rd-ink); font: inherit; font-size: .76rem; font-weight: 800; cursor: pointer;
+    }
+    .rd-preset-chip:hover { border-color: var(--rd-ink); }
+    .rd-preset-chip[aria-pressed="true"] { background: var(--rd-bar); border-color: var(--rd-bar); color: var(--rd-bar-ink); }
+    .rd-preset-chip[aria-pressed="true"]::before { content: "✓ "; }
+
+    .rd-field { display: grid; gap: .3rem; margin-bottom: .7rem; }
+    .rd-field label { font-size: .8rem; font-weight: 800; color: var(--rd-ink); }
+    .rd-panel input[type="text"], .rd-panel input[type="number"], .rd-panel select {
+      width: 100%; min-height: 2.4rem; padding: .45rem .6rem; border-radius: 8px; border: 1px solid var(--rd-line-2);
+      background: var(--rd-card); color: var(--rd-ink); font: inherit; font-size: .88rem; box-sizing: border-box;
+    }
+    .rd-toggle-row { display: flex; align-items: flex-start; gap: .5rem; margin-bottom: .55rem; font-size: .83rem; font-weight: 600; line-height: 1.4; color: var(--rd-ink-2); cursor: pointer; }
+    .rd-toggle-row input { flex: none; width: 17px; height: 17px; margin: .05rem 0 0; accent-color: var(--rd-bar); cursor: pointer; }
+    .rd-panel .rd-btn + .rd-btn { margin-top: .5rem; }
+    .rd-status { min-height: 1.2em; margin: .5rem 0 0; font-size: .8rem; font-weight: 700; color: var(--rd-mute); }
+
+    .rd-match-list { max-height: 260px; margin: .6rem 0; overflow-y: auto; border-radius: 10px; border: 1px solid var(--rd-line); background: var(--rd-card); }
+    .rd-match-item { display: flex; align-items: flex-start; gap: .5rem; padding: .5rem .6rem; border-bottom: 1px solid var(--rd-line); font-size: .8rem; cursor: pointer; }
+    .rd-match-item:last-child { border-bottom: 0; }
+    .rd-match-item input { flex: none; margin-top: .15rem; accent-color: var(--rd-bar); }
+    .rd-match-text { font-weight: 800; color: var(--rd-ink); word-break: break-word; }
+    .rd-match-meta { margin-top: .15rem; font-size: .72rem; color: var(--rd-mute); }
+    .rd-match-empty { margin: 0; padding: 1rem; text-align: center; font-size: .82rem; color: var(--rd-mute); }
+
+    .rd-manual-form { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .35rem; margin-bottom: .6rem; }
+    .rd-manual-form label { display: block; margin-bottom: .2rem; font-size: .66rem; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; color: var(--rd-mute); }
+    .rd-panel .rd-manual-form input { padding: .35rem .4rem; font-size: .82rem; }
+
+    .rd-color-row { display: flex; align-items: center; gap: .5rem; }
+    .rd-color-swatch { width: 2.3rem; height: 2.3rem; padding: 0; border-radius: 8px; border: 2px solid var(--rd-line-2); cursor: pointer; }
+    .rd-color-swatch.blk { background: #000; }
+    .rd-color-swatch.wht { background: #fff; }
+    .rd-color-swatch[aria-pressed="true"] { border-color: var(--rd-ink); box-shadow: 0 0 0 2px var(--rd-card), 0 0 0 4px var(--rd-ink); }
+    .rd-color-custom { width: 2.3rem; height: 2.3rem; padding: 2px; border-radius: 8px; border: 1px solid var(--rd-line-2); background: var(--rd-card); cursor: pointer; }
+    .rd-color-note { margin: 0 0 0 .2rem; font-size: .74rem; color: var(--rd-mute); }
+
+    .rd-marks-panel { max-height: 220px; overflow-y: auto; }
+    .rd-mark-row { display: flex; align-items: center; gap: .5rem; padding: .4rem .1rem; border-bottom: 1px solid var(--rd-line); font-size: .79rem; }
+    .rd-mark-row:last-child { border-bottom: 0; }
+    .rd-mark-dot { flex: none; width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--rd-line-2); }
+    .rd-mark-label { flex: 1; min-width: 0; color: var(--rd-ink-2); overflow-wrap: anywhere; }
+    .rd-mark-del { flex: none; display: grid; place-items: center; width: 1.8rem; height: 1.8rem; padding: 0; border-radius: 6px; border: 1px solid transparent; background: transparent; color: var(--rd-bad); font-weight: 900; cursor: pointer; }
+    .rd-mark-del:hover { border-color: var(--rd-bad); background: var(--rd-bad-soft); }
+    .rd-marks-empty { margin: 0; padding: .7rem 0; text-align: center; font-size: .8rem; color: var(--rd-mute); }
+    .rd-undo-row { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; margin-top: .55rem; }
+
+    /* ---------- thumbnails (built by the script) ---------- */
+    .rd-thumbs {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: .5rem; max-height: 330px; padding: .45rem;
+      overflow-y: auto; border-radius: 10px; background: var(--rd-card); border: 1px solid var(--rd-line);
+    }
+    .rd-thumb { position: relative; display: flex; flex-direction: column; min-width: 0; overflow: hidden; border: 2px solid var(--rd-line); border-radius: 8px; background: var(--rd-thumb-bg); cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+    .rd-thumb:hover { border-color: var(--rd-line-2); }
+    .rd-thumb.is-active { border-color: var(--rd-ink); box-shadow: 0 0 0 2px var(--rd-bar-soft); }
+    .rd-thumb.is-removed [data-thumb-preview] { opacity: .3; filter: grayscale(1); }
+    .rd-thumb [data-thumb-preview] { display: grid; place-items: center; aspect-ratio: 3 / 4; padding: 4px; color: var(--rd-mute); font-weight: 800; }
+    .rd-thumb canvas { display: block; width: 100%; height: 100%; object-fit: contain; }
+    .rd-thumb .num { position: absolute; top: 4px; left: 4px; padding: 0 5px; border-radius: 5px; background: var(--rd-ink); color: var(--rd-card); font-size: .66rem; font-weight: 900; line-height: 1.5; }
+    .rd-thumb .flag { position: absolute; top: 4px; right: 4px; display: none; padding: 0 4px; border-radius: 5px; background: #111; color: #fff; font-size: .62rem; line-height: 1.5; }
+    .rd-thumb.has-marks .flag { display: inline-block; }
+    .rd-thumb-actions { display: flex; gap: 2px; padding: 2px; background: var(--rd-card); border-top: 1px solid var(--rd-line); }
+    .rd-thumb-actions button { flex: 1; min-height: 1.9rem; padding: .2rem 0; border: 0; border-radius: 5px; background: transparent; color: var(--rd-ink-2); font: inherit; font-size: .68rem; font-weight: 800; cursor: pointer; }
+    .rd-thumb-actions button:hover { background: var(--rd-bar-soft); color: var(--rd-ink); }
+    .rd-thumb-actions button[aria-pressed="true"] { background: var(--rd-bad-soft); color: var(--rd-bad); }
+
+    /* ---------- stage ---------- */
+    .rd-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem; }
+    .rd-toolbar-group { display: inline-flex; align-items: center; gap: .35rem; }
+    .rd-toolbar output, .rd-page-jump { min-width: 4.2rem; text-align: center; font-size: .82rem; font-weight: 900; color: var(--rd-ink); font-variant-numeric: tabular-nums; }
+    .rd-hint-bar { display: flex; align-items: flex-start; gap: .45rem; margin: 0; font-size: .8rem; line-height: 1.45; color: var(--rd-mute); }
+    .rd-hint-bar svg { flex: none; width: 16px; height: 16px; margin-top: .1rem; color: var(--rd-ink); }
+
+    /* No padding here: the script sizes the page to this box's clientWidth. */
+    .rd-canvas-wrap {
+      position: relative; width: 100%; max-width: 100%; max-height: min(56vh, 480px); overflow: auto; text-align: center;
+      border-radius: 10px; border: 1px solid var(--rd-line-2); -webkit-overflow-scrolling: touch;
+      background: repeating-conic-gradient(var(--rd-thumb-bg) 0% 25%, var(--rd-well) 0% 50%) 50% / 18px 18px;
+    }
+    @media (min-width: 900px) { .rd-canvas-wrap { max-height: max(320px, calc(100vh - 19rem)); } }
+    .rd-canvas-stack { position: relative; display: inline-block; max-width: 100%; margin: 0 auto; line-height: 0; box-shadow: 0 2px 10px rgba(0, 0, 0, .18); }
+    .rd-canvas-stack canvas { display: block; vertical-align: top; }
+    .rd-canvas-wrap.is-zoomed .rd-canvas-stack, .rd-canvas-wrap.is-zoomed .rd-canvas-stack canvas { max-width: none !important; }
+    .rd-canvas-stack canvas[data-page-canvas] { background: #fff; }
+    .rd-canvas-stack canvas[data-overlay-canvas] { position: absolute; top: 0; left: 0; touch-action: none; cursor: crosshair; }
+    .rd-canvas-stack.mode-view canvas[data-overlay-canvas] { cursor: pointer; }
+    .rd-loading-note { padding: 2.5rem 1rem; font-size: .9rem; font-weight: 700; line-height: 1.4; color: var(--rd-mute); }
+
+    .rd-progress-wrap { display: none; }
+    .rd-progress-wrap.is-active { display: block; }
+    .rd-progress-track { height: 10px; overflow: hidden; border-radius: 99px; background: var(--rd-well); border: 1px solid var(--rd-line); }
+    .rd-progress-fill { width: 0; height: 100%; border-radius: 99px; background: var(--rd-bar); transition: width .15s ease; }
+    .rd-progress-text { margin: .35rem 0 0; font-size: .8rem; font-weight: 700; color: var(--rd-mute); }
+
+    .rd-summary { display: flex; align-items: flex-start; gap: .55rem; margin: 0; padding: .6rem .75rem; border-radius: 10px; background: var(--rd-bar-soft); border: 1px dashed var(--rd-line-2); color: var(--rd-ink); font-size: .86rem; font-weight: 700; line-height: 1.45; }
+    .rd-summary svg { flex: none; width: 18px; height: 18px; margin-top: .05rem; }
+    .rd-actions { display: flex; }
+    .rd-actions .rd-btn { flex: 1 1 auto; }
+
+    .rd-result { padding: 1.05rem; border-radius: 12px; background: var(--rd-well); border: 1px solid var(--rd-line); border-left: 4px solid var(--rd-good); }
+    .rd-result-head { display: flex; align-items: center; gap: .75rem; margin-bottom: .85rem; }
+    .rd-result-icon { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border-radius: 10px; background: var(--rd-good-soft); color: var(--rd-good); }
+    .rd-result-icon svg { width: 24px; height: 24px; }
+    .rd-result-title { margin: 0; font-size: 1.1rem; font-weight: 900; color: var(--rd-ink); }
+    .rd-result-file { margin: .1rem 0 0; font-size: .86rem; color: var(--rd-mute); overflow-wrap: anywhere; }
+    .rd-result-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .45rem; margin: 0 0 .85rem; }
+    .rd-result-stat { padding: .5rem .55rem; border-radius: 9px; background: var(--rd-card); border: 1px solid var(--rd-line); }
+    .rd-result-stat .val { display: block; font-size: 1.05rem; font-weight: 900; color: var(--rd-ink); font-variant-numeric: tabular-nums; }
+    .rd-result-stat .lbl { display: block; font-size: .68rem; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; color: var(--rd-mute); }
+    .rd-result-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .rd-result-actions .rd-btn { flex: 1 1 11rem; }
+    .rd-result-note { margin: .75rem 0 0; font-size: .8rem; line-height: 1.5; color: var(--rd-mute); }
+
+    /* ---------- ad slot straight after the tool ----------
+       inline-ads.js shows .ta-lb-ad (728x90) from 900px and .ta-inline-ad
+       (300x250) below 1000px; hiding the 300x250 from 900px leaves exactly one
+       ad at every width, and a display:none slot never loads its iframe. */
+    /* Before a PDF is open, from 900px the slot is in the right column under
+       the tool (~500-640px wide), where only the 300x250 fits: it is forced on
+       there (data-unit="inline" gives it its size) and the 728x90 is off. Once
+       editing, the slot spans the full width and it swaps to the 728x90. A
+       display:none slot never loads its iframe. */
+    body.rd-page .rd-ad-zone { text-align: center; }
+    body.rd-page .rd-ad-zone > div { margin: 0 auto !important; }
+    @media (min-width: 900px) {
+      body.rd-page .rd-top:not(.is-editing) .rd-ad-zone .ta-lb-ad { display: none !important; }
+      body.rd-page .rd-top:not(.is-editing) .rd-ad-zone .ta-inline-ad { display: block !important; }
+      body.rd-page .rd-top.is-editing .rd-ad-zone .ta-inline-ad { display: none !important; }
+    }
+    @media (max-width: 340px) { .rd-ad-zone { margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); } }
+    /* In the one-column layout the specimen alone would push the ad past the
+       fold, so it only appears beside the tool. */
+    @media (max-width: 899px) { .rd-specimen { display: none; } .rd-title { margin-bottom: .9rem; } }
+    /* Phones: only the headline stays in the cover (the chips repeat the
+       badges further down), so the ad after the tool reaches the first screen. */
+    @media (max-width: 699px) {
+      .rd-cover .rd-badge, .rd-cover .rd-trust-inline { display: none; }
+      .rd-cover { padding: 1.2rem 1.1rem 1.1rem; }
+      /* The folder tab carries a label and the stamp sits on the folder's top
+         edge — both absolute, so neither adds height. */
+      .rd-cover::after {
+        content: "Confidential"; position: absolute; left: .85rem; top: -11px;
+        font: 800 .56rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .2em; text-transform: uppercase; color: var(--rd-mute);
+      }
+      .rd-cover .rd-stamp { top: -9px; right: .9rem; padding: .12rem .45rem; font-size: .6rem; background: var(--rd-folder); transform: rotate(5deg); }
+
+      /* The headline as a case-file heading: the keyword big, the promise
+         below it, and "Sensitive Data" blacked out by a marker as the page
+         loads. The text itself is unchanged — only spans around it. */
+      .rd-title { margin-bottom: 0; letter-spacing: -.02em; }
+      .rd-title .rd-t1 { display: block; font-size: clamp(1.6rem, 8.2vw, 2.2rem); line-height: 1.05; }
+      .rd-title .rd-dash { display: none; }
+      .rd-title .rd-t2 { display: block; margin-top: .4rem; font-size: clamp(1.12rem, 5.3vw, 1.4rem); font-weight: 800; line-height: 1.32; color: var(--rd-ink-2); }
+      .rd-title .rd-hl {
+        position: relative; z-index: 0; display: inline-block; padding: 0 .32em; white-space: nowrap;
+        color: var(--rd-bar-ink); animation: rd-hl-ink .3s ease .75s both;
+      }
+      .rd-title .rd-hl::before {
+        content: ""; position: absolute; z-index: -1; inset: .08em 0 .04em; border-radius: 2px; background: var(--rd-bar);
+        transform: skewX(-7deg); transform-origin: left center; animation: rd-mark .55s cubic-bezier(.3, .7, .2, 1) .5s both;
+      }
+    }
+    @keyframes rd-hl-ink { from { color: var(--rd-ink); } to { color: var(--rd-bar-ink); } }
+
+    /* ---------- sections below the tool ---------- */
+    .rd-sec { padding: 2.5rem 0 0; }
+    .rd-h2 { margin: 0 0 .45rem; text-align: center; font-size: clamp(1.4rem, 2.8vw, 1.9rem); line-height: 1.2; color: var(--rd-ink); }
+    /* a marker stroke under each section title */
+    .rd-h2::after { content: ""; display: block; width: 3.4rem; height: 8px; margin: .55rem auto 0; border-radius: 2px; background: var(--rd-bar); transform: skewX(-12deg); }
+    .rd-sub { max-width: 62ch; margin: 0 auto 1.4rem; text-align: center; color: var(--rd-mute); }
+
+    .rd-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; margin: 0; padding: 0; list-style: none; }
+    .rd-step { padding: 1.1rem 1rem 1rem; border-radius: 12px; background: var(--rd-card); border: 1px solid var(--rd-line); }
+    .rd-step .n { display: grid; place-items: center; width: 2.1rem; height: 2.1rem; margin-bottom: .6rem; border-radius: 6px; background: var(--rd-bar); color: var(--rd-bar-ink); font-weight: 900; }
+    .rd-step h3 { margin: 0 0 .3rem; font-size: 1rem; color: var(--rd-ink); }
+    .rd-step p { margin: 0; font-size: .88rem; line-height: 1.55; color: var(--rd-mute); }
+
+    .rd-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .65rem; }
+    .rd-tile { padding: .95rem .9rem; border-radius: 12px; background: var(--rd-card); border: 1px solid var(--rd-line); }
+    .rd-tile > span { display: block; margin-bottom: .35rem; font-size: 1.35rem; }
+    .rd-tile strong { display: block; margin-bottom: .2rem; font-size: .9rem; color: var(--rd-ink); }
+    .rd-tile p { margin: 0; font-size: .82rem; line-height: 1.5; color: var(--rd-mute); }
+    .rd-usecases { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
+    .rd-usecase { padding: 1.05rem 1rem; border-radius: 12px; background: var(--rd-card); border: 1px solid var(--rd-line); border-top: 3px solid var(--rd-bar); }
+    .rd-usecase strong { display: block; margin-bottom: .35rem; font-size: .98rem; color: var(--rd-ink); }
+    .rd-usecase p { margin: 0; font-size: .87rem; line-height: 1.55; color: var(--rd-mute); }
+
+    .rd-table-wrap { overflow: hidden; border-radius: 12px; border: 1px solid var(--rd-line); background: var(--rd-card); }
+    .rd-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .rd-table th, .rd-table td { padding: .6rem .75rem; border-bottom: 1px solid var(--rd-line); text-align: left; vertical-align: top; color: var(--rd-ink-2); }
+    .rd-table tbody tr:last-child td { border-bottom: 0; }
+    .rd-table th { background: var(--rd-well); color: var(--rd-ink); font-size: .74rem; font-weight: 900; letter-spacing: .05em; text-transform: uppercase; }
+    .rd-table td:first-child { color: var(--rd-ink); font-weight: 700; }
+    .rd-table .rd-pick { font-weight: 900; color: var(--rd-ink); white-space: nowrap; }
+    .rd-table td.yes { color: var(--rd-good); font-weight: 800; }
+    .rd-table td.no { color: var(--rd-bad); font-weight: 700; }
+    .rd-table thead th:nth-child(2) { background: var(--rd-bar); color: var(--rd-bar-ink); }
+    .rd-compare-table td:nth-child(2) { background: var(--rd-bar-soft); }
+
+    .rd-prose { margin-top: 2.5rem; padding: clamp(1.1rem, 3vw, 2rem); border-radius: 14px; background: var(--rd-card); border: 1px solid var(--rd-line); box-shadow: var(--rd-shadow); }
+    .rd-prose h2 { margin: 2.1rem 0 .7rem; padding-left: .8rem; border-left: 5px solid var(--rd-bar); font-size: clamp(1.18rem, 2.4vw, 1.45rem); line-height: 1.3; color: var(--rd-ink); scroll-margin-top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+    .rd-prose h2:first-child { margin-top: 0; }
+    .rd-prose h3 { margin: 1.3rem 0 .45rem; font-size: 1.05rem; color: var(--rd-ink); }
+    .rd-prose p, .rd-prose li { font-size: .95rem; line-height: 1.75; color: var(--rd-ink-2); }
+    .rd-prose ul, .rd-prose ol { padding-left: 1.3rem; }
+    .rd-prose strong { color: var(--rd-ink); }
+    .rd-prose p a, .rd-prose li a { color: var(--rd-link); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+    .rd-prose p a:hover, .rd-prose li a:hover { text-decoration-thickness: 2px; }
+
+    .rd-faq { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; align-items: start; }
+    .rd-page .rd-faq .faq-item { margin: 0; padding: 0; border-radius: 10px; background: var(--rd-well); border: 1px solid var(--rd-line); box-shadow: none; transform: none; }
+    .rd-page .rd-faq .faq-item:hover { border-color: var(--rd-line-2); box-shadow: none; transform: none; }
+    .rd-page .rd-faq summary { position: relative; padding: .8rem 2.2rem .8rem .95rem; list-style: none; cursor: pointer; font-size: .92rem; font-weight: 800; line-height: 1.4; color: var(--rd-ink); }
+    .rd-page .rd-faq summary::-webkit-details-marker { display: none; }
+    .rd-page .rd-faq summary::after { content: "+"; position: absolute; right: .95rem; top: .75rem; font-weight: 900; color: var(--rd-ink); }
+    .rd-page .rd-faq .faq-item[open] summary::after { content: "\2212"; }
+    .rd-page .rd-faq .faq-item p { margin: 0; padding: 0 .95rem .9rem; font-size: .9rem; line-height: 1.65; }
+
+    /* Related tools (rewritten by app.js) in this page's palette. The shared
+       single column is `1fr`, whose minimum is the card's min-content; on a
+       320px phone that is wider than the section and scrolls the page sideways. */
+    .rd-page .related-tools-section { margin-top: 2.5rem; background: var(--rd-card); border-color: var(--rd-line); border-radius: 14px; box-shadow: var(--rd-shadow); }
+    .rd-page .related-tools-eyebrow { color: var(--rd-mute); }
+    .rd-page .related-tools-title { color: var(--rd-ink); }
+    .rd-page .related-tools-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: .6rem; }
+    .rd-page .related-tool-card { min-width: 0; background: var(--rd-well); border-color: var(--rd-line); box-shadow: none; color: var(--rd-ink); }
+    .rd-page .related-tool-card:hover, .rd-page .related-tool-card:focus-visible { border-color: var(--rd-ink); }
+    .rd-page .related-tool-body { min-width: 0; }
+
+    .rd-final {
+      position: relative; overflow: hidden; margin: 2.5rem 0 0; padding: 2rem 1.25rem; border-radius: 14px; text-align: center;
+      background: var(--rd-folder); border: 1px solid var(--rd-folder-line);
+    }
+    .rd-final h2 { margin: 0 0 .45rem; font-size: clamp(1.35rem, 2.8vw, 1.8rem); color: var(--rd-ink); }
+    .rd-final p { max-width: 56ch; margin: 0 auto 1.1rem; color: var(--rd-ink-2); }
+    .rd-final .rd-stamp { top: 1rem; right: 1.1rem; }
+
+    /* ---------- phone sticky bar ---------- */
+    .rd-sticky-cta {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; padding: .55rem .75rem calc(.55rem + env(safe-area-inset-bottom));
+      background: var(--rd-card); border-top: 1px solid var(--rd-line-2); box-shadow: 0 -14px 30px -20px rgba(0, 0, 0, .45);
+      transform: translateY(110%); visibility: hidden; transition: transform .2s ease, visibility 0s linear .2s;
+    }
+    .rd-sticky-cta.is-visible { transform: none; visibility: visible; transition: transform .2s ease; }
+    .rd-sticky-cta .rd-btn { width: 100%; min-height: 3rem; font-size: 1rem; }
+    body.rd-page.rd-sticky-on { padding-bottom: calc(4.6rem + env(safe-area-inset-bottom)); }
+    @media (min-width: 769px) { .rd-sticky-cta { display: none !important; } }
+
+    /* ---------- smaller screens ---------- */
+    @media (max-width: 900px) {
+      .rd-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .rd-steps, .rd-usecases { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 760px) { .rd-faq { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) {
+      .rd-table, .rd-table tbody, .rd-table tr, .rd-table td { display: block; width: 100%; }
+      .rd-table-wrap { overflow: visible; border: 0; background: none; }
+      .rd-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+      .rd-table tr { margin-bottom: .55rem; padding: .6rem .8rem; border: 1px solid var(--rd-line); border-radius: 12px; background: var(--rd-card); }
+      .rd-table td { padding: .14rem 0; border: 0; background: none !important; }
+      .rd-table td:first-child { margin-bottom: .2rem; font-weight: 800; }
+      .rd-table td[data-label]::before { content: attr(data-label) ": "; color: var(--rd-ink); font-weight: 700; }
+      .rd-table .rd-pick { white-space: normal; }
+      .rd-badges { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .rd-manual-form { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .rd-result-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 559px) {
+      /* 10px gutters: a 320px phone then has the 300px its ads need */
+      body.rd-page .rd-main, body.rd-page .ta-support { width: calc(100% - 20px); }
+      .rd-page .breadcrumb { display: none; }
+      .rd-stamp { font-size: .62rem; right: .7rem; }
+      .rd-tool-card { padding: .85rem; }
+      .rd-flow { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      /* No drag and drop on a phone: the button is the whole drop zone. */
+      .rd-drop { padding: 1rem .8rem; }
+      .rd-drop-art, .rd-drop-meta { display: none; }
+      .rd-drop .rd-btn { width: 100%; margin-top: .45rem; }
+      .rd-filebar { padding: .6rem; }
+      .rd-file-actions { width: 100%; }
+      .rd-file-actions .rd-btn { flex: 1 1 0; }
+      .rd-panel { padding: .75rem; }
+      .rd-thumbs { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); max-height: 220px; }
+      .rd-grid, .rd-steps, .rd-usecases { grid-template-columns: 1fr; }
+      .rd-lead { font-size: .92rem; }
+      .rd-page .related-tools-section { padding: 1rem .85rem; }
+    }
+    @media (max-width: 380px) { .rd-badges { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) {
+      body.rd-page *, body.rd-page *::before, body.rd-page *::after { animation: none !important; transition: none !important; }
+    }
+    @media print { .rd-sticky-cta, .rd-ad-zone { display: none !important; } }
+  </style>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Redact PDF Online Free — Permanently Remove Sensitive Data" />
+  <meta property="og:description" content="Permanently black out names, emails, phone numbers, ID numbers and more from any PDF. Manual, search-based, and OCR redaction — true pixel-level removal, no upload, no signup." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tooladda.online/redact-pdf.html" />
+  <meta property="og:site_name" content="ToolAdda" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:image" content="https://tooladda.online/assets/images/og/redact-pdf.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Redact PDF Online Free — Remove Sensitive Data — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="Redact PDF Online Free — Remove Sensitive Data — free online tool on ToolAdda, runs in your browser with no sign-up." />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@tooladda" />
+  <meta name="twitter:title" content="Redact PDF Online Free — Permanently Remove Sensitive Data" />
+  <meta name="twitter:description" content="Search, click, or OCR-detect sensitive text and permanently redact it — true pixel-level removal, not a fake overlay. 100% in your browser." />
+  <meta name="twitter:image" content="https://tooladda.online/assets/images/og/redact-pdf.jpg" />
+      <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 28, 25, 22; }
+      [data-theme="dark"] { --pca: 120, 113, 104; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 120, 113, 104; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/redact-pdf.html#webpage",
+      "url": "https://tooladda.online/redact-pdf.html",
+      "inLanguage": "en",
+      "datePublished": "2026-08-03",
+      "dateModified": "2026-09-24",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="rd-page" data-defer-nav-search>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+      <nav class="nav-links" aria-label="Primary"><a href="/">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy</a></nav>
+      <div class="nav-actions">
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+            <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+            <path d="M3.1 16.9h10.8" />
+            <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+          </svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+        <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <div class="rd-shell">
+      <aside class="ta-support" aria-label="Support ToolAdda">
+        <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+        <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+      </aside>
+
+      <div class="container rd-main">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">›</span>
+          <a href="/">PDF Tools</a><span aria-hidden="true">›</span>
+          <span aria-current="page">Redact PDF</span>
+        </nav>
+
+        <!-- One grid (.rd-top) places these. Under 900px: cover, tool, ad, then
+             the lead and the badges, so a phone reaches the drop zone and the
+             ad straight after the headline. From 900px the cover sits beside
+             the tool with the ad under the tool, all in the first screen; once
+             a PDF is open the tool and the ad take the full width
+             (.is-editing). The ad always comes after the tool, never above it. -->
+        <div class="rd-top">
+          <header class="rd-cover">
+            <span class="rd-stamp" aria-hidden="true">Redacted</span>
+            <p class="rd-badge">⬛ Redact PDF</p>
+            <h1 class="rd-title"><span class="rd-t1">Redact PDF Online</span> <span class="rd-dash">—</span> <span class="rd-t2">Permanently Remove <span class="rd-hl">Sensitive Data</span></span></h1>
+            <div class="rd-specimen" aria-hidden="true">
+              <div class="rd-spec-head"><span>contract-draft.pdf</span><span>page 1 of 4</span></div>
+              <div class="rd-spec-row"><span class="k">Name</span><span class="v" data-t="Anita R. Sharma" style="--d:.5s"></span></div>
+              <div class="rd-spec-row"><span class="k">PAN</span><span class="v" data-t="ABCPS 1234 K" style="--d:.95s"></span></div>
+              <div class="rd-spec-row"><span class="k">Email</span><span class="v" data-t="anita.sharma@example.com" style="--d:1.4s"></span></div>
+              <div class="rd-spec-row"><span class="k">Phone</span><span class="v" data-t="+91 98 7654 3210" style="--d:1.85s"></span></div>
+              <div class="rd-spec-row is-kept"><span class="k">Clause</span><span class="v" data-t="7.2 Payment terms"></span></div>
+            </div>
+            <div class="rd-trust-inline">
+              <span>🔒 Never leaves your device</span>
+              <span>⚡ No signup</span>
+              <span>🚫 No watermark</span>
+              <span>♾️ Free &amp; unlimited</span>
+            </div>
+          </header>
+
+          <div class="rd-intro">
+            <div class="rd-intro-copy">
+              <p class="rd-lead">Black out names, emails, phone numbers, ID numbers, and confidential text from any PDF — with manual drawing, keyword/regex search, built-in sensitive-data presets, and OCR for scanned pages. Every redaction is burned into the page as pixels, not covered with a shape, so nothing can be recovered.</p>
+              <p class="rd-privacy">🔒 Your PDF never leaves your device — 100% client-side redaction, nothing uploaded, nothing stored.</p>
+              <p class="rd-next">Sharing the redacted copy? Lock it afterwards with <a href="pdf-password-protector.html">Protect PDF →</a></p>
+            </div>
+            <p class="rd-honest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg><span><strong>How true redaction works here:</strong> any page you mark gets flattened to a high-resolution image with your redaction boxes burned in — the original text underneath is discarded, not just covered. Pages you don't touch stay full-quality vector text. That's the difference between real redaction and a black rectangle sitting on top of copyable text — a mistake that has caused real-world leaks.</span></p>
+          </div>
+
+          <section class="rd-tool-card" id="redact-tool" data-redact-page aria-label="PDF redaction tool">
+            <ol class="rd-flow" aria-label="Redaction workflow" data-step-list>
+              <li class="is-active" data-step="1"><span>1</span>Upload</li>
+              <li data-step="2"><span>2</span>Preview</li>
+              <li data-step="3"><span>3</span>Choose mode</li>
+              <li data-step="4"><span>4</span>Mark data</li>
+              <li data-step="5"><span>5</span>Apply</li>
+              <li data-step="6"><span>6</span>Download</li>
+            </ol>
+
+            <input type="file" accept="application/pdf,.pdf" multiple hidden data-file-input aria-label="Choose PDF files to redact" />
+
+            <div data-pre-upload>
+              <!-- A group, not a role="button": it holds a real button, which a
+                   button role would flatten for screen readers. Clicking any empty
+                   part of it still opens the picker. -->
+              <div class="rd-drop" data-drop-zone role="group" aria-label="Upload PDFs: drag and drop them here or browse">
+                <svg class="rd-drop-art" viewBox="0 0 120 92" aria-hidden="true" focusable="false">
+                  <path class="sheet" d="M36 8h34l12 12v64H36z"/><path class="sheet" d="M70 8v12h12" fill="none"/>
+                  <path class="ln" d="M43 28h32M43 37h24M43 63h32M43 72h20"/>
+                  <rect class="bar" x="43" y="45" width="32" height="9" rx="1.5"/>
+                  <g class="pen"><g transform="translate(43 51) rotate(28)"><rect class="pen-body" x="-4" y="-30" width="9" height="24" rx="2"/><rect class="pen-cap" x="-4" y="-35" width="9" height="7" rx="2"/><path class="pen-tip" d="M-2.5 -6.5h6l-1.6 6h-2.8z"/></g></g>
+                </svg>
+                <p class="rd-drop-title">Drag &amp; drop PDF files here</p>
+                <p class="rd-drop-sub">Manual, search, pattern, or OCR redaction · Nothing uploaded</p>
+                <button class="rd-btn rd-btn--primary" type="button" data-file-picker><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Choose PDF(s)</button>
+                <p class="rd-drop-meta">Works with text PDFs and scanned/image PDFs (via OCR). Add multiple PDFs for batch redaction with shared search rules.</p>
+              </div>
+            </div>
+
+            <div class="rd-msg hidden" role="status" aria-live="polite" data-message></div>
+
+            <div class="hidden" data-editor-root>
+              <div class="rd-filebar">
+                <div class="rd-file">
+                  <span class="rd-file-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7" stroke-width="3"/></svg></span>
+                  <div data-file-summary></div>
+                </div>
+                <div class="rd-file-actions">
+                  <button class="rd-btn rd-btn--ghost rd-btn--sm" type="button" data-add-more><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>Add PDF(s)</button>
+                  <button class="rd-btn rd-btn--ghost rd-btn--sm" type="button" data-reset-btn><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>Start over</button>
+                </div>
+              </div>
+
+              <div class="rd-queue hidden" data-queue-row role="tablist" aria-label="Loaded PDFs"></div>
+
+              <div class="rd-layout">
+                <!-- ============ SIDEBAR ============ -->
+                <div class="rd-sidebar">
+                  <div class="rd-panel">
+                    <p class="rd-panel-title">Redaction mode</p>
+                    <div class="rd-mode-grid" role="tablist" aria-label="Redaction mode">
+                      <button type="button" class="rd-mode-btn is-active" data-rd-mode="manual" role="tab" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><rect x="8" y="10" width="8" height="4" rx=".5" fill="currentColor"/></svg>Draw Box</button>
+                      <button type="button" class="rd-mode-btn" data-rd-mode="text" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/></svg>Text Search</button>
+                      <button type="button" class="rd-mode-btn" data-rd-mode="ocr" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7V5a1 1 0 0 1 1-1h2M17 4h2a1 1 0 0 1 1 1v2M20 17v2a1 1 0 0 1-1 1h-2M7 20H5a1 1 0 0 1-1-1v-2"/><path d="M8 9h8M8 12h8M8 15h5"/></svg>OCR Text</button>
+                      <button type="button" class="rd-mode-btn" data-rd-mode="page" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><rect x="8" y="11" width="8" height="6" rx=".5" fill="currentColor"/></svg>Whole Page</button>
+                    </div>
+                  </div>
+
+                  <!-- MANUAL MODE PANEL -->
+                  <div class="rd-panel rd-tab-panel is-active" data-rd-panel="manual">
+                    <p class="rd-panel-title">Draw or add a box</p>
+                    <p class="rd-preset-hint">Drag directly on the page preview, or add one precisely (page-percent coordinates) — fully keyboard accessible.</p>
+                    <form data-manual-form>
+                      <div class="rd-manual-form">
+                        <div><label for="rdMPage">Page</label><input id="rdMPage" type="number" min="1" value="1" required /></div>
+                        <div><label for="rdMX">X %</label><input id="rdMX" type="number" min="0" max="100" step="0.1" value="10" required /></div>
+                        <div><label for="rdMY">Y %</label><input id="rdMY" type="number" min="0" max="100" step="0.1" value="10" required /></div>
+                        <div><label for="rdMW">W %</label><input id="rdMW" type="number" min="0.5" max="100" step="0.1" value="30" required /></div>
+                        <div><label for="rdMH">H %</label><input id="rdMH" type="number" min="0.5" max="100" step="0.1" value="6" required /></div>
+                      </div>
+                      <button type="submit" class="rd-btn rd-btn--ghost rd-btn--sm rd-btn--block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>Add box to this page</button>
+                    </form>
+                  </div>
+
+                  <!-- TEXT SEARCH MODE PANEL -->
+                  <div class="rd-panel rd-tab-panel" data-rd-panel="text">
+                    <p class="rd-panel-title">Detect sensitive data</p>
+                    <p class="rd-preset-hint">Pattern presets are a matching aid, not AI — always review matches below before confirming.</p>
+                    <div class="rd-preset-row" data-preset-row>
+                      <button type="button" class="rd-preset-chip" data-preset="email" aria-pressed="false">Email</button>
+                      <button type="button" class="rd-preset-chip" data-preset="phone" aria-pressed="false">Phone</button>
+                      <button type="button" class="rd-preset-chip" data-preset="card" aria-pressed="false">Credit Card</button>
+                      <button type="button" class="rd-preset-chip" data-preset="aadhaar" aria-pressed="false">Aadhaar</button>
+                      <button type="button" class="rd-preset-chip" data-preset="pan" aria-pressed="false">PAN</button>
+                      <button type="button" class="rd-preset-chip" data-preset="passport" aria-pressed="false">Passport</button>
+                      <button type="button" class="rd-preset-chip" data-preset="iban" aria-pressed="false">IBAN</button>
+                      <button type="button" class="rd-preset-chip" data-preset="bank" aria-pressed="false">Bank A/C</button>
+                      <button type="button" class="rd-preset-chip" data-preset="date" aria-pressed="false">Dates</button>
+                      <button type="button" class="rd-preset-chip" data-preset="name" aria-pressed="false">Possible Names</button>
+                    </div>
+                    <div class="rd-field"><label for="rdKeywords">Custom keywords (comma-separated)</label><input type="text" id="rdKeywords" placeholder="e.g. Project Falcon, John Doe" /></div>
+                    <label class="rd-toggle-row"><input type="checkbox" data-regex-toggle /> Treat custom field as regular expression</label>
+                    <label class="rd-toggle-row"><input type="checkbox" data-scan-all-files /> Scan all loaded PDFs (batch)</label>
+                    <button type="button" class="rd-btn rd-btn--primary rd-btn--block" data-scan-btn><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/></svg>Scan document</button>
+                    <div class="rd-match-list" data-match-list><p class="rd-match-empty">Run a scan to see matches here.</p></div>
+                    <button type="button" class="rd-btn rd-btn--ghost rd-btn--block hidden" data-confirm-matches><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg>Redact checked matches</button>
+                    <label class="rd-toggle-row" style="margin-top:.7rem"><input type="checkbox" data-show-text-blocks /> Show all text blocks on this page (click any to redact)</label>
+                  </div>
+
+                  <!-- OCR MODE PANEL -->
+                  <div class="rd-panel rd-tab-panel" data-rd-panel="ocr">
+                    <p class="rd-panel-title">OCR text redaction</p>
+                    <p class="rd-preset-hint">For scanned or image-only pages. Recognition runs fully in your browser via a lazy-loaded OCR engine — slower than native text, so run it per page or in a batch.</p>
+                    <button type="button" class="rd-btn rd-btn--primary rd-btn--block" data-ocr-page-btn><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7V5a1 1 0 0 1 1-1h2M17 4h2a1 1 0 0 1 1 1v2M20 17v2a1 1 0 0 1-1 1h-2M7 20H5a1 1 0 0 1-1-1v-2"/><path d="M8 9h8M8 12h8M8 15h5"/></svg>Run OCR on this page</button>
+                    <button type="button" class="rd-btn rd-btn--ghost rd-btn--block" data-ocr-all-btn>Run OCR on all pages</button>
+                    <p class="rd-status" data-ocr-status></p>
+                    <label class="rd-toggle-row" style="margin-top:.4rem"><input type="checkbox" data-show-ocr-words /> Show recognized words (click any to redact)</label>
+                    <p class="rd-preset-hint" style="margin:0">Once OCR has run on a page, the Text Search presets above also match OCR'd words.</p>
+                  </div>
+
+                  <!-- WHOLE PAGE MODE PANEL -->
+                  <div class="rd-panel rd-tab-panel" data-rd-panel="page">
+                    <p class="rd-panel-title">Whole-page actions</p>
+                    <p class="rd-preset-hint">Use the thumbnail buttons, or act on the currently viewed page:</p>
+                    <button type="button" class="rd-btn rd-btn--primary rd-btn--block" data-blackout-current><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><rect x="8" y="11" width="8" height="6" rx=".5" fill="currentColor"/></svg>Blackout current page</button>
+                    <button type="button" class="rd-btn rd-btn--ghost rd-btn--block" data-remove-current><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>Remove current page from output</button>
+                  </div>
+
+                  <div class="rd-panel">
+                    <p class="rd-panel-title">Redaction color</p>
+                    <div class="rd-color-row">
+                      <button type="button" class="rd-color-swatch blk" data-rd-color="#000000" aria-pressed="true" aria-label="Black"></button>
+                      <button type="button" class="rd-color-swatch wht" data-rd-color="#ffffff" aria-pressed="false" aria-label="White"></button>
+                      <input type="color" class="rd-color-custom" data-rd-color-custom value="#111111" aria-label="Custom redaction color" />
+                      <p class="rd-color-note">Applies to new marks</p>
+                    </div>
+                    <p class="rd-panel-title rd-panel-title--gap">Marks on this page</p>
+                    <div class="rd-marks-panel" data-marks-panel><p class="rd-marks-empty">No redaction marks yet.</p></div>
+                    <div class="rd-undo-row">
+                      <button type="button" class="rd-btn rd-btn--ghost rd-btn--sm" data-undo-btn disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>Undo</button>
+                      <button type="button" class="rd-btn rd-btn--ghost rd-btn--sm" data-redo-btn disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></svg>Redo</button>
+                    </div>
+                  </div>
+
+                  <div class="rd-panel">
+                    <p class="rd-panel-title">Pages <span data-page-count-label></span></p>
+                    <div class="rd-thumbs" data-thumbs role="listbox" aria-label="Page thumbnails"></div>
+                  </div>
+
+                  <div class="rd-panel">
+                    <p class="rd-panel-title">Output options</p>
+                    <label class="rd-toggle-row"><input type="checkbox" data-opt-strip-meta checked /> Strip metadata (title, author, subject…)</label>
+                    <label class="rd-toggle-row"><input type="checkbox" data-opt-watermark /> Stamp "REDACTED" on affected pages</label>
+                    <label class="rd-toggle-row"><input type="checkbox" data-opt-force-raster /> Rasterize entire document (maximum safety)</label>
+                    <div class="rd-field" style="margin-bottom:0"><label for="rdQuality">Output quality</label>
+                      <select id="rdQuality" data-opt-quality>
+                        <option value="150">Standard (150 DPI)</option>
+                        <option value="300" selected>High (300 DPI)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ============ STAGE ============ -->
+                <div class="rd-stage-col">
+                  <div class="rd-toolbar" role="toolbar" aria-label="Page preview controls">
+                    <div class="rd-toolbar-group">
+                      <button type="button" class="rd-icon-btn" data-prev-page aria-label="Previous page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m15 18-6-6 6-6"/></svg></button>
+                      <span class="rd-page-jump"><span data-current-page>1</span> / <span data-total-pages>1</span></span>
+                      <button type="button" class="rd-icon-btn" data-next-page aria-label="Next page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 18 6-6-6-6"/></svg></button>
+                    </div>
+                    <div class="rd-toolbar-group">
+                      <button type="button" class="rd-icon-btn" data-zoom-out aria-label="Zoom out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/></svg></button>
+                      <output data-zoom-label>100%</output>
+                      <button type="button" class="rd-icon-btn" data-zoom-in aria-label="Zoom in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg></button>
+                    </div>
+                  </div>
+                  <p class="rd-hint-bar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg><span data-mode-hint>Drag on the page to draw a redaction box. Nothing is removed until you click Apply &amp; Download.</span></p>
+                  <div class="rd-canvas-wrap" data-canvas-wrap>
+                    <div class="rd-loading-note" data-loading-note>Loading document…</div>
+                    <div class="rd-canvas-stack hidden" data-canvas-stack>
+                      <canvas data-page-canvas></canvas>
+                      <canvas data-overlay-canvas tabindex="0" role="img" aria-label="Page preview — draw a rectangle to mark a redaction, or click a highlighted text block"></canvas>
+                    </div>
+                  </div>
+
+                  <div class="rd-progress-wrap" data-progress-wrap>
+                    <div class="rd-progress-track"><div class="rd-progress-fill" data-progress-fill></div></div>
+                    <p class="rd-progress-text" data-progress-text>Processing…</p>
+                  </div>
+
+                  <p class="rd-summary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="9" width="18" height="6" rx="1" fill="currentColor"/></svg><span data-mark-summary>0 redaction marks across 0 pages queued.</span></p>
+
+                  <div class="rd-actions">
+                    <button type="button" class="rd-btn rd-btn--primary rd-btn--lg" data-apply-btn><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Apply Redaction &amp; Download</button>
+                  </div>
+
+                  <div class="rd-result hidden" data-result-panel>
+                    <div class="rd-result-head">
+                      <span class="rd-result-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20 6 9 17l-5-5"/></svg></span>
+                      <div>
+                        <h3 class="rd-result-title">Redacted PDF ready</h3>
+                        <p class="rd-result-file" data-result-filename></p>
+                      </div>
+                    </div>
+                    <div class="rd-result-stats">
+                      <div class="rd-result-stat"><span class="val" data-stat-size></span><span class="lbl">File size</span></div>
+                      <div class="rd-result-stat"><span class="val" data-stat-pages></span><span class="lbl">Pages</span></div>
+                      <div class="rd-result-stat"><span class="val" data-stat-marks></span><span class="lbl">Redactions applied</span></div>
+                      <div class="rd-result-stat"><span class="val" data-stat-removed></span><span class="lbl">Pages removed</span></div>
+                    </div>
+                    <div class="rd-result-actions">
+                      <a class="rd-btn rd-btn--primary hidden" data-download-link href="#redact-tool" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Download PDF</a>
+                      <button type="button" class="rd-btn rd-btn--ghost" data-download-report>Download summary report</button>
+                      <button type="button" class="rd-btn rd-btn--ghost" data-redact-another>Redact another PDF</button>
+                    </div>
+                    <p class="rd-result-note">Check it before you share it: open the file and try to select or copy text from a blacked-out area — nothing should come out.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Ads (see .rd-ad-zone CSS): 300x250 under the tool, in the right
+               column from 900px; 728x90 once a PDF is open and the slot spans
+               the full width. Straight after the tool, never before or inside it. -->
+          <div class="rd-ad-zone">
+            <div class="ta-lb-ad"></div>
+            <div class="ta-inline-ad" data-unit="inline"></div>
+          </div>
+
+          <section class="rd-extras" aria-label="Why it's safe">
+            <div class="rd-badges">
+              <div class="rd-badge-card"><span class="ic">⬛</span><div><strong>True permanent removal</strong><span>Burned into pixels, not covered</span></div></div>
+              <div class="rd-badge-card"><span class="ic">🛡️</span><div><strong>No upload</strong><span>Files never touch a server</span></div></div>
+              <div class="rd-badge-card"><span class="ic">🖨️</span><div><strong>OCR for scans</strong><span>Redact image-only pages too</span></div></div>
+              <div class="rd-badge-card"><span class="ic">📦</span><div><strong>Batch redaction</strong><span>One rule set, many PDFs</span></div></div>
+              <div class="rd-badge-card"><span class="ic">🧹</span><div><strong>Metadata stripped</strong><span>Title, author, subject cleared</span></div></div>
+              <div class="rd-badge-card"><span class="ic">🆓</span><div><strong>Free, no signup</strong><span>No watermark, no limits</span></div></div>
+            </div>
+          </section>
+        </div>
+
+        <!-- ============ HOW IT WORKS ============ -->
+        <section class="rd-sec" aria-labelledby="rd-how">
+          <h2 class="rd-h2" id="rd-how">How to redact a PDF in six steps</h2>
+          <p class="rd-sub">From upload to a verified, permanently redacted file — usually in under three minutes, and nothing leaves your browser.</p>
+          <ol class="rd-steps">
+            <li class="rd-step"><span class="n">1</span><h3>Upload your PDF</h3><p>Drag and drop one or more PDFs, or browse your device. The file opens in your browser tab and is never uploaded.</p></li>
+            <li class="rd-step"><span class="n">2</span><h3>Preview the document</h3><p>Page thumbnails and a zoomable live preview show exactly what is on every page before you mark anything.</p></li>
+            <li class="rd-step"><span class="n">3</span><h3>Choose a mode</h3><p>Draw boxes, search keywords and sensitive-data presets, run OCR on scanned pages, or black out a whole page.</p></li>
+            <li class="rd-step"><span class="n">4</span><h3>Mark sensitive data</h3><p>Review every match before it becomes a mark. Undo, redo or delete any mark — nothing is removed yet.</p></li>
+            <li class="rd-step"><span class="n">5</span><h3>Apply permanent redaction</h3><p>Marked pages are flattened with the redaction colour burned into the pixels, so the text underneath is gone for good.</p></li>
+            <li class="rd-step"><span class="n">6</span><h3>Download and check</h3><p>Save the PDF and the summary report, then try copying text from a blacked-out area — nothing should come out.</p></li>
+          </ol>
+        </section>
+
+        <!-- ============ WHICH MODE ============ -->
+        <section class="rd-sec" aria-labelledby="rd-which">
+          <h2 class="rd-h2" id="rd-which">Which redaction mode should you use?</h2>
+          <p class="rd-sub">Match the mode to what is on the page. Most real documents need two of them — a search first, then a manual pass.</p>
+          <div class="rd-table-wrap">
+            <table class="rd-table">
+              <thead><tr><th scope="col">What you need to hide</th><th scope="col">Best mode</th><th scope="col">Why it works</th></tr></thead>
+              <tbody>
+                <tr><td>A name or number that repeats across many pages</td><td class="rd-pick" data-label="Best mode">Text Search</td><td data-label="Why it works">One search finds every occurrence on every page, so the one on page 37 is not missed.</td></tr>
+                <tr><td>Emails, phone, card, Aadhaar, PAN or IBAN numbers</td><td class="rd-pick" data-label="Best mode">Text Search + presets</td><td data-label="Why it works">Pattern presets catch structured data you did not know was there, and you confirm each match first.</td></tr>
+                <tr><td>A scanned letter, photo or fax</td><td class="rd-pick" data-label="Best mode">OCR Text</td><td data-label="Why it works">A scan has no text layer, so a normal search finds nothing until OCR has read the words.</td></tr>
+                <tr><td>A signature, stamp, photo or logo</td><td class="rd-pick" data-label="Best mode">Draw Box</td><td data-label="Why it works">It is not text, so only a box you draw over it can remove it.</td></tr>
+                <tr><td>An appendix, annexure or slide that must go</td><td class="rd-pick" data-label="Best mode">Whole Page</td><td data-label="Why it works">Blackout keeps the page count intact; Remove drops the page from the output entirely.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ============ SECURITY / TRUST ============ -->
+        <section class="rd-sec" aria-label="Security and compliance">
+          <h2 class="rd-h2">Privacy-First, Enterprise-Ready Security</h2>
+          <p class="rd-sub">Built for legal, healthcare, government, and financial teams who cannot risk uploading confidential documents.</p>
+          <div class="rd-grid">
+            <div class="rd-tile"><span>💻</span><strong>100% browser processing</strong><p>Every step runs in your tab.</p></div>
+            <div class="rd-tile"><span>🚫</span><strong>No server upload</strong><p>Files never leave your device.</p></div>
+            <div class="rd-tile"><span>🧹</span><strong>Auto memory cleanup</strong><p>Close the tab, data is gone.</p></div>
+            <div class="rd-tile"><span>🔐</span><strong>HTTPS encrypted</strong><p>Page delivery is fully encrypted.</p></div>
+            <div class="rd-tile"><span>🇪🇺</span><strong>GDPR friendly</strong><p>No processor relationship needed.</p></div>
+            <div class="rd-tile"><span>🏥</span><strong>HIPAA friendly</strong><p>No PHI ever transmitted.</p></div>
+            <div class="rd-tile"><span>🏢</span><strong>Enterprise ready</strong><p>No install, no IT approval needed.</p></div>
+            <div class="rd-tile"><span>⚖️</span><strong>Legal-document safe</strong><p>True rasterized permanence.</p></div>
+          </div>
+        </section>
+
+        <!-- ============ BENEFITS ============ -->
+        <section class="rd-sec" aria-label="Benefits">
+          <h2 class="rd-h2">Why Teams Choose ToolAdda to Redact PDFs</h2>
+          <div class="rd-grid" style="margin-top:1.4rem">
+            <div class="rd-tile"><span>⚡</span><strong>No install</strong><p>Runs instantly in any modern browser.</p></div>
+            <div class="rd-tile"><span>🆓</span><strong>Completely free</strong><p>No subscription, no per-file fee.</p></div>
+            <div class="rd-tile"><span>🖨️</span><strong>Built-in OCR</strong><p>Redact scanned documents too.</p></div>
+            <div class="rd-tile"><span>📦</span><strong>Batch processing</strong><p>Apply rules across many PDFs.</p></div>
+            <div class="rd-tile"><span>↩️</span><strong>Safe editing</strong><p>Undo any mark before export.</p></div>
+            <div class="rd-tile"><span>🧾</span><strong>Summary report</strong><p>Audit-friendly redaction log.</p></div>
+            <div class="rd-tile"><span>🎯</span><strong>Precision patterns</strong><p>Regex and 10 sensitive-data presets.</p></div>
+            <div class="rd-tile"><span>🌙</span><strong>Dark mode</strong><p>Comfortable for long review sessions.</p></div>
+          </div>
+        </section>
+
+        <!-- ============ USE CASES ============ -->
+        <section class="rd-sec" aria-label="Enterprise use cases">
+          <h2 class="rd-h2">Built for Every Regulated Document Workflow</h2>
+          <div class="rd-usecases" style="margin-top:1.4rem">
+            <div class="rd-usecase"><strong>⚖️ Legal &amp; Court Filings</strong><p>Redact witness details, case numbers, and privileged information from exhibits before filing or discovery production.</p></div>
+            <div class="rd-usecase"><strong>🏥 Medical Records</strong><p>Remove patient identifiers before sharing charts for research, insurance, or peer review.</p></div>
+            <div class="rd-usecase"><strong>🏛️ Government Documents</strong><p>Black out classified or personally identifiable fields before public release under FOI/RTI requests.</p></div>
+            <div class="rd-usecase"><strong>💳 Financial Statements</strong><p>Hide account numbers, balances, and card details before sending statements to auditors or lenders.</p></div>
+            <div class="rd-usecase"><strong>📄 Contracts &amp; NDAs</strong><p>Redact commercial terms or third-party names before sharing a contract template externally.</p></div>
+            <div class="rd-usecase"><strong>🧑‍💼 HR &amp; Payroll</strong><p>Remove salary, bank, and ID details from resumes or payroll exports shared outside HR.</p></div>
+          </div>
+        </section>
+
+        <!-- ============ COMPETITOR COMPARISON ============ -->
+        <section class="rd-sec" aria-label="Comparison with other tools">
+          <h2 class="rd-h2">How ToolAdda Compares</h2>
+          <p class="rd-sub">A feature-by-feature look at browser-based PDF redaction versus the leading alternatives.</p>
+          <div class="rd-table-wrap">
+            <table class="rd-table rd-compare-table">
+              <thead><tr><th scope="col">Feature</th><th scope="col">ToolAdda</th><th scope="col">Adobe Acrobat</th><th scope="col">Smallpdf / Sejda / PDF24</th></tr></thead>
+              <tbody>
+                <tr><td>No file upload required</td><td class="yes" data-label="ToolAdda">Yes</td><td class="no" data-label="Adobe Acrobat">Desktop app / cloud</td><td class="no" data-label="Smallpdf / Sejda / PDF24">Uploads to server</td></tr>
+                <tr><td>Free, no subscription</td><td class="yes" data-label="ToolAdda">Yes</td><td class="no" data-label="Adobe Acrobat">Paid plan required</td><td class="no" data-label="Smallpdf / Sejda / PDF24">Limited free tier</td></tr>
+                <tr><td>True permanent (rasterized) redaction</td><td class="yes" data-label="ToolAdda">Yes</td><td class="yes" data-label="Adobe Acrobat">Yes (paid)</td><td class="no" data-label="Smallpdf / Sejda / PDF24">Often overlay-only</td></tr>
+                <tr><td>Built-in sensitive-data presets</td><td class="yes" data-label="ToolAdda">10 presets</td><td class="no" data-label="Adobe Acrobat">Manual search only</td><td class="no" data-label="Smallpdf / Sejda / PDF24">Rarely available</td></tr>
+                <tr><td>OCR redaction for scans</td><td class="yes" data-label="ToolAdda">Yes</td><td class="yes" data-label="Adobe Acrobat">Yes (paid)</td><td class="no" data-label="Smallpdf / Sejda / PDF24">Rarely available</td></tr>
+                <tr><td>Batch redaction</td><td class="yes" data-label="ToolAdda">Yes</td><td class="yes" data-label="Adobe Acrobat">Yes (paid)</td><td class="no" data-label="Smallpdf / Sejda / PDF24">Limited/paid</td></tr>
+                <tr><td>Redaction summary report</td><td class="yes" data-label="ToolAdda">Yes</td><td class="no" data-label="Adobe Acrobat">No</td><td class="no" data-label="Smallpdf / Sejda / PDF24">No</td></tr>
+                <tr><td>Works without installing anything</td><td class="yes" data-label="ToolAdda">Yes</td><td class="no" data-label="Adobe Acrobat">Desktop install</td><td class="yes" data-label="Smallpdf / Sejda / PDF24">Yes</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ============ SEO CONTENT ============ -->
+        <article class="rd-prose" id="article" aria-label="PDF redaction guide">
+          <h2 id="what-is-redaction">What Is PDF Redaction?</h2>
+          <p>PDF redaction is the process of permanently removing sensitive, confidential, or legally protected information from a PDF document before it is shared, published, or filed. Unlike editing a Word document, a PDF is designed to preserve its exact appearance and often its underlying text layer, embedded fonts, and metadata everywhere it goes. That permanence is exactly why redaction has to be done correctly — a PDF that "looks" clean but still contains the original text underneath a black box is not redacted at all. It is a document wearing a disguise.</p>
+          <p>True redaction means the sensitive content is gone from the file structure itself: it cannot be revealed by selecting text, running "Select All" and pasting into a text editor, extracting text programmatically, adjusting layer visibility, or even opening the PDF in a hex editor and searching the raw bytes. Anything less than that standard is not redaction — it is decoration.</p>
+          <p>This distinction matters more than most people realize. Government agencies, law firms, hospitals, and corporations have all published documents where a black rectangle sat directly on top of untouched, fully selectable text. Journalists, researchers, and opposing counsel found the "hidden" information within minutes simply by copying the text out from underneath the box. These incidents are now case studies in privacy failure — and they are entirely avoidable with the right tool and the right workflow.</p>
+
+          <h2 id="what-you-can-redact">What Sensitive Data Can You Redact from a PDF?</h2>
+          <p>ToolAdda lets you <strong>redact a PDF online free</strong> and <strong>permanently black out</strong> every category of confidential data a document can carry — names, email addresses, phone numbers, postal addresses, Aadhaar numbers, PAN numbers, passport and voter ID numbers, credit card numbers, bank account numbers, IBANs, salary figures, dates of birth, signatures, stamps, photographs and entire pages. Manual box redaction, search-based redaction and OCR redaction all feed into the same engine, so a mixed document — part native text, part scan — can be cleaned in a single pass.</p>
+          <ul>
+            <li><strong>Personal identifiers</strong> — names, emails, phone numbers, home addresses, dates of birth and next-of-kin details.</li>
+            <li><strong>Government ID numbers</strong> — Aadhaar, PAN, passport, driving licence, voter ID, national insurance and Social Security-equivalent numbers.</li>
+            <li><strong>Financial data</strong> — credit card numbers (Luhn-validated), debit card numbers, bank account numbers, IBANs, UPI IDs, salary and pricing figures.</li>
+            <li><strong>Health and legal data</strong> — medical record numbers, diagnoses, case numbers, minors' names and protected-order material.</li>
+            <li><strong>Visual content</strong> — handwritten signatures, official stamps, faces in photographs, logos, QR codes and barcodes that encode personal data.</li>
+          </ul>
+          <p>Every one of those redactions is applied with <strong>true pixel-level removal</strong>: the affected page is rasterized and the redaction colour is burned into the pixels, so the original characters no longer exist anywhere in the output file. And because the tool is <strong>100% browser-based, nothing is ever uploaded</strong> — no server, no queue, no temporary copy of your document sitting in someone else's storage bucket. If your PDF is locked, run it through <a href="pdf-password-remover.html">Unlock PDF</a> first, and once it is redacted you can re-secure the clean copy with <a href="pdf-password-protector.html">Protect PDF</a> using a strong key from the <a href="password-generator.html">Password Generator</a>.</p>
+
+          <h2 id="redaction-vs-highlighting">Redaction vs. Highlighting vs. Covering — Why They're Not the Same</h2>
+          <p>It helps to be precise about three things that are often confused:</p>
+          <ul>
+            <li><strong>Highlighting</strong> draws attention to text — usually a semi-transparent color layer — without hiding or removing anything. It is meant to be seen through, not concealed.</li>
+            <li><strong>Covering (fake redaction)</strong> places an opaque shape, image, or annotation on top of text so it is no longer visible on screen or in a normal print. The text object itself, however, is untouched in the PDF's content stream, so it remains fully extractable by anyone who knows to look.</li>
+            <li><strong>Redaction (real)</strong> removes the underlying content entirely, typically by rewriting the page so the covered region no longer contains the original text or image data — commonly done by flattening the affected page into a picture with the sensitive area blacked out before the picture is embedded, so there is nothing left to extract.</li>
+          </ul>
+          <p>Only the third approach is safe to use for anything genuinely confidential — legal exhibits, medical records, financial statements, or personal identifiers. ToolAdda's Redact PDF tool is built exclusively around the third approach.</p>
+
+          <h2 id="how-permanent-redaction-works">How Permanent Redaction Actually Works</h2>
+          <p>Under the hood, a PDF page is a set of drawing instructions: "draw this string of text at this position with this font," "draw this image here," "draw this vector shape there." When you draw a black rectangle over a line of text using a typical annotation or shape tool, you are simply adding one more instruction to that list — the text-drawing instruction from before is still there, just visually obscured by whatever gets drawn after it. A computer doesn't care about visual order the way your eyes do; a script can read every instruction in the content stream regardless of what ends up on top.</p>
+          <p>ToolAdda avoids this entirely with a rasterize-on-redact approach: any page that contains at least one redaction mark is rendered to a high-resolution image, your chosen redaction color is burned directly into the pixels of that image at the marked location, and only then is the flattened image embedded into the output PDF in place of the original page content. There is no text object, no vector shape, and no hidden layer left behind in that region — because there is no longer any text or vector content on that page at all. It has become a picture. This is the same permanence principle behind <a href="flatten-pdf.html">Flatten PDF</a>, which bakes form fields and annotations into static page content, and behind <a href="pdf-to-images.html">PDF to Images</a>, which exports pages as PNG or JPG with no text layer at all.</p>
+          <p>Pages you never touch are treated differently for a better result: they are copied across as clean vector content (so selectable text, small file size, and full quality are preserved) using a page-embedding technique that also strips interactive elements like comments, form fields, and links as a side effect of how the document is rebuilt from scratch, rather than edited in place. If you want maximum caution — for example, when a single document must be verifiably free of any residual vector text anywhere — a "rasterize entire document" option forces every page through the same flattening process, even pages with no redaction marks.</p>
+
+          <h2 id="manual-vs-search">Manual vs. Search-Based vs. OCR-Based Redaction</h2>
+          <p>Different documents call for different redaction techniques, and the best tools let you combine them freely:</p>
+          <h3>Manual (draw-box) redaction</h3>
+          <p>You draw a rectangle directly over the region you want removed. This is the most universal method — it works on any content, including images, signatures, logos, diagrams, and tables — and it is the only option that makes sense when the sensitive content isn't actual searchable text (a photo, a stamp, a handwritten note).</p>
+          <h3>Search-based (text) redaction</h3>
+          <p>Instead of hunting visually, you search the extracted text layer for a keyword, phrase, or pattern (like an email address format) and the tool finds every occurrence across every page automatically. This is dramatically faster for repeated identifiers — a client's name that appears forty times in a contract, for instance — and reduces the risk of missing an instance a human reviewer might scroll past.</p>
+          <h3>OCR-based redaction</h3>
+          <p>Scanned documents and photographed pages have no text layer at all — they are just a picture of text. Optical Character Recognition (OCR) reads the picture and reconstructs the words and their positions, which can then be searched and redacted exactly like native PDF text. Without OCR, sensitive information on a scanned page is effectively invisible to search and can only be caught with careful manual review.</p>
+          <p>The strongest workflow almost always combines all three: run a search for known patterns first, sweep any scanned pages with OCR, and finish with a manual pass to catch anything a computer can't reliably identify — like a face in a photo, a handwritten signature, or an unusually formatted identifier.</p>
+
+          <h2 id="ocr-redaction">OCR Redaction for Scanned Documents</h2>
+          <p>Optical character recognition is genuinely difficult to get right in a browser, because it has to happen without ever sending the image to a server. ToolAdda's OCR runs entirely client-side: a page is rendered to a canvas, the recognition engine analyzes that canvas locally, and it returns recognized words along with their pixel positions. Those positions are then converted into the same redaction-mark format used everywhere else in the tool, so you can search OCR'd text with the same keyword and pattern presets used for native PDF text.</p>
+          <p>OCR accuracy varies with scan resolution, contrast, skew, handwriting versus print, and language. Because OCR-based redaction works at the word level, always zoom in and visually confirm that a redaction box fully covers the sensitive word — especially on lower-quality faxes or photographed pages, where recognition can occasionally clip a character or two at the edges. When in doubt, widen the box manually or fall back to manual box redaction for that region.</p>
+          <p>Scan quality is the biggest lever on OCR accuracy, so fix the page before you redact it: straighten sideways or upside-down scans with <a href="pdf-rotate.html">Rotate PDF</a>, and if you are starting from phone photos rather than a PDF, assemble them with <a href="images-to-pdf.html">Images to PDF</a> at full resolution instead of compressing them first — OCR needs the detail that aggressive compression throws away.</p>
+
+          <h2 id="legal-documents">Redacting Legal and Court Documents</h2>
+          <p>Court filings routinely require redaction of Social Security-equivalent numbers, financial account numbers, minors' names, home addresses, and other categories defined by local court rules before a document becomes part of the public record. Because litigation documents are frequently produced under discovery obligations and later scrutinized by opposing counsel, appellate courts, or the press, the permanence bar is unusually high — a redaction failure in a court filing is not just embarrassing, it can constitute a breach of a protective order. Rasterized redaction, combined with a downloadable summary report documenting exactly what was redacted and when, gives legal teams both the technical permanence and the audit trail that filing rules typically expect.</p>
+
+          <h2 id="government-documents">Redacting Government Documents</h2>
+          <p>Freedom of Information and Right to Information requests often require agencies to release documents with specific categories of information withheld — classified material, ongoing investigation details, or third-party personal data. Because these releases are public and permanent once published, and because journalists and researchers actively test redactions by attempting to copy text out from under black boxes, government release workflows are exactly where fake, overlay-based redaction has caused some of the most widely reported privacy failures. A rasterize-on-redact tool removes that entire failure class by construction.</p>
+
+          <h2 id="medical-records">Medical Records and HIPAA Compliance</h2>
+          <p>Sharing medical records for research, insurance claims, peer consultation, or legal proceedings typically requires removing the eighteen HIPAA identifiers — names, dates directly tied to an individual, contact details, medical record numbers, and more — unless the recipient is already authorized to see identified data. Because ToolAdda processes files entirely in the browser with no upload and no server-side storage, no protected health information is ever transmitted anywhere, which sidesteps the Business Associate Agreement question that cloud-upload redaction tools raise for HIPAA-covered entities. Always confirm this fits your organization's specific compliance policy before adopting any new tool for PHI.</p>
+
+          <h2 id="gdpr-compliance">GDPR Compliance and PDF Redaction</h2>
+          <p>Under the GDPR, minimizing the amount of personal data you share — and permanently removing it once it's no longer needed — is a core obligation, not an optional courtesy. Redaction is one of the most direct ways to satisfy data minimization before a document leaves your organization, whether that's a report shared with a partner, a document responding to a subject access request, or an internal file being archived for a shorter retention period than the original. Because no personal data is ever transmitted to a third-party server during processing, using a client-side redaction tool also avoids introducing a new data processor relationship purely to redact a document — a meaningful simplification for a DPO evaluating tooling. This is general information, not legal advice; consult your organization's counsel for jurisdiction-specific guidance.</p>
+
+          <h2 id="financial-documents">Redacting Financial Documents</h2>
+          <p>Bank statements, tax filings, loan applications, and invoices are dense with exactly the kind of structured personal data that automated pattern detection is best at catching — account numbers, IBANs, card numbers, and dates. Running the built-in Credit Card, Bank Account, and IBAN presets across a statement before manually reviewing the results is far faster and more consistent than scanning line by line, and the Luhn-validated credit card pattern specifically reduces false positives compared to a naive digit-run search.</p>
+
+          <h2 id="contracts">Redacting Contracts and NDAs</h2>
+          <p>When a contract template, pricing schedule, or signed NDA needs to be shared outside the two original parties — with a new vendor, an investor during diligence, or a public filing — commercial terms, counterparty names, and signature blocks usually need to come out first. Search-based redaction is particularly effective here because a counterparty's name or a specific dollar figure often repeats throughout a long document; searching once catches every instance instead of relying on a manual page-by-page sweep.</p>
+
+          <h2 id="hr-documents">Redacting HR and Payroll Documents</h2>
+          <p>Resumes, offer letters, and payroll exports frequently need to move between departments, external recruiters, or benefits administrators with different data-access needs. Salary figures, bank details for direct deposit, national ID numbers, and dates of birth are common redaction targets, and batch processing is especially useful when an HR team needs to apply the same redaction rules across dozens of employee files at once before an external audit or a departmental handoff.</p>
+
+          <h2 id="business-reports">Redacting Business Reports and Board Documents</h2>
+          <p>Board decks and financial reports often contain forward-looking figures, unannounced strategic plans, or individual compensation details that need to come out before a version circulates more broadly — to a wider employee audience, an external auditor, or a public filing. A whole-page blackout or page-removal option is often the fastest tool here, since an entire slide or appendix page — not just a single line — frequently needs to disappear from the distributed version. When whole sections have to go, it is often cleaner to build the distribution copy first — pull only the pages the audience should see with <a href="pdf-extract.html">Extract PDF Pages</a> or cut the deck into parts with <a href="pdf-split.html">Split PDF</a> — and then redact what remains.</p>
+
+          <h2 id="common-mistakes">Common PDF Redaction Mistakes</h2>
+          <ul>
+            <li><strong>Drawing a shape instead of truly removing content.</strong> The single most common and most damaging mistake — always confirm your tool rasterizes or otherwise strips the underlying content, not just covers it visually.</li>
+            <li><strong>Forgetting metadata.</strong> Document properties can contain the original author's name, company, GPS coordinates from an embedded photo, or prior revision history — all invisible in the page view but visible in "Document Properties."</li>
+            <li><strong>Missing OCR-only text.</strong> A scanned page has no searchable text layer, so a keyword search silently finds nothing — sensitive text can sit in plain sight, untouched by a search you assumed had covered the whole document.</li>
+            <li><strong>Redacting a screenshot of a PDF instead of the PDF itself.</strong> Screenshots re-flatten everything, but they also throw away searchability for the parts you wanted to keep, and don't fix an already-shared original file.</li>
+            <li><strong>Not checking hidden layers or comments.</strong> Sticky-note comments, form field values, and revision-tracking metadata can carry sensitive content that never appears in the main page view at all.</li>
+            <li><strong>Skipping the copy-paste test.</strong> After redacting, always try to select and copy text from the redacted region in a PDF viewer — if anything comes through, the redaction failed.</li>
+          </ul>
+
+          <h2 id="metadata-risks">The Hidden Risk: PDF Metadata</h2>
+          <p>Even a perfectly redacted page can leak information through the document's metadata — fields that live outside the visible page content entirely. Title, Author, Subject, and Keywords fields are set by whatever software created or last edited the file, and frequently contain a real employee name, a client name used as the working filename, or an internal project codename. Some PDFs also carry XMP metadata, embedded thumbnail previews generated before redaction, and font subsetting information that can hint at what software and template produced the document. Because ToolAdda rebuilds the output file from a blank document rather than editing the original in place, these fields are cleared by default instead of quietly carried forward.</p>
+
+          <h2 id="privacy-best-practices">Privacy Best Practices Before Sharing Any PDF</h2>
+          <ol>
+            <li>Identify every category of sensitive data in the document before you start — names, IDs, financial details, dates, images.</li>
+            <li>Use search-based and pattern-based detection first to catch repeated or structured data, then do a manual visual pass for anything a pattern can't catch.</li>
+            <li>Run OCR on any scanned or photographed pages before assuming a keyword search covered the whole document.</li>
+            <li>Confirm permanence with the copy-paste test on every redacted region before distributing the file.</li>
+            <li>Strip metadata as a final step, even if you're confident the page content itself is clean.</li>
+            <li>Keep the original, unredacted file in a secure, access-controlled location — redaction should be applied to a copy, never your only source record.</li>
+            <li>Run a side-by-side check with <a href="compare-pdfs.html">Compare PDFs</a> to confirm every intended region changed — and that nothing you meant to keep was blacked out by mistake.</li>
+            <li>Because rasterized pages are images, the output can be larger than the original — shrink it with <a href="pdf-compress.html">Compress PDF</a> before emailing, and lock the final copy with <a href="pdf-password-protector.html">Protect PDF</a> if it is still confidential after redaction.</li>
+          </ol>
+
+          <h2 id="enterprise-workflows">Enterprise Redaction Workflows</h2>
+          <p>Teams that redact documents regularly benefit from standardizing the process rather than treating each file as a one-off. A repeatable workflow typically looks like: define a shared set of detection rules (which presets and custom keywords apply to this document type), batch-apply those rules across every file in a release, visually spot-check a sample before distribution, and retain the redaction summary report alongside the output file as an audit record of what was removed and when. Batch processing and a downloadable summary report exist in ToolAdda specifically to support this kind of repeatable, auditable workflow rather than one-off manual redaction.</p>
+          <p>Most release packages need a few more steps around the redaction itself, and every one of them can stay in the browser: stamp the distribution copy with <a href="pdf-watermark.html">Watermark PDF</a> so a leaked file is traceable, bundle the redacted exhibits into a single deliverable with <a href="pdf-merge.html">Merge PDF</a>, and generate fresh source documents server-free with <a href="html-to-pdf.html">HTML to PDF</a> when a report has to be reissued rather than patched.</p>
+
+          <h2 id="choosing-a-tool">Choosing the Right PDF Redaction Tool</h2>
+          <p>When evaluating any redaction tool — this one included — verify four things before trusting it with anything genuinely confidential: does it actually remove content rather than cover it (test with copy-paste); does it ever transmit your file anywhere; does it clear metadata as part of the process; and does it give you a way to review every match before it becomes permanent. A tool that fails any of these is not safe for legal, medical, financial, or government documents, regardless of how polished its interface looks.</p>
+
+          <h2 id="faq-heading">Redact PDF — Frequently Asked Questions</h2>
+          <div class="faq-grid rd-faq" data-faq-grid>
+            <details class="faq-item"><summary>What is PDF redaction and how is it different from highlighting or covering text?</summary><p>PDF redaction permanently removes sensitive text or images so they can never be recovered. Highlighting or drawing a shape on top only hides content visually — the original text usually remains selectable and copyable underneath.</p></details>
+            <details class="faq-item"><summary>Is this PDF redaction tool really free?</summary><p>Yes. Redact PDF is completely free with no signup, no watermark on your output, and no daily usage limits.</p></details>
+            <details class="faq-item"><summary>Does my PDF get uploaded to a server?</summary><p>No. Rendering, searching, OCR, and the final redaction all run inside your browser. Your file never leaves your device.</p></details>
+            <details class="faq-item"><summary>How do you guarantee permanent redaction, not just a black box on top?</summary><p>Any page with a redaction mark is rendered to a flat image with the color burned into the pixels before rebuilding the PDF. The original text underneath is discarded, not covered.</p></details>
+            <details class="faq-item"><summary>Can redacted text be recovered by copy-pasting or text extraction?</summary><p>No — redacted pages are rasterized, so there is no text object left on that page to select, copy, or extract.</p></details>
+            <details class="faq-item"><summary>What redaction modes are available?</summary><p>Manual box drawing (with a keyboard-friendly coordinate form), click-to-redact on detected text, keyword/regex search with built-in presets, and OCR for scanned pages.</p></details>
+            <details class="faq-item"><summary>Can I search for sensitive data automatically?</summary><p>Yes — the Search &amp; Redact panel scans extracted text across every page for keywords, regex, or presets, then lists matches for you to confirm.</p></details>
+            <details class="faq-item"><summary>What patterns can be detected automatically?</summary><p>Email, phone, credit card (Luhn-validated), Aadhaar, PAN, passport-style numbers, IBAN, bank account digit runs, dates, and a possible-names heuristic — all matching aids, always review results.</p></details>
+            <details class="faq-item"><summary>Can I redact scanned or image-only PDFs?</summary><p>Yes — run OCR on a page to recognize its text, then search or click detected words to redact them.</p></details>
+            <details class="faq-item"><summary>How accurate is OCR-based redaction?</summary><p>It depends on scan quality and works at the word level — always zoom in and confirm boxes fully cover sensitive text.</p></details>
+            <details class="faq-item"><summary>Can I redact an entire page?</summary><p>Yes — use the whole-page blackout action on any thumbnail or the current page.</p></details>
+            <details class="faq-item"><summary>Can I remove a page entirely instead of redacting it?</summary><p>Yes — mark a page for removal and it's excluded completely from the output PDF.</p></details>
+            <details class="faq-item"><summary>Can I undo a redaction before saving?</summary><p>Yes — every mark can be undone, redone, edited, or deleted before you click Apply &amp; Download.</p></details>
+            <details class="faq-item"><summary>Once I click Apply and Download, can I undo it?</summary><p>No — applying redaction permanently rebuilds affected pages as images. Keep your original file if you need an unredacted copy.</p></details>
+            <details class="faq-item"><summary>Does redaction remove PDF metadata?</summary><p>Yes — the output PDF is rebuilt from scratch, so title, author, subject, and keyword fields are cleared by default.</p></details>
+            <details class="faq-item"><summary>Does it remove comments, annotations, and hyperlinks?</summary><p>Yes — because the document is reconstructed page by page, comments, form fields, links, and bookmarks aren't carried over.</p></details>
+            <details class="faq-item"><summary>Will my PDF still be searchable after redaction?</summary><p>Pages you redact become images and lose text selectability; untouched pages stay full vector text unless you enable "rasterize entire document."</p></details>
+            <details class="faq-item"><summary>Will redaction reduce quality or increase file size?</summary><p>Redacted pages become high-resolution images, which may slightly increase file size — choose Standard or High output quality to balance the two.</p></details>
+            <details class="faq-item"><summary>Can I redact multiple PDFs at once?</summary><p>Yes — upload several PDFs, build your rules once, and apply them across the whole batch as a ZIP download.</p></details>
+            <details class="faq-item"><summary>Can I use custom keywords or regular expressions?</summary><p>Yes — enter comma-separated keywords or toggle regex mode for advanced matching, alongside the built-in presets.</p></details>
+            <details class="faq-item"><summary>Is this tool suitable for legal and court documents?</summary><p>Yes — its rasterized approach avoids the "fake redaction" failure of extractable covered text. Always follow your jurisdiction's filing rules too.</p></details>
+            <details class="faq-item"><summary>Is this tool HIPAA friendly?</summary><p>Processing is 100% client-side with no upload or server storage, which fits HIPAA-conscious workflows — confirm it matches your organization's policy.</p></details>
+            <details class="faq-item"><summary>Is this tool GDPR friendly?</summary><p>Yes — no personal data is transmitted or stored on any server, avoiding a new data-processor relationship.</p></details>
+            <details class="faq-item"><summary>Can I add a REDACTED watermark to affected pages?</summary><p>Yes — an optional toggle stamps a subtle "REDACTED" mark on any page containing a redaction, useful for audit trails.</p></details>
+            <details class="faq-item"><summary>What redaction colors can I use?</summary><p>Solid black, solid white, or any custom color via the color picker, per mark or as your default.</p></details>
+            <details class="faq-item"><summary>Do I need Adobe Acrobat or any software installed?</summary><p>No — it runs entirely in a modern browser tab, no install required.</p></details>
+            <details class="faq-item"><summary>Does this work on mobile devices?</summary><p>Yes — the workspace is touch-friendly, though precise redaction is easier on a larger screen.</p></details>
+            <details class="faq-item"><summary>What's the maximum PDF size supported?</summary><p>No hard server limit since nothing uploads — large files are bound only by your device's memory.</p></details>
+            <details class="faq-item"><summary>How is this different from Adobe Acrobat's redaction tool?</summary><p>Same permanence guarantee, but no subscription or install, plus built-in presets, OCR, batch processing, and a summary report — all free.</p></details>
+            <details class="faq-item"><summary>What happens to my file after I close the tab?</summary><p>Nothing is stored anywhere — your PDF only ever existed in browser memory, so closing the tab clears it completely.</p></details>
+          </div>
+        </article>
+
+        <aside class="related-tools-section" aria-label="Related tools">
+          <div class="related-tools-section__header">
+            <div><p class="related-tools-eyebrow">Related tools</p><h2 class="related-tools-title">More PDF tools</h2></div>
+          </div>
+          <div class="related-tools-grid">
+            <a class="related-tool-card" href="pdf-password-protector.html"><div class="related-tool-icon">🔒</div><div><strong>Protect PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Add a password</span></div></a>
+            <a class="related-tool-card" href="pdf-password-remover.html"><div class="related-tool-icon">🔓</div><div><strong>Unlock PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Remove a password</span></div></a>
+            <a class="related-tool-card" href="compare-pdfs.html"><div class="related-tool-icon">🔍</div><div><strong>Compare PDFs</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Visual &amp; text diff</span></div></a>
+            <a class="related-tool-card" href="pdf-compress.html"><div class="related-tool-icon">🗜️</div><div><strong>Compress PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Reduce file size</span></div></a>
+            <a class="related-tool-card" href="pdf-merge.html"><div class="related-tool-icon">🔗</div><div><strong>Merge PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Combine PDF files</span></div></a>
+            <a class="related-tool-card" href="pdf-split.html"><div class="related-tool-icon">✂️</div><div><strong>Split PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Break apart pages</span></div></a>
+            <a class="related-tool-card" href="flatten-pdf.html"><div class="related-tool-icon">🧱</div><div><strong>Flatten PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Flatten forms/pages</span></div></a>
+            <a class="related-tool-card" href="pdf-watermark.html"><div class="related-tool-icon">💧</div><div><strong>Watermark PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Add watermark</span></div></a>
+            <a class="related-tool-card" href="pdf-to-images.html"><div class="related-tool-icon">🖼️</div><div><strong>PDF to Images</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Export pages as images</span></div></a>
+            <a class="related-tool-card" href="images-to-pdf.html"><div class="related-tool-icon">📸</div><div><strong>Images to PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Photos to PDF</span></div></a>
+            <a class="related-tool-card" href="pdf-extract.html"><div class="related-tool-icon">📑</div><div><strong>Extract PDF Pages</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Save selected pages</span></div></a>
+          </div>
+        </aside>
+
+        <!-- ============ FINAL CTA ============ -->
+        <section class="rd-final">
+          <span class="rd-stamp" aria-hidden="true">Cleared</span>
+          <h2>Ready to permanently remove sensitive data from a PDF?</h2>
+          <p>No upload, no signup, no watermark — just true, permanent redaction in your browser.</p>
+          <a class="rd-btn rd-btn--primary rd-btn--lg" href="#redact-tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><rect x="8" y="11" width="8" height="4" rx=".5" fill="currentColor"/></svg>Redact a PDF now</a>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Phone-only bar. The script shows it only while the control it stands in
+       for (the tool, Apply, or Download) is off screen. -->
+  <div class="rd-sticky-cta" aria-hidden="true">
+    <button type="button" class="rd-btn rd-btn--primary" data-sticky-redact-cta tabindex="-1">Choose PDF to redact</button>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a><p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p></div>
+      <div><h3>Explore</h3><div class="footer-links"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms</a></div></div>
+      <div><h3>Stay updated</h3><p>© <span data-year></span> ToolAdda. All rights reserved.</p>
+                    <a href="https://uno.directory" target="_blank" rel="nofollow noopener">
+          <img src="https://uno.directory/uno-directory.svg" alt="Listed on Uno Directory" width="120" height="30" />
+        </a></div>
+    </div>
+  </footer>
+
+  <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://tooladda.online/#website",
+      "name": "ToolAdda",
+      "alternateName": [
+        "Tool Adda",
+        "Tools Adda",
+        "ToolsAdda",
+        "Tooladda",
+        "ToolAdda.online"
+      ],
+      "url": "https://tooladda.online/",
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "alternateName": [
+        "Tool Adda",
+        "Tools Adda",
+        "ToolsAdda",
+        "Tooladda",
+        "ToolAdda.online"
+      ],
+      "url": "https://tooladda.online/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tooladda.online/assets/images/logo.svg"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/redact-pdf.html#webpage",
+      "url": "https://tooladda.online/redact-pdf.html",
+      "name": "Redact PDF Online Free — Permanently Remove Sensitive Data | ToolAdda",
+      "description": "Redact PDF online free — permanently remove names, emails, phone numbers, ID numbers and more with manual, search-based, and OCR redaction. 100% browser-based.",
+      "inLanguage": "en",
+      "datePublished": "2026-08-02",
+      "dateModified": "2026-08-02",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://tooladda.online/redact-pdf.html#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://tooladda.online/redact-pdf.html#softwareapplication"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://tooladda.online/redact-pdf.html#softwareapplication",
+      "name": "PDF Redaction Tool",
+      "alternateName": [
+        "Redact PDF",
+        "PDF Blackout Tool",
+        "PDF Privacy Tool"
+      ],
+      "url": "https://tooladda.online/redact-pdf.html",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "description": "Permanently redact sensitive text and images from PDF files using manual box drawing, keyword/regex search, pattern detection, and OCR — with true pixel-level removal via page rasterization, not a fake overlay.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Manual rectangle redaction",
+        "Click-to-redact text runs",
+        "Keyword and regex search & redact",
+        "Built-in pattern detection (email, phone, credit card, Aadhaar, PAN, passport, IBAN, dates)",
+        "OCR redaction for scanned PDFs",
+        "Whole-page blackout",
+        "Page removal",
+        "Undo/redo before export",
+        "Black, white, or custom redaction color",
+        "Automatic metadata, comment, annotation and hyperlink removal",
+        "Optional REDACTED watermark stamp",
+        "Batch redaction across multiple PDFs",
+        "Redaction summary report",
+        "True rasterized permanent removal",
+        "100% client-side — no upload",
+        "No registration required"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tooladda.online/redact-pdf.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Redact PDF"
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to redact a PDF online for free",
+      "description": "Permanently remove sensitive information from a PDF using ToolAdda's browser-based redaction tool.",
+      "totalTime": "PT3M",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Upload your PDF",
+          "text": "Drag and drop a PDF or browse your device. The file stays in your browser and is never uploaded to a server."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Preview the document",
+          "text": "Review page count, thumbnails, and zoom into any page in the live workspace."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Choose a redaction mode",
+          "text": "Draw boxes manually, click detected text runs, search or use pattern presets, or run OCR on scanned pages."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Mark sensitive data",
+          "text": "Confirm every match or box you want redacted. Nothing is removed yet — you can undo or edit any mark."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Apply permanent redaction",
+          "text": "Click Apply & Download. Redacted areas are burned into the page as pixels so the underlying text cannot be recovered."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 6,
+          "name": "Download the redacted PDF",
+          "text": "Save your redacted PDF and optional redaction summary report. Files never touch a server at any step."
+        }
+      ]
+    },
+    {
+      "@type": "TechArticle",
+      "@id": "https://tooladda.online/redact-pdf.html#techarticle",
+      "headline": "The Complete Guide to PDF Redaction: Permanent, Secure, and Compliant",
+      "description": "An in-depth technical and practical guide to redacting PDF documents correctly — covering permanent removal, OCR, legal and compliance workflows, and common mistakes.",
+      "author": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "datePublished": "2026-08-02",
+      "dateModified": "2026-08-02",
+      "mainEntityOfPage": "https://tooladda.online/redact-pdf.html#article",
+      "about": [
+        "PDF redaction",
+        "document privacy",
+        "data protection",
+        "GDPR",
+        "HIPAA"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is PDF redaction and how is it different from highlighting or covering text?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PDF redaction is the permanent removal of sensitive text or images so they can never be recovered. Highlighting or drawing a shape on top only hides content visually — the original text usually remains selectable, searchable, and copyable underneath, which is a common and serious privacy failure."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this PDF redaction tool really free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Redact PDF is completely free with no signup, no watermark on your output, and no daily usage limits."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does my PDF get uploaded to a server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Rendering, searching, OCR, and the final redaction all run inside your browser. Your file never leaves your device."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does ToolAdda guarantee permanent redaction and not just a black box on top?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Any page that contains a redaction mark is rendered to a flat image with the redaction color burned into the pixels before it is rebuilt into the output PDF. The original vector text underneath is discarded, not merely covered, so it cannot be recovered by copy-paste, text extraction, or removing a shape."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can redacted text be recovered by copy-pasting or text extraction?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No - redacted pages are rasterized, so there is no text object left on that page to select, copy, or extract."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What redaction modes are available?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Manual box drawing (with a keyboard-friendly coordinate form), click-to-redact on detected text, keyword/regex search with built-in presets, and OCR for scanned pages."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I search for sensitive data automatically?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - the Search & Redact panel scans extracted text across every page for keywords, regex, or presets, then lists matches for you to confirm."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What patterns can be detected automatically?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Built-in presets include email addresses, phone numbers, credit card numbers (with Luhn validation to reduce false positives), Aadhaar numbers, PAN numbers, passport-style numbers, IBAN, generic bank account digit runs, dates, and a possible-names heuristic. These are pattern-matching aids, not AI — always review highlighted matches."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I redact scanned or image-only PDFs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - run OCR on a page to recognize its text, then search or click detected words to redact them."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How accurate is OCR-based redaction?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "OCR accuracy depends on scan quality, font, and language, and works at the word level. Always visually confirm redaction boxes fully cover sensitive text before applying, especially on low-quality scans."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I redact an entire page?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - use the whole-page blackout action on any thumbnail or the current page."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I remove a page entirely instead of redacting it?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - mark a page for removal and it's excluded completely from the output PDF."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I undo a redaction before saving?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - every mark can be undone, redone, edited, or deleted before you click Apply & Download."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Once I click Apply and Download, can I undo it?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No - applying redaction permanently rebuilds affected pages as images. Keep your original file if you need an unredacted copy."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does redaction remove PDF metadata?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - the output PDF is rebuilt from scratch, so title, author, subject, and keyword fields are cleared by default."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it remove comments, annotations, and hyperlinks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - because the document is reconstructed page by page, comments, form fields, links, and bookmarks aren't carried over."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will my PDF still be searchable or selectable after redaction?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pages containing at least one redaction mark are converted to images, so text on those pages is no longer selectable — that is required for genuine permanence. Pages you did not redact remain vector and fully selectable unless you enable the 'rasterize entire document' option."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will redaction reduce quality or increase file size?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Redacted pages become high-resolution images, which may slightly increase file size - choose Standard or High output quality to balance the two."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I redact multiple PDFs at once?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - upload several PDFs, build your rules once, and apply them across the whole batch as a ZIP download."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use custom keywords or regular expressions?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - enter comma-separated keywords or toggle regex mode for advanced matching, alongside the built-in presets."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this tool suitable for legal and court documents?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Its rasterized, no-upload approach avoids the classic 'fake redaction' failure where covered text is still extractable, which has caused real legal and government redaction incidents. Always follow your jurisdiction's filing rules for redacted exhibits."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this tool HIPAA friendly?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Processing is 100% client-side with no upload or server storage, which fits HIPAA-conscious workflows - confirm it matches your organization's policy."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this tool GDPR friendly?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - no personal data is transmitted or stored on any server, avoiding a new data-processor relationship."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I add a REDACTED watermark to affected pages?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - an optional toggle stamps a subtle \"REDACTED\" mark on any page containing a redaction, useful for audit trails."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What redaction colors can I use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Solid black, solid white, or any custom color via the color picker, per mark or as your default."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need Adobe Acrobat or any software installed?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No - it runs entirely in a modern browser tab, no install required."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this work on mobile devices?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - the workspace is touch-friendly, though precise redaction is easier on a larger screen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the maximum PDF size supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "There is no hard server-side limit since nothing uploads, but very large files are bound by your device's available memory — most office documents and scans process comfortably."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is this different from Adobe Acrobat's redaction tool?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Same permanence guarantee, but no subscription or install, plus built-in presets, OCR, batch processing, and a summary report - all free."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens to my file after I close the tab?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nothing is stored anywhere - your PDF only ever existed in browser memory, so closing the tab clears it completely."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+
+  <script src="assets/js/app.js" defer></script>
+  <script src="assets/js/redact-pdf.js?v=2" defer></script>
+  <script src="assets/js/side-ads.js" defer></script>
+  <script src="assets/js/inline-ads.js" data-in-article defer></script>
+</body>
+</html>

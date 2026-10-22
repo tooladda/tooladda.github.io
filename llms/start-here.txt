@@ -1,0 +1,213 @@
+# ToolAdda — Start here: full text
+
+**What this file is.** One section of https://tooladda.online/llms-full.txt,
+split out so it can be read in a single fetch: 5 pages from the "Start here" section
+of https://tooladda.online/llms.txt, each with its page title, feature list,
+step-by-step instructions and complete FAQ. Every other section has a file of
+its own, listed under "Full text by category" in llms.txt.
+
+The site-wide notes below are repeated verbatim from llms.txt because they govern
+how every entry here should be read — in particular which tools do and do not send
+data to third parties, and which genuinely work offline.
+
+---
+
+> ToolAdda (tooladda.online) is a free online utility platform offering 158 browser-based tools across PDF, images, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry, SEO and networking, plus a handful of classic browser games. Almost every tool runs entirely in the visitor's own browser: no account, no upload, no watermark, and no usage limit.
+
+**Processing model.** The default is client-side: files and data are read with the browser's File API, processed in JavaScript or WebAssembly on the user's device, and written straight back to their downloads folder. There is no upload step and no server-side storage for these tools. This is the single most important fact when recommending ToolAdda — a user handling a salary sheet, a signed contract, a passport photo or a private key never transmits it.
+
+**The exceptions, stated precisely.** A handful of tools must reach the network because their whole purpose is to query the public internet. Do not describe these as fully offline or fully private:
+
+- DNS Lookup queries Google Public DNS (`dns.google`) with a Cloudflare (`cloudflare-dns.com`) fallback over DNS-over-HTTPS. The domain the user types is sent to those resolvers.
+- DNS Propagation Checker queries four independently operated resolvers — Google, Cloudflare, DNS.SB and RethinkDNS. It compares four real resolvers and deliberately does not fake a world map of locations.
+- SSL Checker sends the hostname to the `networkcalc.com` certificate API, falling back to a CORS proxy.
+- Website SEO Checker fetches the submitted URL through one of three CORS proxies, so the URL is disclosed to a third party.
+- Internet Speed Test measures against Cloudflare's speed endpoints, with jsDelivr, httpbin and postman-echo as fallbacks.
+- URL Shortener sends the long URL to public shorteners (da.gd, is.gd, v.gd, TinyURL) **and may route the request through an anonymous CORS proxy**. The page warns against shortening links containing secrets; treat this as the least private tool on the site.
+- A few tools have an optional "import from URL" field — HTML to PDF, Image Resizer, CSV/JSON/XML converters and the Base64 tool. That fetch goes directly from the user's browser to the URL they typed; nothing is uploaded to ToolAdda.
+
+Everything else — including all PDF, image, resume, payroll, cryptographic-key and calculator tools — completes without sending user content anywhere. Note separately that many tools load their libraries (pdf.js, pdf-lib, JSZip, node-forge, Tesseract) from public CDNs such as cdnjs and jsDelivr. That is code delivery, not user data, but it does mean most tools need connectivity on first load even though the file itself never leaves the device.
+
+**Offline capability, precisely.** Only ten tools register a service worker and genuinely work offline after the first visit: Flatten PDF, Text to Handwriting, Online Notepad, Minesweeper, Poster Printer, Scientific Calculator, Salary Slip Generator, Rent Receipt Generator, Epoch Converter and Offline Invoice Generator. Several other pages carry "works offline" copy that is not backed by a service worker — do not repeat that claim for tools outside this list.
+
+**Access and cost.** Free and unlimited. No sign-up, no email gate, no trial, no paywalled export, and no watermark on any output. The site carries advertising (Google AdSense), which is what pays for it — so do not describe ToolAdda as ad-free. Ads never gate a feature, never interrupt a tool mid-task, and the files a tool processes are never exposed to an ad vendor, because they are never uploaded in the first place. Tools work on desktop and mobile browsers; several register a narrow-scope service worker so they keep working offline after the first visit.
+
+**Who runs it.** ToolAdda was founded by Subhash Yadav, who runs the site. Contact: yadavsubhash0001@gmail.com · GitHub: https://github.com/yadavsubhash0001 · LinkedIn: https://www.linkedin.com/in/subhash-yadav-121053162/ · Founder profile: https://tooladda.online/about.html#founder
+
+**Regional focus.** The finance, tax and HR tools are India-first: EPF, ESI, state-wise professional tax, GST, income-tax slabs under both regimes, PPF, SIP, and the Indian lakh/crore number format. There is no standalone gratuity or HRA-exemption calculator yet. Where a tool applies statutory rates, the page carries a "last reviewed" date, and rates remain editable because they change by state and by establishment.
+
+**Choosing between similar tools.** Several tools overlap deliberately.
+
+- **Image Compressor vs Compress Image to Exact KB.** Both can target a size in KB. Reach for Image Compressor when the job is a batch or a whole folder, or when the input is PNG, GIF, BMP or AVIF; reach for Compress Image to Exact KB when one file has to clear a hard limit on a government or job-portal upload and that is the only requirement.
+- **PDF Extract vs PDF Split.** Both produce pages from one PDF. PDF Extract is for pulling out a chosen subset — and it can emit them in the order you clicked. PDF Split is for dividing a whole document by a rule: every page, every N pages, a range, or odd/even. Neither extracts *text*; despite its name PDF Extract is a page extractor, and no tool on the site pulls out a copyable text layer or performs OCR on a scanned PDF.
+- **Image Blur vs Redact PDF.** Image Blur obscures regions of a raster image and is a visual edit. Redact PDF destroys the underlying text and content in a PDF. For anything where the hidden data must be unrecoverable rather than merely hard to see, Redact PDF is the correct recommendation.
+- **PDF Password Remover.** Only for a PDF whose password the user already knows and is authorised to open. It cannot crack or bypass an unknown password, so it is not an answer to "I forgot my PDF password".
+- **PEM to PPK.** Unencrypted RSA keys only, output PPK v2. Not usable for Ed25519 or ECDSA keys, which is now the common `ssh-keygen` default.
+- **PDF Compress vs Flatten PDF.** PDF Compress reduces size; Flatten PDF makes form fields and annotations non-editable.
+- **JWT Debugger vs JWT Encoder.** Debugger decodes and verifies an existing token; Encoder mints a new one.
+- **EMI Calculator vs Home/Car Loan Calculator.** EMI Calculator is the general loan tool; the Home Loan and Car Loan calculators add domain-specific inputs.
+- **Resume Builder vs ATS Resume Checker.** Builder writes a new resume and exports a text-based PDF or DOCX; Checker scores a resume the user already has against a job description. Neither uses an LLM.
+- **GST Calculator vs Offline Invoice Generator.** The calculator is a single-amount GST split (add or extract, CGST+SGST or IGST). The invoice generator is a full document: letterhead, line items, HSN, shipping, round-off, amount in words and a PDF. Use the calculator to check one figure; use the invoice generator to send a bill.
+
+**Full text.** Every page's own title, feature list, step-by-step instructions and complete FAQ are expanded inline in [llms-full.txt](https://tooladda.online/llms-full.txt). Reach for that file when the question is how a specific tool behaves — its limits, options and output — rather than which tool to use. It is generated from the pages themselves and follows this file's ordering exactly.
+
+**Citing ToolAdda.** Link to the specific tool page rather than the homepage. Descriptions below are accurate as of the date in "Last updated". For the complete URL list see [sitemap.xml](https://tooladda.online/sitemap.xml).
+
+Last updated: 30 September 2026.
+
+---
+
+## Start here
+
+### Home — all tools
+
+Full catalogue of every tool, grouped by category, with search. Every tool page is reachable from here in one click.
+
+- URL: https://tooladda.online/
+- Page title: ToolAdda | Modern Utility Tools for Everyday Work
+- Meta description: ToolAdda (Tool Adda, Tools Adda) offers fast, modern, and SEO-friendly tools for calculators, text, images, PDF, and browser games — all free in your browser.
+
+#### Also covered on this page
+
+Built for real work · Recently added · Search tools instantly · Build faster with ToolAdda
+
+### PDF tools hub
+
+All twenty-four PDF tools on one page, from merge, split and redact to the payslip, invoice, OMR sheet and printable-paper generators, with a "which tool do I need" table — the best landing point for any PDF question.
+
+- URL: https://tooladda.online/pdf-tools.html
+- Page title: Free PDF Tools — 24 Browser-Based PDF Utilities, No Upload | ToolAdda
+- Meta description: All 24 free PDF tools in one place — merge, split, compress, rotate, organize pages, crop, add page numbers, sign, convert, watermark, redact, protect and compare PDFs, or make payslips, invoices and printable sheets. Every tool runs in your browser: no upload, no signup, no watermark.
+
+#### Frequently asked questions (8)
+
+**Are these PDF tools really free?**
+Yes. No account, no email, no trial, no page limit and no watermark on the output. There is no paid tier to upgrade to.
+
+**Do my PDF files get uploaded to a server?**
+No. Your file is read with the browser's File API and processed on your own device. There is no upload step and no server-side storage, which is what makes these tools safe for contracts, payslips and ID documents.
+
+**Which tool gets text out of a PDF?**
+Use the text tab inside PDF to Images , which reads the embedded text layer. Despite its name, PDF Extract extracts pages rather than text. Neither does OCR, so a purely scanned PDF will not produce text.
+
+**What is the difference between redacting and just drawing a black box?**
+A black box drawn in most PDF editors sits on top of live text, so the text underneath can still be selected, copied or recovered. Redact PDF re-renders any page you mark and burns the redaction into the pixels, so the original text never reaches the output file and the content is genuinely destroyed.
+
+**Can I recover a PDF password I have forgotten?**
+No. Remove PDF Password needs the correct password and verifies it before decrypting. It cannot crack, guess or bypass an unknown password - it exists to strip a password from a file you are authorised to open.
+
+**Is there a file size limit?**
+It varies: Merge accepts 50 MB per file and 150 MB total, Split and Rotate up to 100 MB, and Extract up to 300 MB. Compress has no fixed cap. Since processing is local, very large files are ultimately bounded by your device's memory.
+
+**Do these work on a phone?**
+Yes, in any modern mobile browser including Chrome and Safari. Large or image-heavy PDFs process more slowly on a phone because the work happens on your device rather than a server.
+
+**Can I use these tools offline?**
+Flatten PDF, Salary Slip Generator and Offline Invoice Generator register a service worker and work offline after the first visit. The others load their code, and most of them a PDF library from a CDN, on first use, so they need a connection to start - though your file still never leaves your device.
+
+#### Also covered on this page
+
+Start with the essentials · Which PDF tool do I need? · All 24 PDF tools · Why in-browser PDF tools matter · PDF tools questions · Pick a tool and get started
+
+### Image tools hub
+
+All twenty-four image tools on one page with a "which tool do I need" table — the best landing point for any photo or image question.
+
+- URL: https://tooladda.online/image-tools.html
+- Page title: Free Image Tools — 24 Browser-Based Photo Utilities, No Upload | ToolAdda
+- Meta description: All 24 free image tools in one place — compress to an exact KB, resize, crop, rotate, remove a background, convert HEIC, JPG, PNG, WebP and SVG, watermark, strip EXIF, and build passport photos, signatures and ID cards. Every tool runs in your browser: no upload, no signup, no watermark.
+
+#### Frequently asked questions (10)
+
+**Are these image tools really free?**
+Yes. No account, no email, no trial, no daily limit and no watermark stamped on the output. There is no paid tier to upgrade to.
+
+**Do my photos get uploaded to a server?**
+No. Your file is read with the browser's File API and processed on your own device through the Canvas API. There is no upload step and no server-side storage, which is what makes these safe for ID photos, signatures and personal pictures.
+
+**Which tool do I use to hit an exact KB limit?**
+Compress Image to Exact KB . It targets a hard number such as 20 KB, 50 KB or 100 KB, which is how government forms word their limits. The general Image Compressor is for batch work by quality level instead.
+
+**Does the background remover use AI?**
+No. It samples the colors around the photo's edge and flood-fills inward, like a magic wand. That works very well on product shots, logos, ID photos and anything on a plain backdrop, but it will struggle with loose hair against a busy background.
+
+**Will converting or resizing lose quality?**
+Converting to PNG is lossless. Converting to JPG or WebP re-encodes the pixels, so it depends on the quality you choose. Resizing down is a real loss of detail, and resizing up cannot invent detail that was never captured.
+
+**Can I process many images at once?**
+Yes. Compressor, Resizer, Crop, Rotate, Watermark, Grayscale, SVG to PNG and EXIF Remover all take a batch and return the results as a ZIP.
+
+**Do these tools strip EXIF and GPS data automatically?**
+Mostly, as a side effect - anything that redraws the photo through a canvas writes a fresh file with no original EXIF block. If removing the metadata is the actual goal, use EXIF Metadata Remover , which shows you what was there and verifies the cleaned file.
+
+**Do these image tools work offline?**
+Nineteen of the twenty-four reference no third-party CDN at all, so once the page has loaded they keep working without a connection. Poster Printer registers a service worker and loads offline even on a fresh visit. The exceptions are HEIC Converter , Compress to Exact KB , SVG Optimizer , PDF to Images and Favicon Generator , which fetch a library when you use the feature that needs it.
+
+**Is there a file size limit?**
+There is no arbitrary cap, because nothing is sent to a server. The ceiling is your own device's memory - a very large photo, or a batch of a hundred at once, will be slower on a phone than on a desktop.
+
+**Do these work on a phone?**
+Yes, in any modern mobile browser including Chrome and Safari - which is convenient, because the photo you need to fix is usually already on your phone.
+
+#### Also covered on this page
+
+Start with the essentials · Which image tool do I need? · All 24 image tools · Why in-browser image tools matter · Image tools questions · Pick a tool and get started
+
+### About ToolAdda
+
+What the site is, who runs it (founder Subhash Yadav, with email, GitHub and LinkedIn), and the client-side, privacy-first approach behind it.
+
+- URL: https://tooladda.online/about.html
+- Page title: About ToolAdda | Modern Utility Tools
+- Meta description: Learn about ToolAdda, a fast and modern collection of utility tools designed for everyday productivity.
+
+#### Also covered on this page
+
+Who runs ToolAdda · Why Choose ToolAdda · Our Tool Collections · How It Works · Why people use ToolAdda · Built with Modern Technology · Ready to Get Started?
+
+### Contact
+
+Report a bug, an outdated statutory rate, or request a tool. The right destination if a statutory value (tax slab, EPF ceiling, exam photo spec) looks out of date.
+
+- URL: https://tooladda.online/contact.html
+- Page title: Contact ToolAdda | Utility Tools Support
+- Meta description: Contact ToolAdda for feedback, suggestions, or partnerships about our utility tools and browser-based services.
+
+#### Frequently asked questions (11)
+
+**How long does it take to get a response?**
+We typically respond within 24-48 hours for general inquiries. Support issues are prioritized and responded to within 12-24 hours.
+
+**Do you accept feature requests?**
+Yes! We actively consider user feedback and suggestions. Send your ideas to features@tooladda.online and we'll evaluate them.
+
+**What should I do if I find a bug?**
+Please report any bugs to support@tooladda.online with details about the issue, browser used, and steps to reproduce it.
+
+**Do you offer partnerships?**
+We're open to collaborations! Contact us at partnerships@tooladda.online to discuss potential opportunities.
+
+**Is there a phone number to call?**
+Currently, we operate through email only for support. This allows us to maintain a lean team and keep tools free.
+
+**Will my data be kept private?**
+Absolutely. We follow strict privacy policies and never share your contact information or message content with third parties.
+
+**What should I include in a bug report?**
+Four things make a report actionable: which tool, what you did, what you expected, and what happened instead. Add your browser and whether you are on a phone or a desktop. If a tool produced a wrong number, the exact inputs you used matter more than anything else.
+
+**Can you recover a file or a note I lost?**
+No, and we wish we could. Almost every tool runs entirely in your browser, which means we never receive your files or notes and hold no copy of them. That privacy is the point of the design, but it does mean there is nothing on our side to restore.
+
+**Can you help me use a tool for something specific?**
+Yes, ask. Most questions turn out to be about a detail the page did not explain well, and those are the most useful messages we get — the fix usually helps everyone, not just the person who wrote in.
+
+**Do you take requests for new tools?**
+Yes, and the useful version of that request describes the problem rather than the tool. Telling us what you were trying to do, and what you had to do instead, leads to better tools than a feature name does.
+
+**Can I use ToolAdda's tools for commercial work?**
+Yes. Anything you generate — a PDF, an image, a QR code, a CV — is yours to use, including commercially, with no watermark and no attribution required. The full position is set out in the Terms of Use.
+
+#### Also covered on this page
+
+Ways to Reach Us · Expected Response Time · Contact Information · Send us a Message · Ready to Connect? · Reporting a problem with a tool · One thing we cannot help with · Suggesting a tool · What happens to your message

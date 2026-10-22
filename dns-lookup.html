@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+  <title>DNS Lookup Tool — Free A, AAAA, MX, TXT, NS, CNAME, SOA, PTR, SRV, CAA Checker | ToolAdda</title>
+  <meta name="description" content="Free DNS lookup tool — instantly check A, AAAA, MX, TXT, SPF, DKIM, DMARC, NS, SOA, CNAME, PTR, SRV, CAA, DNSSEC and more for any domain. Real-time DNS-over-HTTPS queries, DNS health score, provider detection, and export to JSON/CSV. 100% free, no signup." />
+  <meta name="author" content="ToolAdda" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="theme-color" content="#4f46e5" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
+  <link rel="canonical" href="https://tooladda.online/dns-lookup.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+  <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="preload" as="style" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+
+  <meta property="og:title" content="DNS Lookup Tool — Free A, AAAA, MX, TXT, NS, SOA, PTR, SRV, CAA Checker" />
+  <meta property="og:description" content="Check every DNS record for any domain instantly — A, AAAA, MX, TXT, SPF, DKIM, DMARC, NS, SOA, CNAME, PTR, SRV, CAA, DNSSEC. Live DNS-over-HTTPS queries, health score, and export tools." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tooladda.online/dns-lookup.html" />
+  <meta property="og:site_name" content="ToolAdda" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:image" content="https://tooladda.online/assets/images/og/dns-lookup.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="DNS Lookup Tool — Free A, AAAA, MX, TXT, NS, CNAME, SOA, PTR, SRV, CAA Checker — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="DNS Lookup Tool — Free A, AAAA, MX, TXT, NS, CNAME, SOA, PTR, SRV, CAA Checker — free online tool on ToolAdda, runs in your browser with no sign-up." />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@tooladda" />
+  <meta name="twitter:title" content="DNS Lookup Tool — Free DNS Record Checker" />
+  <meta name="twitter:description" content="Instant A, AAAA, MX, TXT, SPF, DKIM, DMARC, NS, SOA, PTR, SRV, CAA lookups with DNSSEC detection, health score, and JSON/CSV export — free, no signup." />
+  <meta name="twitter:image" content="https://tooladda.online/assets/images/og/dns-lookup.jpg" />
+
+  <style>
+    .dl-shell{position:relative;padding:1.75rem 0 3rem;background:radial-gradient(circle at 10% 8%,rgba(79,70,229,.13),transparent 30%),radial-gradient(circle at 90% 12%,rgba(14,165,233,.12),transparent 27%),linear-gradient(150deg,#eef2ff 0%,#f8fafc 46%,#f0f9ff 100%);overflow:hidden}
+    [data-theme="dark"] .dl-shell{background:radial-gradient(circle at 10% 8%,rgba(79,70,229,.22),transparent 32%),radial-gradient(circle at 90% 12%,rgba(14,165,233,.14),transparent 28%),linear-gradient(150deg,#0f172a 0%,#111827 52%,#0b1220 100%)}
+    .dl-wrap{max-width:1240px;margin:0 auto}
+    .dl-card{padding:clamp(1.1rem,2.6vw,1.85rem);border-radius:28px;border:1px solid rgba(148,163,184,.22);background:rgba(255,255,255,.86);backdrop-filter:blur(24px);box-shadow:0 24px 90px rgba(15,23,42,.12)}
+    [data-theme="dark"] .dl-card{background:rgba(15,23,42,.85);border-color:rgba(148,163,184,.18)}
+
+    .dl-badge{display:inline-flex;align-items:center;gap:.35rem;padding:.32rem .78rem;border-radius:999px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.6rem;background:linear-gradient(135deg,#4f46e5,#0284c7);color:#fff}
+    .dl-title{margin:0 0 .55rem;font-size:clamp(1.72rem,4.2vw,2.5rem);font-weight:900;line-height:1.13;letter-spacing:-.022em;background:linear-gradient(135deg,#1f2937,#4f46e5 55%,#0284c7);-webkit-background-clip:text;background-clip:text;color:transparent}
+    [data-theme="dark"] .dl-title{background:linear-gradient(135deg,#f8fafc,#a5b4fc 55%,#7dd3fc);-webkit-background-clip:text;background-clip:text}
+    .dl-lead{margin:0;color:var(--text-muted);line-height:1.66;max-width:72ch;font-size:clamp(.95rem,1.9vw,1.03rem)}
+
+    .dl-trust-row{display:flex;flex-wrap:wrap;gap:.4rem;margin:.95rem 0 0;padding:0;list-style:none}
+    .dl-trust-row li{display:inline-flex;align-items:center;gap:.32rem;font-size:.78rem;font-weight:700;color:var(--text-muted);background:var(--surface-strong);border:1px solid var(--border);border-radius:999px;padding:.33rem .72rem}
+    .dl-trust-row li b{color:var(--text);font-weight:800}
+    .dl-privacy{display:flex;align-items:flex-start;gap:.55rem;font-weight:700;color:#166534;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.24);border-radius:14px;padding:.65rem 1rem;margin:.95rem 0 0;font-size:.87rem;line-height:1.55}
+    [data-theme="dark"] .dl-privacy{color:#86efac}
+    .dl-hero-cta{margin-top:1.1rem;display:flex;flex-wrap:wrap;gap:.65rem}
+    .dl-hero-cta .primary-btn{border-radius:14px;font-weight:800;padding:.75rem 1.4rem;box-shadow:0 10px 28px rgba(79,70,229,.3)}
+
+    .dl-search-row{display:grid;grid-template-columns:2.2fr 1.1fr auto;gap:.6rem;align-items:end;margin-bottom:.6rem}
+    @media(max-width:720px){ .dl-search-row{grid-template-columns:1fr} }
+    .dl-field{display:flex;flex-direction:column;gap:.3rem}
+    .dl-field label{font-weight:700;font-size:.82rem}
+    .dl-field input,.dl-field select{border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:12px;padding:.7rem .8rem;width:100%;font-size:1rem;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;box-sizing:border-box}
+    .dl-field input:focus,.dl-field select:focus{outline:none;border-color:#4f46e5;box-shadow:0 0 0 3px rgba(79,70,229,.15)}
+    .dl-lookup-btn{border:none;border-radius:12px;padding:.75rem 1.3rem;font-family:inherit;font-weight:800;font-size:.92rem;color:#fff;cursor:pointer;background:linear-gradient(135deg,#4f46e5,#0284c7);white-space:nowrap}
+    .dl-lookup-btn:hover{transform:translateY(-1px)}
+    .dl-lookup-btn:disabled{opacity:.65;cursor:progress;transform:none}
+    .dl-error{font-size:.82rem;color:#b91c1c;font-weight:700;margin:.2rem 0 .6rem;min-height:1.2em}
+    [data-theme="dark"] .dl-error{color:#fca5a5}
+
+    .dl-example-row,.dl-history-row{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin:.3rem 0 .7rem}
+    .dl-example-row span,.dl-history-row span{font-size:.76rem;font-weight:700;color:var(--text-muted);margin-right:.15rem}
+    .dl-chip{border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:999px;padding:.32rem .72rem;font-size:.78rem;font-weight:700;cursor:pointer;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .dl-chip:hover{border-color:#4f46e5}
+    .dl-clear-history{border:none;background:transparent;color:var(--accent);font-weight:700;font-size:.76rem;cursor:pointer}
+
+    .dl-empty{padding:2.4rem 1rem;text-align:center;color:var(--text-muted)}
+    .dl-empty .em-icon{font-size:2.6rem;display:block;margin-bottom:.6rem}
+    .dl-empty strong{display:block;color:var(--text);font-size:1.05rem;margin-bottom:.3rem}
+
+    .dl-loading{padding:.5rem 0}
+    .dl-skel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+    @media(max-width:820px){ .dl-skel-grid{grid-template-columns:1fr 1fr} }
+    @media(max-width:560px){ .dl-skel-grid{grid-template-columns:1fr} }
+    .dl-skel-card{height:110px;border-radius:16px;background:linear-gradient(90deg,var(--surface-strong) 25%,var(--surface) 37%,var(--surface-strong) 63%);background-size:400% 100%;animation:dl-shimmer 1.4s ease infinite;border:1px solid var(--border)}
+    @keyframes dl-shimmer{0%{background-position:100% 50%}100%{background-position:0 50%}}
+    .dl-loading-label{text-align:center;font-weight:700;color:var(--text-muted);margin:.9rem 0;font-size:.86rem}
+
+    .dl-fail{padding:2rem 1rem;text-align:center}
+    .dl-fail .fail-icon{font-size:2.6rem;display:block;margin-bottom:.6rem}
+    .dl-fail p{color:var(--text-muted);max-width:52ch;margin:0 auto 1rem}
+
+    .dl-summary{display:grid;grid-template-columns:repeat(6,1fr);gap:.6rem;margin-bottom:1rem}
+    @media(max-width:960px){ .dl-summary{grid-template-columns:repeat(3,1fr)} }
+    @media(max-width:560px){ .dl-summary{grid-template-columns:repeat(2,1fr)} }
+    .dl-sum-item{padding:.7rem;border-radius:14px;border:1px solid var(--border);background:var(--surface-strong)}
+    .dl-sum-item span{display:block;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--text-muted);margin-bottom:.2rem}
+    .dl-sum-item strong{font-size:.92rem;font-weight:900;word-break:break-word}
+    .dl-ok{color:#15803d}[data-theme="dark"] .dl-ok{color:#4ade80}
+    .dl-warn{color:#b45309}[data-theme="dark"] .dl-warn{color:#fcd34d}
+
+    .dl-score-wrap{display:flex;align-items:center;gap:1rem;margin:0 0 1rem}
+    .dl-score-ring{--pct:0;width:74px;height:74px;border-radius:50%;background:conic-gradient(#4f46e5 calc(var(--pct)*1%),var(--border) 0);display:flex;align-items:center;justify-content:center;position:relative;flex:0 0 auto}
+    .dl-score-ring::before{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--surface)}
+    .dl-score-ring span{position:relative;font-weight:900;font-size:1.25rem}
+    .dl-score-ring small{position:relative;font-size:.6rem;color:var(--text-muted);margin-left:1px}
+    .dl-score-label{font-weight:800;font-size:.85rem;color:var(--text-muted)}
+
+    .dl-actions-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.1rem}
+    .dl-actions-row button{border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:12px;padding:.55rem .9rem;font-weight:700;font-size:.84rem;cursor:pointer;font-family:inherit}
+    .dl-actions-row button:hover{border-color:#4f46e5}
+
+    .dl-provider-badges{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
+    .dl-provider-badge{font-size:.76rem;font-weight:700;padding:.32rem .68rem;border-radius:999px;background:rgba(79,70,229,.13);color:#4338ca}
+    [data-theme="dark"] .dl-provider-badge{color:#a5b4fc}
+    .dl-provider-badge--muted{background:var(--surface-strong);color:var(--text-muted)}
+    .dl-provider-badge b{font-weight:900}
+
+    .dl-records-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.9rem;margin-bottom:1.2rem}
+    @media(max-width:820px){ .dl-records-grid{grid-template-columns:1fr} }
+    .dl-record-card{border:1px solid var(--border);background:var(--surface);border-radius:18px;padding:1rem;overflow:hidden}
+    .dl-record-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem}
+    .dl-record-card-head h3{margin:0;font-size:1rem;font-weight:900}
+    .dl-record-card-head h3 span{display:block;font-size:.72rem;font-weight:600;color:var(--text-muted);margin-top:.1rem}
+    .dl-count-badge{background:linear-gradient(135deg,#4f46e5,#0284c7);color:#fff;font-size:.72rem;font-weight:800;border-radius:999px;padding:.15rem .55rem;flex:0 0 auto}
+    .dl-record-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.5rem}
+    .dl-record-row{border:1px solid var(--border);border-radius:12px;padding:.55rem .65rem;background:var(--surface-strong)}
+    .dl-record-value code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.84rem;word-break:break-all}
+    .dl-record-value code.dl-txt{display:block;margin-top:.25rem;white-space:pre-wrap}
+    .dl-record-meta{display:flex;align-items:center;justify-content:space-between;margin-top:.35rem;font-size:.72rem;color:var(--text-muted);font-weight:700}
+    .dl-mini-copy{border:none;background:transparent;color:var(--accent);font-weight:800;cursor:pointer;font-size:.72rem}
+    .dl-mini-copy:hover{text-decoration:underline}
+    .dl-pill{display:inline-block;background:rgba(14,165,233,.15);color:#0369a1;font-size:.7rem;font-weight:800;padding:.1rem .45rem;border-radius:999px;margin-right:.3rem}
+    [data-theme="dark"] .dl-pill{color:#7dd3fc}
+    .dl-soa-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem .8rem;font-size:.8rem}
+    .dl-soa-grid div span{display:block;font-size:.68rem;color:var(--text-muted);font-weight:700}
+
+    .dl-esec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-bottom:1.2rem}
+    @media(max-width:900px){ .dl-esec-grid{grid-template-columns:1fr} }
+    .dl-esec-card{border-radius:16px;padding:1rem;border:1px solid var(--border);background:var(--surface)}
+    .dl-esec-card.is-ok{border-color:rgba(34,197,94,.35)}
+    .dl-esec-card.is-warn{border-color:rgba(245,158,11,.35)}
+    .dl-esec-card strong{display:block;margin-bottom:.4rem;font-size:.9rem}
+    .dl-esec-card p{margin:.35rem 0 0;font-size:.8rem;color:var(--text-muted);line-height:1.5}
+    .dl-esec-card code{display:block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.76rem;word-break:break-all;background:var(--surface-strong);border-radius:8px;padding:.4rem .5rem}
+    .dl-btn-ghost{border:1px solid var(--border);border-radius:10px;padding:.45rem .8rem;font-family:inherit;font-weight:700;font-size:.78rem;color:var(--text);cursor:pointer;background:var(--surface-strong);margin-top:.5rem}
+    .dl-btn-ghost:hover{border-color:#4f46e5}
+
+    .dl-recommendations{border:1px solid var(--border);border-radius:16px;padding:1rem;background:var(--surface);margin-bottom:.4rem}
+    .dl-recommendations ul{margin:0;padding-left:1.2rem}
+    .dl-recommendations li{font-size:.85rem;color:var(--text-muted);line-height:1.6}
+    .dl-hint{font-size:.85rem;color:var(--text-muted);line-height:1.6;margin:.3rem 0}
+
+    .dl-sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:40;padding:.75rem 1rem;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-top:1px solid var(--border);display:none}
+    [data-theme="dark"] .dl-sticky-cta{background:rgba(15,23,42,.94)}
+    @media(max-width:768px){ .dl-sticky-cta{display:block} .dl-sticky-cta .primary-btn{width:100%;font-weight:800;min-height:2.85rem} }
+
+    @media(prefers-reduced-motion:reduce){ [data-dns-page] *{animation:none!important;transition:none!important} }
+
+    .dl-security-grid,.dl-benefits-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.7rem;margin:1.1rem 0}
+    .dl-usecase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.85rem;margin:1.1rem 0}
+    .dl-edu-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin:1.1rem 0}
+    @media(max-width:960px){ .dl-security-grid,.dl-benefits-grid,.dl-edu-grid{grid-template-columns:repeat(3,1fr)} }
+    @media(max-width:640px){ .dl-security-grid,.dl-benefits-grid,.dl-edu-grid{grid-template-columns:repeat(2,1fr)} .dl-usecase-grid{grid-template-columns:1fr} }
+    .dl-security-card,.dl-benefit-card,.dl-edu-card{padding:.85rem;border-radius:16px;border:1px solid var(--border);background:var(--surface);text-align:center}
+    .dl-security-card span,.dl-benefit-card span,.dl-edu-card span{display:block;font-size:1.3rem;margin-bottom:.25rem}
+    .dl-security-card strong,.dl-benefit-card strong,.dl-edu-card strong{display:block;font-size:.78rem;margin-bottom:.15rem}
+    .dl-security-card p,.dl-benefit-card p,.dl-edu-card p{margin:0;font-size:.72rem;color:var(--text-muted);line-height:1.45}
+    .dl-usecase-card{padding:1.1rem;border-radius:16px;border:1px solid var(--border);background:var(--surface-strong)}
+    .dl-usecase-card strong{display:block;margin-bottom:.35rem;font-size:.98rem}
+    .dl-usecase-card p{margin:0;font-size:.86rem;color:var(--text-muted);line-height:1.55}
+
+    .dl-compare-wrap{overflow-x:auto;margin:1.1rem 0;border-radius:16px;border:1px solid var(--border)}
+    table.dl-compare{width:100%;border-collapse:collapse;font-size:.84rem;min-width:640px}
+    table.dl-compare th,table.dl-compare td{padding:.65rem .8rem;text-align:left;border-bottom:1px solid var(--border)}
+    table.dl-compare thead th{background:var(--surface-strong);font-weight:800;font-size:.76rem;text-transform:uppercase;letter-spacing:.03em;color:var(--text-muted)}
+    table.dl-compare tbody tr:last-child td{border-bottom:none}
+    table.dl-compare td:first-child{font-weight:700}
+    table.dl-compare td.yes{color:#15803d;font-weight:800}
+    [data-theme="dark"] table.dl-compare td.yes{color:#4ade80}
+    table.dl-compare td.no{color:#b91c1c;font-weight:700}
+    [data-theme="dark"] table.dl-compare td.no{color:#fca5a5}
+
+    .dl-ref-wrap{overflow-x:auto;margin:1rem 0;border-radius:16px;border:1px solid var(--border)}
+    table.dl-ref{width:100%;border-collapse:collapse;font-size:.82rem;min-width:600px}
+    table.dl-ref th,table.dl-ref td{padding:.55rem .7rem;text-align:left;border-bottom:1px solid var(--border);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    table.dl-ref thead th{background:var(--surface-strong);font-family:inherit;font-weight:800;font-size:.72rem;text-transform:uppercase;color:var(--text-muted)}
+    table.dl-ref tbody tr:last-child td{border-bottom:none}
+
+    .dl-seo h2{margin:2.1rem 0 .75rem;font-size:clamp(1.25rem,2.5vw,1.55rem);scroll-margin-top:90px}
+    .dl-seo h2:first-child{margin-top:0}
+    .dl-seo h3{margin:1.3rem 0 .5rem;font-size:1.05rem}
+    .dl-seo p,.dl-seo li{line-height:1.75;color:var(--text-muted)}
+    .dl-seo ul,.dl-seo ol{padding-left:1.3rem}
+    .dl-seo code{background:var(--surface-strong);border:1px solid var(--border);border-radius:5px;padding:.05rem .35rem;font-size:.9em}
+  </style>
+
+  <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://tooladda.online/#website",
+      "name": "ToolAdda",
+      "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+      "url": "https://tooladda.online/",
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://tooladda.online/dns-lookup.html?domain={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+      "url": "https://tooladda.online/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tooladda.online/assets/images/logo.svg"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/dns-lookup.html#webpage",
+      "url": "https://tooladda.online/dns-lookup.html",
+      "name": "DNS Lookup Tool — Free A, AAAA, MX, TXT, NS, SOA, PTR, SRV, CAA Checker | ToolAdda",
+      "description": "Free DNS lookup tool — check A, AAAA, MX, TXT, SPF, DKIM, DMARC, NS, SOA, CNAME, PTR, SRV, CAA and DNSSEC for any domain instantly, with health scoring and export.",
+      "inLanguage": "en",
+      "datePublished": "2026-08-03",
+      "dateModified": "2026-08-03",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://tooladda.online/dns-lookup.html#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://tooladda.online/dns-lookup.html#softwareapplication"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://tooladda.online/dns-lookup.html#softwareapplication",
+      "name": "DNS Lookup Tool",
+      "alternateName": [
+        "DNS Checker",
+        "DNS Record Lookup",
+        "Nslookup Online"
+      ],
+      "url": "https://tooladda.online/dns-lookup.html",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "description": "Look up A, AAAA, MX, TXT, SPF, DKIM, DMARC, NS, SOA, CNAME, PTR, SRV, CAA, NAPTR, DNSKEY, DS, TLSA, SSHFP, LOC, RP, and HINFO DNS records for any domain in real time via DNS-over-HTTPS, with DNSSEC detection, DNS health scoring, CDN/cloud provider detection, and JSON/CSV/TXT export.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Real-time DNS-over-HTTPS lookups (Google & Cloudflare)",
+        "A, AAAA, MX, TXT, NS, SOA, CNAME, CAA, PTR, SRV, NAPTR, DNSKEY, DS, TLSA, SSHFP, LOC, RP, HINFO record types",
+        "SPF, DKIM, and DMARC email authentication analysis",
+        "DNSSEC validation detection",
+        "DNS health score with actionable recommendations",
+        "CDN / cloud / DNS provider detection",
+        "Reverse DNS (PTR) lookup for IPv4 and IPv6",
+        "Search history and one-click example domains",
+        "Copy, JSON export, CSV export, TXT export, print, and shareable links",
+        "Dark mode and full keyboard accessibility",
+        "No signup, no installation, and results straight from the public resolvers"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tooladda.online/dns-lookup.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "DNS Lookup"
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to look up DNS records online",
+      "totalTime": "PT1M",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Enter a domain name",
+          "text": "Type any domain, subdomain, or hostname, such as example.com or api.example.com."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Choose a record type",
+          "text": "Pick a specific record type like A, MX, or TXT, or leave it on 'All Records' to query the full core set at once."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Run the lookup",
+          "text": "Click 'Lookup DNS Records' to query public DNS-over-HTTPS resolvers in real time."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Review the results",
+          "text": "See every record in organized cards with TTL, priority, DNSSEC status, and a DNS health score."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Export or share",
+          "text": "Copy any value, export as JSON, CSV, or TXT, print the report, or copy a shareable link."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is DNS lookup?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "DNS lookup is the process of querying the Domain Name System to retrieve the records associated with a domain — such as its IP address (A/AAAA), mail servers (MX), or text records (TXT) — translating human-readable names into the machine-readable data that powers the internet."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does DNS work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "When you look up a domain, a recursive resolver asks a root name server which server handles the domain's TLD, then asks that TLD server which name server is authoritative for the exact domain, and finally asks that authoritative server for the actual record — a process called recursive resolution."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is an A record?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An A record maps a domain name to an IPv4 address, such as example.com pointing to 93.184.216.34. It's the most fundamental DNS record type, used by browsers to know where to connect."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is an AAAA record?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An AAAA record maps a domain name to an IPv6 address, the 128-bit successor to IPv4 designed to accommodate the internet's growth beyond IPv4's address space."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is an MX record?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An MX (Mail Exchange) record specifies which mail servers accept email for a domain, along with a priority number — lower numbers are tried first — so a domain can list backup mail servers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a TXT record?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A TXT record stores arbitrary text data attached to a domain, commonly used for SPF, DKIM, DMARC, domain ownership verification, and other machine-readable metadata."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is an SPF record?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "SPF (Sender Policy Framework) is a TXT record listing which mail servers are authorized to send email on behalf of a domain, helping receiving servers reject forged 'from' addresses."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a DMARC record?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "DMARC (Domain-based Message Authentication, Reporting & Conformance) is a TXT record at _dmarc.yourdomain.com that tells receiving mail servers what to do with messages that fail SPF or DKIM checks, and where to send reports."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a DKIM record?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "DKIM (DomainKeys Identified Mail) publishes a public key at a selector subdomain (like selector._domainkey.yourdomain.com) so receiving servers can verify a cryptographic signature added to outgoing mail, proving it wasn't altered in transit."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I check DNS records for a domain?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Enter the domain into this tool, choose a record type or 'All Records', and click Lookup — results come back in seconds directly from public DNS-over-HTTPS resolvers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How often do DNS records update?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Updates depend on the record's TTL (time to live). A record with a 3600-second TTL can take up to an hour to be reflected everywhere, since resolvers cache the old value until it expires."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why are my DNS changes not visible yet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "DNS propagation isn't instant — different resolvers around the world cache records for different durations based on TTL, so changes can take anywhere from minutes to 48 hours to be visible everywhere."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is TTL in DNS?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "TTL (Time To Live) is the number of seconds a resolver is allowed to cache a DNS record before re-querying the authoritative server, balancing update speed against query load."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is DNSSEC?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "DNSSEC (Domain Name System Security Extensions) cryptographically signs DNS records so resolvers can verify they weren't tampered with in transit, protecting against cache poisoning and spoofing attacks."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I look up subdomains?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — enter any subdomain or hostname, such as api.example.com or mail.example.com, exactly as you would a root domain."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I check email authentication records?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — this tool automatically checks SPF and DMARC, and includes a one-click check against common DKIM selectors to find published DKIM keys."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I export the results?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — export any lookup as JSON, CSV, or plain TXT, copy a formatted summary to your clipboard, print the page, or copy a shareable link that reruns the same lookup."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this DNS lookup tool free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — completely free, with no signup, no rate limits, and no watermarked results."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work on mobile?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — the interface is fully responsive with a sticky mobile search button, and every feature works identically on phones, tablets, and desktops."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is DNS lookup secure and private?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Lookups are sent directly from your browser to public DNS-over-HTTPS resolvers (Google and Cloudflare) over encrypted HTTPS — ToolAdda's own servers never see or log the domains you search."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a CNAME record?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A CNAME (Canonical Name) record aliases one domain name to another, so all DNS queries for the alias are redirected to the target domain's records instead."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is an NS record?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An NS (Name Server) record identifies which servers are authoritative for a domain, i.e., which servers hold the master copy of its DNS records."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a SOA record?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An SOA (Start of Authority) record holds administrative information about a DNS zone: the primary name server, admin contact, serial number, and timing values like refresh, retry, and expire."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a PTR record?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A PTR (Pointer) record maps an IP address back to a domain name — the reverse of an A record — used for reverse DNS lookups, mail server verification, and network diagnostics."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a CAA record?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A CAA (Certification Authority Authorization) record specifies which certificate authorities are permitted to issue TLS/SSL certificates for a domain, reducing the risk of mis-issued certificates."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/dns-lookup.html#webpage",
+      "url": "https://tooladda.online/dns-lookup.html",
+      "inLanguage": "en",
+      "datePublished": "2026-08-03",
+      "dateModified": "2026-09-03",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+      <nav class="nav-links" aria-label="Primary"><a href="/">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy</a></nav>
+      <div class="nav-actions">
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+            <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+            <path d="M3.1 16.9h10.8" />
+            <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+          </svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+        <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <div class="dl-shell">
+      <aside class="ta-support" aria-label="Support ToolAdda">
+        <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+        <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+      </aside>
+
+      <div class="container dl-wrap">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">›</span>
+          <a href="/">Developer Tools</a><span aria-hidden="true">›</span>
+          <span aria-current="page">DNS Lookup</span>
+        </nav>
+
+        <div class="dl-card" style="margin:1rem 0 1.25rem">
+          <p class="dl-badge">🌐 DNS Lookup Tool</p>
+          <h1 class="dl-title">DNS Lookup Tool — Check Any Domain's DNS Records Instantly</h1>
+          <p class="dl-lead">Enter a domain, subdomain, or hostname to retrieve A, AAAA, MX, TXT, SPF, DKIM, DMARC, NS, SOA, CNAME, PTR, SRV, CAA, DNSSEC, and more — queried live from public DNS-over-HTTPS resolvers. Get a DNS health score, provider detection, and export results in seconds.</p>
+          <p class="dl-privacy">🔒 Queries go straight from your browser to Google &amp; Cloudflare's public resolvers over encrypted HTTPS — ToolAdda never logs the domains you search.</p>
+          <ul class="dl-trust-row">
+            <li><b>Real-time results</b></li>
+            <li>19 record types</li>
+            <li>DNSSEC detection</li>
+            <li>Email security analysis</li>
+            <li>No signup</li>
+          </ul>
+          <div class="dl-hero-cta">
+            <a class="primary-btn" href="#dns-tool">Lookup DNS records free</a>
+            <a class="secondary-btn" href="#article">Learn how DNS works →</a>
+          </div>
+        </div>
+
+        <div class="dl-card" id="dns-tool" data-dns-page>
+          <div class="dl-search-row">
+            <div class="dl-field"><label for="dlDomain">Domain, subdomain, or IP</label><input type="text" id="dlDomain" data-domain-input placeholder="example.com" inputmode="url" autocomplete="off" spellcheck="false" /></div>
+            <div class="dl-field">
+              <label for="dlType">Record type</label>
+              <select id="dlType" data-type-select>
+                <option value="ALL" selected>All Records</option>
+                <optgroup label="Common">
+                  <option value="A">A — IPv4 address</option>
+                  <option value="AAAA">AAAA — IPv6 address</option>
+                  <option value="CNAME">CNAME — Alias</option>
+                  <option value="MX">MX — Mail server</option>
+                  <option value="TXT">TXT — Text / SPF</option>
+                  <option value="NS">NS — Name server</option>
+                  <option value="SOA">SOA — Zone authority</option>
+                  <option value="CAA">CAA — CA authorization</option>
+                </optgroup>
+                <optgroup label="Advanced">
+                  <option value="PTR">PTR — Reverse DNS</option>
+                  <option value="SRV">SRV — Service locator</option>
+                  <option value="NAPTR">NAPTR — Naming pointer</option>
+                  <option value="DNSKEY">DNSKEY — DNSSEC key</option>
+                  <option value="DS">DS — Delegation signer</option>
+                  <option value="TLSA">TLSA — DANE TLS</option>
+                  <option value="SSHFP">SSHFP — SSH fingerprint</option>
+                  <option value="LOC">LOC — Geo location</option>
+                  <option value="RP">RP — Responsible person</option>
+                  <option value="HINFO">HINFO — Host info</option>
+                </optgroup>
+              </select>
+            </div>
+            <button type="button" class="dl-lookup-btn" data-lookup-btn>🔍 Lookup DNS Records</button>
+          </div>
+          <p class="dl-error" data-dl-error role="alert" aria-live="polite"></p>
+
+          <div class="dl-example-row">
+            <span>Try:</span>
+            <button type="button" class="dl-chip" data-example="google.com">google.com</button>
+            <button type="button" class="dl-chip" data-example="cloudflare.com">cloudflare.com</button>
+            <button type="button" class="dl-chip" data-example="github.com">github.com</button>
+            <button type="button" class="dl-chip" data-example="wikipedia.org">wikipedia.org</button>
+          </div>
+
+          <div class="dl-history-row hidden" data-history-row>
+            <span>Recent:</span>
+            <span data-history-chips></span>
+            <button type="button" class="dl-clear-history" data-clear-history>Clear</button>
+          </div>
+
+          <!-- EMPTY STATE -->
+          <div class="dl-empty" data-dl-empty>
+            <span class="em-icon" aria-hidden="true">🔎</span>
+            <strong>Enter a domain above to see its DNS records</strong>
+            <p>Results include A/AAAA, MX, TXT, NS, SOA, CAA, DNSSEC status, email security analysis, and a DNS health score.</p>
+          </div>
+
+          <!-- LOADING STATE -->
+          <div class="dl-loading hidden" data-dl-loading aria-live="polite">
+            <p class="dl-loading-label">⏳ Querying public DNS resolvers…</p>
+            <div class="dl-skel-grid">
+              <div class="dl-skel-card"></div><div class="dl-skel-card"></div><div class="dl-skel-card"></div>
+            </div>
+          </div>
+
+          <!-- FAIL STATE -->
+          <div class="dl-fail hidden" data-dl-fail role="alert">
+            <span class="fail-icon" aria-hidden="true">⚠️</span>
+            <strong>No records found</strong>
+            <p data-dl-fail-msg></p>
+            <button type="button" class="secondary-btn" data-retry-btn>↻ Try again</button>
+          </div>
+
+          <!-- RESULTS -->
+          <div class="hidden" data-dl-results>
+            <div class="dl-summary" data-dl-summary></div>
+            <div class="dl-score-wrap" data-health-score></div>
+
+            <div class="dl-actions-row">
+              <button type="button" data-copy-all>📋 Copy all records</button>
+              <button type="button" data-export-json>⬇️ Export JSON</button>
+              <button type="button" data-export-csv>⬇️ Export CSV</button>
+              <button type="button" data-export-txt>⬇️ Download TXT</button>
+              <button type="button" data-print-results>🖨️ Print report</button>
+              <button type="button" data-share-link>🔗 Copy shareable link</button>
+            </div>
+
+            <div class="dl-provider-badges" data-provider-badges></div>
+
+            <h2 style="margin:0 0 .6rem;font-size:1.1rem">DNS Records</h2>
+            <div class="dl-records-grid" data-records-grid></div>
+
+            <h2 style="margin:0 0 .6rem;font-size:1.1rem">Email Security (SPF · DKIM · DMARC)</h2>
+            <div class="dl-esec-grid" data-email-security></div>
+
+            <h2 style="margin:0 0 .6rem;font-size:1.1rem">Security Recommendations</h2>
+            <div class="dl-recommendations" data-recommendations></div>
+          </div>
+        </div>
+
+        <!-- ============ TRUST ============ -->
+        <section class="dl-card" style="margin-top:1.25rem" aria-label="Trust signals">
+          <h2 style="margin-top:0">Built for Developers, DevOps &amp; Security Teams</h2>
+          <div class="dl-security-grid">
+            <div class="dl-security-card"><span>⚡</span><strong>Real-time queries</strong><p>Live DNS-over-HTTPS, no cache.</p></div>
+            <div class="dl-security-card"><span>🔓</span><strong>No registration</strong><p>Open and use immediately.</p></div>
+            <div class="dl-security-card"><span>♾️</span><strong>Free forever</strong><p>No limits, no premium tier.</p></div>
+            <div class="dl-security-card"><span>🔒</span><strong>Encrypted lookups</strong><p>HTTPS to trusted public resolvers.</p></div>
+            <div class="dl-security-card"><span>🕵️</span><strong>Privacy focused</strong><p>ToolAdda logs nothing you search.</p></div>
+          </div>
+        </section>
+
+        <!-- ============ BENEFITS ============ -->
+        <section class="dl-card" style="margin-top:1.25rem" aria-label="Benefits">
+          <h2 style="margin-top:0">Deeper Than a Basic DNS Checker</h2>
+          <div class="dl-benefits-grid">
+            <div class="dl-benefit-card"><span>🩺</span><strong>DNS health score</strong><p>Actionable, weighted scoring.</p></div>
+            <div class="dl-benefit-card"><span>✉️</span><strong>Email security analysis</strong><p>SPF, DKIM, DMARC in one view.</p></div>
+            <div class="dl-benefit-card"><span>🏷️</span><strong>Provider detection</strong><p>CDN, cloud, and DNS host.</p></div>
+            <div class="dl-benefit-card"><span>🛡️</span><strong>DNSSEC validation</strong><p>See if answers are authenticated.</p></div>
+            <div class="dl-benefit-card"><span>📤</span><strong>JSON, CSV, TXT export</strong><p>Take results anywhere.</p></div>
+          </div>
+        </section>
+
+        <!-- ============ USE CASES ============ -->
+        <section class="dl-card" style="margin-top:1.25rem" aria-label="Use cases">
+          <h2 style="margin-top:0">Built for Every DNS Workflow</h2>
+          <div class="dl-usecase-grid">
+            <div class="dl-usecase-card"><strong>🚀 Website Migrations</strong><p>Verify A/AAAA and CNAME records point to the new host before and after cutover.</p></div>
+            <div class="dl-usecase-card"><strong>✉️ Email Deliverability</strong><p>Confirm MX, SPF, DKIM, and DMARC are correctly published before a sending domain goes live.</p></div>
+            <div class="dl-usecase-card"><strong>🔐 Certificate Management</strong><p>Check CAA records to see which certificate authorities are authorized to issue TLS certs.</p></div>
+            <div class="dl-usecase-card"><strong>☁️ Cloud &amp; DevOps</strong><p>Diagnose Route 53, Cloudflare, or Azure DNS changes and confirm they've propagated.</p></div>
+            <div class="dl-usecase-card"><strong>🎓 Networking Education</strong><p>See the recursive resolution chain and record types explained side-by-side with live data.</p></div>
+            <div class="dl-usecase-card"><strong>🕵️ Security Investigation</strong><p>Spot unexpected NS changes, missing DNSSEC, or unauthorized CNAME redirects.</p></div>
+          </div>
+        </section>
+
+        <!-- ============ COMPARISON ============ -->
+        <section class="dl-card" style="margin-top:1.25rem" aria-label="Comparison with other tools">
+          <h2 style="margin-top:0">How ToolAdda Compares</h2>
+          <div class="dl-compare-wrap">
+            <table class="dl-compare">
+              <thead><tr><th>Feature</th><th>ToolAdda</th><th>Nslookup / Dig CLI</th><th>Typical Web DNS Checkers</th></tr></thead>
+              <tbody>
+                <tr><td>No install or terminal required</td><td class="yes">Yes</td><td class="no">No</td><td class="yes">Yes</td></tr>
+                <tr><td>DNS health score with recommendations</td><td class="yes">Yes</td><td class="no">No</td><td class="no">Rare</td></tr>
+                <tr><td>SPF / DKIM / DMARC analysis built in</td><td class="yes">Yes</td><td class="no">No</td><td class="no">Rare</td></tr>
+                <tr><td>CDN / cloud provider detection</td><td class="yes">Yes</td><td class="no">No</td><td class="no">No</td></tr>
+                <tr><td>JSON / CSV / TXT export</td><td class="yes">Yes</td><td class="no">No</td><td class="no">Limited</td></tr>
+                <tr><td>19 record types including DNSSEC, TLSA, SSHFP</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="no">Usually A/MX/TXT only</td></tr>
+                <tr><td>Dark mode</td><td class="yes">Yes</td><td class="no">N/A</td><td class="no">Rare</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ============ EDUCATIONAL CARDS ============ -->
+        <section class="dl-card" style="margin-top:1.25rem" aria-label="DNS concepts">
+          <h2 style="margin-top:0">Core DNS Concepts</h2>
+          <div class="dl-edu-grid">
+            <div class="dl-edu-card"><span>⏱️</span><strong>TTL</strong><p>Seconds a record may be cached before re-checking.</p></div>
+            <div class="dl-edu-card"><span>🗃️</span><strong>DNS Cache</strong><p>Stored copies of recent answers for speed.</p></div>
+            <div class="dl-edu-card"><span>🔁</span><strong>Recursive Resolver</strong><p>Does the multi-step lookup on your behalf.</p></div>
+            <div class="dl-edu-card"><span>🏛️</span><strong>Authoritative Server</strong><p>Holds the zone's actual source-of-truth records.</p></div>
+            <div class="dl-edu-card"><span>🛡️</span><strong>DNSSEC</strong><p>Cryptographic signatures that prevent spoofing.</p></div>
+            <div class="dl-edu-card"><span>➡️</span><strong>Forward Lookup</strong><p>Name → IP address (the common case).</p></div>
+            <div class="dl-edu-card"><span>⬅️</span><strong>Reverse Lookup</strong><p>IP address → name, via PTR records.</p></div>
+            <div class="dl-edu-card"><span>🌍</span><strong>Public DNS</strong><p>Open resolvers like 8.8.8.8 or 1.1.1.1.</p></div>
+            <div class="dl-edu-card"><span>🏢</span><strong>Private DNS</strong><p>Internal resolvers for corporate networks.</p></div>
+            <div class="dl-edu-card"><span>🪓</span><strong>Split-Horizon DNS</strong><p>Different answers for internal vs external clients.</p></div>
+            <div class="dl-edu-card"><span>⚖️</span><strong>DNS Load Balancing</strong><p>Multiple A records spread traffic across servers.</p></div>
+            <div class="dl-edu-card"><span>📍</span><strong>GeoDNS</strong><p>Answers vary by the requester's geographic location.</p></div>
+          </div>
+        </section>
+
+        <!-- ============ SEO CONTENT ============ -->
+        <article class="dl-card dl-seo" style="margin-top:1.25rem" id="article" aria-label="DNS lookup guide">
+          <h2 id="what-is-dns">What Is DNS?</h2>
+          <p>The Domain Name System (DNS) is the internet's address book — a distributed, hierarchical database that translates human-friendly domain names like <code>example.com</code> into the numerical IP addresses computers actually use to route traffic. Without DNS, you'd need to memorize an IP address for every website you visit, the way phone books once required memorizing phone numbers. DNS was standardized in 1983 (RFC 882/883) to replace a single, centrally maintained HOSTS.TXT file that could no longer scale with the growing ARPANET, and its distributed design is the reason it still scales to billions of queries per day, four decades later.</p>
+
+          <h2 id="how-dns-works">How DNS Works</h2>
+          <p>Every DNS lookup is a short conversation between several specialized servers, each responsible for one layer of the domain hierarchy. When you type a domain into a browser, your device first checks its local cache; if there's no cached answer, it asks a recursive resolver — typically run by your ISP or a public provider like Google (8.8.8.8) or Cloudflare (1.1.1.1) — to do the legwork. This tool queries those same public resolvers directly over DNS-over-HTTPS (DoH), the same encrypted protocol modern browsers use, so the answers you see are exactly what a real client would receive.</p>
+
+          <h2 id="what-is-dns-lookup">What Is DNS Lookup?</h2>
+          <p>A DNS lookup is a single query-and-response exchange that retrieves one type of record for a domain — "what's the A record for example.com?" or "what MX servers handle mail for this domain?" Tools like this one automate that exchange, formatting the raw response into something readable and adding analysis (DNSSEC status, health scoring, provider detection) that a bare protocol response doesn't include.</p>
+
+          <h2 id="resolution-process">The DNS Resolution Process, Step by Step</h2>
+          <p>Resolving <code>www.example.com</code> from scratch involves up to four hops. First, the recursive resolver asks a root name server (one of 13 logical root server clusters) where to find servers for the <code>.com</code> top-level domain. The root server doesn't know the answer for <code>example.com</code> specifically, but it knows which servers manage all of <code>.com</code>, so it refers the resolver there. Next, the resolver asks a TLD server for <code>.com</code>, which responds with the authoritative name servers for <code>example.com</code> specifically — information it learned when the domain was registered. Finally, the resolver queries one of those authoritative servers directly and receives the actual record. The resolver caches the answer for the record's TTL and returns it to your device, all of which typically happens in well under 100 milliseconds.</p>
+
+          <h2 id="recursive-resolver">Recursive Resolvers Explained</h2>
+          <p>A recursive resolver is the "detective" in DNS resolution — it's the only party that does all the walking between root, TLD, and authoritative servers, then caches and returns the final answer. Your ISP runs one by default, but public alternatives like Google Public DNS, Cloudflare 1.1.1.1, and Quad9 are popular because they can be faster, more privacy-respecting, or support features like DNS-over-HTTPS and malware filtering that ISP resolvers may lack.</p>
+
+          <h2 id="root-servers">Root Name Servers</h2>
+          <p>Root name servers sit at the top of the DNS hierarchy and know only one thing: which servers are authoritative for each top-level domain (.com, .org, .net, and hundreds of others). There are 13 logical root server addresses (lettered A through M), each operated by different organizations and heavily anycast across hundreds of physical locations worldwide, making the root zone extraordinarily resilient to outages and attacks.</p>
+
+          <h2 id="tld-servers">TLD Servers</h2>
+          <p>Top-Level Domain servers manage one specific suffix — Verisign runs the authoritative servers for <code>.com</code> and <code>.net</code>, for example — and their job is narrow: given a second-level domain like <code>example.com</code>, respond with the authoritative name servers that domain's owner configured at registration. TLD servers don't store a domain's actual A or MX records; they only point resolvers toward the servers that do.</p>
+
+          <h2 id="authoritative-dns">Authoritative DNS Servers</h2>
+          <p>An authoritative name server holds the actual, source-of-truth DNS records for a zone — every A, MX, TXT, and other record you configure in your DNS provider's dashboard lives here. This is the "last stop" in resolution: whatever an authoritative server returns for a query is the real, current answer, as opposed to a cached copy a recursive resolver is temporarily holding onto.</p>
+
+          <h2 id="a-records">A Records Explained</h2>
+          <p>An A record is the simplest and most common DNS record: it maps a hostname directly to an IPv4 address. A domain can have multiple A records pointing to different IPs — a common technique called round-robin DNS, used for basic load distribution across several servers without a dedicated load balancer.</p>
+
+          <h2 id="aaaa-records">AAAA Records</h2>
+          <p>AAAA records perform the same job as A records but for IPv6 addresses — the 128-bit successor to IPv4's 32-bit address space, designed because IPv4's roughly 4.3 billion addresses were exhausted by the growth of internet-connected devices. A domain typically publishes both A and AAAA records so it's reachable over either protocol, letting the client's operating system pick whichever it supports (a process called Happy Eyeballs).</p>
+
+          <h2 id="mx-records">MX Records</h2>
+          <p>MX records tell the internet which mail servers accept email for a domain, each paired with a priority number where lower values are preferred. If the primary mail server (priority 10) is unreachable, sending servers automatically fall back to the next-lowest priority, giving domains built-in mail redundancy without any application-level failover logic.</p>
+
+          <h2 id="txt-records">TXT Records</h2>
+          <p>TXT records hold arbitrary free-form text tied to a domain. Originally meant for human-readable notes, TXT records became DNS's general-purpose extension mechanism: SPF policies, DKIM public keys, DMARC policies, domain-ownership verification codes for services like Google Search Console, and countless other machine-readable protocols all piggyback on TXT because it required no new DNS record type to be standardized.</p>
+
+          <h2 id="spf-records">SPF Records</h2>
+          <p>SPF (Sender Policy Framework) is a TXT record starting with <code>v=spf1</code> that whitelists the mail servers and IP ranges authorized to send email claiming to be from a domain. Receiving mail servers check the sending server's IP against the domain's SPF record and can reject or flag messages from unauthorized sources — a foundational defense against email spoofing that this tool checks automatically.</p>
+
+          <h2 id="dkim-records">DKIM Records</h2>
+          <p>DKIM (DomainKeys Identified Mail) adds a cryptographic signature to outgoing email headers, verifiable against a public key published in DNS at a "selector" subdomain like <code>google._domainkey.example.com</code>. Because the selector name is chosen by whoever configures DKIM, it can't be discovered from the domain alone — this tool probes a list of common selectors (default, google, selector1, selector2, and others) to find published keys.</p>
+
+          <h2 id="dmarc-records">DMARC Records</h2>
+          <p>DMARC ties SPF and DKIM together into one policy, published as a TXT record at <code>_dmarc.example.com</code>. It tells receiving servers what to do when a message fails both checks (reject, quarantine, or just monitor) and where to send aggregate reports — closing the loop that SPF and DKIM alone leave open, since either can technically pass in isolation while the "from" header is still spoofed.</p>
+
+          <h2 id="cname-records">CNAME Records</h2>
+          <p>A CNAME record makes one domain name an alias for another — querying the alias transparently redirects the entire lookup to the target's records. CNAMEs are common for subdomains pointing at third-party services (like a custom domain pointing at a CDN or SaaS platform) but can't coexist with other record types at the same name, a rule enforced because a CNAME redirects the whole query, not just part of it.</p>
+
+          <h2 id="ns-records">NS Records</h2>
+          <p>NS records declare which servers are authoritative for a domain's DNS zone. They exist both at the registrar (delegating the domain to specific name servers) and within the zone itself, and mismatches between the two — a common migration mistake — can cause intermittent or region-dependent resolution failures.</p>
+
+          <h2 id="soa-records">SOA Records</h2>
+          <p>Every DNS zone has exactly one SOA record, holding administrative metadata: the primary name server, the zone administrator's email (with the @ replaced by a dot), a serial number that must increase with every zone edit for secondary servers to notice changes, and four timing values — refresh, retry, expire, and minimum TTL — that govern how secondary name servers stay in sync with the primary.</p>
+
+          <h2 id="ptr-records">PTR Records</h2>
+          <p>A PTR record is the reverse of an A record: given an IP address, it returns the associated hostname, looked up under the special <code>in-addr.arpa</code> zone (or <code>ip6.arpa</code> for IPv6) with the address octets reversed. Reverse DNS matters most for mail servers — many receiving servers reject email from IPs with no PTR record, or one that doesn't match the sending domain, as a basic anti-spam signal.</p>
+
+          <h2 id="srv-records">SRV Records</h2>
+          <p>SRV records generalize what MX records do for mail to any service: they specify a target host and port for a named service, plus priority and weight values for load balancing between multiple targets. Protocols like SIP (VoIP), XMPP (chat), and Minecraft server discovery rely on SRV records so clients don't need a hardcoded port.</p>
+
+          <h2 id="caa-records">CAA Records</h2>
+          <p>CAA (Certification Authority Authorization) records restrict which certificate authorities are allowed to issue TLS certificates for a domain. Publishing a CAA record naming only your chosen CA (like Let's Encrypt or DigiCert) means a compromised or careless CA elsewhere can't validly issue a certificate for your domain — CAs are required by the CA/Browser Forum baseline requirements to check for CAA records before issuing.</p>
+
+          <h2 id="dnssec">DNSSEC</h2>
+          <p>DNSSEC adds a chain of cryptographic signatures to DNS responses, anchored at the root zone, so a resolver can mathematically verify that an answer came from the real authoritative server and wasn't altered or forged en route — closing a gap that plain DNS, designed in an era before this kind of attack was a concern, never addressed. This tool surfaces the "AD" (Authenticated Data) flag returned by upstream resolvers to indicate whether a domain's DNSSEC signatures validated successfully.</p>
+
+          <h2 id="email-authentication">Email Authentication as a System</h2>
+          <p>SPF, DKIM, and DMARC solve three different pieces of the same problem — authorizing senders, verifying message integrity, and enforcing policy on failures — and are most effective deployed together. A domain with SPF but no DMARC still lets attackers spoof its "from" header in ways SPF alone doesn't catch (SPF validates the technical return-path, not the visible from-address), which is why mailbox providers increasingly require all three for reliable inbox delivery.</p>
+
+          <h2 id="troubleshooting">DNS Troubleshooting Basics</h2>
+          <p>Most DNS issues trace back to one of three causes: a record that's missing or has the wrong value, a TTL that hasn't expired yet on some resolvers (making a fix look like it "isn't working" when it actually already is, just not everywhere), or a delegation mismatch between the registrar's name servers and the zone's own NS records. Running a lookup against multiple resolvers — as this tool does by querying independent Google and Cloudflare infrastructure — quickly reveals whether an issue is a real misconfiguration or just a propagation delay.</p>
+
+          <h2 id="common-errors">Common DNS Errors</h2>
+          <ul>
+            <li><strong>NXDOMAIN</strong> — the domain doesn't exist at all, often a typo or an expired/unregistered domain.</li>
+            <li><strong>SERVFAIL</strong> — the authoritative server failed to respond validly, frequently caused by a broken DNSSEC signature chain.</li>
+            <li><strong>Dangling CNAME</strong> — a CNAME pointing at a deleted resource (like a decommissioned cloud storage bucket), a known subdomain-takeover risk.</li>
+            <li><strong>Missing glue records</strong> — when a domain's own name servers are subdomains of itself, the registrar must publish "glue" A records to avoid a resolution deadlock.</li>
+            <li><strong>Mismatched NS delegation</strong> — registrar-level name servers don't match the zone's own NS records, causing inconsistent answers depending on which resolver you ask.</li>
+          </ul>
+
+          <h2 id="propagation">DNS Propagation</h2>
+          <p>"Propagation" describes the gradual, TTL-governed process by which a DNS change becomes visible everywhere — it isn't a single event but thousands of independent caches expiring their old answers on their own schedules. Lowering a record's TTL well before a planned change (a common pre-migration step) shortens this window; a record left at its default TTL of 3600 or 86400 seconds can take up to that long to update on any given resolver.</p>
+
+          <h2 id="cdn-and-dns">CDNs and DNS</h2>
+          <p>Content Delivery Networks like Cloudflare, Akamai, and Fastly typically take over a domain's DNS entirely (rather than just fronting HTTP traffic), returning different A/AAAA answers to different users based on their location so each visitor is routed to the nearest edge server — a technique only possible because DNS resolution itself happens close to the requester, not the origin.</p>
+
+          <h2 id="cloudflare-dns">Cloudflare DNS</h2>
+          <p>Cloudflare operates both a free public resolver (1.1.1.1, one of the fastest according to independent benchmarks) and an authoritative DNS hosting service used by tens of millions of domains, alongside its CDN and security products. This tool uses Cloudflare's DNS-over-HTTPS endpoint as one of its two query sources.</p>
+
+          <h2 id="google-public-dns">Google Public DNS</h2>
+          <p>Google Public DNS (8.8.8.8 and 8.8.4.4) was one of the first major free, privacy-focused public resolvers, launched in 2009, and remains one of the most widely used alternatives to ISP-provided DNS. This tool's primary lookups run through Google's DNS-over-HTTPS JSON API, with Cloudflare as an automatic fallback if a query fails.</p>
+
+          <h2 id="best-practices">DNS Best Practices</h2>
+          <ul>
+            <li>Use at least two geographically distributed authoritative name servers for redundancy.</li>
+            <li>Lower TTLs before planned changes, then raise them again afterward once the change is confirmed stable.</li>
+            <li>Publish SPF, DKIM, and DMARC together — never just one or two in isolation.</li>
+            <li>Enable DNSSEC where your registrar and DNS host both support it.</li>
+            <li>Add CAA records to lock down which certificate authorities can issue for your domain.</li>
+            <li>Remove dangling CNAME records immediately when decommissioning a linked service.</li>
+          </ul>
+
+          <h2 id="dns-security">DNS Security</h2>
+          <p>Beyond DNSSEC, DNS security includes encrypting the query path itself (DNS-over-HTTPS and DNS-over-TLS, which this tool uses, prevent on-path eavesdroppers from seeing which domains you look up), rate-limiting and monitoring for DNS-based data exfiltration or DDoS amplification, and access-controlling zone transfers (AXFR) so an entire zone's record set can't be dumped by an unauthorized party — a classic reconnaissance technique this tool intentionally does not perform, since it queries individual record types rather than requesting a full zone transfer.</p>
+
+          <h2 id="enterprise-dns">Enterprise DNS Architecture</h2>
+          <p>Large organizations typically run split-horizon DNS — separate internal and external views of the same zone, so internal clients resolve private IPs for internal-only services while external clients see only public-facing records — layered with secondary/hidden-master authoritative setups for redundancy and change control. Getting this architecture right is what keeps DNS from becoming a single point of failure across an entire company's infrastructure.</p>
+
+          <h2 id="devops-dns">DevOps Use Cases for DNS Lookup</h2>
+          <p>DNS lookup tools are a routine part of CI/CD and incident response: verifying a deployment's DNS changes actually took effect before routing production traffic, confirming a TLS certificate's CAA prerequisites are met before an automated renewal, or quickly diagnosing whether a "site down" report is a DNS issue versus an application or network problem further down the stack.</p>
+
+          <h2 id="route53">AWS Route 53</h2>
+          <p>Route 53 is AWS's authoritative DNS service, notable for "alias" records — a Route 53-specific extension that behaves like a CNAME but works at the zone apex (a bare domain, without "www"), which standard DNS doesn't otherwise permit. Looking up a Route 53-hosted domain here will typically show NS records ending in <code>awsdns-*.com/.net/.org/.co.uk</code>, which this tool's provider detection recognizes automatically.</p>
+
+          <h2 id="azure-dns">Azure DNS</h2>
+          <p>Azure DNS is Microsoft's equivalent authoritative hosting service, commonly paired with Azure Traffic Manager for DNS-based global load balancing and failover. Domains hosted here typically resolve through name servers under the <code>azure-dns.*</code> family.</p>
+
+          <h2 id="google-cloud-dns">Google Cloud DNS</h2>
+          <p>Google Cloud DNS provides the same authoritative hosting role within GCP, often paired with Google Cloud Load Balancing and Cloud CDN, and integrates tightly with other GCP-managed certificates and services.</p>
+
+          <h2 id="kubernetes-dns">Kubernetes DNS</h2>
+          <p>Inside a Kubernetes cluster, CoreDNS (or historically kube-dns) provides internal service discovery, resolving service names like <code>my-service.my-namespace.svc.cluster.local</code> to pod or service IPs — a completely separate, internal DNS namespace from the public DNS this tool queries, but built on the same underlying protocol and record types.</p>
+
+          <h2 id="docker-dns">Docker DNS</h2>
+          <p>Docker's embedded DNS server (at 127.0.0.11 inside containers on user-defined networks) resolves container names to their current IPs automatically, letting containers reference each other by name instead of hardcoded, ephemeral IP addresses that would break every time a container restarts.</p>
+
+          <h2 id="performance">DNS Performance Optimization</h2>
+          <p>The biggest performance lever is TTL tuning — longer TTLs mean fewer round trips and faster perceived load times, at the cost of slower propagation when you do need to change something. Beyond that, using anycast-routed authoritative and resolver infrastructure (which most major DNS providers and public resolvers now do by default) and minimizing unnecessary CNAME chains (each hop adds a full round trip) are the most reliable ways to shave milliseconds off resolution time.</p>
+
+          <h2 id="conclusion">Conclusion</h2>
+          <p>DNS is easy to take for granted precisely because it usually works invisibly — but nearly every outage, mail deliverability problem, and certificate issue a developer or DevOps engineer investigates eventually traces back to a DNS record, correctly or incorrectly configured. Understanding the record types, resolution process, and security layers covered here — and having a fast, trustworthy way to inspect them, like the tool above — turns DNS from a black box into a diagnosable, well-understood layer of your infrastructure.</p>
+
+          <h2 id="faq-heading">DNS Lookup — Frequently Asked Questions</h2>
+          <div class="faq-grid" data-faq-grid>
+            <details class="faq-item"><summary>What is DNS lookup?</summary><p>Querying the Domain Name System to retrieve records for a domain, such as its IP address, mail servers, or text records.</p></details>
+            <details class="faq-item"><summary>How does DNS work?</summary><p>A recursive resolver walks from root servers to TLD servers to authoritative servers to fetch the actual record.</p></details>
+            <details class="faq-item"><summary>What is an A record?</summary><p>Maps a domain name to an IPv4 address — the most fundamental DNS record type.</p></details>
+            <details class="faq-item"><summary>What is an AAAA record?</summary><p>Maps a domain name to an IPv6 address, the successor to IPv4.</p></details>
+            <details class="faq-item"><summary>What is an MX record?</summary><p>Specifies which mail servers accept email for a domain, with a priority order.</p></details>
+            <details class="faq-item"><summary>What is a TXT record?</summary><p>Stores arbitrary text, commonly used for SPF, DKIM, DMARC, and ownership verification.</p></details>
+            <details class="faq-item"><summary>What is an SPF record?</summary><p>A TXT record listing servers authorized to send email for a domain.</p></details>
+            <details class="faq-item"><summary>What is a DMARC record?</summary><p>A policy telling receivers what to do with mail that fails SPF/DKIM checks.</p></details>
+            <details class="faq-item"><summary>What is a DKIM record?</summary><p>A public key published in DNS used to verify a cryptographic email signature.</p></details>
+            <details class="faq-item"><summary>How do I check DNS records?</summary><p>Enter a domain into this tool, pick a record type or "All Records", and click Lookup.</p></details>
+            <details class="faq-item"><summary>How often do DNS records update?</summary><p>Depends on TTL — a record can take up to its TTL in seconds to refresh everywhere.</p></details>
+            <details class="faq-item"><summary>Why aren't my DNS changes visible yet?</summary><p>Propagation isn't instant — different resolvers cache records for different durations.</p></details>
+            <details class="faq-item"><summary>What is TTL?</summary><p>Time To Live — how many seconds a resolver may cache a record before re-checking.</p></details>
+            <details class="faq-item"><summary>What is DNSSEC?</summary><p>Cryptographic signing of DNS records so resolvers can verify authenticity.</p></details>
+            <details class="faq-item"><summary>Can I lookup subdomains?</summary><p>Yes — enter any subdomain or hostname exactly as you would a root domain.</p></details>
+            <details class="faq-item"><summary>Can I check email records?</summary><p>Yes — SPF and DMARC are checked automatically, with a one-click DKIM selector probe.</p></details>
+            <details class="faq-item"><summary>Can I export results?</summary><p>Yes — export as JSON, CSV, or TXT, copy to clipboard, print, or copy a shareable link.</p></details>
+            <details class="faq-item"><summary>Is this free?</summary><p>Yes — completely free with no signup or limits.</p></details>
+            <details class="faq-item"><summary>Does it work on mobile?</summary><p>Yes — fully responsive with a sticky mobile search button.</p></details>
+            <details class="faq-item"><summary>Is DNS lookup secure?</summary><p>Queries run over encrypted HTTPS to public resolvers; ToolAdda logs nothing you search.</p></details>
+            <details class="faq-item"><summary>What is a CNAME record?</summary><p>Aliases one domain name to another, redirecting the whole DNS query.</p></details>
+            <details class="faq-item"><summary>What is an NS record?</summary><p>Identifies which servers are authoritative for a domain's DNS zone.</p></details>
+            <details class="faq-item"><summary>What is a SOA record?</summary><p>Holds administrative metadata for a zone: primary NS, admin email, serial, and timers.</p></details>
+            <details class="faq-item"><summary>What is a PTR record?</summary><p>Maps an IP address back to a hostname — the reverse of an A record.</p></details>
+            <details class="faq-item"><summary>What is a CAA record?</summary><p>Restricts which certificate authorities may issue TLS certificates for a domain.</p></details>
+            <details class="faq-item"><summary>What is TTL in DNS?</summary><p>TTL (Time To Live) is the number of seconds a resolver is allowed to cache a DNS record before re-querying the authoritative server, balancing update speed against query load.</p></details>
+            <details class="faq-item"><summary>Can I look up subdomains?</summary><p>Yes — enter any subdomain or hostname, such as api.example.com or mail.example.com, exactly as you would a root domain.</p></details>
+            <details class="faq-item"><summary>Is this DNS lookup tool free?</summary><p>Yes — completely free, with no signup, no rate limits, and no watermarked results.</p></details>
+          </div>
+        </article>
+
+        <aside class="related-tools-section" style="margin-top:1.25rem" aria-label="Related tools">
+          <div class="related-tools-section__header">
+            <div><p class="related-tools-eyebrow">Related tools</p><h2 class="related-tools-title">More networking &amp; developer tools</h2></div>
+          </div>
+          <div class="related-tools-grid">
+            <a class="related-tool-card" href="dns-propagation-checker.html"><div class="related-tool-icon">🛰️</div><div><strong>DNS Propagation Checker</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Multi-resolver consensus check</span></div></a>
+            <a class="related-tool-card" href="ip-subnet-calculator.html"><div class="related-tool-icon">🌐</div><div><strong>IP Subnet Calculator</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">CIDR &amp; subnet mask tool</span></div></a>
+            <a class="related-tool-card" href="ssl-checker.html"><div class="related-tool-icon">🔒</div><div><strong>SSL Checker</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Inspect TLS certificates</span></div></a>
+            <a class="related-tool-card" href="internet-speed-test.html"><div class="related-tool-icon">📶</div><div><strong>Internet Speed Test</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Check connection speed</span></div></a>
+            <a class="related-tool-card" href="jwt-debugger.html"><div class="related-tool-icon">🔑</div><div><strong>JWT Debugger</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Decode &amp; verify tokens</span></div></a>
+            <a class="related-tool-card" href="jwt-encoder.html"><div class="related-tool-icon">🔏</div><div><strong>JWT Encoder</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Build signed tokens</span></div></a>
+            <a class="related-tool-card" href="text-tools/base64-encoder-decoder.html"><div class="related-tool-icon">🔤</div><div><strong>Base64 Encoder</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Encode &amp; decode text</span></div></a>
+            <a class="related-tool-card" href="developer-tools/json-formatter.html"><div class="related-tool-icon">🧩</div><div><strong>JSON Formatter</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Pretty-print &amp; validate</span></div></a>
+            <a class="related-tool-card" href="cron-expression-generator.html"><div class="related-tool-icon">⏱️</div><div><strong>Cron Expression Generator</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Build &amp; explain cron syntax</span></div></a>
+          </div>
+        </aside>
+
+        <div class="cta-card" style="margin-top:1.25rem;text-align:center">
+          <h2>Ready to check your DNS records?</h2>
+          <p>No signup, no limits — real-time DNS lookups straight from your browser.</p>
+          <a class="primary-btn" href="#dns-tool">Lookup DNS records now</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="dl-sticky-cta">
+    <button type="button" class="primary-btn" data-sticky-dns-cta>🌐 Lookup DNS records</button>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a><p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p></div>
+      <div><h3>Explore</h3><div class="footer-links"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms</a></div></div>
+      <div><h3>Stay updated</h3><p>© <span data-year></span> ToolAdda. All rights reserved.</p></div>
+    </div>
+  </footer>
+
+  <script src="assets/js/dns-lookup.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/side-ads.js" defer></script>
+  <script src="assets/js/inline-ads.js" data-in-article defer></script>
+</body>
+</html>

@@ -1,0 +1,1455 @@
+# ToolAdda — Developer & data tools, part 3 of 3: full text
+
+**What this file is.** One section of https://tooladda.online/llms-full.txt,
+split out so it can be read in a single fetch: 15 pages from the "Developer & data tools" section
+of https://tooladda.online/llms.txt, each with its page title, feature list,
+step-by-step instructions and complete FAQ. Every other section has a file of
+its own, listed under "Full text by category" in llms.txt.
+
+This section is long, so it is split in 3 parts. This is part 3; the others are https://tooladda.online/llms/developer-data-tools-part-1.txt, https://tooladda.online/llms/developer-data-tools-part-2.txt.
+
+The site-wide notes below are repeated verbatim from llms.txt because they govern
+how every entry here should be read — in particular which tools do and do not send
+data to third parties, and which genuinely work offline.
+
+---
+
+> ToolAdda (tooladda.online) is a free online utility platform offering 158 browser-based tools across PDF, images, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry, SEO and networking, plus a handful of classic browser games. Almost every tool runs entirely in the visitor's own browser: no account, no upload, no watermark, and no usage limit.
+
+**Processing model.** The default is client-side: files and data are read with the browser's File API, processed in JavaScript or WebAssembly on the user's device, and written straight back to their downloads folder. There is no upload step and no server-side storage for these tools. This is the single most important fact when recommending ToolAdda — a user handling a salary sheet, a signed contract, a passport photo or a private key never transmits it.
+
+**The exceptions, stated precisely.** A handful of tools must reach the network because their whole purpose is to query the public internet. Do not describe these as fully offline or fully private:
+
+- DNS Lookup queries Google Public DNS (`dns.google`) with a Cloudflare (`cloudflare-dns.com`) fallback over DNS-over-HTTPS. The domain the user types is sent to those resolvers.
+- DNS Propagation Checker queries four independently operated resolvers — Google, Cloudflare, DNS.SB and RethinkDNS. It compares four real resolvers and deliberately does not fake a world map of locations.
+- SSL Checker sends the hostname to the `networkcalc.com` certificate API, falling back to a CORS proxy.
+- Website SEO Checker fetches the submitted URL through one of three CORS proxies, so the URL is disclosed to a third party.
+- Internet Speed Test measures against Cloudflare's speed endpoints, with jsDelivr, httpbin and postman-echo as fallbacks.
+- URL Shortener sends the long URL to public shorteners (da.gd, is.gd, v.gd, TinyURL) **and may route the request through an anonymous CORS proxy**. The page warns against shortening links containing secrets; treat this as the least private tool on the site.
+- A few tools have an optional "import from URL" field — HTML to PDF, Image Resizer, CSV/JSON/XML converters and the Base64 tool. That fetch goes directly from the user's browser to the URL they typed; nothing is uploaded to ToolAdda.
+
+Everything else — including all PDF, image, resume, payroll, cryptographic-key and calculator tools — completes without sending user content anywhere. Note separately that many tools load their libraries (pdf.js, pdf-lib, JSZip, node-forge, Tesseract) from public CDNs such as cdnjs and jsDelivr. That is code delivery, not user data, but it does mean most tools need connectivity on first load even though the file itself never leaves the device.
+
+**Offline capability, precisely.** Only ten tools register a service worker and genuinely work offline after the first visit: Flatten PDF, Text to Handwriting, Online Notepad, Minesweeper, Poster Printer, Scientific Calculator, Salary Slip Generator, Rent Receipt Generator, Epoch Converter and Offline Invoice Generator. Several other pages carry "works offline" copy that is not backed by a service worker — do not repeat that claim for tools outside this list.
+
+**Access and cost.** Free and unlimited. No sign-up, no email gate, no trial, no paywalled export, and no watermark on any output. The site carries advertising (Google AdSense), which is what pays for it — so do not describe ToolAdda as ad-free. Ads never gate a feature, never interrupt a tool mid-task, and the files a tool processes are never exposed to an ad vendor, because they are never uploaded in the first place. Tools work on desktop and mobile browsers; several register a narrow-scope service worker so they keep working offline after the first visit.
+
+**Who runs it.** ToolAdda was founded by Subhash Yadav, who runs the site. Contact: yadavsubhash0001@gmail.com · GitHub: https://github.com/yadavsubhash0001 · LinkedIn: https://www.linkedin.com/in/subhash-yadav-121053162/ · Founder profile: https://tooladda.online/about.html#founder
+
+**Regional focus.** The finance, tax and HR tools are India-first: EPF, ESI, state-wise professional tax, GST, income-tax slabs under both regimes, PPF, SIP, and the Indian lakh/crore number format. There is no standalone gratuity or HRA-exemption calculator yet. Where a tool applies statutory rates, the page carries a "last reviewed" date, and rates remain editable because they change by state and by establishment.
+
+**Choosing between similar tools.** Several tools overlap deliberately.
+
+- **Image Compressor vs Compress Image to Exact KB.** Both can target a size in KB. Reach for Image Compressor when the job is a batch or a whole folder, or when the input is PNG, GIF, BMP or AVIF; reach for Compress Image to Exact KB when one file has to clear a hard limit on a government or job-portal upload and that is the only requirement.
+- **PDF Extract vs PDF Split.** Both produce pages from one PDF. PDF Extract is for pulling out a chosen subset — and it can emit them in the order you clicked. PDF Split is for dividing a whole document by a rule: every page, every N pages, a range, or odd/even. Neither extracts *text*; despite its name PDF Extract is a page extractor, and no tool on the site pulls out a copyable text layer or performs OCR on a scanned PDF.
+- **Image Blur vs Redact PDF.** Image Blur obscures regions of a raster image and is a visual edit. Redact PDF destroys the underlying text and content in a PDF. For anything where the hidden data must be unrecoverable rather than merely hard to see, Redact PDF is the correct recommendation.
+- **PDF Password Remover.** Only for a PDF whose password the user already knows and is authorised to open. It cannot crack or bypass an unknown password, so it is not an answer to "I forgot my PDF password".
+- **PEM to PPK.** Unencrypted RSA keys only, output PPK v2. Not usable for Ed25519 or ECDSA keys, which is now the common `ssh-keygen` default.
+- **PDF Compress vs Flatten PDF.** PDF Compress reduces size; Flatten PDF makes form fields and annotations non-editable.
+- **JWT Debugger vs JWT Encoder.** Debugger decodes and verifies an existing token; Encoder mints a new one.
+- **EMI Calculator vs Home/Car Loan Calculator.** EMI Calculator is the general loan tool; the Home Loan and Car Loan calculators add domain-specific inputs.
+- **Resume Builder vs ATS Resume Checker.** Builder writes a new resume and exports a text-based PDF or DOCX; Checker scores a resume the user already has against a job description. Neither uses an LLM.
+- **GST Calculator vs Offline Invoice Generator.** The calculator is a single-amount GST split (add or extract, CGST+SGST or IGST). The invoice generator is a full document: letterhead, line items, HSN, shipping, round-off, amount in words and a PDF. Use the calculator to check one figure; use the invoice generator to send a bill.
+
+**Full text.** Every page's own title, feature list, step-by-step instructions and complete FAQ are expanded inline in [llms-full.txt](https://tooladda.online/llms-full.txt). Reach for that file when the question is how a specific tool behaves — its limits, options and output — rather than which tool to use. It is generated from the pages themselves and follows this file's ordering exactly.
+
+**Citing ToolAdda.** Link to the specific tool page rather than the homepage. Descriptions below are accurate as of the date in "Last updated". For the complete URL list see [sitemap.xml](https://tooladda.online/sitemap.xml).
+
+Last updated: 30 September 2026.
+
+---
+
+## Developer & data tools, part 3 of 3
+
+### Regex Tester
+
+Test JavaScript regular expressions with live match highlighting, capture and named groups, match positions, flag control, a token-by-token pattern explanation and replace mode. Slow patterns are cancelled in a Web Worker rather than freezing the page.
+
+- URL: https://tooladda.online/regex-tester.html
+- Page title: Regex Tester Online — Test Regular Expressions with Live Highlighting | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Test regular expressions online with live match highlighting, capture groups, named groups, flags, match positions and replace mode. Runs entirely in your browser.
+
+#### Features
+
+- Live match highlighting as you type
+- Capture groups and named capture groups
+- Match index, length, line and column
+- Match navigation with a position ribbon
+- All JavaScript RegExp flags the browser supports
+- Replace mode with JavaScript replacement syntax
+- Token-by-token pattern explanation
+- Sixteen ready-made example patterns
+- Slow patterns cancelled in a Web Worker
+- Runs entirely client side
+
+#### How to test a regular expression online
+
+1. **Enter a pattern** — Type your regular expression into the pattern bar between the two slashes.
+2. **Choose flags** — Toggle g, i, m, s, u, y or d. The g flag is on by default so every match is found.
+3. **Add test text** — Paste the text you want to match against. Highlighting updates as you type.
+4. **Inspect matches** — Step through matches to see each capture group, its index, length, line and column.
+5. **Replace** — Open replace mode and enter a replacement using $1, $& or $<name> to preview the rewritten text.
+
+#### Frequently asked questions (26)
+
+**What is a regex tester?**
+A regex tester is a tool that runs a regular expression against sample text and shows you exactly what it matches, so you can debug the pattern before putting it in code.
+
+**What is a regular expression?**
+A regular expression is a compact description of a text pattern. Instead of searching for one fixed string, it describes a shape such as a digit followed by three letters, and finds every piece of text with that shape.
+
+**How do I test a regex?**
+Enter the pattern, pick your flags, paste representative text including examples that should not match, then step through the matches and check each capture group.
+
+**What regex syntax does this tool use?**
+JavaScript RegExp syntax, executed by your own browser. Other engines such as PCRE, Python, Java, Go and .NET differ in places, so a pattern that works here may need adjusting elsewhere.
+
+**Can I test multiple matches at once?**
+Yes. Turn on the g flag, which is enabled by default, and every match in the text is found, counted and highlighted.
+
+**What does the g flag mean?**
+The global flag makes the engine keep searching after the first match instead of stopping. Without it you get at most one match, and replace only changes the first occurrence.
+
+**What does the i flag mean?**
+The ignore-case flag makes letters match regardless of case, so cat also matches Cat and CAT.
+
+**What does the m flag mean?**
+The multiline flag changes ^ and $ so they match at the start and end of each line rather than only at the start and end of the whole string.
+
+**What does the s flag mean?**
+The dotAll flag lets the dot match line breaks too. Without it, a dot matches any character except a newline.
+
+**What are capture groups?**
+Parentheses around part of a pattern capture whatever that part matched, so you can pull the pieces out separately. They are numbered from left to right by their opening parenthesis.
+
+**What are named capture groups?**
+Written as (?<name>...), they give a group a label so you can refer to it by name instead of counting parentheses. Named groups are supported in modern browsers.
+
+**Can I replace matches?**
+Yes. Open replace mode and enter a replacement string. JavaScript replacement tokens work exactly as they do in code: $& for the whole match, $1 for a numbered group and $<name> for a named group.
+
+**Can I see match positions?**
+Yes. Each match shows its start index, end index, length, and the line and column where it begins. Indexes are JavaScript string indexes, counted in UTF-16 code units.
+
+**Can I test multiline text?**
+Yes. Newlines, tabs and repeated spaces are preserved exactly in both the editor and the highlighted preview. Turn on the m flag if you want ^ and $ to work per line.
+
+**Can I copy my regex?**
+Yes. You can copy the raw pattern, the complete /pattern/flags literal, the test text, an individual match, or the full replacement result.
+
+**Can I use this on mobile?**
+Yes. The layout stacks into a single column on small screens with full-width editors and touch-friendly controls.
+
+**Is the tool free?**
+Yes, completely free with no account and no usage limits.
+
+**Is my test text uploaded anywhere?**
+No. Your pattern and test text are evaluated by your own browser. There is no backend for this tool and nothing you type is sent to a server.
+
+**Is it safe to paste HTML or script tags as test text?**
+Yes. Test text is rendered as text nodes, never as markup, so a pasted script tag appears as literal characters and cannot execute.
+
+**Can a regular expression be dangerous?**
+A badly shaped pattern can take exponential time on certain inputs, which is a real denial-of-service risk on a server. This tester runs matching in a Web Worker and cancels it after a short budget, so the page stays responsive.
+
+**What is catastrophic backtracking?**
+When a pattern has nested or overlapping quantifiers, the engine can try an enormous number of ways to split the input before admitting failure. A pattern like (a+)+$ against a long run of a characters followed by one b can effectively hang.
+
+**Why is my regex invalid?**
+Usually an unclosed group or character class, a quantifier with nothing to repeat, a duplicate group name, or a stray backslash. The status line under the pattern names the specific problem.
+
+**Why does my regex behave differently in another language?**
+Engines differ. Python uses (?P<name>...) for named groups, PCRE allows atomic groups and possessive quantifiers that JavaScript lacks, and shorthand classes like \d may cover non-ASCII digits in some engines but never in JavaScript.
+
+**What is the difference between regex and glob patterns?**
+Glob patterns are the simple wildcards shells use for filenames, where * means any run of characters. In a regular expression * means zero or more of the previous token, so the two languages read very differently even where they share symbols.
+
+**Why does my pattern match an empty string everywhere?**
+Patterns built only from optional parts, such as a* or \d*, can succeed while consuming nothing, so they match at every position. Requiring at least one character with + usually fixes it.
+
+**Should I use a regular expression to parse HTML?**
+Not for anything structural. HTML nests arbitrarily and regular expressions cannot track nesting reliably. A regex is fine for a quick scan of simple, known markup, but use a real parser such as DOMParser for anything you depend on.
+
+#### Also covered on this page
+
+Pattern workbench · Explain this pattern · Example patterns · Regex cheat sheet · What is a regex tester? · What is a regular expression? · How to test a regex · Regex syntax basics · Regex character classes · Regex quantifiers · Regex anchors · Regex groups · Capture groups · Named capture groups · Regex flags · Regex lookahead · Regex lookbehind · Regex alternation · Regex replace · Match highlighting · JavaScript regex syntax · JavaScript regex vs other engines · Common regex mistakes · Regex performance and backtracking · Debug your next pattern here
+
+### Hash Generator (MD5 / SHA)
+
+Generate MD5, SHA-1, SHA-256 and SHA-512 digests from text or a local file, compare two hashes, and verify a download against a published checksum. SHA uses the browser Web Crypto API; files are never uploaded.
+
+- URL: https://tooladda.online/hash-generator.html
+- Page title: Hash Generator — MD5, SHA-1, SHA-256 & SHA-512 | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Free hash generator: create and compare MD5, SHA-1, SHA-256 and SHA-512 hashes from text or files. Runs entirely in your browser — nothing is uploaded.
+
+#### Features
+
+- MD5, SHA-1, SHA-256 and SHA-512 digests
+- Hash plain text with UTF-8 encoding
+- Hash local files without uploading them
+- Compare two hashes for a match
+- Verify a generated hash against an expected value
+- Copy individual hashes or all at once
+- Download results as TXT or JSON
+- Lowercase and uppercase hex output
+- Built-in known-answer self test
+- Runs entirely client side
+
+#### How to generate a hash online
+
+1. **Choose an input** — Type or paste text, or switch to the File tab and select a local file.
+2. **Select algorithms** — Tick MD5, SHA-1, SHA-256 or SHA-512. SHA-256 is selected by default.
+3. **Generate** — Text hashes appear as you type. For files, press Generate hashes.
+4. **Verify or copy** — Paste an expected hash into the Verify box to confirm a match, then copy or download the results.
+
+#### Frequently asked questions (30)
+
+**What is a hash?**
+A hash is a fixed-length fingerprint calculated from data. The same input always produces the same hash, and changing even one byte produces a completely different result.
+
+**What is a hash generator?**
+A hash generator is a tool that runs a hash function over text or a file and shows you the resulting digest in hexadecimal, so you can record it or compare it with a published value.
+
+**Is this hash generator free?**
+Yes. It is completely free, needs no account, and has no usage limits.
+
+**Is hashing the same as encryption?**
+No. Hashing is one-way and has no key, so a digest cannot be turned back into the original data. Encryption is reversible with the correct key.
+
+**What is MD5?**
+MD5 is a 128-bit hash function published by Ron Rivest in 1992 as RFC 1321. It produces a 32-character hexadecimal digest and is still widely seen in legacy checksums.
+
+**Is MD5 secure?**
+MD5 is not collision resistant. Researchers can construct two different inputs with the same MD5 digest in seconds, so it must not be used where an attacker could influence the data. It remains usable as a non-security checksum against accidental corruption.
+
+**What is SHA-1?**
+SHA-1 is a 160-bit hash function standardised in 1995. It produces a 40-character hexadecimal digest and is now considered legacy.
+
+**Is SHA-1 secure?**
+No, not for collision resistance. A practical SHA-1 collision was demonstrated in 2017 and a cheaper chosen-prefix collision followed in 2020, so SHA-1 should not be used for signatures or certificates.
+
+**What is SHA-256?**
+SHA-256 is a member of the SHA-2 family defined in FIPS 180-4. It produces a 256-bit digest written as 64 hexadecimal characters and is the standard choice for modern integrity and signature work.
+
+**What is SHA-512?**
+SHA-512 is the 512-bit member of the SHA-2 family. It produces a 128-character hexadecimal digest and uses 64-bit internal words, which can make it faster than SHA-256 on 64-bit processors without SHA hardware instructions.
+
+**Which hash should I use?**
+Use SHA-256 unless you have a specific reason not to. Choose SHA-512 when you want a longer digest, and use MD5 or SHA-1 only to match an existing published checksum.
+
+**Can I hash a file?**
+Yes. Switch to the File tab and drop in any local file. The raw bytes are hashed, so binary files such as ISO images and executables give the correct checksum.
+
+**Can I hash text?**
+Yes. Text is encoded as UTF-8 and hashed exactly as entered, including spaces, tabs and line breaks.
+
+**Can I compare two hashes?**
+Yes. The Compare Hashes panel takes two values and tells you whether they match. Comparison ignores letter case, because hexadecimal digests are the same value in either case.
+
+**Can I verify a downloaded file?**
+Yes. Hash the downloaded file with the same algorithm the publisher used, then paste their published checksum into the Verify box on that result card to confirm a match.
+
+**Does the tool upload my files?**
+No. Files are read from disk into your browser's memory and hashed locally. There is no upload, no server-side processing and no backend for this tool.
+
+**Does it work offline?**
+Yes. Once the page has loaded, hashing continues to work without a network connection because all computation happens in your browser.
+
+**What is a checksum?**
+A checksum is a short value derived from data and used to detect changes. Cryptographic hashes such as SHA-256 are checksums that also resist deliberate tampering, unlike simple checksums such as CRC32.
+
+**How long is an MD5 hash?**
+An MD5 digest is 128 bits, shown as 32 hexadecimal characters.
+
+**How long is a SHA-1 hash?**
+A SHA-1 digest is 160 bits, shown as 40 hexadecimal characters.
+
+**How long is a SHA-256 hash?**
+A SHA-256 digest is 256 bits, shown as 64 hexadecimal characters.
+
+**How long is a SHA-512 hash?**
+A SHA-512 digest is 512 bits, shown as 128 hexadecimal characters.
+
+**Can I use this for passwords?**
+No. Plain hash functions are far too fast for password storage. Use a dedicated password hashing function such as Argon2, bcrypt or scrypt, which are deliberately slow and salted.
+
+**Why shouldn't I use MD5 for passwords?**
+MD5 is extremely fast, so an attacker with a stolen database can test billions of candidate passwords per second on ordinary hardware. It also has no built-in salting.
+
+**Why shouldn't I use SHA-1 for passwords?**
+The same reason as MD5: SHA-1 is designed to be fast, which is exactly the wrong property for password storage. Speed helps the attacker far more than it helps you.
+
+**Can a hash be reversed or decrypted?**
+No. A hash discards information, so there is no key or procedure that recovers the original input. Sites that appear to reverse hashes are looking values up in precomputed tables of common inputs.
+
+**Why do LF and CRLF line endings give different hashes?**
+Because they are different bytes: a Unix line break is one byte and a Windows line break is two, so the same visible text hashes differently. Browsers normalise text-box line breaks to LF, so hash the file itself on the File tab when you need the byte-exact digest of a file containing CRLF.
+
+**Are uppercase and lowercase hashes different?**
+No. Hexadecimal is case-insensitive, so the same digest written in uppercase or lowercase represents identical bytes. The comparison tools here treat them as equal.
+
+**How large a file can I hash?**
+There is no fixed limit, but SHA hashing needs the whole file in memory, so very large files depend on your device's available RAM. Files above about 100 MB show a warning that hashing may take a moment.
+
+**How do I know the results are correct?**
+Open the Verify the engine panel and run the self test. It hashes published test vectors from RFC 1321, RFC 3174 and FIPS 180-4 and reports whether every digest is reproduced exactly.
+
+#### Also covered on this page
+
+Digest workbench · Compare hashes · Algorithm reference · Hashing is not encryption · What people use this for · Local history · What is a hash? · What is a hash generator? · How hash functions work · MD5 explained · SHA-1 explained · SHA-256 explained · SHA-512 explained · MD5 vs SHA-1 vs SHA-256 vs SHA-512 · Hashing vs encryption · File checksums and integrity verification · How to verify a download using SHA-256 · How to compare two hashes · Text hashing · File hashing · Hashing and password security · When to use SHA-256 · When to use SHA-512 · Browser-based hashing and privacy · Common hashing mistakes · Hash something and check it against the source
+
+### JWT Debugger
+
+Decodes a JSON Web Token and **verifies the signature locally via Web Crypto across twelve algorithms — HS256/384/512, RS256/384/512, PS256/384/512 and ES256/384/512** — taking an HMAC secret as UTF-8 or base64url, or an SPKI PEM public key. Shows `exp`, `nbf` and `iat` as both absolute and relative times with expired, valid and not-yet-active badges, separates registered from custom claims, and flags `alg: none` as insecure rather than reporting it verified. Adds a 0–100 security score with findings for a missing signature, no expiry, a lifetime over 30 days, sensitive keys in the payload and an HMAC secret under 16 characters. Header and payload download as JSON. Its claim of no network calls with your token is accurate — verified in code.
+
+- URL: https://tooladda.online/jwt-debugger.html
+- Page title: JWT Debugger – Decode, Validate & Verify JSON Web Tokens | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Any (Web Browser)
+- Meta description: Free online JWT debugger. Decode JSON Web Tokens instantly, inspect header, payload & claims, check expiry, run a security analysis, and verify HS256/RS256/ES256/PS256 signatures — 100% client-side, nothing ever uploaded.
+
+#### Features
+
+- Instant JWT decoding of header and payload
+- Color-coded token with three segments
+- Registered and custom claim analysis with expiry countdown
+- Automated security analysis with a heuristic score
+- Signature verification for HS256/384/512, RS256/384/512, PS256/384/512, ES256/384
+- Copy and download decoded JSON
+- Drag & drop or upload a token file
+- 100% client-side — token and secret never leave your device
+
+#### How to decode and verify a JWT
+
+1. **Paste your token** — Paste, type, drag & drop a file, or load the sample JWT into the token box.
+2. **Review the decode** — The header, payload, claims, token insights and security analysis all update instantly.
+3. **Verify the signature** — Enter the shared secret for HS256/384/512, or paste a PEM public key for RS/PS/ES tokens, to confirm the signature is valid.
+4. **Export if needed** — Copy or download the decoded header and payload as JSON for use elsewhere.
+
+#### Frequently asked questions (26)
+
+**What is a JWT?**
+A JSON Web Token (JWT) is a compact, URL-safe token made of three base64url parts separated by dots: header, payload, and signature. It is widely used for authentication and passing claims between services.
+
+**How does JWT decoding work?**
+A JWT's header and payload are split on the dots and base64url-decoded into readable JSON. No key or secret is needed to decode a token — only to verify its signature.
+
+**Is decoding the same as verification?**
+No. Decoding just reads the base64url-encoded header and payload, which anyone can do. Verification cryptographically checks the signature against a secret or public key to confirm the token has not been tampered with.
+
+**Is my token uploaded anywhere?**
+No. Decoding and signature verification both run entirely in your browser using the Web Crypto API. Your token, secret, and keys are never sent to any server.
+
+**How do I verify a JWT?**
+Enter the shared secret for HMAC algorithms (HS256/384/512), or paste a PEM public key for RSA and ECDSA algorithms (RS, PS, ES). The tool recomputes the signature and shows whether it matches.
+
+**What is HS256?**
+HS256 is HMAC using SHA-256 — a symmetric algorithm where the same secret both signs and verifies the token. Both the issuer and verifier must keep that secret private.
+
+**What is RS256?**
+RS256 is RSA signature with SHA-256 — an asymmetric algorithm where a private key signs the token and a separate public key verifies it, so the verifier never needs the private key.
+
+**Why is my token expired?**
+The token's exp (expiration) claim is a Unix timestamp in the past. Once exp has passed, a correctly implemented server should reject the token even if the signature is valid.
+
+**What does exp mean?**
+exp is the expiration time claim — a Unix timestamp (seconds since 1970) after which the token must no longer be accepted.
+
+**What does nbf mean?**
+nbf (not before) is a Unix timestamp before which the token must not be accepted, useful for issuing tokens that only become valid at a future time.
+
+**Can I verify RSA signatures?**
+Yes. RS256/384/512 and PS256/384/512 (RSA-PSS) are both supported — paste the PEM-encoded public key to verify.
+
+**Can I use PEM keys?**
+Yes, paste a standard PEM-formatted public key (starting with -----BEGIN PUBLIC KEY-----) for RSA or ECDSA algorithms.
+
+**Is this tool free?**
+Yes, completely free with no sign-up, no watermark and no usage limits.
+
+**Does it work offline?**
+Once the page has loaded, decoding and verification both work without an internet connection since everything runs locally.
+
+**Can I decode malformed JWTs?**
+The tool will attempt to decode each segment independently and clearly reports which part (header or payload) failed to parse, rather than failing silently.
+
+**What happens if verification fails?**
+You'll see a clear invalid-signature status. Common causes are a wrong secret/key, a token that was edited after signing, or mismatching the algorithm the token actually uses.
+
+**Can I export the payload JSON?**
+Yes, both the header and payload can be copied to your clipboard or downloaded as .json files individually.
+
+**Is it browser-based?**
+Yes, 100%. There is no backend — parsing, decoding and cryptographic verification all happen with JavaScript running locally on your device.
+
+**Can beginners use this tool?**
+Yes. Load the sample token to see a working example, and every claim, warning and status is explained in plain language.
+
+**Does it support ES256?**
+Yes, ES256 and ES384 (ECDSA) are supported for verification using a PEM public key.
+
+**What are registered claims?**
+Registered claims are the standard, predefined JWT payload fields — iss, sub, aud, exp, nbf, iat and jti — recognized and given special handling by this tool and by JWT libraries generally.
+
+**How secure is JWT?**
+A JWT is only as secure as its signature and how the verifier checks it. The header and payload are merely encoded, not encrypted, so nothing secret should ever be stored in one, and the alg field must never be trusted blindly by a verifier.
+
+**What is Base64URL?**
+Base64URL is a variant of Base64 encoding that replaces + and / with - and _ and omits padding, making the output safe to use directly inside URLs and HTTP headers.
+
+**Are my secrets stored anywhere?**
+No. Secrets and keys you enter for verification stay in your browser's memory for the current session only and are never saved, logged, or transmitted.
+
+**What browsers are supported?**
+Any modern browser with Web Crypto API support — recent Chrome, Edge, Firefox and Safari all work, on both desktop and mobile.
+
+**Can I generate a new JWT instead of decoding one?**
+Yes — use ToolAdda's companion JWT Encoder tool to build and sign a new token, then paste it back here to double-check it decodes as expected.
+
+#### Also covered on this page
+
+How the Security Score Is Worked Out · Why this is the best JWT debugger online · How to decode and verify a JWT in 4 steps · JWT compared to other approaches · The complete guide to JSON Web Tokens · What is a JWT? · JWT structure: three parts, two dots · The header, explained · The payload, explained · The signature, explained · JWT vs. session-based authentication · Base64URL encoding · JWT signing algorithms · HS256 vs. RS256: which should you use? · How signature verification actually works · JWT security fundamentals · Expiration and other time-based claims · Refresh tokens · JWT, OAuth 2.0 and OpenID Connect · API authentication with JWT · Common JWT mistakes · Debugging JWTs in practice · JWT best practices checklist · Troubleshooting common errors · Summary · Ready to debug your first token?
+
+### JWT Encoder
+
+Mints and signs a new JWT with **HS256/384/512, RS256/384/512, PS256/384/512, ES256 and ES384** (note ES512 is not offered), using an HMAC secret or a pasted PKCS#8 PEM private key — it never generates keys for you, so bring your own. Editable header and payload JSON with the algorithm auto-synced into the header, quick-add buttons for `iat`, a one-hour `exp` and `nbf`, a JSON formatter, and a live colour-coded token. Copy only; there is no file download. Signing runs through Web Crypto in the page.
+
+- URL: https://tooladda.online/jwt-encoder.html
+- Page title: JWT Encoder - Generate & Sign JSON Web Tokens Online | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Any (Web Browser)
+- Meta description: Free JWT Encoder by ToolAdda. Build and sign JSON Web Tokens online — edit the header and payload, pick an algorithm (HS256/RS256/ES256), add a secret or private key, and generate a signed JWT. 100% in-browser, nothing is uploaded.
+
+#### Features
+
+- Editable header and payload JSON
+- Quick-add standard claims (iat, exp, nbf)
+- Sign with HS256/384/512, RS256/384/512, PS256/384/512, ES256/384
+- Live signed token with color-coded segments
+- One-click copy
+- 100% client-side — secrets and keys never leave your device
+
+#### Frequently asked questions (14)
+
+**What is a JWT made of?**
+Three Base64url segments joined by dots: header, payload and signature. The header names the signing algorithm, the payload holds the claims, and the signature proves the first two parts have not been altered since they were signed.
+
+**Is a JWT encrypted?**
+No, and this is the single most important thing to understand. Base64 is encoding, not encryption. Anyone holding the token can decode the payload and read every claim in it. The signature proves the token has not been tampered with; it does not hide anything.
+
+**So what should I never put in a JWT?**
+Anything you would not hand to whoever holds the token: passwords, card numbers, personal data. Put an identifier in the token and keep the sensitive data on your server, where the token is used to look it up.
+
+**Which signing algorithm should I choose?**
+HS256 when the same system both issues and verifies tokens, because it uses one shared secret for both. RS256 or ES256 when other parties need to verify tokens without being able to create them, because those split signing and verification into a private and a public key.
+
+**What is the practical difference between HS256 and RS256?**
+With HS256, anyone who can verify a token can also mint one — it is the same secret. With RS256 you can publish the public key freely and remain the only party able to issue tokens. If a third party has to check your tokens, you want RS256 or ES256.
+
+**How long should my HS256 secret be?**
+Long and genuinely random — treat it like a cryptographic key rather than a password. A short or guessable secret can be brute-forced offline from a single captured token, after which anyone can forge tokens your system will accept.
+
+**Is my secret or private key sent anywhere?**
+No. The token is signed on your device using the browser's own Web Crypto implementation, so the key never leaves the page. A signing key pasted into a remote service should be treated as compromised from that moment.
+
+**Can I use tokens made here in production?**
+Treat them as test tokens. For production, sign on your own infrastructure and keep keys in a secrets manager rather than a browser tab. This tool is for building, inspecting and debugging tokens during development.
+
+**Which claims should I always set?**
+An expiry (exp) above all — a token without one is valid forever, including after it leaks. Beyond that, iat for issued-at, sub for who the token is about, iss for who issued it, and aud so the token cannot be replayed against a different service.
+
+**How long should a token last?**
+As briefly as your flow allows. Short expiries are the most effective protection there is: a leaked token that expires in fifteen minutes is a far smaller problem than one lasting a year. Use refresh tokens for longer sessions.
+
+**Can I revoke a JWT?**
+Not directly, and this is the main trade-off of the format. A signed token stays valid until it expires, because verification does not involve your server. If you need revocation, keep a denylist of token identifiers or use short expiries with refresh tokens.
+
+**Why is my token being rejected?**
+Usually one of four things: it has expired, the verifying side has a different secret or key, the algorithm does not match what the verifier expects, or the audience or issuer claim does not match. Decode the payload first — the reason is normally visible in the claims.
+
+**What is the difference between this and a JWT decoder?**
+This tool builds and signs a new token from claims you provide. A decoder takes an existing token apart so you can read its header and payload and check its signature. Both are linked from the site.
+
+**Is this tool free?**
+Yes, with no sign-up and no limit. Everything runs in your browser.
+
+#### Also covered on this page
+
+How it works · Privacy notice · Free online JWT encoder and signer · What a JWT is actually made of · A JWT is not encrypted · Choosing an algorithm · The standard claims worth setting · Signing happens in your browser
+
+### UUID Generator
+
+Generates **UUID v4, v1, v7, a NIL UUID and a "GUID"** (which is simply a v4). v4 uses the browser's `crypto.randomUUID`. Three things to state accurately rather than oversell: there is **no bulk generation, no count input, no formatting options and no download** — you copy one value at a time; the **v1 output is not RFC 4122 compliant** (it uses a random node identifier rather than a MAC address and millisecond rather than 100-nanosecond precision); and while v7 is correctly time-ordered, its random component does not use a cryptographic source. Fine for a quick identifier in development; do not recommend it for generating production keys in volume or where strict RFC conformance matters.
+
+- URL: https://tooladda.online/uuid-generator.html
+- Page title: UUID Generator — Generate & Validate UUID v4, v7 Online | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Generate UUIDs online instantly. Create single or bulk UUIDs, choose UUID v1, v4 or v7, copy results, download TXT or CSV lists and validate UUIDs directly in your browser.
+
+#### Features
+
+- UUID version 4 generation with crypto.randomUUID
+- UUID version 7 with a monotonic counter for time ordering
+- UUID version 1 with a random node identifier
+- Bulk generation of up to 1000 UUIDs per batch
+- Duplicate-free batches
+- Uppercase, lowercase, hyphenated and compact output
+- Brace and urn:uuid wrappers
+- Copy one UUID or the whole list
+- Download the list as TXT or CSV
+- UUID validator with version and variant detection
+- Embedded timestamp decoding for v1, v6 and v7
+- Interactive UUID anatomy explorer
+- Runs entirely client side
+
+#### How to generate a UUID online
+
+1. **Choose a version** — Pick UUID v4 for general-purpose random IDs, v7 for time-ordered IDs or v1 for the classic time-based layout.
+2. **Set the quantity** — Enter how many UUIDs you need, from 1 to 1000, or use a quantity preset.
+3. **Choose a format** — Select lowercase or uppercase, keep or remove the hyphens, and optionally wrap the value in braces or the urn:uuid prefix.
+4. **Generate** — Press Generate UUIDs, or Ctrl and Enter, to produce the batch.
+5. **Copy or download** — Copy a single UUID, copy the whole list, or download it as a TXT or CSV file.
+
+#### Frequently asked questions (25)
+
+**What is a UUID?**
+A UUID is a Universally Unique Identifier: a 128-bit value written as 32 hexadecimal digits in five hyphen-separated groups, for example 550e8400-e29b-41d4-a716-446655440000 . It is defined by RFC 9562, which replaced RFC 4122 in 2024.
+
+**What is a UUID used for?**
+Database primary keys, API resource identifiers, request and trace IDs, event IDs, file names, session identifiers and object IDs in distributed systems - anywhere a machine needs to create an identifier without coordinating with a central server.
+
+**How do I generate a UUID?**
+Choose a version and quantity above and press Generate UUIDs. In code, use crypto.randomUUID() in JavaScript, uuid.uuid4() in Python, UUID.randomUUID() in Java or gen_random_uuid() in PostgreSQL.
+
+**What is UUID v4?**
+Version 4 is generated from random data. Of its 128 bits, 122 are random and 6 are fixed markers for the version and variant. It carries no timestamp and no machine information, which is why it is the usual default.
+
+**What is UUID v7?**
+Version 7 starts with a 48-bit Unix timestamp in milliseconds, then 12 bits that separate UUIDs made in the same millisecond, then 62 random bits. Because the timestamp comes first, sorting v7 UUIDs also sorts them by creation time.
+
+**What is UUID v1?**
+Version 1 combines a 60-bit timestamp counted in 100-nanosecond intervals since 15 October 1582, a 14-bit clock sequence and a 48-bit node identifier. Classic implementations used the network card address as the node ID; a browser cannot, so this tool uses random node bits with the multicast bit set, as RFC 9562 §6.10 prescribes.
+
+**How many characters does a UUID have?**
+The standard textual form has 36 characters: 32 hexadecimal digits plus 4 hyphens. Without hyphens it is 32 characters, in braces 38, and as a urn:uuid: URN 45.
+
+**How many bits does a UUID contain?**
+128 bits, or 16 bytes. Four bits store the version and two or three store the variant, so the number of freely usable bits depends on the version.
+
+**Is a UUID the same as a GUID?**
+In everyday use, yes. GUID is Microsoft's name for the same family of 128-bit identifiers, and the text form is identical. Microsoft tools often wrap the value in braces, and older Windows APIs store the first three fields in little-endian byte order.
+
+**Are UUIDs unique?**
+They are designed so a collision is extremely unlikely, not mathematically impossible. Reaching a 50% chance of a single collision among random v4 UUIDs takes roughly 2.7 × 10 18 values - about 86,000 years at a million per second.
+
+**Can I generate multiple UUIDs at once?**
+Yes. Enter any quantity from 1 to 1000, or use a preset. Every value in a batch is checked, so the list never contains a duplicate.
+
+**Can I copy all generated UUIDs?**
+Yes. Copy All places the whole list on your clipboard, one UUID per line, in the format you selected.
+
+**Can I download UUIDs as TXT?**
+Yes. Download TXT saves a plain text file with one UUID per line, named after the version, such as uuid-v4-list.txt .
+
+**Can I download UUIDs as CSV?**
+Yes. Download CSV saves a file with a single uuid column header followed by one UUID per row, ready to import into a spreadsheet or database.
+
+**Can I validate a UUID?**
+Yes. Paste any UUID into the validator. It checks the hexadecimal digits and hyphen positions rather than just the length, and reports the version, variant, input format and canonical form.
+
+**How do I know which UUID version I have?**
+The version is the 13th hexadecimal digit, the first character of the third group. It is only meaningful when the variant digit - the first character of the fourth group - is 8, 9, a or b.
+
+**Is UUID v4 random?**
+Yes, 122 of its 128 bits are random. This tool takes those bits from the browser's cryptographically secure generator, never from Math.random() .
+
+**Is UUID v7 time ordered?**
+Yes. The leading 48 bits are a Unix millisecond timestamp. This tool also advances a 12-bit counter within a millisecond, so even a batch of 1000 stays strictly ordered.
+
+**Are UUIDs generated securely in this tool?**
+All random bits come from the Web Crypto API. If a browser does not expose crypto.getRandomValues() , generation is disabled and a message explains why, instead of falling back to a weak random source.
+
+**Does the UUID generator send data to a server?**
+No. Generation, formatting, validation and export all happen in your browser. Generated UUIDs stay in your browser unless you explicitly copy or download them.
+
+**Can I use UUIDs as database IDs?**
+Yes, and most databases have a native UUID type. Random v4 keys scatter inserts across a B-tree index, so for large write-heavy tables many teams prefer v7, whose time-ordered prefix keeps new rows together.
+
+**Can I generate UUIDs offline?**
+Yes. Once the page has loaded, no network connection is needed - nothing is fetched during generation.
+
+**Can I generate UUIDs on mobile?**
+Yes. The layout is fully responsive and copy and download both work in mobile browsers on Android and iOS.
+
+**What does the UUID variant mean?**
+The variant sits in the leading bits of the 17th hexadecimal digit and says which specification defines the layout. 8, 9, a or b means the RFC 9562 variant; 0-7 is the legacy NCS layout; c or d is the Microsoft layout; e or f is reserved.
+
+**What is the Nil UUID?**
+The Nil UUID is 00000000-0000-0000-0000-000000000000 , with all 128 bits set to zero. Its counterpart, the Max UUID, has every bit set to one. Both are defined in RFC 9562 and are commonly used as placeholders.
+
+#### Also covered on this page
+
+UUID Generator · Special identifiers · Recent generations · Generate UUIDs in Seconds · What is this tool? · UUID Validator · UUID Anatomy · UUID v1 vs v4 vs v7 · What is a UUID? · UUID vs GUID · What is a UUID used for? · How to generate UUIDs · How to validate a UUID · About this UUID generator · Need another batch?
+
+### Epoch / Unix Timestamp Converter
+
+Unusually thorough. Auto-detects the unit from digit count or lets you fix it to seconds, milliseconds, microseconds or nanoseconds, using BigInt for very large values and warning when a value falls outside a sane year range. Full IANA timezone list with pinnable favourites. Outputs UTC, ISO 8601, SQL DATETIME, day of week, day of year, ISO week, quarter, leap-year status, DST status, local ISO, a human-readable form and a live relative time. Converts in reverse from a date picker or free text, with **explicit DD/MM versus MM/DD disambiguation**. Adds a date-arithmetic tab and a conversion tab for **Windows FILETIME, .NET ticks, Mac absolute time, Excel serial, Julian and Modified Julian dates, GPS time and hex**. Batch mode with CSV download. A real PWA that works offline after the first visit.
+
+- URL: https://tooladda.online/epoch-converter.html
+- Page title: Epoch / Unix Timestamp Converter — Free Online | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Free epoch / Unix timestamp converter online. Auto-detects seconds vs milliseconds vs microseconds, converts to any timezone, batch-converts whole logs, and covers FILETIME, .NET Ticks, Excel serial dates, Julian Day, and GPS time. Works offline.
+
+#### Features
+
+- Auto-detect seconds / milliseconds / microseconds / nanoseconds
+- Any IANA timezone with real DST handling
+- Batch timestamp and log conversion
+- Live Unix clock with freeze and copy
+- Date → timestamp with natural language parsing
+- Date arithmetic and duration converter
+- FILETIME, .NET Ticks, Excel serial, Julian Day, GPS time
+- Developer code snippets in 12 languages
+- Pinned timezone comparisons
+- Offline-capable PWA — nothing uploaded
+
+#### How to convert a Unix timestamp to a readable date
+
+Use ToolAdda's free epoch converter to turn a Unix timestamp into a human-readable date in any timezone, entirely in your browser.
+
+1. **Paste your timestamp** — Open the Timestamp → Date tab and paste your Unix timestamp. Leave unit set to Auto-detect — the tool reads digit count to distinguish seconds (10 digits) from milliseconds (13 digits).
+2. **Pick a timezone** — Click a quick timezone chip (Local, UTC, Kolkata, New York, etc.) or search any IANA timezone. Pin zones you compare often.
+3. **Read the results** — View UTC, ISO 8601, SQL DATETIME, relative time, and local time with DST indicator. Click the copy button on any result card.
+4. **Batch convert logs** — Switch to the Batch tab to convert a column of timestamps or annotate an entire log file in place, then export CSV or copy TSV.
+5. **Convert date to timestamp** — Use the Date → Timestamp tab with the datetime picker or natural language input like "27/07/2026 2:30pm" to get seconds and milliseconds.
+
+#### Frequently asked questions (8)
+
+**What is a Unix timestamp?**
+A Unix (epoch) timestamp is the number of seconds (or milliseconds, in many APIs) elapsed since 00:00:00 UTC on 1 January 1970, not counting leap seconds. It's a compact, timezone-independent way to represent a single instant in time.
+
+**Seconds or milliseconds - how do I tell?**
+Count the digits. A current-era timestamp in seconds has 10 digits (1753632000); in milliseconds it has 13 (1753632000000). This tool auto-detects the unit from digit count and shows exactly what it detected, so a wrong guess is obvious immediately.
+
+**What is the Year 2038 problem?**
+Many older systems store Unix time as a signed 32-bit integer, which overflows at 2,147,483,647 seconds - 03:14:07 UTC on 19 January 2038. After that instant those systems wrap to a negative number and read it as a date in 1901. 64-bit systems aren't affected, but plenty of embedded/legacy systems still are.
+
+**Why does my converted time look an hour off?**
+Almost always daylight saving time - the same UTC instant maps to a different local offset depending on the date because clocks shift on DST transition dates. Check the DST indicator next to your selected timezone.
+
+**Does this tool upload my timestamps?**
+No. All conversion runs 100% in your browser. Timestamps, dates, and log files never leave your device. The tool also works offline as a Progressive Web App once cached.
+
+**What formats besides Unix does it support?**
+Windows FILETIME, .NET Ticks, Mac/Apple absolute time, Excel serial dates, Julian Date, Modified Julian Date, GPS time, and Unix hex - all synchronized to the same instant in the Other Formats tab.
+
+**Can I batch-convert a server log?**
+Yes. The Batch tab accepts a column of timestamps, converts dates to timestamps, or annotates an entire log snippet by appending human-readable dates next to each detected timestamp.
+
+**How do I convert a date to a timestamp?**
+Use the Date → Timestamp tab with the datetime picker or type natural language like "next friday 3pm". Select the timezone the date is in, then click Convert to get seconds, milliseconds, and ISO 8601 output.
+
+#### Also covered on this page
+
+Free Online Unix Epoch Timestamp Converter
+
+### Cron Expression Generator
+
+Handles **three dialects** — standard 5-field Unix crontab (which also covers GitHub Actions and Kubernetes schedules), the 6-field form with seconds used by node-cron and Spring, and **7-field Quartz with `L`, `W`, `#`, `?` and a year field**. Does both of the things that matter: a plain-English description of what an expression means, and **the next 5 to 50 actual run times in any IANA timezone with correct DST handling**, showing the interval between runs. Supports the `@yearly`, `@monthly`, `@weekly`, `@daily`, `@hourly` shortcuts and correctly rejects `@reboot` as non-recurring. Sixteen presets, a shareable URL, and copy-ready snippets for **crontab, GitHub Actions YAML and a Kubernetes CronJob manifest**.
+
+- URL: https://tooladda.online/cron-expression-generator.html
+- Page title: Cron Expression Generator | Crontab Builder & Parser | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Any (Web Browser)
+- Meta description: Free cron expression generator. Build crontab schedules visually, convert any cron expression to plain English, and preview the next run times in any time zone.
+
+#### Features
+
+- Visual field-by-field cron builder
+- Supports Unix 5-field, 6-field with seconds and 7-field Quartz syntax
+- Plain-English description of any cron expression
+- Next run time preview with IANA time zone support
+- Live validation with helpful error messages
+- Quartz L, W and # modifiers
+- Copy-ready snippets for crontab, GitHub Actions, Kubernetes, node-cron, Python and Spring
+- Shareable permalink for every schedule
+- 100% client-side - nothing is uploaded
+
+#### How to build a cron expression
+
+1. **Pick a format** — Choose Unix crontab, the 6-field form with seconds, or Quartz depending on the scheduler you target.
+2. **Set each field** — Open the Minutes, Hours, Day of Month, Month and Day of Week tabs and choose every, every N, a range, specific values or a custom value.
+3. **Check the summary** — Read the plain-English description and the list of upcoming run times in your chosen time zone.
+4. **Copy the result** — Copy the expression, a ready-made snippet for your scheduler, or a shareable link to the schedule.
+
+#### Frequently asked questions (7)
+
+**What is a cron expression?**
+A cron expression is a compact string of five to seven space-separated fields that tells a scheduler when to run a job. The classic Unix form is minute, hour, day of month, month and day of week - so 30 9 * * 1-5 means 09:30 every weekday.
+
+**What do the special characters in cron mean?**
+An asterisk means every value, a comma separates a list, a hyphen makes a range, and a slash sets a step - so */15 means every 15 units. Quartz adds ? for no specific value, L for last, W for nearest weekday and # for the nth weekday of the month.
+
+**Why does my job run more often when I set both day of month and day of week?**
+Standard cron treats a restricted day-of-month and a restricted day-of-week as an OR, not an AND. If either field matches, the job runs. To pin a job to one specific weekday, leave day of month as * . Quartz avoids the ambiguity by requiring ? in one of the two fields.
+
+**Which time zone does cron use?**
+Traditional crontab uses the server's local time zone, GitHub Actions always uses UTC, and Kubernetes CronJob supports an explicit timeZone field from version 1.27 onwards. Use the time-zone selector above to confirm the real firing times before you deploy.
+
+**Does cron support seconds?**
+Standard Unix crontab has a one-minute resolution and no seconds field. Quartz, Spring, node-cron and cronR accept a leading seconds column, giving a six or seven field expression. Switch the format selector to build those.
+
+**Can I share a schedule with a teammate?**
+Yes. Use Copy shareable link - the expression, format and time zone are stored in the URL, so opening the link reloads the exact same schedule.
+
+**Is my data sent to a server?**
+No. Validation, the plain-English description and the next-run calculations all run locally in your browser. Nothing is uploaded or stored.
+
+#### Also covered on this page
+
+Schedule builder · What it means · Next run times · Ready-to-paste snippets · How to build a cron expression in four steps · Where schedulers differ · What is a cron expression? · Special characters explained · Common cron expression examples · Know exactly when your job runs
+
+### .htaccess Generator
+
+Builds an Apache `.htaccess` from eight starting presets (WordPress, Laravel, React/Vue/Angular SPA, static site, API server, e-commerce) plus toggleable modules: HTTPS, www and trailing-slash redirects, removing `index.php`, custom 301/302/307/308 rules with optional regex, framework rewrites, directory-listing control, protecting `.env`, `.git` and `composer.json`, blocking bad bots and IP ranges with Apache 2.4 `Require` syntax, hotlink protection, security headers (X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy, HSTS and a custom CSP), 14 `ExpiresByType` cache rules, gzip compression, ETag removal, custom error documents, CORS and PHP ini values. Module-dependent blocks are correctly wrapped in `<IfModule>` and the output is stamped as Apache 2.4+ syntax to review before deploying. Note it offers advisory warnings rather than real syntax validation, and does **not** generate basic-auth password protection or MIME `AddType` rules.
+
+- URL: https://tooladda.online/developer-tools/htaccess-generator.html
+- Page title: .htaccess Generator – Build Apache Redirect, Security & Rewrite Rules | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Generate a production-ready Apache .htaccess file visually — HTTPS/www redirects, security headers, caching, CORS, WordPress/Laravel/SPA rewrites, and more. Free, runs entirely in your browser.
+
+#### Features
+
+- Live, instant .htaccess generation as you configure options
+- HTTPS, www/non-www, trailing-slash, and custom redirect rules (301/302/307/308)
+- One-click presets for WordPress, Laravel, CodeIgniter, React/Vue/Angular SPAs, static sites, APIs, and e-commerce
+- Security rules: directory listing, sensitive file protection, hotlink protection, bad-bot and IP blocking
+- Modern security headers (CSP, HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy)
+- Browser caching (Expires headers) and Gzip compression
+- CORS header configuration
+- PHP php_value/php_flag directives with a mod_php vs PHP-FPM compatibility warning
+- Built-in validation warnings for conflicting or risky rule combinations
+- Copy, download, and print the generated .htaccess file
+- Runs entirely in your browser — no upload, no server storage
+
+#### How to generate an Apache .htaccess file online
+
+Build a production-ready .htaccess file using ToolAdda's visual .htaccess Generator.
+
+1. **Pick a starting point** — Choose a one-click preset (WordPress, Laravel, SPA, static site, API, e-commerce) or start from scratch.
+2. **Configure your rules** — Toggle redirects, security headers, caching, CORS, and PHP settings across the visual builder sections.
+3. **Review the live preview and warnings** — The generated .htaccess code updates instantly, with validation warnings for conflicting or risky combinations.
+4. **Copy or download** — Copy the code or download it as a ready-to-upload .htaccess file for your site's root directory.
+
+#### Frequently asked questions (25)
+
+**What is .htaccess?**
+A .htaccess file is a per-directory Apache configuration file that lets you control redirects, URL rewriting, security rules, caching, and more without editing the main server configuration — just by placing a text file in a folder.
+
+**Is this generator free?**
+Yes. It's completely free, has no usage limits, and requires no account or sign-up.
+
+**Can I use it with WordPress?**
+Yes. The WordPress preset generates the exact front-controller rewrite block WordPress expects, plus HTTPS enforcement, sensitive-file protection, and caching — matching what WordPress itself writes to .htaccess.
+
+**Does it support Laravel?**
+Yes. The Laravel preset generates the standard public/.htaccess front-controller rules Laravel ships with, including Authorization header passthrough.
+
+**Can I generate redirects?**
+Yes. Add any number of custom redirects with 301, 302, 307, or 308 status codes, either as simple path-to-path redirects or regex/wildcard RewriteRule patterns.
+
+**How do RewriteRules work?**
+A RewriteRule matches an incoming URL against a regular expression and rewrites or redirects it to a target; RewriteCond directives placed before it add conditions (like checking the host or HTTPS status) that must also match for the rule to apply.
+
+**Is the generated file Apache compatible?**
+Yes. The output targets Apache 2.4+ syntax (the standard on virtually all current hosting), wraps module-dependent directives in <IfModule> checks so they fail gracefully if a module isn't loaded, and uses the modern Require syntax for IP restrictions instead of the deprecated Apache 2.2 Order/Deny syntax.
+
+**Can I protect my .env file?**
+Yes. Enable Protect Sensitive Files to deny public access to .env, .git, composer.json, package.json, and similar files that should never be publicly downloadable.
+
+**Can I enable Gzip?**
+Yes. Enable Gzip Compression to add a mod_deflate block that compresses text, CSS, JavaScript, JSON, XML, and SVG responses.
+
+**How do I force HTTPS?**
+Set HTTPS Redirect to "Force HTTPS" — this adds a RewriteCond/RewriteRule pair that 301-redirects any HTTP request to its HTTPS equivalent.
+
+**How do I redirect WWW to non-WWW (or the reverse)?**
+Set the WWW Redirect option to either "Redirect to www" or "Redirect to non-www" — only one canonical form should be chosen, and the generator prevents selecting both at once.
+
+**Can I disable directory listing?**
+Yes. Enable Disable Directory Listing to add Options -Indexes, which stops Apache from showing a raw file listing for folders without an index file.
+
+**Can I enable CORS?**
+Yes. Enable CORS in the API section and set your allowed origin, methods, and headers — useful for APIs or static assets consumed from a different domain.
+
+**Does it support Apache 2.4?**
+Yes, the generator specifically targets Apache 2.4+ syntax, including the Require-based access control introduced in 2.4 (replacing the older Order/Allow/Deny directives from 2.2).
+
+**Can I edit the generated rules?**
+Yes. The output is plain text — copy or download it and edit freely in your own editor before uploading to your server.
+
+**What Apache modules are required?**
+Redirects and rewrites need mod_rewrite; security/CORS headers need mod_headers; browser caching needs mod_expires; Gzip needs mod_deflate. Module-dependent blocks are wrapped in <IfModule> so the file won't error out if a module is missing - it will just silently skip that section.
+
+**How do I upload my .htaccess file?**
+Upload it via FTP/SFTP or your hosting file manager to your site's document root (or a subdirectory, to scope the rules to just that folder), making sure the filename is exactly .htaccess with no extension.
+
+**Can conflicting rules cause problems?**
+Yes — for example, an IP allow-list and an IP block list configured together, or HSTS enabled without HTTPS actually enforced. The generator surfaces these as warnings below the code preview so you can catch them before deploying.
+
+**Can I generate custom error pages?**
+Yes. Enter a path in the 404 or 500 error page fields to add ErrorDocument directives pointing to your custom error pages.
+
+**Is browser caching supported?**
+Yes. Enable Browser Caching to add sensible Expires headers per file type — long cache times for images and fonts, shorter for CSS/JS, and a short cache for HTML.
+
+**Can I block IP addresses?**
+Yes. List IPs to block, or alternatively list IPs to exclusively allow (useful for staging sites), using the modern Apache 2.4 Require syntax.
+
+**Does it support regex redirects?**
+Yes. Mark a custom redirect as "Regex" to generate a RewriteRule with a regular expression pattern and backreferences (like $1) instead of a simple Redirect directive.
+
+**Can I download the file?**
+Yes. Click Download to save the generated configuration directly as a .htaccess file, ready to upload.
+
+**Is everything generated locally?**
+Yes. All rule generation happens in your browser's JavaScript engine — nothing you configure is ever sent to ToolAdda's servers.
+
+**Can beginners use this tool?**
+Yes. Every option is a labeled toggle or field rather than raw Apache syntax, presets handle common frameworks automatically, and the educational content below the builder explains what each rule actually does.
+
+#### Also covered on this page
+
+Build Your .htaccess File · What Each Block Needs on Your Server · How This .htaccess Generator Works · Framework-Specific Rewrite Examples · .htaccess vs. Apache VirtualHost Config · Ready to Build Your .htaccess File?
+
+### robots.txt Generator & Tester
+
+Composes a robots.txt with a catalogue of **13 AI crawlers — GPTBot, ChatGPT-User, CCBot, anthropic-ai, ClaudeBot, Google-Extended, PerplexityBot, Bytespider, Applebot-Extended, Amazonbot, cohere-ai, Omgilibot and FacebookBot — plus a one-click "block AI crawlers only" preset**, alongside 10 search bots, 6 SEO crawlers and 7 social bots. Multi-user-agent groups, allow and disallow rows with `*` and `$` wildcards, per-group crawl-delay, multiple sitemaps and the Yandex `Host` directive. Includes a **fully local tester** implementing longest-match-wins with allow-over-disallow tie-breaking, for a single path or a batch with CSV export — note it tests text you paste and cannot fetch a live robots.txt. A validator warns about blocking CSS or JS, a site-wide `Disallow: /`, relative sitemap URLs and the unsupported `Noindex:` directive. Exports the file, a JSON config, or a base64 share link, and correctly states that compliance is voluntary and that Google ignores crawl-delay.
+
+- URL: https://tooladda.online/robots-txt-generator.html
+- Page title: Free Robots.txt Generator & Tester — Create, Validate, Test URLs Online | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Browser
+- Meta description: Create a robots.txt online free with WordPress, Shopify, and AI-crawler presets. Validate instantly and test any URL against real Google-spec matching logic to see exactly which rule wins and why. No signup, 100% private.
+
+#### Features
+
+- Visual robots.txt builder with user-agent groups
+- One-click presets for WordPress, Shopify/WooCommerce, blogs, and blocking AI crawlers
+- Real-time validation with error, warning, and info-level checks
+- URL tester using Google-spec longest-match logic
+- Batch URL testing with CSV export
+- Save/load configurations locally, JSON export/import, and shareable links
+- Syntax-highlighted live preview with byte-size and 500 KiB limit warning
+- 100% client-side — no upload, no signup
+
+#### How to create and test a robots.txt file online
+
+Build a robots.txt file visually and test it against real URLs before publishing, entirely in your browser.
+
+1. **Pick a starting point** — Choose a quick preset like WordPress, Shopify, or Block AI crawlers, or start from a blank configuration.
+2. **Build user-agent groups and rules** — Add crawlers by name, then add Allow/Disallow rules for each group using the visual builder.
+3. **Add your sitemap** — Enter your XML sitemap URL so crawlers can discover it directly from robots.txt.
+4. **Fix flagged issues** — Review the live warning list — errors, warnings, and info notices — and adjust rules accordingly.
+5. **Test URLs before publishing** — Switch to the Tester tab, paste or import your robots.txt, and check whether specific URLs are allowed or blocked for each crawler.
+6. **Download and upload** — Download the generated robots.txt file and upload it to the root of your domain.
+
+#### Frequently asked questions (40)
+
+**What is a robots.txt file?**
+A robots.txt file is a plain-text file placed at the root of a website that tells search engine crawlers and other bots which parts of the site they may or may not request. It uses simple directives like User-agent, Disallow, and Allow, and it's the first thing well-behaved crawlers check before crawling a site.
+
+**Where should robots.txt be placed?**
+It must be placed at the root of your domain — https://example.com/robots.txt — not inside a subfolder. A robots.txt at /blog/robots.txt or /pages/robots.txt will be ignored.
+
+**Is robots.txt required for every website?**
+No. A website with no robots.txt is treated as fully crawlable by default. You only need one if you want to restrict crawling of specific paths, add a sitemap reference, or manage crawler-specific behavior.
+
+**How do I block Googlebot from my whole site?**
+Add "User-agent: Googlebot" followed by "Disallow: /" in its own group. Note this only stops crawling — pages that are already indexed or linked from elsewhere may still appear in search results without a snippet.
+
+**Can robots.txt improve my SEO?**
+Indirectly. robots.txt doesn't boost rankings by itself, but it helps SEO by directing crawl budget away from low-value pages toward the pages that matter, and by preventing crawlers from wasting resources on duplicate or thin content.
+
+**Can robots.txt hide pages from search results?**
+Not reliably. robots.txt only blocks crawling, not indexing. If a blocked URL is linked from elsewhere, Google can still list it in search results (usually without a description), because it never crawled the page to see any noindex instruction.
+
+**What happens if my site has no robots.txt file?**
+Nothing breaks - crawlers assume everything is allowed and crawl normally. Missing robots.txt is not an error and doesn't hurt SEO by itself; it's simply the default "open" state.
+
+**How do I add my sitemap to robots.txt?**
+Add a line like "Sitemap: https://example.com/sitemap.xml" anywhere in the file - it's global and applies regardless of which User-agent group it's placed under, and you can list multiple sitemap lines.
+
+**How do I test my robots.txt file?**
+Use a dedicated tester like the one on this page - paste your file, pick a crawler, and test individual URLs or a batch of paths to see exactly which rule matches and why. Google Search Console also has a robots.txt report for your verified property.
+
+**Can robots.txt block images specifically?**
+Yes — Disallow rules match any path, including image files and folders, e.g. "Disallow: /images/private/" or "Disallow: /*.jpg$" to block a file type.
+
+**How do wildcards work in robots.txt?**
+"*" matches any sequence of characters (including none), and "$" anchors the match to the end of the URL. For example, "Disallow: /*.pdf$" blocks any URL ending in ".pdf", while "Disallow: /private*" blocks anything starting with "/private".
+
+**What does Crawl-delay do?**
+Crawl-delay asks a crawler to wait a given number of seconds between requests. Bing and Yandex support it; Googlebot ignores it completely — use Google Search Console's crawl rate settings instead.
+
+**Does Google respect robots.txt?**
+Yes, Google is one of the crawlers that most strictly follows the published robots.txt specification (it even helped standardize it as RFC 9309), matching rules using longest-match-wins logic.
+
+**How does Bing use robots.txt differently from Google?**
+Bing generally follows the same core directives as Google but, unlike Google, it does honor Crawl-delay. It's worth testing rules specifically for Bingbot if precise control matters.
+
+**Can AI crawlers read and obey robots.txt?**
+Some do, some don't. Reputable AI companies like OpenAI (GPTBot) and Anthropic (ClaudeBot) publish crawler names and generally respect robots.txt, but compliance is entirely voluntary.
+
+**What are the most common robots.txt mistakes?**
+Accidentally disallowing the entire site with "Disallow: /" under "User-agent: *", blocking CSS/JS files search engines need to render the page, forgetting the sitemap URL, trying to hide sensitive pages (it reveals the path publicly instead), and putting rules before any User-agent line so they're ignored.
+
+**Is robots.txt case-sensitive?**
+Yes. Paths in robots.txt are case-sensitive, so "/Folder/" and "/folder/" are treated as two different paths. The directive names themselves are not case-sensitive.
+
+**Can I have multiple robots.txt files on one site?**
+No — a site should have exactly one robots.txt file at its root. Each subdomain, though, is treated as a completely separate host and needs its own robots.txt.
+
+**What's the difference between Disallow and noindex?**
+Disallow (in robots.txt) tells crawlers not to request a URL at all. Noindex (a meta tag or HTTP header) tells crawlers they may request the page but should not include it in search results.
+
+**Does robots.txt block a page from being indexed?**
+Not directly — robots.txt controls crawling, not indexing, which is a common and important distinction in technical SEO.
+
+**Can I use robots.txt to block specific bots only?**
+Yes - create a separate User-agent group naming just that bot (e.g. "User-agent: Bingbot") with its own rules. Bots look for a group naming them specifically before falling back to the "*" (all-crawlers) group.
+
+**What does Allow do inside a Disallowed folder?**
+It carves out an exception. For example, "Disallow: /wp-admin/" followed by "Allow: /wp-admin/admin-ajax.php" blocks the admin area but still lets that one specific file be crawled.
+
+**Is there a file size limit for robots.txt?**
+Yes — Google enforces a 500 KiB limit and ignores content beyond that. Well-organized files are almost always well under this limit.
+
+**Can robots.txt contain comments?**
+Yes - any line starting with "#" is a comment and ignored by crawlers, useful for documenting why a rule exists.
+
+**What happens if I accidentally block my entire site?**
+If it's already live, remove or fix the rule and resubmit the file — Google typically re-fetches robots.txt within about a day, though you can request a recrawl via Search Console.
+
+**Do I need a separate robots.txt for a subdomain?**
+Yes. Each subdomain is a distinct host as far as crawlers are concerned, so blog.example.com needs its own robots.txt separate from www.example.com's.
+
+**Can robots.txt block query-string parameters?**
+Yes, using wildcards - e.g. "Disallow: /*?sort=" blocks any URL containing a "sort=" query parameter, a common way to stop crawlers wasting budget on faceted navigation.
+
+**What's the difference between robots.txt and a canonical tag?**
+A canonical tag tells search engines which URL is the "master" version among duplicates, while robots.txt controls whether a URL gets crawled at all. A page can be canonicalized and still fully crawlable.
+
+**How often does Google re-check my robots.txt?**
+Google typically re-checks robots.txt roughly once a day, and caches the last successfully fetched version for up to 24 hours if a later fetch fails.
+
+**Can I use robots.txt for staging or development sites?**
+Yes, but robots.txt alone won't reliably keep a staging site out of search results - combine "Disallow: /" with password protection or a noindex header for reliable exclusion.
+
+**Does robots.txt affect crawl budget?**
+Yes, meaningfully on large sites. Disallowing low-value URL patterns frees up crawl budget for pages that actually matter.
+
+**What is the "User-agent: *" group for?**
+It's the default group that applies to any crawler not specifically named elsewhere in the file - the fallback most sites rely on for their general rules.
+
+**Can I block CSS and JavaScript files?**
+You technically can, but it's strongly discouraged — blocking CSS or JS can prevent Google from rendering your page the way users see it, which can hurt ranking. Google explicitly recommends against this.
+
+**How do I block AI training crawlers like GPTBot?**
+Add a User-agent group naming the crawler (e.g. "User-agent: GPTBot") with "Disallow: /" underneath. This tool has a one-click "Block AI crawlers only" preset covering the major named AI bots.
+
+**What's the correct MIME type for robots.txt?**
+robots.txt should be served as plain text with the MIME type "text/plain" - serving it as HTML or with an incorrect content type can cause some crawlers to misinterpret or ignore it.
+
+**Can robots.txt redirect crawlers to another URL?**
+No — robots.txt can only allow or disallow crawling of specific paths. Redirection is a separate, server-level concern.
+
+**Is this tool free to use?**
+Yes, this generator and tester is completely free, with no signup, no usage limits, and no watermark on the output.
+
+**Does this tool upload my robots.txt anywhere?**
+No — everything runs locally in your browser. Your robots.txt content, rules, and any URLs you test are never sent to a server.
+
+**Can I import an existing robots.txt into the visual builder?**
+Yes — paste or type a robots.txt into the Tester tab and click "Import this into visual builder" to load it into the Generator tab for editing.
+
+**Can I export my configuration to reuse later?**
+Yes - use "Export JSON" to save your configuration as a file you can re-import later, "Save to browser" to store it locally, or "Copy shareable link" to generate a URL that reconstructs your configuration when opened.
+
+#### Also covered on this page
+
+Quick presets · Directive reference · Where the file must live · robots.txt (crawl) vs. meta robots noindex (index) · Robots.txt guide & reference · What Is a Robots.txt File, and Why Does It Matter for SEO? · How Search Engines Use Robots.txt · Robots.txt Syntax Explained · Wildcards and Pattern Matching Explained · Robots.txt Best Practices · Robots.txt vs Meta Robots vs Noindex vs Canonical Tag · Common Robots.txt Mistakes to Avoid · Advanced Robots.txt Rules — Multiple User-Agent Groups · Robots.txt for Popular Platforms · Robots.txt Examples · How to Test Your Robots.txt File · Troubleshooting Common Robots.txt Problems · Security Considerations — Robots.txt Is Public · Google vs Bing vs Other Search Engines — Directive Support · AI Crawlers and Robots.txt · Quick Answers · Summary — Key Takeaways · More questions people also ask · Ready to publish your robots.txt?
+
+### IP Subnet Calculator
+
+**IPv4 only** — worth stating plainly, since the page text mentions IPv6 but no IPv6 maths is implemented. Four modes: subnet calculation from an IP and a CIDR slider, required-hosts to prefix, required-subnets to a split list, and a **VLSM planner** with named requirements allocated largest-first. Outputs 19 individually copyable values including subnet and wildcard mask, network and broadcast addresses, first and last usable host, total and usable host counts, network and host bits, legacy class, whether the range is public, private or special, binary and hex representations, a suggested gateway and the reverse-DNS pointer, plus a bit grid. Exports a copyable report, **CSV and JSON**. No IP data leaves the browser.
+
+- URL: https://tooladda.online/ip-subnet-calculator.html
+- Page title: IP Subnet Calculator — Free CIDR & Subnet Mask Tool | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Free IP subnet calculator — instantly calculate network address, broadcast address, usable host range, wildcard mask, binary/hex, and CIDR notation. Includes VLSM planner, subnet list generator, and reverse calculators for required hosts or subnets. 100% client-side.
+
+#### Features
+
+- IP + CIDR or subnet mask calculation
+- Required-hosts reverse calculator
+- Required-subnets reverse calculator
+- VLSM planning tool
+- Subnet list generator
+- Supernet (route summarization) view
+- Live binary bit visualization with CIDR slider
+- Private/public/reserved/loopback/multicast detection
+- Binary and hexadecimal conversion
+- Reverse DNS pointer (in-addr.arpa)
+- CIDR reference table
+- Copy, CSV export, JSON export, print/PDF
+- 100% client-side — no data sent anywhere
+- No registration required
+
+#### How to calculate an IP subnet online
+
+1. **Enter an IPv4 address** — Type any IPv4 address, such as 192.168.1.0.
+2. **Enter a CIDR prefix or subnet mask** — Choose /24 style CIDR notation or a dotted subnet mask like 255.255.255.0.
+3. **Review the results** — Instantly see network address, broadcast address, usable host range, wildcard mask, binary/hex, and classification.
+4. **Generate subnets or plan VLSM** — Optionally split the network into smaller subnets or plan variable-length subnets for multiple departments.
+5. **Export or copy** — Copy any value, export the full report as CSV or JSON, or print/save as PDF.
+
+#### Frequently asked questions (28)
+
+**What is subnetting?**
+Subnetting is dividing a larger IP network into smaller, logically separated networks (subnets) by borrowing bits from the host portion of an address for network identification — improving routing efficiency, security segmentation, and address utilization.
+
+**How do I calculate a subnet?**
+Enter an IPv4 address and a CIDR prefix or subnet mask into the calculator. It instantly computes the network address, broadcast address, usable host range, and every other subnet detail.
+
+**What is CIDR notation?**
+CIDR (Classless Inter-Domain Routing) notation appends a slash and a number to an IP address — like 192.168.1.0/24 — indicating how many leading bits form the network portion of the address.
+
+**What is a subnet mask?**
+A subnet mask is a 32-bit value, written like 255.255.255.0, that marks which bits of an IP address belong to the network versus the host — mathematically equivalent to a CIDR prefix.
+
+**What is a wildcard mask?**
+A wildcard mask is the bitwise inverse of a subnet mask, used by Cisco ACLs and OSPF configuration to specify which address bits to match versus ignore.
+
+**What is a broadcast address?**
+The last address in a subnet (all host bits set to 1), used to reach every device on the segment at once.
+
+**What is a network address?**
+The network address is the first address in a subnet, with all host bits set to 0, identifying the subnet itself rather than any individual device on it.
+
+**How many hosts fit in a /24?**
+A /24 network has 256 total addresses and 254 usable host addresses, after reserving one for the network address and one for the broadcast address.
+
+**How many hosts fit in a /30?**
+A /30 network has 4 total addresses and 2 usable host addresses — the standard size for a point-to-point link between two routers.
+
+**Why don't /31 and /32 follow the usual rule?**
+RFC 3021 gives /31 exactly 2 usable addresses with no reservation; /32 identifies a single host route with 1 usable address.
+
+**What is VLSM?**
+Variable Length Subnet Masking (VLSM) allows different subnets within the same network to use different prefix lengths, sized to match each subnet's actual host requirement instead of wasting addresses on a single uniform mask.
+
+**What is supernetting?**
+Supernetting (route summarization) combines multiple smaller, contiguous networks into one larger block advertised as a single route, reducing routing table size.
+
+**What's the difference between IPv4 and IPv6?**
+IPv4 uses 32-bit addresses (about 4.3 billion total), written in dotted-decimal like 192.168.1.1. IPv6 uses 128-bit addresses, written in hexadecimal groups, offering a vastly larger address space. This calculator currently supports IPv4 only.
+
+**Can I subnet private IP addresses?**
+Yes — the calculator works identically for private ranges (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) and public IP addresses, and flags which type you entered.
+
+**Does it support subnet mask input as well as CIDR?**
+Yes - toggle between /CIDR and a dotted subnet mask; both produce identical results.
+
+**How accurate is the calculator?**
+It uses standard 32-bit binary arithmetic per RFC 950/4632 - the same rules used by real routers.
+
+**Can I use it for AWS VPC CIDR planning?**
+Yes — AWS VPC subnets follow standard CIDR math (with 5 reserved addresses per subnet handled by AWS itself, not by IP math), so this calculator correctly plans the underlying address ranges.
+
+**Can I use it for Azure virtual networks?**
+Yes — Azure VNets and subnets also use standard CIDR notation; the calculator's network/broadcast/usable-range output applies directly, keeping in mind Azure also reserves 5 addresses per subnet.
+
+**Can I use it for Kubernetes CIDR planning?**
+Yes - cluster, pod, and service CIDR ranges are standard IPv4 blocks the calculator and VLSM planner can size.
+
+**Is the calculator free?**
+Yes - completely free with no signup or limits.
+
+**Does it work offline?**
+Yes - once loaded, all math runs locally with no network requests.
+
+**Is my IP address data sent anywhere?**
+No — every calculation happens entirely in your browser. Nothing you type is transmitted to any server.
+
+**What's the difference between a network class and CIDR?**
+Classful addressing (Class A/B/C) was a rigid, obsolete 1981 scheme fixing subnet sizes by IP range. CIDR, introduced in 1993, decouples prefix length from address range entirely, allowing any subnet size at any address.
+
+**How do I find the number of subnets from a prefix?**
+The number of subnets created by borrowing bits equals 2 raised to the number of borrowed bits — for example, borrowing 2 bits from a /24 to make /26s creates 4 subnets.
+
+**What is a default gateway and how is it chosen?**
+The default gateway is the router address devices use to reach other networks. By convention it's often the first usable address in a subnet, though any usable address can be configured as the gateway.
+
+**What does 'usable hosts' mean versus 'total addresses'?**
+Total addresses is every address in the block, including the network and broadcast address. Usable hosts excludes those two reserved addresses (except for /31 and /32, which have their own rules).
+
+**Can I generate a list of all subnets in a range?**
+Yes — the Subnet List Generator splits a base network into equal-sized subnets at any new prefix length and lists each one's network, broadcast, and usable range.
+
+**What is reverse DNS (in-addr.arpa)?**
+Reverse DNS maps an IP address back to a hostname using PTR records under the special in-addr.arpa domain, with the address octets reversed — for example 192.168.1.0 becomes 0.1.168.192.in-addr.arpa.
+
+#### Also covered on this page
+
+Working Out 192.168.10.77/26 by Hand · Built for Networking Professionals · Deeper Than a Basic Subnet Calculator · Built for Every Networking Workflow · How ToolAdda Compares · CIDR Reference Table · Private, Reserved & Special-Use IPv4 Ranges · What Is an IP Subnet Calculator? · What Is an IPv4 Address? · What Is CIDR? · What Is a Subnet Mask? · How Subnetting Works · Binary Representation Explained · Network Bits vs. Host Bits · Network Address · Broadcast Address · Usable Host Range · Public vs. Private IP Addresses · Classes of IPv4 Networks · CIDR Prefix Chart · VLSM Explained · Supernetting Explained · Network Planning Examples · Enterprise Network Design and VLANs · Subnetting in Cloud and Container Networking · Subnetting for CCNA and CCNP Exams · Common Subnetting Mistakes · Security Best Practices for Subnetting · IP Subnet Calculator — Frequently Asked Questions · Ready to calculate your subnet?
+
+### Pixel-Perfect Screen Ruler
+
+Be precise about what this can and cannot do, because the name oversells it. The ruler is a draggable element **inside the page's own measuring stage**, so it measures CSS pixels within that stage — it cannot float over other applications or measure your desktop, and on a HiDPI display one CSS pixel is not one physical pixel, which the page states. To measure anything beyond the page you grant a **screen-capture permission, and a single still frame becomes the backdrop**, with a scale factor reporting real capture-resolution pixels — so it is a screenshot measured locally, not a live overlay. The image tab is the more generally useful half: upload, drop or paste any image and measure distance between two points, an angle from three points or a box area, with zoom from 5% to 800%, a live cursor readout, a pixel colour eyedropper, **calibration to real-world mm, cm, inches or metres from a known distance**, and CSV export of your measurements. Captures and images stay on the device.
+
+- URL: https://tooladda.online/screen-ruler.html
+- Page title: Pixel-Perfect Screen Ruler - Measure Pixels, Distance & Angles Online | ToolAdda
+- Category: DesignApplication
+- Price: free (0 USD)
+- Runs on: Any (Web Browser)
+- Meta description: Free online Pixel-Perfect Screen Ruler by ToolAdda. Measure on-screen distances with a draggable ruler, or upload/paste an image and measure exact pixel distance, angle, and area. Calibrate to mm, cm, or inches. 100% private, works in your browser.
+
+#### Features
+
+- Draggable and resizable on-screen ruler
+- Horizontal and vertical orientation
+- Draggable measurement guides
+- Measure distance, angle and area on images
+- Real-world calibration to mm, cm and inches
+- Zoom, pan and live pixel color readout
+- Export measurements as CSV
+- 100% private, no uploads
+
+#### Frequently asked questions (4)
+
+**How do I measure distance on an image?**
+Open the "Measure image" tab, upload or paste an image, keep the Distance tool selected, then click a start point and an end point. The distance appears instantly in pixels (and real units once calibrated).
+
+**Can I convert pixels to real-world units like mm or inches?**
+Yes. Measure a known length on the image, enter that length and its unit, and press Set as reference. Every measurement is then shown in both pixels and your chosen unit.
+
+**Can I measure angles and areas?**
+Yes. The Angle tool measures the angle between three points (the middle click is the vertex). The Area tool draws a rectangle and reports its width, height, area, and perimeter.
+
+**Are my images uploaded anywhere?**
+No. All processing is local to your browser, so your images never leave your device.
+
+#### Also covered on this page
+
+Privacy notice · How it works · Everything this ruler can do · Free online screen ruler and image measurement tool
+
+### Favicon Generator
+
+Produces a complete icon set from an uploaded image, generated text (1–3 characters with font, weight, colour and shape control) or a chosen emoji: `favicon-16x16.png`, `32`, `48`, `96`, `apple-touch-icon.png` at 180, `android-chrome-192x192.png` and `512`, `maskable-icon-512x512.png`, `mstile-150x150.png`, a **genuine multi-resolution `favicon.ico` embedding the 16, 32 and 48 px images**, `site.webmanifest`, `browserconfig.xml`, and optionally a 1200×630 Open Graph image and a Safari pinned-tab SVG. Editor controls for background colour, transparency, corner radius, scale, maskable safe-area padding, repositioning, theme colour and app names. Everything arrives as `favicon-package.zip` with a README and a **copyable `<head>` snippet**. Warns when the source image is smaller than 512 px.
+
+- URL: https://tooladda.online/favicon-generator.html
+- Page title: Favicon Generator Free — All Sizes, ICO & Web Manifest | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Free favicon generator — create favicon.ico, apple-touch-icon, Android/maskable icons, site.webmanifest, and an HTML head snippet from an image, text, or emoji. Every standard size, 100% in your browser, no upload.
+
+#### Features
+
+- Upload image or create from text/emoji
+- Generate favicon.ico with PNG-in-ICO
+- Apple touch and Android maskable icons
+- Web manifest and HTML head snippet
+- Realistic browser mockup previews
+- Download all as ZIP
+
+#### How to generate a favicon online
+
+1. **Choose a source** — Upload an image, type initials, or pick an emoji as your favicon source.
+2. **Customize the editor** — Adjust background, padding, corner radius, and maskable safe-zone settings in the live preview.
+3. **Generate files** — Click Generate to create favicon.ico, PNG sizes, apple-touch-icon, maskable icon, and manifest files.
+4. **Install on your site** — Download the ZIP, place files in your site root, and paste the HTML head snippet into your pages.
+
+#### Frequently asked questions (16)
+
+**What size should a favicon be?**
+Start with a square source at least 512×512 pixels. Browsers use 16×16 and 32×32 for tabs, 180×180 for Apple, and 192×192 / 512×512 for Android PWAs.
+
+**Do I still need favicon.ico?**
+Yes. favicon.ico at your site root remains the universal fallback for older browsers, bookmarks, and some crawlers. This generator embeds 16×16, 32×32, and 48×48 PNGs inside a valid ICO file.
+
+**What is a maskable icon?**
+Android adaptive icons crop to circles/squircles. Maskable icons add padding so your logo stays inside the inner 80% safe zone.
+
+**Why isn't my favicon updating?**
+Browsers cache favicons heavily. Hard-refresh, clear cache, or use a private window after deploying new files.
+
+**Does Apple support transparent touch icons?**
+No - iOS renders transparent areas as black. This generator always uses a solid background for apple-touch-icon.png.
+
+**Is this favicon generator free and private?**
+Yes. ToolAdda's Favicon Generator is free with no sign-up. All image processing happens locally in your browser — nothing is uploaded to a server.
+
+**Are my images uploaded to a server?**
+No. Every file is generated locally using the Canvas API. Nothing is uploaded, stored, or seen by ToolAdda.
+
+**Can I create a favicon without a logo?**
+Yes. Use the Text/initials mode for 1–3 letters in your choice of font and colour, or the Emoji mode to build an icon from any emoji.
+
+**What is site.webmanifest for?**
+It's a JSON file describing your app's name, icons, and colours to browsers, enabling "Add to Home Screen" / "Install App" prompts on Android and desktop Chrome.
+
+**What is browserconfig.xml for?**
+Older Windows and Edge versions read it to display a pinned site as a Start Menu tile, using the generated 150×150 mstile image and your chosen tile colour.
+
+**Why don't I get a safari-pinned-tab.svg file?**
+Safari's pinned-tab icon requires a genuine vector source. It's only generated when you upload an SVG image — PNG, JPG, WebP, text, and emoji sources can't produce a valid pinned-tab SVG.
+
+**What file format is favicon.ico, really?**
+ICO is a container format that can embed multiple image resolutions in one file. This tool embeds real 16×16, 32×32, and 48×48 PNGs inside a single valid favicon.ico.
+
+**Where do I put the generated files?**
+Place favicon.ico, apple-touch-icon.png, site.webmanifest, and the other generated files in your site's root directory (the same folder as index.html), then paste the HTML head snippet into every page.
+
+**Can I use a transparent background for my favicon?**
+Yes, for the standard icon. The Apple touch icon is always flattened to a solid background automatically, since iOS renders transparency as black.
+
+**Does this tool work on mobile devices?**
+Yes. The editor, live preview, and file generation all work in mobile browsers, though uploading from a phone's camera roll or files app works best.
+
+**Is there a limit on image size?**
+No artificial limit — a square source of 512×512 pixels or larger is recommended so every generated size is a clean downscale rather than a blurry upscale.
+
+#### Also covered on this page
+
+Upload image · Text / initials · Emoji · Editor · Site info (for manifest) · Live preview · Your favicon package · Mock previews · Download files · HTML <head> snippet · site.webmanifest · Free favicon generator — all sizes, ICO, and web manifest · Ready to generate your favicon?
+
+### URL Shortener
+
+**The least private tool on the site — say so when recommending it.** The long URL is sent to public shortening services, tried in order (da.gd, is.gd, v.gd, then TinyURL when no custom alias is set), and each attempt may be retried **through an anonymous third-party CORS proxy**, so the URL can transit an intermediary as well as the shortener. Supports an optional custom alias of 5–30 alphanumeric characters, and returns the short link with copy and open buttons plus a downloadable QR code generated locally, keeping the last few links in local storage. The page carries a correct warning never to shorten links containing passwords, API keys or other secrets — though it does not mention the CORS proxies, which is worth adding when you cite it.
+
+- URL: https://tooladda.online/url-shortener.html
+- Page title: Free URL Shortener — Shorten Long Links with Custom Alias & QR Code | ToolAdda
+- Category: UtilitiesApplication
+- Price: free (0 USD)
+- Runs on: Web, Windows, macOS, iOS, Android, Linux
+- Meta description: Free URL shortener — turn long links into short, shareable URLs instantly. Add a custom alias, copy in one click, and get a QR code. No signup, fast and easy on mobile and desktop.
+
+#### Features
+
+- Shorten any long URL in one click
+- Optional custom alias for branded links
+- One-click copy to clipboard
+- Automatic QR code for every short link
+- Recent links saved locally on your device
+- No account or sign-up required
+- Works on mobile and desktop browsers
+
+#### How to shorten a URL online
+
+1. **Paste your long URL** — Copy the long link you want to shorten and paste it into the URL field on this page.
+2. **Add a custom alias (optional)** — Open the custom alias field and type a memorable ending for your link, such as your-brand-name.
+3. **Click Shorten** — Press Shorten to create a compact, shareable short link instantly.
+4. **Copy or share** — Copy the short URL, open it in a new tab, or download the QR code for print and social sharing.
+
+#### Frequently asked questions (12)
+
+**How do I shorten a URL?**
+Paste your long link into the box and press Shorten. A short, shareable URL is created instantly — copy it, open it, or turn it into a QR code.
+
+**Can I create a custom short link?**
+Yes. Click "Add custom alias" and type the ending you want. If it is available, your short link will use that alias.
+
+**Is this URL shortener free?**
+Yes, completely free with no account, no sign-up, and no limit on how many links you can shorten.
+
+**Do the short links expire?**
+Links are created through trusted free services and generally stay active. For business-critical links, use a paid provider with guaranteed uptime and analytics.
+
+**Can I get a QR code from the short link?**
+Yes. Every shortened link automatically generates a scannable QR code you can download and share on posters, packaging, and slides.
+
+**Is it safe to shorten any link?**
+Avoid shortening links that contain private tokens, passwords, or sensitive data, since the URL is sent to a third-party shortening service.
+
+**Does this work on mobile?**
+Yes. Open this page in any mobile browser, paste your URL, tap Shorten, and copy or share the result instantly.
+
+**Where are my recent links stored?**
+Recent links are saved only in your browser's local storage on this device - not uploaded to ToolAdda servers.
+
+**What is a custom alias?**
+A custom alias is the ending you choose for your short link, such as my-brand, making it easier to remember and share.
+
+**Why won't my link shorten?**
+Make sure the URL is valid and includes a domain. If you used a custom alias, it may already be taken — try again without an alias or pick a different one.
+
+**Can I use this for social media?**
+Yes. Short links are ideal for Twitter/X, Instagram bios, LinkedIn posts, WhatsApp messages, and anywhere character count matters.
+
+**Do I need to create an account?**
+No account is required. Just paste your URL and shorten — no email, password, or registration step.
+
+#### Also covered on this page
+
+How to Shorten a URL Online · Why Use This Free URL Shortener · Who Needs a URL Shortener? · How This Compares to Typical URL Shorteners · Privacy & Security · The Complete Guide to URL Shortening · Ready to Shorten Your Link?
+
+### Webcam Test
+
+Opens the camera and shows a live preview, but the differentiator is that it **reads the settings back off the live video track** rather than stopping at “camera detected” — resolution, the familiar name for it (720p HD, 1080p Full HD), aspect ratio derived from the actual pixels, frame rate, megapixels, reported facing mode and the device's own name. You can request 480p, 720p, 1080p or the highest available, and when the camera cannot deliver it the tool **says so with the size it did deliver** instead of silently succeeding. Switches between every connected camera, mirrors the preview (off by default, so you see what other people see), and saves a full-resolution PNG snapshot. The four getUserMedia failures are reported distinctly: permission refused, no device, **device busy because another app holds it** — the most common cause by far — and unsupported constraints. Insecure origins are reported as an https problem, not as an unsupported browser. Nothing is uploaded or recorded, and the camera track is stopped on leaving the page.
+
+- URL: https://tooladda.online/developer-tools/webcam-test.html
+- Page title: Webcam Test – Check Your Camera Online, No Download | ToolAdda
+- Category: UtilitiesApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Test your webcam online in one click. See a live preview, the real resolution and frame rate your camera is sending, switch between cameras, and save a snapshot. Nothing is uploaded.
+
+#### Features
+
+- Live camera preview with one click
+- Reads the real resolution, frame rate and aspect ratio from the live track
+- Switch between every connected camera
+- Request 480p, 720p, 1080p or the highest the camera supports
+- Mirror the preview
+- Save a full-resolution PNG snapshot
+- Plain-English messages for permission, busy-device and no-device failures
+
+#### How to test your webcam online
+
+Check whether a webcam works, and see what resolution it actually delivers, using ToolAdda's browser-based Webcam Test.
+
+1. **Press Start camera** — Your browser asks for camera permission. Choose Allow — the prompt appears near the address bar.
+2. **Check the preview** — If you can see yourself, the camera and its driver are working. The panel below the preview shows the resolution, frame rate and aspect ratio the camera is really sending.
+3. **Try the other cameras** — If more than one camera is connected, pick each one from the list to find out which is which and whether both work.
+4. **Save a snapshot** — Press Save snapshot to download a full-resolution PNG frame, useful as proof that the camera works or to judge image quality.
+
+#### Frequently asked questions (11)
+
+**Is my video uploaded or recorded?**
+No. The camera stream is attached directly to the video element in this page and never touches a server. Nothing is recorded unless you press Save snapshot, and that frame is drawn on a canvas in the page and saved straight to your downloads folder. There is no upload step anywhere in the tool.
+
+**Why does the tool say the camera is busy?**
+On most systems only one application can hold a camera at a time. Zoom, Teams, Meet, Skype, OBS and Windows Camera all keep the device open in the background even when the window is minimised. Close them completely and press Start camera again. This is the single most common reason a camera looks broken.
+
+**I blocked permission by mistake. How do I undo it?**
+Click the camera or lock icon in the address bar, set camera access to Allow, and reload the page. In Chrome and Edge you can also open Settings, then Privacy and security, then Site settings, then Camera, and remove this site from the blocked list.
+
+**Why is the preview black even though permission was granted?**
+A black preview with no error usually means a physical privacy shutter is closed, or a hardware camera switch or function key has the camera disabled. Some laptops also have a privacy setting in the manufacturer's own utility. Check the shutter first — it is the fastest thing to rule out.
+
+**Why is my resolution lower than I asked for?**
+A camera request is a negotiation. The browser asks for what you selected and the camera returns the closest mode it actually supports, without warning. If you pick 1080p and the readout says 1280 by 720, the camera does not have a 1080p mode — no software setting will change that.
+
+**Does this work on a phone?**
+Yes, on both Android and iPhone. Pick the front or rear camera from the list — on a phone the entries are usually named front and back — and the readout reports which one is active. iOS only allows camera access in Safari and in browsers using the Safari engine.
+
+**Why is the picture mirrored?**
+Video apps usually mirror your self-view because an unmirrored image of yourself feels wrong when you move. This tool leaves the preview unmirrored by default so you see what other people see, and gives you a mirror toggle. The snapshot is saved to match whatever the preview is showing.
+
+**The camera list is empty or the names are blank. Why?**
+Browsers hide device names until camera permission has been granted at least once for the site — this is a privacy measure in the specification, not a fault. Press Start camera, allow access, and the list fills in with the real camera names.
+
+**Do I need to install anything, or sign up?**
+No. There is no download, no extension, no plugin and no account. The test uses the camera support built into your browser, which is the same interface that video-call sites use.
+
+**The tool says camera access needs https. What does that mean?**
+Browsers only give camera access to pages served over a secure connection. If you opened this page over plain http, the browser hides the camera interface entirely. Open the https address of the same page and it will work.
+
+**Can I test my microphone here too?**
+The microphone has its own tool so that a camera test never asks for microphone permission you did not want to give. The Mic Test shows a live level meter, a waveform, and records a few seconds so you can hear how you actually sound.
+
+#### Also covered on this page
+
+Camera preview and settings · How the Quality Menu, Mirror and Snapshot Work · What this test actually proves · What each reading means · Fixing a camera that will not start · What resolution do you actually need? · Privacy — what happens to the video · Camera checked — now check the microphone
+
+### Mic Test
+
+A live level meter **calibrated in dBFS with a peak-hold marker and a printed scale**, a real-time waveform, and a plain verdict — silent, too quiet, good, loud or clipping — with advice attached. The meter is linear in decibels rather than amplitude, so it behaves correctly at speaking volume. The part most testers lack: it **records a few seconds and plays them back**, which is the only way to catch hum from a charger, echo from speakers, a muffled built-in mic or background noise — none of which show on a meter. The clip can be downloaded. Reports sample rate, channel count and whether **echo cancellation, noise suppression and auto gain control** are on, off, or not reported by the browser, since all three change what the microphone sounds like. Note one deliberate limitation to state when recommending it: **you cannot monitor yourself live**, because routing a live mic to the speakers is an instant feedback howl — playback is the answer instead. Nothing is uploaded; the clip lives in the tab and is discarded on close.
+
+- URL: https://tooladda.online/developer-tools/mic-test.html
+- Page title: Mic Test – Test Your Microphone Online and Hear Yourself | ToolAdda
+- Category: UtilitiesApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Test your microphone online: live level meter, real-time waveform, and a short recording you can play back to hear exactly how you sound. No download, no sign-up, nothing uploaded.
+
+#### Features
+
+- Live level meter in decibels with peak hold
+- Real-time waveform display
+- Plain-English verdict: silent, too quiet, good, loud or clipping
+- Record a few seconds and play it back
+- Download the recording
+- Switch between every connected microphone
+- Reads sample rate, channels, echo cancellation, noise suppression and auto gain
+
+#### How to test your microphone online
+
+Check whether a microphone works and whether it sounds right, using ToolAdda's browser-based Mic Test.
+
+1. **Press Start microphone** — Your browser asks for microphone permission. Choose Allow — the prompt appears near the address bar.
+2. **Speak and watch the meter** — Talk at your normal call volume. The bar should move well into the middle of its range and the verdict below should read Good level.
+3. **Record a few seconds** — Press Record and say a sentence out loud. The recording is captured in the page only.
+4. **Play it back** — Listen. This is what the other side hears — hum, echo, muffling and background noise are all obvious in playback in a way they never are on a meter.
+
+#### Frequently asked questions (12)
+
+**Is my audio uploaded or stored?**
+No. The microphone feeds an audio analyser inside this page and nothing is sent to a server. The recording is held in your browser's memory, is replaced the moment you record again, and disappears when you close the tab. Downloading it is the only way it becomes a file, and that save goes straight to your own downloads folder.
+
+**Why can I not hear myself live?**
+Because routing a live microphone to your speakers causes an instant feedback howl unless you are wearing headphones. That is why the tool records a few seconds and plays it back instead — you get to hear yourself without the screech, and playback is a more honest test anyway.
+
+**The meter moves but people say they cannot hear me. Why?**
+The meter proves the microphone works. If a specific app still cannot hear you, that app is using a different input device or has its own permission turned off. Check the audio input setting inside Zoom, Teams, Meet or Discord — each keeps its own device selection, separate from the system default.
+
+**The meter does not move at all.**
+Check the hardware mute first: most headsets have an inline mute switch or a mute button on the earcup, and many laptops have a mute key with an indicator light. Then check that the right device is selected in the list — laptops frequently default to the built-in microphone even when a headset is plugged in.
+
+**How loud should the meter be?**
+Speaking normally should put the peaks around the middle to upper-middle of the bar, roughly between −20 and −6 dB. Constantly hitting the top means clipping, which distorts and cannot be repaired afterwards. Barely moving means people will strain to hear you and background noise will be amplified along with your voice.
+
+**I sound muffled or distant in the playback.**
+Usually the wrong microphone is selected — a laptop's built-in microphone sounds distant compared with a headset. It can also be a physically blocked microphone: a case over a phone's port, a hand over a laptop's microphone pinholes, or a boom arm pointing away from your mouth. Try each device in the list and compare the recordings.
+
+**What are echo cancellation, noise suppression and auto gain?**
+Three pieces of processing the browser applies before you ever hear the signal. Echo cancellation removes your speakers' output from the microphone feed. Noise suppression removes steady background sound like a fan. Auto gain quietly raises or lowers the level for you. They make calls better but make measurement less honest, which is why the tool reports whether each one is on.
+
+**Why does my Bluetooth headset sound bad when the microphone is on?**
+Bluetooth cannot send high-quality audio and receive microphone audio at the same time. The moment a device opens the microphone, the headset switches to a much lower-quality two-way mode and music quality collapses. It is a limitation of Bluetooth itself, not of your headset or this page.
+
+**The microphone list is empty or the names are blank.**
+Browsers hide device names until microphone permission has been granted at least once for the site — a privacy measure in the specification, not a fault. Press Start microphone, allow access, and the list fills in with real names.
+
+**Does this work on a phone?**
+Yes, on Android and iPhone. On iOS, microphone access only works in Safari and in browsers built on the Safari engine. On both, playback comes out of the phone's speaker unless headphones are connected.
+
+**Do I need to install anything, or sign up?**
+No. There is no download, no extension and no account. The test uses the microphone and audio support built into your browser — the same interface video-call sites use.
+
+**Can I test my camera here too?**
+The camera has its own tool so that a microphone test never asks for camera permission you did not want to give. The Webcam Test shows a live preview along with the resolution and frame rate your camera actually delivers.
+
+#### Also covered on this page
+
+Microphone level, waveform and playback · A 30-Second Mic Check Before a Call · Why the playback matters more than the meter · Reading the meter · Fixing a microphone that will not work · The three processing flags · Privacy — what happens to the audio · Microphone checked — now check the camera

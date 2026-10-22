@@ -1,0 +1,2471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+  <meta name="description" content="Resize and compress your signature online free for SSC, UPSC, IBPS, PAN, banking, and university forms. Auto-crop, clean the background, hit an exact KB range, and compare before/after — 100% private, runs entirely in your browser." />
+  <title>Signature Resizer Online — Resize Signature for SSC, PAN, Aadhaar &amp; More Free | ToolAdda</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    :root {
+      --sigx-ink: #0c1929;
+      --sigx-navy: #1e3a5f;
+      --sigx-gold: #c9a227;
+      --sigx-gold-soft: #f5e6b8;
+      --sigx-cream: #faf7f2;
+      --sigx-seal: #991b1b;
+      --sigx-emerald: #059669;
+      --sigx-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+      --sigx-header-pad: calc(var(--header-overlap, 4.5rem) + 0.75rem);
+    }
+    @keyframes sigxFadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes sigxDraw { from { stroke-dashoffset: 420; } to { stroke-dashoffset: 0; } }
+    @keyframes sigxPulse { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+    @keyframes sigxFloat { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-8px) rotate(1deg); } }
+    @media (prefers-reduced-motion: reduce) {
+      .sigx-page * { animation: none !important; transition-duration: 0.001ms !important; }
+    }
+
+    .sigx-page {
+      --section-pad-top: var(--sigx-header-pad);
+      position: relative;
+      background:
+        radial-gradient(ellipse 130% 90% at 50% -25%, rgba(201, 162, 39, 0.28), transparent 52%),
+        radial-gradient(circle at 0% 45%, rgba(30, 58, 95, 0.16), transparent 42%),
+        radial-gradient(circle at 100% 75%, rgba(153, 27, 27, 0.1), transparent 38%),
+        linear-gradient(180deg, #ebe4d6 0%, #f2ece2 35%, #e8eef4 100%);
+    }
+    [data-theme="dark"] .sigx-page {
+      background:
+        radial-gradient(ellipse 130% 90% at 50% -25%, rgba(201, 162, 39, 0.14), transparent 52%),
+        radial-gradient(circle at 0% 45%, rgba(56, 189, 248, 0.08), transparent 42%),
+        radial-gradient(circle at 100% 75%, rgba(153, 27, 27, 0.12), transparent 38%),
+        linear-gradient(180deg, #070b12 0%, #0c1220 40%, #0a1018 100%);
+    }
+    .sigx-page::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        repeating-linear-gradient(125deg, transparent 0, transparent 72px, rgba(201, 162, 39, 0.045) 72px, rgba(201, 162, 39, 0.045) 73px),
+        radial-gradient(rgba(12, 25, 41, 0.05) 1px, transparent 1px);
+      background-size: auto, 28px 28px;
+    }
+    [data-theme="dark"] .sigx-page::before {
+      background:
+        repeating-linear-gradient(125deg, transparent 0, transparent 72px, rgba(201, 162, 39, 0.025) 72px, rgba(201, 162, 39, 0.025) 73px),
+        radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: auto, 28px 28px;
+    }
+    .sigx-page > .section { position: relative; z-index: 1; }
+    .sigx-page .breadcrumb { position: relative; z-index: 2; }
+
+    /* ===== Ink & Seal shell ===== */
+    .sigx-shell {
+      position: relative; padding: 1.5rem 0 2.5rem; overflow: hidden; border-radius: 28px;
+      border: 1px solid rgba(201, 162, 39, 0.28);
+      box-shadow: 0 32px 90px rgba(12, 25, 41, 0.14), inset 0 1px 0 rgba(255,255,255,0.65);
+      background:
+        radial-gradient(ellipse 90% 60% at 20% 0%, rgba(201, 162, 39, 0.22), transparent 58%),
+        radial-gradient(circle at 92% 20%, rgba(30, 58, 95, 0.18), transparent 42%),
+        radial-gradient(circle at 8% 90%, rgba(153, 27, 27, 0.08), transparent 35%),
+        linear-gradient(165deg, rgba(255,252,247,0.97) 0%, rgba(243,237,227,0.95) 42%, rgba(238,244,250,0.93) 100%);
+    }
+    [data-theme="dark"] .sigx-shell {
+      border-color: rgba(201, 162, 39, 0.18);
+      box-shadow: 0 32px 90px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+      background:
+        radial-gradient(ellipse 90% 60% at 20% 0%, rgba(201, 162, 39, 0.14), transparent 58%),
+        radial-gradient(circle at 92% 20%, rgba(56, 189, 248, 0.1), transparent 42%),
+        linear-gradient(165deg, rgba(12,18,28,0.97) 0%, rgba(15,23,36,0.95) 52%, rgba(10,16,26,0.93) 100%);
+    }
+    .sigx-shell::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.4;
+      background-image: radial-gradient(rgba(12, 25, 41, 0.07) 1px, transparent 1px);
+      background-size: 22px 22px;
+    }
+    .sigx-shell::after {
+      content: "✍"; position: absolute; top: 1.2rem; right: 1.5rem; font-size: 7rem; font-weight: 900;
+      color: rgba(201, 162, 39, 0.07); pointer-events: none; line-height: 1; transform: rotate(-18deg);
+    }
+    [data-theme="dark"] .sigx-shell::before { opacity: 0.22; background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); }
+    [data-theme="dark"] .sigx-shell::after { color: rgba(201, 162, 39, 0.06); }
+
+    /* Hero */
+    .sigx-hero {
+      position: relative; z-index: 1; display: grid; grid-template-columns: 1.1fr 0.9fr;
+      gap: clamp(1rem, 3vw, 2rem); align-items: center; margin-bottom: 1.5rem;
+      animation: sigxFadeUp 0.55s var(--sigx-ease);
+    }
+    .sigx-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.8rem;
+      border-radius: 999px; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em;
+      text-transform: uppercase; color: #fff !important;
+      background: linear-gradient(135deg, var(--sigx-navy), var(--sigx-seal));
+      box-shadow: 0 4px 18px rgba(153, 27, 27, 0.22);
+    }
+    .sigx-mob-intro .sigx-badge { color: #fff !important; -webkit-text-fill-color: #fff; }
+    .sigx-title {
+      margin: 0.65rem 0 0.55rem; font-size: clamp(1.65rem, 4.2vw, 2.55rem); font-weight: 900;
+      line-height: 1.12; letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--sigx-ink) 0%, var(--sigx-navy) 48%, var(--sigx-gold) 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    [data-theme="dark"] .sigx-title {
+      background: linear-gradient(135deg, #f8fafc 0%, #fde68a 55%, #fcd34d 100%);
+      -webkit-background-clip: text; background-clip: text;
+    }
+    .sigx-lead { margin: 0; color: var(--text-muted); line-height: 1.65; max-width: 58ch; font-size: clamp(0.94rem, 1.8vw, 1.05rem); }
+    .sigx-hero-cta { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 1.1rem; align-items: center; }
+    .sigx-hero-cta .primary-btn { border-radius: 14px; font-weight: 800; box-shadow: 0 10px 28px rgba(30, 58, 95, 0.22); }
+    .sigx-trust-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+    .sigx-trust-pill {
+      font-size: 0.74rem; font-weight: 700; padding: 0.38rem 0.72rem; border-radius: 999px;
+      border: 1px solid rgba(201, 162, 39, 0.35); background: rgba(255,255,255,0.72); color: var(--text);
+    }
+    [data-theme="dark"] .sigx-trust-pill { background: rgba(15, 23, 42, 0.72); border-color: rgba(201, 162, 39, 0.28); }
+
+    /* Hero visual — form mockup */
+    .sigx-hero-visual { position: relative; display: flex; justify-content: center; align-items: center; min-height: 240px; }
+    .sigx-form-mock {
+      position: relative; width: min(100%, 340px); padding: 1.35rem 1.25rem 1.1rem;
+      border-radius: 18px; border: 1px solid rgba(30, 58, 95, 0.14);
+      background: linear-gradient(180deg, #fff 0%, #faf7f2 100%);
+      box-shadow: 0 22px 60px rgba(12, 25, 41, 0.14), inset 0 1px 0 rgba(255,255,255,0.9);
+      animation: sigxFloat 7s ease-in-out infinite;
+    }
+    [data-theme="dark"] .sigx-form-mock { background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); border-color: rgba(148,163,184,0.18); }
+    .sigx-form-mock__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; }
+    .sigx-form-mock__head span { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--sigx-seal); }
+    .sigx-form-mock__head em { font-style: normal; font-size: 0.72rem; font-weight: 700; color: var(--text-muted); }
+    .sigx-form-mock__line { height: 7px; border-radius: 999px; background: rgba(30, 58, 95, 0.08); margin-bottom: 0.45rem; }
+    .sigx-form-mock__line.short { width: 62%; }
+    .sigx-form-mock__sig-box {
+      margin-top: 0.75rem; padding: 0.85rem; border-radius: 12px;
+      border: 1.5px dashed rgba(201, 162, 39, 0.55); background: #fff;
+      min-height: 72px; display: flex; align-items: center; justify-content: center;
+    }
+    [data-theme="dark"] .sigx-form-mock__sig-box { background: rgba(15,23,42,0.6); }
+    .sigx-form-mock__sig-box svg { width: 100%; max-width: 200px; height: auto; }
+    .sigx-form-mock__sig-box path {
+      fill: none; stroke: var(--sigx-ink); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 420; animation: sigxDraw 2.8s var(--sigx-ease) infinite alternate;
+    }
+    [data-theme="dark"] .sigx-form-mock__sig-box path { stroke: #e2e8f0; }
+    .sigx-spec-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+    .sigx-spec-chip {
+      font-size: 0.68rem; font-weight: 800; padding: 0.28rem 0.55rem; border-radius: 8px;
+      background: rgba(5, 150, 105, 0.12); color: #047857; border: 1px solid rgba(5, 150, 105, 0.22);
+    }
+    [data-theme="dark"] .sigx-spec-chip { color: #6ee7b7; }
+    .sigx-seal-badge {
+      position: absolute; top: -12px; right: -8px; width: 52px; height: 52px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #ef4444, var(--sigx-seal));
+      border: 3px double rgba(255,255,255,0.45); box-shadow: 0 8px 22px rgba(153,27,27,0.35);
+      display: grid; place-items: center; font-size: 1.35rem; transform: rotate(12deg);
+    }
+
+    /* Mobile intro (tool-first) */
+    .sigx-mob-intro { display: none; position: relative; z-index: 2; margin-bottom: 0.85rem; }
+    .sigx-mob-intro .sigx-mob-title { margin: 0; font-size: 1.45rem; font-weight: 900; line-height: 1.15; background: linear-gradient(135deg, var(--sigx-ink), var(--sigx-gold)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    [data-theme="dark"] .sigx-mob-intro .sigx-mob-title { background: linear-gradient(135deg, #f8fafc, #fde68a); -webkit-background-clip: text; background-clip: text; }
+    .sigx-mob-intro p { margin: 0.35rem 0 0; font-size: 0.86rem; color: var(--text-muted); }
+    .sigx-mob-steps { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.55rem; }
+    .sigx-mob-step { font-size: 0.68rem; font-weight: 800; padding: 0.28rem 0.55rem; border-radius: 999px; background: rgba(201,162,39,0.16); color: var(--sigx-navy); border: 1px solid rgba(201,162,39,0.3); }
+    [data-theme="dark"] .sigx-mob-step { color: #fde68a; }
+
+    /* Workspace — clear 2-column flow */
+    .sigx-workspace {
+      position: relative; z-index: 1; padding: clamp(0.85rem, 2vw, 1.35rem);
+      border-radius: 22px; border: 1px solid rgba(30, 58, 95, 0.14);
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(20px);
+      box-shadow: 0 18px 70px rgba(12, 25, 41, 0.1);
+    }
+    [data-theme="dark"] .sigx-workspace { background: rgba(15, 23, 42, 0.92); border-color: rgba(148,163,184,0.16); }
+
+    .sigx-flow {
+      display: flex; align-items: center; gap: 0.25rem; flex-wrap: wrap;
+      margin-bottom: 0.85rem; padding: 0.55rem 0.65rem; border-radius: 14px;
+      background: linear-gradient(90deg, rgba(30,58,95,0.06), rgba(201,162,39,0.08));
+      border: 1px solid rgba(201,162,39,0.22);
+    }
+    .sigx-flow-step {
+      display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; font-weight: 800;
+      color: var(--text-muted); padding: 0.28rem 0.55rem; border-radius: 999px;
+    }
+    .sigx-flow-step span {
+      width: 1.25rem; height: 1.25rem; border-radius: 50%; display: grid; place-items: center;
+      font-size: 0.65rem; font-weight: 900; background: var(--border); color: var(--text-muted);
+    }
+    .sigx-flow-step.is-active { color: var(--sigx-navy); }
+    .sigx-flow-step.is-active span { background: linear-gradient(135deg, var(--sigx-navy), var(--sigx-seal)); color: #fff; }
+    .sigx-flow-step.is-done { color: var(--sigx-emerald); }
+    .sigx-flow-step.is-done span { background: rgba(5,150,105,0.18); color: #047857; }
+    .sigx-flow-arrow { color: rgba(201,162,39,0.7); font-size: 0.75rem; font-weight: 900; padding: 0 0.1rem; }
+    [data-theme="dark"] .sigx-flow-step.is-active { color: #fde68a; }
+
+    .sigx-layout { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 1.1rem; align-items: start; }
+    .sigx-input-stack { display: flex; flex-direction: column; gap: 0.85rem; min-width: 0; }
+    .sigx-block {
+      padding: 0.9rem; border-radius: 16px; border: 1px solid var(--border);
+      background: var(--surface-strong);
+    }
+    .sigx-block-head {
+      display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;
+      padding-bottom: 0.55rem; border-bottom: 1px dashed rgba(201,162,39,0.35);
+    }
+    .sigx-block-num {
+      width: 1.6rem; height: 1.6rem; border-radius: 50%; display: grid; place-items: center;
+      font-size: 0.72rem; font-weight: 900; color: #fff; background: var(--sigx-navy); flex-shrink: 0;
+    }
+    .sigx-block-head strong { font-size: 0.9rem; }
+    .sigx-block-head em { font-style: normal; font-size: 0.74rem; color: var(--text-muted); margin-left: auto; font-weight: 600; }
+
+    .sigx-result-panel {
+      position: sticky; top: calc(var(--header-overlap, 5.5rem) + 0.75rem);
+      padding: 0.9rem; border-radius: 18px;
+      border: 2px solid rgba(201, 162, 39, 0.45);
+      background: linear-gradient(180deg, rgba(245,230,184,0.35) 0%, rgba(255,255,255,0.95) 28%, var(--surface-strong) 100%);
+      box-shadow: 0 14px 40px rgba(201,162,39,0.12);
+      scroll-margin-top: calc(var(--header-overlap, 5.5rem) + 1rem);
+      transition: box-shadow 0.35s var(--sigx-ease), border-color 0.35s var(--sigx-ease);
+    }
+    [data-theme="dark"] .sigx-result-panel {
+      background: linear-gradient(180deg, rgba(201,162,39,0.12) 0%, rgba(15,23,42,0.95) 28%, var(--surface-strong) 100%);
+    }
+    .sigx-result-panel.is-highlight {
+      border-color: var(--sigx-emerald);
+      box-shadow: 0 0 0 4px rgba(5,150,105,0.18), 0 16px 48px rgba(5,150,105,0.15);
+      animation: sigxResultPulse 0.6s var(--sigx-ease);
+    }
+    @keyframes sigxResultPulse {
+      0% { transform: scale(1); }
+      35% { transform: scale(1.012); }
+      100% { transform: scale(1); }
+    }
+    .sigx-result-panel .sigx-block-head { border-bottom-color: rgba(201,162,39,0.45); }
+    .sigx-result-badge {
+      margin-left: auto; font-size: 0.62rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.05em; padding: 0.22rem 0.5rem; border-radius: 999px;
+      background: rgba(201,162,39,0.2); color: var(--sigx-navy);
+    }
+    [data-theme="dark"] .sigx-result-badge { color: #fde68a; }
+
+    .sigx-workspace-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.85rem; }
+    .sigx-steps-rail { display: none; }
+    .sigx-result-empty {
+      text-align: center; padding: 1.5rem 0.75rem; color: var(--text-muted); font-size: 0.84rem; line-height: 1.5;
+    }
+    .sigx-result-empty span { display: block; font-size: 2rem; margin-bottom: 0.35rem; opacity: 0.65; }
+
+    .sig-privacy-banner {
+      display: flex; align-items: center; gap: 0.55rem; font-weight: 700; font-size: 0.84rem;
+      color: #065f46; background: rgba(5, 150, 105, 0.1); border: 1px solid rgba(5, 150, 105, 0.22);
+      border-radius: 12px; padding: 0.55rem 0.85rem; margin: 0;
+    }
+    [data-theme="dark"] .sig-privacy-banner { color: #6ee7b7; }
+
+    .sig-tab-row { display: flex; gap: 0.4rem; margin-bottom: 0.85rem; flex-wrap: wrap; }
+    .sig-tab-btn {
+      flex: 1; min-width: 0; border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      font-weight: 700; font-size: 0.84rem; padding: 0.58rem 0.75rem; border-radius: 12px; cursor: pointer;
+      transition: all 0.15s var(--sigx-ease);
+    }
+    .sig-tab-btn.is-active { background: linear-gradient(135deg, var(--sigx-navy), #2563eb); color: #fff; border-color: transparent; box-shadow: 0 6px 18px rgba(30,58,95,0.22); }
+    .sig-tab-panel { display: none; }
+    .sig-tab-panel.is-active { display: block; }
+
+    .sig-pad-wrap { border: 2px dashed rgba(201,162,39,0.45); border-radius: 14px; background: #fff; touch-action: none; width: 100%; }
+    .sig-pad-wrap canvas { display: block; width: 100%; height: auto; touch-action: none; cursor: crosshair; border-radius: 12px; }
+    .sig-pad-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-top: 0.65rem; }
+    .sig-pen-row { display: flex; align-items: center; gap: 0.45rem; font-size: 0.84rem; font-weight: 600; }
+    .sig-pen-row input { flex: 1; min-width: 80px; }
+    .sig-ink-row { display: flex; gap: 0.45rem; }
+    .sig-ink-swatch { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); cursor: pointer; }
+    .sig-ink-swatch.is-active { box-shadow: 0 0 0 3px rgba(201,162,39,0.35); border-color: var(--sigx-gold); }
+
+    .sig-field { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.85rem; }
+    .sig-field label { font-weight: 700; font-size: 0.86rem; }
+    .sig-field select, .sig-field input[type="number"] {
+      border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      border-radius: 12px; padding: 0.6rem 0.75rem; font-size: 0.92rem; width: 100%;
+    }
+    .sig-custom-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.65rem; }
+    .sig-custom-grid.hidden { display: none; }
+    .sig-note { font-size: 0.78rem; color: var(--text-muted); margin: 0.15rem 0 0; line-height: 1.45; }
+
+    .sig-output-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-top: 0; }
+    .sigx-result-empty.hidden { display: none; }
+    .sig-preview-card {
+      border: 1px solid var(--border); border-radius: 12px; padding: 0.75rem;
+      background: var(--surface); text-align: center; position: relative;
+    }
+    .sig-preview-card h3 { margin: 0 0 0.5rem; font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); }
+    .sig-preview-card canvas, .sig-preview-card img {
+      max-width: 100%; background: repeating-conic-gradient(#e2e8f0 0% 25%, #fff 0% 50%) 50%/12px 12px;
+      border: 1px solid var(--border); border-radius: 8px;
+    }
+    .sig-stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.45rem; margin-top: 0.65rem; }
+    .sig-stat-box { border: 1px solid var(--border); border-radius: 10px; padding: 0.55rem 0.7rem; background: var(--surface); font-size: 0.78rem; color: var(--text-muted); }
+    .sig-stat-box strong { display: block; font-size: 0.98rem; color: var(--text); margin-top: 0.1rem; }
+    .sig-stat-ok strong { color: var(--sigx-emerald); }
+    .sig-stat-bad strong { color: #dc2626; }
+
+    .sigx-actions { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0; }
+    .sigx-actions .primary-btn {
+      width: 100%; border-radius: 12px; font-weight: 800; min-height: 3rem; font-size: 1rem;
+      background: linear-gradient(135deg, var(--sigx-navy), #1d4ed8);
+      box-shadow: 0 10px 28px rgba(30,58,95,0.28);
+    }
+    .sigx-actions .secondary-btn { width: 100%; border-radius: 12px; font-weight: 700; justify-content: center; }
+    .sigx-actions-row { display: flex; gap: 0.45rem; flex-wrap: wrap; }
+    .sigx-actions-row .secondary-btn { flex: 1; min-width: calc(50% - 0.25rem); }
+
+    .sigx-result-actions { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.85rem; }
+    .sigx-result-actions.hidden { display: none; }
+    .sigx-download-btn {
+      width: 100%; border: none; border-radius: 12px; font-weight: 800; font-size: 1rem;
+      min-height: 3rem; cursor: pointer; color: #fff !important;
+      background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+      box-shadow: 0 10px 32px rgba(5, 150, 105, 0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+      transition: transform 0.15s var(--sigx-ease), box-shadow 0.15s var(--sigx-ease);
+      animation: sigxDlGlow 2.2s ease-in-out infinite;
+    }
+    .sigx-download-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 38px rgba(5, 150, 105, 0.5), inset 0 1px 0 rgba(255,255,255,0.3); }
+    @keyframes sigxDlGlow {
+      0%, 100% { box-shadow: 0 10px 32px rgba(5, 150, 105, 0.4), inset 0 1px 0 rgba(255,255,255,0.25); }
+      50% { box-shadow: 0 10px 40px rgba(5, 150, 105, 0.55), 0 0 0 3px rgba(52, 211, 153, 0.25); }
+    }
+    .sigx-result-actions .secondary-btn { width: 100%; border-radius: 12px; font-weight: 700; justify-content: center; min-height: 2.5rem; }
+
+    .sr-thumb-row {
+      display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 0.85rem;
+      border-radius: 12px; border: 1px solid var(--border); background: var(--surface); margin-bottom: 0.75rem; flex-wrap: wrap;
+    }
+    .sr-thumb-row img { width: 64px; height: 64px; object-fit: contain; border-radius: 8px; border: 1px solid var(--border); background: repeating-conic-gradient(#e2e8f0 0% 25%, #fff 0% 50%) 50%/10px 10px; }
+    .sr-thumb-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+    .pdf-drop-zone { border-radius: 14px !important; border-style: dashed !important; border-color: rgba(201,162,39,0.45) !important; background: rgba(250,247,242,0.65) !important; cursor: pointer; }
+    [data-theme="dark"] .pdf-drop-zone { background: rgba(15,23,42,0.5) !important; }
+    .sigx-drop-meta { margin: 0.25rem 0 0.65rem; font-size: 0.8rem; color: var(--text-muted); }
+    .sigx-choose-btn {
+      display: inline-flex; align-items: center; justify-content: center; margin-top: 0.15rem;
+      padding: 0.55rem 1.15rem; border-radius: 10px; font-weight: 700; font-size: 0.86rem; cursor: pointer;
+      background: linear-gradient(135deg, var(--sigx-navy), #2563eb); color: #fff !important;
+      box-shadow: 0 6px 16px rgba(30,58,95,0.22); border: none;
+      transition: transform 0.15s var(--sigx-ease), box-shadow 0.15s var(--sigx-ease);
+    }
+    .sigx-choose-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(30,58,95,0.28); }
+
+    /* Compact trust strip (desktop) */
+    .sigx-trust-strip {
+      display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.75rem;
+    }
+    .sigx-trust-strip-item {
+      font-size: 0.67rem; font-weight: 700; padding: 0.22rem 0.5rem; border-radius: 999px;
+      background: rgba(30,58,95,0.06); border: 1px solid rgba(30,58,95,0.1); color: var(--text-muted);
+      white-space: nowrap;
+    }
+    [data-theme="dark"] .sigx-trust-strip-item { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.08); }
+
+    /* Trust fold — hidden, replaced by strip on desktop */
+    .sigx-trust-fold { display: none; }
+
+    /* Preset showcase */
+    .sigx-preset-section { position: relative; z-index: 1; margin: 1.25rem 0 0.5rem; }
+    .sigx-preset-section h2 { margin: 0 0 0.75rem; font-size: clamp(1rem, 2vw, 1.2rem); font-weight: 900; }
+    .sigx-preset-scroll {
+      display: flex; gap: 0.65rem; overflow-x: auto; padding-bottom: 0.35rem;
+      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+    }
+    .sigx-preset-scroll::-webkit-scrollbar { height: 5px; }
+    .sigx-preset-scroll::-webkit-scrollbar-thumb { background: rgba(201,162,39,0.45); border-radius: 999px; }
+    .sr-preset-card {
+      flex: 0 0 auto; min-width: 168px; scroll-snap-align: start; text-align: left;
+      border: 1px solid var(--border); background: rgba(255,255,255,0.82); border-radius: 14px;
+      padding: 0.85rem 0.95rem; cursor: pointer; transition: all 0.18s var(--sigx-ease);
+    }
+    [data-theme="dark"] .sr-preset-card { background: rgba(15,23,42,0.72); }
+    .sr-preset-card:hover { border-color: var(--sigx-gold); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(201,162,39,0.15); }
+    .sr-preset-card strong { display: block; font-size: 0.88rem; margin-bottom: 0.25rem; }
+    .sr-preset-card span { display: block; font-size: 0.74rem; color: var(--text-muted); line-height: 1.4; }
+
+    /* Feature + trust bands */
+    .sigx-band { position: relative; z-index: 1; margin-top: 1.25rem; }
+    .pdf-summary-grid { gap: 0.75rem !important; }
+    .pdf-feature-card { border-radius: 16px !important; border-color: rgba(30,58,95,0.12) !important; }
+    .sr-trust-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0.65rem; margin: 1rem 0 0; }
+    .sr-trust-card {
+      padding: 0.95rem; border-radius: 16px; border: 1px solid var(--border);
+      background: rgba(255,255,255,0.78); text-align: center; transition: transform 0.15s, box-shadow 0.15s;
+    }
+    [data-theme="dark"] .sr-trust-card { background: rgba(15,23,42,0.65); }
+    .sr-trust-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(30,58,95,0.08); }
+    .sr-trust-card .ic { font-size: 1.5rem; margin-bottom: 0.3rem; }
+    .sr-trust-card strong { display: block; font-size: 0.84rem; margin-bottom: 0.15rem; }
+    .sr-trust-card p { margin: 0; font-size: 0.76rem; color: var(--text-muted); line-height: 1.42; }
+
+    /* Related tools — themed */
+    .sigx-related { margin-top: 2rem; padding: 1.35rem; border-radius: 20px; border: 1px solid rgba(201,162,39,0.28); background: linear-gradient(135deg, rgba(250,247,242,0.9), rgba(255,255,255,0.85)); }
+    [data-theme="dark"] .sigx-related { background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(30,41,59,0.85)); }
+    .sigx-related-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 0.75rem; margin-top: 0.85rem; }
+    .sigx-related-card {
+      display: flex; gap: 0.65rem; align-items: flex-start; padding: 0.85rem; border-radius: 14px;
+      border: 1px solid var(--border); background: var(--surface); text-decoration: none; color: inherit;
+      transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .sigx-related-card:hover { border-color: var(--sigx-gold); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(201,162,39,0.12); }
+    .sigx-related-icon { font-size: 1.35rem; line-height: 1; flex-shrink: 0; }
+    .sigx-related-card strong { display: block; font-size: 0.86rem; margin-bottom: 0.15rem; }
+    .sigx-related-card span { display: block; font-size: 0.74rem; color: var(--text-muted); font-weight: 600; line-height: 1.35; }
+
+    .sr-compare-table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.86rem; overflow-x: auto; display: block; }
+    .sr-compare-table thead, .sr-compare-table tbody { display: table; width: 100%; table-layout: fixed; }
+    .sr-compare-table th, .sr-compare-table td { padding: 0.6rem 0.7rem; border: 1px solid var(--border); text-align: left; }
+    .sr-compare-table th { background: var(--surface-strong); }
+
+    .sr-compare-overlay { position: fixed; inset: 0; background: rgba(12,25,41,0.78); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+    .sr-compare-overlay.hidden { display: none; }
+    .sr-compare-panel { background: var(--surface); border-radius: 20px; max-width: 640px; width: 100%; padding: 1rem; box-shadow: 0 24px 80px rgba(0,0,0,0.35); }
+    .sr-compare-head { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; margin-bottom: 0.6rem; }
+    .sr-compare-head p { margin: 0; font-weight: 700; }
+    .sr-compare-stage { position: relative; width: 100%; height: min(50vh, 360px); overflow: hidden; border-radius: 14px; background: repeating-conic-gradient(#e2e8f0 0% 25%, #fff 0% 50%) 50%/14px 14px; }
+    .sr-compare-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+    .sr-compare-stage img[data-compare-after] { clip-path: inset(0 0 0 50%); }
+    .sr-compare-divider { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: var(--sigx-gold); box-shadow: 0 0 0 1px rgba(0,0,0,0.15); pointer-events: none; }
+    .sr-compare-label { position: absolute; top: 0.5rem; font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: #fff; background: rgba(12,25,41,0.6); padding: 0.2rem 0.5rem; border-radius: 6px; pointer-events: none; }
+    .sr-compare-label.before { left: 0.5rem; }
+    .sr-compare-label.after { right: 0.5rem; }
+    .sr-compare-slider { width: 100%; margin-top: 0.75rem; }
+
+    .sr-lightbox { position: fixed; inset: 0; background: rgba(12,25,41,0.88); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+    .sr-lightbox.hidden { display: none; }
+    .sr-lightbox-panel { max-width: min(90vw, 700px); text-align: center; }
+    .sr-lightbox-panel img { max-width: 100%; max-height: 80vh; border-radius: 14px; background: repeating-conic-gradient(#e2e8f0 0% 25%, #fff 0% 50%) 50%/14px 14px; }
+    .sr-lightbox-close { margin-top: 0.75rem; }
+    .sr-zoom-expand { position: absolute; top: 0.5rem; right: 0.5rem; font-size: 0.68rem; font-weight: 800; padding: 0.28rem 0.5rem; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); cursor: pointer; }
+
+    .sr-sticky-cta {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0; padding: 0.6rem 0.85rem;
+      background: rgba(250,247,242,0.94); backdrop-filter: blur(16px); border-top: 1px solid rgba(201,162,39,0.35);
+      z-index: 900; box-shadow: 0 -8px 32px rgba(12,25,41,0.1);
+    }
+    [data-theme="dark"] .sr-sticky-cta { background: rgba(15,23,42,0.94); }
+    .sr-sticky-cta .primary-btn { width: 100%; border-radius: 14px; font-weight: 800; min-height: 2.85rem; }
+
+    /* Final CTA banner */
+    .sigx-final-cta { margin-top: 2.25rem; position: relative; z-index: 1; }
+    .sigx-final-cta__inner {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.25rem;
+      padding: clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 3.5vw, 2.25rem);
+      border-radius: 22px; overflow: hidden; position: relative;
+      border: 1px solid rgba(201, 162, 39, 0.35);
+      background: linear-gradient(135deg, var(--sigx-navy) 0%, #1e3a5f 45%, #991b1b 100%);
+      box-shadow: 0 24px 60px rgba(12, 25, 41, 0.28);
+    }
+    .sigx-final-cta__inner::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(circle at 85% 20%, rgba(201,162,39,0.35), transparent 45%);
+    }
+    .sigx-final-cta__copy { display: flex; align-items: center; gap: 1rem; position: relative; z-index: 1; flex: 1; min-width: 220px; }
+    .sigx-final-cta__icon {
+      width: 3.25rem; height: 3.25rem; border-radius: 16px; display: grid; place-items: center;
+      font-size: 1.65rem; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.22);
+      flex-shrink: 0;
+    }
+    .sigx-final-cta__copy h2 { margin: 0 0 0.3rem; font-size: clamp(1.15rem, 2.5vw, 1.45rem); font-weight: 900; color: #fff; }
+    .sigx-final-cta__copy p { margin: 0; font-size: 0.88rem; color: rgba(255,255,255,0.82); line-height: 1.5; max-width: 42ch; }
+    .sigx-final-cta__btn {
+      position: relative; z-index: 1; display: inline-flex; align-items: center; justify-content: center;
+      padding: 0.85rem 1.6rem; border-radius: 14px; font-weight: 800; font-size: 0.98rem;
+      text-decoration: none; color: var(--sigx-navy);
+      background: linear-gradient(135deg, #fde68a, #fbbf24);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      transition: transform 0.15s var(--sigx-ease), box-shadow 0.15s var(--sigx-ease);
+      white-space: nowrap;
+    }
+    .sigx-final-cta__btn:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(0,0,0,0.32); }
+
+    @media (max-width: 1024px) {
+      .sigx-layout { grid-template-columns: 1fr; }
+      .sigx-result-panel { position: static; order: 3; }
+      .sigx-related-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 768px) {
+      .sigx-page .breadcrumb { display: none; }
+      .sigx-hero { display: none; }
+      .sigx-mob-intro { display: block; }
+      .sigx-workspace-head .sigx-steps-rail { display: none; }
+      .sigx-trust-fold { display: none; }
+      .sigx-trust-strip { display: none; }
+      .sigx-trust-row { display: none; }
+      .sigx-flow { gap: 0.15rem; padding: 0.45rem 0.5rem; }
+      .sigx-flow-step { font-size: 0.65rem; padding: 0.22rem 0.4rem; }
+      .sigx-flow-arrow { display: none; }
+      .sr-sticky-cta { display: block; }
+      .sigx-page { padding-bottom: 4.75rem; }
+      .sigx-related-grid { grid-template-columns: 1fr; }
+      .sig-output-grid { grid-template-columns: 1fr; }
+      .sig-stat-grid { grid-template-columns: 1fr; }
+      .sigx-final-cta__inner { flex-direction: column; text-align: center; }
+      .sigx-final-cta__copy { flex-direction: column; }
+      .sigx-final-cta__btn { width: 100%; }
+    }
+    @media (max-width: 640px) {
+      .sig-custom-grid { grid-template-columns: 1fr; }
+    }
+
+    /* =====================================================================
+       The application form. Form paper with printed field rules, section
+       bars like a government application, the signature box in dashed
+       lines, and a violet rubber stamp — the ink Indian offices still use —
+       as decoration. Fountain-pen navy is the one accent; green and red
+       keep their meaning in the size check. The rules above are the
+       previous design's controls; this block sets the frame and layout,
+       and wins by coming last.
+       ===================================================================== */
+    body.sigx-page {
+      --sgp-paper: #f3f5f8;
+      --sgp-card: #ffffff;
+      --sgp-well: #f7f8fb;
+      --sgp-line: rgba(22, 38, 64, .12);
+      --sgp-line-2: rgba(22, 38, 64, .22);
+      --sgp-ink: #14213a;
+      --sgp-ink-2: #3a4960;
+      --sgp-mute: #5f6b7e;
+      --sgp-accent: #1e3a5f;
+      --sgp-accent-hover: #152a46;
+      --sgp-accent-ink: #ffffff;
+      --sgp-accent-text: #1e3a5f;
+      --sgp-accent-soft: rgba(30, 58, 95, .08);
+      --sgp-stamp: #5b3aa0;
+      --sgp-rule: rgba(30, 58, 95, .07);
+      --sgp-shadow: 0 1px 0 rgba(22, 38, 64, .05), 0 16px 36px -24px rgba(22, 38, 64, .45);
+      --accent: var(--sgp-accent); --accent-strong: var(--sgp-accent-text); --accent-soft: var(--sgp-accent-soft);
+      --section-pad-top: calc(var(--header-overlap, 4.5rem) + .6rem);
+      background: var(--sgp-paper);
+    }
+    [data-theme="dark"] body.sigx-page {
+      --sgp-paper: #0b1019;
+      --sgp-card: #121a27;
+      --sgp-well: #0e1520;
+      --sgp-line: rgba(214, 226, 245, .1);
+      --sgp-line-2: rgba(214, 226, 245, .2);
+      --sgp-ink: #eef3fb;
+      --sgp-ink-2: #cbd5e5;
+      --sgp-mute: #95a3b9;
+      --sgp-accent: #93b4dd;
+      --sgp-accent-hover: #b6cdea;
+      --sgp-accent-ink: #0b1526;
+      --sgp-accent-text: #a9c4e6;
+      --sgp-accent-soft: rgba(147, 180, 221, .12);
+      --sgp-stamp: #b39ddb;
+      --sgp-rule: rgba(147, 180, 221, .05);
+      --sgp-shadow: 0 1px 0 rgba(0, 0, 0, .4), 0 20px 44px -26px rgba(0, 0, 0, .9);
+      background: var(--sgp-paper);
+    }
+    /* the site rules inside the page read these tokens */
+    .container.sigx-main { --text: var(--sgp-ink); --text-muted: var(--sgp-mute); --surface: var(--sgp-card); --surface-strong: var(--sgp-well); --border: var(--sgp-line-2); }
+    /* printed form rules across the page instead of the old texture */
+    body.sigx-page::before { position: fixed; background: repeating-linear-gradient(180deg, transparent 0 31px, var(--sgp-rule) 31px 32px); background-size: auto; }
+    [data-theme="dark"] body.sigx-page::before { background: repeating-linear-gradient(180deg, transparent 0 31px, var(--sgp-rule) 31px 32px); }
+    .container.sigx-main { width: min(1120px, calc(100% - 2rem)); }
+    .sigx-page .breadcrumb { margin: .35rem 0 .9rem; font-size: .86rem; color: var(--sgp-mute); }
+    .sigx-page .breadcrumb a { color: var(--sgp-accent-text); font-weight: 700; }
+    #sig-page, .sigx-page .sigx-result-panel { scroll-margin-top: calc(var(--header-overlap, 5.5rem) + .75rem); }
+    .sigx-page :is(.sig-tab-btn, .sigx-choose-btn, .primary-btn, .secondary-btn, .sr-preset-card, .sigx-download-btn, .faq-item summary):focus-visible { outline: 3px solid rgba(30, 58, 95, .35); outline-offset: 2px; }
+
+    /* ---------- top: the tool grid ----------
+       Under 700px one column: the steps, the upload card, the ad, then the
+       preset, Process and the result. 700-999px: the 300x250 sits beside
+       the upload card. From 1000px: form | result | ad. The ad is never
+       above the tool, and nothing after the grid sits inside it. */
+    .sigx-top { position: relative; z-index: 1; display: grid; gap: 1rem; align-items: start; grid-template-areas: "flow" "upload" "ad" "preset" "process" "result"; }
+    .sigx-top > * { min-width: 0; }
+    .sigx-top > .sigx-flow { grid-area: flow; margin: 0; }
+    .sigx-top > .sigx-up { grid-area: upload; }
+    .sigx-top > .sigx-pre { grid-area: preset; }
+    .sigx-top > .sigx-proc { grid-area: process; }
+    .sigx-top > .sigx-result-panel { grid-area: result; }
+    .sigx-ad-zone { grid-area: ad; }
+    @media (min-width: 700px) {
+      .sigx-top { grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "flow ad" "upload ad" "preset ad" "process ad" "result result"; column-gap: 1.1rem; }
+    }
+    @media (min-width: 1000px) {
+      .sigx-top { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr) 300px; grid-template-areas: "flow flow ad" "upload result ad" "preset result ad" "process result ad"; }
+      /* sticky only here: the ad column is the full height of the grid, so
+         it can never slide over a full-width row beneath it */
+      .sigx-ad-zone { position: sticky; top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+    }
+    /* One 300x250 at every width: inline-ads.js only shows .ta-inline-ad
+       below 1000px, so it is forced on here; data-unit="inline" sizes it. */
+    body.sigx-page .sigx-ad-zone { text-align: center; }
+    body.sigx-page .sigx-ad-zone .ta-inline-ad { display: block !important; margin: 0 auto !important; }
+    @media (max-width: 340px) { .sigx-ad-zone { margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); } }
+
+    /* ---------- cover: the form header ---------- */
+    .sigx-cover {
+      position: relative; z-index: 1; overflow: hidden; display: grid; gap: 1rem 1.6rem; align-items: center; margin: 0 0 1rem;
+      padding: 1.15rem 1.3rem 1.1rem; border-radius: 16px; border: 1px solid var(--sgp-line); background: var(--sgp-card); box-shadow: var(--sgp-shadow);
+    }
+    /* the ruled band a printed form starts with */
+    .sigx-cover::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; background: var(--sgp-accent); box-shadow: 0 3px 0 var(--sgp-card), 0 4px 0 var(--sgp-accent); }
+    @media (min-width: 900px) { .sigx-cover { grid-template-columns: minmax(0, 1fr) 270px; padding: 1rem 1.3rem .95rem; } }
+    .sigx-page .sigx-cover .sigx-badge { margin-top: .2rem; padding: .28rem .7rem; font-size: .66rem; background: var(--sgp-accent); box-shadow: none; border-radius: 6px; letter-spacing: .08em; }
+    .sigx-page .sigx-title { margin: .45rem 0 0; font-size: clamp(1.55rem, .9rem + 1.85vw, 2.2rem); line-height: 1.12; color: var(--sgp-ink); background: none; -webkit-background-clip: border-box; background-clip: border-box; -webkit-text-fill-color: currentColor; }
+    [data-theme="dark"] .sigx-page .sigx-title { background: none; }
+    .sigx-t1 { color: var(--sgp-accent-text); }
+    .sigx-cover-note { margin: .45rem 0 0; font-size: .92rem; color: var(--sgp-mute); }
+    .sigx-page .sigx-cover .sigx-hero-visual { min-height: 0; }
+    .sigx-page .sigx-form-mock { width: 100%; animation: none; background: var(--sgp-card); border-color: var(--sgp-line-2); box-shadow: 0 12px 26px -18px rgba(22, 38, 64, .6); transform: rotate(-1.2deg); }
+    .sigx-page .sigx-form-mock { padding: .75rem .85rem .7rem; }
+    .sigx-page .sigx-form-mock__head { margin-bottom: .45rem; }
+    .sigx-page .sigx-form-mock__line { display: none; }
+    .sigx-page .sigx-form-mock__sig-box { margin-top: 0; min-height: 0; padding: .45rem .6rem; }
+    .sigx-page .sigx-form-mock__sig-box svg { max-width: 170px; }
+    .sigx-page .sigx-spec-chips { margin-top: .5rem; }
+    .sigx-page .sigx-form-mock__head span { color: var(--sgp-accent-text); }
+    .sigx-page .sigx-form-mock__sig-box { border-color: var(--sgp-accent); border-style: dashed; background: var(--sgp-well); }
+    .sigx-page .sigx-form-mock__sig-box path { stroke: var(--sgp-ink); }
+    /* the violet rubber stamp */
+    .sigx-page .sigx-seal-badge { top: auto; bottom: 30px; right: 6px; width: 56px; height: 56px; font-size: 1.3rem; color: var(--sgp-stamp); background: none; border: 3px solid var(--sgp-stamp); box-shadow: inset 0 0 0 3px var(--sgp-card), inset 0 0 0 4px var(--sgp-stamp); opacity: .85; transform: rotate(-14deg); mix-blend-mode: multiply; }
+    [data-theme="dark"] .sigx-page .sigx-seal-badge { mix-blend-mode: normal; }
+    .sigx-page .sigx-spec-chip { background: var(--sgp-accent-soft); color: var(--sgp-accent-text); border-color: var(--sgp-line); }
+
+    /* ---------- the form sections (the tool) ---------- */
+    .sigx-page .sigx-flow { padding: .45rem .55rem; border-radius: 10px; background: var(--sgp-card); border: 1px solid var(--sgp-line); box-shadow: var(--sgp-shadow); }
+    .sigx-page .sigx-flow-step.is-active { color: var(--sgp-accent-text); }
+    .sigx-page .sigx-flow-step.is-active span { background: var(--sgp-accent); color: var(--sgp-accent-ink); }
+    .sigx-page .sigx-flow-arrow { color: var(--sgp-mute); }
+    .sigx-page .sigx-block, .sigx-page .sigx-result-panel { padding: 0 0 .95rem; border-radius: 14px; border: 1px solid var(--sgp-line); background: var(--sgp-card); box-shadow: var(--sgp-shadow); overflow: hidden; }
+    .sigx-page .sigx-block > :not(.sigx-block-head), .sigx-page .sigx-result-panel > :not(.sigx-block-head) { margin-left: .95rem; margin-right: .95rem; }
+    /* each section header is the printed bar of a form: "1  Add your signature" */
+    .sigx-page .sigx-block-head { margin: 0 0 .85rem; padding: .6rem .95rem; border-bottom: 1px solid var(--sgp-line); background: var(--sgp-well); }
+    .sigx-page .sigx-block-num { width: 1.5rem; height: 1.5rem; border-radius: 4px; background: var(--sgp-accent); color: var(--sgp-accent-ink); }
+    .sigx-page .sigx-block-head strong { font-size: .86rem; letter-spacing: .02em; color: var(--sgp-ink); }
+    .sigx-page .sigx-result-panel { position: static; border: 1px solid var(--sgp-line); border-top: 4px solid var(--sgp-accent); }
+    .sigx-page .sigx-result-panel .sigx-block-head { border-bottom-color: var(--sgp-line); }
+    .sigx-page .sigx-result-badge { background: var(--sgp-accent-soft); color: var(--sgp-accent-text); }
+    .sigx-page .sigx-result-empty { margin-top: .4rem; padding: 1.4rem .9rem; border: 2px dashed var(--sgp-line-2); border-radius: 10px; background: var(--sgp-well); }
+    .sigx-page .sig-tab-btn { white-space: nowrap; padding-left: .5rem; padding-right: .5rem; border-radius: 9px; background: var(--sgp-card); border-color: var(--sgp-line-2); color: var(--sgp-ink); }
+    .sigx-page .sig-tab-btn.is-active { background: var(--sgp-accent); color: var(--sgp-accent-ink); box-shadow: none; }
+    .sigx-page .pdf-drop-zone { border-color: var(--sgp-accent) !important; background: var(--sgp-well) !important; border-width: 2px !important; }
+    .sigx-page .sigx-choose-btn { background: var(--sgp-accent); color: var(--sgp-accent-ink) !important; box-shadow: none; border-radius: 9px; }
+    .sigx-page .sig-pad-wrap { border-color: var(--sgp-accent); }
+    .sigx-page .sig-field select, .sigx-page .sig-field input[type="number"] { border-radius: 9px; border-color: var(--sgp-line-2); background: var(--sgp-card); color: var(--sgp-ink); }
+    .sigx-page input[type="range"], .sigx-page input[type="checkbox"] { accent-color: var(--sgp-accent); }
+    .sigx-page .sigx-actions .primary-btn { background: var(--sgp-accent); box-shadow: 0 10px 22px -12px var(--sgp-accent); color: var(--sgp-accent-ink); }
+    .sigx-page .sigx-actions .primary-btn:hover { background: var(--sgp-accent-hover); }
+    .sigx-page .sig-preview-card, .sigx-page .sig-stat-box { border-radius: 10px; border-color: var(--sgp-line); background: var(--sgp-well); }
+
+    /* ---------- below the tool ---------- */
+    .sigx-intro { position: relative; z-index: 1; display: grid; gap: .8rem 1.5rem; margin-top: 1.4rem; align-items: start; }
+    @media (min-width: 900px) { .sigx-intro { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); } }
+    .sigx-page .sigx-intro .sigx-lead { max-width: none; padding-left: .85rem; border-left: 3px solid var(--sgp-accent); color: var(--sgp-ink-2); }
+    .sigx-page .sigx-intro .sigx-hero-cta { margin-top: .8rem; }
+    .sigx-page .sigx-intro .sigx-hero-cta .primary-btn { background: var(--sgp-accent); color: var(--sgp-accent-ink); box-shadow: none; }
+    .sigx-page .sigx-intro .sigx-trust-row { margin-top: .7rem; }
+    .sigx-page .sigx-intro .sig-privacy-banner { margin: 0 0 .6rem; }
+    .sigx-page .sigx-intro .sigx-trust-strip { margin: 0; }
+    .sigx-page .sigx-intro .sigx-mob-intro { display: none; }
+    .sigx-page .sigx-trust-pill, .sigx-page .sr-preset-card, .sigx-page .sr-trust-card { background: var(--sgp-card); border-color: var(--sgp-line); }
+    .sigx-page .sr-preset-card:hover { border-color: var(--sgp-accent); box-shadow: none; }
+    /* the site's .section pads 4.5rem top and bottom; inside the page that
+       left a 9rem gap between every article */
+    .sigx-page .sigx-main > .section { padding: 1.1rem 0 0; }
+    .sigx-page .sigx-main > .sigx-preset-section, .sigx-page .sigx-main > .sigx-band { margin-top: 1.4rem; }
+    .sigx-page .content-card, .sigx-page .sigx-related { border-radius: 14px; border: 1px solid var(--sgp-line); background: var(--sgp-card); box-shadow: var(--sgp-shadow); }
+    .sigx-page .content-card h2, .sigx-page .faq-section > .section-title { color: var(--sgp-ink); background: none; -webkit-text-fill-color: currentColor; }
+    .sigx-page .content-card > h2:first-child { padding-bottom: .5rem; border-bottom: 2px solid var(--sgp-accent); display: inline-block; }
+    .sigx-page .sigx-related-card:hover { border-color: var(--sgp-accent); box-shadow: none; }
+    /* Related tools (added by app.js) in this page's palette */
+    .sigx-page .related-tools-section { background: var(--sgp-card); border-color: var(--sgp-line); border-radius: 14px; box-shadow: var(--sgp-shadow); }
+    .sigx-page .related-tools-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: .6rem; }
+    .sigx-page .related-tool-card { min-width: 0; background: var(--sgp-well); border-color: var(--sgp-line); box-shadow: none; }
+    .sigx-page .related-tool-card:hover { border-color: var(--sgp-accent); }
+    .sigx-page .related-tool-body { min-width: 0; }
+    .sigx-page .faq-item { border-radius: 10px; border-color: var(--sgp-line); background: var(--sgp-card); }
+    .sigx-page .sigx-final-cta__inner { background: var(--sgp-accent); border-color: transparent; }
+    [data-theme="dark"] .sigx-page .sigx-final-cta__inner { background: #17263d; }
+    .sigx-page .sigx-final-cta__inner::before { background: repeating-linear-gradient(180deg, transparent 0 31px, rgba(255, 255, 255, .06) 31px 32px); }
+    /* the steps section (new) */
+    .sigx-steps { counter-reset: sgs; display: grid; gap: .6rem; margin: .8rem 0 0; padding: 0; list-style: none; }
+    .sigx-steps li { position: relative; padding: .75rem .9rem .75rem 3.1rem; border-radius: 10px; border: 1px solid var(--sgp-line); background: var(--sgp-well); color: var(--sgp-ink-2); line-height: 1.6; counter-increment: sgs; }
+    .sigx-steps li::before { content: counter(sgs); position: absolute; left: .85rem; top: .8rem; display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 4px; background: var(--sgp-accent); color: var(--sgp-accent-ink); font-weight: 900; font-size: .82rem; }
+    .sigx-steps strong { color: var(--sgp-ink); }
+
+    /* phone Process bar: only once a photo is in, so it never covers the
+       ad on the first screen */
+    @media (max-width: 768px) {
+      body.sigx-page .sr-sticky-cta { display: none; }
+      body.sigx-page:has([data-uploaded-thumb-wrap]:not(.hidden)) .sr-sticky-cta { display: block; }
+      body.sigx-page { padding-bottom: 0; }
+      body.sigx-page:has([data-uploaded-thumb-wrap]:not(.hidden)) { padding-bottom: 4.75rem; }
+      .sigx-page .sigx-intro .sigx-mob-intro { display: block; }
+      .sigx-page .sigx-intro .sigx-mob-intro .sigx-badge, .sigx-page .sigx-intro .sigx-mob-intro .sigx-mob-title { display: none; }
+    }
+
+    /* ---------- smaller screens ---------- */
+    @media (max-width: 899px) { .sigx-cover .sigx-hero-visual { display: none; } .sigx-cover-note { display: none; } }
+    @media (max-width: 699px) {
+      /* phones: the cover keeps the headline; the upload card is compact,
+         so the ad after it reaches the first screen */
+      .sigx-cover { padding: 1rem .95rem .9rem; }
+      .sigx-page .sigx-cover .sigx-badge { display: none; }
+      .sigx-page .sigx-title { margin: .2rem 0 0; display: grid; gap: .2rem; }
+      .sigx-t1 { font-size: 1.12em; line-height: 1.05; }
+      .sigx-dash { display: none; }
+      .sigx-t2 { font-size: .6em; font-weight: 800; line-height: 1.35; color: var(--sgp-ink-2); }
+      .sigx-page .sigx-flow-step { font-size: .64rem; }
+      .sigx-page .pdf-drop-zone { display: grid !important; grid-template-columns: auto minmax(0, 1fr); align-items: center; justify-items: start; min-height: 0 !important; gap: .15rem .8rem !important; padding: .8rem .9rem !important; text-align: left; }
+      .sigx-page .pdf-drop-zone .pdf-drop-zone-icon { grid-row: span 2; margin: 0; font-size: 1.6rem; }
+      .sigx-page .pdf-drop-zone .pdf-drop-zone-title { margin: 0; }
+      .sigx-page .pdf-drop-zone .sigx-drop-meta { display: none; }
+      .sigx-page .pdf-drop-zone .sigx-choose-btn { margin: 0; padding: .45rem .9rem; }
+      .sigx-page .sig-tab-row { margin-bottom: .65rem; }
+      .sigx-page .sig-tab-btn { padding: .5rem .5rem; font-size: .8rem; }
+    }
+    @media (max-width: 559px) {
+      /* 10px gutters: a 320px phone then has the 300px its ads need */
+      body.sigx-page .container.sigx-main, body.sigx-page .ta-support { width: calc(100% - 20px); }
+      .sigx-page .breadcrumb { display: none; }
+      .sigx-page .sr-compare-table { font-size: .8rem; }
+    }
+    @media (max-width: 640px) {
+      .sigx-page .sr-compare-table, .sigx-page .sr-compare-table tbody, .sigx-page .sr-compare-table tr, .sigx-page .sr-compare-table td { display: block; width: 100%; }
+      .sigx-page .sr-compare-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+      .sigx-page .sr-compare-table tr { margin-bottom: .5rem; padding: .55rem .8rem; border: 1px solid var(--sgp-line); border-radius: 10px; background: var(--sgp-well); }
+      .sigx-page .sr-compare-table td { padding: .12rem 0; border: 0; }
+      .sigx-page .sr-compare-table td:first-child { color: var(--sgp-ink); font-weight: 800; }
+      .sigx-page .sr-compare-table td[data-label]::before { content: attr(data-label) ": "; color: var(--sgp-ink); font-weight: 700; }
+    }
+  </style>
+      <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 30, 58, 95; }
+      [data-theme="dark"] { --pca: 147, 180, 221; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 147, 180, 221; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+
+  <meta name="theme-color" content="#1e3a5f" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="author" content="ToolAdda" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <link rel="canonical" href="https://tooladda.online/signature-resizer.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+  <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+  <link rel="manifest" href="/manifest.json" />
+
+  <meta property="og:title" content="Signature Resizer Online — Resize Signature for SSC, PAN, Aadhaar & More Free | ToolAdda" />
+  <meta property="og:description" content="Resize and compress your signature into the exact KB range required for SSC, UPSC, IBPS, Railway RRB, PAN, banking, and university forms. Free, private, and browser-based." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tooladda.online/signature-resizer.html" />
+  <meta property="og:site_name" content="ToolAdda" />
+  <meta property="og:image" content="https://tooladda.online/assets/images/og/signature-resizer.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Signature Resizer Online — Resize Signature for SSC, PAN, Aadhaar &amp;amp; More Free — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="Signature Resizer Online — Resize Signature for SSC, PAN, Aadhaar &amp;amp; More Free — free online tool on ToolAdda, runs in your browser with no sign-up." />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Signature Resizer for Government Forms | ToolAdda" />
+  <meta name="twitter:description" content="Resize a signature to an exact KB range for SSC, IBPS, PAN, and other government and exam forms. Free, private, and instant." />
+  <meta name="twitter:image" content="https://tooladda.online/assets/images/og/signature-resizer.jpg" />
+
+  <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/signature-resizer.html",
+      "url": "https://tooladda.online/signature-resizer.html",
+      "name": "Signature Resizer Online — Resize Signature for SSC, PAN, Aadhaar & More Free | ToolAdda",
+      "description": "Resize and compress a signature into an exact KB range for SSC, IBPS, UPSC, Railway RRB, PAN card, banking, and university forms.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "ToolAdda",
+        "alternateName": [
+          "Tool Adda",
+          "Tools Adda",
+          "ToolsAdda",
+          "Tooladda",
+          "ToolAdda.online"
+        ],
+        "url": "https://tooladda.online/"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "ToolAdda Signature Resizer",
+      "operatingSystem": "Browser",
+      "applicationCategory": "UtilityApplication",
+      "url": "https://tooladda.online/signature-resizer.html",
+      "description": "A free, offline tool that auto-crops, cleans, resizes, and compresses signatures into an exact KB range for exam and government form uploads.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Auto-crop signature whitespace",
+        "Clean/whiten background",
+        "Exact minimum and maximum KB targeting",
+        "One-click SSC, UPSC, IBPS, RRB, PAN and other government presets",
+        "Draw signature directly on a pad",
+        "Custom pixel, mm, or cm sizing with DPI",
+        "Before/after comparison",
+        "100% client-side — no upload"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tooladda.online/signature-resizer.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Signature Resizer"
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to resize a signature online with ToolAdda",
+      "description": "Resize and compress a signature for government and exam forms, entirely in your browser.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Upload or draw your signature",
+          "text": "Upload a clear photo/scan, or switch to the Draw tab and sign with your mouse, finger, or stylus."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Choose a preset",
+          "text": "Pick a one-click preset such as SSC, UPSC, IBPS, RRB, or PAN, or enter a Custom size and KB range."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Process",
+          "text": "Click Process signature — the tool auto-crops whitespace, optionally cleans the background, resizes, and compresses into the target KB range."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Compare before/after",
+          "text": "Use the compare slider and zoomed preview to check the result before downloading."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Download",
+          "text": "Download the finished signature as a JPEG, ready to upload to your form."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I resize my signature online?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Upload a photo/scan of your signature or draw it directly, pick a preset (or Custom), and click Process signature — the tool auto-crops, cleans, resizes, and compresses it automatically."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I resize my signature without losing quality?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The tool resizes to the exact pixel dimensions you choose and compresses only as much as needed to reach the target KB range, keeping quality loss to the minimum required to hit that size."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this tool free to use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, completely free with no signup, watermark, or usage limit."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my signature uploaded to a server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Everything runs locally in your browser using the Canvas API — your signature is never sent to a server."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I resize a PNG signature?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — JPG, PNG, and WebP photos or scans of a signature can all be uploaded."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I resize a JPG signature?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, JPG and JPEG uploads are fully supported."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I resize a signature with a transparent background?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can upload a transparent PNG, but the output is always a white-background JPEG, since that's what government and exam portals require."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I resize my signature for a passport application?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Passport portals don't publish one universal signature-file spec - use the Custom option with the exact dimensions and size your specific application requests."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I resize my signature for a PAN card form?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - a PAN Card preset (2×4.5 cm) is built in. If your form asks for different numbers, switch to Custom."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I resize my signature for Aadhaar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Aadhaar forms don't have one fixed signature-file spec either - use Custom with the dimensions your form specifies."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I resize my signature to a specific KB range?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - every preset (and Custom) targets both a minimum and maximum KB, since many portals reject files that are too small as well as too large."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use this for SSC, UPSC, IBPS, or RRB exam forms?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — SSC, UPSC, IBPS, and Railway RRB all have one-click presets with commonly published dimensions and KB ranges."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I resize my signature for a driving license application?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - a general Driving License preset is included, but RTO/Sarathi requirements vary by state, so double-check your application."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I resize my signature for a bank account or KYC form?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - a general Bank Account/KYC preset is included; confirm against your bank's exact instructions."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I resize my signature for a university admission form?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — a general University/College Admission preset is included; specs vary a lot by institution, so treat it as a starting point."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I resize my signature for a scholarship application?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — a general Scholarship Portal preset is included, styled after commonly seen specs; verify against your scheme's official guidelines."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which image format does the output use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The processed output is always a JPEG — the format government portals almost universally require for signature uploads."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work on mobile devices?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, the interface is fully responsive and works with your phone's camera roll or file picker."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I draw my signature instead of uploading a photo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — switch to the Draw tab and sign with your mouse, finger, or stylus directly on the pad."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it preserve image quality during resizing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — the tool searches for the highest JPEG quality that still fits your target KB range, rather than applying a fixed heavy compression."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can beginners use this tool without technical knowledge?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — pick a preset and click Process; no settings changes are required for common use cases."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work offline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Once the page has loaded, processing runs entirely locally and needs no further network connection."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a file size limit for uploads?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "There's no hard upload limit, but very large photos take a little longer to process since everything runs in your browser."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I resize multiple signatures at once?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "This tool processes one signature at a time so you can carefully review and compare the result before downloading."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What DPI should I use for my signature?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For custom sizes in mm or cm, 300 DPI is a good default and matches what most scanning guidelines expect - the tool converts it to pixels automatically."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which browsers are supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Any modern browser with Canvas API support — Chrome, Edge, Firefox, and Safari all work."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is my signature file being rejected by the form portal?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Usually because the file is outside either the required pixel dimensions or the allowed KB range - this tool targets both together."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Should I upload a photo or a scanned copy of my signature?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A flatbed scan on plain white paper usually gives the cleanest result. A phone photo works too in good, even light - use \"Clean background\" to whiten the paper and boost ink contrast."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens if my signature is too small to reach the minimum KB?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The tool adds a very light, barely visible texture to raise the file size without changing its pixel dimensions or visibly altering your signature."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are the exam/form presets on this page guaranteed to be accurate?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Presets reflect commonly published specs at the time of writing, but authorities do revise requirements - always check your official notification and use Custom if anything differs."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/signature-resizer.html#webpage",
+      "url": "https://tooladda.online/signature-resizer.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-26",
+      "dateModified": "2026-09-24",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="sigx-page">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/" aria-label="ToolAdda home">
+        <span class="brand-mark" aria-hidden="true">T</span>
+        <span>ToolAdda</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+            <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+            <path d="M3.1 16.9h10.8" />
+            <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+          </svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+        <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="section">
+      <aside class="ta-support" aria-label="Support ToolAdda">
+        <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+        <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+      </aside>
+
+      <div class="container sigx-main">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span>›</span><a href="/">Image Tools</a><span>›</span><span>Signature Resizer</span>
+        </nav>
+
+        <header class="sigx-cover">
+          <div>
+            <p class="sigx-badge">✍️ Government &amp; Exam Forms · No Upload</p>
+            <h1 class="sigx-title"><span class="sigx-t1">Signature Resizer</span> <span class="sigx-dash">—</span> <span class="sigx-t2">Resize &amp; Compress for Government Forms</span></h1>
+            <p class="sigx-cover-note">Photo or drawing in, a form-ready JPG out — right pixels, right KB.</p>
+          </div>
+          <div class="sigx-hero-visual" aria-hidden="true">
+            <div class="sigx-form-mock">
+              <div class="sigx-seal-badge">✓</div>
+              <div class="sigx-form-mock__head"><span>Form upload</span><em>Signature field</em></div>
+              <div class="sigx-form-mock__line"></div>
+              <div class="sigx-form-mock__line short"></div>
+              <div class="sigx-form-mock__sig-box">
+                <svg viewBox="0 0 220 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M12 42 C28 8, 52 52, 78 28 S118 12, 148 38 S182 48, 208 22" />
+                </svg>
+              </div>
+              <div class="sigx-spec-chips">
+                <span class="sigx-spec-chip">140×60 px</span>
+                <span class="sigx-spec-chip">10–20 KB</span>
+                <span class="sigx-spec-chip">JPEG</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- One grid (.sigx-top) is the tool and the script's root
+             ([data-sig-page]). Under 700px: steps, upload, ad, preset,
+             process, result. 700-999px: the ad sits beside the upload card.
+             From 1000px: form | result | ad. Nothing else lives inside the
+             grid, so the sticky ad can never ride over the page. -->
+        <div class="sigx-top" id="sig-page" data-sig-page>
+          <div class="sigx-flow" aria-label="How it works" data-flow-bar>
+            <div class="sigx-flow-step is-active" data-flow-step="1"><span>1</span> Upload</div>
+            <div class="sigx-flow-arrow" aria-hidden="true">→</div>
+            <div class="sigx-flow-step" data-flow-step="2"><span>2</span> Pick preset</div>
+            <div class="sigx-flow-arrow" aria-hidden="true">→</div>
+            <div class="sigx-flow-step" data-flow-step="3"><span>3</span> Process</div>
+            <div class="sigx-flow-arrow" aria-hidden="true">→</div>
+            <div class="sigx-flow-step" data-flow-step="4"><span>4</span> Download</div>
+          </div>
+
+          <section class="sigx-block sigx-up" aria-labelledby="sigx-block-upload">
+            <div class="sigx-block-head">
+              <span class="sigx-block-num">1</span>
+              <strong id="sigx-block-upload">Add your signature</strong>
+              <em>Upload photo or draw</em>
+            </div>
+            <div class="sig-tab-row" role="tablist">
+              <button type="button" class="sig-tab-btn is-active" data-tab-btn="upload" role="tab" aria-selected="true">📁 Upload photo</button>
+              <button type="button" class="sig-tab-btn" data-tab-btn="draw" role="tab" aria-selected="false">✏️ Draw signature</button>
+            </div>
+            <div class="sig-tab-panel is-active" data-tab-panel="upload">
+              <input type="file" accept="image/jpeg,image/png,image/webp" hidden data-file-input />
+              <div class="sr-thumb-row hidden" data-uploaded-thumb-wrap>
+                <img data-uploaded-thumb alt="Uploaded signature preview" />
+                <div class="sr-thumb-actions">
+                  <button class="secondary-btn" type="button" data-replace-btn>🔄 Replace</button>
+                  <button class="icon-btn pdf-remove-btn" type="button" data-remove-btn aria-label="Remove uploaded signature">✕</button>
+                </div>
+              </div>
+              <div class="pdf-drop-zone" data-drop-zone tabindex="0" aria-label="Drag and drop a signature photo here or click to browse">
+                <div class="pdf-drop-zone-icon" aria-hidden="true">✍️</div>
+                <p class="pdf-drop-zone-title"><strong>Drop signature photo here</strong></p>
+                <p class="sigx-drop-meta">JPG, PNG or WebP · plain white paper works best</p>
+                <span class="sigx-choose-btn" role="button" tabindex="0" data-file-picker>Choose image</span>
+              </div>
+            </div>
+            <div class="sig-tab-panel" data-tab-panel="draw">
+              <div class="sig-pad-wrap"><canvas data-draw-canvas width="600" height="240"></canvas></div>
+              <div class="sig-pad-controls">
+                <div class="sig-pen-row">
+                  <label for="sigPenSize">Pen size</label>
+                  <input type="range" id="sigPenSize" min="1" max="8" value="3" />
+                </div>
+                <div class="sig-ink-row" role="group" aria-label="Ink color">
+                  <button type="button" class="sig-ink-swatch is-active" data-ink="#111827" style="background:#111827;" aria-label="Black ink"></button>
+                  <button type="button" class="sig-ink-swatch" data-ink="#1d4ed8" style="background:#1d4ed8;" aria-label="Blue ink"></button>
+                </div>
+                <button class="secondary-btn" type="button" data-clear-draw>🗑️ Clear</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Ad: one 300x250 (see .sigx-ad-zone CSS) — beside the tool from
+               700px, straight after the upload card below that. -->
+          <div class="sigx-ad-zone">
+            <div class="ta-inline-ad" data-unit="inline"></div>
+          </div>
+
+          <section class="sigx-block sigx-pre" aria-labelledby="sigx-block-preset">
+            <div class="sigx-block-head">
+              <span class="sigx-block-num">2</span>
+              <strong id="sigx-block-preset">Choose form preset</strong>
+              <em>SSC, PAN, UPSC…</em>
+            </div>
+            <div class="sig-field">
+              <label for="sigPreset">Exam / form preset</label>
+              <select id="sigPreset"></select>
+              <p class="sig-note" data-preset-note></p>
+            </div>
+            <div class="sig-custom-grid hidden" data-custom-grid>
+              <div class="sig-field"><label for="sigCustomW">Width</label><input type="number" id="sigCustomW" min="1" value="140" /></div>
+              <div class="sig-field"><label for="sigCustomH">Height</label><input type="number" id="sigCustomH" min="1" value="60" /></div>
+              <div class="sig-field">
+                <label for="sigCustomUnit">Unit</label>
+                <select id="sigCustomUnit">
+                  <option value="px" selected>Pixels (px)</option>
+                  <option value="mm">Millimetres (mm)</option>
+                  <option value="cm">Centimetres (cm)</option>
+                </select>
+              </div>
+              <div class="sig-field"><label for="sigCustomDpi">DPI (for mm/cm)</label><input type="number" id="sigCustomDpi" min="72" value="300" /></div>
+              <div class="sig-field"><label for="sigCustomMinKb">Minimum size (KB)</label><input type="number" id="sigCustomMinKb" min="0" value="10" /></div>
+              <div class="sig-field"><label for="sigCustomMaxKb">Maximum size (KB)</label><input type="number" id="sigCustomMaxKb" min="1" value="20" /></div>
+            </div>
+            <div class="sig-field" style="margin-bottom:0;">
+              <label style="display:flex;align-items:center;gap:0.5rem;">
+                <input type="checkbox" id="sigCleanBg" checked /> Clean background (whiten paper)
+              </label>
+              <input type="range" id="sigSensitivity" min="0" max="100" value="55" />
+              <p class="sig-note">Higher sensitivity whitens more background but can thin faint ink.</p>
+            </div>
+          </section>
+
+          <section class="sigx-block sigx-proc" aria-labelledby="sigx-block-process">
+            <div class="sigx-block-head">
+              <span class="sigx-block-num">3</span>
+              <strong id="sigx-block-process">Process signature</strong>
+              <em>One click</em>
+            </div>
+            <div class="sigx-actions">
+              <button class="primary-btn" type="button" data-process-btn>⚙️ Process signature</button>
+              <button class="secondary-btn" type="button" data-reset-btn>↺ Reset</button>
+            </div>
+            <div class="message-box hidden" role="status" aria-live="assertive" data-message style="margin-top:0.65rem;"></div>
+          </section>
+
+          <aside class="sigx-result-panel" id="sig-result" data-result-panel aria-labelledby="sigx-result-title">
+            <div class="sigx-block-head">
+              <span class="sigx-block-num">✓</span>
+              <strong id="sigx-result-title">Your output</strong>
+              <span class="sigx-result-badge">Live preview</span>
+            </div>
+            <div class="sigx-result-empty" data-result-placeholder>
+              <span>📋</span>
+              Hit <strong>Process signature</strong> — your cropped preview, zoom view, and KB stats will appear here instantly.
+            </div>
+            <div class="sig-output-grid hidden" data-output-grid>
+              <div class="sig-preview-card">
+                <h3>Actual size</h3>
+                <canvas data-preview-actual></canvas>
+              </div>
+              <div class="sig-preview-card">
+                <h3>Zoom 3×</h3>
+                <button type="button" class="sr-zoom-expand" data-lightbox-open>⤢ Expand</button>
+                <canvas data-preview-zoom></canvas>
+              </div>
+            </div>
+            <div class="sig-stat-grid hidden" data-stat-grid>
+              <div class="sig-stat-box"><span>Dimensions</span><strong data-stat-dims>—</strong></div>
+              <div class="sig-stat-box" data-stat-size-box><span>File size</span><strong data-stat-size>—</strong></div>
+              <div class="sig-stat-box"><span>Target range</span><strong data-stat-range>—</strong></div>
+            </div>
+            <div class="sigx-result-actions hidden" data-result-actions>
+              <button class="sigx-download-btn" type="button" data-download-btn>⬇️ Download JPG</button>
+              <button class="secondary-btn" type="button" data-compare-btn>🔍 Compare before/after</button>
+            </div>
+          </aside>
+        </div>
+
+        <div class="sigx-intro">
+          <div>
+            <p class="sigx-lead">Resize a signature to an exact KB range for SSC, IBPS, UPSC, Railway RRB, PAN, banking, and university forms. Auto-crop whitespace, clean up the background, and compress into the exact size your form requires — all inside your browser.</p>
+            <div class="sigx-hero-cta"><a class="primary-btn" href="#sig-page">✍️ Resize my signature now</a></div>
+            <div class="sigx-trust-row" aria-label="Trust highlights">
+              <span class="sigx-trust-pill">🔒 Private — no upload</span>
+              <span class="sigx-trust-pill">✓ Min + max KB</span>
+              <span class="sigx-trust-pill">✓ 10 gov presets</span>
+              <span class="sigx-trust-pill">✓ Draw or upload</span>
+              <span class="sigx-trust-pill">✓ Free forever</span>
+            </div>
+          </div>
+          <div>
+            <div class="sig-privacy-banner">🔒 No upload — 100% private, works fully offline.</div>
+            <div class="sigx-trust-strip" aria-label="Trust highlights">
+              <span class="sigx-trust-strip-item">🔒 Private</span>
+              <span class="sigx-trust-strip-item">🚫 No upload</span>
+              <span class="sigx-trust-strip-item">⚡ Instant</span>
+              <span class="sigx-trust-strip-item">🆓 Free</span>
+              <span class="sigx-trust-strip-item">📱 Mobile</span>
+              <span class="sigx-trust-strip-item">📴 Offline</span>
+            </div>
+          <div class="sigx-mob-intro" aria-label="Signature Resizer">
+            <p class="sigx-badge">✍️ Government &amp; Exam Forms · No Upload</p>
+            <p class="sigx-mob-title">Signature Resizer</p>
+            <p>Resize &amp; compress for SSC, PAN, IBPS &amp; more — 100% private in your browser.</p>
+            <div class="sigx-mob-steps">
+              <span class="sigx-mob-step">1 · Upload</span>
+              <span class="sigx-mob-step">2 · Preset</span>
+              <span class="sigx-mob-step">3 · Process</span>
+              <span class="sigx-mob-step">4 · Download</span>
+            </div>
+          </div>
+          </div>
+        </div>
+
+        <div class="sigx-preset-section" aria-label="One-click government form presets">
+          <h2>Quick presets — tap to auto-fill</h2>
+          <p class="sig-note" style="margin:0 0 0.65rem;">Selects the preset in step 2 above. Always verify against your official form notification.</p>
+          <div class="sigx-preset-scroll">
+            <button type="button" class="sr-preset-card" data-preset-card="ssc"><strong>🏛️ SSC</strong><span>140×60 px · 10–20 KB</span></button>
+            <button type="button" class="sr-preset-card" data-preset-card="upsc"><strong>📚 UPSC</strong><span>350×350 px max · 20–300 KB</span></button>
+            <button type="button" class="sr-preset-card" data-preset-card="ibps"><strong>🏦 IBPS / Bank Exams</strong><span>140×60 px · 10–20 KB</span></button>
+            <button type="button" class="sr-preset-card" data-preset-card="rrb"><strong>🚆 Railway RRB</strong><span>3.5×1.5 cm · 10–20 KB</span></button>
+            <button type="button" class="sr-preset-card" data-preset-card="pan"><strong>🪪 PAN Card</strong><span>2×4.5 cm signature</span></button>
+            <button type="button" class="sr-preset-card" data-preset-card="driving-license"><strong>🚗 Driving License</strong><span>3.5×1.5 cm · 10–20 KB</span></button>
+            <button type="button" class="sr-preset-card" data-preset-card="banking"><strong>💳 Bank / KYC</strong><span>140×60 px · 10–20 KB</span></button>
+            <button type="button" class="sr-preset-card" data-preset-card="university"><strong>🎓 University</strong><span>200×80 px · 10–50 KB</span></button>
+            <button type="button" class="sr-preset-card" data-preset-card="scholarship"><strong>🎖️ Scholarship</strong><span>140×60 px · 10–20 KB</span></button>
+            <button type="button" class="sr-preset-card" data-preset-card="employment"><strong>💼 Job Application</strong><span>200×80 px · 10–50 KB</span></button>
+            <button type="button" class="sr-preset-card" data-preset-card="custom"><strong>🎛️ Custom</strong><span>Any size, unit &amp; KB range</span></button>
+          </div>
+        </div>
+
+        <div class="sigx-band">
+          <div class="pdf-summary-grid">
+            <div class="pdf-feature-card">
+              <strong>Exact KB window</strong>
+              <p>Targets both a minimum and maximum file size — many portals reject files that are too small, not just too large.</p>
+            </div>
+            <div class="pdf-feature-card">
+              <strong>Auto-crop &amp; clean</strong>
+              <p>Trims whitespace automatically and can whiten paper background for a crisp scan look.</p>
+            </div>
+            <div class="pdf-feature-card">
+              <strong>100% offline</strong>
+              <p>Your signature is never uploaded — everything runs locally using the Canvas API.</p>
+            </div>
+          </div>
+          <div class="sr-trust-grid" aria-label="Why trust this tool">
+            <div class="sr-trust-card"><div class="ic" aria-hidden="true">🔒</div><strong>100% local</strong><p>Runs fully inside your browser. Nothing is uploaded, ever.</p></div>
+            <div class="sr-trust-card"><div class="ic" aria-hidden="true">🎯</div><strong>Min + max KB</strong><p>Targets a KB window, not just a ceiling — the exact requirement most portals enforce.</p></div>
+            <div class="sr-trust-card"><div class="ic" aria-hidden="true">🧽</div><strong>Auto-crop &amp; clean</strong><p>Trims whitespace and whitens paper background automatically.</p></div>
+            <div class="sr-trust-card"><div class="ic" aria-hidden="true">🆓</div><strong>Free, no signup</strong><p>No account, no watermark, no daily limits.</p></div>
+            <div class="sr-trust-card"><div class="ic" aria-hidden="true">📱</div><strong>Mobile ready</strong><p>Works from your phone's gallery with a fully responsive interface.</p></div>
+            <div class="sr-trust-card"><div class="ic" aria-hidden="true">🧹</div><strong>Nothing stored</strong><p>Close the tab and your signature is cleared from memory.</p></div>
+          </div>
+        </div>
+
+        <section class="section">
+          <div class="content-card">
+            <h2>What Happens When You Press Process</h2>
+            <p>Four things happen, in this order, all on your own device. Knowing them makes it easier to fix a result the portal still rejects.</p>
+            <ol class="sigx-steps">
+              <li><strong>Auto-crop.</strong> The tool finds where the ink is and trims away the empty paper around it, keeping a small margin — about 4% of the signature's width and height — so the strokes never touch the edge.</li>
+              <li><strong>Clean the background.</strong> With "Clean background" on, anything lighter than a threshold becomes pure white and the ink is darkened slightly. The sensitivity slider moves that threshold: higher whitens more shadow and paper texture, but can also thin very light pen strokes.</li>
+              <li><strong>Fit the exact size.</strong> The signature is scaled to fit inside the preset's width and height without being stretched, then centred on white so the file is exactly the size the form asks for — 140 × 60 px for SSC, for example.</li>
+              <li><strong>Land inside the KB window.</strong> The JPEG is saved at up to ten quality levels, halving the gap each time, to find the best quality that stays under the maximum. If even full quality is below the minimum — common with a small, clean signature — a fine grain is added, starting very faint and increasing only as much as needed, until the file reaches the minimum. If the window cannot be met, the file size turns red and a message explains why, instead of quietly handing you a file that will bounce.</li>
+            </ol>
+            <p>If a portal still rejects the file, the cause is almost always a preset that no longer matches the current notification. Switch to Custom and type the exact width, height and KB range from the official instructions.</p>
+          </div>
+        </section>
+        <section class="section">
+          <div class="content-card">
+            <h2>What Is a Signature Resizer, and Why Do You Need One?</h2>
+            <p>A signature resizer takes a photo, scan, or drawing of your signature and turns it into a file that matches exactly what a form, portal, or application asks for — specific pixel dimensions, and a file size that falls inside a required range. It sounds simple, but most people hit this wall the same way: their phone camera produces a multi-megabyte photo with a huge canvas of white paper around a tiny signature, while the portal wants a tightly cropped image that's often under 20 KB. Getting from one to the other by hand — cropping, resizing, and compressing to a precise byte count — is fiddly and easy to get wrong, which is exactly the gap this tool closes in one click.</p>
+            <p>This tool runs the entire process locally in your browser: it automatically finds and crops the signature out of the surrounding whitespace, can whiten the paper background and boost ink contrast, resizes to your chosen dimensions, and compresses until the file lands inside both a minimum and maximum KB target — not just under a ceiling, which is where most simpler tools fall short.</p>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="content-grid">
+            <article class="content-card">
+              <h2>Why Government Forms Are So Strict About Signature Files</h2>
+              <p>Government and exam portals process millions of applications through automated systems that expect uniform inputs. A signature that's the wrong pixel size can break a printed form's layout; a file that's too large slows down bulk processing and storage; and — less intuitively — a file that's <em>too small</em> can also be rejected, since some systems treat a suspiciously tiny file as a sign of a corrupted or blank upload. That's why serious portals specify both a minimum and maximum file size, not just an upper limit, which is exactly what this tool is built to hit.</p>
+            </article>
+            <article class="content-card">
+              <h2>Passport, Aadhaar &amp; PAN Signature Guidelines</h2>
+              <p>Unlike SSC or UPSC, passport and Aadhaar portals don't publish one universal signature-file specification — requirements can depend on the specific form or update you're submitting. PAN card applications more commonly reference a signature area around 2×4.5 cm, which is why a PAN preset is included here. For passport and Aadhaar, use the Custom option with the exact dimensions and KB range stated in your specific application's instructions, rather than assuming a fixed number.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="content-grid">
+            <article class="content-card">
+              <h2>Exam &amp; Recruitment Portals: SSC, UPSC, IBPS, Railway RRB</h2>
+              <p>These are the portals with the most consistently published, exact specifications, which is why they have dedicated one-click presets here. SSC and IBPS commonly ask for a 140×60 px signature between 10–20 KB. UPSC typically allows up to 350×350 px with a wider 20–300 KB range. Railway RRB is usually specified in physical units — 3.5×1.5 cm at 300 DPI — which this tool converts to pixels automatically. Always cross-check against your specific notification, since authorities do revise specs between recruitment cycles.</p>
+            </article>
+            <article class="content-card">
+              <h2>Banking, University &amp; Scholarship Signature Uploads</h2>
+              <p>Bank account opening, KYC updates, university admission portals, and scholarship schemes each set their own signature requirements, and unlike the exam boards above, there's no single industry standard. The presets included for these categories reflect commonly seen specifications as a sensible starting point — but because requirements vary so much by institution, always confirm the exact dimensions and KB range in your specific form's instructions before submitting, and switch to Custom if they differ.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="content-card">
+            <h2>Government Form Quick Reference</h2>
+            <table class="sr-compare-table">
+              <thead><tr><th>Form / Exam</th><th>Typical dimensions</th><th>Typical KB range</th><th>Notes</th></tr></thead>
+              <tbody>
+                <tr><td>SSC</td><td data-label="Dimensions">140×60 px</td><td data-label="KB range">10–20 KB</td><td data-label="Notes">Widely consistent across cycles</td></tr>
+                <tr><td>UPSC</td><td data-label="Dimensions">Up to 350×350 px</td><td data-label="KB range">20–300 KB</td><td data-label="Notes">Verify against current notification</td></tr>
+                <tr><td>IBPS / Bank Exams</td><td data-label="Dimensions">140×60 px</td><td data-label="KB range">10–20 KB</td><td data-label="Notes">Mirrors SSC-style specs</td></tr>
+                <tr><td>Railway RRB</td><td data-label="Dimensions">3.5×1.5 cm (300 DPI)</td><td data-label="KB range">10–20 KB</td><td data-label="Notes">Given in physical units</td></tr>
+                <tr><td>PAN Card</td><td data-label="Dimensions">2×4.5 cm</td><td data-label="KB range">Up to ~100 KB</td><td data-label="Notes">Signature area on the form</td></tr>
+                <tr><td>Driving License</td><td data-label="Dimensions">~3.5×1.5 cm</td><td data-label="KB range">10–20 KB</td><td data-label="Notes">Varies by state RTO — verify</td></tr>
+                <tr><td>Bank / KYC</td><td data-label="Dimensions">140×60 px</td><td data-label="KB range">10–20 KB</td><td data-label="Notes">Confirm with your bank</td></tr>
+                <tr><td>University Admission</td><td data-label="Dimensions">~200×80 px</td><td data-label="KB range">10–50 KB</td><td data-label="Notes">Varies a lot by institution</td></tr>
+                <tr><td>Scholarship Portal</td><td data-label="Dimensions">140×60 px</td><td data-label="KB range">10–20 KB</td><td data-label="Notes">Verify against your scheme</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="content-grid">
+            <article class="content-card">
+              <h2>Understanding the Minimum-and-Maximum KB Window</h2>
+              <p>Most people only think about compressing a file <em>down</em> — but a simple signature on a clean white background can compress to just 2–3 KB even at full quality, which is often <em>below</em> a portal's stated minimum. This tool solves both directions at once: it searches for the highest JPEG quality that still fits under your maximum, and if the result is still below the minimum, it adds a very light, controlled texture to raise the file size without visibly changing your signature or its pixel dimensions.</p>
+            </article>
+            <article class="content-card">
+              <h2>Signature Dimensions &amp; Resolution, Explained</h2>
+              <p>Pixel dimensions (like 140×60 px) define the exact grid of the output image — this is what most exam portals specify directly. Physical units (mm/cm) are common on printed-form-style requirements and need a DPI (dots per inch) value to convert to pixels; 300 DPI is the standard assumption for signature and photo scans. This tool accepts either: pick pixels for exam-style specs, or millimetres/centimetres with a DPI for print-style specs, and it computes the correct pixel grid either way.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="content-grid">
+            <article class="content-card">
+              <h2>Why JPEG, and PNG vs JPG for Signatures</h2>
+              <p>The final download from this tool is always a JPEG, because that's what the overwhelming majority of government and exam portals require for signature uploads — JPEG compresses far more efficiently than PNG for a mostly-white image with fine dark strokes, which is exactly what's needed to hit a tight KB ceiling like 20 KB. You can upload a PNG (including one with transparency) as your source, but the processed output always has a solid white background, matching what portals expect.</p>
+            </article>
+            <article class="content-card">
+              <h2>DPI Explained</h2>
+              <p>DPI (dots per inch) only matters when you enter a size in millimetres or centimetres — it's the bridge between a physical measurement and a pixel count. At 300 DPI, one centimetre becomes roughly 118 pixels. Scanning and printing guidelines commonly assume 300 DPI as a baseline for document-quality output, which is why it's the default here; if your specific instructions mention a different DPI, just change the value and the pixel dimensions recalculate automatically.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="content-grid">
+            <article class="content-card">
+              <h2>From Paper to Pixels: Photo vs Scan Best Practices</h2>
+              <p>A flatbed scan on plain white paper gives the cleanest starting point — even lighting, no shadows, high contrast between ink and paper. A phone photo works well too if taken directly above the page in good, even light, avoiding glare and shadows from your hand or the camera itself. Whichever method you use, the "Clean background" option in this tool whitens the paper and boosts ink contrast, which meaningfully improves both the auto-crop accuracy and the final visual clarity.</p>
+            </article>
+            <article class="content-card">
+              <h2>Common Mistakes That Get Signatures Rejected</h2>
+              <ul>
+                <li>Uploading a full-page photo without cropping close to the signature first — auto-crop helps, but starting closer improves accuracy.</li>
+                <li>Ignoring the minimum file size and only checking that the file isn't too large.</li>
+                <li>Signing on lined or colored paper, which confuses background-cleaning and auto-crop.</li>
+                <li>Using a blurry or low-light photo — sharpness matters more than most people expect for tiny 140×60 px signatures.</li>
+                <li>Assuming every portal uses the same specs as SSC — always check your specific form's instructions.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="content-card">
+            <h2>Troubleshooting</h2>
+            <p><strong>My result shows "infeasible" or a size warning.</strong> This means the target dimensions are too small to fit inside the maximum KB even at the lowest quality, or too large to reach the minimum — try a slightly larger maximum, or a clearer/simpler signature. <strong>My signature looks blurry after resizing.</strong> Very small target dimensions (like 140×60 px) show flaws more than a full-size photo does — try a sharper original photo or a proper scan. <strong>The background isn't fully white.</strong> Increase the Clean background sensitivity slider, or retake the photo in more even lighting with less shadow.</p>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="content-grid">
+            <article class="content-card">
+              <h2>Privacy &amp; Security</h2>
+              <p>Your signature is one of the most sensitive images you can upload anywhere — it's tied directly to legal and financial identity. This tool never makes a network request with your image data: everything from cropping to compression happens using your browser's own Canvas API, so there's nothing to intercept or leak in transit because nothing is ever transmitted in the first place.</p>
+            </article>
+            <article class="content-card">
+              <h2>Why Choose This Tool</h2>
+              <p>Most generic resizers stop at "make it smaller." This one is purpose-built for the exact problem government and exam forms create: hitting a precise pixel size <em>and</em> landing inside a minimum-to-maximum KB window, with auto-crop and background cleanup built in so you don't need separate tools for each step — all without your signature ever leaving your device.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="content-card">
+            <h2>This Tool vs Typical Cloud Signature Resizers</h2>
+            <table class="sr-compare-table">
+              <thead><tr><th>Aspect</th><th>ToolAdda Signature Resizer</th><th>Typical cloud tool</th></tr></thead>
+              <tbody>
+                <tr><td>File leaves your device</td><td data-label="This tool">Never</td><td data-label="Typical cloud tool">Yes, temporarily</td></tr>
+                <tr><td>Minimum <em>and</em> maximum KB targeting</td><td data-label="This tool">Yes</td><td data-label="Typical cloud tool">Usually maximum only</td></tr>
+                <tr><td>Auto-crop + background cleanup</td><td data-label="This tool">Built in</td><td data-label="Typical cloud tool">Often separate tools</td></tr>
+                <tr><td>Draw signature directly</td><td data-label="This tool">Yes</td><td data-label="Typical cloud tool">Rarely offered</td></tr>
+                <tr><td>Signup / account</td><td data-label="This tool">Not required</td><td data-label="Typical cloud tool">Often required</td></tr>
+                <tr><td>Cost</td><td data-label="This tool">Free, unlimited</td><td data-label="Typical cloud tool">Often rate-limited or paid</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section faq-section">
+          <h2 class="section-title">Frequently asked questions</h2>
+          <div class="grid-2">
+            <details class="faq-item">
+              <summary><strong>How do I resize my signature online?</strong></summary>
+              <p>Upload a photo/scan of your signature or draw it directly, pick a preset (or Custom), and click Process signature — the tool auto-crops, cleans, resizes, and compresses it automatically.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I resize my signature without losing quality?</strong></summary>
+              <p>The tool resizes to the exact pixel dimensions you choose and compresses only as much as needed to reach the target KB range, keeping quality loss to the minimum required to hit that size.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Is this tool free to use?</strong></summary>
+              <p>Yes, completely free with no signup, watermark, or usage limit.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Is my signature uploaded to a server?</strong></summary>
+              <p>No. Everything runs locally in your browser using the Canvas API — your signature is never sent to a server.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I resize a PNG signature?</strong></summary>
+              <p>Yes — JPG, PNG, and WebP photos or scans of a signature can all be uploaded.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I resize a JPG signature?</strong></summary>
+              <p>Yes, JPG and JPEG uploads are fully supported.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I resize a signature with a transparent background?</strong></summary>
+              <p>You can upload a transparent PNG, but the output is always a white-background JPEG, since that's what government and exam portals require.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I resize my signature for a passport application?</strong></summary>
+              <p>Passport portals don't publish one universal signature-file spec — use the Custom option with the exact dimensions and size your specific application requests.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I resize my signature for a PAN card form?</strong></summary>
+              <p>Yes — a PAN Card preset (2×4.5 cm) is built in. If your form asks for different numbers, switch to Custom.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I resize my signature for Aadhaar?</strong></summary>
+              <p>Aadhaar forms don't have one fixed signature-file spec either — use Custom with the dimensions your form specifies.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I resize my signature to a specific KB range?</strong></summary>
+              <p>Yes — every preset (and Custom) targets both a minimum and maximum KB, since many portals reject files that are too small as well as too large.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I use this for SSC, UPSC, IBPS, or RRB exam forms?</strong></summary>
+              <p>Yes — SSC, UPSC, IBPS, and Railway RRB all have one-click presets with commonly published dimensions and KB ranges.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I resize my signature for a driving license application?</strong></summary>
+              <p>Yes — a general Driving License preset is included, but RTO/Sarathi requirements vary by state, so double-check your application.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I resize my signature for a bank account or KYC form?</strong></summary>
+              <p>Yes — a general Bank Account/KYC preset is included; confirm against your bank's exact instructions.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I resize my signature for a university admission form?</strong></summary>
+              <p>Yes — a general University/College Admission preset is included; specs vary a lot by institution, so treat it as a starting point.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I resize my signature for a scholarship application?</strong></summary>
+              <p>Yes — a general Scholarship Portal preset is included, styled after commonly seen specs; verify against your scheme's official guidelines.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Which image format does the output use?</strong></summary>
+              <p>The processed output is always a JPEG — the format government portals almost universally require for signature uploads.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Does it work on mobile devices?</strong></summary>
+              <p>Yes, the interface is fully responsive and works with your phone's camera roll or file picker.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I draw my signature instead of uploading a photo?</strong></summary>
+              <p>Yes — switch to the Draw tab and sign with your mouse, finger, or stylus directly on the pad.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Does it preserve image quality during resizing?</strong></summary>
+              <p>Yes — the tool searches for the highest JPEG quality that still fits your target KB range, rather than applying a fixed heavy compression.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can beginners use this tool without technical knowledge?</strong></summary>
+              <p>Yes — pick a preset and click Process; no settings changes are required for common use cases.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Does it work offline?</strong></summary>
+              <p>Once the page has loaded, processing runs entirely locally and needs no further network connection.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Is there a file size limit for uploads?</strong></summary>
+              <p>There's no hard upload limit, but very large photos take a little longer to process since everything runs in your browser.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I resize multiple signatures at once?</strong></summary>
+              <p>This tool processes one signature at a time so you can carefully review and compare the result before downloading.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>What DPI should I use for my signature?</strong></summary>
+              <p>For custom sizes in mm or cm, 300 DPI is a good default and matches what most scanning guidelines expect — the tool converts it to pixels automatically.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Which browsers are supported?</strong></summary>
+              <p>Any modern browser with Canvas API support — Chrome, Edge, Firefox, and Safari all work.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Why is my signature file being rejected by the form portal?</strong></summary>
+              <p>Usually because the file is outside either the required pixel dimensions or the allowed KB range — this tool targets both together.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Should I upload a photo or a scanned copy of my signature?</strong></summary>
+              <p>A flatbed scan on plain white paper usually gives the cleanest result. A phone photo works too in good, even light — use "Clean background" to whiten the paper and boost ink contrast.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>What happens if my signature is too small to reach the minimum KB?</strong></summary>
+              <p>The tool adds a very light, barely visible texture to raise the file size without changing its pixel dimensions or visibly altering your signature.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Are the exam/form presets on this page guaranteed to be accurate?</strong></summary>
+              <p>Presets reflect commonly published specs at the time of writing, but authorities do revise requirements — always check your official notification and use Custom if anything differs.</p>
+            </details>
+          </div>
+        </section>
+
+        <aside class="sigx-related" aria-label="Related image tools">
+          <p class="related-tools-eyebrow">Related tools</p>
+          <h2 class="related-tools-title">More image &amp; form tools</h2>
+          <div class="sigx-related-grid">
+            <a class="sigx-related-card" href="passport-photo-maker.html"><span class="sigx-related-icon">🪪</span><div><strong>Passport Photo Maker</strong><span>Exact-size ID photos for forms</span></div></a>
+            <a class="sigx-related-card" href="image-compress-to-kb.html"><span class="sigx-related-icon">🎯</span><div><strong>Compress Image to KB</strong><span>Exact KB target for uploads</span></div></a>
+            <a class="sigx-related-card" href="image-compressor.html"><span class="sigx-related-icon">🗜️</span><div><strong>Image Compressor</strong><span>Batch compress, compare quality</span></div></a>
+            <a class="sigx-related-card" href="image-resizer.html"><span class="sigx-related-icon">📐</span><div><strong>Image Resizer</strong><span>Resize by pixels or %</span></div></a>
+            <a class="sigx-related-card" href="image-crop.html"><span class="sigx-related-icon">✂️</span><div><strong>Crop Image</strong><span>Crop before resizing</span></div></a>
+            <a class="sigx-related-card" href="image-background-remover.html"><span class="sigx-related-icon">🪄</span><div><strong>Background Remover</strong><span>Clean photo backgrounds</span></div></a>
+            <a class="sigx-related-card" href="jpg-to-png.html"><span class="sigx-related-icon">🖼️</span><div><strong>JPG to PNG</strong><span>Convert image format</span></div></a>
+            <a class="sigx-related-card" href="png-to-webp.html"><span class="sigx-related-icon">⚡</span><div><strong>PNG to WebP</strong><span>Smaller web images</span></div></a>
+          </div>
+        </aside>
+
+        <section class="sigx-final-cta" aria-label="Start resizing">
+          <div class="sigx-final-cta__inner">
+            <div class="sigx-final-cta__copy">
+              <span class="sigx-final-cta__icon" aria-hidden="true">✍️</span>
+              <div>
+                <h2>Ready to fix your signature file?</h2>
+                <p>Upload, pick a government preset, and download a form-ready JPG in under a minute — free and 100% private.</p>
+              </div>
+            </div>
+            <a class="sigx-final-cta__btn" href="#sig-page">✍️ Resize my signature now</a>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div class="sr-sticky-cta">
+    <button type="button" class="primary-btn" data-sticky-process-cta>✍️ Resize Signature — Free</button>
+  </div>
+
+  <div class="sr-compare-overlay hidden" data-compare-overlay role="dialog" aria-modal="true" aria-label="Before and after comparison">
+    <div class="sr-compare-panel">
+      <div class="sr-compare-head">
+        <p>Before / after comparison</p>
+        <button type="button" class="icon-btn" data-compare-close aria-label="Close comparison">✕</button>
+      </div>
+      <div class="sr-compare-stage">
+        <img data-compare-before alt="Original signature" />
+        <img data-compare-after alt="Resized signature" />
+        <div class="sr-compare-divider" aria-hidden="true" data-compare-divider></div>
+        <span class="sr-compare-label before" aria-hidden="true">Before</span>
+        <span class="sr-compare-label after" aria-hidden="true">After</span>
+      </div>
+      <input type="range" class="sr-compare-slider" min="0" max="100" value="50" data-compare-slider aria-label="Drag to compare before and after" />
+    </div>
+  </div>
+
+  <div class="sr-lightbox hidden" data-lightbox role="dialog" aria-modal="true" aria-label="Zoomed signature preview">
+    <div class="sr-lightbox-panel">
+      <img data-lightbox-img alt="Zoomed signature preview" />
+      <div><button type="button" class="secondary-btn sr-lightbox-close" data-lightbox-close>Close</button></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+      </div>
+      <div>
+        <h3>Explore</h3>
+        <div class="footer-links">
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms.html">Terms</a>
+        </div>
+      </div>
+      <div>
+        <h3>Stay updated</h3>
+        <p>© <span data-year></span> ToolAdda. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var PRESETS = [
+        { key: 'ssc', label: 'SSC — 140×60 px, 10–20 KB', w: 140, h: 60, minKb: 10, maxKb: 20 },
+        { key: 'upsc', label: 'UPSC — 350×350 px max, 20–300 KB', w: 350, h: 350, minKb: 20, maxKb: 300, note: 'UPSC specs are occasionally revised — verify with the official notification before submitting.' },
+        { key: 'ibps', label: 'IBPS / Bank Exams — 140×60 px, 10–20 KB', w: 140, h: 60, minKb: 10, maxKb: 20 },
+        { key: 'rrb', label: 'Railway RRB — 3.5×1.5 cm, 10–20 KB', cm: [3.5, 1.5], dpi: 300, minKb: 10, maxKb: 20 },
+        { key: 'pan', label: 'PAN Card — 2×4.5 cm signature', cm: [2, 4.5], dpi: 300, minKb: 1, maxKb: 100 },
+        { key: 'driving-license', label: 'Driving License — 3.5×1.5 cm, 10–20 KB', cm: [3.5, 1.5], dpi: 300, minKb: 10, maxKb: 20, note: 'RTO/Sarathi portal specs vary by state — verify with your specific application before submitting.' },
+        { key: 'banking', label: 'Bank Account / KYC — 140×60 px, 10–20 KB', w: 140, h: 60, minKb: 10, maxKb: 20, note: "Most bank KYC and net-banking portals follow SSC-style specs, but always confirm with your bank's form instructions." },
+        { key: 'university', label: 'University / College Admission — 200×80 px, 10–50 KB', w: 200, h: 80, minKb: 10, maxKb: 50, note: 'Admission portal specs vary significantly by institution — this is a common starting point, not a universal standard. Check your specific admission portal.' },
+        { key: 'scholarship', label: 'Scholarship Portal — 140×60 px, 10–20 KB', w: 140, h: 60, minKb: 10, maxKb: 20, note: "Many scholarship portals mirror SSC-style specs, but confirm against your scheme's official guidelines." },
+        { key: 'employment', label: 'Job Application / Employment Form — 200×80 px, 10–50 KB', w: 200, h: 80, minKb: 10, maxKb: 50, note: "Private employer and PSU application portals vary widely — verify with the specific job portal's instructions." },
+        { key: 'custom', label: 'Custom size &amp; KB range…' }
+      ];
+
+      var page = document.querySelector('[data-sig-page]');
+      var tabButtons = Array.from(page.querySelectorAll('[data-tab-btn]'));
+      var tabPanels = Array.from(page.querySelectorAll('[data-tab-panel]'));
+      var fileInput = page.querySelector('[data-file-input]');
+      var filePicker = page.querySelector('[data-file-picker]');
+      var dropZone = page.querySelector('[data-drop-zone]');
+      var drawCanvas = page.querySelector('[data-draw-canvas]');
+      var drawCtx = drawCanvas.getContext('2d');
+      var penSizeInput = document.getElementById('sigPenSize');
+      var inkSwatches = Array.from(page.querySelectorAll('.sig-ink-swatch'));
+      var clearDrawBtn = page.querySelector('[data-clear-draw]');
+      var presetSelect = document.getElementById('sigPreset');
+      var presetNote = page.querySelector('[data-preset-note]');
+      var customGrid = page.querySelector('[data-custom-grid]');
+      var customW = document.getElementById('sigCustomW');
+      var customH = document.getElementById('sigCustomH');
+      var customUnit = document.getElementById('sigCustomUnit');
+      var customDpi = document.getElementById('sigCustomDpi');
+      var customMinKb = document.getElementById('sigCustomMinKb');
+      var customMaxKb = document.getElementById('sigCustomMaxKb');
+      var cleanBgCheckbox = document.getElementById('sigCleanBg');
+      var sensitivityInput = document.getElementById('sigSensitivity');
+      var processBtn = page.querySelector('[data-process-btn]');
+      var downloadBtn = page.querySelector('[data-download-btn]');
+      var messageBox = page.querySelector('[data-message]');
+      var outputGrid = page.querySelector('[data-output-grid]');
+      var statGrid = page.querySelector('[data-stat-grid]');
+      var previewActual = page.querySelector('[data-preview-actual]');
+      var previewZoom = page.querySelector('[data-preview-zoom]');
+      var statDims = page.querySelector('[data-stat-dims]');
+      var statSize = page.querySelector('[data-stat-size]');
+      var statSizeBox = page.querySelector('[data-stat-size-box]');
+      var statRange = page.querySelector('[data-stat-range]');
+
+      /* ---- new premium-UI element refs (additive; no existing refs above were changed) ---- */
+      var thumbWrap = page.querySelector('[data-uploaded-thumb-wrap]');
+      var thumbImg = page.querySelector('[data-uploaded-thumb]');
+      var replaceBtn = page.querySelector('[data-replace-btn]');
+      var removeBtn = page.querySelector('[data-remove-btn]');
+      var resetBtn = page.querySelector('[data-reset-btn]');
+      var compareBtn = page.querySelector('[data-compare-btn]');
+      var resultActions = page.querySelector('[data-result-actions]');
+      var presetCards = Array.from(document.querySelectorAll('[data-preset-card]'));
+      var resultPlaceholder = page.querySelector('[data-result-placeholder]');
+      var resultPanel = document.querySelector('[data-result-panel]');
+      var flowSteps = Array.from(document.querySelectorAll('[data-flow-step]'));
+
+      function setFlowStep(n) {
+        flowSteps.forEach(function (el) {
+          var step = parseInt(el.dataset.flowStep, 10);
+          el.classList.toggle('is-active', step === n);
+          el.classList.toggle('is-done', step < n);
+        });
+      }
+      function scrollToResult() {
+        if (!resultPanel) return;
+        var headerOff = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-overlap')) || 88;
+        var top = resultPanel.getBoundingClientRect().top + window.pageYOffset - headerOff - 16;
+        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+        resultPanel.classList.add('is-highlight');
+        window.setTimeout(function () { resultPanel.classList.remove('is-highlight'); }, 1400);
+      }
+
+      var overlay = document.querySelector('[data-compare-overlay]');
+      var overlayBefore = overlay.querySelector('[data-compare-before]');
+      var overlayAfter = overlay.querySelector('[data-compare-after]');
+      var overlayDivider = overlay.querySelector('[data-compare-divider]');
+      var overlaySlider = overlay.querySelector('[data-compare-slider]');
+      var overlayClose = overlay.querySelector('[data-compare-close]');
+
+      var lightbox = document.querySelector('[data-lightbox]');
+      var lightboxImg = lightbox.querySelector('[data-lightbox-img]');
+      var lightboxClose = lightbox.querySelector('[data-lightbox-close]');
+      var lightboxTrigger = page.querySelector('[data-lightbox-open]');
+
+      presetSelect.innerHTML = PRESETS.map(function (p) { return '<option value="' + p.key + '">' + p.label + '</option>'; }).join('');
+
+      var activeTab = 'upload';
+      var uploadedImg = null;
+      var hasDrawn = false;
+      var inkColor = '#111827';
+      var lastResultBlob = null;
+      var lastFilename = 'signature';
+      /* ---- new state (additive) ---- */
+      var lastOriginalCanvas = null;
+      var lastResizedCanvas = null;
+      var uploadedFileUrl = null;
+
+      function showMessage(text, type) {
+        messageBox.textContent = text;
+        messageBox.classList.remove('hidden', 'success', 'error');
+        messageBox.classList.add(type === 'error' ? 'error' : 'success');
+      }
+      function clearMessage() { messageBox.textContent = ''; messageBox.classList.add('hidden'); }
+
+      // ---- Tabs ----
+      tabButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          activeTab = btn.dataset.tabBtn;
+          tabButtons.forEach(function (b) { b.classList.toggle('is-active', b === btn); b.setAttribute('aria-selected', b === btn ? 'true' : 'false'); });
+          tabPanels.forEach(function (p) { p.classList.toggle('is-active', p.dataset.tabPanel === activeTab); });
+          if (activeTab === 'upload' && !uploadedImg) {
+            window.setTimeout(openPicker, 0);
+          }
+        });
+      });
+
+      // ---- Upload ----
+      function openPicker() { fileInput.click(); }
+      filePicker.addEventListener('click', function (e) { e.stopPropagation(); openPicker(); });
+      filePicker.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); openPicker(); } });
+      dropZone.addEventListener('click', function (e) { if (!e.target.closest('[data-file-picker]')) openPicker(); });
+      dropZone.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPicker(); } });
+      ['dragenter', 'dragover'].forEach(function (ev) { dropZone.addEventListener(ev, function (e) { e.preventDefault(); dropZone.classList.add('active'); }); });
+      ['dragleave', 'drop'].forEach(function (ev) { dropZone.addEventListener(ev, function (e) { e.preventDefault(); dropZone.classList.remove('active'); }); });
+      dropZone.addEventListener('drop', function (e) { handleFile(e.dataTransfer.files && e.dataTransfer.files[0]); });
+      fileInput.addEventListener('change', function (e) { handleFile(e.target.files && e.target.files[0]); e.target.value = ''; });
+
+      function handleFile(file) {
+        if (!file) return;
+        var isValid = /^image\/(jpeg|png|webp)$/.test(file.type) || /\.(jpe?g|png|webp)$/i.test(file.name);
+        if (!isValid) { showMessage('Please choose a JPG, PNG, or WebP image.', 'error'); return; }
+        clearMessage();
+        var url = URL.createObjectURL(file);
+        var img = new Image();
+        img.onload = function () {
+          uploadedImg = img;
+          /* ---- new: show uploaded thumbnail + replace/remove UI (additive, no change to uploadedImg assignment above) ---- */
+          if (uploadedFileUrl) URL.revokeObjectURL(uploadedFileUrl);
+          uploadedFileUrl = url;
+          thumbImg.src = url;
+          thumbWrap.classList.remove('hidden');
+          dropZone.classList.add('hidden');
+          setFlowStep(2);
+        };
+        img.onerror = function () { showMessage('Could not load that image.', 'error'); };
+        img.src = url;
+      }
+
+      /* ---- new: Replace / Remove uploaded signature (thin state helpers, no processing logic) ---- */
+      function clearUploadState() {
+        uploadedImg = null;
+        if (uploadedFileUrl) { URL.revokeObjectURL(uploadedFileUrl); uploadedFileUrl = null; }
+        thumbImg.src = '';
+        thumbWrap.classList.add('hidden');
+        dropZone.classList.remove('hidden');
+        fileInput.value = '';
+      }
+      replaceBtn.addEventListener('click', function () { clearUploadState(); openPicker(); });
+      removeBtn.addEventListener('click', function () { clearUploadState(); clearMessage(); });
+
+      // ---- Draw pad ----
+      drawCtx.fillStyle = '#ffffff';
+      drawCtx.fillRect(0, 0, drawCanvas.width, drawCanvas.height);
+      var drawing = false, lastPt = null;
+
+      function padPoint(e) {
+        var rect = drawCanvas.getBoundingClientRect();
+        var scaleX = drawCanvas.width / rect.width, scaleY = drawCanvas.height / rect.height;
+        return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY };
+      }
+      drawCanvas.addEventListener('pointerdown', function (e) {
+        drawCanvas.setPointerCapture(e.pointerId);
+        drawing = true;
+        lastPt = padPoint(e);
+      });
+      drawCanvas.addEventListener('pointermove', function (e) {
+        if (!drawing) return;
+        var pt = padPoint(e);
+        drawCtx.strokeStyle = inkColor;
+        drawCtx.lineWidth = parseInt(penSizeInput.value, 10) * (drawCanvas.width / drawCanvas.getBoundingClientRect().width);
+        drawCtx.lineCap = 'round';
+        drawCtx.lineJoin = 'round';
+        drawCtx.beginPath();
+        drawCtx.moveTo(lastPt.x, lastPt.y);
+        drawCtx.lineTo(pt.x, pt.y);
+        drawCtx.stroke();
+        lastPt = pt;
+        hasDrawn = true;
+        setFlowStep(2);
+      });
+      function endStroke(e) { drawing = false; lastPt = null; }
+      drawCanvas.addEventListener('pointerup', endStroke);
+      drawCanvas.addEventListener('pointercancel', endStroke);
+      drawCanvas.addEventListener('pointerleave', endStroke);
+
+      inkSwatches.forEach(function (sw) {
+        sw.addEventListener('click', function () {
+          inkSwatches.forEach(function (s) { s.classList.remove('is-active'); });
+          sw.classList.add('is-active');
+          inkColor = sw.dataset.ink;
+        });
+      });
+      clearDrawBtn.addEventListener('click', function () {
+        drawCtx.fillStyle = '#ffffff';
+        drawCtx.fillRect(0, 0, drawCanvas.width, drawCanvas.height);
+        hasDrawn = false;
+      });
+
+      // ---- Preset handling ----
+      function activePreset() { return PRESETS.filter(function (p) { return p.key === presetSelect.value; })[0]; }
+      function updatePresetUI() {
+        var preset = activePreset();
+        customGrid.classList.toggle('hidden', preset.key !== 'custom');
+        presetNote.textContent = preset.note || '';
+      }
+      presetSelect.addEventListener('change', function () { updatePresetUI(); setFlowStep(2); });
+      updatePresetUI();
+
+      /* ---- new: government preset showcase cards — set the existing <select> and reuse updatePresetUI() ---- */
+      presetCards.forEach(function (card) {
+        card.addEventListener('click', function () {
+          var key = card.dataset.presetCard;
+          if (!PRESETS.some(function (p) { return p.key === key; })) return;
+          presetSelect.value = key;
+          updatePresetUI();
+          setFlowStep(2);
+          page.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+
+      function computeTargetSpec() {
+        var preset = activePreset();
+        if (preset.key === 'custom') {
+          var wVal = parseFloat(customW.value), hVal = parseFloat(customH.value);
+          var unit = customUnit.value, dpi = parseInt(customDpi.value, 10) || 300;
+          var minKb = parseFloat(customMinKb.value) || 0;
+          var maxKb = parseFloat(customMaxKb.value) || 0;
+          if (!wVal || !hVal || wVal <= 0 || hVal <= 0 || !maxKb || maxKb <= 0) return null;
+          var w, h;
+          if (unit === 'px') { w = Math.round(wVal); h = Math.round(hVal); }
+          else {
+            var mmW = unit === 'cm' ? wVal * 10 : wVal;
+            var mmH = unit === 'cm' ? hVal * 10 : hVal;
+            w = Math.round(mmW / 25.4 * dpi); h = Math.round(mmH / 25.4 * dpi);
+          }
+          return { w: w, h: h, minKb: minKb, maxKb: maxKb, key: 'custom' };
+        }
+        if (preset.w && preset.h) return { w: preset.w, h: preset.h, minKb: preset.minKb, maxKb: preset.maxKb, key: preset.key };
+        if (preset.cm) {
+          var w2 = Math.round(preset.cm[0] * 10 / 25.4 * preset.dpi);
+          var h2 = Math.round(preset.cm[1] * 10 / 25.4 * preset.dpi);
+          return { w: w2, h: h2, minKb: preset.minKb, maxKb: preset.maxKb, key: preset.key };
+        }
+        return null;
+      }
+
+      // ---- Image processing pipeline ----
+      function sourceCanvasFromImage(img) {
+        var c = document.createElement('canvas');
+        c.width = img.naturalWidth; c.height = img.naturalHeight;
+        var cctx = c.getContext('2d');
+        cctx.fillStyle = '#ffffff';
+        cctx.fillRect(0, 0, c.width, c.height);
+        cctx.drawImage(img, 0, 0);
+        return c;
+      }
+
+      function autoCropWhitespace(canvas) {
+        var w = canvas.width, h = canvas.height;
+        var ctx2 = canvas.getContext('2d');
+        var data = ctx2.getImageData(0, 0, w, h).data;
+        var minX = w, minY = h, maxX = -1, maxY = -1;
+        var threshold = 245;
+        for (var y = 0; y < h; y++) {
+          for (var x = 0; x < w; x++) {
+            var i = (y * w + x) * 4;
+            var lum = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+            if (lum < threshold) {
+              if (x < minX) minX = x;
+              if (x > maxX) maxX = x;
+              if (y < minY) minY = y;
+              if (y > maxY) maxY = y;
+            }
+          }
+        }
+        if (maxX < minX || maxY < minY) return canvas; // nothing found, e.g. blank canvas
+        var padX = Math.max(2, Math.round((maxX - minX) * 0.04));
+        var padY = Math.max(2, Math.round((maxY - minY) * 0.04));
+        minX = Math.max(0, minX - padX); minY = Math.max(0, minY - padY);
+        maxX = Math.min(w - 1, maxX + padX); maxY = Math.min(h - 1, maxY + padY);
+        var cropW = maxX - minX + 1, cropH = maxY - minY + 1;
+        var out = document.createElement('canvas');
+        out.width = cropW; out.height = cropH;
+        out.getContext('2d').drawImage(canvas, minX, minY, cropW, cropH, 0, 0, cropW, cropH);
+        return out;
+      }
+
+      function cleanBackground(canvas, sensitivity) {
+        var w = canvas.width, h = canvas.height;
+        var ctx2 = canvas.getContext('2d');
+        var imgData = ctx2.getImageData(0, 0, w, h);
+        var data = imgData.data;
+        var threshold = 255 - (sensitivity / 100) * 120; // sensitivity 0-100 -> threshold 255..135
+        for (var i = 0; i < data.length; i += 4) {
+          var lum = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+          if (lum >= threshold) {
+            data[i] = 255; data[i + 1] = 255; data[i + 2] = 255;
+          } else {
+            var factor = Math.max(0, lum / threshold);
+            var boosted = Math.round(lum * factor * factor);
+            data[i] = boosted; data[i + 1] = boosted; data[i + 2] = boosted;
+          }
+        }
+        ctx2.putImageData(imgData, 0, 0);
+        return canvas;
+      }
+
+      function resizeAndPad(canvas, targetW, targetH) {
+        var scale = Math.min(targetW / canvas.width, targetH / canvas.height);
+        var newW = Math.max(1, Math.round(canvas.width * scale));
+        var newH = Math.max(1, Math.round(canvas.height * scale));
+        var out = document.createElement('canvas');
+        out.width = targetW; out.height = targetH;
+        var octx = out.getContext('2d');
+        octx.fillStyle = '#ffffff';
+        octx.fillRect(0, 0, targetW, targetH);
+        var offsetX = Math.round((targetW - newW) / 2);
+        var offsetY = Math.round((targetH - newH) / 2);
+        octx.drawImage(canvas, offsetX, offsetY, newW, newH);
+        return out;
+      }
+
+      function estimateSharpness(canvas) {
+        var w = canvas.width, h = canvas.height;
+        var ctx2 = canvas.getContext('2d');
+        var data = ctx2.getImageData(0, 0, w, h).data;
+        function gray(x, y) { var i = (y * w + x) * 4; return 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]; }
+        var sum = 0, sumSq = 0, count = 0;
+        var stepX = Math.max(1, Math.floor(w / 120));
+        var stepY = Math.max(1, Math.floor(h / 120));
+        for (var y = stepY; y < h - stepY; y += stepY) {
+          for (var x = stepX; x < w - stepX; x += stepX) {
+            var lap = gray(x - stepX, y) + gray(x + stepX, y) + gray(x, y - stepY) + gray(x, y + stepY) - 4 * gray(x, y);
+            sum += lap; sumSq += lap * lap; count++;
+          }
+        }
+        if (count === 0) return 0;
+        var mean = sum / count;
+        return sumSq / count - mean * mean;
+      }
+
+      function addNoiseCopy(canvas, intensity) {
+        var out = document.createElement('canvas');
+        out.width = canvas.width; out.height = canvas.height;
+        var octx = out.getContext('2d');
+        octx.drawImage(canvas, 0, 0);
+        var imgData = octx.getImageData(0, 0, out.width, out.height);
+        var data = imgData.data;
+        for (var i = 0; i < data.length; i += 4) {
+          var n = (Math.random() * 2 - 1) * intensity;
+          data[i] = Math.min(255, Math.max(0, data[i] + n));
+          data[i + 1] = Math.min(255, Math.max(0, data[i + 1] + n));
+          data[i + 2] = Math.min(255, Math.max(0, data[i + 2] + n));
+        }
+        octx.putImageData(imgData, 0, 0);
+        return out;
+      }
+
+      function toBlobP(c, type, quality) { return new Promise(function (resolve) { c.toBlob(resolve, type, quality); }); }
+
+      async function compressToRange(canvas, minKb, maxKb) {
+        var minBytes = minKb * 1024, maxBytes = maxKb * 1024;
+        var lo = 0.1, hi = 1.0, best = null;
+        for (var i = 0; i < 10; i++) {
+          var mid = (lo + hi) / 2;
+          var blob = await toBlobP(canvas, 'image/jpeg', mid);
+          if (blob.size <= maxBytes) { best = blob; lo = mid; }
+          else { hi = mid; }
+        }
+        if (!best) return { blob: await toBlobP(canvas, 'image/jpeg', 0.1), status: 'exceeds-max' };
+        if (best.size >= minBytes) return { blob: best, status: 'ok' };
+
+        var full = await toBlobP(canvas, 'image/jpeg', 1.0);
+        if (full.size >= minBytes && full.size <= maxBytes) return { blob: full, status: 'ok' };
+        if (full.size > maxBytes) return { blob: best, status: 'infeasible' };
+
+        var noiseLevels = [4, 8, 14, 22, 32, 45, 60, 80, 105, 135, 170, 210];
+        var prevBlob = full;
+        for (var n = 0; n < noiseLevels.length; n++) {
+          var noisy = addNoiseCopy(canvas, noiseLevels[n]);
+          var nb = await toBlobP(noisy, 'image/jpeg', 1.0);
+          if (nb.size >= minBytes && nb.size <= maxBytes) return { blob: nb, status: 'ok' };
+          if (nb.size > maxBytes) return { blob: (Math.abs(prevBlob.size - minBytes) < Math.abs(nb.size - maxBytes)) ? prevBlob : nb, status: 'infeasible' };
+          prevBlob = nb;
+        }
+        return { blob: prevBlob, status: 'infeasible' };
+      }
+
+      function downloadBlob(blob, filename) {
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url; a.download = filename;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        window.setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+      }
+
+      function drawPreview(target, canvas, zoomFactor) {
+        target.width = canvas.width * zoomFactor;
+        target.height = canvas.height * zoomFactor;
+        var tctx = target.getContext('2d');
+        tctx.imageSmoothingEnabled = zoomFactor < 1;
+        tctx.drawImage(canvas, 0, 0, target.width, target.height);
+      }
+
+      processBtn.addEventListener('click', async function () {
+        clearMessage();
+        var spec = computeTargetSpec();
+        if (!spec) { showMessage('Please enter a valid custom size and maximum KB.', 'error'); return; }
+
+        var sourceCanvas;
+        if (activeTab === 'upload') {
+          if (!uploadedImg) { showMessage('Please upload a signature photo first.', 'error'); return; }
+          sourceCanvas = sourceCanvasFromImage(uploadedImg);
+        } else {
+          if (!hasDrawn) { showMessage('Please draw your signature first.', 'error'); return; }
+          sourceCanvas = document.createElement('canvas');
+          sourceCanvas.width = drawCanvas.width; sourceCanvas.height = drawCanvas.height;
+          sourceCanvas.getContext('2d').drawImage(drawCanvas, 0, 0);
+        }
+
+        processBtn.disabled = true;
+        processBtn.textContent = '⏳ Processing…';
+        setFlowStep(3);
+        /* ---- new: guard the additive Reset/Replace/Remove controls while a process run is in flight, so Reset can't race an in-flight result and get silently undone ---- */
+        resetBtn.disabled = true;
+        replaceBtn.disabled = true;
+        removeBtn.disabled = true;
+
+        try {
+          var cropped = autoCropWhitespace(sourceCanvas);
+          var sharpness = estimateSharpness(cropped);
+          if (cleanBgCheckbox.checked) {
+            cropped = cleanBackground(cropped, parseInt(sensitivityInput.value, 10));
+          }
+          var resized = resizeAndPad(cropped, spec.w, spec.h);
+          var result = await compressToRange(resized, spec.minKb || 0, spec.maxKb);
+
+          lastResultBlob = result.blob;
+          lastFilename = 'signature-' + spec.key + '-' + spec.w + 'x' + spec.h + '.jpg';
+
+          drawPreview(previewActual, resized, 1);
+          drawPreview(previewZoom, resized, 3);
+          /* ---- new: stash canvases for compare overlay + reveal compare button (additive, inserted between pre-existing lines) ---- */
+          lastOriginalCanvas = sourceCanvas;
+          lastResizedCanvas = resized;
+          if (resultActions) resultActions.classList.remove('hidden');
+          outputGrid.classList.remove('hidden');
+          if (resultPlaceholder) resultPlaceholder.classList.add('hidden');
+          statGrid.classList.remove('hidden');
+
+          statDims.textContent = spec.w + '×' + spec.h + ' px';
+          statRange.textContent = spec.minKb ? (spec.minKb + '–' + spec.maxKb + ' KB') : ('up to ' + spec.maxKb + ' KB');
+          var sizeKb = (result.blob.size / 1024).toFixed(1);
+          statSize.textContent = sizeKb + ' KB';
+          statSizeBox.classList.remove('sig-stat-ok', 'sig-stat-bad');
+
+          setFlowStep(4);
+          scrollToResult();
+
+          if (result.status === 'ok') {
+            statSizeBox.classList.add('sig-stat-ok');
+            var warnings = [];
+            if (sharpness < 25) warnings.push('Your signature looks a little blurry at this size — for best results, try a sharper photo or a flatbed scan.');
+            if (warnings.length) showMessage(warnings.join(' '), 'error');
+            else showMessage('Signature processed successfully — ready to download.', 'success');
+          } else {
+            statSizeBox.classList.add('sig-stat-bad');
+            var reason = result.status === 'exceeds-max'
+              ? 'Could not compress under the maximum size at these dimensions.'
+              : 'Could not land exactly inside the required KB range at these dimensions — the closest possible result is shown.';
+            showMessage(reason + ' You can still download this result, or try a simpler/clearer signature image.', 'error');
+          }
+        } catch (err) {
+          showMessage('Something went wrong while processing this image. Please try a different file.', 'error');
+        } finally {
+          processBtn.disabled = false;
+          processBtn.textContent = '⚙️ Process signature';
+          resetBtn.disabled = false;
+          replaceBtn.disabled = false;
+          removeBtn.disabled = false;
+        }
+      });
+
+      downloadBtn.addEventListener('click', function () {
+        if (!lastResultBlob) return;
+        downloadBlob(lastResultBlob, lastFilename);
+      });
+
+      /* ---- new: Reset — clears everything back to the empty state (calls existing handlers, no algorithm changes) ---- */
+      function resetAll() {
+        clearUploadState();
+        clearDrawBtn.click();
+        lastResultBlob = null;
+        lastOriginalCanvas = null;
+        lastResizedCanvas = null;
+        outputGrid.classList.add('hidden');
+        statGrid.classList.add('hidden');
+        if (resultPlaceholder) resultPlaceholder.classList.remove('hidden');
+        if (resultActions) resultActions.classList.add('hidden');
+        clearMessage();
+        setFlowStep(1);
+        page.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      resetBtn.addEventListener('click', resetAll);
+
+      /* ---- new: before/after compare overlay (reads already-produced canvases; no reprocessing) ---- */
+      function updateOverlaySplit(value) {
+        overlayAfter.style.clipPath = 'inset(0 0 0 ' + value + '%)';
+        overlayDivider.style.left = value + '%';
+      }
+      function openCompare() {
+        if (!lastOriginalCanvas || !lastResizedCanvas) return;
+        overlayBefore.src = lastOriginalCanvas.toDataURL('image/png');
+        overlayAfter.src = lastResizedCanvas.toDataURL('image/png');
+        overlaySlider.value = 50;
+        updateOverlaySplit(50);
+        overlay.classList.remove('hidden');
+        overlayClose.focus();
+        document.addEventListener('keydown', onOverlayKeydown);
+      }
+      function closeCompare() {
+        overlay.classList.add('hidden');
+        document.removeEventListener('keydown', onOverlayKeydown);
+      }
+      function onOverlayKeydown(e) { if (e.key === 'Escape') closeCompare(); }
+      compareBtn.addEventListener('click', openCompare);
+      overlaySlider.addEventListener('input', function () { updateOverlaySplit(overlaySlider.value); });
+      overlayClose.addEventListener('click', closeCompare);
+      overlay.addEventListener('click', function (e) { if (e.target === overlay) closeCompare(); });
+
+      /* ---- new: fullscreen lightbox for the zoomed preview (reads existing previewZoom canvas) ---- */
+      function openLightbox() {
+        if (!lastResizedCanvas) return;
+        lightboxImg.src = previewZoom.toDataURL('image/png');
+        lightbox.classList.remove('hidden');
+        lightboxClose.focus();
+        document.addEventListener('keydown', onLightboxKeydown);
+      }
+      function closeLightbox() {
+        lightbox.classList.add('hidden');
+        document.removeEventListener('keydown', onLightboxKeydown);
+      }
+      function onLightboxKeydown(e) { if (e.key === 'Escape') closeLightbox(); }
+      if (lightboxTrigger) lightboxTrigger.addEventListener('click', openLightbox);
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', function (e) { if (e.target === lightbox) closeLightbox(); });
+
+      /* ---- new: sticky mobile CTA ---- */
+      var stickyCta = document.querySelector('[data-sticky-process-cta]');
+      if (stickyCta) {
+        stickyCta.addEventListener('click', function () {
+          page.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (!processBtn.disabled) processBtn.click();
+        });
+      }
+    })();
+  </script>
+  <script src="assets/js/inline-ads.js" data-in-article defer></script>
+  <script src="assets/js/side-ads.js" defer></script>
+</body>
+</html>

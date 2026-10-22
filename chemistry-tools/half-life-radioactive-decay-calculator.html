@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+    <title>Half-Life Calculator &amp; Radioactive Decay Simulator | ToolAdda</title>
+    <meta name="description" content="Free half-life calculator with a live decay graph. Find the remaining quantity, elapsed time, half-life or decay constant, with step-by-step working." />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="css/half-life-calculator.css" />
+    <meta name="theme-color" content="#831843" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <link rel="canonical" href="https://tooladda.online/chemistry-tools/half-life-radioactive-decay-calculator.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+    <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ToolAdda" />
+    <meta property="og:title" content="Half-Life Calculator &amp; Radioactive Decay Simulator" />
+    <meta property="og:description" content="Calculate radioactive decay, find the remaining quantity after any elapsed time, and visualise exponential decay with an interactive graph." />
+    <meta property="og:url" content="https://tooladda.online/chemistry-tools/half-life-radioactive-decay-calculator.html" />
+    <meta property="og:image" content="https://tooladda.online/assets/images/og/chemistry-tools-half-life-radioactive-decay-calculator.jpg" />
+    <meta property="og:image:secure_url" content="https://tooladda.online/assets/images/og/chemistry-tools-half-life-radioactive-decay-calculator.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content="Half-Life Calculator &amp; Radioactive Decay Simulator — free chemistry tool on ToolAdda, runs in your browser with no sign-up." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Half-Life Calculator &amp; Radioactive Decay Simulator" />
+    <meta name="twitter:description" content="Calculate radioactive decay, find the remaining quantity after any elapsed time, and visualise exponential decay with an interactive graph." />
+    <meta name="twitter:image" content="https://tooladda.online/assets/images/og/chemistry-tools-half-life-radioactive-decay-calculator.jpg" />
+
+    <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://tooladda.online/chemistry-tools/half-life-radioactive-decay-calculator.html#app",
+      "name": "Half-Life Calculator & Radioactive Decay Simulator",
+      "url": "https://tooladda.online/chemistry-tools/half-life-radioactive-decay-calculator.html",
+      "applicationCategory": "EducationalApplication",
+      "applicationSubCategory": "Science Calculator",
+      "operatingSystem": "Any modern web browser",
+      "browserRequirements": "Requires JavaScript",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Browser-based half-life and radioactive decay calculator with an interactive exponential decay graph, timeline simulator, decay table and step-by-step working.",
+      "featureList": [
+        "Calculate the remaining quantity after any elapsed time",
+        "Solve for elapsed time, half-life or initial quantity",
+        "Decay constant and mean lifetime",
+        "Interactive decay graph in quantity, percent remaining and percent decayed modes",
+        "Timeline slider measured in half-lives",
+        "Educational decay simulation with adjustable speed",
+        "Automatically generated decay table",
+        "Step-by-step calculation working",
+        "Decimal and scientific notation",
+        "Copy result, download CSV, download graph as PNG, print"
+      ],
+      "publisher": { "@type": "Organization", "name": "ToolAdda", "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"], "url": "https://tooladda.online/" }
+    },
+    {
+      "@type": "HowTo",
+      "@id": "https://tooladda.online/chemistry-tools/half-life-radioactive-decay-calculator.html#howto",
+      "name": "How to calculate radioactive decay using half-life",
+      "description": "Find how much of a radioactive sample remains after a given time using the half-life decay equation.",
+      "totalTime": "PT1M",
+      "supply": [
+        { "@type": "HowToSupply", "name": "Initial quantity of the sample" },
+        { "@type": "HowToSupply", "name": "Half-life of the isotope" },
+        { "@type": "HowToSupply", "name": "Elapsed time" }
+      ],
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Enter the initial quantity",
+          "text": "Type the amount you start with and choose its unit. The decay equation works on any unit of amount, so grams, atoms or moles all behave the same way."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Enter the half-life",
+          "text": "Type the half-life of the isotope and pick its time unit, for example 5730 years for carbon-14."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Enter the elapsed time",
+          "text": "Type how much time has passed. The calculator converts it into the same unit as the half-life before dividing."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Read the result",
+          "text": "The calculator divides the elapsed time by the half-life to get the number of half-lives, then multiplies the initial quantity by one half raised to that power."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Check the graph and table",
+          "text": "The decay curve marks your chosen time, and the decay table lists the remaining quantity at each whole and half step so you can check the answer."
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tooladda.online/chemistry-tools/half-life-radioactive-decay-calculator.html#breadcrumb",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://tooladda.online/" },
+        { "@type": "ListItem", "position": 2, "name": "Chemistry Tools", "item": "https://tooladda.online/chemistry-tools/periodic-table.html" },
+        { "@type": "ListItem", "position": 3, "name": "Half-Life Calculator & Radioactive Decay Simulator", "item": "https://tooladda.online/chemistry-tools/half-life-radioactive-decay-calculator.html" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://tooladda.online/chemistry-tools/half-life-radioactive-decay-calculator.html#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is half-life?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Half-life is the time it takes for half of a radioactive sample to decay. It is a constant for each isotope: whatever amount you start with, after one half-life exactly half of it is left, and after another half-life half of that remains." }
+        },
+        {
+          "@type": "Question",
+          "name": "How is half-life calculated?",
+          "acceptedAnswer": { "@type": "Answer", "text": "If you know the starting amount, the amount left and how long it took, the half-life is the elapsed time divided by the number of times the sample halved: T = t divided by log base 2 of (N0 over N). This calculator does that for you in Find half-life mode." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the half-life formula?",
+          "acceptedAnswer": { "@type": "Answer", "text": "The half-life formula is N(t) = N0 x (1/2)^(t / T), where N0 is the initial quantity, T is the half-life, t is the elapsed time and N(t) is what remains. The exponent t divided by T is simply the number of half-lives that have passed." }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I calculate radioactive decay?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Divide the elapsed time by the half-life to get the number of half-lives, then multiply the initial quantity by one half raised to that power. For 1000 g with a 10-year half-life after 30 years: 30 divided by 10 is 3 half-lives, and 1000 x (1/2) cubed is 125 g." }
+        },
+        {
+          "@type": "Question",
+          "name": "How much of a sample remains after one half-life?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Exactly 50 percent. That is the definition of a half-life, and it does not depend on how large the starting sample was." }
+        },
+        {
+          "@type": "Question",
+          "name": "How much remains after two half-lives?",
+          "acceptedAnswer": { "@type": "Answer", "text": "25 percent. Two half-lives is not all of the sample gone; it is half of a half. A common mistake is to assume two half-lives means nothing is left." }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens after five half-lives?",
+          "acceptedAnswer": { "@type": "Answer", "text": "About 3.125 percent of the original amount is left, so roughly 97 percent has decayed. Five half-lives is often used as a rough rule of thumb for when a sample has mostly decayed away." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the decay constant?",
+          "acceptedAnswer": { "@type": "Answer", "text": "The decay constant, written as the Greek letter lambda, is the probability per unit time that any single nucleus decays. It equals ln(2) divided by the half-life, and it is what appears in the exponential form N(t) = N0 x e^(-lambda t)." }
+        },
+        {
+          "@type": "Question",
+          "name": "How are half-life and decay constant related?",
+          "acceptedAnswer": { "@type": "Answer", "text": "They are two ways of stating the same thing: lambda = ln(2) / T and T = ln(2) / lambda. A short half-life means a large decay constant. Because ln(2) is about 0.693, the decay constant is always roughly 0.693 divided by the half-life." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can a half-life be a fraction?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes, and so can the number of half-lives elapsed. Nothing in the equation requires whole numbers. After 2.35 half-lives about 19.6 percent remains, and the calculator handles fractional values throughout." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use this calculator for Carbon-14?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. There is a one-click carbon-14 preset that loads a half-life of 5730 years. Carbon-14 is the isotope used in radiocarbon dating, and its decay follows the same equation as every other isotope." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this calculator show a decay graph?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. The exponential decay curve is drawn live and updates as you type. You can switch it between remaining quantity, percent remaining and percent decayed, and hover or tap anywhere on it to read the values at that moment." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I calculate the elapsed time instead of the remaining quantity?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Switch to Find time mode, enter the initial quantity, the half-life and the amount you want to be left, and the calculator solves t = T x log base 2 of (N0 over N)." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I calculate a half-life from a measured remaining quantity?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Find half-life mode takes the initial quantity, the quantity remaining and the time between them, then rearranges the decay equation to give the half-life." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is exponential decay?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Exponential decay is any process where the rate of decrease is proportional to how much is currently there. That is why a fixed fraction disappears in each equal period of time rather than a fixed amount, and it is what gives the decay curve its characteristic shape." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does radioactive material ever disappear completely?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Mathematically the curve approaches zero without ever reaching it, so the equation always returns a small positive number. In reality a sample contains a finite number of atoms, so eventually the last one decays. The smooth exponential model describes large populations rather than individual atoms." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between half-life and decay rate?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Half-life is a fixed period of time and never changes for a given isotope. The decay rate, meaning decays per second, falls as the sample shrinks, because fewer remaining atoms means fewer decays even though each atom is just as likely to decay as before." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the unit of the quantity matter?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. The decay equation multiplies the initial quantity by a fraction, so grams, kilograms, atoms, moles or any custom unit all give the same percentage result. Only the time units have to be consistent, and the calculator converts those for you." }
+        },
+        {
+          "@type": "Question",
+          "name": "Which time units does the calculator support?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Seconds, minutes, hours, days, weeks, months and years, and the half-life and elapsed time can use different units. Years are Julian years of 365.25 days, and the month option is a labelled approximation of exactly 30 days because calendar months vary in length." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use this for chemistry or physics homework?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes, and the step-by-step working shows the unit conversion, the number of half-lives and the substitution into the decay equation so you can copy the method rather than just the answer. It is an educational tool, not a substitute for laboratory or regulatory guidance." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the calculator work on mobile?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. The layout stacks into the order you use it on a narrow screen, the graph scales to the width of the display, and you can tap the curve to read values at any point." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data sent to a server?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. Every calculation runs in your browser using JavaScript on this page. Nothing you type is uploaded, there is no account, and the tool keeps working if you disconnect from the network after the page has loaded." }
+        }
+      ]
+    }
+  ]
+}
+    </script>
+      <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 131, 24, 67; }
+      [data-theme="dark"] { --pca: 187, 128, 152; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 187, 128, 152; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/chemistry-tools/half-life-radioactive-decay-calculator.html#webpage",
+      "url": "https://tooladda.online/chemistry-tools/half-life-radioactive-decay-calculator.html",
+      "inLanguage": "en",
+      "datePublished": "2026-08-24",
+      "dateModified": "2026-08-28",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+
+  <body class="hld-page">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="container navbar">
+        <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../privacy-policy.html">Privacy</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+              <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+              <path d="M3.1 16.9h10.8" />
+              <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+            </svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+          <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+          <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <div class="container">
+        <aside class="ta-support" aria-label="Support ToolAdda">
+          <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+        </aside>
+
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">›</span><a href="periodic-table.html">Chemistry Tools</a><span aria-hidden="true">›</span><span>Half-Life Calculator</span>
+        </nav>
+
+        <!-- ------------------------------------------------------- hero -->
+        <div class="hld-hero">
+          <p class="hld-eyebrow">Free · No sign-up · Runs in your browser</p>
+          <h1>Half-Life Calculator &amp; <em>Radioactive Decay Simulator</em></h1>
+          <p class="hld-hero-sub">Calculate radioactive decay, find the remaining quantity after any elapsed time, and visualise exponential decay with an interactive graph. Solve for the remaining amount, the time taken, the half-life or the original quantity.</p>
+          <ul class="hld-trust">
+            <li>Always free</li>
+            <li>Instant calculation</li>
+            <li>Interactive graph</li>
+            <li>Nothing uploaded</li>
+            <li>Runs after page load</li>
+          </ul>
+          <div class="hld-hero-cta">
+            <button type="button" class="hld-btn hld-btn-primary" id="hldCalculate">Calculate decay</button>
+            <button type="button" class="hld-btn" data-hld-preset="1000|g|5730|years|11460|years">Try Carbon-14 example</button>
+          </div>
+        </div>
+
+        <p class="hld-err" id="hldError" role="alert" aria-live="polite" hidden></p>
+
+        <!-- --------------------------------------------------- the bench -->
+        <div class="hld-bench">
+
+          <!-- inputs -->
+          <section class="hld-card" aria-labelledby="hldCalcH">
+            <div class="hld-card-head">
+              <h2 id="hldCalcH">Calculator</h2>
+            </div>
+            <div class="hld-card-body">
+
+              <div class="hld-modes" role="group" aria-label="What do you want to calculate?">
+                <button type="button" class="hld-mode" data-hld-mode="remaining" aria-pressed="true">Remaining amount</button>
+                <button type="button" class="hld-mode" data-hld-mode="time" aria-pressed="false">Find time</button>
+                <button type="button" class="hld-mode" data-hld-mode="halflife" aria-pressed="false">Find half-life</button>
+                <button type="button" class="hld-mode" data-hld-mode="initial" aria-pressed="false">Find initial</button>
+              </div>
+
+              <div class="hld-field" id="hldFieldInitial">
+                <label for="hldInitial">Initial quantity (N₀)</label>
+                <div class="hld-inputrow">
+                  <input type="text" inputmode="decimal" id="hldInitial" value="1000" autocomplete="off" spellcheck="false" />
+                  <label class="hld-sr" for="hldInitialUnit">Quantity unit</label>
+                  <select id="hldInitialUnit">
+                    <option value="g" selected>grams</option>
+                    <option value="kg">kilograms</option>
+                    <option value="mg">milligrams</option>
+                    <option value="atoms">atoms</option>
+                    <option value="particles">particles</option>
+                    <option value="mol">moles</option>
+                    <option value="custom">custom…</option>
+                  </select>
+                </div>
+                <input type="text" id="hldCustomUnit" class="hld-custom" placeholder="Custom unit name" aria-label="Custom quantity unit" hidden style="margin-top:.4rem;width:100%" />
+              </div>
+
+              <div class="hld-field" id="hldFieldHalfLife">
+                <label for="hldHalfLife">Half-life (T½)</label>
+                <div class="hld-inputrow">
+                  <input type="text" inputmode="decimal" id="hldHalfLife" value="10" autocomplete="off" spellcheck="false" />
+                  <label class="hld-sr" for="hldHalfLifeUnit">Half-life time unit</label>
+                  <select id="hldHalfLifeUnit">
+                    <option value="seconds">seconds</option>
+                    <option value="minutes">minutes</option>
+                    <option value="hours">hours</option>
+                    <option value="days">days</option>
+                    <option value="weeks">weeks</option>
+                    <option value="months">months (30 d)</option>
+                    <option value="years" selected>years</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="hld-field" id="hldFieldElapsed">
+                <label for="hldElapsed">Elapsed time (t)</label>
+                <div class="hld-inputrow">
+                  <input type="text" inputmode="decimal" id="hldElapsed" value="30" autocomplete="off" spellcheck="false" />
+                  <label class="hld-sr" for="hldElapsedUnit">Elapsed time unit</label>
+                  <select id="hldElapsedUnit">
+                    <option value="seconds">seconds</option>
+                    <option value="minutes">minutes</option>
+                    <option value="hours">hours</option>
+                    <option value="days">days</option>
+                    <option value="weeks">weeks</option>
+                    <option value="months">months (30 d)</option>
+                    <option value="years" selected>years</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="hld-field" id="hldFieldTarget" hidden>
+                <label for="hldTarget">Remaining quantity (N)</label>
+                <div class="hld-inputrow">
+                  <input type="text" inputmode="decimal" id="hldTarget" value="125" autocomplete="off" spellcheck="false" />
+                </div>
+                <p class="hld-hint">The amount you want left, in the same unit as the initial quantity.</p>
+              </div>
+
+              <div class="hld-field">
+                <label for="hldNotation">Number format</label>
+                <select id="hldNotation" style="width:100%">
+                  <option value="auto" selected>Automatic</option>
+                  <option value="decimal">Decimal</option>
+                  <option value="scientific">Scientific notation</option>
+                </select>
+              </div>
+
+              <div class="hld-btnrow">
+                <button type="button" class="hld-btn" id="hldReset">Reset</button>
+                <button type="button" class="hld-btn" id="hldCopy">Copy result</button>
+              </div>
+
+              <p class="hld-hint" style="margin-top:.9rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em">Examples</p>
+              <div class="hld-presets">
+                <button type="button" class="hld-btn hld-btn-sm" data-hld-preset="1000|g|5730|years|11460|years">Carbon-14</button>
+                <button type="button" class="hld-btn hld-btn-sm" data-hld-preset="1000|g|10|years|30|years">1000 g · 10 y · 30 y</button>
+                <button type="button" class="hld-btn hld-btn-sm" data-hld-preset="1000|particles|10|seconds|30|seconds">Short half-life</button>
+                <button type="button" class="hld-btn hld-btn-sm" data-hld-preset="6.022e23|atoms|8.02|days|24.06|days">Atoms · 8.02 d</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- results + graph -->
+          <div>
+            <section class="hld-card" id="hldResults" aria-labelledby="hldResH" style="margin-bottom:1rem">
+              <div class="hld-card-head">
+                <h2 id="hldResH">Result</h2>
+              </div>
+              <div class="hld-card-body">
+                <div class="hld-headline">
+                  <span id="hldHeadLabel">Remaining quantity</span>
+                  <strong id="hldHeadValue">—</strong>
+                </div>
+                <div class="hld-stats">
+                  <div class="hld-stat"><span>% remaining</span><strong id="hldPctRemaining">—</strong></div>
+                  <div class="hld-stat"><span>% decayed</span><strong id="hldPctDecayed">—</strong></div>
+                  <div class="hld-stat"><span>Half-lives passed</span><strong id="hldHalfLivesPassed">—</strong></div>
+                  <div class="hld-stat"><span>Decayed quantity</span><strong id="hldDecayedQty">—</strong></div>
+                  <div class="hld-stat"><span>Decay constant λ</span><strong id="hldLambda">—</strong></div>
+                  <div class="hld-stat"><span>Mean lifetime τ</span><strong id="hldMeanLife">—</strong></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="hld-card" aria-labelledby="hldGraphH">
+              <div class="hld-card-head">
+                <h2 id="hldGraphH">Decay curve</h2>
+                <span class="hld-spacer"></span>
+                <div class="hld-graph-modes" role="group" aria-label="Graph mode">
+                  <button type="button" class="hld-gmode" data-hld-gmode="quantity" aria-pressed="true">Quantity</button>
+                  <button type="button" class="hld-gmode" data-hld-gmode="percent" aria-pressed="false">% left</button>
+                  <button type="button" class="hld-gmode" data-hld-gmode="decayed" aria-pressed="false">% decayed</button>
+                </div>
+              </div>
+              <div class="hld-card-body">
+                <div class="hld-graphwrap">
+                  <svg class="hld-graph" id="hldGraph" viewBox="0 0 720 380" role="img" aria-labelledby="hldGraphTitle" aria-describedby="hldGraphDesc"></svg>
+                  <title id="hldGraphTitle" class="hld-sr">Radioactive decay curve</title>
+                  <div class="hld-tip" id="hldTip" hidden></div>
+                </div>
+                <p class="hld-sr" id="hldGraphDesc"></p>
+                <p class="hld-hint">Hover or tap the curve to read the values at any moment. The dashed line marks your elapsed time.</p>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- ------------------------------------------------- timeline -->
+        <section class="hld-card hld-block" aria-labelledby="hldTimeH">
+          <div class="hld-card-head"><h2 id="hldTimeH">Timeline simulator</h2></div>
+          <div class="hld-card-body hld-timeline">
+            <div class="hld-slider-row">
+              <label class="hld-sr" for="hldSlider">Half-lives elapsed</label>
+              <input type="range" id="hldSlider" min="0" max="10" step="0.01" value="3" />
+              <span class="hld-slider-val" id="hldSliderVal" aria-live="polite">3.00 × T½</span>
+            </div>
+            <div class="hld-ticks" aria-hidden="true">
+              <span>0</span><span>2</span><span>4</span><span>6</span><span>8</span><span>10</span>
+            </div>
+            <div class="hld-simrow">
+              <button type="button" class="hld-btn" id="hldPlay" aria-pressed="false">▶ Start simulation</button>
+              <button type="button" class="hld-btn" id="hldRestart">↺ Restart</button>
+              <label for="hldSpeed">Speed</label>
+              <select id="hldSpeed">
+                <option value="0.5">0.5×</option>
+                <option value="1" selected>1×</option>
+                <option value="2">2×</option>
+                <option value="5">5×</option>
+                <option value="10">10×</option>
+              </select>
+            </div>
+            <p class="hld-hint" style="margin-top:.6rem">The animation moves along the mathematical curve so you can watch the shape of the decay. It is a teaching aid — it does not mean real decay can be observed at this speed.</p>
+          </div>
+        </section>
+
+        <!-- ------------------------------------------- ladder + steps -->
+        <div class="hld-bench hld-block" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
+          <section class="hld-card" aria-labelledby="hldLadderH">
+            <div class="hld-card-head"><h2 id="hldLadderH">Radioactive decay at a glance</h2></div>
+            <div class="hld-card-body">
+              <div class="hld-ladder" id="hldLadder"></div>
+              <p class="hld-hint" style="margin-top:.7rem">Each half-life removes half of whatever is left. The percentage falls by the same factor every time, but the <em>amount</em> lost gets smaller with each step.</p>
+            </div>
+          </section>
+
+          <section class="hld-card" aria-labelledby="hldStepsH">
+            <div class="hld-card-head"><h2 id="hldStepsH">Step-by-step working</h2></div>
+            <div class="hld-card-body">
+              <ol class="hld-steps" id="hldSteps"></ol>
+            </div>
+          </section>
+        </div>
+
+        <!-- ---------------------------------------------------- table -->
+        <section class="hld-card hld-block" aria-labelledby="hldTableH">
+          <div class="hld-card-head">
+            <h2 id="hldTableH">Decay table</h2>
+            <span class="hld-spacer"></span>
+            <button type="button" class="hld-btn hld-btn-sm" id="hldShowMore">Show more rows</button>
+          </div>
+          <div class="hld-card-body">
+            <div class="hld-tablewrap">
+              <table class="hld-table">
+                <caption class="hld-sr">Remaining and decayed quantity at each step of the half-life series</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Time</th>
+                    <th scope="col">Half-lives</th>
+                    <th scope="col">Remaining</th>
+                    <th scope="col">% remaining</th>
+                    <th scope="col">% decayed</th>
+                  </tr>
+                </thead>
+                <tbody id="hldTableBody"></tbody>
+              </table>
+            </div>
+            <div class="hld-btnrow">
+              <button type="button" class="hld-btn" id="hldCsv">Download CSV</button>
+              <button type="button" class="hld-btn" id="hldPng">Download graph PNG</button>
+              <button type="button" class="hld-btn" id="hldPrint">Print</button>
+              <button type="button" class="hld-btn" id="hldFormula">Copy formula</button>
+            </div>
+            <p class="hld-toast hld-hint" id="hldToast" role="status" aria-live="polite" hidden></p>
+          </div>
+        </section>
+
+        <p class="hld-note hld-block">
+          <strong>Educational use only.</strong> This calculator models ideal exponential radioactive decay mathematically.
+          It does not replace professional scientific, medical, regulatory or laboratory guidance, and the presets are
+          teaching examples rather than descriptions of real laboratory samples.
+        </p>
+
+        <!-- ================================================= content -->
+        <div class="hld-block">
+
+          <section class="hld-block" aria-labelledby="hld-what-h">
+            <h2 id="hld-what-h">What is half-life?</h2>
+            <p>Half-life is the time it takes for half of a radioactive sample to decay. It is written T½, and for any given isotope it is a fixed property — as reliable as a melting point or a density. Carbon-14 has a half-life of 5,730 years whether you have a gram of it or a tonne, whether it is warm or cold, and whether it is chemically bound in a bone or floating free in the atmosphere.</p>
+            <p>That last point surprises people. Almost every other rate in chemistry can be pushed around: heat a reaction and it speeds up, add a catalyst and it accelerates. Radioactive decay is different because it happens inside the nucleus, insulated from the chemistry going on in the electron shells outside. Nothing you can do in a normal laboratory changes an isotope's half-life in any meaningful way.</p>
+            <p>The consequence is worth stating plainly: <strong>half-life does not mean half the time until it is gone.</strong> After one half-life, half remains. After two, a quarter. After three, an eighth. The sample never quite reaches zero by this equation — it keeps halving, and half of something is always something.</p>
+          </section>
+
+          <section class="hld-block" aria-labelledby="hld-decay-h">
+            <h2 id="hld-decay-h">What is radioactive decay?</h2>
+            <p>Some atomic nuclei are unstable. Their combination of protons and neutrons sits at an energy that is not the lowest available to them, and sooner or later they rearrange into something more stable, throwing off energy and particles as they go. That rearrangement is radioactive decay.</p>
+            <p>The crucial feature is that it is <em>random for any individual nucleus</em>. There is no countdown timer inside an atom of uranium-238 ticking towards a scheduled moment. Each nucleus simply has a fixed probability of decaying in the next second, and that probability never changes no matter how long it has already survived. An atom that has sat around for a billion years is exactly as likely to decay in the next minute as a freshly created one.</p>
+            <p>Randomness at the level of one atom produces near-perfect predictability at the level of a sample, because a realistic sample holds an enormous number of atoms. A single gram of carbon contains on the order of 5 × 10²² atoms. With numbers that large, the statistical average is so overwhelmingly likely that the smooth exponential curve describes the population to many decimal places, even though every individual decay was a coin flip.</p>
+          </section>
+
+          <section class="hld-block" aria-labelledby="hld-how-h">
+            <h2 id="hld-how-h">How does half-life work?</h2>
+            <p>Because each nucleus has a constant probability of decaying per unit time, a constant <em>fraction</em> of the sample disappears in each equal period — not a constant amount. This is the single idea that makes decay exponential rather than linear, and it is where most mistakes come from.</p>
+            <p>Picture 1,000 g of an isotope with a 10-year half-life:</p>
+            <ul>
+              <li>Years 0 to 10: 500 g decays, leaving 500 g.</li>
+              <li>Years 10 to 20: 250 g decays, leaving 250 g.</li>
+              <li>Years 20 to 30: 125 g decays, leaving 125 g.</li>
+              <li>Years 30 to 40: 62.5 g decays, leaving 62.5 g.</li>
+            </ul>
+            <p>Every decade removes half of what was there at the start of that decade. The <em>percentage</em> lost is always 50%, but the <em>mass</em> lost falls each time: 500 g, then 250 g, then 125 g. A sample that started with a great deal of activity becomes quieter and quieter, which is why the curve flattens as it goes right.</p>
+          </section>
+
+          <section class="hld-block" aria-labelledby="hld-formula-h">
+            <h2 id="hld-formula-h">The half-life formula</h2>
+            <p>The core equation this calculator uses is:</p>
+            <p><strong>N(t) = N₀ × (1/2)<sup>t / T½</sup></strong></p>
+            <p>where N₀ is the initial quantity, T½ is the half-life, t is the elapsed time and N(t) is what remains after that time. The exponent <code>t / T½</code> is just the number of half-lives that have passed — call it <em>n</em> — so the equation can be written even more simply as N = N₀ × (1/2)<sup>n</sup>.</p>
+            <h3>The exponential form</h3>
+            <p>You will also meet the same physics written with the base of natural logarithms:</p>
+            <p><strong>N(t) = N₀ × e<sup>−λt</sup></strong>, where <strong>λ = ln(2) / T½</strong></p>
+            <p>These two are not competing models, or approximations of each other. They are algebraically identical. Substituting λ = ln(2)/T½ into the exponential form gives e<sup>−ln(2)·t/T½</sup>, and since e<sup>ln(2)</sup> is exactly 2, that is 2<sup>−t/T½</sup> — the first equation again. Any half-life problem can be solved either way and must give the same answer. This calculator evaluates the power-of-two form because it is numerically better behaved, and reports λ separately for anyone who needs it.</p>
+            <h3>Rearranging for the other unknowns</h3>
+            <p>The same relationship solves for whichever quantity you are missing:</p>
+            <ul>
+              <li><strong>Time:</strong> t = T½ × log₂(N₀ / N)</li>
+              <li><strong>Half-life:</strong> T½ = t ÷ log₂(N₀ / N)</li>
+              <li><strong>Initial quantity:</strong> N₀ = N × 2<sup>t / T½</sup></li>
+            </ul>
+            <p>All three are available in the calculator above through the mode buttons.</p>
+          </section>
+
+          <section class="hld-block" aria-labelledby="hld-calc-h">
+            <h2 id="hld-calc-h">How to calculate radioactive decay</h2>
+            <p>The method is three short steps, and it is worth doing once by hand so the calculator's output means something.</p>
+            <h3>Worked example</h3>
+            <p>You have <strong>1,000 g</strong> of an isotope whose half-life is <strong>10 years</strong>. How much is left after <strong>30 years</strong>?</p>
+            <p><strong>Step 1 — make the units match.</strong> The half-life is in years and the elapsed time is in years, so there is nothing to convert. If the half-life had been given in days you would convert one to the other first; this is the single most common source of wrong answers.</p>
+            <p><strong>Step 2 — count the half-lives.</strong> n = t ÷ T½ = 30 ÷ 10 = <strong>3 half-lives</strong>.</p>
+            <p><strong>Step 3 — apply the equation.</strong> N = 1000 × (1/2)³ = 1000 × 0.125 = <strong>125 g</strong>.</p>
+            <p>So 125 g remains, which is 12.5% of the original. The decayed amount is 1000 − 125 = 875 g, or 87.5%. Notice that the remaining and decayed percentages always add to 100.</p>
+            <h3>When the number of half-lives is not a whole number</h3>
+            <p>Nothing changes. If 25 years have passed instead of 30, then n = 2.5, and N = 1000 × (1/2)<sup>2.5</sup> ≈ 176.8 g. Your calculator's <code>y<sup>x</sup></code> key handles fractional exponents perfectly well, and so does the tool above.</p>
+          </section>
+
+          <section class="hld-block" aria-labelledby="hld-lambda-h">
+            <h2 id="hld-lambda-h">How to calculate the decay constant</h2>
+            <p>The decay constant λ is the probability per unit time that any one nucleus decays. It comes straight from the half-life:</p>
+            <p><strong>λ = ln(2) / T½ ≈ 0.693 / T½</strong></p>
+            <p>For a half-life of 5 years, λ = 0.693 ÷ 5 = 0.1386 per year, usually written 0.1386 year⁻¹. The unit matters: a decay constant is always a reciprocal time, so it inherits whatever unit the half-life was given in. Quote λ in s⁻¹ if the half-life was in seconds, in year⁻¹ if it was in years, and convert deliberately rather than by habit.</p>
+            <h3>Mean lifetime</h3>
+            <p>A related quantity is the mean lifetime τ (tau), the average time a nucleus survives before decaying:</p>
+            <p><strong>τ = 1 / λ = T½ / ln(2) ≈ 1.44 × T½</strong></p>
+            <p>The mean lifetime is always <em>longer</em> than the half-life, by about 44%. That feels wrong until you notice that the average is dragged upwards by the long tail of nuclei that survive far beyond the halfway point. The calculator reports τ alongside λ.</p>
+          </section>
+
+          <section class="hld-block" aria-labelledby="hld-vs-h">
+            <h2 id="hld-vs-h">Half-life vs decay constant</h2>
+            <p>These describe the same physics from opposite directions, and switching between them is a common exam task.</p>
+            <div class="hld-tablewrap">
+              <table class="hld-table">
+                <thead><tr><th scope="col">Property</th><th scope="col">Half-life T½</th><th scope="col">Decay constant λ</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row">What it measures</th><td>Time for half the sample to decay</td><td>Probability of decay per unit time</td></tr>
+                  <tr><th scope="row">Unit</th><td>A time (s, days, years)</td><td>Reciprocal time (s⁻¹, year⁻¹)</td></tr>
+                  <tr><th scope="row">Short-lived isotope</th><td>Small value</td><td>Large value</td></tr>
+                  <tr><th scope="row">Long-lived isotope</th><td>Large value</td><td>Small value</td></tr>
+                  <tr><th scope="row">Conversion</th><td>T½ = ln(2) / λ</td><td>λ = ln(2) / T½</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>They are inversely related: a fast decay means a short half-life and a large decay constant. If you ever calculate a large half-life <em>and</em> a large decay constant, you have made an arithmetic error.</p>
+          </section>
+
+          <section class="hld-block" aria-labelledby="hld-exp-h">
+            <h2 id="hld-exp-h">Understanding exponential decay</h2>
+            <p>Exponential decay is any process where the rate of decrease is proportional to the amount currently present. Written as a differential equation, that sentence is:</p>
+            <p><strong>dN/dt = −λN</strong></p>
+            <p>Read it as: the number of decays per second is proportional to how many undecayed atoms are left. Solving it gives N(t) = N₀e<sup>−λt</sup>, which is where the exponential form comes from. The minus sign simply says the population is shrinking.</p>
+            <p>The same mathematics governs a surprising range of things — the cooling of a hot drink, the discharge of a capacitor, the clearance of a drug from the bloodstream, the absorption of light passing through a filter. In each case something falls by a constant fraction per unit of time, so the half-life concept transfers directly, which is why pharmacologists talk about a drug's half-life in exactly the same way.</p>
+            <p>What distinguishes exponential decay from linear decrease is that the curve never becomes a straight line down to zero. It approaches the axis asymptotically, always getting closer, never mathematically arriving.</p>
+          </section>
+
+          <section class="hld-block" aria-labelledby="hld-graph-h">
+            <h2 id="hld-graph-h">Reading the radioactive decay graph</h2>
+            <p>The graph in this tool plots the remaining quantity against the number of half-lives elapsed. A few features are worth pointing out because they are frequently examined:</p>
+            <ul>
+              <li><strong>The curve is steepest at the start.</strong> The most decay per unit time happens when the most undecayed atoms are present.</li>
+              <li><strong>It flattens but never touches the axis.</strong> Mathematically the value is always positive, however small.</li>
+              <li><strong>Equal horizontal steps give equal <em>ratios</em>, not equal drops.</strong> Every one unit to the right halves the height, whether you are going from 100% to 50% or from 1% to 0.5%.</li>
+              <li><strong>The shape never changes.</strong> Plotted in half-lives, carbon-14 over 50,000 years and a medical isotope over a few hours give exactly the same curve. Only the axis labels differ.</li>
+            </ul>
+            <p>Switch the graph to <em>% decayed</em> and you get the mirror image: a curve rising towards 100% but never reaching it. Both views describe the same sample; use whichever matches the question being asked.</p>
+            <p>Plotting the natural logarithm of N against time instead gives a straight line of gradient −λ. That trick is how decay constants are actually measured in the laboratory, because a straight-line fit is far easier to do accurately than fitting a curve.</p>
+          </section>
+
+          <section class="hld-block" aria-labelledby="hld-c14-h">
+            <h2 id="hld-c14-h">Carbon-14 and radiocarbon dating</h2>
+            <p>Carbon-14 is the best-known application of half-life. It forms continuously in the upper atmosphere when cosmic-ray neutrons strike nitrogen-14, and it mixes into atmospheric carbon dioxide. Living things exchange carbon with their surroundings constantly, so while an organism is alive the proportion of carbon-14 in its tissues stays roughly in step with the atmosphere.</p>
+            <p>When the organism dies, that exchange stops. No new carbon-14 arrives, and the carbon-14 already present carries on decaying with a half-life of <strong>5,730 years</strong>. Measuring how much is left tells you how long ago the exchange stopped.</p>
+            <p>Some worked figures, which you can reproduce with the carbon-14 preset above:</p>
+            <ul>
+              <li>After 5,730 years — one half-life — 50% of the original carbon-14 remains.</li>
+              <li>After 11,460 years — two half-lives — 25% remains.</li>
+              <li>After 17,190 years — three half-lives — 12.5% remains.</li>
+              <li>After 28,650 years — five half-lives — about 3.125% remains.</li>
+            </ul>
+            <p>This is also why radiocarbon dating has a practical ceiling of roughly 50,000 years. Beyond about nine half-lives there is so little carbon-14 left that the measurement is swamped by contamination and background. Real radiocarbon work also applies calibration curves, because the atmospheric carbon-14 level has not been perfectly constant through history — the raw exponential calculation is the starting point, not the final published date.</p>
+          </section>
+
+          <section class="hld-block" aria-labelledby="hld-fields-h">
+            <h2 id="hld-fields-h">Half-life in physics, chemistry and nuclear science</h2>
+            <h3>In physics</h3>
+            <p>Half-life is the standard way of describing nuclear stability. Known half-lives span an almost absurd range — from tiny fractions of a second for some synthetic superheavy nuclei to figures far exceeding the age of the universe for nearly-stable isotopes. The same equation covers the entire span; only the numbers change.</p>
+            <h3>In chemistry</h3>
+            <p>The term appears beyond the nucleus too. A first-order chemical reaction has a half-life that is independent of the starting concentration, mathematically identical to radioactive decay. Second-order reactions also have half-lives, but there the half-life <em>does</em> depend on concentration, so the simple constant-halving picture no longer applies. If you are using this calculator for reaction kinetics, check that your reaction really is first order.</p>
+            <h3>In nuclear science and medicine</h3>
+            <p>Half-life drives practical decisions. Diagnostic imaging favours isotopes with short half-lives so that the activity falls quickly once the scan is finished. Waste management deals with the opposite problem: long-lived isotopes remain radioactive for geological periods, which is why storage timescales are discussed in thousands of years. In both cases the underlying arithmetic is the equation on this page — though real decisions also involve biological clearance, shielding and regulation, none of which this tool models.</p>
+          </section>
+
+          <section class="hld-block" aria-labelledby="hld-mistakes-h">
+            <h2 id="hld-mistakes-h">Common half-life calculation mistakes</h2>
+            <p>Almost every wrong answer in a half-life question comes from one of these:</p>
+            <ol>
+              <li><strong>Mismatched time units.</strong> Dividing 30 days by a half-life of 2 years gives nonsense. Convert first, always. The calculator does this automatically and shows the conversion in the working.</li>
+              <li><strong>Assuming two half-lives means nothing is left.</strong> Two half-lives leaves 25%, not 0%. Halving twice is not the same as subtracting twice.</li>
+              <li><strong>Subtracting instead of halving.</strong> If 500 g decays in the first period, learners often subtract another 500 g for the second. The correct step is to halve what remains, giving 250 g.</li>
+              <li><strong>Multiplying by the number of half-lives.</strong> The count <em>n</em> is an exponent, not a multiplier. It goes in the power, never in front.</li>
+              <li><strong>Rounding <em>n</em> to a whole number.</strong> A time of 25 years with a 10-year half-life is 2.5 half-lives, not 2 or 3. Fractional exponents are perfectly valid.</li>
+              <li><strong>Confusing remaining with decayed.</strong> Read the question carefully — "how much is left" and "how much has decayed" are complements that sum to 100%.</li>
+              <li><strong>Forgetting the unit on λ.</strong> A decay constant without a reciprocal time unit is meaningless. 0.1386 is not an answer; 0.1386 year⁻¹ is.</li>
+              <li><strong>Using this model for a second-order reaction.</strong> Constant halving is a property of first-order processes only.</li>
+            </ol>
+          </section>
+
+          <section class="hld-block" aria-labelledby="hld-faq-h">
+            <h2 id="hld-faq-h">Frequently asked questions</h2>
+            <div class="hld-faqs">
+              <details class="faq-item"><summary><strong>What is half-life?</strong></summary><p>Half-life is the time it takes for half of a radioactive sample to decay. It is a constant for each isotope: whatever amount you start with, after one half-life exactly half of it is left, and after another half-life half of that remains.</p></details>
+              <details class="faq-item"><summary><strong>How is half-life calculated?</strong></summary><p>If you know the starting amount, the amount left and how long it took, the half-life is the elapsed time divided by the number of times the sample halved: T = t divided by log base 2 of (N0 over N). This calculator does that for you in Find half-life mode.</p></details>
+              <details class="faq-item"><summary><strong>What is the half-life formula?</strong></summary><p>The half-life formula is N(t) = N0 x (1/2)^(t / T), where N0 is the initial quantity, T is the half-life, t is the elapsed time and N(t) is what remains. The exponent t divided by T is simply the number of half-lives that have passed.</p></details>
+              <details class="faq-item"><summary><strong>How do I calculate radioactive decay?</strong></summary><p>Divide the elapsed time by the half-life to get the number of half-lives, then multiply the initial quantity by one half raised to that power. For 1000 g with a 10-year half-life after 30 years: 30 divided by 10 is 3 half-lives, and 1000 x (1/2) cubed is 125 g.</p></details>
+              <details class="faq-item"><summary><strong>How much of a sample remains after one half-life?</strong></summary><p>Exactly 50 percent. That is the definition of a half-life, and it does not depend on how large the starting sample was.</p></details>
+              <details class="faq-item"><summary><strong>How much remains after two half-lives?</strong></summary><p>25 percent. Two half-lives is not all of the sample gone; it is half of a half. A common mistake is to assume two half-lives means nothing is left.</p></details>
+              <details class="faq-item"><summary><strong>What happens after five half-lives?</strong></summary><p>About 3.125 percent of the original amount is left, so roughly 97 percent has decayed. Five half-lives is often used as a rough rule of thumb for when a sample has mostly decayed away.</p></details>
+              <details class="faq-item"><summary><strong>What is the decay constant?</strong></summary><p>The decay constant, written as the Greek letter lambda, is the probability per unit time that any single nucleus decays. It equals ln(2) divided by the half-life, and it is what appears in the exponential form N(t) = N0 x e^(-lambda t).</p></details>
+              <details class="faq-item"><summary><strong>How are half-life and decay constant related?</strong></summary><p>They are two ways of stating the same thing: lambda = ln(2) / T and T = ln(2) / lambda. A short half-life means a large decay constant. Because ln(2) is about 0.693, the decay constant is always roughly 0.693 divided by the half-life.</p></details>
+              <details class="faq-item"><summary><strong>Can a half-life be a fraction?</strong></summary><p>Yes, and so can the number of half-lives elapsed. Nothing in the equation requires whole numbers. After 2.35 half-lives about 19.6 percent remains, and the calculator handles fractional values throughout.</p></details>
+              <details class="faq-item"><summary><strong>Can I use this calculator for Carbon-14?</strong></summary><p>Yes. There is a one-click carbon-14 preset that loads a half-life of 5730 years. Carbon-14 is the isotope used in radiocarbon dating, and its decay follows the same equation as every other isotope.</p></details>
+              <details class="faq-item"><summary><strong>Does this calculator show a decay graph?</strong></summary><p>Yes. The exponential decay curve is drawn live and updates as you type. You can switch it between remaining quantity, percent remaining and percent decayed, and hover or tap anywhere on it to read the values at that moment.</p></details>
+              <details class="faq-item"><summary><strong>Can I calculate the elapsed time instead of the remaining quantity?</strong></summary><p>Yes. Switch to Find time mode, enter the initial quantity, the half-life and the amount you want to be left, and the calculator solves t = T x log base 2 of (N0 over N).</p></details>
+              <details class="faq-item"><summary><strong>Can I calculate a half-life from a measured remaining quantity?</strong></summary><p>Yes. Find half-life mode takes the initial quantity, the quantity remaining and the time between them, then rearranges the decay equation to give the half-life.</p></details>
+              <details class="faq-item"><summary><strong>What is exponential decay?</strong></summary><p>Exponential decay is any process where the rate of decrease is proportional to how much is currently there. That is why a fixed fraction disappears in each equal period of time rather than a fixed amount, and it is what gives the decay curve its characteristic shape.</p></details>
+              <details class="faq-item"><summary><strong>Does radioactive material ever disappear completely?</strong></summary><p>Mathematically the curve approaches zero without ever reaching it, so the equation always returns a small positive number. In reality a sample contains a finite number of atoms, so eventually the last one decays. The smooth exponential model describes large populations rather than individual atoms.</p></details>
+              <details class="faq-item"><summary><strong>What is the difference between half-life and decay rate?</strong></summary><p>Half-life is a fixed period of time and never changes for a given isotope. The decay rate, meaning decays per second, falls as the sample shrinks, because fewer remaining atoms means fewer decays even though each atom is just as likely to decay as before.</p></details>
+              <details class="faq-item"><summary><strong>Does the unit of the quantity matter?</strong></summary><p>No. The decay equation multiplies the initial quantity by a fraction, so grams, kilograms, atoms, moles or any custom unit all give the same percentage result. Only the time units have to be consistent, and the calculator converts those for you.</p></details>
+              <details class="faq-item"><summary><strong>Which time units does the calculator support?</strong></summary><p>Seconds, minutes, hours, days, weeks, months and years, and the half-life and elapsed time can use different units. Years are Julian years of 365.25 days, and the month option is a labelled approximation of exactly 30 days because calendar months vary in length.</p></details>
+              <details class="faq-item"><summary><strong>Can I use this for chemistry or physics homework?</strong></summary><p>Yes, and the step-by-step working shows the unit conversion, the number of half-lives and the substitution into the decay equation so you can copy the method rather than just the answer. It is an educational tool, not a substitute for laboratory or regulatory guidance.</p></details>
+              <details class="faq-item"><summary><strong>Does the calculator work on mobile?</strong></summary><p>Yes. The layout stacks into the order you use it on a narrow screen, the graph scales to the width of the display, and you can tap the curve to read values at any point.</p></details>
+              <details class="faq-item"><summary><strong>Is my data sent to a server?</strong></summary><p>No. Every calculation runs in your browser using JavaScript on this page. Nothing you type is uploaded, there is no account, and the tool keeps working if you disconnect from the network after the page has loaded.</p></details>
+            </div>
+          </section>
+
+          <section class="hld-block" aria-labelledby="hld-related-h">
+            <h2 id="hld-related-h">Related ToolAdda tools</h2>
+            <p>If you are working through a physics or chemistry problem set, these pair naturally with the decay calculator. The <a href="../scientific-calculator.html">Scientific Calculator</a> handles the logarithms and fractional powers this page uses, and its <code>log</code> and <code>ln</code> keys are what you need when rearranging for time. The <a href="chemical-equation-balancer.html">Chemical Equation Balancer</a> solves reaction coefficients with atom-by-atom verification, and the <a href="periodic-table.html">Interactive Periodic Table</a> covers element properties and flags radioactive elements, while the <a href="electron-configuration.html">Electron Configuration Builder</a> deals with the electron structure outside the nucleus.</p>
+            <p>For the arithmetic around your answer, the <a href="../calculators/percentage-calculator.html">Percentage Calculator</a> converts between remaining fractions and percentages, and the <a href="../unit-converter.html">Unit Converter</a> handles mass and time conversions when a question mixes units.</p>
+          </section>
+
+          <section class="hld-block" aria-labelledby="hld-roadmap-h">
+            <h2 id="hld-roadmap-h">What this tool does, and what may come later</h2>
+            <p><strong>Available now:</strong> remaining-quantity, elapsed-time, half-life and initial-quantity solving; decay constant and mean lifetime; an interactive decay curve with quantity, percent-remaining and percent-decayed modes; a timeline slider measured in half-lives; an educational decay animation with adjustable speed; an automatically generated decay table; step-by-step working; decimal and scientific notation; and export by copy, CSV, PNG or print.</p>
+            <p><strong>Under consideration for later versions:</strong> comparing two isotopes on one chart, entering a custom decay constant directly, activity and becquerel calculations, mass-to-atom-count conversion, decay chain visualisation, a built-in isotope library, and a logarithmic graph mode. These are not implemented yet and are listed here only so the current scope is clear.</p>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+          <p>ToolAdda — premium utility tools for modern workflows.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links"><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../privacy-policy.html">Privacy</a><a href="../terms.html">Terms</a></div>
+        </div>
+      </div>
+    </footer>
+
+    <noscript>
+      <p style="max-width:40rem;margin:2rem auto;padding:1rem;border:1px solid #ccc;border-radius:8px;">
+        The interactive half-life calculator needs JavaScript. The equation it evaluates is N = N₀ × (1/2)^(t / T½):
+        divide the elapsed time by the half-life to get the number of half-lives, then multiply the starting amount by
+        one half raised to that power. For example 1000 g with a 10-year half-life leaves 125 g after 30 years, because
+        30 ÷ 10 = 3 half-lives and 1000 × (1/2)³ = 125.
+      </p>
+    </noscript>
+
+    <script src="../assets/js/app.js" defer></script>
+    <script src="../assets/js/half-life-engine.js" defer></script>
+    <script src="js/half-life-calculator.js" defer></script>
+    <script src="../assets/js/side-ads.js" defer></script>
+    <script src="../assets/js/inline-ads.js" data-in-article defer></script>
+  </body>
+</html>

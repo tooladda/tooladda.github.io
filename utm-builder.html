@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+    <meta name="description" content="Free UTM Builder by ToolAdda. Add UTM campaign parameters (source, medium, campaign, term, content) to any link and build trackable URLs for Google Analytics. Live preview, copy, and QR code — no sign-up." />
+    <meta name="theme-color" content="#4f46e5" />
+    <title>UTM Builder - Free Campaign URL Builder for Google Analytics | ToolAdda</title>
+    <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="ToolAdda" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <link rel="canonical" href="https://tooladda.online/utm-builder.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta property="og:title" content="UTM Builder - Free Campaign URL Builder for Google Analytics" />
+    <meta property="og:description" content="Add UTM parameters to any link and build trackable campaign URLs. Live preview, copy, and QR code. Free, no sign-up." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tooladda.online/utm-builder.html" />
+    <meta property="og:site_name" content="ToolAdda" />
+    <meta property="og:image" content="https://tooladda.online/assets/images/og/utm-builder.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="UTM Builder - Free Campaign URL Builder for Google Analytics — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="UTM Builder - Free Campaign URL Builder for Google Analytics — free online tool on ToolAdda, runs in your browser with no sign-up." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="UTM Builder - Free Campaign URL Builder for Google Analytics" />
+    <meta name="twitter:description" content="Build trackable campaign URLs with UTM parameters. Live preview, copy, and QR code — free and no sign-up." />
+    <meta name="twitter:image" content="https://tooladda.online/assets/images/og/utm-builder.jpg" />
+    <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "UTM Builder",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any (Web Browser)",
+      "url": "https://tooladda.online/utm-builder.html",
+      "description": "Free campaign URL builder that adds UTM parameters (source, medium, campaign, term, content, id) to any link for tracking in Google Analytics and other tools.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Add utm_source, utm_medium, utm_campaign, utm_term, utm_content and utm_id",
+        "Live URL preview as you type",
+        "One-click copy to clipboard",
+        "Automatic QR code for the tracking link",
+        "Lowercase normalization for consistent reporting",
+        "Runs entirely in your browser, no sign-up"
+      ],
+      "publisher": {
+        "@type": "Organization",
+        "name": "ToolAdda",
+        "alternateName": [
+          "Tool Adda",
+          "Tools Adda",
+          "ToolsAdda",
+          "Tooladda",
+          "ToolAdda.online"
+        ],
+        "url": "https://tooladda.online/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a UTM parameter?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A small tag added to a URL, like utm_source=newsletter . Analytics tools read these tags to show which campaign or channel brought each visitor."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which UTM parameters are required?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "utm_source, utm_medium, and utm_campaign are the three core parameters most teams always fill in. utm_term and utm_content are optional and used for paid keywords and A/B testing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Should UTM values be lowercase?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, it is a best practice. UTM values are case-sensitive, so Facebook and facebook appear as two different sources. Keeping everything lowercase avoids split reporting."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this UTM builder send my data anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The link is built entirely in your browser and nothing is uploaded or stored on a server."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "UTM Builder"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+    <style>
+      .utm-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+      @media (max-width: 640px) { .utm-grid { grid-template-columns: 1fr; } }
+      .utm-field { display: flex; flex-direction: column; gap: 0.35rem; }
+      .utm-field.full { grid-column: 1 / -1; }
+      .utm-field label { font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 0.4rem; }
+      .utm-field .req { color: #ef4444; font-weight: 700; }
+      .utm-field .hint { font-weight: 400; color: var(--text-muted); font-size: 0.8rem; }
+      .utm-field input {
+        border: 1px solid var(--border); background: var(--surface-strong); color: var(--text);
+        border-radius: 10px; padding: 0.75rem 0.9rem; font: inherit; font-size: 0.98rem; outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+      .utm-field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+      .utm-field input.invalid { border-color: #ef4444; }
+
+      .utm-options { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; margin: 1.1rem 0; font-size: 0.9rem; }
+      .utm-options label { display: inline-flex; align-items: center; gap: 0.45rem; cursor: pointer; }
+
+      .utm-output { margin-top: 0.5rem; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; background: var(--surface); }
+      .utm-output-main { display: flex; gap: 1.25rem; padding: 1.25rem; flex-wrap: wrap; align-items: center; }
+      .utm-output-info { flex: 1 1 260px; min-width: 0; }
+      .utm-output-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin: 0 0 0.4rem; }
+      .utm-url {
+        font-size: 1.02rem; font-weight: 600; word-break: break-all; color: var(--accent-strong);
+        background: var(--surface-strong); border: 1px solid var(--border); border-radius: 10px; padding: 0.8rem 0.95rem; min-height: 2.6rem;
+      }
+      .utm-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.9rem; }
+      .utm-qr { flex: 0 0 auto; background: #fff; border-radius: 12px; padding: 10px; border: 1px solid var(--border); }
+      .utm-qr canvas { display: block; width: 120px; height: 120px; }
+      .copy-btn.copied { background: linear-gradient(135deg, #10b981, #059669); color: #fff; }
+      .utm-crosslink { margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted); }
+      .utm-crosslink a { color: var(--accent); font-weight: 600; }
+
+      /* input hover + subtle lift */
+      .utm-field input:hover { border-color: rgba(79, 70, 229, 0.4); }
+      .utm-field input:focus { transform: translateY(-1px); }
+
+      /* output card accent + header */
+      .utm-output { position: relative; }
+      .utm-output::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+        background: linear-gradient(90deg, var(--accent), #38bdf8, #10b981); }
+      .utm-output-label { display: flex; align-items: center; gap: 0.6rem; }
+      .live-chip { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.66rem; font-weight: 700;
+        letter-spacing: 0.04em; color: #10b981; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3);
+        padding: 0.1rem 0.5rem; border-radius: 999px; text-transform: uppercase; }
+      .live-chip .dot { width: 7px; height: 7px; border-radius: 50%; background: #10b981; animation: pulseDot 1.6s ease-in-out infinite; }
+      @keyframes pulseDot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.7); } }
+
+      /* colored URL preview */
+      .utm-url { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; line-height: 1.6; transition: box-shadow 0.2s ease; }
+      .utm-url.placeholder { color: var(--text-muted); font-family: inherit; }
+      .utm-url.flash { box-shadow: 0 0 0 3px var(--accent-soft); }
+      .utm-url .u-base { color: var(--text); font-weight: 600; }
+      .utm-url .u-q, .utm-url .u-amp, .utm-url .u-eq { color: var(--text-muted); }
+      .utm-url .u-key { color: var(--accent); font-weight: 700; }
+      .utm-url .u-key.utm { color: #0ea5e9; }
+      [data-theme="dark"] .utm-url .u-key.utm { color: #38bdf8; }
+      .utm-url .u-val { color: #10b981; }
+      [data-theme="dark"] .utm-url .u-val { color: #34d399; }
+
+      /* QR fade-in when a link exists */
+      .utm-qr { transition: opacity 0.25s ease, transform 0.25s ease; }
+      .utm-qr.empty { opacity: 0.35; transform: scale(0.96); }
+
+      /* ---------- page chrome. Prefix: utm-  Accent: indigo #4f46e5 ---------- */
+      .utm-page {
+        --utm-surface: #ffffff;
+        --utm-raised: #f5f6ff;
+        --utm-sunken: #eef0fb;
+        --utm-border: rgba(30, 27, 75, .12);
+        --utm-border-strong: rgba(30, 27, 75, .2);
+        --utm-text: #1e1b4b;
+        --utm-text-2: #3730a3;
+        --utm-muted: #5b5a7a;
+        --utm-accent: #4f46e5;
+        --utm-accent-deep: #4338ca;
+        --utm-accent-soft: rgba(79, 70, 229, .1);
+        --utm-accent-line: rgba(79, 70, 229, .3);
+        --utm-r-xl: 20px;
+        --utm-r-md: 10px;
+        --utm-shadow: 0 1px 2px rgba(30, 27, 75, .04), 0 14px 38px rgba(30, 27, 75, .07);
+      }
+      [data-theme="dark"] .utm-page {
+        --utm-surface: #0f1020;
+        --utm-raised: #16182c;
+        --utm-sunken: #0b0c18;
+        --utm-border: rgba(199, 210, 254, .13);
+        --utm-border-strong: rgba(199, 210, 254, .22);
+        --utm-text: #eef2ff;
+        --utm-text-2: #c7d2fe;
+        --utm-muted: #9aa3c7;
+        --utm-accent: #a5b4fc;
+        --utm-accent-deep: #c7d2fe;
+        --utm-accent-soft: rgba(165, 180, 252, .14);
+        --utm-accent-line: rgba(165, 180, 252, .32);
+        --utm-shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 16px 40px rgba(0, 0, 0, .45);
+      }
+      html:has(body.utm-page-shell) { background-color: #eef0fb; }
+      html[data-theme="dark"]:has(body.utm-page-shell) { background-color: #0b0c18; }
+      .utm-page-shell { --pg-bg: #eef0fb; --pg-dot: rgba(79, 70, 229, .16); }
+      [data-theme="dark"] .utm-page-shell { --pg-bg: #0b0c18; --pg-dot: rgba(165, 180, 252, .12); }
+      body.utm-page-shell {
+        position: relative; isolation: isolate;
+        background-color: transparent !important;
+        background-image:
+          radial-gradient(920px 480px at 6% -8%, rgba(79, 70, 229, .10), transparent 58%),
+          radial-gradient(780px 420px at 100% 0%, rgba(56, 189, 248, .08), transparent 52%),
+          radial-gradient(640px 340px at 50% 100%, rgba(79, 70, 229, .06), transparent 55%) !important;
+        --accent: #4f46e5; --accent-strong: #4338ca; --accent-soft: rgba(79, 70, 229, .14);
+      }
+      body.utm-page-shell::before {
+        content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+        background-color: var(--pg-bg);
+        background-image: radial-gradient(circle, var(--pg-dot) 1px, transparent 1px);
+        background-size: 18px 18px;
+      }
+      [data-theme="dark"] body.utm-page-shell {
+        background-image:
+          radial-gradient(920px 480px at 6% -8%, rgba(165, 180, 252, .12), transparent 58%),
+          radial-gradient(780px 420px at 100% 0%, rgba(56, 189, 248, .08), transparent 52%),
+          radial-gradient(640px 340px at 50% 100%, rgba(79, 70, 229, .07), transparent 55%) !important;
+        --accent: #a5b4fc; --accent-strong: #c7d2fe; --accent-soft: rgba(165, 180, 252, .14);
+      }
+      .utm-page-shell .navbar {
+        border-color: rgba(79, 70, 229, .14) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .95) inset, 0 16px 48px rgba(79, 70, 229, .10) !important;
+      }
+      [data-theme="dark"] .utm-page-shell .navbar { border-color: rgba(165, 180, 252, .2) !important; }
+      .utm-page-shell .brand-mark {
+        background: linear-gradient(145deg, #4f46e5, #4338ca, #38bdf8) !important;
+        box-shadow: 0 8px 22px rgba(79, 70, 229, .35) !important;
+      }
+      .utm-page-shell .nav-links { background: rgba(79, 70, 229, .05) !important; border-color: rgba(79, 70, 229, .08) !important; }
+      .utm-page-shell .icon-btn { border-color: rgba(79, 70, 229, .12) !important; }
+      .utm-page-shell a:not(.btn):not(.nav-tools-cta):not(.primary-btn):not(.secondary-btn):not(.utm-hero-btn):not(.related-tool-card):not(.copy-btn) { color: var(--accent); }
+      .utm-page-shell .utm-crumb a { color: inherit; }
+      .utm-page-shell .site-footer a:not(.btn) { color: var(--accent); }
+      @media (max-width: 768px) { body.utm-page-shell { overflow-x: hidden; } }
+      .utm-page [id] { scroll-margin-top: 6.5rem; }
+
+      .utm-crumb {
+        display: flex; flex-wrap: wrap; align-items: center; gap: .4rem;
+        font-size: .8rem; font-weight: 700; color: var(--utm-muted); margin-bottom: 1rem;
+      }
+      .utm-crumb a { color: var(--utm-muted); text-decoration: none; }
+      .utm-crumb a:hover { color: var(--utm-accent); text-decoration: underline; }
+      .utm-crumb [aria-current] { color: var(--utm-text-2); }
+
+      .utm-hero {
+        position: relative; overflow: hidden;
+        border: 1px solid var(--utm-border); border-radius: var(--utm-r-xl);
+        padding: 1.4rem; box-shadow: var(--utm-shadow); margin-bottom: 1.1rem;
+        background:
+          radial-gradient(900px 300px at 88% -30%, var(--utm-accent-soft), transparent 66%),
+          linear-gradient(180deg, var(--utm-raised), var(--utm-surface));
+      }
+      .utm-hero::before {
+        content: ""; position: absolute; inset: 0 auto auto 0; width: 100%; height: 3px; z-index: 2;
+        background: linear-gradient(90deg, var(--utm-accent), #38bdf8, var(--utm-accent-deep)); opacity: .9;
+      }
+      .utm-hero > * { position: relative; z-index: 1; }
+      .utm-eyebrow {
+        display: inline-flex; align-items: center; gap: .45rem;
+        font-size: .68rem; font-weight: 900; letter-spacing: .13em; text-transform: uppercase;
+        color: var(--utm-accent); background: var(--utm-accent-soft);
+        border: 1px solid var(--utm-accent-line); border-radius: 999px;
+        padding: .3rem .7rem; margin: 0 0 .7rem;
+      }
+      .utm-h1 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.1; letter-spacing: -.02em; margin: 0 0 .5rem; font-weight: 900; color: var(--utm-text); }
+      .utm-lede { margin: 0 0 .9rem; color: var(--utm-text-2); font-size: 1rem; line-height: 1.6; max-width: 68ch; }
+      .utm-badges { list-style: none; display: flex; flex-wrap: wrap; gap: .4rem; margin: 0; padding: 0; }
+      .utm-badges li {
+        display: inline-flex; align-items: center; gap: .35rem;
+        font-size: .74rem; font-weight: 800; color: var(--utm-text-2);
+        background: var(--utm-surface); border: 1px solid var(--utm-border);
+        border-radius: 999px; padding: .32rem .68rem;
+      }
+      .utm-badges li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--utm-accent); }
+      .utm-hero-cta { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: .95rem; }
+      .utm-hero-btn {
+        display: inline-flex; align-items: center; gap: .4rem; text-decoration: none;
+        font-weight: 800; font-size: .88rem; border-radius: var(--utm-r-md);
+        padding: .62rem 1.05rem; border: 1px solid transparent; transition: transform .15s ease;
+      }
+      .utm-hero-btn--primary {
+        background: var(--utm-accent); color: #fff;
+        box-shadow: 0 12px 28px -12px rgba(79, 70, 229, .55);
+      }
+      [data-theme="dark"] .utm-hero-btn--primary { color: #1e1b4b; }
+      .utm-hero-btn--ghost { background: var(--utm-surface); color: var(--utm-text-2); border-color: var(--utm-border-strong); }
+      .utm-hero-btn:hover { transform: translateY(-1px); }
+
+      [data-utm] { animation: rulerFade 0.45s ease both; }
+      @keyframes rulerFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+      .pdf-feature-card { position: relative; overflow: hidden; transition: transform 0.18s ease, box-shadow 0.18s ease; }
+      .pdf-feature-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), #38bdf8); opacity: 0.9; }
+      .pdf-feature-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px -20px rgba(79, 70, 229, 0.55); }
+      @media (prefers-reduced-motion: reduce) { .utm-hero-btn { transition: none; } [data-utm] { animation: none; } }
+      .pdf-merge-unified-card {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.28));
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 24px 60px -30px rgba(79, 70, 229, 0.5);
+      }
+      [data-theme="dark"] .pdf-merge-unified-card {
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.62), rgba(15, 23, 42, 0.38));
+        border: 1px solid rgba(148, 163, 184, 0.18); box-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.7);
+      }
+      /* ======================================================================
+         "Luggage tags" - UTM parameters as tags tied to a link. The headline's
+         UTM is a paper tag on a string; the cover hangs source, medium and
+         campaign off one address and shows the link the builder makes from
+         them. Eyelet ground (the reinforced hole a tag's string goes through).
+         Indigo stays (theme-color); sky keys and green values are the tool's
+         own URL colours. Scoped to body.lt-page.
+         ====================================================================== */
+      body.lt-page { --lt-paper: #fffaf0; --lt-paper-edge: rgba(120, 83, 20, .22); --lt-string: #4f46e5; --lt-src: #0284c7; --lt-med: #c2410c; --lt-cmp: #7c3aed;
+        --lt-card: #ffffff; --lt-line: rgba(30, 27, 75, .12); }
+      [data-theme="dark"] body.lt-page { --lt-paper: #1f1c2e; --lt-paper-edge: rgba(253, 230, 138, .2); --lt-string: #a5b4fc; --lt-src: #38bdf8; --lt-med: #fb923c; --lt-cmp: #c4b5fd;
+        --lt-card: #0f1020; --lt-line: rgba(199, 210, 254, .14); }
+      /* ground: eyelets */
+      body.lt-page::before {
+        background-image: radial-gradient(circle, transparent 2px, var(--pg-dot) 2px 3.2px, transparent 3.2px) !important;
+        background-size: 28px 28px !important;
+      }
+      @media (max-width: 768px) { body.utm-page-shell.lt-page { overflow-x: clip; } }
+      /* the page's link rule does not reach the coffee button, but keep it navy */
+      html body.lt-page .ta-donate:is(a):not(.btn):not(.nav-tools-cta):not(.primary-btn):not(.secondary-btn):not(.utm-hero-btn):not(.related-tool-card):not(.copy-btn) { color: #14213d; }
+      body.lt-page .utm-crumb { margin-bottom: .6rem; }
+
+      /* ---------- cover ---------- */
+      .lt-cover { display: grid; gap: 1.2rem; align-items: center; margin-bottom: 1.2rem; }
+      .lt-cover .utm-eyebrow { margin-bottom: .6rem; }
+      .lt-page .lt-title { margin: 0; font-size: clamp(2.3rem, 10vw, 3.5rem); line-height: 1.05; letter-spacing: -.035em; }
+      /* UTM on a paper tag, tied on with a string */
+      .lt-tagword {
+        position: relative; display: inline-block; margin: 0 .12em 0 .3em; padding: .02em .32em .06em .62em;
+        font-size: .82em; color: var(--utm-accent-deep, #4338ca); background: var(--lt-paper);
+        border: 1px solid var(--lt-paper-edge); border-radius: .12em .2em .2em .12em;
+        clip-path: polygon(.34em 0, 100% 0, 100% 100%, .34em 100%, 0 50%);
+        filter: drop-shadow(0 .06em .1em rgba(30, 27, 75, .2)); transform: rotate(-4deg); transform-origin: 0 50%;
+      }
+      .lt-tagword::before { content: ""; position: absolute; left: .26em; top: 50%; width: .18em; height: .18em; margin-top: -.09em; border-radius: 50%;
+        background: var(--lt-string); box-shadow: 0 0 0 .05em var(--lt-paper), 0 0 0 .08em var(--lt-paper-edge); }
+      .lt-tagword::after { content: ""; position: absolute; right: 100%; top: 50%; width: .38em; height: .06em; margin-top: -.03em; background: var(--lt-string); border-radius: .03em;
+        transform: rotate(8deg); transform-origin: right center; }
+      [data-theme="dark"] .lt-tagword { color: #c7d2fe; }
+      .lt-art { display: none; margin: 0; }
+      @media (min-width: 900px) {
+        .lt-cover { grid-template-columns: minmax(0, 1fr) minmax(0, 470px); gap: 2rem; }
+        .lt-art { display: block; }
+      }
+      .lt-art { padding: 1rem 1.1rem .95rem; border-radius: 18px; background: var(--lt-card); border: 1px solid var(--lt-line); box-shadow: 0 18px 44px -28px rgba(30, 27, 75, .45); }
+      .lt-link { display: flex; align-items: center; gap: .5rem; padding: .45rem .7rem; border-radius: 999px; background: var(--utm-sunken, #eef0fb); border: 1px solid var(--lt-line);
+        font: 700 .8rem ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--utm-text, #1e1b4b); }
+      .lt-link i { font-style: normal; color: var(--utm-muted, #5b5a7a); font-weight: 600; }
+      .lt-tags { display: flex; justify-content: space-around; gap: .6rem; padding: 0 .4rem; }
+      .lt-tag { position: relative; display: grid; margin-top: 30px; padding: .35rem .6rem .4rem 1.05rem; background: var(--lt-paper); border: 1px solid var(--lt-paper-edge);
+        clip-path: polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 0 50%); font: 700 .74rem ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--utm-text, #1e1b4b);
+        transform: rotate(var(--r, -3deg)); filter: drop-shadow(0 4px 6px rgba(30, 27, 75, .16)); }
+      .lt-tag b { font: 800 .58rem system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--c); }
+      .lt-tag::before { content: ""; position: absolute; left: 7px; top: 50%; width: 6px; height: 6px; margin-top: -3px; border-radius: 50%; background: var(--lt-card); box-shadow: 0 0 0 1.5px var(--c); }
+      .lt-tag::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--c); }
+      .lt-tag.src { --c: var(--lt-src); --r: -4deg; } .lt-tag.med { --c: var(--lt-med); --r: 2deg; } .lt-tag.cmp { --c: var(--lt-cmp); --r: -2deg; }
+      /* the strings */
+      .lt-tags span.lt-str { display: none; }
+      .lt-tagwrap { position: relative; }
+      .lt-tagwrap::before { content: ""; position: absolute; left: 12px; top: -2px; width: 1.5px; height: 34px; background: var(--lt-string); opacity: .55; transform: rotate(var(--sr, 8deg)); transform-origin: top; }
+      .lt-tagwrap:nth-child(2)::before { --sr: -4deg; } .lt-tagwrap:nth-child(3)::before { --sr: 6deg; }
+      .lt-built { margin: .9rem 0 0; padding: .55rem .7rem; border-radius: 10px; background: var(--utm-sunken, #eef0fb); border: 1px dashed var(--lt-line);
+        font: 600 .72rem/1.55 ui-monospace, "SF Mono", Menlo, Consolas, monospace; word-break: break-all; color: var(--utm-muted, #5b5a7a); }
+      .lt-built .k { color: #0ea5e9; font-weight: 700; } [data-theme="dark"] .lt-built .k { color: #38bdf8; }
+      .lt-built .v { color: #059669; } [data-theme="dark"] .lt-built .v { color: #34d399; }
+      .lt-built .b { color: var(--utm-text, #1e1b4b); }
+
+      /* ---------- the builder: one grid ---------- */
+      .lt-page .lt-grid { display: grid; gap: 1rem; grid-template-columns: minmax(0, 1fr); grid-template-areas: "in" "ad" "out"; margin-bottom: 1.2rem; }
+      .lt-in { grid-area: in; } .lt-out { grid-area: out; min-width: 0; } .lt-ad-zone { grid-area: ad; min-width: 0; }
+      @media (min-width: 700px) {
+        .lt-page .lt-grid { grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "in ad" "out ad"; gap: 1.1rem 1.3rem; align-items: start; }
+        .lt-page .lt-grid > .lt-ad-zone { position: sticky; top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+      }
+      body.lt-page .lt-ad-zone { text-align: center; }
+      body.lt-page .lt-ad-zone .ta-inline-ad { display: block !important; margin: 0 auto !important; }
+      .lt-box { position: relative; padding: 1.1rem 1.15rem; border-radius: 18px; background: var(--lt-card); border: 1px solid var(--lt-line); box-shadow: 0 16px 40px -28px rgba(30, 27, 75, .5); min-width: 0; }
+      .lt-box::before { content: ""; position: absolute; top: 0; left: 18px; right: 18px; height: 3px; border-radius: 0 0 3px 3px; background: linear-gradient(90deg, var(--lt-src), var(--lt-med), var(--lt-cmp)); }
+      .lt-page .lt-in .utm-options { margin: .9rem 0 0; justify-content: space-between; }
+      .lt-page .lt-in .message-box:not(.hidden) { margin-top: .8rem; }
+      /* the three essentials wear their tag colour */
+      .lt-page .utm-field:has(#utm-source) input { border-left: 3px solid var(--lt-src); }
+      .lt-page .utm-field:has(#utm-medium) input { border-left: 3px solid var(--lt-med); }
+      .lt-page .utm-field:has(#utm-campaign) input { border-left: 3px solid var(--lt-cmp); }
+      .lt-page .utm-field .hint { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: .72rem; }
+      .lt-page .utm-field label { flex-wrap: wrap; column-gap: .4rem; row-gap: 0; }
+      .lt-page .lt-out .utm-output { margin: 0; border-radius: 18px; border-color: var(--lt-line); background: var(--lt-card); }
+      .lt-page .lt-out .utm-qr canvas { width: 112px; height: 112px; }
+
+      /* ---------- after the tool ---------- */
+      .lt-after { margin: 0 0 1.4rem; padding: 1.1rem 1.25rem; border-radius: 18px; border: 1px solid var(--lt-line); background: var(--lt-card); }
+      .lt-page .lt-after .utm-lede { max-width: none; }
+      .lt-page .lt-after .pdf-summary-grid { margin-top: 1rem; }
+
+      /* ---------- new section ---------- */
+      .lt-ext .lt-tablewrap { overflow-x: auto; border: 1px solid var(--lt-line); border-radius: 14px; background: var(--lt-card); margin-top: .9rem; }
+      .lt-enc { width: 100%; min-width: 700px; border-collapse: collapse; font-size: .86rem; }
+      .lt-enc th, .lt-enc td { padding: .6rem .75rem; text-align: left; border-bottom: 1px solid var(--lt-line); vertical-align: top; }
+      .lt-enc tbody tr:last-child td { border-bottom: 0; }
+      .lt-enc thead th { font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); background: rgba(79, 70, 229, .06); }
+      .lt-enc td:first-child code, .lt-enc td:nth-child(2) code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: .8rem; word-break: break-all; }
+      .lt-enc td:nth-child(2) code { color: #059669; font-weight: 700; } [data-theme="dark"] .lt-enc td:nth-child(2) code { color: #34d399; }
+      .lt-enc tr.lt-no td:nth-child(2) { color: #be123c; font-weight: 700; } [data-theme="dark"] .lt-enc tr.lt-no td:nth-child(2) { color: #fda4af; }
+      .lt-enc td:first-child small { display: block; color: var(--text-muted); margin-bottom: .15rem; font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; font-weight: 700; }
+      .lt-enc td:nth-child(3) { color: var(--text-muted); line-height: 1.55; }
+      @media (max-width: 640px) {
+        .lt-ext .lt-tablewrap { overflow: visible; border: 0; background: none; }
+        .lt-enc { min-width: 0; }
+        .lt-enc, .lt-enc tbody, .lt-enc tr, .lt-enc td { display: block; }
+        .lt-enc thead { display: none; }
+        .lt-enc tr { margin-bottom: .55rem; padding: .65rem .8rem; border: 1px solid var(--lt-line); border-radius: 12px; background: var(--lt-card); }
+        .lt-enc td { padding: .12rem 0; border: 0; }
+        .lt-enc td:nth-child(2)::before { content: "\2192  "; color: var(--text-muted); }
+      }
+
+      @media print { .lt-page .lt-ad-zone, .lt-page .lt-art { display: none !important; } }
+
+      /* ---------- phones ---------- */
+      @media (max-width: 699px) {
+        body.lt-page .utm-crumb, .lt-page .lt-cover .utm-eyebrow { display: none; }
+        body.lt-page main > .section:first-child { padding-top: .4rem; }
+        .lt-cover { margin-bottom: 1rem; }
+        .lt-box { padding: .85rem .8rem; border-radius: 16px; }
+        /* two fields a row, hints off, so the essentials fit above the ad */
+        .lt-page .lt-in .utm-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: .6rem .55rem; }
+        .lt-page .lt-in .utm-field label { font-size: .78rem; }
+        .lt-page .lt-in .utm-field .hint { display: none; }
+        .lt-page .lt-in .utm-field input { padding: .6rem .65rem; font-size: .9rem; min-width: 0; }
+        .lt-page .lt-in .utm-options { margin-top: .7rem; gap: .5rem; font-size: .82rem; }
+        .lt-page .lt-in .utm-options .secondary-btn { padding: .45rem .8rem; min-height: 0; }
+      }
+    </style>
+      <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 79, 70, 229; }
+      [data-theme="dark"] { --pca: 165, 180, 252; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 165, 180, 252; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/utm-builder.html#webpage",
+      "url": "https://tooladda.online/utm-builder.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-24",
+      "dateModified": "2026-09-11",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="utm-page-shell lt-page">
+    <a class="skip-link" href="#utmStudio">Skip to the UTM builder</a>
+    <header class="site-header">
+      <div class="container navbar">
+        <a class="brand" href="/" aria-label="ToolAdda home">
+          <span class="brand-mark" aria-hidden="true">T</span>
+          <span>ToolAdda</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Home</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="privacy-policy.html">Privacy</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+              <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+              <path d="M3.1 16.9h10.8" />
+              <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+            </svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+          <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+          <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section class="section">
+        <aside class="ta-support" aria-label="Support ToolAdda">
+          <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+        </aside>
+
+        <div class="container utm-page">
+          <nav class="utm-crumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span aria-hidden="true">/</span>
+            <a href="/#search-tools">Tools</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">UTM Builder</span>
+          </nav>
+
+          <!-- Cover: the headline with UTM on a paper tag; from 900px three tags tied to
+               one address and the link the builder makes from them (same rules as
+               the tool). The introduction follows the builder. -->
+          <header class="lt-cover">
+            <div>
+              <p class="utm-eyebrow">Marketing &amp; Analytics</p>
+              <h1 class="utm-h1 lt-title" id="utm-hero-h"><span class="lt-tagword">UTM</span> Builder</h1>
+            </div>
+            <figure class="lt-art" aria-hidden="true">
+              <div class="lt-link"><span>&#128279;</span> example.com/shoes <i>&middot; the page you promote</i></div>
+              <div class="lt-tags">
+                <span class="lt-tagwrap"><span class="lt-tag src"><b>source</b>newsletter</span></span>
+                <span class="lt-tagwrap"><span class="lt-tag med"><b>medium</b>email</span></span>
+                <span class="lt-tagwrap"><span class="lt-tag cmp"><b>campaign</b>spring_sale</span></span>
+              </div>
+              <p class="lt-built"><span class="b">https://example.com/shoes</span>?<span class="k">utm_source</span>=<span class="v">newsletter</span>&amp;<span class="k">utm_medium</span>=<span class="v">email</span>&amp;<span class="k">utm_campaign</span>=<span class="v">spring_sale</span></p>
+            </figure>
+          </header>
+
+          <!-- One grid, and the builder's root ([data-utm], which utm-builder.js
+               searches inside): the fields; the ad; the finished link and its QR.
+               On phones the ad follows the fields; from 700px it has its own column. -->
+          <div class="lt-grid" data-utm id="utmStudio">
+            <div class="lt-in lt-box">
+            <form class="utm-grid" data-form autocomplete="off">
+              <div class="utm-field full">
+                <label for="utm-base">Website URL <span class="req">*</span> <span class="hint">the page you are promoting</span></label>
+                <input id="utm-base" type="url" inputmode="url" placeholder="https://example.com/landing-page" data-base required />
+              </div>
+              <div class="utm-field">
+                <label for="utm-source">Campaign Source <span class="req">*</span> <span class="hint">utm_source</span></label>
+                <input id="utm-source" type="text" placeholder="google, newsletter, facebook" data-p="utm_source" list="src-list" required />
+              </div>
+              <div class="utm-field">
+                <label for="utm-medium">Campaign Medium <span class="req">*</span> <span class="hint">utm_medium</span></label>
+                <input id="utm-medium" type="text" placeholder="cpc, email, social, banner" data-p="utm_medium" list="med-list" required />
+              </div>
+              <div class="utm-field">
+                <label for="utm-campaign">Campaign Name <span class="req">*</span> <span class="hint">utm_campaign</span></label>
+                <input id="utm-campaign" type="text" placeholder="spring_sale, launch_2026" data-p="utm_campaign" required />
+              </div>
+              <div class="utm-field">
+                <label for="utm-id">Campaign ID <span class="hint">utm_id (optional)</span></label>
+                <input id="utm-id" type="text" placeholder="abc-123" data-p="utm_id" />
+              </div>
+              <div class="utm-field">
+                <label for="utm-term">Campaign Term <span class="hint">utm_term — paid keyword</span></label>
+                <input id="utm-term" type="text" placeholder="running+shoes" data-p="utm_term" />
+              </div>
+              <div class="utm-field">
+                <label for="utm-content">Campaign Content <span class="hint">utm_content — A/B variant</span></label>
+                <input id="utm-content" type="text" placeholder="logolink, textlink" data-p="utm_content" />
+              </div>
+            </form>
+
+            <datalist id="src-list">
+              <option value="google"></option><option value="facebook"></option><option value="instagram"></option>
+              <option value="linkedin"></option><option value="twitter"></option><option value="youtube"></option>
+              <option value="newsletter"></option><option value="bing"></option>
+            </datalist>
+            <datalist id="med-list">
+              <option value="cpc"></option><option value="email"></option><option value="social"></option>
+              <option value="organic"></option><option value="referral"></option><option value="banner"></option>
+              <option value="affiliate"></option><option value="display"></option>
+            </datalist>
+
+            <div class="utm-options">
+              <label><input type="checkbox" data-lowercase checked /> Force lowercase (recommended)</label>
+              <button class="secondary-btn" type="button" data-clear>Clear all</button>
+            </div>
+
+            <div class="message-box hidden" role="status" aria-live="polite" data-message></div>
+            </div>
+
+            <!-- Ad: one 300x250 (see .lt-ad-zone). -->
+            <div class="lt-ad-zone">
+              <div class="ta-inline-ad" data-unit="inline"></div>
+            </div>
+
+            <div class="lt-out">
+            <div class="utm-output">
+              <div class="utm-output-main">
+                <div class="utm-output-info">
+                  <p class="utm-output-label">Your campaign URL <span class="live-chip"><span class="dot" aria-hidden="true"></span>live</span></p>
+                  <div class="utm-url placeholder" data-url aria-live="polite">Fill in the fields above to build your tracking link…</div>
+                  <div class="utm-actions">
+                    <button class="primary-btn copy-btn" type="button" data-copy disabled>📋 Copy URL</button>
+                    <a class="secondary-btn" data-open target="_blank" rel="noopener noreferrer">↗ Open</a>
+                    <a class="secondary-btn" data-download-qr download="utm-link-qr.png">⬇️ Download QR</a>
+                  </div>
+                  <p class="utm-crosslink">Link too long? <a href="url-shortener.html">Shorten it with our URL Shortener →</a></p>
+                </div>
+                <div class="utm-qr empty" data-qr-wrap>
+                  <canvas data-qr aria-label="QR code for the campaign URL"></canvas>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+
+          <div class="lt-after">
+            <p class="utm-lede">
+              Build trackable campaign URLs in seconds. Add UTM parameters to any link so tools like
+              Google Analytics can tell you exactly which campaign, channel, or ad sent each visitor.
+            </p>
+            <ul class="utm-badges">
+              <li>Live preview</li>
+              <li>Copy URL</li>
+              <li>QR code</li>
+              <li>Lowercase tags</li>
+              <li>Nothing uploaded</li>
+              <li>Free</li>
+            </ul>
+            <div class="utm-hero-cta">
+              <a class="utm-hero-btn utm-hero-btn--ghost" href="url-shortener.html">URL Shortener</a>
+            </div>
+          <div class="pdf-summary-grid">
+            <div class="pdf-feature-card">
+              <strong>Know your traffic</strong>
+              <p>See exactly which source, channel, and campaign drives visitors and conversions in your analytics.</p>
+            </div>
+            <div class="pdf-feature-card">
+              <strong>Live preview</strong>
+              <p>The tracking URL updates instantly as you type — copy it the moment it looks right.</p>
+            </div>
+            <div class="pdf-feature-card">
+              <strong>Consistent naming</strong>
+              <p>Force-lowercase keeps Facebook and facebook from splitting into two sources in reports.</p>
+            </div>
+            <div class="pdf-feature-card">
+              <strong>QR &amp; shortening</strong>
+              <p>Grab a QR code for print, or shorten the long tracking link in one tap.</p>
+            </div>
+          </div>
+          </div>
+
+          <section class="section">
+            <div class="container" style="padding-left:0;padding-right:0">
+              <h2 class="section-title">What each UTM parameter means</h2>
+              <div class="grid-2">
+                <article class="panel">
+                  <h3>The 3 essentials</h3>
+                  <ul>
+                    <li><strong>utm_source</strong> — where the traffic comes from (e.g. <em>google</em>, <em>newsletter</em>, <em>facebook</em>).</li>
+                    <li><strong>utm_medium</strong> — the type of channel (e.g. <em>cpc</em>, <em>email</em>, <em>social</em>).</li>
+                    <li><strong>utm_campaign</strong> — the specific campaign or promotion (e.g. <em>spring_sale</em>).</li>
+                  </ul>
+                </article>
+                <article class="panel">
+                  <h3>The optional extras</h3>
+                  <ul>
+                    <li><strong>utm_term</strong> — the paid keyword you bid on (mainly for search ads).</li>
+                    <li><strong>utm_content</strong> — tells apart two links or creatives in the same ad (great for A/B tests).</li>
+                    <li><strong>utm_id</strong> — a campaign ID that ties the link to a campaign in your analytics.</li>
+                  </ul>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <!-- NEW SECTION -->
+          <section class="section lt-ext" aria-labelledby="lt-enc-h">
+            <h2 class="section-title" id="lt-enc-h">What the Builder Does to What You Type</h2>
+            <p>A link can only carry certain characters, so the builder rewrites some of what you type before it adds it. Each row below was built by the same rules as the tool above, with Force lowercase on; where the address is the point, the whole link is shown.</p>
+            <div class="lt-tablewrap">
+              <table class="lt-enc">
+                <thead><tr><th scope="col">You type</th><th scope="col">In the link</th><th scope="col">Why</th></tr></thead>
+                <tbody>
+                    <tr data-base="https://example.com/shoes" data-field="utm_campaign" data-value="Spring Sale 2026" data-want="https://example.com/shoes?utm_campaign=spring+sale+2026"><td><small>Campaign Name</small><code>Spring Sale 2026</code></td><td><code>utm_campaign=spring+sale+2026</code></td><td>Lowercased, and each space written as <code>+</code>, which analytics reads back as a space.</td></tr>
+                    <tr data-base="https://example.com/shoes" data-field="utm_term" data-value="running shoes" data-want="https://example.com/shoes?utm_term=running+shoes"><td><small>Campaign Term</small><code>running shoes</code></td><td><code>utm_term=running+shoes</code></td><td>Type the space; the builder writes the <code>+</code> for you.</td></tr>
+                    <tr data-base="https://example.com/shoes" data-field="utm_term" data-value="running+shoes" data-want="https://example.com/shoes?utm_term=running%2Bshoes"><td><small>Campaign Term</small><code>running+shoes</code></td><td><code>utm_term=running%2Bshoes</code></td><td>A <code>+</code> you type yourself is kept as a real plus sign (<code>%2B</code>), so reports show <em>running+shoes</em>.</td></tr>
+                    <tr data-base="https://example.com/shoes" data-field="utm_content" data-value="10% off &amp; free" data-want="https://example.com/shoes?utm_content=10%25+off+%26+free"><td><small>Campaign Content</small><code>10% off &amp; free</code></td><td><code>utm_content=10%25+off+%26+free</code></td><td><code>%</code> and <code>&amp;</code> are escaped, so they cannot break the link or start a parameter of their own.</td></tr>
+                    <tr data-base="example.com/shoes?color=red#reviews" data-field="utm_source" data-value="newsletter" data-want="https://example.com/shoes?color=red&amp;utm_source=newsletter#reviews"><td><small>Website URL</small><code>example.com/shoes?color=red#reviews</code></td><td><code>https://example.com/shoes?color=red&amp;utm_source=newsletter#reviews</code></td><td><code>https://</code> is added, your own parameters stay, and the UTM tags go before the <code>#anchor</code>.</td></tr>
+                    <tr data-base="https://example.com/?utm_source=old" data-field="utm_source" data-value="newsletter" data-want="https://example.com/?utm_source=newsletter"><td><small>Website URL</small><code>https://example.com/?utm_source=old</code></td><td><code>https://example.com/?utm_source=newsletter</code></td><td>A <code>utm_source</code> already in the address is replaced, not doubled.</td></tr>
+                    <tr class="lt-no" data-base="localhost:3000/page" data-field="utm_source" data-value="test" data-want=""><td><small>Website URL</small><code>localhost:3000/page</code></td><td>Not accepted</td><td>The builder wants a domain with a dot in it, so a local test address is refused. Use your live domain.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="content-grid">
+              <article class="content-card">
+                <h2>How it works</h2>
+                <p>Enter the page you are promoting, then fill in the campaign fields. ToolAdda appends the values as UTM query parameters and shows the finished link live. Copy it into your emails, ads, posts, or QR codes, and your analytics will attribute every click to the right campaign.</p>
+              </article>
+              <article class="content-card">
+                <h2>Privacy notice</h2>
+                <p>Your link is built entirely in your browser. Nothing you type is uploaded, logged, or stored on any server.</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="section faq-section">
+            <h2 class="section-title">Frequently asked questions</h2>
+            <div class="grid-2">
+              <details class="faq-item">
+                <summary><strong>What is a UTM parameter?</strong></summary>
+                <p>A small tag added to a URL, like <code>utm_source=newsletter</code>. Analytics tools read these tags to show which campaign or channel brought each visitor.</p>
+              </details>
+              <details class="faq-item">
+                <summary><strong>Which UTM parameters are required?</strong></summary>
+                <p>utm_source, utm_medium, and utm_campaign are the three core parameters most teams always fill in. utm_term and utm_content are optional and used for paid keywords and A/B testing.</p>
+              </details>
+              <details class="faq-item">
+                <summary><strong>Should UTM values be lowercase?</strong></summary>
+                <p>Yes, it is a best practice. UTM values are case-sensitive, so Facebook and facebook appear as two different sources. Keeping everything lowercase avoids split reporting.</p>
+              </details>
+              <details class="faq-item">
+                <summary><strong>Does this UTM builder send my data anywhere?</strong></summary>
+                <p>No. The link is built entirely in your browser and nothing is uploaded or stored on a server.</p>
+              </details>
+              <details class="faq-item">
+                <summary><strong>Which parameters do I actually need?</strong></summary>
+                <p>utm_source, utm_medium, and utm_campaign are the three you should almost always fill in. The rest are optional.</p>
+              </details>
+              <details class="faq-item">
+                <summary><strong>Why lowercase everything?</strong></summary>
+                <p>UTM values are case-sensitive, so <em>Facebook</em> and <em>facebook</em> count as different sources. Lowercase keeps your reports clean.</p>
+              </details>
+              <details class="faq-item">
+                <summary><strong>Can I use it with Google Analytics 4?</strong></summary>
+                <p>Yes. GA4 and most analytics platforms automatically read standard UTM parameters.</p>
+              </details>
+              <details class="faq-item">
+                <summary><strong>Does it work if my URL already has parameters?</strong></summary>
+                <p>Yes. Existing query parameters and page anchors are preserved, and the UTM tags are added alongside them.</p>
+              </details>
+              <details class="faq-item">
+                <summary><strong>Is my data sent anywhere?</strong></summary>
+                <p>No. Everything runs locally in your browser.</p>
+              </details>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="seo-utm">
+        <div class="container">
+          <h2 id="seo-utm">Free campaign URL builder with UTM parameters</h2>
+          <p>The <strong>UTM Builder by ToolAdda</strong> helps marketers, creators, and small businesses measure what actually works. By tagging your links with UTM parameters, you turn vague "where did this traffic come from?" questions into clear answers inside Google Analytics and other tools. Build a link for every email, ad, social post, or QR code, and compare campaigns side by side.</p>
+          <div class="grid-2">
+            <article class="panel">
+              <h3>How to use</h3>
+              <ol>
+                <li>Paste the page URL you want to promote.</li>
+                <li>Fill in source, medium, and campaign (plus optional fields).</li>
+                <li>Copy the generated URL or download its QR code.</li>
+              </ol>
+            </article>
+            <article class="panel">
+              <h3>Benefits</h3>
+              <ul>
+                <li>Accurate campaign tracking in your analytics.</li>
+                <li>Consistent, lowercase, shareable links.</li>
+                <li>Free, private, and no sign-up required.</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+          <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links">
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms.html">Terms</a>
+          </div>
+        </div>
+        <div>
+          <h3>Stay updated</h3>
+          <p>© <span data-year></span> ToolAdda. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/qrcode-generator.min.js"></script>
+    <script src="assets/js/utm-builder.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/side-ads.js" defer></script>
+    <script src="assets/js/inline-ads.js" data-in-article defer></script>
+  </body>
+</html>

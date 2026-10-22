@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+  <meta name="description" content="Free emoji &amp; kaomoji picker with instant one-tap copy paste. Search 550+ emoji, Japanese text faces, Lenny faces &amp; symbols. No app, no signup, works fully offline in your browser." />
+  <title>Emoji &amp; Kaomoji Picker: Free Copy &amp; Paste | ToolAdda</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    /* ============ Layout shell ============ */
+    .ep-page .content-card { padding: 1.4rem 1.4rem 1.7rem; border-radius: 26px; overflow: hidden; }
+
+    .ep-hero-panel {
+      position: relative;
+      margin: -1.4rem -1.4rem 1.1rem;
+      padding: 1.6rem 1.4rem 1.4rem;
+      background:
+        radial-gradient(520px 260px at 8% -20%, rgba(79, 70, 229, 0.22), transparent 60%),
+        radial-gradient(420px 220px at 108% 0%, rgba(56, 189, 248, 0.20), transparent 60%),
+        linear-gradient(180deg, var(--accent-soft), transparent 85%);
+      border-bottom: 1px solid var(--border);
+    }
+    [data-theme="dark"] .ep-hero-panel {
+      background:
+        radial-gradient(520px 260px at 8% -20%, rgba(139, 92, 246, 0.28), transparent 60%),
+        radial-gradient(420px 220px at 108% 0%, rgba(56, 189, 248, 0.16), transparent 60%),
+        linear-gradient(180deg, rgba(139, 92, 246, 0.10), transparent 85%);
+    }
+
+    .ep-hero-top { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 0.9rem; margin-bottom: 0.75rem; }
+    .ep-hero-copy { max-width: 62ch; }
+    .ep-page .hero-badge {
+      display: inline-flex; align-items: center; width: fit-content;
+      padding: 0.4rem 0.8rem; border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), #38bdf8); color: #fff;
+      font-size: 0.76rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase;
+      margin: 0 0 0.6rem; box-shadow: 0 8px 18px -8px rgba(79, 70, 229, 0.5);
+    }
+    .ep-hero-copy h1 {
+      margin: 0.3rem 0 0.4rem;
+      font-size: clamp(1.65rem, 4vw, 2.35rem);
+      line-height: 1.14;
+      letter-spacing: -0.01em;
+      background: linear-gradient(120deg, var(--text) 30%, var(--accent-strong));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .ep-hero-sub { margin: 0; color: var(--text-muted); font-size: 1.02rem; line-height: 1.55; }
+
+    .ep-copy-counter {
+      flex-shrink: 0; text-align: center; min-width: 128px;
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.7rem 1rem;
+      box-shadow: 0 10px 24px -14px rgba(79, 70, 229, 0.4);
+      position: relative;
+    }
+    .ep-copy-counter::before {
+      content: "🔥"; position: absolute; top: -10px; right: -8px; font-size: 1.1rem;
+      background: var(--surface-strong); border: 1px solid var(--border); border-radius: 999px;
+      width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+    }
+    .ep-copy-counter strong { display: block; font-size: 1.55rem; font-weight: 900; color: var(--accent-strong); line-height: 1.1; }
+    .ep-copy-counter span { font-size: 0.7rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; }
+
+    .ep-trust-strip { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.85rem 0 1rem; }
+    .ep-trust-chip {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.78rem; font-weight: 700; color: var(--text);
+      background: var(--surface-strong); border: 1px solid var(--border);
+      border-radius: 999px; padding: 0.35rem 0.75rem 0.35rem 0.4rem;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+    }
+    .ep-trust-chip i { font-style: normal; display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: var(--accent-soft); font-size: 0.78rem; }
+
+    .ep-search-row { position: relative; margin-bottom: 0.6rem; }
+    .ep-search-row input {
+      width: 100%; padding: 1.05rem 1rem 1.05rem 3rem; font-size: 1.12rem;
+      border-radius: 999px; border: 2px solid var(--border);
+      background: var(--surface-strong); color: var(--text);
+      box-shadow: 0 12px 30px -18px rgba(20, 33, 61, 0.35);
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+    }
+    .ep-search-row input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft), 0 14px 30px -16px rgba(79, 70, 229, 0.45); transform: translateY(-1px); }
+    .ep-search-icon { position: absolute; left: 1.1rem; top: 50%; transform: translateY(-50%); opacity: 0.55; pointer-events: none; font-size: 1.05rem; }
+    .ep-search-hint { position: absolute; right: 1.1rem; top: 50%; transform: translateY(-50%); font-size: 0.78rem; color: var(--text-muted); border: 1px solid var(--border); background: var(--surface); border-radius: 6px; padding: 0.1rem 0.45rem; pointer-events: none; font-family: monospace; }
+    .ep-search-result-count { font-size: 0.8rem; color: var(--text-muted); margin: 0.1rem 0 0; min-height: 1.1em; font-weight: 600; }
+
+    .ep-tab-row { display: flex; gap: 0.45rem; flex-wrap: wrap; margin-bottom: 0.85rem; }
+    .ep-tab-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      border: 1px solid var(--border); background: var(--surface-strong); color: var(--text);
+      font-weight: 700; padding: 0.55rem 1.05rem; border-radius: 999px; cursor: pointer; font-size: 0.92rem;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+    .ep-tab-btn i { font-style: normal; }
+    .ep-tab-btn:hover { transform: translateY(-1px); border-color: var(--accent); }
+    .ep-tab-btn.is-active { background: linear-gradient(135deg, var(--accent), #16a34a); color: #fff; border-color: transparent; box-shadow: 0 10px 22px -10px rgba(79, 70, 229, 0.55); }
+    .ep-tab-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+    .ep-toolbar {
+      display: flex; flex-wrap: wrap; gap: 0.7rem 1.1rem; align-items: center; justify-content: space-between;
+      margin-bottom: 0.8rem; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 0.7rem 0.9rem; backdrop-filter: blur(6px);
+    }
+    .ep-toolbar-group { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .ep-toolbar label { font-size: 0.78rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.02em; }
+    .ep-toolbar select { border: 1px solid var(--border); background: var(--surface-strong); color: var(--text); border-radius: 8px; padding: 0.4rem 0.55rem; font-size: 0.85rem; cursor: pointer; }
+    .ep-toolbar select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .ep-toggle-btn, .ep-random-btn {
+      border: 1px solid var(--border); background: var(--surface-strong); color: var(--text);
+      border-radius: 999px; padding: 0.42rem 0.9rem; font-size: 0.82rem; font-weight: 700; cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    .ep-toggle-btn:hover, .ep-random-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 18px -10px rgba(20, 33, 61, 0.35); }
+    .ep-toggle-btn.is-on { background: var(--accent); color: #fff; border-color: transparent; }
+
+    .ep-multicopy-bar { display: none; gap: 0.6rem; margin-bottom: 0.8rem; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: var(--radius-md); padding: 0.8rem; animation: ep-slide-in 0.2s ease; }
+    .ep-multicopy-bar.is-active { display: flex; flex-wrap: wrap; }
+    .ep-multicopy-bar textarea { flex: 1; min-width: 200px; min-height: 2.8rem; border-radius: 10px; border: 1px solid var(--border); padding: 0.6rem 0.8rem; font-size: 1.15rem; background: var(--surface-strong); color: var(--text); }
+    @keyframes ep-slide-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .ep-bookmark-nudge { display: none; align-items: center; justify-content: space-between; gap: 0.6rem; background: linear-gradient(135deg, var(--accent-soft), transparent); border: 1px solid var(--accent); border-radius: var(--radius-md); padding: 0.65rem 0.95rem; margin-bottom: 0.85rem; font-size: 0.86rem; font-weight: 700; color: var(--accent-strong); animation: ep-slide-in 0.25s ease; }
+    .ep-bookmark-nudge.is-visible { display: flex; flex-wrap: wrap; }
+    .ep-bookmark-nudge button { border: 1px solid var(--accent); background: var(--surface-strong); color: var(--accent-strong); font-weight: 800; cursor: pointer; padding: 0.3rem 0.7rem; border-radius: 999px; }
+
+    .ep-category-nav {
+      display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.8rem;
+      position: sticky; top: 0; z-index: 3; padding: 0.5rem 0.1rem;
+      background: linear-gradient(180deg, var(--bg) 78%, transparent);
+    }
+    .ep-category-chip {
+      border: 1px solid var(--border); background: var(--surface-strong); color: var(--text);
+      border-radius: 999px; padding: 0.35rem 0.8rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+      white-space: nowrap; transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+    .ep-category-chip:hover, .ep-category-chip:focus-visible { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-strong); transform: translateY(-1px); outline: none; }
+
+    .ep-section-title { position: sticky; top: 46px; background: var(--bg); z-index: 2; font-size: 0.92rem; font-weight: 800; padding: 0.55rem 0.1rem; margin: 0; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; }
+    .ep-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(52px, 1fr)); gap: 0.45rem; margin-bottom: 1.2rem; content-visibility: auto; contain-intrinsic-size: 0 220px; }
+    .ep-grid.size-small { grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); }
+    .ep-grid.size-large { grid-template-columns: repeat(auto-fill, minmax(68px, 1fr)); }
+    .ep-tile {
+      position: relative; overflow: hidden; border: 1px solid var(--border); background: var(--surface-strong);
+      border-radius: 12px; aspect-ratio: 1; min-height: 44px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; cursor: pointer; padding: 0.2rem;
+      transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+    .ep-grid.size-small .ep-tile { font-size: 1.2rem; }
+    .ep-grid.size-large .ep-tile { font-size: 2.1rem; }
+    .ep-tile:hover { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 10px 22px -12px rgba(79, 70, 229, 0.45); transform: translateY(-3px) scale(1.04); z-index: 1; }
+    .ep-tile:focus-visible { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft), 0 10px 22px -12px rgba(79, 70, 229, 0.45); z-index: 1; }
+    .ep-tile:active { transform: translateY(-1px) scale(0.96); }
+    .ep-tile.is-copied { animation: ep-pop 0.4s cubic-bezier(0.3, 1.4, 0.4, 1); }
+    @keyframes ep-pop { 0% { transform: scale(1); } 45% { transform: scale(1.28); } 100% { transform: scale(1); } }
+    .ep-tile.is-copied::before {
+      content: "\2713"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; font-size: 1.4rem; font-weight: 900;
+      border-radius: inherit; animation: ep-check-fade 0.9s ease forwards; pointer-events: none;
+    }
+    @keyframes ep-check-fade { 0% { opacity: 0; transform: scale(0.6); } 18% { opacity: 1; transform: scale(1); } 70% { opacity: 1; } 100% { opacity: 0; } }
+    .ep-tile.is-fav::after { content: "\2605"; position: absolute; top: -3px; right: -3px; font-size: 0.65rem; color: #f59e0b; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25)); }
+    .ep-tile.decoration-tile { font-size: 0.9rem; font-family: monospace; aspect-ratio: auto; min-height: 52px; grid-column: span 2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0.4rem; justify-content: flex-start; }
+    .ep-tile.kaomoji-tile { aspect-ratio: auto; min-height: 52px; grid-column: span 3; font-size: 1.05rem; font-family: "Segoe UI", Meiryo, sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0.4rem 0.6rem; justify-content: flex-start; }
+
+    .ep-empty-note { color: var(--text-muted); font-size: 0.95rem; padding: 2rem 0; text-align: center; }
+    .ep-sentinel { height: 1px; }
+
+    .ep-toast {
+      position: fixed; bottom: 28px; left: 50%; transform: translate(-50%, 24px) scale(0.96);
+      background: #111827; color: #fff; padding: 0.75rem 1.3rem; border-radius: 999px;
+      font-weight: 700; font-size: 0.95rem; opacity: 0; pointer-events: none; z-index: 200;
+      box-shadow: 0 16px 32px -12px rgba(0,0,0,0.45);
+      transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+    .ep-toast.is-visible { opacity: 1; transform: translate(-50%, 0) scale(1); }
+
+    .ep-popup-backdrop { position: fixed; inset: 0; background: rgba(10, 12, 20, 0.55); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; z-index: 150; padding: 1rem; }
+    .ep-popup-backdrop.is-active { display: flex; animation: ep-fade-in 0.15s ease; }
+    @keyframes ep-fade-in { from { opacity: 0; } to { opacity: 1; } }
+    .ep-popup-card {
+      background: var(--surface-strong); border: 1px solid var(--border); border-radius: 22px; padding: 1.6rem;
+      max-width: 380px; width: 100%; text-align: center; box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.4);
+      animation: ep-popup-in 0.2s cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+    @keyframes ep-popup-in { from { opacity: 0; transform: translateY(10px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .ep-popup-char {
+      font-size: 4rem; margin: 0 auto 0.6rem; width: 96px; height: 96px; display: flex; align-items: center; justify-content: center;
+      background: radial-gradient(circle, var(--accent-soft), transparent 70%); border-radius: 50%;
+    }
+    .ep-popup-name { font-weight: 800; font-size: 1.08rem; margin-bottom: 1rem; text-transform: capitalize; }
+    .ep-popup-row { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.55rem 0.75rem; margin-bottom: 0.5rem; font-size: 0.85rem; text-align: left; }
+    .ep-popup-row span:first-child { color: var(--text-muted); font-weight: 700; flex-shrink: 0; }
+    .ep-popup-row code { overflow-x: auto; white-space: nowrap; }
+    .ep-popup-row button { border: none; background: var(--accent-soft); color: var(--accent-strong); border-radius: 7px; padding: 0.3rem 0.6rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; flex-shrink: 0; transition: background 0.15s ease; }
+    .ep-popup-row button:hover { background: var(--accent); color: #fff; }
+    .ep-popup-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
+    .ep-popup-actions .primary-btn, .ep-popup-actions .secondary-btn { flex: 1 1 auto; }
+
+    .ep-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+    .ep-trending-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .ep-trending-pill {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: linear-gradient(135deg, var(--accent-soft), transparent); border: 1px solid var(--border);
+      border-radius: 999px; padding: 0.4rem 0.85rem 0.4rem 0.5rem; font-size: 0.85rem; cursor: pointer; font-weight: 700;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .ep-trending-pill:hover { transform: translateY(-1px); border-color: var(--accent); }
+    .ep-eod-btn { font-size: 1.4rem; }
+
+
+    /* content section tables */
+    .ep-page table.ep-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.92rem; border-radius: 10px; overflow: hidden; }
+    .ep-page table.ep-table caption { text-align: left; font-weight: 700; margin-bottom: 0.4rem; color: var(--text-muted); }
+    .ep-page table.ep-table th, .ep-page table.ep-table td { border: 1px solid var(--border); padding: 0.55rem 0.7rem; text-align: left; vertical-align: top; }
+    .ep-page table.ep-table th { background: var(--accent-soft); color: var(--accent-strong); font-weight: 800; }
+    .ep-page table.ep-table tbody tr:hover { background: var(--surface); }
+    .ep-page .table-scroll { overflow-x: auto; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ep-tile, .ep-toast, .ep-bookmark-nudge, .ep-popup-card, .ep-popup-backdrop, .ep-multicopy-bar { transition: none !important; animation: none !important; }
+    }
+
+    @media (max-width: 640px) {
+      .ep-page .content-card { padding: 1.1rem 1.1rem 1.4rem; border-radius: 20px; }
+      .ep-hero-panel { margin: -1.1rem -1.1rem 1rem; padding: 1.3rem 1.1rem 1.1rem; }
+      .ep-grid { grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); }
+      .ep-toolbar { flex-direction: column; align-items: stretch; }
+      .ep-category-nav { top: 0; overflow-x: auto; flex-wrap: nowrap; }
+      .ep-hero-top { flex-direction: column; }
+      .ep-copy-counter { align-self: flex-start; }
+    }
+  </style>
+
+  <meta name="theme-color" content="#4f46e5" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="author" content="ToolAdda" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <link rel="canonical" href="https://tooladda.online/emoji-kaomoji-picker.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+  <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta property="og:title" content="Emoji & Kaomoji Picker: Free Copy & Paste | ToolAdda" />
+  <meta property="og:description" content="Search and one-tap copy emoji, kaomoji (Japanese text faces), Lenny faces and symbols. Free, no signup, works offline in your browser." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tooladda.online/emoji-kaomoji-picker.html" />
+  <meta property="og:site_name" content="ToolAdda" />
+  <meta property="og:image" content="https://tooladda.online/assets/images/og/emoji-kaomoji-picker.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Emoji &amp;amp; Kaomoji Picker: Free Copy &amp;amp; Paste — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="Emoji &amp;amp; Kaomoji Picker: Free Copy &amp;amp; Paste — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Emoji & Kaomoji Picker: Free Copy & Paste | ToolAdda" />
+  <meta name="twitter:description" content="Search and one-tap copy emoji, kaomoji, and symbols instantly. Free, offline, no signup." />
+  <meta name="twitter:image" content="https://tooladda.online/assets/images/og/emoji-kaomoji-picker.jpg" />
+
+  <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/emoji-kaomoji-picker.html",
+      "url": "https://tooladda.online/emoji-kaomoji-picker.html",
+      "name": "Emoji & Kaomoji Picker: Free Copy & Paste | ToolAdda",
+      "description": "Search and one-tap copy emoji, kaomoji, text faces, Lenny faces, and symbols, with favourites, recents, skin tones, and developer Unicode details.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://tooladda.online/emoji-kaomoji-picker.html#breadcrumb"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "ToolAdda",
+        "alternateName": [
+          "Tool Adda",
+          "Tools Adda",
+          "ToolsAdda",
+          "Tooladda",
+          "ToolAdda.online"
+        ],
+        "url": "https://tooladda.online/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tooladda.online/emoji-kaomoji-picker.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Emoji & Kaomoji Picker",
+          "item": "https://tooladda.online/emoji-kaomoji-picker.html"
+        }
+      ]
+    },
+    {
+      "@type": "WebApplication",
+      "name": "ToolAdda Emoji & Kaomoji Picker",
+      "url": "https://tooladda.online/emoji-kaomoji-picker.html",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any (browser-based)",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": "Emoji search, kaomoji and text faces, Lenny faces, skin tone selector, favourites, recently used, multi-emoji combo builder, Unicode codepoint / HTML entity / CSS / shortcode copy, dark mode, keyboard navigation",
+      "browserRequirements": "Requires a modern browser with Clipboard API or execCommand fallback"
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to copy and paste an emoji or kaomoji online",
+      "description": "Copy any emoji, kaomoji, or symbol from ToolAdda and paste it anywhere — Instagram, WhatsApp, Discord, Word, or Gmail.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Search or browse",
+          "text": "Type a word like \"laugh\" or \"shrug\" in the search box, or tap a category tab such as Emoji, Kaomoji, Symbols, or Decorations."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Tap to copy",
+          "text": "Click or tap any emoji, kaomoji, or symbol tile. It is copied to your clipboard instantly — no second click needed."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Paste it anywhere",
+          "text": "Go to your app or website (Instagram bio, WhatsApp chat, Word document, email) and paste using Ctrl+V or Cmd+V, or long-press and choose Paste on mobile."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I copy an emoji from this page?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Click or tap any emoji, kaomoji, or symbol tile. It is copied to your clipboard the moment you click it — there is no separate 'copy' button to press and no page reload."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a kaomoji?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A kaomoji (顔文字, literally 'face character') is a Japanese-style emoticon built from Unicode letters, punctuation, and symbols that you read face-on, like (＾▽＾) or ¯\\_(ツ)_/¯, instead of sideways like a classic Western emoticon such as :)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this emoji picker free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Every emoji, kaomoji, symbol, and feature on this page is free with no account, no signup, and no hidden paywall."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to install an app or extension?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Everything runs directly in your browser. There is nothing to install, and it works on desktop and mobile browsers alike."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does an emoji look different on my phone than on my friend's phone?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Emoji are Unicode characters, not pictures. Apple, Google, Samsung, and Microsoft each draw their own artwork for the same character, so the meaning stays identical but the exact look changes by device and app."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does an emoji show as a box or question mark?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your device's font hasn't been updated to include that newer emoji yet. Updating your OS usually resolves it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I use these emojis on Instagram or WhatsApp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Copy the emoji or kaomoji here, open Instagram or WhatsApp, tap into the bio, caption, or chat field, and paste using your device's normal paste action (long-press → Paste on mobile, Ctrl+V or Cmd+V on desktop)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use kaomoji in usernames and bios?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Usually yes - they're plain Unicode text, so they work anywhere text is accepted, unless the platform restricts special characters."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this work on mobile?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, the picker is fully responsive and touch-friendly, with tap-to-copy, long-press for details, and a layout that avoids horizontal scrolling on any screen size."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I copy multiple emojis at once?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Turn on 'Build a string' mode, tap each emoji or kaomoji you want in order, and then use 'Copy all' to copy the entire combined string in one go."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I change emoji skin tone?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use the skin tone dropdown above the grid; it applies to supported hand and people emoji and is remembered on this device."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are my copied emojis stored anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Recents and favourites are saved only in your browser's local storage on your device - nothing is uploaded."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the shrug emoji and how do I type it?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The shrug emoticon ¯\\_(ツ)_/¯ is a kaomoji, not a standard emoji — it isn't on your phone's default keyboard. Search 'shrug' on this page to copy it instantly."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a Lenny face?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A Lenny face, ( ͡° ͜ʖ ͡°), is a specific viral kaomoji used to convey a smug or suggestive tone. It's built from Unicode combining characters, which is why it's hard to type by hand — search 'lenny' here to copy it directly."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do these emojis work in Word, Excel, and Gmail?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Because emoji and kaomoji are standard Unicode text, they paste correctly into Word, Excel, Google Docs, Gmail, and virtually any modern app that accepts text."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the Windows emoji keyboard shortcut?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Win + . (period) or Win + ; (semicolon) opens the native panel from any text field."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do some kaomoji break or show as boxes when pasted?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Kaomoji often use rare Unicode combining marks and symbol blocks. Some apps strip unsupported characters, some fonts don't include the glyph, and some input fields sanitize text — pasting into a plain-text field usually works best."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I search by feeling instead of exact name?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The search understands everyday words like 'crying', 'shrug', 'happy', or 'flip table' in addition to exact emoji names and shortcodes, and it tolerates small typos."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/emoji-kaomoji-picker.html#webpage",
+      "url": "https://tooladda.online/emoji-kaomoji-picker.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-26",
+      "dateModified": "2026-09-01",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="ep-page">
+  <a class="skip-link" href="#epSearch">Skip to emoji search</a>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+      <nav class="nav-links" aria-label="Primary"><a href="/">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy</a></nav>
+      <div class="nav-actions">
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+            <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+            <path d="M3.1 16.9h10.8" />
+            <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+          </svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+        <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="section">
+      <aside class="ta-support" aria-label="Support ToolAdda">
+        <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+        <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+      </aside>
+
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>›</span><span aria-current="page">Emoji &amp; Kaomoji Picker</span></nav>
+
+        <div class="content-card">
+          <div class="ep-hero-panel">
+            <div class="ep-hero-top">
+              <div class="ep-hero-copy">
+                <p class="hero-badge">😀 Text &amp; Fun</p>
+                <h1>Emoji &amp; Kaomoji Picker — Copy in One Tap</h1>
+                <p class="ep-hero-sub">Search, tap, paste. <span data-emoji-count>550+</span> emoji, Japanese kaomoji, Lenny faces, symbols and text decorations — nothing to install, nothing uploaded.</p>
+              </div>
+              <div class="ep-copy-counter" aria-live="off">
+                <strong data-copy-total-display>0</strong>
+                <span>copied on this device</span>
+              </div>
+            </div>
+
+            <div class="ep-trust-strip" role="list" aria-label="Trust and privacy facts">
+              <span class="ep-trust-chip" role="listitem"><i>🔒</i>Runs in your browser</span>
+              <span class="ep-trust-chip" role="listitem"><i>🚫</i>No signup</span>
+              <span class="ep-trust-chip" role="listitem"><i>⚡</i>Instant tap-to-copy</span>
+              <span class="ep-trust-chip" role="listitem"><i>📴</i>Works offline</span>
+              <span class="ep-trust-chip" role="listitem"><i>🧬</i>Unicode 15.1 / Emoji 15.1</span>
+              <span class="ep-trust-chip" role="listitem"><i>🆓</i>Free forever</span>
+            </div>
+
+            <div class="ep-search-row">
+              <span class="ep-search-icon" aria-hidden="true">🔍</span>
+              <label for="epSearch" class="ep-sr-only">Search emoji, kaomoji, and symbols</label>
+              <input type="search" id="epSearch" placeholder="Search by name or feeling... try 'laugh', 'shrug', 'lenny', 'fire'" autocomplete="off" aria-describedby="epSearchCount" />
+              <span class="ep-search-hint" aria-hidden="true">/</span>
+            </div>
+            <p class="ep-search-result-count" id="epSearchCount" aria-live="polite"></p>
+          </div>
+
+          <div class="ep-tab-row" role="tablist" data-tab-row aria-label="Picker category">
+            <button type="button" class="ep-tab-btn is-active" role="tab" aria-selected="true" data-tab-btn="emoji"><i>😀</i>Emoji</button>
+            <button type="button" class="ep-tab-btn" role="tab" aria-selected="false" data-tab-btn="kaomoji"><i>(◕‿◕)</i>Kaomoji</button>
+            <button type="button" class="ep-tab-btn" role="tab" aria-selected="false" data-tab-btn="symbols"><i>★</i>Symbols</button>
+            <button type="button" class="ep-tab-btn" role="tab" aria-selected="false" data-tab-btn="decorations"><i>✦</i>Decorations</button>
+          </div>
+
+          <div class="ep-toolbar">
+            <div class="ep-toolbar-group" data-skin-tone-group>
+              <label for="epSkinTone">Skin tone</label>
+              <select id="epSkinTone">
+                <option value="default">Default 👋</option>
+                <option value="light">Light 👋🏻</option>
+                <option value="medium-light">Medium-Light 👋🏼</option>
+                <option value="medium">Medium 👋🏽</option>
+                <option value="medium-dark">Medium-Dark 👋🏾</option>
+                <option value="dark">Dark 👋🏿</option>
+              </select>
+            </div>
+            <div class="ep-toolbar-group">
+              <label for="epTileSize">Tile size</label>
+              <select id="epTileSize"><option value="small">Small</option><option value="medium" selected>Medium</option><option value="large">Large</option></select>
+            </div>
+            <div class="ep-toolbar-group">
+              <button type="button" class="ep-toggle-btn" data-multicopy-toggle>🧵 Build a string</button>
+              <button type="button" class="ep-random-btn" data-random-btn="emoji">🎲 Random emoji</button>
+              <button type="button" class="ep-random-btn" data-random-btn="kaomoji">🎲 Random kaomoji</button>
+            </div>
+          </div>
+
+          <div class="ep-multicopy-bar" data-multicopy-bar>
+            <textarea id="epMultiCopyText" placeholder="Tap items to append them here..." readonly></textarea>
+            <button class="secondary-btn" type="button" data-multicopy-copy>📋 Copy all</button>
+            <button class="secondary-btn" type="button" data-multicopy-clear>🗑️ Clear</button>
+          </div>
+
+          <div class="ep-bookmark-nudge" data-bookmark-nudge role="status">
+            <span>🔖 Nice streak! Press <kbd>Ctrl/Cmd + D</kbd> to bookmark this page for next time.</span>
+            <button type="button" data-bookmark-dismiss>Got it</button>
+          </div>
+
+          <div class="ep-trending-row" data-eod-row></div>
+
+          <div class="ep-category-nav" data-category-nav></div>
+
+          <div data-results-view class="hidden">
+            <h2 class="ep-section-title">Search results</h2>
+            <div class="ep-grid" data-results-grid></div>
+            <p class="ep-empty-note hidden" data-no-results>No matches — try a different word, or check the spelling.</p>
+          </div>
+
+          <div data-browse-view>
+            <div data-mostused-section class="hidden">
+              <h2 class="ep-section-title">🔥 Your most-used</h2>
+              <div class="ep-grid" data-mostused-grid></div>
+            </div>
+            <div data-favorites-section class="hidden">
+              <h2 class="ep-section-title">★ Favourites</h2>
+              <div class="ep-grid" data-favorites-grid></div>
+            </div>
+            <div data-recents-section class="hidden">
+              <h2 class="ep-section-title">🕓 Recently used</h2>
+              <button type="button" class="ep-toggle-btn" data-clear-recents style="margin-bottom:0.6rem;">Clear recents</button>
+              <div class="ep-grid" data-recents-grid></div>
+            </div>
+            <div data-category-sections></div>
+          </div>
+
+          <p class="ep-honest-note" style="font-size:0.82rem;color:var(--text-muted);margin-top:1rem;">Emoji look different across Apple, Google, Windows, and Samsung — what you see here is rendered using your own device's font. Some newer emoji may show as a box (▯) on older devices.</p>
+        </div>
+
+        <div aria-live="polite" class="ep-sr-only" data-live-announcer></div>
+
+        <!-- ================= SEO CONTENT ================= -->
+        <section class="section" aria-labelledby="ep-content-heading">
+          <div class="content-card">
+            <h2 id="ep-content-heading">Everything to know about emoji, kaomoji, and text symbols</h2>
+
+            <h3>What is an emoji picker?</h3>
+            <p>An emoji picker is a search-and-select tool that lets you find and copy an emoji without hunting through your phone's tiny built-in keyboard grid. Instead of scrolling through dozens of unlabelled icons, you type what you mean — "laugh", "fire", "birthday" — and get a shortlist you can copy with a single tap. A good picker also goes further than your phone's keyboard: it surfaces kaomoji, text symbols, and decorative characters that most keyboards don't offer at all, and it works the same way on a laptop, where native emoji access is often buried behind an obscure shortcut.</p>
+
+            <h3>What is kaomoji? (Japanese emoticons explained)</h3>
+            <p>Kaomoji (顔文字) is the Japanese word for "face character." Unlike a Western emoticon such as <code>:)</code>, which you read sideways, a kaomoji is read face-on: <code>(＾▽＾)</code> looks like a face with the eyes, mouth, and outline all upright. Kaomoji emerged on Japanese bulletin boards in the early 1990s, arguably before Western emoticons became widespread on IRC and Usenet, and they've since spread globally because they express nuance plain emoji can't — a specific kind of shy blush, an exact shrug, a very particular flavour of rage typically expressed by <a href="#kaomoji-tableflip">flipping a table</a>.</p>
+
+            <h3>Emoji vs kaomoji vs emoticon vs symbols — what's the difference?</h3>
+            <div class="table-scroll">
+              <table class="ep-table">
+                <caption>How the four text-based expression types differ</caption>
+                <thead><tr><th>Type</th><th>Example</th><th>Made of</th><th>Renders as</th></tr></thead>
+                <tbody>
+                  <tr><td>Emoji</td><td>😀 🔥 🎉</td><td>A single Unicode character (or a joined sequence)</td><td>A full-colour picture drawn by your device's font</td></tr>
+                  <tr><td>Emoticon</td><td>:) :D XD</td><td>Plain keyboard punctuation, read sideways</td><td>Plain text, same on every device</td></tr>
+                  <tr><td>Kaomoji</td><td>(＾▽＾) ¯\_(ツ)_/¯</td><td>Unicode letters, brackets, and symbols, read face-on</td><td>Plain text, same on every device</td></tr>
+                  <tr><td>Symbol</td><td>★ ✓ ♥ →</td><td>A single Unicode symbol character</td><td>Plain text glyph, styled by the current font</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>The practical difference that matters most: emoji can break (show as a box) on an outdated device because they need dedicated colour artwork, while kaomoji, emoticons, and symbols are just text and will display identically everywhere a font supports the characters.</p>
+
+            <h3>How to copy and paste emoji online (desktop and mobile)</h3>
+            <p>On this page: tap any tile once — it's copied immediately, no second click. Elsewhere: on <strong>Windows</strong>, press <kbd>Win</kbd> + <kbd>.</kbd> for the native emoji panel; on <strong>Mac</strong>, press <kbd>Ctrl</kbd> + <kbd>Cmd</kbd> + <kbd>Space</kbd>; on <strong>iPhone/Android</strong>, tap the emoji icon on your keyboard. None of the native pickers include kaomoji or the aesthetic symbol sets below, which is the main reason people search for a dedicated picker in the first place.</p>
+
+            <h3>How to use kaomoji on WhatsApp, Instagram, Discord, and X</h3>
+            <p>Copy the kaomoji here, then paste it directly into the message box, caption, bio, or username field with a long-press → Paste (mobile) or <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>V</kbd> (desktop). Discord and X handle the widest range of Unicode symbol blocks; some older or heavily-filtered input fields (certain banking or government forms) strip anything outside basic Latin text, so if a kaomoji "disappears" on paste, that's the field's filter, not a copy failure on this page.</p>
+
+            <h3>History and origin of emoji and kaomoji</h3>
+            <p>Kaomoji is generally traced to a 1986 Japanese message board post using <code>(^_^)</code>. Emoji followed in 1999, created by Shigetaka Kurita for Japanese mobile carrier NTT DoCoMo as a 12×12 pixel set of 176 icons meant to make short messages friendlier. Apple's iOS emoji keyboard (2008, expanded globally in 2011) and the founding of the Unicode Consortium's emoji working group turned emoji into a global, standardized character set rather than a Japan-only feature — which is also why every emoji now has an official Unicode codepoint, the same way the letter "A" does.</p>
+
+            <h3>Most popular kaomoji and what they mean</h3>
+            <div class="table-scroll">
+              <table class="ep-table">
+                <caption>Common kaomoji, decoded</caption>
+                <thead><tr><th>Kaomoji</th><th>Meaning</th><th>Use it for</th></tr></thead>
+                <tbody>
+                  <tr><td>¯\_(ツ)_/¯</td><td>Shrug</td><td>"I don't know" / indifference</td></tr>
+                  <tr><td>( ͡° ͜ʖ ͡°)</td><td>Lenny face</td><td>Smug, suggestive, or joking tone</td></tr>
+                  <tr><td>(╯°□°)╯︵ ┻━┻</td><td>Table flip</td><td>Frustration, rage-quitting</td></tr>
+                  <tr><td>┬─┬ノ( º _ ºノ)</td><td>Table un-flip</td><td>Calming down, putting things back</td></tr>
+                  <tr><td>(＾▽＾)</td><td>Big happy smile</td><td>Genuine excitement or joy</td></tr>
+                  <tr><td>(T_T)</td><td>Crying</td><td>Sadness, disappointment</td></tr>
+                  <tr><td>ʕ•ᴥ•ʔ</td><td>Bear face</td><td>Cute, wholesome sign-offs</td></tr>
+                  <tr><td>(╬ಠ益ಠ)</td><td>Furious face</td><td>Strong anger</td></tr>
+                  <tr><td>(´・ω・`)</td><td>Awkward / unsure</td><td>Mild embarrassment or uncertainty</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Emoji categories explained</h3>
+            <p>The Unicode emoji standard groups every emoji into official categories — Smileys &amp; Emotion, People &amp; Body, Animals &amp; Nature, Food &amp; Drink, Travel &amp; Places, Activities, Objects, Symbols, and Flags — and this picker follows the same structure so the layout matches what you'd expect from a phone keyboard, just with better search on top.</p>
+
+            <h3>Emoji meanings people get wrong</h3>
+            <ul>
+              <li><strong>🙏</strong> is "folded hands" (please/thanks/pray), not a high-five.</li>
+              <li><strong>😂</strong> means tears of joy from laughing, not tears of sadness.</li>
+              <li><strong>🍑</strong> is officially "peach," though it's widely used with an unofficial slang meaning — context matters.</li>
+              <li><strong>💯</strong> is "hundred points," used for "exactly right" or "keep it 100," not literally a school grade.</li>
+              <li><strong>😬</strong> is "grimacing face" (awkward/cringe), often mistaken for a grin.</li>
+            </ul>
+
+            <h3>Aesthetic emoji and symbols for bios and usernames</h3>
+            <p>Bio aesthetics usually combine three layers: a symbol divider (like <code>꧁═──═👑═──═꧂</code> from the Decorations tab), an accent symbol (★ ✦ ⋆), and styled text. For the styled-text layer, this picker intentionally doesn't duplicate work — pair it with our <a href="text-tools/fancy-font-generator.html">fancy font generator</a> to turn your bio text into bold, cursive, or bubble Unicode fonts that paste cleanly next to the symbols and kaomoji you copy here.</p>
+
+            <h3>Emoji for social media marketing and engagement</h3>
+            <p>On Instagram and X, one or two well-placed emoji at the start of a caption line measurably improve scannability and can lift engagement, but overuse reads as spam and can trigger platform-level reach penalties. A practical rule: use emoji to replace a word (🔥 instead of "amazing"), not to decorate every sentence. If you're drafting captions with a strict character limit, run the draft through our <a href="text-tools/character-counter.html">character counter</a> before posting — emoji count as more than one character on some platforms, which quietly eats into your limit.</p>
+
+            <h3>Emoji in messaging, email, and professional communication</h3>
+            <p>In Slack and WhatsApp, emoji are expected shorthand. In professional email, a single closing emoji (🙂) can soften tone, but stacking several reads as unprofessional in most industries. Kaomoji are almost never appropriate in formal email, since many corporate mail filters and older webmail clients don't render the Unicode ranges cleanly.</p>
+
+            <h3>Why some emoji look different on iPhone, Android, and Windows</h3>
+            <p>Unicode standardizes the <em>meaning</em> and codepoint of an emoji, not its artwork. Apple, Google, Samsung, and Microsoft each design and ship their own emoji font, so 😳 can look flushed-and-wide-eyed on one platform and subtly different on another, while still representing the same underlying character and the same intended meaning.</p>
+
+            <h3>Unicode, shortcodes, and how emoji actually work</h3>
+            <p>Every emoji is one or more Unicode <strong>codepoints</strong> — for example 😀 is <code>U+1F600</code>. Apps like Slack and Discord also support human-readable <strong>shortcodes</strong> such as <code>:grinning:</code>, which their software maps back to the real character. Tap the ⓘ detail view on any tile in this picker to see the exact codepoint, HTML entity, CSS escape, and shortcode for that item — genuinely useful if you're a developer hardcoding an icon into markup instead of pasting it as a live character.</p>
+
+            <h3>Skin tones, gender variants, and ZWJ sequences</h3>
+            <p>Since Unicode 8.0, people-emoji support five Fitzpatrick skin tone modifiers layered onto a base emoji (for example 👋 + 🏽 → 👋🏽). More complex emoji, like a family or a specific-gender professional, are built as a <strong>ZWJ sequence</strong> — several codepoints joined invisibly with a Zero-Width Joiner so multiple characters render as one combined glyph. Older devices that don't recognise a ZWJ sequence will show the separate pieces side by side instead of the merged icon.</p>
+
+            <h3>Emoji keyboard shortcuts (Windows, Mac, Android, iPhone)</h3>
+            <div class="table-scroll">
+              <table class="ep-table">
+                <caption>Native emoji keyboard shortcuts by platform</caption>
+                <thead><tr><th>Platform</th><th>Shortcut</th></tr></thead>
+                <tbody>
+                  <tr><td>Windows 10/11</td><td><kbd>Win</kbd> + <kbd>.</kbd> or <kbd>Win</kbd> + <kbd>;</kbd></td></tr>
+                  <tr><td>macOS</td><td><kbd>Ctrl</kbd> + <kbd>Cmd</kbd> + <kbd>Space</kbd></td></tr>
+                  <tr><td>iPhone / iPad</td><td>Tap the 🌐/emoji key on the on-screen keyboard</td></tr>
+                  <tr><td>Android</td><td>Tap the smiley icon on the Gboard keyboard</td></tr>
+                  <tr><td>ChromeOS</td><td><kbd>Search</kbd> (or <kbd>Launcher</kbd>) + <kbd>Shift</kbd> + <kbd>Space</kbd></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>None of these native shortcuts open a kaomoji panel — that's the gap this page fills.</p>
+
+            <h3>Privacy — everything runs in your browser</h3>
+            <p>This picker's entire dataset is loaded with the page itself; nothing is fetched from a server as you search, and no keystroke or copy event is sent anywhere. Favourites, recents, and your skin tone preference are saved with <code>localStorage</code> on your device only, so clearing your browser data clears them permanently and irreversibly on our end too — there's no account to recover them from, because there's no account.</p>
+
+            <h3>Why choose this emoji &amp; kaomoji picker?</h3>
+            <p>Most sites do one half of this job well. Emoji-focused sites have deep meaning pages but clunky, ad-heavy copy flows. Kaomoji-focused sites have fast copy grids but almost no explanatory content and visibly dated interfaces. This page combines a fast, one-tap, keyboard-navigable grid with genuine kaomoji depth (Lenny faces, table flips, and mood-based categories most "emoji" sites skip entirely), plus favourites, recents, skin tones, and developer-grade Unicode detail in one place.</p>
+
+            <h2>Frequently asked questions</h2>
+            <div class="grid-2">
+              <details class="faq-item"><summary><strong>How do I copy an emoji from this page?</strong></summary><p>Click or tap any tile. It copies instantly — there's no separate copy button and no page reload.</p></details>
+              <details class="faq-item"><summary><strong>What is a kaomoji?</strong></summary><p>A Japanese-style emoticon read face-on, built from Unicode text rather than a colour picture — for example (＾▽＾) or ¯\_(ツ)_/¯.</p></details>
+              <details class="faq-item"><summary><strong>Is this emoji picker free?</strong></summary><p>Yes, completely free with no account and no paywall on any feature.</p></details>
+              <details class="faq-item"><summary><strong>Do I need to install an app or extension?</strong></summary><p>No. It runs entirely in your browser on desktop and mobile.</p></details>
+              <details class="faq-item"><summary><strong>Why does an emoji look different on my phone?</strong></summary><p>Apple, Google, Samsung, and Microsoft each design their own artwork for the same Unicode character, so the look varies by device even though the meaning stays the same.</p></details>
+              <details class="faq-item"><summary><strong>Why does an emoji show as a box or question mark?</strong></summary><p>Your device's font hasn't been updated to include that newer emoji yet. Updating your OS usually resolves it.</p></details>
+              <details class="faq-item"><summary><strong>How do I use these on Instagram or WhatsApp?</strong></summary><p>Copy it here, then paste into the bio, caption, or chat field using your device's normal paste action.</p></details>
+              <details class="faq-item"><summary><strong>Can I use kaomoji in usernames and bios?</strong></summary><p>Usually yes — they're plain Unicode text, so they work anywhere text is accepted, unless the platform restricts special characters.</p></details>
+              <details class="faq-item"><summary><strong>Does this work on mobile?</strong></summary><p>Yes, it's fully responsive with tap-to-copy and no horizontal scrolling on any screen size.</p></details>
+              <details class="faq-item"><summary><strong>Can I copy multiple emojis at once?</strong></summary><p>Yes — turn on "Build a string," tap items in order, then use "Copy all."</p></details>
+              <details class="faq-item"><summary><strong>How do I change emoji skin tone?</strong></summary><p>Use the skin tone dropdown above the grid; it applies to supported hand and people emoji and is remembered on this device.</p></details>
+              <details class="faq-item"><summary><strong>Are my copied emojis stored anywhere?</strong></summary><p>Recents and favourites are saved only in your browser's local storage on your device — nothing is uploaded.</p></details>
+              <details class="faq-item"><summary><strong>What is the shrug emoji and how do I type it?</strong></summary><p>¯\_(ツ)_/¯ is a kaomoji, not a keyboard emoji — search "shrug" here to copy it directly.</p></details>
+              <details class="faq-item"><summary><strong>What is a Lenny face?</strong></summary><p>( ͡° ͜ʖ ͡°) is a viral kaomoji with a smug or suggestive tone — search "lenny" to find variants.</p></details>
+              <details class="faq-item"><summary><strong>Do these emojis work in Word, Excel, and Gmail?</strong></summary><p>Yes, since they're standard Unicode text, they paste correctly into virtually any modern app.</p></details>
+              <details class="faq-item"><summary><strong>What is the Windows emoji keyboard shortcut?</strong></summary><p>Win + . (period) or Win + ; (semicolon) opens the native panel from any text field.</p></details>
+              <details class="faq-item"><summary><strong>Why do some kaomoji break when pasted?</strong></summary><p>Some apps or input fields strip Unicode characters outside basic Latin text — that's the field's filter, not a copy failure here.</p></details>
+              <details class="faq-item"><summary><strong>Why does an emoji look different on my phone than on my friend's phone?</strong></summary><p>Emoji are Unicode characters, not pictures. Apple, Google, Samsung, and Microsoft each draw their own artwork for the same character, so the meaning stays identical but the exact look changes by device and app.</p></details>
+              <details class="faq-item"><summary><strong>Can I search by feeling instead of exact name?</strong></summary><p>Yes. The search understands everyday words like 'crying', 'shrug', 'happy', or 'flip table' in addition to exact emoji names and shortcodes, and it tolerates small typos.</p></details>
+            </div>
+
+            <aside class="related-tools-section" style="margin-top:2rem" aria-label="Related text tools">
+              <div class="related-tools-section__header">
+                <div>
+                  <p class="related-tools-eyebrow">Related tools</p>
+                  <h2 class="related-tools-title">More text &amp; bio tools</h2>
+                </div>
+              </div>
+              <div class="related-tools-grid">
+                <a class="related-tool-card" href="text-tools/fancy-font-generator.html"><div class="related-tool-icon">🔤</div><div><strong>Fancy Font Generator</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Stylish Unicode fonts for bios</span></div></a>
+                <a class="related-tool-card" href="text-tools/case-converter.html"><div class="related-tool-icon">🔠</div><div><strong>Case Converter</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">UPPER, lower, Title Case text</span></div></a>
+                <a class="related-tool-card" href="text-tools/character-counter.html"><div class="related-tool-icon">🔢</div><div><strong>Character Counter</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Check bio &amp; caption limits</span></div></a>
+                <a class="related-tool-card" href="text-tools/text-sorter.html"><div class="related-tool-icon">↕️</div><div><strong>Text Sorter</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Sort and de-duplicate lines</span></div></a>
+              </div>
+            </aside>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a><p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p></div>
+      <div><h3>Explore</h3><div class="footer-links"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms</a></div></div>
+      <div><h3>Stay updated</h3><p>© <span data-year></span> ToolAdda. All rights reserved.</p></div>
+    </div>
+  </footer>
+
+  <div class="ep-toast" data-toast></div>
+
+  <div class="ep-popup-backdrop" data-popup-backdrop>
+    <div class="ep-popup-card" role="dialog" aria-modal="true" aria-labelledby="epPopupName">
+      <div class="ep-popup-char" data-popup-char>😀</div>
+      <div class="ep-popup-name" id="epPopupName" data-popup-name>name</div>
+      <div class="ep-popup-row"><span>Codepoint</span><code data-popup-codepoint>U+0000</code><button type="button" data-copy-field="codepoint">Copy</button></div>
+      <div class="ep-popup-row"><span>HTML entity</span><code data-popup-entity>&amp;#0;</code><button type="button" data-copy-field="entity">Copy</button></div>
+      <div class="ep-popup-row"><span>CSS escape</span><code data-popup-css>\0</code><button type="button" data-copy-field="css">Copy</button></div>
+      <div class="ep-popup-row"><span>Shortcode</span><code data-popup-shortcode>:name:</code><button type="button" data-copy-field="shortcode">Copy</button></div>
+      <div class="ep-popup-actions">
+        <button class="secondary-btn" type="button" data-popup-favorite>☆ Add to favourites</button>
+        <button class="secondary-btn" type="button" data-popup-share>🔗 Copy link</button>
+        <button class="primary-btn" type="button" data-popup-close>Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/app.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      // ================= Pure logic (search, formatting, list helpers) =================
+      function levenshtein(a, b) {
+        a = a.toLowerCase(); b = b.toLowerCase();
+        var m = a.length, n = b.length;
+        if (m === 0) return n;
+        if (n === 0) return m;
+        var prev = new Array(n + 1), cur = new Array(n + 1);
+        for (var j = 0; j <= n; j++) prev[j] = j;
+        for (var i = 1; i <= m; i++) {
+          cur[0] = i;
+          for (var j2 = 1; j2 <= n; j2++) {
+            var cost = a[i - 1] === b[j2 - 1] ? 0 : 1;
+            cur[j2] = Math.min(prev[j2] + 1, cur[j2 - 1] + 1, prev[j2 - 1] + cost);
+          }
+          var tmp = prev; prev = cur; cur = tmp;
+        }
+        return prev[n];
+      }
+      function fuzzyKeywordScore(query, keyword) {
+        query = query.toLowerCase(); keyword = keyword.toLowerCase();
+        if (keyword === query) return 100;
+        if (keyword.startsWith(query)) return 60;
+        if (keyword.includes(query)) return 40;
+        var allowedDist = query.length <= 4 ? 1 : query.length <= 7 ? 2 : 3;
+        var dist = levenshtein(query, keyword);
+        if (dist <= allowedDist) return Math.max(0, 20 - dist * 6);
+        return 0;
+      }
+      function scoreItem(item, query) {
+        if (!query) return 0;
+        var best = 0;
+        if (item.name) best = Math.max(best, fuzzyKeywordScore(query, item.name) * 0.8);
+        (item.keywords || []).forEach(function (kw) { best = Math.max(best, fuzzyKeywordScore(query, kw)); });
+        return best;
+      }
+      function searchItems(items, query, limit) {
+        query = (query || '').trim();
+        if (!query) return [];
+        var scored = items.map(function (item) { return { item: item, score: scoreItem(item, query) }; }).filter(function (s) { return s.score > 0; });
+        scored.sort(function (a, b) { return b.score - a.score; });
+        return scored.slice(0, limit || scored.length).map(function (s) { return s.item; });
+      }
+      function codePointsOf(str) { return Array.from(str).map(function (ch) { return ch.codePointAt(0); }); }
+      function toUPlusNotation(str) { return codePointsOf(str).map(function (cp) { return 'U+' + cp.toString(16).toUpperCase().padStart(4, '0'); }).join(' '); }
+      function toHtmlEntity(str) { return codePointsOf(str).map(function (cp) { return '&#' + cp + ';'; }).join(''); }
+      function toCssEscape(str) { return codePointsOf(str).map(function (cp) { return '\\' + cp.toString(16).toUpperCase(); }).join(''); }
+      function toShortcode(name) { return ':' + (name || '').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') + ':'; }
+      function toSlug(name) { return (name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
+      var SKIN_TONE_MODIFIERS = { light: '\u{1F3FB}', 'medium-light': '\u{1F3FC}', medium: '\u{1F3FD}', 'medium-dark': '\u{1F3FE}', dark: '\u{1F3FF}' };
+      function applySkinTone(entry, toneKey) {
+        if (!entry.skinTonable || !toneKey || toneKey === 'default') return entry.char;
+        var modifier = SKIN_TONE_MODIFIERS[toneKey];
+        return modifier ? entry.char + modifier : entry.char;
+      }
+      function addRecent(list, value, max) { return [value].concat(list.filter(function (v) { return v !== value; })).slice(0, max); }
+      function toggleFavorite(favArray, value) {
+        if (favArray.includes(value)) return favArray.filter(function (v) { return v !== value; });
+        return favArray.concat([value]);
+      }
+
+      if (typeof document === 'undefined' || !document.getElementById) {
+        if (typeof module !== 'undefined') module.exports = { levenshtein, fuzzyKeywordScore, scoreItem, searchItems, codePointsOf, toUPlusNotation, toHtmlEntity, toCssEscape, toShortcode, toSlug, applySkinTone, addRecent, toggleFavorite };
+        return;
+      }
+
+      // ================= Dataset =================
+      var EMOJI_CATEGORIES = [
+        { key: 'smileys', label: 'Smileys & Emotion', icon: '😀', items: [
+          ['😀','grinning face',['happy','smile','grin']],['😃','grinning face with big eyes',['happy','smile','joy']],
+          ['😄','grinning face with smiling eyes',['happy','laugh','joy']],['😁','beaming face with smiling eyes',['happy','grin','smile']],
+          ['😆','grinning squinting face',['laugh','happy','haha']],['😅','grinning face with sweat',['laugh','relief','nervous','phew']],
+          ['🤣','rolling on the floor laughing',['rofl','lol','laugh','hilarious']],['😂','face with tears of joy',['laugh','lol','crying','funny','tears','joy','haha']],
+          ['🙂','slightly smiling face',['smile','happy','ok']],['🙃','upside-down face',['silly','sarcasm','irony']],
+          ['😉','winking face',['wink','flirt','joke']],['😊','smiling face with smiling eyes',['happy','blush','shy','sweet']],
+          ['😇','smiling face with halo',['angel','innocent','blessed']],['🥰','smiling face with hearts',['love','adore','crush','inlove']],
+          ['😍','heart eyes',['love','crush','adore','wow']],['🤩','star-struck',['wow','amazed','excited','starstruck']],
+          ['😘','face blowing a kiss',['kiss','love','xoxo']],['😋','face savoring food',['yum','tasty','delicious','hungry']],
+          ['😜','winking face with tongue',['silly','playful','joke','crazy']],['🤪','zany face',['crazy','silly','wild']],
+          ['🤑','money-mouth face',['money','rich','cash','greedy']],['🤗','hugging face',['hug','embrace','support']],
+          ['🤭','face with hand over mouth',['oops','giggle','shy','secret']],['🤫','shushing face',['quiet','secret','shh']],
+          ['🤔','thinking face',['think','hmm','consider','doubt']],['🤨','face with raised eyebrow',['skeptical','suspicious','doubt']],
+          ['😐','neutral face',['meh','blank','indifferent']],['😑','expressionless face',['blank','meh','unimpressed']],
+          ['😏','smirking face',['smirk','sly','flirt']],['🙄','face with rolling eyes',['eyeroll','annoyed','whatever']],
+          ['😬','grimacing face',['awkward','nervous','cringe']],['😌','relieved face',['relief','calm','peaceful']],
+          ['😔','pensive face',['sad','thoughtful','down']],['😴','sleeping face',['sleep','zzz','tired']],
+          ['🥵','hot face',['hot','heat','sweating']],['🥶','cold face',['cold','freezing','chilly']],
+          ['😵','dizzy face',['dizzy','confused','knockedout']],['🤯','exploding head',['mindblown','shocked','wow']],
+          ['🥳','partying face',['party','celebrate','birthday']],['😎','smiling face with sunglasses',['cool','sunglasses','awesome']],
+          ['🧐','face with monocle',['inspect','curious','fancy']],['😕','confused face',['confused','unsure']],
+          ['🙁','slightly frowning face',['sad','frown']],['😮','face with open mouth',['surprised','wow','shock']],
+          ['😲','astonished face',['shocked','surprised','wow']],['😳','flushed face',['blush','embarrassed','shy','omg']],
+          ['🥺','pleading face',['puppyeyes','please','sad']],['😨','fearful face',['scared','afraid','fear']],
+          ['😢','crying face',['cry','sad','tear']],['😭','loudly crying face',['cry','sob','sad','bawling']],
+          ['😱','face screaming in fear',['scream','shocked','scared']],['😞','disappointed face',['sad','disappointed']],
+          ['😩','weary face',['tired','exhausted','ugh']],['🥱','yawning face',['yawn','tired','bored']],
+          ['😤','face with steam from nose',['angry','frustrated','triumph']],['😡','pouting face',['angry','mad','rage']],
+          ['😠','angry face',['angry','mad']],['🤬','face with symbols on mouth',['swearing','angry','cursing']],
+          ['😈','smiling face with horns',['devil','evil','mischief']],['💀','skull',['dead','skull','death']],
+          ['💩','pile of poo',['poop','funny','crap']],['🤡','clown face',['clown','joke','silly']],
+          ['👻','ghost',['ghost','spooky','halloween']],['👽','alien',['alien','ufo','space']],
+          ['🤖','robot',['robot','ai','bot']],['😺','grinning cat',['cat','happy']]
+        ] },
+        { key: 'people', label: 'People & Body', icon: '👋', items: [
+          ['👋','waving hand',['wave','hello','bye'],true],['🤚','raised back of hand',['stop','hand'],true],
+          ['✋','raised hand',['stop','high five','hand'],true],['🖖','vulcan salute',['startrek','livelong'],true],
+          ['👌','ok hand',['ok','perfect','nice'],true],['🤏','pinching hand',['small','tiny'],true],
+          ['✌️','victory hand',['peace','victory'],true],['🤞','crossed fingers',['luck','hope'],true],
+          ['🤟','love-you gesture',['loveyou','rock'],true],['🤘','sign of the horns',['rock','metal'],true],
+          ['👍','thumbs up',['like','yes','good','approve'],true],['👎','thumbs down',['dislike','no','bad'],true],
+          ['✊','raised fist',['fist','power','solidarity'],true],['👊','oncoming fist',['punch','fistbump'],true],
+          ['👏','clapping hands',['clap','applause','bravo'],true],['🙌','raising hands',['celebrate','praise','yay'],true],
+          ['👐','open hands',['hug','open'],true],['🤝','handshake',['deal','agreement','partnership'],true],
+          ['🙏','folded hands',['please','pray','thanks','namaste'],true],['💪','flexed biceps',['strong','muscle','gym'],true],
+          ['👀','eyes',['look','watching','see']],['🧠','brain',['smart','brain','mind']],
+          ['👶','baby',['baby','infant'],true],['🧑','person',['person','human'],true],
+          ['🧑‍💻','technologist',['coder','programmer','developer']],['🕺','man dancing',['dance','party']],
+          ['💃','woman dancing',['dance','party']],['🧘','person in lotus position',['yoga','meditate','calm'],true]
+        ] },
+        { key: 'animals', label: 'Animals & Nature', icon: '🐶', items: [
+          ['🐶','dog face',['dog','puppy','pet']],['🐱','cat face',['cat','kitten','pet']],
+          ['🐭','mouse face',['mouse']],['🐹','hamster',['hamster','pet']],
+          ['🐰','rabbit face',['rabbit','bunny']],['🦊','fox',['fox']],
+          ['🐻','bear',['bear']],['🐼','panda',['panda']],
+          ['🐨','koala',['koala']],['🐯','tiger face',['tiger']],
+          ['🦁','lion',['lion']],['🐮','cow face',['cow']],
+          ['🐷','pig face',['pig']],['🐸','frog',['frog']],
+          ['🐵','monkey face',['monkey']],['🙈','see-no-evil monkey',['monkey','oops']],
+          ['🐔','chicken',['chicken']],['🐧','penguin',['penguin']],
+          ['🐦','bird',['bird']],['🦅','eagle',['eagle']],
+          ['🦉','owl',['owl']],['🦇','bat',['bat']],
+          ['🐺','wolf',['wolf']],['🐗','boar',['boar']],
+          ['🐴','horse face',['horse']],['🦄','unicorn',['unicorn','magic']],
+          ['🐝','honeybee',['bee']],['🦋','butterfly',['butterfly']],
+          ['🐌','snail',['snail','slow']],['🐞','lady beetle',['ladybug']],
+          ['🐢','turtle',['turtle','slow']],['🐍','snake',['snake']],
+          ['🦖','t-rex',['dinosaur','trex']],['🐙','octopus',['octopus']],
+          ['🐳','spouting whale',['whale']],['🐬','dolphin',['dolphin']],
+          ['🐠','tropical fish',['fish']],['🦈','shark',['shark']],
+          ['🐊','crocodile',['crocodile']],['🦒','giraffe',['giraffe']],
+          ['🐘','elephant',['elephant']],['🦓','zebra',['zebra']],
+          ['🐎','horse',['horse','racing']],['🐐','goat',['goat']],
+          ['🌵','cactus',['cactus','desert']],['🌲','evergreen tree',['tree','pine']],
+          ['🌸','cherry blossom',['flower','spring','blossom']],['🌹','rose',['flower','rose','love']],
+          ['🌻','sunflower',['flower','sunflower']],['🌈','rainbow',['rainbow','pride']],
+          ['☀️','sun',['sun','sunny','weather']],['⭐','star',['star']],
+          ['🌙','crescent moon',['moon','night']],['⚡','high voltage',['lightning','electric','fast']],
+          ['🔥','fire',['fire','lit','hot','flame','trending']],['💧','droplet',['water','drop','rain']],
+          ['🌊','water wave',['wave','ocean','sea']],['❄️','snowflake',['snow','winter','cold']]
+        ] },
+        { key: 'food', label: 'Food & Drink', icon: '🍔', items: [
+          ['🍏','green apple',['apple','fruit']],['🍎','red apple',['apple','fruit']],
+          ['🍌','banana',['banana','fruit']],['🍉','watermelon',['watermelon','fruit']],
+          ['🍇','grapes',['grapes','fruit']],['🍓','strawberry',['strawberry','fruit']],
+          ['🍍','pineapple',['pineapple','fruit']],['🥭','mango',['mango','fruit']],
+          ['🥥','coconut',['coconut']],['🥑','avocado',['avocado']],
+          ['🍅','tomato',['tomato']],['🌶️','hot pepper',['spicy','chili','hot']],
+          ['🌽','ear of corn',['corn']],['🥕','carrot',['carrot']],
+          ['🍔','hamburger',['burger','food']],['🍕','pizza',['pizza','food']],
+          ['🌭','hot dog',['hotdog','food']],['🥪','sandwich',['sandwich','food']],
+          ['🌮','taco',['taco','food']],['🌯','burrito',['burrito','food']],
+          ['🍜','steaming bowl',['noodles','ramen','soup']],['🍣','sushi',['sushi','japanese']],
+          ['🍱','bento box',['bento','lunch']],['🍦','soft ice cream',['icecream','dessert']],
+          ['🎂','birthday cake',['cake','birthday','party']],['🍩','doughnut',['donut','dessert']],
+          ['🍪','cookie',['cookie','dessert']],['🍫','chocolate bar',['chocolate','dessert']],
+          ['🍿','popcorn',['popcorn','movie']],['🍯','honey pot',['honey']],
+          ['🥐','croissant',['croissant','bread']],['🍞','bread',['bread']],
+          ['🧀','cheese wedge',['cheese']],['🥚','egg',['egg']],
+          ['☕','hot beverage',['coffee','tea','hot']],['🍵','teacup without handle',['tea','green tea']],
+          ['🧃','beverage box',['juice','drink']],['🥤','cup with straw',['drink','soda']],
+          ['🍺','beer mug',['beer','drink']],['🍷','wine glass',['wine','drink']],
+          ['🥂','clinking glasses',['cheers','celebrate','toast']],['🍹','tropical drink',['cocktail','drink','summer']]
+        ] },
+        { key: 'travel', label: 'Travel & Places', icon: '✈️', items: [
+          ['🚗','automobile',['car','drive']],['🚕','taxi',['taxi','cab']],
+          ['🚌','bus',['bus']],['🚓','police car',['police']],
+          ['🚑','ambulance',['ambulance','emergency']],['🚒','fire engine',['firetruck']],
+          ['🚲','bicycle',['bike','cycle']],['🛵','motor scooter',['scooter']],
+          ['✈️','airplane',['plane','flight','travel']],['🚀','rocket',['rocket','space','launch']],
+          ['🚁','helicopter',['helicopter']],['⛵','sailboat',['boat','sailing']],
+          ['🚢','ship',['ship','cruise']],['🚆','train',['train']],
+          ['🧳','luggage',['luggage','suitcase','travel']],['🗽','statue of liberty',['newyork','usa']],
+          ['🗼','tokyo tower',['tokyo','japan']],['🏰','castle',['castle']],
+          ['🕌','mosque',['mosque']],['🛕','hindu temple',['temple','india']],
+          ['🏔️','snow-capped mountain',['mountain']],['🏖️','beach with umbrella',['beach','vacation']],
+          ['🏜️','desert',['desert']],['🏕️','camping',['camp','tent']],
+          ['🌋','volcano',['volcano']],['🗻','mount fuji',['fuji','mountain','japan']],
+          ['🌃','night with stars',['night','city']],['🌅','sunrise',['sunrise','morning']],
+          ['🎡','ferris wheel',['ferriswheel','carnival']],['🎢','roller coaster',['rollercoaster']]
+        ] },
+        { key: 'activities', label: 'Activities', icon: '⚽', items: [
+          ['⚽','soccer ball',['football','soccer']],['🏀','basketball',['basketball']],
+          ['🏈','american football',['football','nfl']],['⚾','baseball',['baseball']],
+          ['🎾','tennis',['tennis']],['🏐','volleyball',['volleyball']],
+          ['🏉','rugby football',['rugby']],['🎱','pool 8 ball',['pool','billiards']],
+          ['🏓','ping pong',['pingpong','tabletennis']],['🏸','badminton',['badminton']],
+          ['🥊','boxing glove',['boxing']],['🥋','martial arts uniform',['karate','judo']],
+          ['🎽','running shirt',['running','marathon']],['🏆','trophy',['trophy','win','champion']],
+          ['🥇','1st place medal',['gold','first','winner']],['🎯','direct hit',['target','bullseye','goal']],
+          ['🎮','video game',['gaming','videogame']],['🎲','game die',['dice','game']],
+          ['🎳','bowling',['bowling']],['🎸','guitar',['guitar','music']],
+          ['🎤','microphone',['mic','sing','karaoke']],['🎧','headphone',['music','audio']],
+          ['🎨','artist palette',['art','paint']],['🎬','clapper board',['movie','film']],
+          ['♟️','chess pawn',['chess']],['🧩','puzzle piece',['puzzle']]
+        ] },
+        { key: 'objects', label: 'Objects', icon: '💡', items: [
+          ['📱','mobile phone',['phone','mobile']],['💻','laptop',['laptop','computer']],
+          ['⌨️','keyboard',['keyboard']],['🖥️','desktop computer',['computer','pc']],
+          ['🖨️','printer',['printer']],['📷','camera',['camera','photo']],
+          ['🔋','battery',['battery','power']],['🔌','electric plug',['plug','power']],
+          ['💡','light bulb',['idea','bulb','light']],['🔦','flashlight',['flashlight','torch']],
+          ['🕯️','candle',['candle']],['📚','books',['books','study']],
+          ['📖','open book',['book','read']],['✏️','pencil',['pencil','write']],
+          ['🖊️','pen',['pen','write']],['📝','memo',['note','write']],
+          ['📌','pushpin',['pin','note']],['📎','paperclip',['clip']],
+          ['✂️','scissors',['scissors','cut']],['🔒','locked',['lock','secure','private']],
+          ['🔑','key',['key','unlock']],['🔨','hammer',['hammer','tool']],
+          ['🧰','toolbox',['tools','toolbox']],['💰','money bag',['money','cash','rich']],
+          ['💳','credit card',['card','payment']],['💎','gem stone',['diamond','gem','precious']],
+          ['🎁','wrapped gift',['gift','present']],['🎈','balloon',['balloon','party']],
+          ['🔔','bell',['bell','notification']],['📢','loudspeaker',['announce','loud']],
+          ['📅','calendar',['calendar','date']],['⏰','alarm clock',['clock','alarm','time']],
+          ['⌛','hourglass',['time','wait']],['🧭','compass',['compass','direction']]
+        ] },
+        { key: 'symbols-emoji', label: 'Symbols', icon: '❤️', items: [
+          ['❤️','red heart',['love','heart']],['🧡','orange heart',['love','heart']],
+          ['💛','yellow heart',['love','heart']],['💚','green heart',['love','heart']],
+          ['💙','blue heart',['love','heart']],['💜','purple heart',['love','heart']],
+          ['🖤','black heart',['love','heart','dark']],['🤍','white heart',['love','heart']],
+          ['💔','broken heart',['heartbreak','sad','breakup']],['❣️','heart exclamation',['love','heart']],
+          ['💕','two hearts',['love','hearts']],['💖','sparkling heart',['love','heart']],
+          ['💗','growing heart',['love','heart']],['💘','heart with arrow',['love','cupid']],
+          ['✅','check mark button',['done','yes','correct']],['❌','cross mark',['no','wrong','error']],
+          ['❗','exclamation mark',['warning','important']],['❓','question mark',['question','confused']],
+          ['♻️','recycling symbol',['recycle','eco']],['🔞','no one under eighteen',['18+','adult']],
+          ['📵','no mobile phones',['nophones']],['🚫','prohibited',['no','banned','stop']],
+          ['⚠️','warning',['warning','caution','alert']],['♾️','infinity',['infinity','forever']],
+          ['💯','hundred points',['100','perfect','score']],['✨','sparkles',['sparkle','shine','magic']],
+          ['🆕','new button',['new']],['🔝','top arrow',['top','best']]
+        ] },
+        { key: 'flags', label: 'Flags', icon: '🏳️', items: [
+          ['🏳️','white flag',['flag','surrender','peace']],['🏴','black flag',['flag']],
+          ['🏁','chequered flag',['flag','racing','finish']],['🏳️‍🌈','rainbow flag',['pride','lgbtq','flag']],
+          ['🇮🇳','flag India',['india','flag']],['🇺🇸','flag United States',['usa','america','flag']],
+          ['🇬🇧','flag United Kingdom',['uk','britain','england','flag']],['🇨🇦','flag Canada',['canada','flag']],
+          ['🇦🇺','flag Australia',['australia','flag']],['🇩🇪','flag Germany',['germany','flag']],
+          ['🇫🇷','flag France',['france','flag']],['🇯🇵','flag Japan',['japan','flag']],
+          ['🇰🇷','flag South Korea',['korea','flag']],['🇨🇳','flag China',['china','flag']],
+          ['🇧🇷','flag Brazil',['brazil','flag']],['🇮🇹','flag Italy',['italy','flag']],
+          ['🇪🇸','flag Spain',['spain','flag']],['🇷🇺','flag Russia',['russia','flag']],
+          ['🇦🇪','flag United Arab Emirates',['uae','dubai','flag']],['🇸🇬','flag Singapore',['singapore','flag']]
+        ] }
+      ];
+
+      var KAOMOJI_CATEGORIES = [
+        { key: 'happy', label: 'Happy', icon: '(＾▽＾)', items: [
+          ['(＾▽＾)','happy kaomoji',['happy','smile']],['(´｡• ᵕ •｡`)','happy kaomoji',['happy','cute']],
+          ['(*^▽^*)','happy kaomoji',['happy','joy']],['ヽ(´▽`)/','joyful kaomoji',['happy','yay']],
+          ['(≧◡≦)','happy kaomoji',['happy','smile']],['(◕‿◕)','happy kaomoji',['happy','cute']],
+          ['＼(^o^)／','cheering kaomoji',['happy','yay','cheer']],['(*≧ω≦*)','delighted kaomoji',['happy','excited']]
+        ] },
+        { key: 'sad', label: 'Sad', icon: '(╥﹏╥)', items: [
+          ['(╥﹏╥)','crying kaomoji',['sad','cry']],['(;﹏;)','crying kaomoji',['sad','cry']],
+          ['(T_T)','crying kaomoji',['sad','cry','tears']],['(ノД`)','sobbing kaomoji',['sad','cry']],
+          ['｡ﾟ(ﾟ´ω`ﾟ)ﾟ｡','crying kaomoji',['sad','cry']],['(´；ω；`)','sad kaomoji',['sad','sorry']],
+          ['(个_个)','sad kaomoji',['sad','depressed']],['(∩︵∩)','disappointed kaomoji',['sad','disappointed']]
+        ] },
+        { key: 'angry', label: 'Angry', icon: '(╬ಠ益ಠ)', items: [
+          ['(╬ಠ益ಠ)','angry kaomoji',['angry','rage','mad']],['ヽ(`Д´)ﾉ','angry kaomoji',['angry','mad']],
+          ['(°Д°)','shocked angry kaomoji',['angry','shocked']],['ಠ_ಠ','disapproval kaomoji',['angry','annoyed','side eye']],
+          ['(ノಠ益ಠ)ノ','furious kaomoji',['angry','rage']],['ヽ(ｏ`皿′ｏ)ﾉ','angry kaomoji',['angry','mad']],
+          ['(≖_≖ )','side eye kaomoji',['annoyed','suspicious']],['\\(°ロ°)/','shocked kaomoji',['shocked','angry']]
+        ] },
+        { key: 'love', label: 'Love', icon: '(♥‿♥)', items: [
+          ['(♥‿♥)','love kaomoji',['love','heart eyes']],['(｡♥‿♥｡)','love kaomoji',['love','crush']],
+          ['♡(˃͈ દ ˂͈ ༶ )','shy love kaomoji',['love','shy']],['(´∀`)♡','love kaomoji',['love','happy']],
+          ['(੭ ˃ᴗ˂)੭','love kaomoji',['love','excited']],['(￣▽￣)ノ♡','love kaomoji',['love']],
+          ['✿♥‿♥✿','love kaomoji',['love','flowers']],['(*¯︶¯*)','content love kaomoji',['love','content']]
+        ] },
+        { key: 'confused', label: 'Confused', icon: '(・_・?)', items: [
+          ['(・_・?)','confused kaomoji',['confused','question']],['(￣～￣;)','confused kaomoji',['confused','thinking']],
+          ['(ーー;)','awkward confused kaomoji',['confused','awkward']],['(´・ω・`)','unsure kaomoji',['confused','unsure']],
+          ['(◎_◎;)','confused shocked kaomoji',['confused','surprised']],['눈_눈','skeptical kaomoji',['confused','skeptical']],
+          ['(°ロ°) !','confused shock kaomoji',['confused','shock']],['(￢_￢;)','side glance confused kaomoji',['confused']]
+        ] },
+        { key: 'surprised', label: 'Surprised', icon: '(⊙_⊙)', items: [
+          ['(⊙_⊙)','surprised kaomoji',['surprised','shock']],['(o_o)','surprised kaomoji',['surprised']],
+          ['Σ(ﾟДﾟ)','shocked kaomoji',['surprised','shock']],['(ﾟoﾟ)','surprised kaomoji',['surprised']],
+          ['(°o°)','surprised kaomoji',['surprised']],['(⊙_☉)','wide eyed shocked kaomoji',['surprised','shock']],
+          ['Σ(°△°|||)︴','panicked shock kaomoji',['surprised','panic']],['(((o(*ﾟ▽ﾟ*)o)))','excited surprise kaomoji',['surprised','excited']]
+        ] },
+        { key: 'sleepy', label: 'Sleepy', icon: '(-_-) zzz', items: [
+          ['(-_-) zzz','sleepy kaomoji',['sleepy','tired']],['(｡-ω-)zzz','sleeping kaomoji',['sleepy','sleep']],
+          ['(￣ｏ￣) . z Z','yawning kaomoji',['sleepy','yawn']],['(ᴗ˳ᴗ)','sleepy kaomoji',['sleepy','tired']],
+          ['(-.-)Zzz...','sleeping kaomoji',['sleepy','sleep']],['(_ _)ﾉﾞ','tired bow kaomoji',['sleepy','tired']],
+          ['(´～`)','drowsy kaomoji',['sleepy','tired']],['(－ω－) zzZ','sleeping kaomoji',['sleepy','sleep']]
+        ] },
+        { key: 'shrug', label: 'Shrug', icon: '¯\\_(ツ)_/¯', items: [
+          ['¯\\_(ツ)_/¯','shrug kaomoji',['shrug','whatever','idk']],['ლ(ﾟдﾟლ)','confused shrug kaomoji',['shrug','confused']],
+          ['\\_(-_-)_/','shrug kaomoji',['shrug','meh']],['(￣ε￣;)','indifferent shrug kaomoji',['shrug','meh']]
+        ] },
+        { key: 'lenny', label: 'Lenny Faces', icon: '( ͡° ͜ʖ ͡°)', items: [
+          ['( ͡° ͜ʖ ͡°)','lenny face',['lenny','smug','meme']],['( ͠° ͟ʖ ͡°)','lenny face variant',['lenny','meme']],
+          ['ᕦ( ͡° ͜ʖ ͡°)ᕤ','flexing lenny face',['lenny','strong','meme']],['( ͡~ ͜ʖ ͡°)','winking lenny face',['lenny','wink','meme']],
+          ['( ͡ᵔ ͜ʖ ͡ᵔ )','happy lenny face',['lenny','happy','meme']],['¯\\_( ͡° ͜ʖ ͡°)_/¯','shrugging lenny face',['lenny','shrug','meme']]
+        ] },
+        { key: 'tableflip', label: 'Table Flip', icon: '(╯°□°)╯︵ ┻━┻', items: [
+          ['(╯°□°)╯︵ ┻━┻','table flip kaomoji',['tableflip','angry','rage']],
+          ['┬─┬ノ( º _ ºノ)','table unflip kaomoji',['tableflip','putback','calm']],
+          ['(ノಠ益ಠ)ノ彡┻━┻','angry table flip kaomoji',['tableflip','angry']],
+          ['(╯‵□′)╯︵┴─┴','frustrated table flip kaomoji',['tableflip','frustrated']]
+        ] },
+        { key: 'animals-kao', label: 'Animals', icon: 'ʕ•ᴥ•ʔ', items: [
+          ['ʕ•ᴥ•ʔ','bear kaomoji',['bear','animal','cute']],['(=^･ω･^=)','cat kaomoji',['cat','animal','cute']],
+          ['(◕ᴥ◕)','dog kaomoji',['dog','animal','cute']],['ฅ^•ﻌ•^ฅ','cat kaomoji',['cat','animal','cute']],
+          ['(＾• ω •＾)','fox kaomoji',['fox','animal','cute']],['(U ﹃ U)','puppy kaomoji',['dog','animal','cute']],
+          ['(=￣ω￣=)','cat kaomoji',['cat','animal']],['ᵔᴥᵔ','bear cub kaomoji',['bear','animal','cute']]
+        ] },
+        { key: 'greeting', label: 'Greeting', icon: '(｡•̀ᴗ-)✧', items: [
+          ['(｡•̀ᴗ-)✧','greeting kaomoji',['hello','greeting','wink']],['ヾ(＾-＾)ノ','waving kaomoji',['hello','wave','bye']],
+          ['(=^-ω-^=)','greeting kaomoji',['hello','cute']],['(＾ｕ＾)','greeting smile kaomoji',['hello','smile']],
+          ['ヽ(・∀・)ﾉ','cheerful greeting kaomoji',['hello','cheerful']],['(´• ω •`)ノ','shy greeting kaomoji',['hello','shy']]
+        ] },
+        { key: 'dancing', label: 'Dancing', icon: '♪┏(・o･)┛♪', items: [
+          ['♪┏(・o･)┛♪','dancing kaomoji',['dance','music','party']],['(っ˘ω˘ς )','dancing kaomoji',['dance']],
+          ['┌(ㆆ㉨ㆆ)ʃ','wiggle dance kaomoji',['dance','wiggle']],['ヽ(o´∀`)ﾉ♪♬','happy dancing kaomoji',['dance','music','happy']],
+          ['ヾ(⌐■_■)ノ♪','cool dancing kaomoji',['dance','cool','music']]
+        ] },
+        { key: 'cute', label: 'Cute', icon: '(｡◕‿◕｡)', items: [
+          ['(｡◕‿◕｡)','cute kaomoji',['cute','happy']],['(◠‿◠)','cute smile kaomoji',['cute','smile']],
+          ['(◡‿◡✿)','cute flower kaomoji',['cute','flower']],['(⁄ ⁄•⁄ω⁄•⁄ ⁄)','shy cute kaomoji',['cute','shy','blush']],
+          ['(ノ◕ヮ◕)ノ*:･ﾟ✧','excited sparkle kaomoji',['cute','excited','sparkle']],['(*ฅ́˘ฅ̀*)','cute cat paw kaomoji',['cute','cat']],
+          ['(⁀ᗢ⁀)','cute smiling kaomoji',['cute','smile']],['ପ(๑•ᴗ•๑)ଓ','cute happy kaomoji',['cute','happy']]
+        ] }
+      ];
+
+      var SYMBOL_CATEGORIES = [
+        { key: 'arrows', label: 'Arrows', icon: '→', items: [
+          ['→','right arrow',['arrow','right']],['←','left arrow',['arrow','left']],['↑','up arrow',['arrow','up']],['↓','down arrow',['arrow','down']],
+          ['↔','left right arrow',['arrow','both']],['↕','up down arrow',['arrow','both']],['⇒','double right arrow',['arrow','right']],
+          ['⇐','double left arrow',['arrow','left']],['⇑','double up arrow',['arrow','up']],['⇓','double down arrow',['arrow','down']],
+          ['↗','up-right arrow',['arrow','diagonal']],['↘','down-right arrow',['arrow','diagonal']],['↙','down-left arrow',['arrow','diagonal']],
+          ['↖','up-left arrow',['arrow','diagonal']],['↩','back arrow',['arrow','back','return']],['↪','forward arrow',['arrow','forward']],
+          ['⟶','long right arrow',['arrow','right','long']],['⤴','curved up arrow',['arrow','curve']],['⤵','curved down arrow',['arrow','curve']]
+        ] },
+        { key: 'currency', label: 'Currency', icon: '₹', items: [
+          ['₹','indian rupee sign',['rupee','india','money','currency']],['$','dollar sign',['dollar','usd','money','currency']],
+          ['€','euro sign',['euro','money','currency']],['£','pound sign',['pound','gbp','money','currency']],
+          ['¥','yen sign',['yen','yuan','money','currency']],['¢','cent sign',['cent','money']],['₩','won sign',['won','korea','money']],
+          ['₽','ruble sign',['ruble','russia','money']],['฿','baht sign',['baht','thailand','money']],['₺','lira sign',['lira','turkey','money']]
+        ] },
+        { key: 'math', label: 'Math', icon: '∑', items: [
+          ['±','plus-minus',['plusminus','math']],['×','multiplication',['multiply','times','math']],['÷','division',['divide','math']],
+          ['≈','approximately equal',['approx','math']],['≠','not equal',['notequal','math']],['≤','less than or equal',['lte','math']],
+          ['≥','greater than or equal',['gte','math']],['∞','infinity',['infinity','forever','math']],['√','square root',['sqrt','root','math']],
+          ['∑','summation',['sum','sigma','math']],['∏','product',['product','pi','math']],['∫','integral',['integral','calculus','math']],
+          ['°','degree',['degree','temperature','math']],['%','percent',['percent','math']],['‰','per mille',['permille','math']]
+        ] },
+        { key: 'stars', label: 'Stars & Bullets', icon: '★', items: [
+          ['★','black star',['star']],['☆','white star',['star']],['✦','sparkle star',['star','sparkle']],['✧','sparkle star outline',['star','sparkle']],
+          ['✩','star outline',['star']],['✪','circled star',['star']],['✫','shadowed star',['star']],['✬','pinwheel star',['star']],
+          ['•','bullet',['bullet','dot']],['‣','triangular bullet',['bullet']],['◦','white bullet',['bullet']],['▪','black square bullet',['bullet']],
+          ['▫','white square bullet',['bullet']],['●','black circle',['circle','dot']],['○','white circle',['circle']],['◆','black diamond',['diamond']]
+        ] },
+        { key: 'dingbats', label: 'Dingbats & Checks', icon: '✓', items: [
+          ['✓','check mark',['check','tick','yes','done']],['✔','heavy check mark',['check','tick','yes','done']],
+          ['☑','ballot box with check',['check','tick','done']],['✗','ballot x',['cross','no','wrong']],
+          ['✘','heavy ballot x',['cross','no','wrong']],['☒','ballot box with x',['cross','no']],
+          ['❖','black diamond minus white x',['dingbat']],['✂','scissors',['cut','scissors']],['✎','pencil',['pencil','write']],
+          ['✉','envelope',['mail','envelope']],['☎','telephone',['phone','call']],['⚑','flag',['flag','marker']]
+        ] },
+        { key: 'boxdrawing', label: 'Box Drawing', icon: '┌', items: [
+          ['─','horizontal line',['box','line']],['│','vertical line',['box','line']],['┌','top-left corner',['box','corner']],
+          ['┐','top-right corner',['box','corner']],['└','bottom-left corner',['box','corner']],['┘','bottom-right corner',['box','corner']],
+          ['├','left tee',['box']],['┤','right tee',['box']],['┬','top tee',['box']],['┴','bottom tee',['box']],
+          ['┼','cross',['box']],['═','double horizontal',['box','double']],['║','double vertical',['box','double']],
+          ['╔','double top-left',['box','double']],['╗','double top-right',['box','double']],['╚','double bottom-left',['box','double']],['╝','double bottom-right',['box','double']]
+        ] },
+        { key: 'greek', label: 'Greek Letters', icon: 'Ω', items: [
+          ['α','alpha',['greek','alpha']],['β','beta',['greek','beta']],['γ','gamma',['greek','gamma']],['δ','delta',['greek','delta']],
+          ['ε','epsilon',['greek','epsilon']],['θ','theta',['greek','theta']],['λ','lambda',['greek','lambda']],['μ','mu',['greek','mu']],
+          ['π','pi',['greek','pi','math']],['σ','sigma',['greek','sigma']],['φ','phi',['greek','phi']],['ω','omega',['greek','omega']],
+          ['Δ','capital delta',['greek','delta']],['Σ','capital sigma',['greek','sigma']],['Ω','capital omega',['greek','omega']],['Φ','capital phi',['greek','phi']]
+        ] },
+        { key: 'superscript', label: 'Superscript/Subscript', icon: '²', items: [
+          ['⁰','superscript 0',['superscript','zero']],['¹','superscript 1',['superscript','one']],['²','superscript 2',['superscript','two','squared']],
+          ['³','superscript 3',['superscript','three','cubed']],['ⁿ','superscript n',['superscript']],['₀','subscript 0',['subscript']],
+          ['₁','subscript 1',['subscript']],['₂','subscript 2',['subscript']],['ₓ','subscript x',['subscript']],['ᵃ','superscript a',['superscript']]
+        ] },
+        { key: 'cardsuits', label: 'Card Suits & Zodiac', icon: '♠', items: [
+          ['♠','spade suit',['cards','spade']],['♣','club suit',['cards','club']],['♥','heart suit',['cards','heart']],['♦','diamond suit',['cards','diamond']],
+          ['♈','aries',['zodiac','aries']],['♉','taurus',['zodiac','taurus']],['♊','gemini',['zodiac','gemini']],['♋','cancer',['zodiac','cancer']],
+          ['♌','leo',['zodiac','leo']],['♍','virgo',['zodiac','virgo']],['♎','libra',['zodiac','libra']],['♏','scorpio',['zodiac','scorpio']],
+          ['♐','sagittarius',['zodiac','sagittarius']],['♑','capricorn',['zodiac','capricorn']],['♒','aquarius',['zodiac','aquarius']],['♓','pisces',['zodiac','pisces']]
+        ] }
+      ];
+
+      var DECORATION_ITEMS = [
+        ['▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬','solid divider',['divider','line','border']],
+        ['═══════════════════','double line divider',['divider','line']],
+        ['• ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ •','dotted divider',['divider','dots']],
+        ['◈━━━━━━━━━━━━━━◈','diamond divider',['divider','diamond']],
+        ['▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀','zigzag divider',['divider','zigzag']],
+        ['•.,¸¸,.•*¯`•. .•´¯`•.,¸¸,.•*','fancy wave divider',['divider','fancy','wave']],
+        ['❀•° :¨:•.•:¨:° •❀','flower divider',['divider','flower']],
+        ['~•~•~•~•~•~•~•~•~•~','tilde divider',['divider','tilde']],
+        ['▁ ▂ ▃ ▄ ▅ ▆ ▇ █ ▇ ▆ ▅ ▄ ▃ ▂ ▁','bar chart divider',['divider','bars']],
+        ['꧁═──═👑═──═꧂','crown border',['border','crown','fancy']],
+        ['⋆⁺₊⋆ ☾⋆⁺₊⋆','stars and moon divider',['divider','stars','moon']],
+        ['.•*¨*•.¸¸♪','music note divider',['divider','music']],
+        ['『 』','japanese brackets',['brackets','decoration']],
+        ['【 】','lenticular brackets',['brackets','decoration']],
+        ['❝ ❞','fancy quotes',['quotes','decoration']],
+        ['✞ ✟ ✝','cross symbols',['cross','decoration']],
+        ['☙❧','ornamental brackets',['decoration','ornament']],
+        ['๑•ิ.•ั๑','cute divider',['divider','cute']],
+        ['▂▃▅▇█▓▒░ ░▒▓█▇▅▃▂','gradient bar',['divider','gradient']],
+        ['⊹ ࣪ ˖ ✦','sparkle cluster',['sparkle','decoration']]
+      ];
+
+      // ================= Build flat item list for each tab =================
+      function buildEmojiItems() {
+        var out = [];
+        EMOJI_CATEGORIES.forEach(function (cat) {
+          cat.items.forEach(function (e) {
+            out.push({ char: e[0], name: e[1], keywords: e[2], skinTonable: !!e[3], category: cat.key, type: 'emoji' });
+          });
+        });
+        return out;
+      }
+      function buildKaomojiItems() {
+        var out = [];
+        KAOMOJI_CATEGORIES.forEach(function (cat) {
+          cat.items.forEach(function (k) { out.push({ char: k[0], name: k[1], keywords: k[2], category: cat.key, type: 'kaomoji' }); });
+        });
+        return out;
+      }
+      function buildSymbolItems() {
+        var out = [];
+        SYMBOL_CATEGORIES.forEach(function (cat) {
+          cat.items.forEach(function (s) { out.push({ char: s[0], name: s[1], keywords: s[2], category: cat.key, type: 'symbol' }); });
+        });
+        return out;
+      }
+      function buildDecorationItems() {
+        return DECORATION_ITEMS.map(function (d) { return { char: d[0], name: d[1], keywords: d[2], category: 'decorations', type: 'decoration' }; });
+      }
+
+      var TABS = {
+        emoji: { categories: EMOJI_CATEGORIES, items: buildEmojiItems() },
+        kaomoji: { categories: KAOMOJI_CATEGORIES, items: buildKaomojiItems() },
+        symbols: { categories: SYMBOL_CATEGORIES, items: buildSymbolItems() },
+        decorations: { categories: [{ key: 'decorations', label: 'Decorations', icon: '✦', items: [] }], items: buildDecorationItems() }
+      };
+      var ALL_ITEMS = TABS.emoji.items.concat(TABS.kaomoji.items, TABS.symbols.items, TABS.decorations.items);
+
+      // ================= DOM wiring =================
+      var searchInput = document.getElementById('epSearch');
+      var searchCount = document.getElementById('epSearchCount');
+      var tabButtons = Array.from(document.querySelectorAll('[data-tab-btn]'));
+      var skinToneSelect = document.getElementById('epSkinTone');
+      var skinToneGroup = document.querySelector('[data-skin-tone-group]');
+      var tileSizeSelect = document.getElementById('epTileSize');
+      var multiCopyToggle = document.querySelector('[data-multicopy-toggle]');
+      var multiCopyBar = document.querySelector('[data-multicopy-bar]');
+      var multiCopyText = document.getElementById('epMultiCopyText');
+      var categoryNav = document.querySelector('[data-category-nav]');
+      var resultsView = document.querySelector('[data-results-view]');
+      var resultsGrid = document.querySelector('[data-results-grid]');
+      var noResultsNote = document.querySelector('[data-no-results]');
+      var browseView = document.querySelector('[data-browse-view]');
+      var favoritesSection = document.querySelector('[data-favorites-section]');
+      var favoritesGrid = document.querySelector('[data-favorites-grid]');
+      var recentsSection = document.querySelector('[data-recents-section]');
+      var recentsGrid = document.querySelector('[data-recents-grid]');
+      var mostUsedSection = document.querySelector('[data-mostused-section]');
+      var mostUsedGrid = document.querySelector('[data-mostused-grid]');
+      var categorySectionsRoot = document.querySelector('[data-category-sections]');
+      var toast = document.querySelector('[data-toast]');
+      var popupBackdrop = document.querySelector('[data-popup-backdrop]');
+      var liveAnnouncer = document.querySelector('[data-live-announcer]');
+      var copyTotalDisplay = document.querySelector('[data-copy-total-display]');
+      var bookmarkNudge = document.querySelector('[data-bookmark-nudge]');
+      var eodRow = document.querySelector('[data-eod-row]');
+
+      var STORAGE_RECENTS = 'tooladda-emoji-recents';
+      var STORAGE_FAVORITES = 'tooladda-emoji-favorites';
+      var STORAGE_FREQ = 'tooladda-emoji-freq';
+      var STORAGE_SKINTONE = 'tooladda-emoji-skintone';
+      var STORAGE_COPYTOTAL = 'tooladda-emoji-copytotal';
+      function loadList(key) { try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) { return []; } }
+      function saveList(key, list) { try { localStorage.setItem(key, JSON.stringify(list)); } catch (e) {} }
+      function loadObj(key) { try { return JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) { return {}; } }
+      function saveObj(key, obj) { try { localStorage.setItem(key, JSON.stringify(obj)); } catch (e) {} }
+      function loadNum(key) { try { return parseInt(localStorage.getItem(key), 10) || 0; } catch (e) { return 0; } }
+      function saveNum(key, n) { try { localStorage.setItem(key, String(n)); } catch (e) {} }
+
+      var state = {
+        activeTab: 'emoji',
+        multiCopyMode: false,
+        recents: loadList(STORAGE_RECENTS),
+        favorites: loadList(STORAGE_FAVORITES),
+        freq: loadObj(STORAGE_FREQ),
+        copyTotal: loadNum(STORAGE_COPYTOTAL),
+        sessionCopies: 0,
+        popupItem: null
+      };
+
+      // Live-compute and display real dataset size (avoids stale marketing numbers)
+      var countEl = document.querySelector('[data-emoji-count]');
+      if (countEl) countEl.textContent = (Math.floor(ALL_ITEMS.length / 50) * 50) + '+';
+      copyTotalDisplay.textContent = state.copyTotal;
+
+      // Restore skin tone preference
+      var savedTone = localStorage.getItem(STORAGE_SKINTONE);
+      if (savedTone) skinToneSelect.value = savedTone;
+
+      function findItemByChar(ch) {
+        for (var key in TABS) {
+          var found = TABS[key].items.filter(function (it) { return it.char === ch; })[0];
+          if (found) return found;
+        }
+        return null;
+      }
+      function findItemBySlug(slug) { return ALL_ITEMS.filter(function (it) { return toSlug(it.name) === slug; })[0] || null; }
+
+      function currentDisplayChar(item) {
+        return item.type === 'emoji' ? applySkinTone(item, skinToneSelect.value) : item.char;
+      }
+
+      function showToast(text) {
+        toast.textContent = text;
+        toast.classList.add('is-visible');
+        window.clearTimeout(toast._hideTimer);
+        toast._hideTimer = window.setTimeout(function () { toast.classList.remove('is-visible'); }, 1400);
+      }
+      function announce(text) { liveAnnouncer.textContent = text; }
+
+      function execCommandCopy(value) {
+        var temp = document.createElement('textarea');
+        temp.value = value; temp.style.position = 'fixed'; temp.style.left = '-9999px';
+        document.body.appendChild(temp); temp.select();
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+        document.body.removeChild(temp);
+        return ok ? Promise.resolve() : Promise.reject(new Error('execCommand copy failed'));
+      }
+      // Clipboard API can exist but still reject (permission prompts, unfocused
+      // document, some embedded/iframe contexts) — always fall back to execCommand
+      // rather than letting the copy silently fail with no feedback.
+      function copyToClipboard(value) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(value).catch(function () { return execCommandCopy(value); });
+        }
+        return execCommandCopy(value);
+      }
+
+      function bumpCopyTotal() {
+        state.copyTotal += 1;
+        state.sessionCopies += 1;
+        saveNum(STORAGE_COPYTOTAL, state.copyTotal);
+        copyTotalDisplay.textContent = state.copyTotal;
+        if (state.sessionCopies === 3 && !sessionStorage.getItem('tooladda-emoji-nudge-shown')) {
+          bookmarkNudge.classList.add('is-visible');
+          sessionStorage.setItem('tooladda-emoji-nudge-shown', '1');
+        }
+      }
+      function bumpFreq(ch) {
+        state.freq[ch] = (state.freq[ch] || 0) + 1;
+        saveObj(STORAGE_FREQ, state.freq);
+      }
+
+      function handleTileActivate(item, tileEl) {
+        var value = currentDisplayChar(item);
+        if (state.multiCopyMode) {
+          multiCopyText.value += value;
+          showToast('Added ' + value);
+          return;
+        }
+        copyToClipboard(value).then(function () {
+          showToast('Copied ' + value);
+          announce('Copied ' + item.name + ' to clipboard');
+          if (tileEl) { tileEl.classList.remove('is-copied'); void tileEl.offsetWidth; tileEl.classList.add('is-copied'); }
+          bumpCopyTotal();
+          bumpFreq(item.char);
+          state.recents = addRecent(state.recents, item.char, 40);
+          saveList(STORAGE_RECENTS, state.recents);
+          renderRecents();
+          renderMostUsed();
+        }).catch(function () {
+          showToast('Copy failed — select the text and copy manually');
+          announce('Copy failed for ' + item.name);
+        });
+      }
+
+      function createTile(item) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'ep-tile' + (item.type === 'decoration' ? ' decoration-tile' : '') + (item.type === 'kaomoji' ? ' kaomoji-tile' : '') + (state.favorites.includes(item.char) ? ' is-fav' : '');
+        btn.textContent = currentDisplayChar(item);
+        btn.title = item.type === 'kaomoji' ? item.char : item.name;
+        btn.setAttribute('aria-label', item.name + (item.type === 'kaomoji' ? ' (' + item.char + ')' : ''));
+        btn.addEventListener('click', function () { handleTileActivate(item, btn); });
+        btn.addEventListener('contextmenu', function (e) {
+          e.preventDefault();
+          state.favorites = toggleFavorite(state.favorites, item.char);
+          saveList(STORAGE_FAVORITES, state.favorites);
+          btn.classList.toggle('is-fav');
+          renderFavorites();
+          showToast(state.favorites.includes(item.char) ? 'Added to favourites' : 'Removed from favourites');
+        });
+        var longPressTimer = null;
+        btn.addEventListener('touchstart', function () { longPressTimer = window.setTimeout(function () { openPopup(item); }, 500); }, { passive: true });
+        btn.addEventListener('touchend', function () { window.clearTimeout(longPressTimer); });
+        btn.addEventListener('touchmove', function () { window.clearTimeout(longPressTimer); });
+        btn.addEventListener('dblclick', function (e) { e.preventDefault(); openPopup(item); });
+        return btn;
+      }
+
+      // ---- Lazy/chunked rendering so large grids stay smooth ----
+      function renderGridLazy(container, items, batchSize) {
+        container.innerHTML = '';
+        if (!items.length) return;
+        var index = 0;
+        batchSize = batchSize || 60;
+        var sentinel = document.createElement('div');
+        sentinel.className = 'ep-sentinel';
+        var observer;
+        function renderBatch() {
+          var end = Math.min(items.length, index + batchSize);
+          var frag = document.createDocumentFragment();
+          for (; index < end; index++) frag.appendChild(createTile(items[index]));
+          container.insertBefore(frag, sentinel);
+          if (index >= items.length) {
+            if (observer) observer.disconnect();
+            if (sentinel.parentNode) sentinel.parentNode.removeChild(sentinel);
+          }
+        }
+        container.appendChild(sentinel);
+        renderBatch();
+        if (index < items.length) {
+          observer = new IntersectionObserver(function (entries) {
+            if (entries[0].isIntersecting) renderBatch();
+          }, { rootMargin: '400px' });
+          observer.observe(sentinel);
+        }
+      }
+
+      function renderFavorites() {
+        var items = state.favorites.map(findItemByChar).filter(Boolean);
+        favoritesSection.classList.toggle('hidden', items.length === 0);
+        renderGridLazy(favoritesGrid, items, 100);
+      }
+      function renderRecents() {
+        var items = state.recents.map(findItemByChar).filter(Boolean);
+        recentsSection.classList.toggle('hidden', items.length === 0);
+        renderGridLazy(recentsGrid, items, 100);
+      }
+      function renderMostUsed() {
+        var entries = Object.keys(state.freq).map(function (ch) { return { ch: ch, count: state.freq[ch] }; });
+        entries.sort(function (a, b) { return b.count - a.count; });
+        var items = entries.slice(0, 12).map(function (e) { return findItemByChar(e.ch); }).filter(Boolean);
+        mostUsedSection.classList.toggle('hidden', items.length < 3);
+        renderGridLazy(mostUsedGrid, items, 100);
+      }
+
+      function renderCategoryNav() {
+        var tab = TABS[state.activeTab];
+        categoryNav.innerHTML = '';
+        tab.categories.forEach(function (cat) {
+          if (!cat.items.length && state.activeTab !== 'decorations') return;
+          var chip = document.createElement('button');
+          chip.type = 'button'; chip.className = 'ep-category-chip';
+          chip.textContent = cat.icon + ' ' + cat.label;
+          chip.addEventListener('click', function () {
+            var target = document.getElementById('cat-' + cat.key);
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+          categoryNav.appendChild(chip);
+        });
+      }
+
+      // ---- Mobile in-list ad (Adsterra 300x250, assets/js/inline-ads.js) ----
+      // Slot pehli category ke baad rehta hai. Tab/size badalne par sirf category sections
+      // hatte/judte hain, slot ko hilaya nahi jata - iframe ko DOM me move karne se wo
+      // reload hota aur naya impression girta. Search ke waqt browse view ke saath chhup
+      // jata hai. Desktop par CSS se chhupa rehta hai aur iframe banta hi nahi.
+      var AD_AFTER_SECTIONS = 1;
+      var inlistAd = document.createElement('div');
+      inlistAd.className = 'ta-inline-ad';
+      if (window.TAInlineAd) window.TAInlineAd.fill(inlistAd);
+      function addCategorySection(section) {
+        var placed = Array.prototype.filter.call(categorySectionsRoot.children, function (el) { return el !== inlistAd; }).length;
+        if (placed < AD_AFTER_SECTIONS) categorySectionsRoot.insertBefore(section, inlistAd);
+        else categorySectionsRoot.appendChild(section);
+      }
+
+      function renderCategorySections() {
+        Array.prototype.slice.call(categorySectionsRoot.children).forEach(function (el) {
+          if (el !== inlistAd) categorySectionsRoot.removeChild(el);
+        });
+        if (!inlistAd.parentNode) categorySectionsRoot.appendChild(inlistAd);
+        var tab = TABS[state.activeTab];
+        if (state.activeTab === 'decorations') {
+          var section = document.createElement('div');
+          var grid = document.createElement('div');
+          grid.className = 'ep-grid size-' + tileSizeSelect.value;
+          section.appendChild(grid);
+          addCategorySection(section);
+          renderGridLazy(grid, tab.items, 60);
+          return;
+        }
+        tab.categories.forEach(function (cat) {
+          var catItems = tab.items.filter(function (it) { return it.category === cat.key; });
+          if (!catItems.length) return;
+          var section = document.createElement('div');
+          section.id = 'cat-' + cat.key;
+          var title = document.createElement('h2');
+          title.className = 'ep-section-title';
+          title.textContent = cat.icon + ' ' + cat.label;
+          var grid = document.createElement('div');
+          grid.className = 'ep-grid size-' + tileSizeSelect.value;
+          section.appendChild(title); section.appendChild(grid);
+          addCategorySection(section);
+          renderGridLazy(grid, catItems, 60);
+        });
+      }
+
+      function renderEmojiOfDay() {
+        eodRow.innerHTML = '';
+        var pool = TABS.emoji.items;
+        var dayIndex = Math.floor(Date.now() / 86400000) % pool.length;
+        var eodItem = pool[dayIndex];
+        var pill = document.createElement('button');
+        pill.type = 'button'; pill.className = 'ep-trending-pill';
+        pill.innerHTML = '<span class="ep-eod-btn">' + eodItem.char + '</span> Emoji of the day: ' + eodItem.name;
+        pill.addEventListener('click', function () { openPopup(eodItem); });
+        eodRow.appendChild(pill);
+      }
+
+      function renderBrowseView() {
+        skinToneGroup.style.display = state.activeTab === 'emoji' ? '' : 'none';
+        renderMostUsed();
+        renderFavorites();
+        renderRecents();
+        renderCategoryNav();
+        renderCategorySections();
+      }
+
+      function runSearch(query) {
+        // Search spans every type (emoji, kaomoji, symbols, decorations) regardless of
+        // the active tab, since a word like "shrug" only exists as a kaomoji, not an emoji.
+        var results = searchItems(ALL_ITEMS, query, 200);
+        resultsGrid.innerHTML = '';
+        searchCount.textContent = results.length + (results.length === 1 ? ' result' : ' results') + ' for "' + query + '"';
+        if (!results.length) { noResultsNote.classList.remove('hidden'); return; }
+        noResultsNote.classList.add('hidden');
+        resultsGrid.className = 'ep-grid size-' + tileSizeSelect.value;
+        renderGridLazy(resultsGrid, results, 100);
+      }
+
+      searchInput.addEventListener('input', function () {
+        window.clearTimeout(searchInput._debounce);
+        searchInput._debounce = window.setTimeout(function () {
+          var q = searchInput.value.trim();
+          if (q) {
+            resultsView.classList.remove('hidden');
+            browseView.classList.add('hidden');
+            runSearch(q);
+          } else {
+            resultsView.classList.add('hidden');
+            browseView.classList.remove('hidden');
+            searchCount.textContent = '';
+          }
+        }, 200);
+      });
+
+      tabButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          state.activeTab = btn.dataset.tabBtn;
+          tabButtons.forEach(function (b) { b.classList.toggle('is-active', b === btn); b.setAttribute('aria-selected', b === btn ? 'true' : 'false'); });
+          searchInput.value = '';
+          searchCount.textContent = '';
+          resultsView.classList.add('hidden');
+          browseView.classList.remove('hidden');
+          renderBrowseView();
+        });
+      });
+
+      skinToneSelect.addEventListener('change', function () {
+        try { localStorage.setItem(STORAGE_SKINTONE, skinToneSelect.value); } catch (e) {}
+        if (!searchInput.value.trim()) renderBrowseView(); else runSearch(searchInput.value.trim());
+      });
+      tileSizeSelect.addEventListener('change', function () { if (!searchInput.value.trim()) renderBrowseView(); else runSearch(searchInput.value.trim()); });
+
+      multiCopyToggle.addEventListener('click', function () {
+        state.multiCopyMode = !state.multiCopyMode;
+        multiCopyToggle.classList.toggle('is-on', state.multiCopyMode);
+        multiCopyBar.classList.toggle('is-active', state.multiCopyMode);
+      });
+      document.querySelector('[data-multicopy-copy]').addEventListener('click', function () {
+        copyToClipboard(multiCopyText.value).then(function () { showToast('Copied all'); announce('Copied combined string to clipboard'); });
+        bumpCopyTotal();
+      });
+      document.querySelector('[data-multicopy-clear]').addEventListener('click', function () { multiCopyText.value = ''; });
+
+      document.querySelector('[data-clear-recents]').addEventListener('click', function () {
+        state.recents = [];
+        saveList(STORAGE_RECENTS, state.recents);
+        renderRecents();
+        showToast('Recents cleared');
+      });
+
+      document.querySelectorAll('[data-random-btn]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var tabKey = btn.dataset.randomBtn;
+          var pool = TABS[tabKey].items;
+          var pick = pool[Math.floor(Math.random() * pool.length)];
+          openPopup(pick);
+        });
+      });
+
+      document.querySelector('[data-bookmark-dismiss]').addEventListener('click', function () {
+        bookmarkNudge.classList.remove('is-visible');
+      });
+
+      // ---- Detail popup ----
+      function openPopup(item) {
+        state.popupItem = item;
+        var value = currentDisplayChar(item);
+        document.querySelector('[data-popup-char]').textContent = value;
+        document.querySelector('[data-popup-name]').textContent = item.name;
+        document.querySelector('[data-popup-codepoint]').textContent = toUPlusNotation(value);
+        document.querySelector('[data-popup-entity]').textContent = toHtmlEntity(value);
+        document.querySelector('[data-popup-css]').textContent = toCssEscape(value);
+        document.querySelector('[data-popup-shortcode]').textContent = toShortcode(item.name);
+        var favBtn = document.querySelector('[data-popup-favorite]');
+        favBtn.textContent = state.favorites.includes(item.char) ? '★ Remove favourite' : '☆ Add to favourites';
+        popupBackdrop.classList.add('is-active');
+        document.querySelector('[data-popup-close]').focus();
+      }
+      function closePopup() { popupBackdrop.classList.remove('is-active'); state.popupItem = null; }
+      document.querySelector('[data-popup-close]').addEventListener('click', closePopup);
+      popupBackdrop.addEventListener('click', function (e) { if (e.target === popupBackdrop) closePopup(); });
+      document.querySelector('[data-popup-favorite]').addEventListener('click', function () {
+        if (!state.popupItem) return;
+        state.favorites = toggleFavorite(state.favorites, state.popupItem.char);
+        saveList(STORAGE_FAVORITES, state.favorites);
+        renderFavorites();
+        openPopup(state.popupItem);
+      });
+      document.querySelector('[data-popup-share]').addEventListener('click', function () {
+        if (!state.popupItem) return;
+        var url = location.origin + location.pathname + '#' + toSlug(state.popupItem.name);
+        copyToClipboard(url).then(function () { showToast('Link copied'); });
+      });
+      Array.from(document.querySelectorAll('[data-copy-field]')).forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var field = btn.dataset.copyField;
+          var selector = field === 'codepoint' ? '[data-popup-codepoint]' : field === 'entity' ? '[data-popup-entity]' : field === 'shortcode' ? '[data-popup-shortcode]' : '[data-popup-css]';
+          var text = document.querySelector(selector).textContent;
+          copyToClipboard(text).then(function () { showToast('Copied ' + text); });
+        });
+      });
+
+      // ---- Keyboard navigation ----
+      document.addEventListener('keydown', function (e) {
+        var isTyping = document.activeElement === searchInput || document.activeElement.tagName === 'TEXTAREA';
+        if (e.key === '/' && !isTyping) { e.preventDefault(); searchInput.focus(); return; }
+        if (e.key === 'Escape') {
+          if (popupBackdrop.classList.contains('is-active')) { closePopup(); return; }
+          if (document.activeElement === searchInput) { searchInput.value = ''; searchInput.dispatchEvent(new Event('input')); searchInput.blur(); }
+          return;
+        }
+        if (isTyping) return;
+        var tiles = Array.from(document.querySelectorAll('.ep-tile'));
+        if (!tiles.length) return;
+        var activeIdx = tiles.indexOf(document.activeElement);
+        if (['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'Enter', 'Home', 'End'].includes(e.key)) {
+          if (activeIdx === -1) { tiles[0].focus(); e.preventDefault(); return; }
+          e.preventDefault();
+          if (e.key === 'Enter') { tiles[activeIdx].click(); return; }
+          if (e.key === 'Home') { tiles[0].focus(); return; }
+          if (e.key === 'End') { tiles[tiles.length - 1].focus(); return; }
+          var cols = 1;
+          var gridEl = tiles[activeIdx].closest('.ep-grid');
+          if (gridEl) { var colStyle = window.getComputedStyle(gridEl).gridTemplateColumns; cols = colStyle.split(' ').length || 1; }
+          var next = activeIdx;
+          if (e.key === 'ArrowRight') next = Math.min(tiles.length - 1, activeIdx + 1);
+          if (e.key === 'ArrowLeft') next = Math.max(0, activeIdx - 1);
+          if (e.key === 'ArrowDown') next = Math.min(tiles.length - 1, activeIdx + cols);
+          if (e.key === 'ArrowUp') next = Math.max(0, activeIdx - cols);
+          tiles[next].focus();
+        }
+      });
+
+      // ---- Desktop-only autofocus (never steal the mobile keyboard) ----
+      if (window.matchMedia && window.matchMedia('(min-width: 768px)').matches) {
+        searchInput.focus();
+      }
+
+      renderEmojiOfDay();
+      renderBrowseView();
+
+      // ---- Deep-link support: #shrug, #lenny-face, etc. ----
+      if (location.hash.length > 1) {
+        var slug = decodeURIComponent(location.hash.slice(1));
+        var deepItem = findItemBySlug(slug);
+        if (deepItem) {
+          var ownerTabKey = Object.keys(TABS).filter(function (k) { return TABS[k].items.indexOf(deepItem) !== -1; })[0];
+          var ownerBtn = tabButtons.filter(function (b) { return b.dataset.tabBtn === ownerTabKey; })[0];
+          if (ownerBtn && ownerTabKey !== state.activeTab) ownerBtn.click();
+          window.setTimeout(function () { openPopup(deepItem); }, 50);
+        }
+      }
+    })();
+  </script>
+  <script src="assets/js/side-ads.js" defer></script>
+  <script src="assets/js/inline-ads.js" data-in-article defer></script>
+</body>
+</html>

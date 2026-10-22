@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+    <meta name="description" content="Format, validate, beautify and minify JSON online for free. Syntax highlighting, exact error lines, tree view and one-click copy — all in your browser." />
+    <title>JSON Formatter, Validator &amp; Minifier | ToolAdda</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <meta name="theme-color" content="#1d4ed8" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="ToolAdda" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <link rel="canonical" href="https://tooladda.online/developer-tools/json-formatter.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+    <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta property="og:title" content="JSON Formatter, Validator &amp; Minifier | ToolAdda" />
+    <meta property="og:description" content="Format, validate, beautify and minify JSON with syntax highlighting, exact error lines, a collapsible tree view and live statistics. Free, in your browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tooladda.online/developer-tools/json-formatter.html" />
+    <meta property="og:site_name" content="ToolAdda" />
+    <meta property="og:image" content="https://tooladda.online/assets/images/og/developer-tools-json-formatter.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content="JSON Formatter, Validator and Minifier — free developer tool on ToolAdda, runs in your browser with no sign-up." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JSON Formatter, Validator &amp; Minifier | ToolAdda" />
+    <meta name="twitter:description" content="Format, validate, beautify and minify JSON with syntax highlighting, exact error lines, a collapsible tree view and live statistics. Free, in your browser." />
+    <meta name="twitter:image" content="https://tooladda.online/assets/images/og/developer-tools-json-formatter.jpg" />
+    <meta name="twitter:image:alt" content="JSON Formatter, Validator and Minifier — free developer tool on ToolAdda, runs in your browser with no sign-up." />
+
+    <style id="jf-styles">
+      /* ============================================================
+         JSON Formatter — page-scoped design system.
+
+         A cool steel-blue console with the JSON syntax palette doing
+         the talking: keys blue, strings green, numbers amber, literals
+         violet. Deliberately not the site indigo, the SIP lime, the RD
+         teal, the shadow-generator fuchsia or the orange of the JSON
+         to YAML page.
+
+         Both editors stay dark in either theme. Code belongs on a dark
+         surface, and pinning it keeps the six syntax colours at a
+         stable contrast instead of retuning them per theme.
+         ============================================================ */
+
+      .jf-page {
+        --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+        --r-sm: 8px; --r-md: 12px; --r-lg: 18px;
+
+        --app-bg: #f1f5f9;
+        --surface: #ffffff;
+        --surface-raised: #f8fafc;
+        --surface-hover: #e6edf5;
+        --text-primary: #0f172a;
+        --text-secondary: #41506b;
+        --muted: #6b7a94;
+        --border: rgba(15, 23, 42, .12);
+        --border-strong: rgba(15, 23, 42, .22);
+
+        --accent: #1d4ed8;
+        --accent-deep: #1e40af;
+        --accent-soft: rgba(29, 78, 216, .10);
+
+        --code-bg: #0b1220;
+        --code-text: #dbe4f0;
+        --json-key: #7dd3fc;
+        --json-string: #86efac;
+        --json-number: #fbbf24;
+        --json-boolean: #c4b5fd;
+        --json-null: #f9a8d4;
+
+        --success: #15803d;
+        --warning: #92610a;
+        --warning-soft: rgba(146, 97, 10, .12);
+        --danger: #b3261e;
+        --danger-soft: rgba(179, 38, 30, .10);
+        --focus: #1d4ed8;
+
+        --panel-shadow: 0 1px 2px rgba(15, 23, 42, .05), 0 14px 38px rgba(15, 23, 42, .08);
+
+        color: var(--text-primary);
+        background: radial-gradient(circle at 12% 0%, rgba(29, 78, 216, .08), transparent 420px), var(--app-bg);
+        padding-bottom: 3rem;
+      }
+
+      [data-theme="dark"] .jf-page {
+        --app-bg: #0b1120; --surface: #131c2e; --surface-raised: #18233a; --surface-hover: #1f2c47;
+        --text-primary: #eef3fa; --text-secondary: #b9c6da; --muted: #8496b0;
+        --border: rgba(238, 243, 250, .13); --border-strong: rgba(238, 243, 250, .24);
+        --accent: #60a5fa; --accent-deep: #93c5fd; --accent-soft: rgba(96, 165, 250, .14);
+        --success: #6ee7a0; --warning: #e0b054; --warning-soft: rgba(224, 176, 84, .13);
+        --danger: #fca5a5; --danger-soft: rgba(252, 165, 165, .12); --focus: #60a5fa;
+        --panel-shadow: 0 16px 46px rgba(0, 0, 0, .55);
+        background: radial-gradient(circle at 12% 0%, rgba(96, 165, 250, .10), transparent 420px), var(--app-bg);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) .jf-page {
+          --app-bg: #0b1120; --surface: #131c2e; --surface-raised: #18233a; --surface-hover: #1f2c47;
+          --text-primary: #eef3fa; --text-secondary: #b9c6da; --muted: #8496b0;
+          --border: rgba(238, 243, 250, .13); --border-strong: rgba(238, 243, 250, .24);
+          --accent: #60a5fa; --accent-deep: #93c5fd; --accent-soft: rgba(96, 165, 250, .14);
+          --success: #6ee7a0; --warning: #e0b054; --warning-soft: rgba(224, 176, 84, .13);
+          --danger: #fca5a5; --danger-soft: rgba(252, 165, 165, .12); --focus: #60a5fa;
+          --panel-shadow: 0 16px 46px rgba(0, 0, 0, .55);
+          background: radial-gradient(circle at 12% 0%, rgba(96, 165, 250, .10), transparent 420px), var(--app-bg);
+        }
+      }
+
+      .jf-page :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 5px; }
+      .jf-page [hidden] { display: none !important; }
+      .jf-wrap { max-width: 1320px; margin: 0 auto; padding: 0 1rem; }
+      .jf-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+      .jf-crumb { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; padding: 1rem 0 .2rem; font-size: .85rem; color: var(--muted); }
+      .jf-crumb a { color: var(--accent); font-weight: 600; text-decoration: none; }
+      .jf-crumb a:hover { text-decoration: underline; }
+      .jf-crumb span[aria-hidden] { opacity: .5; }
+
+      .jf-hero { padding: 1rem 0 1.3rem; }
+      .jf-eyebrow { display: inline-flex; align-items: center; gap: .4rem; font-family: var(--mono); font-size: .69rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); padding: .3rem .62rem; border-radius: 999px; background: var(--accent-soft); border: 1px solid var(--accent-soft); }
+      .jf-h1 { margin: .7rem 0 .45rem; font-size: clamp(1.8rem, 4.4vw, 2.7rem); font-weight: 800; letter-spacing: -.024em; line-height: 1.08; }
+      .jf-lede { margin: 0; max-width: 68ch; color: var(--text-secondary); font-size: 1.02rem; line-height: 1.65; }
+      .jf-trust { display: flex; flex-wrap: wrap; gap: .4rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+      .jf-trust li { font-size: .78rem; font-weight: 600; color: var(--text-secondary); padding: .3rem .62rem; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); }
+
+      /* ---------- console ---------- */
+      .jf-console { border: 1px solid var(--border-strong); border-radius: var(--r-lg); background: var(--surface); overflow: hidden; box-shadow: var(--panel-shadow); }
+      .jf-bar { display: flex; align-items: center; justify-content: space-between; gap: .6rem 1rem; flex-wrap: wrap; padding: .6rem 1rem; background: var(--surface-raised); border-bottom: 1px solid var(--border); }
+      .jf-bar__title { margin: 0; font-family: var(--mono); font-size: .68rem; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; color: var(--text-secondary); }
+      .jf-privacy { display: inline-flex; align-items: center; gap: .32rem; font-size: .72rem; font-weight: 650; color: var(--success); background: var(--accent-soft); border: 1px solid var(--accent-soft); padding: .24rem .55rem; border-radius: 999px; }
+
+      .jf-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+      @media (max-width: 900px) { .jf-grid { grid-template-columns: 1fr; } }
+      .jf-pane { min-width: 0; display: flex; flex-direction: column; }
+      .jf-pane--in { border-right: 1px solid var(--border); }
+      @media (max-width: 900px) { .jf-pane--in { border-right: none; border-bottom: 1px solid var(--border); } }
+
+      .jf-panehead { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; padding: .55rem .8rem; border-bottom: 1px solid var(--border); background: var(--surface-raised); }
+      .jf-panetitle { display: inline-flex; align-items: center; gap: .45rem; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+      .jf-paneactions { display: flex; flex-wrap: wrap; gap: .25rem; }
+
+      .jf-editor { position: relative; display: flex; background: var(--code-bg); }
+      @media (min-width: 901px) { .jf-editor { height: clamp(380px, 52vh, 600px); } }
+      @media (max-width: 900px) { .jf-editor { height: clamp(300px, 44vh, 440px); } }
+
+      .jf-gutter { flex: none; padding: .8rem .5rem .8rem .8rem; margin: 0; font-family: var(--mono); font-size: .82rem; line-height: 1.6; color: rgba(219, 228, 240, .3); text-align: right; white-space: pre; user-select: none; overflow: hidden; border-right: 1px solid rgba(219, 228, 240, .09); }
+      .jf-input, .jf-out {
+        flex: 1 1 auto; min-width: 0; margin: 0; padding: .8rem .9rem;
+        border: 0; outline: none; resize: none;
+        font-family: var(--mono); font-size: .82rem; line-height: 1.6;
+        background: transparent; color: var(--code-text);
+        overflow: auto; white-space: pre; tab-size: 2;
+      }
+      .jf-input::placeholder { color: rgba(219, 228, 240, .35); }
+      .jf-input[aria-invalid="true"] { box-shadow: inset 3px 0 0 var(--danger); }
+      .jf-placeholder { color: rgba(219, 228, 240, .35); }
+      .jf-editor.is-dragging { box-shadow: inset 0 0 0 2px var(--accent); }
+
+      .tok-key { color: var(--json-key); }
+      .tok-str { color: var(--json-string); }
+      .tok-num { color: var(--json-number); }
+      .tok-bool { color: var(--json-boolean); }
+      .tok-null { color: var(--json-null); }
+
+      .jf-panefoot { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; padding: .45rem .8rem; border-top: 1px solid var(--border); background: var(--surface-raised); font-size: .72rem; color: var(--muted); font-family: var(--mono); }
+
+      /* ---------- tree ---------- */
+      .jf-treebar { display: flex; flex-wrap: wrap; gap: .3rem; align-items: center; padding: .5rem .8rem; border-bottom: 1px solid var(--border); background: var(--surface-raised); }
+      .jf-tree { background: var(--code-bg); color: var(--code-text); overflow: auto; padding: .7rem .8rem; font-family: var(--mono); font-size: .8rem; }
+      @media (min-width: 901px) { .jf-tree { height: clamp(380px, 52vh, 600px); } }
+      @media (max-width: 900px) { .jf-tree { height: clamp(300px, 44vh, 440px); } }
+      .jf-tree ul { list-style: none; margin: 0; padding: 0 0 0 1.1rem; }
+      .jf-tree > ul { padding-left: 0; }
+      .jf-row { display: flex; min-width: 0; }
+      .jf-row.is-dim { opacity: .32; }
+      .jf-row.is-hit { background: var(--accent-soft); border-radius: 4px; }
+      .jf-twisty, .jf-leaf {
+        display: inline-flex; align-items: center; gap: .45rem; flex-wrap: wrap;
+        font: inherit; text-align: left; cursor: pointer; min-height: 28px;
+        padding: .1rem .3rem; border: 0; border-radius: 4px;
+        background: none; color: inherit; min-width: 0;
+      }
+      .jf-twisty:hover, .jf-leaf:hover { background: rgba(219, 228, 240, .08); }
+      .jf-key { color: var(--json-key); font-weight: 650; }
+      /* The type is stated in words as well as colour. */
+      .jf-type { font-size: .64rem; letter-spacing: .04em; text-transform: uppercase; color: rgba(219, 228, 240, .5); border: 1px solid rgba(219, 228, 240, .18); border-radius: 4px; padding: 0 .28rem; }
+      .jf-val { overflow-wrap: anywhere; }
+      .jf-val--string { color: var(--json-string); }
+      .jf-val--number { color: var(--json-number); }
+      .jf-val--boolean { color: var(--json-boolean); }
+      .jf-val--null { color: var(--json-null); }
+      .jf-empty { color: rgba(219, 228, 240, .4); padding: .1rem .3rem; }
+      .jf-tree-note { margin: 0 0 .5rem; color: rgba(219, 228, 240, .55); font-size: .74rem; }
+      .jf-path { margin: 0; padding: .5rem .8rem; border-top: 1px solid var(--border); background: var(--surface-raised); font-family: var(--mono); font-size: .76rem; color: var(--text-secondary); overflow-x: auto; white-space: pre; }
+
+      /* ---------- controls ---------- */
+      .jf-actionbar { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; padding: .8rem 1rem; border-top: 1px solid var(--border); background: var(--surface-raised); }
+      .jf-btn { display: inline-flex; align-items: center; justify-content: center; gap: .35rem; font: inherit; font-weight: 650; cursor: pointer; min-height: 44px; padding: .5rem .9rem; border-radius: var(--r-md); border: 1px solid transparent; background: none; color: inherit; transition: background .15s, border-color .15s, color .15s; }
+      .jf-btn--accent { background: var(--accent); color: #fff; font-weight: 750; min-height: 48px; padding: .6rem 1.4rem; }
+      .jf-btn--accent:hover { background: var(--accent-deep); }
+      [data-theme="dark"] .jf-btn--accent { color: #0b1220; }
+      .jf-btn--ghost { background: var(--surface); color: var(--text-secondary); border-color: var(--border-strong); }
+      .jf-btn--ghost:hover { background: var(--surface-hover); color: var(--text-primary); }
+      .jf-btn--sm { min-height: 36px; padding: .28rem .6rem; font-size: .78rem; border-radius: var(--r-sm); font-weight: 600; }
+      .jf-btn.is-on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+      .jf-status { display: inline-flex; align-items: center; gap: .4rem; margin-left: auto; font-size: .8rem; font-weight: 650; padding: .35rem .7rem; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); }
+      /* State is spelled out and given a glyph — never colour alone. */
+      .jf-status::before { content: "•"; }
+      .jf-status[data-state="valid"] { color: var(--success); border-color: var(--success); }
+      .jf-status[data-state="valid"]::before { content: "✓"; }
+      .jf-status[data-state="invalid"] { color: var(--danger); border-color: var(--danger); background: var(--danger-soft); }
+      .jf-status[data-state="invalid"]::before { content: "✕"; }
+      .jf-status[data-state="working"]::before { content: "⋯"; }
+
+      .jf-toggle { display: inline-flex; align-items: center; gap: .4rem; font-size: .8rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; min-height: 44px; }
+      .jf-toggle input { width: 18px; height: 18px; accent-color: var(--accent); }
+      .jf-select { font: inherit; font-size: .8rem; font-weight: 600; min-height: 40px; padding: .3rem .5rem; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-primary); }
+      .jf-filter { font: inherit; font-size: .78rem; min-height: 36px; padding: .25rem .55rem; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-primary); max-width: 180px; }
+
+      .jf-error { margin: 0; padding: .75rem 1rem; border-top: 1px solid var(--danger); background: var(--danger-soft); color: var(--danger); font-size: .86rem; line-height: 1.6; display: grid; gap: .3rem; }
+      .jf-error__where, .jf-error__hint { font-size: .8rem; }
+      .jf-error__excerpt { margin: .3rem 0 0; padding: .5rem .6rem; border-radius: var(--r-sm); background: var(--code-bg); color: var(--code-text); font-family: var(--mono); font-size: .78rem; overflow-x: auto; white-space: pre; }
+      .jf-dupes { margin: 0; padding: .7rem 1rem; border-top: 1px solid var(--warning); background: var(--warning-soft); color: var(--text-secondary); font-size: .84rem; line-height: 1.6; }
+      .jf-dupes strong { color: var(--warning); }
+
+      .jf-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(132px, 100%), 1fr)); gap: .4rem; margin: 0; padding: .8rem 1rem; border-top: 1px solid var(--border); }
+      .jf-stat { min-width: 0; padding: .5rem .6rem; border-radius: var(--r-sm); background: var(--surface-raised); border: 1px solid var(--border); }
+      .jf-stat dt { font-size: .64rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+      .jf-stat dd { margin: .12rem 0 0; font-family: var(--mono); font-size: .92rem; font-weight: 750; color: var(--text-primary); overflow-wrap: anywhere; }
+
+      .jf-examples { display: flex; flex-wrap: wrap; gap: .3rem; padding: .8rem 1rem; border-top: 1px solid var(--border); }
+      .jf-chip { font: inherit; font-size: .78rem; font-weight: 650; cursor: pointer; min-height: 36px; padding: .3rem .68rem; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-secondary); }
+      .jf-chip:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+      /* ---------- content ---------- */
+      .jf-section { margin-top: 2.4rem; }
+      .jf-h2 { margin: 0 0 .45rem; font-size: clamp(1.32rem, 2.6vw, 1.72rem); font-weight: 760; letter-spacing: -.016em; line-height: 1.22; }
+      .jf-h3 { margin: 1.6rem 0 .4rem; font-size: 1.06rem; font-weight: 720; }
+      .jf-sub { margin: 0 0 1rem; color: var(--text-secondary); max-width: 74ch; line-height: 1.65; }
+      .jf-section p, .jf-section li { color: var(--text-secondary); line-height: 1.72; }
+      .jf-section > p, .jf-section > ul, .jf-section > ol { max-width: 74ch; }
+      .jf-section > p { margin: 0 0 .85rem; }
+      .jf-section > ul, .jf-section > ol { margin: 0 0 .95rem; padding-left: 1.15rem; }
+      .jf-section li { margin-bottom: .35rem; }
+      .jf-section strong { color: var(--text-primary); font-weight: 700; }
+      .jf-section a { color: var(--accent); font-weight: 600; }
+      .jf-section code { font-family: var(--mono); font-size: .87em; padding: .1rem .32rem; border-radius: 4px; background: var(--surface-hover); border: 1px solid var(--border); color: var(--text-primary); }
+
+      .jf-snippet { margin: 0; padding: .8rem .9rem; border-radius: var(--r-md); background: var(--code-bg); color: var(--code-text); font-family: var(--mono); font-size: .82rem; line-height: 1.65; overflow-x: auto; white-space: pre; }
+      .jf-pair { display: grid; gap: .6rem; grid-template-columns: minmax(0, 1fr); margin: 0 0 1rem; }
+      @media (min-width: 700px) { .jf-pair { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+      .jf-pair figure { margin: 0; min-width: 0; }
+      .jf-pair figcaption { font-family: var(--mono); font-size: .66rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .3rem; }
+
+      .jf-callout { padding: .8rem .9rem; border-radius: var(--r-md); font-size: .86rem; line-height: 1.65; background: var(--warning-soft); border: 1px solid var(--warning-soft); color: var(--text-secondary); }
+      .jf-callout strong { color: var(--warning); }
+
+      .jf-faq { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: .55rem; align-items: start; }
+      .jf-faq details { border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); }
+      .jf-faq summary { cursor: pointer; padding: .8rem .9rem; min-height: 44px; font-weight: 660; font-size: .93rem; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: .6rem; }
+      .jf-faq summary::-webkit-details-marker { display: none; }
+      .jf-faq summary::after { content: "+"; font-family: var(--mono); color: var(--muted); }
+      .jf-faq details[open] summary::after { content: "−"; }
+      .jf-faq p { margin: 0; padding: 0 .9rem .85rem; font-size: .87rem; line-height: 1.65; color: var(--text-secondary); }
+
+      .jf-related { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(228px, 100%), 1fr)); gap: .6rem; }
+      .jf-related a { display: block; padding: .85rem .9rem; border-radius: var(--r-md); border: 1px solid var(--border); background: var(--surface); text-decoration: none; color: inherit; }
+      .jf-related a:hover { border-color: var(--accent); background: var(--accent-soft); }
+      .jf-related strong { display: block; font-size: .93rem; margin-bottom: .18rem; color: var(--text-primary); }
+      .jf-related span { font-size: .8rem; color: var(--muted); line-height: 1.5; }
+
+      .jf-disclaimer { margin-top: 2rem; padding: .85rem 1rem; border-radius: var(--r-md); border: 1px solid var(--border); background: var(--surface-raised); font-size: .82rem; line-height: 1.65; color: var(--muted); }
+
+      @media (prefers-reduced-motion: reduce) {
+        .jf-page *, .jf-page *::before, .jf-page *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+      }
+
+      /* ============================================================
+         Bracket pairs. A formatter's whole job is to make nesting
+         visible, so the page is drawn the way editors colour matching
+         brackets: gold for the outer pair, orchid for the next, blue for
+         the third, each with its own guide line. The cover is an editor
+         pane with a gutter; blue #1d4ed8 stays the accent, and the six
+         JSON syntax colours from above still style the code.
+         ============================================================ */
+      body.jf-body { background: #eef2f7; }
+      [data-theme="dark"] body.jf-body { background: #0a0f1c; }
+      .jf-page {
+        --jf-b1: #ffd700; --jf-b2: #da70d6; --jf-b3: #179fff;
+        --jf-b1-ink: #a16207; --jf-b2-ink: #a21caf; --jf-b3-ink: #0369a1;
+      }
+      [data-theme="dark"] .jf-page { --jf-b1-ink: #facc15; --jf-b2-ink: #e879f9; --jf-b3-ink: #38bdf8; }
+      .jf-shell { padding: .6rem 0 3rem; }
+      .container.jf-main { padding: 0; }
+      .jf-page .jf-crumb { padding: .35rem 0 .9rem; }
+      .jf-page [data-jf-root] { scroll-margin-top: calc(var(--header-overlap, 5.5rem) + .75rem); }
+      /* compact pane heads: the title and all its buttons on one line */
+      .jf-page .jf-top .jf-panehead { gap: .35rem .5rem; padding: .5rem .65rem; }
+      .jf-page .jf-top .jf-paneactions { gap: .2rem; }
+      .jf-page .jf-top .jf-panehead .jf-btn--sm { min-height: 32px; padding: .2rem .5rem; font-size: .74rem; }
+
+      /* ---------- cover: an editor pane ---------- */
+      .jf-cover {
+        position: relative; overflow: hidden; display: grid; gap: 1rem 1.8rem; align-items: center; margin: 0 0 .9rem;
+        padding: .8rem 1.2rem .8rem 3.6rem; border-radius: var(--r-lg); background: var(--code-bg); color: var(--code-text);
+        border: 1px solid rgba(219, 228, 240, .1); box-shadow: var(--panel-shadow);
+      }
+      /* the gutter: line numbers down the left edge */
+      .jf-cover::before {
+        content: "1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9" / ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2.5rem; padding: .85rem .6rem 0 0;
+        white-space: pre; text-align: right; font: 600 .72rem/1.95 var(--mono); color: rgba(219, 228, 240, .26);
+        background: rgba(255, 255, 255, .025); border-right: 1px solid rgba(219, 228, 240, .08);
+      }
+      @media (min-width: 900px) { .jf-cover { grid-template-columns: minmax(0, 1fr) auto; } }
+      /* the headline sits inside the outer (gold) pair of braces */
+      .jf-cover-text { position: relative; padding: 1.2rem 0 1.2rem 1.2rem; }
+      .jf-cover-text::before, .jf-cover-text::after { position: absolute; left: 0; font: 800 1.05rem/1 var(--mono); color: var(--jf-b1); }
+      .jf-cover-text::before { content: "{" / ""; top: 0; }
+      .jf-cover-text::after { content: "}" / ""; bottom: 0; }
+      .jf-cover-guide { position: absolute; left: .3rem; top: 1.25rem; bottom: 1.25rem; width: 1px; background: rgba(255, 215, 0, .4); }
+      .jf-page .jf-cover .jf-eyebrow { padding: 0; border: 0; background: none; color: rgba(219, 228, 240, .5); letter-spacing: .08em; }
+      .jf-page .jf-cover .jf-eyebrow::before { content: "//" / ""; color: rgba(219, 228, 240, .35); }
+      .jf-page .jf-cover .jf-h1 { margin: .3rem 0 0; font-size: clamp(1.85rem, 1.2rem + 1.7vw, 2.4rem); line-height: 1.06; color: #f4f7fb; }
+      @media (min-width: 700px) { .jf-t1, .jf-t2 { display: block; } .jf-t2 { font-size: .78em; margin-top: .1rem; } }
+      .jf-t1 { color: #f4f7fb; }
+      .jf-t2 { color: var(--json-key); }
+      .jf-cover-note { margin: .4rem 0 0; font: 500 .82rem/1.5 var(--mono); color: rgba(219, 228, 240, .55); }
+      /* a small document with its bracket pairs coloured; every token is data-t */
+      .jf-pairs { padding: .6rem .85rem; border-radius: 10px; background: rgba(255, 255, 255, .035); border: 1px solid rgba(219, 228, 240, .08); font: 600 .72rem/1.62 var(--mono); }
+      .jf-pairs b { display: block; font-weight: 600; white-space: pre; }
+      .jf-pairs b.d1 { padding-left: 2ch; background: linear-gradient(rgba(255, 215, 0, .45), rgba(255, 215, 0, .45)) .45ch 0 / 1px 100% no-repeat; }
+      .jf-pairs b.d2 { padding-left: 4ch; background: linear-gradient(rgba(255, 215, 0, .45), rgba(255, 215, 0, .45)) .45ch 0 / 1px 100% no-repeat, linear-gradient(rgba(218, 112, 214, .5), rgba(218, 112, 214, .5)) 2.45ch 0 / 1px 100% no-repeat; }
+      .jf-pairs b.d3 { padding-left: 6ch; background: linear-gradient(rgba(255, 215, 0, .45), rgba(255, 215, 0, .45)) .45ch 0 / 1px 100% no-repeat, linear-gradient(rgba(218, 112, 214, .5), rgba(218, 112, 214, .5)) 2.45ch 0 / 1px 100% no-repeat, linear-gradient(rgba(23, 159, 255, .55), rgba(23, 159, 255, .55)) 4.45ch 0 / 1px 100% no-repeat; }
+      .jf-pairs i { font-style: normal; color: rgba(219, 228, 240, .6); }
+      .jf-pairs i::before { content: attr(data-t); }
+      .jf-pairs i.k { color: var(--json-key); }
+      .jf-pairs i.s { color: var(--json-string); }
+      .jf-pairs i.n { color: var(--json-number); }
+      .jf-pairs i.c1 { color: var(--jf-b1); }
+      .jf-pairs i.c2 { color: var(--jf-b2); }
+      .jf-pairs i.c3 { color: var(--jf-b3); }
+      .jf-pairs-ok { margin-top: .35rem; padding-top: .35rem; border-top: 1px solid rgba(219, 228, 240, .08); font: 700 .68rem/1.3 var(--mono); color: var(--json-string); }
+      .jf-pairs-ok::before { content: attr(data-t); }
+
+      /* ---------- top: the tool grid ----------
+         Under 700px one column: input, the ad, output, then the buttons
+         and examples. 700-999px: the 300x250 sits beside the workspace bar
+         and the input. From 1000px: input | output | ad. The ad is never
+         above the tool, and nothing else lives inside the grid. */
+      .jf-top { display: grid; gap: .9rem; align-items: start; grid-template-areas: "bar" "in" "ad" "out" "ctl"; }
+      .jf-top > * { min-width: 0; }
+      .jf-top > .jf-bar { grid-area: bar; }
+      .jf-top > .jf-box--in { grid-area: in; }
+      .jf-top > .jf-box--out { grid-area: out; }
+      .jf-top > .jf-box--ctl { grid-area: ctl; }
+      .jf-ad-zone { grid-area: ad; }
+      @media (min-width: 700px) {
+        .jf-top { grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "bar ad" "in ad" "out out" "ctl ctl"; column-gap: 1.1rem; }
+      }
+      @media (min-width: 1000px) {
+        .jf-top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 300px; grid-template-areas: "bar bar ad" "in out ad" "ctl ctl ad"; }
+        /* sticky only here, where the ad column runs the grid's full height */
+        .jf-ad-zone { position: sticky; top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+      }
+      /* One 300x250 at every width: inline-ads.js only shows .ta-inline-ad
+         below 1000px, so it is forced on here; data-unit="inline" sizes it. */
+      body.jf-body .jf-ad-zone { text-align: center; }
+      body.jf-body .jf-ad-zone .ta-inline-ad { display: block !important; margin: 0 auto !important; }
+      @media (max-width: 340px) { .jf-ad-zone { margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); } }
+
+      /* the boxes of the console */
+      .jf-page .jf-top > .jf-bar, .jf-page .jf-box { border: 1px solid var(--border-strong); border-radius: var(--r-lg); background: var(--surface); box-shadow: var(--panel-shadow); overflow: hidden; }
+      .jf-page .jf-top > .jf-bar { border-bottom: 1px solid var(--border-strong); background: var(--surface-raised); }
+      .jf-page .jf-top > .jf-bar .jf-bar__title::before { content: "{ }" / ""; margin-right: .5rem; color: var(--jf-b1-ink); letter-spacing: 0; }
+      /* each editor box is tagged with a bracket-pair colour */
+      .jf-page .jf-box--in { border-top: 4px solid var(--jf-b1); }
+      .jf-page .jf-box--out { border-top: 4px solid var(--jf-b3); }
+      .jf-page .jf-box--ctl { border-top: 4px solid var(--jf-b2); }
+      .jf-page .jf-pane--in { border-right: 0; border-bottom: 0; }
+      .jf-page .jf-box--ctl .jf-actionbar { border-top: 0; }
+      .jf-page .jf-box--ctl .jf-error { border-top: 0; border-bottom: 1px solid var(--danger); }
+      .jf-page .jf-box--ctl .jf-dupes { border-top: 0; border-bottom: 1px solid var(--warning); }
+      @media (min-width: 1000px) { .jf-page .jf-top .jf-editor, .jf-page .jf-top .jf-tree { height: clamp(320px, 46vh, 540px); } }
+      /* the reused .jf-btn--accent hover keeps a light label on the deeper fill */
+      .jf-page .jf-btn--accent { box-shadow: 0 10px 22px -12px var(--accent); }
+      .jf-page .jf-btn--accent:hover { background: var(--accent-deep); color: #fff; }
+      [data-theme="dark"] .jf-page .jf-btn--accent:hover { color: #0b1220; }
+      .jf-page .jf-chip { border-radius: 8px; font-family: var(--mono); font-size: .74rem; }
+
+      /* ---------- below the tool ---------- */
+      .jf-intro { display: grid; gap: .8rem 1.5rem; margin-top: 1.3rem; align-items: center; }
+      @media (min-width: 900px) { .jf-intro { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); } }
+      .jf-page .jf-intro .jf-lede { max-width: none; padding-left: .85rem; border-left: 3px solid var(--accent); }
+      .jf-page .jf-intro .jf-trust { margin: 0; }
+      .jf-page .jf-trust li { border-radius: 6px; }
+      .jf-page .jf-section { padding: clamp(1.05rem, 2.6vw, 1.6rem); border-radius: var(--r-lg); border: 1px solid var(--border); background: var(--surface); box-shadow: var(--panel-shadow); }
+      /* each title opens a bracket pair, in turn gold, orchid and blue */
+      .jf-page .jf-h2 { display: flex; align-items: baseline; gap: .55rem; }
+      .jf-page .jf-section .jf-h2::before { content: "{" / ""; flex: none; font: 800 1em/1 var(--mono); color: var(--jf-b1-ink); }
+      .jf-page .jf-section:nth-of-type(3n+2) .jf-h2::before { color: var(--jf-b2-ink); }
+      .jf-page .jf-section:nth-of-type(3n) .jf-h2::before { color: var(--jf-b3-ink); }
+      .jf-page .jf-snippet { border-left: 3px solid var(--jf-b1); }
+
+      /* the new shortcuts and statistics section */
+      .jf-keys-grid { display: grid; gap: 1rem 1.6rem; }
+      @media (min-width: 900px) { .jf-keys-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+      .jf-page .jf-keys .jf-h3 { margin-top: .4rem; }
+      .jf-kbd-list, .jf-count-list { margin: 0; padding: 0; list-style: none; display: grid; gap: .4rem; }
+      .jf-page .jf-kbd-list li { display: grid; grid-template-columns: minmax(0, 12.5rem) minmax(0, 1fr); gap: .8rem; align-items: baseline; margin: 0; padding: .5rem .7rem; border-radius: var(--r-sm); border: 1px solid var(--border); background: var(--surface-raised); font-size: .88rem; line-height: 1.5; }
+      .jf-kbd-list li > span:first-child { color: var(--text-primary); font-size: .8rem; }
+      .jf-page .jf-keys kbd { display: inline-block; min-width: 1.4em; padding: .05rem .38rem; border-radius: 4px; border: 1px solid var(--border-strong); border-bottom-width: 2px; background: var(--surface); color: var(--text-primary); font: 700 .76rem/1.4 var(--mono); text-align: center; }
+      .jf-count-list > div { padding: .5rem .7rem; border-radius: var(--r-sm); border: 1px solid var(--border); border-left: 3px solid var(--jf-b3); background: var(--surface-raised); }
+      .jf-count-list dt { font-size: .82rem; font-weight: 750; color: var(--text-primary); }
+      .jf-count-list dd { margin: .15rem 0 0; font-size: .86rem; line-height: 1.6; color: var(--text-secondary); }
+      .jf-page .jf-count-list code { font-family: var(--mono); font-size: .86em; padding: .05rem .3rem; border-radius: 4px; background: var(--surface-hover); border: 1px solid var(--border); color: var(--text-primary); }
+
+      /* ---------- smaller screens ---------- */
+      @media (max-width: 899px) { .jf-cover .jf-pairs, .jf-cover-note { display: none; } }
+      @media (max-width: 699px) {
+        /* phones: headline only in the cover and a shorter input editor,
+           so the ad after the input reaches the first screen; the output
+           and the controls follow */
+        .jf-cover { padding: .7rem 1rem .75rem 2.9rem; }
+        .jf-cover::before { width: 2rem; content: "1\A 2\A 3\A 4\A 5" / ""; padding-top: .8rem; line-height: 1.75; }
+        .jf-cover-text { padding: 1.05rem 0 1.05rem 1rem; }
+        .jf-page .jf-cover .jf-eyebrow { display: none; }
+        .jf-page .jf-cover .jf-h1 { margin: 0; display: grid; gap: .15rem; }
+        .jf-t1 { font-size: min(1.12em, 8.4vw); line-height: 1.05; white-space: nowrap; }
+        .jf-t2 { font-size: .62em; font-weight: 700; }
+        .jf-page .jf-top { row-gap: .75rem; }
+        .jf-page .jf-top > .jf-bar { display: none; }
+        .jf-page .jf-box--in .jf-editor { height: 150px; min-height: 0; }
+        .jf-page .jf-box--out .jf-editor, .jf-page .jf-box--out .jf-tree { height: 280px; min-height: 0; }
+        .jf-page .jf-top .jf-panehead { flex-wrap: nowrap; }
+        .jf-page .jf-top .jf-panetitle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+        .jf-page .jf-top .jf-panehead .jf-btn--sm { padding: .2rem .42rem; }
+        .jf-page .jf-top .jf-paneactions { flex-wrap: wrap; justify-content: flex-start; }
+        .jf-page .jf-box--in .jf-panefoot > span:last-child { display: none; }
+        .jf-page .jf-kbd-list li { grid-template-columns: 1fr; gap: .2rem; }
+      }
+      @media (max-width: 559px) {
+        /* 10px gutters: a 320px phone then has the 300px its ads need */
+        body.jf-body .container.jf-main, body.jf-body .ta-support { width: calc(100% - 20px); }
+        .jf-page .jf-crumb { display: none; }
+        .jf-page .jf-actionbar .jf-btn--accent { flex: 1 1 100%; }
+        .jf-page .jf-status { margin-left: 0; }
+      }
+    </style>
+
+    <script type="application/ld+json" data-tooladda-page-schema="true">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        { "@type": "WebSite", "@id": "https://tooladda.online/#website", "name": "ToolAdda", "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"], "url": "https://tooladda.online/", "inLanguage": "en", "publisher": { "@id": "https://tooladda.online/#organization" } },
+        { "@type": "Organization", "@id": "https://tooladda.online/#organization", "name": "ToolAdda", "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"], "url": "https://tooladda.online/", "logo": { "@type": "ImageObject", "url": "https://tooladda.online/assets/images/logo.svg" } },
+        {
+          "@type": "WebPage",
+          "@id": "https://tooladda.online/developer-tools/json-formatter.html#webpage",
+          "url": "https://tooladda.online/developer-tools/json-formatter.html",
+          "name": "JSON Formatter, Validator & Minifier",
+          "description": "Format, validate, beautify and minify JSON with syntax highlighting, exact error lines, a collapsible tree view and live statistics.",
+          "inLanguage": "en",
+          "isPartOf": { "@id": "https://tooladda.online/#website" },
+          "breadcrumb": { "@id": "https://tooladda.online/developer-tools/json-formatter.html#breadcrumb" },
+          "mainEntity": { "@id": "https://tooladda.online/developer-tools/json-formatter.html#app" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://tooladda.online/developer-tools/json-formatter.html#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://tooladda.online/" },
+            { "@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://tooladda.online/#developer" },
+            { "@type": "ListItem", "position": 3, "name": "JSON Formatter" }
+          ]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://tooladda.online/developer-tools/json-formatter.html#app",
+          "name": "JSON Formatter, Validator & Minifier",
+          "url": "https://tooladda.online/developer-tools/json-formatter.html",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Any modern web browser",
+          "description": "Format, validate, beautify and minify JSON. Reports the exact line and column of a syntax error with a corrective hint, detects duplicate keys without removing them, and shows a collapsible tree with JSON paths.",
+          "inLanguage": "en",
+          "isAccessibleForFree": true,
+          "featureList": [
+            "Format and beautify JSON with 2-space, 4-space or tab indentation",
+            "Minify JSON and see the exact size reduction",
+            "Validation reporting line, column and a corrective hint",
+            "Duplicate key detection that never removes data",
+            "Collapsible tree view with data types and JSON paths",
+            "Live statistics: objects, arrays, keys, values and depth",
+            "Optional alphabetical key sorting and Unicode escaping",
+            "Copy, download and drag-and-drop a file",
+            "Runs entirely in the browser with no upload"
+          ],
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+          "publisher": { "@id": "https://tooladda.online/#organization" }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://tooladda.online/developer-tools/json-formatter.html#faq",
+          "isPartOf": { "@id": "https://tooladda.online/developer-tools/json-formatter.html#webpage" },
+          "mainEntity": [
+            { "@type": "Question", "name": "What is a JSON formatter?", "acceptedAnswer": { "@type": "Answer", "text": "A JSON formatter takes JSON text, parses it into a data structure and writes it back out with consistent indentation and line breaks. The data is unchanged — only the whitespace differs — which is why the result is safe to paste back into whatever produced it." } },
+            { "@type": "Question", "name": "What is JSON beautification?", "acceptedAnswer": { "@type": "Answer", "text": "Beautifying and formatting are the same operation under two names: turning compact JSON into an indented, readable layout. A minified API response on one long line becomes a document you can actually scan for the field you need." } },
+            { "@type": "Question", "name": "What is a JSON validator?", "acceptedAnswer": { "@type": "Answer", "text": "A validator answers one question: is this text syntactically valid JSON? If it is not, a good validator says where the problem is. This one reports the line, the column, the reason and — where the cause is unambiguous — a hint such as \"standard JSON does not allow a trailing comma\"." } },
+            { "@type": "Question", "name": "What is a JSON minifier?", "acceptedAnswer": { "@type": "Answer", "text": "A minifier removes every space, tab and newline that sits between JSON tokens, producing the smallest text that still parses to the same data. Whitespace inside string values is part of the data and is never touched." } },
+            { "@type": "Question", "name": "How do I format JSON?", "acceptedAnswer": { "@type": "Answer", "text": "Paste your JSON into the input editor. It is parsed and formatted as you type, and the result appears on the right with syntax highlighting. Choose 2 spaces, 4 spaces or tabs from the indentation control, then use Copy or Download." } },
+            { "@type": "Question", "name": "How do I validate JSON?", "acceptedAnswer": { "@type": "Answer", "text": "Validation runs automatically on every change, and the Validate button reports on demand without touching the output. A valid document shows a green Valid JSON status; an invalid one shows the line, column, reason and the offending line with a caret under the exact position." } },
+            { "@type": "Question", "name": "How do I minify JSON?", "acceptedAnswer": { "@type": "Answer", "text": "Press Minify, or use Ctrl+Shift+M. The document is parsed first, so minification can only succeed on valid JSON — you can never produce a compact string that does not parse. The statistics panel shows how many bytes the whitespace was costing." } },
+            { "@type": "Question", "name": "What is pretty print JSON?", "acceptedAnswer": { "@type": "Answer", "text": "Pretty printing is another name for formatting: adding indentation and line breaks so the structure is visible. In JavaScript it is JSON.stringify(value, null, 2), which is exactly what this tool runs after parsing your input." } },
+            { "@type": "Question", "name": "Why is my JSON invalid?", "acceptedAnswer": { "@type": "Answer", "text": "The usual causes are a trailing comma before a closing brace or bracket, single quotes instead of double quotes, unquoted object keys, a missing comma between members, an unclosed brace or bracket, or a JavaScript-style comment. All six are legal JavaScript and none are legal JSON." } },
+            { "@type": "Question", "name": "How do I fix a JSON syntax error?", "acceptedAnswer": { "@type": "Answer", "text": "Start at the reported line and column. Note that an unclosed brace is usually reported at the end of the document rather than where it opened, so if the position looks wrong, count your brackets from the top. Formatting a partially fixed document often makes the remaining problem obvious." } },
+            { "@type": "Question", "name": "What does \"unexpected token\" mean in JSON?", "acceptedAnswer": { "@type": "Answer", "text": "It means the parser found a character that cannot legally appear at that point. A stray } usually means a comma or a value is missing before it; a letter usually means an unquoted key or a bare word where a value was expected." } },
+            { "@type": "Question", "name": "Why does JSON require double quotes?", "acceptedAnswer": { "@type": "Answer", "text": "Because the specification defines a string as a sequence of characters wrapped in double quotes, with no alternative. Single quotes are a JavaScript convenience that JSON deliberately left out to keep the grammar unambiguous for every language, not just JavaScript." } },
+            { "@type": "Question", "name": "Are trailing commas allowed in JSON?", "acceptedAnswer": { "@type": "Answer", "text": "No. A comma after the last member of an object or array makes the document invalid, even though JavaScript accepts it. This tool detects the case specifically and tells you so rather than reporting a generic unexpected token." } },
+            { "@type": "Question", "name": "Can JSON contain comments?", "acceptedAnswer": { "@type": "Answer", "text": "No. There is no comment syntax in JSON at all — neither // nor /* */. Formats that allow them, such as JSON5 and JSONC, are separate specifications. If you need comments in configuration, YAML is usually the better choice." } },
+            { "@type": "Question", "name": "What is the difference between JSON and JSON5?", "acceptedAnswer": { "@type": "Answer", "text": "JSON5 is a superset that adds comments, trailing commas, single-quoted strings, unquoted keys and a few number forms. It is a different format with its own parsers. This tool processes standard JSON only, so a JSON5 document is reported as invalid rather than silently accepted." } },
+            { "@type": "Question", "name": "Can this tool format large JSON files?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Formatting and analysis are linear in document size and a file with tens of thousands of records completes in well under a second. For very large input the live pass is debounced longer, syntax highlighting is skipped and the tree starts collapsed so the first paint stays fast." } },
+            { "@type": "Question", "name": "Can I format API responses?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, and it is the most common use. Paste a minified response straight from your network tab or a curl command. Because everything runs locally, a response containing a token or personal data never leaves your machine." } },
+            { "@type": "Question", "name": "Can I download formatted JSON?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Download saves exactly what is in the output pane as formatted.json, or minified.json if you last minified. It is generated in the browser with a Blob and there is no upload step." } },
+            { "@type": "Question", "name": "Can I copy minified JSON?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Copy minified produces the compact form from the same parsed data without changing what is displayed, so you can keep reading the formatted version while pasting the compact one." } },
+            { "@type": "Question", "name": "Does formatting change JSON data?", "acceptedAnswer": { "@type": "Answer", "text": "No. Formatting only adds whitespace between tokens. Every key, value, type and array order is identical, and parsing the formatted output gives a structure equal to parsing the original." } },
+            { "@type": "Question", "name": "Does minification change JSON data?", "acceptedAnswer": { "@type": "Answer", "text": "No. Minification removes whitespace between tokens only. Spaces, tabs and newlines inside string values are part of the data and are preserved exactly." } },
+            { "@type": "Question", "name": "What is the difference between formatting and validating JSON?", "acceptedAnswer": { "@type": "Answer", "text": "Validating asks whether the text is legal JSON and answers yes or no. Formatting rewrites valid JSON into a readable layout. Formatting implies validation — a document has to parse before it can be reformatted — but validating on its own leaves the text untouched." } },
+            { "@type": "Question", "name": "Can JSON contain arrays?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. An array is an ordered list in square brackets and may hold any mix of values, including other arrays and objects. Order is significant and is always preserved by this tool, including when key sorting is switched on." } },
+            { "@type": "Question", "name": "Can JSON contain nested objects?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, to any depth. The statistics panel reports the maximum depth of your document, and the tree view lets you collapse branches you are not interested in." } },
+            { "@type": "Question", "name": "How are null values handled?", "acceptedAnswer": { "@type": "Answer", "text": "null is preserved as the JSON literal null. It is never turned into the string \"null\", into undefined, or into an empty string, and it is never silently dropped from an object or an array." } },
+            { "@type": "Question", "name": "How are booleans handled?", "acceptedAnswer": { "@type": "Answer", "text": "true and false are preserved as literals. A string containing the text \"true\" is different data and stays a quoted string, so the two can never be confused." } },
+            { "@type": "Question", "name": "Can JSON contain Unicode?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Devanagari, Chinese, Japanese, Arabic, accented Latin and emoji all pass through unchanged. There is an optional Escape Unicode setting that rewrites them as \\uXXXX sequences — a change of representation, not of the underlying text — and it is off by default." } },
+            { "@type": "Question", "name": "How are large numbers handled?", "acceptedAnswer": { "@type": "Answer", "text": "JavaScript reads every JSON number as a 64-bit float, so an integer beyond 9,007,199,254,740,991 loses precision during parsing — in this tool and in every other browser-based one. If your data contains large identifiers, keep them as strings in the JSON." } },
+            { "@type": "Question", "name": "What happens to duplicate keys?", "acceptedAnswer": { "@type": "Answer", "text": "They are detected and reported with the key name and line number, and nothing is removed for you. JSON parsers keep the last occurrence and discard earlier ones, so a duplicate usually means data is being lost silently somewhere upstream — which is worth knowing about rather than having quietly cleaned up." } },
+            { "@type": "Question", "name": "What is JSON tree view?", "acceptedAnswer": { "@type": "Answer", "text": "A collapsible outline of the parsed document. Each branch shows its type and how many members it has, each leaf shows its value and type in words as well as colour, and clicking a leaf reveals its path such as $.user.profile.name." } },
+            { "@type": "Question", "name": "Does sorting keys change my data?", "acceptedAnswer": { "@type": "Answer", "text": "It changes the order properties appear in, which some systems care about, so it is off by default. The values themselves are untouched and array order is never altered." } },
+            { "@type": "Question", "name": "Is JSON formatting safe?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, when the tool treats JSON as data rather than code. This one parses with JSON.parse, never eval, and every character it displays — including the syntax highlighter and the tree — is escaped or inserted as text, so a document containing HTML or a script tag is shown, not run." } },
+            { "@type": "Question", "name": "Is my JSON uploaded to a server?", "acceptedAnswer": { "@type": "Answer", "text": "No. Parsing, formatting, minifying and downloading all happen in your browser and no network request carries your data. This matters because JSON pasted into a formatter routinely contains API keys, tokens and personal data." } },
+            { "@type": "Question", "name": "Is this JSON formatter free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Free, no sign-up, no email address and no limit on document size beyond what your browser can hold." } }
+          ]
+        }
+      ]
+    }
+    </script>
+      <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 29, 78, 216; }
+      [data-theme="dark"] { --pca: 96, 165, 250; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 96, 165, 250; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/developer-tools/json-formatter.html#webpage",
+      "url": "https://tooladda.online/developer-tools/json-formatter.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-16",
+      "dateModified": "2026-09-23",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+  <body class="jf-body">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="container navbar">
+        <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../privacy-policy.html">Privacy</a>
+        </nav>
+        <div class="nav-actions"><a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee"><svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg><span class="ta-donate-label">Buy me a coffee</span></a><button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button><button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button></div>
+      </div>
+    </header>
+
+    <main id="main-content" class="jf-page">
+      <div class="jf-shell">
+      <aside class="ta-support" aria-label="Support ToolAdda">
+        <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+        <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+      </aside>
+
+      <div class="container jf-main">
+        <nav class="jf-crumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">/</span><a href="/#developer">Developer Tools</a><span aria-hidden="true">/</span><span>JSON Formatter</span>
+        </nav>
+
+        <header class="jf-cover">
+          <div class="jf-cover-text">
+            <span class="jf-cover-guide" aria-hidden="true"></span>
+            <span class="jf-eyebrow">Developer Tool</span>
+            <h1 class="jf-h1"><span class="jf-t1">JSON Formatter,</span> <span class="jf-t2">Validator &amp; Minifier</span></h1>
+            <p class="jf-cover-note">Paste any JSON: it is checked, indented and ready to copy.</p>
+          </div>
+          <div class="jf-pairs" aria-hidden="true"><b class="d0"><i class="c1" data-t="{"></i></b><b class="d1"><i class="k" data-t="&quot;user&quot;"></i><i data-t=": "></i><i class="c2" data-t="{"></i></b><b class="d2"><i class="k" data-t="&quot;name&quot;"></i><i data-t=": "></i><i class="s" data-t="&quot;Asha&quot;"></i><i data-t=","></i></b><b class="d2"><i class="k" data-t="&quot;tags&quot;"></i><i data-t=": "></i><i class="c3" data-t="["></i></b><b class="d3"><i class="s" data-t="&quot;json&quot;"></i><i data-t=", "></i><i class="s" data-t="&quot;yaml&quot;"></i></b><b class="d2"><i class="c3" data-t="]"></i></b><b class="d1"><i class="c2" data-t="}"></i></b><b class="d0"><i class="c1" data-t="}"></i></b><p class="jf-pairs-ok" data-t="✓ valid · 3 keys · depth 4"></p></div>
+        </header>
+
+        <!-- One grid (.jf-top) is the formatter and the script's root
+             ([data-jf-root]). Under 700px: input, the ad, output, controls.
+             700-999px: the ad sits beside the bar and input. From 1000px:
+             input | output | ad. Nothing else lives inside the grid, so the
+             sticky ad can never ride over the page. -->
+        <div class="jf-top" data-jf-root aria-label="JSON formatter, validator and minifier" role="region">
+          <div class="jf-bar">
+            <p class="jf-bar__title">JSON Workspace</p>
+            <span class="jf-privacy">🔒 Your JSON is processed locally in your browser</span>
+          </div>
+
+          <section class="jf-box jf-box--in" aria-label="Input">
+              <div class="jf-pane jf-pane--in">
+                <div class="jf-panehead">
+                  <span class="jf-panetitle">JSON input</span>
+                  <span class="jf-paneactions">
+                    <button type="button" class="jf-btn jf-btn--ghost jf-btn--sm" data-jf-paste>Paste</button>
+                    <button type="button" class="jf-btn jf-btn--ghost jf-btn--sm" data-jf-load-example>Load example</button>
+                    <label class="jf-btn jf-btn--ghost jf-btn--sm" for="jfFile">Open file</label>
+                    <input id="jfFile" type="file" accept="application/json,.json,.txt" class="jf-sr" />
+                    <button type="button" class="jf-btn jf-btn--ghost jf-btn--sm" data-jf-clear>Clear</button>
+                  </span>
+                </div>
+                <div class="jf-editor" data-jf-drop>
+                  <pre class="jf-gutter" data-jf-gutter aria-hidden="true">1</pre>
+                  <textarea class="jf-input" id="jfInput" spellcheck="false" autocomplete="off"
+                            autocapitalize="off" autocorrect="off" wrap="off"
+                            aria-label="JSON input"
+                            placeholder="Paste JSON here, or drop a .json file…"></textarea>
+                </div>
+                <div class="jf-panefoot">
+                  <span data-jf-input-meta>0 lines · 0 chars</span>
+                  <span>Tab indents · Esc frees Tab · Ctrl+Enter formats</span>
+                </div>
+              </div>
+          </section>
+
+          <!-- Ad: one 300x250 (see .jf-ad-zone CSS) — beside the tool from
+               700px, straight after the input below that. -->
+          <div class="jf-ad-zone">
+            <div class="ta-inline-ad" data-unit="inline"></div>
+          </div>
+
+          <section class="jf-box jf-box--out" aria-label="Output">
+              <div class="jf-pane">
+                <div class="jf-panehead">
+                  <span class="jf-panetitle">Output</span>
+                  <span class="jf-paneactions">
+                    <button type="button" class="jf-btn jf-btn--ghost jf-btn--sm is-on" data-jf-view="code" aria-pressed="true">Code</button>
+                    <button type="button" class="jf-btn jf-btn--ghost jf-btn--sm" data-jf-view="tree" aria-pressed="false">Tree</button>
+                    <button type="button" class="jf-btn jf-btn--ghost jf-btn--sm" data-jf-copy>Copy</button>
+                    <button type="button" class="jf-btn jf-btn--ghost jf-btn--sm" data-jf-copy-min>Copy minified</button>
+                    <button type="button" class="jf-btn jf-btn--ghost jf-btn--sm" data-jf-download>Download</button>
+                  </span>
+                </div>
+
+                <div data-jf-output-wrap>
+                  <div class="jf-editor">
+                    <pre class="jf-out" data-jf-output tabindex="0" role="region" aria-label="Formatted JSON output"><span class="jf-placeholder">Formatted JSON will appear here.</span></pre>
+                  </div>
+                </div>
+
+                <div data-jf-tree-wrap hidden>
+                  <div class="jf-treebar">
+                    <button type="button" class="jf-btn jf-btn--ghost jf-btn--sm" data-jf-expand-all>Expand all</button>
+                    <button type="button" class="jf-btn jf-btn--ghost jf-btn--sm" data-jf-collapse-all>Collapse all</button>
+                    <label class="jf-sr" for="jfFilter">Filter tree</label>
+                    <input class="jf-filter" id="jfFilter" type="search" placeholder="Filter keys and values…" autocomplete="off" />
+                  </div>
+                  <div class="jf-tree" data-jf-tree role="tree" aria-label="JSON tree"></div>
+                  <p class="jf-path" data-jf-path hidden></p>
+                </div>
+
+                <div class="jf-panefoot">
+                  <span data-jf-output-meta>—</span>
+                </div>
+              </div>
+          </section>
+
+          <div class="jf-box jf-box--ctl">
+            <p class="jf-error" data-jf-error role="alert" hidden></p>
+            <p class="jf-dupes" data-jf-duplicates role="status" hidden></p>
+
+            <div class="jf-actionbar">
+              <button type="button" class="jf-btn jf-btn--accent" data-jf-format>Format JSON</button>
+              <button type="button" class="jf-btn jf-btn--ghost" data-jf-minify>Minify</button>
+              <button type="button" class="jf-btn jf-btn--ghost" data-jf-validate>Validate</button>
+
+              <label class="jf-toggle" for="jfIndent">
+                <span>Indent</span>
+                <select class="jf-select" id="jfIndent">
+                  <option value="2">2 spaces</option>
+                  <option value="4">4 spaces</option>
+                  <option value="tab">Tab</option>
+                </select>
+              </label>
+
+              <label class="jf-toggle"><input type="checkbox" id="jfSortKeys" /><span>Sort keys</span></label>
+              <label class="jf-toggle"><input type="checkbox" id="jfEscapeUnicode" /><span>Escape Unicode</span></label>
+              <label class="jf-toggle"><input type="checkbox" id="jfLive" checked /><span>Live validation</span></label>
+
+              <span class="jf-status" data-jf-status data-state="empty">Ready</span>
+            </div>
+
+            <dl class="jf-stats" data-jf-stats hidden></dl>
+
+            <div class="jf-examples" data-jf-examples role="group" aria-label="Example documents"></div>
+
+            <p class="jf-sr" role="status" aria-live="polite" data-jf-announce></p>
+          </div>
+        </div>
+
+        <div class="jf-intro">
+          <p class="jf-lede">Format, validate, beautify and minify JSON instantly with syntax highlighting, error detection and one-click copy.</p>
+          <ul class="jf-trust">
+            <li>Free</li>
+            <li>No signup</li>
+            <li>Instant processing</li>
+            <li>Browser-based</li>
+            <li>Copy instantly</li>
+          </ul>
+        </div>
+
+        <!-- ============ SHORTCUTS + STATS ============ -->
+        <section class="jf-section jf-keys" aria-labelledby="jf-keys-heading">
+          <h2 class="jf-h2" id="jf-keys-heading">Shortcuts and What the Statistics Count</h2>
+          <p class="jf-sub">The editor is built for the keyboard, and the statistics panel under the output follows fixed counting rules. Both are summarised here.</p>
+          <div class="jf-keys-grid">
+            <div>
+              <h3 class="jf-h3">Keyboard shortcuts</h3>
+              <ul class="jf-kbd-list">
+                <li><span><kbd>Ctrl</kbd> / <kbd>⌘</kbd> + <kbd>Enter</kbd></span><span>Format, from anywhere on the page</span></li>
+                <li><span><kbd>Ctrl</kbd> / <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd></span><span>Minify</span></li>
+                <li><span><kbd>Tab</kbd></span><span>Inside the editor, inserts one indent at your chosen width instead of leaving the box</span></li>
+                <li><span><kbd>Esc</kbd></span><span>Lets <kbd>Tab</kbd> move focus out of the editor; it indents again the next time the editor gets focus</span></li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="jf-h3">How the statistics are counted</h3>
+              <dl class="jf-count-list">
+                <div><dt>Objects, Arrays</dt><dd>Every <code>{}</code> and <code>[]</code>, including the outermost one.</dd></div>
+                <div><dt>Keys</dt><dd>Keys in every object, added up. A duplicated key counts once, because the parser keeps only its last value.</dd></div>
+                <div><dt>Values</dt><dd>Strings, numbers, booleans and <code>null</code> — objects and arrays are not counted here.</dd></div>
+                <div><dt>Max depth</dt><dd>The outermost value is level 1 and each step inside adds one, counting the values themselves: <code>{"a": {"b": 1}}</code> has a max depth of 3.</dd></div>
+                <div><dt>Sizes</dt><dd>UTF-8 bytes. The reduction compares the minified text with the formatted text at your chosen indent, not with what you pasted.</dd></div>
+              </dl>
+            </div>
+          </div>
+        </section>
+        <!-- ============ DIRECT ANSWERS ============ -->
+        <section class="jf-section" aria-labelledby="jf-answers-heading">
+          <h2 class="jf-h2" id="jf-answers-heading">JSON formatting, validation and minification</h2>
+
+          <h3 class="jf-h3">What is a JSON formatter?</h3>
+          <p>A JSON formatter parses JSON text into a data structure and writes it back out with consistent indentation and line breaks. The data is untouched — only whitespace changes — so the formatted result is interchangeable with what you started from.</p>
+
+          <h3 class="jf-h3">How do I format JSON?</h3>
+          <ol>
+            <li>Paste your JSON into the input editor, or drop a <code>.json</code> file onto it.</li>
+            <li>It is parsed and formatted as you type; the result appears on the right.</li>
+            <li>Pick 2 spaces, 4 spaces or tabs from the indentation control.</li>
+            <li>Press <strong>Copy</strong> or <strong>Download</strong>.</li>
+          </ol>
+
+          <h3 class="jf-h3">How do I validate JSON?</h3>
+          <p>Validation runs on every change, and the <strong>Validate</strong> button reports on demand without altering the output. A valid document shows a Valid JSON status; an invalid one shows the reason, the line and column, and the offending line with a caret under the exact character.</p>
+
+          <h3 class="jf-h3">How do I minify JSON?</h3>
+          <p>Press <strong>Minify</strong> or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>. The document is parsed first, so a compact string that does not parse can never be produced. The statistics panel reports exactly how many bytes the whitespace was costing.</p>
+
+          <h3 class="jf-h3">Does formatting or minifying change my data?</h3>
+          <p>No, in both directions. Formatting adds whitespace between tokens and minifying removes it; neither touches whitespace <em>inside</em> a string value, because that is data. Parse the input and parse the output and you get structures that are equal.</p>
+
+          <h3 class="jf-h3">Why is my JSON invalid?</h3>
+          <p>Almost always one of six things: a trailing comma before <code>}</code> or <code>]</code>, single quotes instead of double, an unquoted key, a missing comma between members, an unclosed bracket, or a <code>//</code> comment. Every one of them is legal JavaScript and none is legal JSON — which is exactly why they slip through.</p>
+        </section>
+
+        <!-- ============ EXAMPLES ============ -->
+        <section class="jf-section" aria-labelledby="jf-examples-heading">
+          <h2 class="jf-h2" id="jf-examples-heading">JSON formatting examples</h2>
+
+          <h3 class="jf-h3">Minified and formatted</h3>
+          <div class="jf-pair">
+            <figure><figcaption>Minified</figcaption><pre class="jf-snippet">{"name":"John","age":30,"active":true}</pre></figure>
+            <figure><figcaption>Formatted</figcaption><pre class="jf-snippet">{
+  "name": "John",
+  "age": 30,
+  "active": true
+}</pre></figure>
+          </div>
+
+          <h3 class="jf-h3">Nested objects</h3>
+          <pre class="jf-snippet">{
+  "user": {
+    "name": "John",
+    "profile": {
+      "age": 30
+    }
+  }
+}</pre>
+
+          <h3 class="jf-h3">Arrays</h3>
+          <pre class="jf-snippet">{
+  "skills": [
+    "JavaScript",
+    "Python",
+    "PHP"
+  ]
+}</pre>
+
+          <h3 class="jf-h3">Invalid JSON</h3>
+          <pre class="jf-snippet">{
+  "name": "John",
+  "age": 30,
+}</pre>
+          <div class="jf-callout"><strong>The last comma is the problem.</strong> After <code>30</code> the comma promises another member, and the parser then meets <code>}</code> instead. JavaScript object literals tolerate this; the JSON grammar does not. This tool reports it as a trailing comma rather than as a generic unexpected token.</div>
+        </section>
+
+        <!-- ============ ARTICLE ============ -->
+        <section class="jf-section" aria-labelledby="jf-guide-heading">
+          <h2 class="jf-h2" id="jf-guide-heading">Working with JSON</h2>
+
+          <h3 class="jf-h3">What is JSON?</h3>
+          <p>JSON — JavaScript Object Notation — is a text format for structured data with exactly six value types: object, array, string, number, boolean and null. There is no date type, no comment syntax, no reference mechanism and no distinction between integers and floats. That small vocabulary is the point.</p>
+          <p>Its other defining quality is strictness. Keys must be double-quoted, commas separate members and must not trail, and there is one way to write any given structure. A JSON parser needs no configuration and cannot read the same bytes two ways, which is why JSON became the default for web APIs, log lines and configuration that machines exchange.</p>
+          <p>The same strictness makes JSON tiring to write and easy to break by hand. Almost every "invalid JSON" error comes from writing JavaScript out of habit — a trailing comma, a single quote, an unquoted key — none of which JSON accepts.</p>
+
+          <h3 class="jf-h3">What a formatter actually does</h3>
+          <p>The pipeline is short and it matters that it is done in this order: parse first, render second. The text is handed to <code>JSON.parse</code>, which either produces a value or throws. Only if it produces a value is anything rendered.</p>
+          <p>Doing it the other way round — manipulating the text with pattern matching to insert newlines — is how formatters end up producing output that looks indented and no longer parses. It also means such a tool cannot tell you whether your JSON was valid, because it never actually tried to read it.</p>
+          <p>Because every view here derives from one parsed value, the formatted code, the tree, the statistics and the minified copy can never disagree with one another. Change the indentation and everything re-renders from the same data.</p>
+
+          <h3 class="jf-h3">JSON syntax rules</h3>
+          <p>The complete grammar fits in a paragraph. A document is a single value. An <strong>object</strong> is zero or more <code>"key": value</code> pairs inside braces, separated by commas, with double-quoted keys. An <strong>array</strong> is zero or more values inside square brackets, separated by commas. A <strong>string</strong> is double-quoted, with backslash escapes for quote, backslash, slash, backspace, form feed, newline, carriage return, tab and <code>\uXXXX</code>. A <strong>number</strong> is an optional minus, digits, an optional fraction and an optional exponent — no leading plus, no leading zeros, no hex. And there are three bare literals: <code>true</code>, <code>false</code> and <code>null</code>, all lower case.</p>
+          <p>Everything else is invalid, including the things people most expect to work: comments, trailing commas, single quotes, unquoted keys, <code>NaN</code>, <code>Infinity</code> and <code>undefined</code>.</p>
+
+          <h3 class="jf-h3">JSON strings, numbers and literals</h3>
+          <p>Strings are where most surprises live. A literal newline cannot appear inside a JSON string — it must be written as <code>\n</code> — and neither can an unescaped control character. Backslashes in Windows paths must be doubled. None of that changes here: the string content you put in is the string content you get out, byte for byte.</p>
+          <p>Numbers carry a caveat worth stating plainly. JavaScript reads every JSON number as a 64-bit float, so an integer beyond 9,007,199,254,740,991 is already imprecise by the time any browser-based tool sees it. A 20-digit database identifier will come back subtly wrong — not because of this formatter, but because of how the language parses. Keep such identifiers as strings.</p>
+          <p>The three literals are exact and lower case. <code>null</code> stays <code>null</code>; it never becomes the string <code>"null"</code>, never becomes <code>undefined</code>, and is never dropped from an object or an array.</p>
+
+          <h3 class="jf-h3">Common JSON errors and how to fix them</h3>
+          <ul>
+            <li><strong>Trailing comma.</strong> <code>{"a": 1,}</code> — remove the last comma. The single most common error, because JavaScript allows it.</li>
+            <li><strong>Single quotes.</strong> <code>{'a': 1}</code> — JSON has only double quotes.</li>
+            <li><strong>Unquoted key.</strong> <code>{a: 1}</code> — keys are strings and must be quoted.</li>
+            <li><strong>Missing comma.</strong> Two members with nothing between them; the parser stops at the start of the second.</li>
+            <li><strong>Unclosed bracket.</strong> Reported at the end of the document rather than where it opened — count from the top when the position looks wrong.</li>
+            <li><strong>Comments.</strong> Not part of JSON in any form.</li>
+            <li><strong>Bad escape.</strong> <code>"\q"</code> is not a defined escape; only a fixed set is legal.</li>
+            <li><strong>Trailing content.</strong> A document holds exactly one value; anything after it is an error.</li>
+          </ul>
+
+          <h3 class="jf-h3">Reading a line-and-column error</h3>
+          <p>The position reported is where the parser <em>gave up</em>, which is not always where the mistake was made. A missing closing brace is only detectable at the end of the file, so it reports there. A missing comma reports at the start of the next member, one token past the omission.</p>
+          <p>The practical technique is to read the reported line, then look at the line before it. If the reported position is the very last character of the document, you are almost certainly missing a closing bracket somewhere above. Where the cause is unambiguous — a trailing comma, a single quote, an unquoted key, a comment — this tool names it directly instead of leaving you to work it out.</p>
+
+          <h3 class="jf-h3">Duplicate keys</h3>
+          <p>A JSON object may contain the same key twice. The specification does not forbid it and simply calls the behaviour undefined, so parsers differ: JavaScript keeps the last occurrence and silently discards the earlier ones.</p>
+          <p>That silence is the problem. A configuration file with <code>"port"</code> written twice will do something, and it will not be what whoever wrote the first one intended. This tool detects duplicates by scanning the text — the information is gone from the parsed value — and reports the key and line, without removing anything. Which occurrence should survive is a decision about your data, not one a formatter should make for you.</p>
+
+          <h3 class="jf-h3">Minification and payload size</h3>
+          <p>Minifying JSON removes the whitespace between tokens. It is not compression, and it is worth keeping the two ideas separate: gzip or Brotli on the wire will do far more for payload size than removing indentation, and most servers already apply one of them.</p>
+          <p>Where minification does earn its place is in storage and in transports that are not compressed — a database column, a message queue payload, a query parameter, a log line. The statistics panel shows the formatted size, the minified size and the difference in bytes and per cent, calculated from your actual document rather than estimated.</p>
+
+          <h3 class="jf-h3">Tree view</h3>
+          <p>The tree is the fastest way to answer "what shape is this?" for an unfamiliar payload. Each branch names its type and member count; each leaf shows its value with the type spelled out in words next to it, so the distinction between the number <code>30</code> and the string <code>"30"</code> is visible rather than inferred from colour.</p>
+          <p>Clicking a leaf reveals its path — <code>$.user.profile.name</code> — using dot notation for identifier-safe keys and bracket notation for everything else. The filter box dims non-matching rows and opens the ancestors of every match, which is the quickest way to find where <code>email</code> appears in a deeply nested response.</p>
+          <p>For very large documents the tree opens collapsed. Rendering tens of thousands of nodes eagerly is the classic way a JSON viewer locks the tab, and lazily is not worth the complexity when starting collapsed solves it.</p>
+
+          <h3 class="jf-h3">Formatting best practices</h3>
+          <ul>
+            <li><strong>Two spaces is the common default</strong> and what most tooling emits. Four is easier to scan at depth; tabs let each reader choose. Be consistent within a repository.</li>
+            <li><strong>Format on commit, not on read.</strong> A config file that is reformatted by whoever opened it last produces diffs full of whitespace.</li>
+            <li><strong>Keep hand-edited config formatted and machine payloads minified.</strong> The audiences are different.</li>
+            <li><strong>Do not sort keys in files where order carries meaning.</strong> Sorting is available here and is deliberately off by default.</li>
+            <li><strong>Keep large identifiers as strings</strong> so no parser can round them.</li>
+            <li><strong>If you need comments,</strong> you do not need JSON — use YAML, or a schema with a description field.</li>
+          </ul>
+
+          <h3 class="jf-h3">Security, and why it matters for a JSON tool</h3>
+          <p>JSON is data, not code, and a formatter must treat it that way. This one never calls <code>eval</code>. Parsing is <code>JSON.parse</code>; the syntax highlighter escapes every slice of text it emits; the tree is built with <code>createElement</code> and <code>textContent</code> rather than string concatenation.</p>
+          <p>The practical result is that a document containing <code>&lt;img src=x onerror=alert(1)&gt;</code> or a <code>&lt;script&gt;</code> tag is displayed as those characters and nothing else happens. That is the correct behaviour, and it is worth checking in any tool you paste production data into.</p>
+          <p>The privacy side matters just as much. JSON pasted into a formatter is routinely an API response with a bearer token in it, or a config file with a database URL. Nothing here is uploaded: parse, format, minify and download all run in the page, and once it has loaded you can disconnect and it still works.</p>
+        </section>
+
+        <!-- ============ FAQ ============ -->
+        <section class="jf-section" aria-labelledby="jf-faq-heading">
+          <h2 class="jf-h2" id="jf-faq-heading">Frequently asked questions</h2>
+          <div class="jf-faq" data-jf-faq>
+            <details><summary>What is a JSON formatter?</summary><p>A JSON formatter takes JSON text, parses it into a data structure and writes it back out with consistent indentation and line breaks. The data is unchanged — only the whitespace differs — which is why the result is safe to paste back into whatever produced it.</p></details>
+            <details><summary>What is JSON beautification?</summary><p>Beautifying and formatting are the same operation under two names: turning compact JSON into an indented, readable layout. A minified API response on one long line becomes a document you can actually scan for the field you need.</p></details>
+            <details><summary>What is a JSON validator?</summary><p>A validator answers one question: is this text syntactically valid JSON? If it is not, a good validator says where the problem is. This one reports the line, the column, the reason and — where the cause is unambiguous — a hint such as "standard JSON does not allow a trailing comma".</p></details>
+            <details><summary>What is a JSON minifier?</summary><p>A minifier removes every space, tab and newline that sits between JSON tokens, producing the smallest text that still parses to the same data. Whitespace inside string values is part of the data and is never touched.</p></details>
+            <details><summary>How do I format JSON?</summary><p>Paste your JSON into the input editor. It is parsed and formatted as you type, and the result appears on the right with syntax highlighting. Choose 2 spaces, 4 spaces or tabs from the indentation control, then use Copy or Download.</p></details>
+            <details><summary>How do I validate JSON?</summary><p>Validation runs automatically on every change, and the Validate button reports on demand without touching the output. A valid document shows a green Valid JSON status; an invalid one shows the line, column, reason and the offending line with a caret under the exact position.</p></details>
+            <details><summary>How do I minify JSON?</summary><p>Press Minify, or use Ctrl+Shift+M. The document is parsed first, so minification can only succeed on valid JSON — you can never produce a compact string that does not parse. The statistics panel shows how many bytes the whitespace was costing.</p></details>
+            <details><summary>What is pretty print JSON?</summary><p>Pretty printing is another name for formatting: adding indentation and line breaks so the structure is visible. In JavaScript it is JSON.stringify(value, null, 2), which is exactly what this tool runs after parsing your input.</p></details>
+            <details><summary>Why is my JSON invalid?</summary><p>The usual causes are a trailing comma before a closing brace or bracket, single quotes instead of double quotes, unquoted object keys, a missing comma between members, an unclosed brace or bracket, or a JavaScript-style comment. All six are legal JavaScript and none are legal JSON.</p></details>
+            <details><summary>How do I fix a JSON syntax error?</summary><p>Start at the reported line and column. Note that an unclosed brace is usually reported at the end of the document rather than where it opened, so if the position looks wrong, count your brackets from the top. Formatting a partially fixed document often makes the remaining problem obvious.</p></details>
+            <details><summary>What does "unexpected token" mean in JSON?</summary><p>It means the parser found a character that cannot legally appear at that point. A stray } usually means a comma or a value is missing before it; a letter usually means an unquoted key or a bare word where a value was expected.</p></details>
+            <details><summary>Why does JSON require double quotes?</summary><p>Because the specification defines a string as a sequence of characters wrapped in double quotes, with no alternative. Single quotes are a JavaScript convenience that JSON deliberately left out to keep the grammar unambiguous for every language, not just JavaScript.</p></details>
+            <details><summary>Are trailing commas allowed in JSON?</summary><p>No. A comma after the last member of an object or array makes the document invalid, even though JavaScript accepts it. This tool detects the case specifically and tells you so rather than reporting a generic unexpected token.</p></details>
+            <details><summary>Can JSON contain comments?</summary><p>No. There is no comment syntax in JSON at all — neither // nor /* */. Formats that allow them, such as JSON5 and JSONC, are separate specifications. If you need comments in configuration, YAML is usually the better choice.</p></details>
+            <details><summary>What is the difference between JSON and JSON5?</summary><p>JSON5 is a superset that adds comments, trailing commas, single-quoted strings, unquoted keys and a few number forms. It is a different format with its own parsers. This tool processes standard JSON only, so a JSON5 document is reported as invalid rather than silently accepted.</p></details>
+            <details><summary>Can this tool format large JSON files?</summary><p>Yes. Formatting and analysis are linear in document size and a file with tens of thousands of records completes in well under a second. For very large input the live pass is debounced longer, syntax highlighting is skipped and the tree starts collapsed so the first paint stays fast.</p></details>
+            <details><summary>Can I format API responses?</summary><p>Yes, and it is the most common use. Paste a minified response straight from your network tab or a curl command. Because everything runs locally, a response containing a token or personal data never leaves your machine.</p></details>
+            <details><summary>Can I download formatted JSON?</summary><p>Yes. Download saves exactly what is in the output pane as formatted.json, or minified.json if you last minified. It is generated in the browser with a Blob and there is no upload step.</p></details>
+            <details><summary>Can I copy minified JSON?</summary><p>Yes. Copy minified produces the compact form from the same parsed data without changing what is displayed, so you can keep reading the formatted version while pasting the compact one.</p></details>
+            <details><summary>Does formatting change JSON data?</summary><p>No. Formatting only adds whitespace between tokens. Every key, value, type and array order is identical, and parsing the formatted output gives a structure equal to parsing the original.</p></details>
+            <details><summary>Does minification change JSON data?</summary><p>No. Minification removes whitespace between tokens only. Spaces, tabs and newlines inside string values are part of the data and are preserved exactly.</p></details>
+            <details><summary>What is the difference between formatting and validating JSON?</summary><p>Validating asks whether the text is legal JSON and answers yes or no. Formatting rewrites valid JSON into a readable layout. Formatting implies validation — a document has to parse before it can be reformatted — but validating on its own leaves the text untouched.</p></details>
+            <details><summary>Can JSON contain arrays?</summary><p>Yes. An array is an ordered list in square brackets and may hold any mix of values, including other arrays and objects. Order is significant and is always preserved by this tool, including when key sorting is switched on.</p></details>
+            <details><summary>Can JSON contain nested objects?</summary><p>Yes, to any depth. The statistics panel reports the maximum depth of your document, and the tree view lets you collapse branches you are not interested in.</p></details>
+            <details><summary>How are null values handled?</summary><p>null is preserved as the JSON literal null. It is never turned into the string "null", into undefined, or into an empty string, and it is never silently dropped from an object or an array.</p></details>
+            <details><summary>How are booleans handled?</summary><p>true and false are preserved as literals. A string containing the text "true" is different data and stays a quoted string, so the two can never be confused.</p></details>
+            <details><summary>Can JSON contain Unicode?</summary><p>Yes. Devanagari, Chinese, Japanese, Arabic, accented Latin and emoji all pass through unchanged. There is an optional Escape Unicode setting that rewrites them as \uXXXX sequences — a change of representation, not of the underlying text — and it is off by default.</p></details>
+            <details><summary>How are large numbers handled?</summary><p>JavaScript reads every JSON number as a 64-bit float, so an integer beyond 9,007,199,254,740,991 loses precision during parsing — in this tool and in every other browser-based one. If your data contains large identifiers, keep them as strings in the JSON.</p></details>
+            <details><summary>What happens to duplicate keys?</summary><p>They are detected and reported with the key name and line number, and nothing is removed for you. JSON parsers keep the last occurrence and discard earlier ones, so a duplicate usually means data is being lost silently somewhere upstream — which is worth knowing about rather than having quietly cleaned up.</p></details>
+            <details><summary>What is JSON tree view?</summary><p>A collapsible outline of the parsed document. Each branch shows its type and how many members it has, each leaf shows its value and type in words as well as colour, and clicking a leaf reveals its path such as $.user.profile.name.</p></details>
+            <details><summary>Does sorting keys change my data?</summary><p>It changes the order properties appear in, which some systems care about, so it is off by default. The values themselves are untouched and array order is never altered.</p></details>
+            <details><summary>Is JSON formatting safe?</summary><p>Yes, when the tool treats JSON as data rather than code. This one parses with JSON.parse, never eval, and every character it displays — including the syntax highlighter and the tree — is escaped or inserted as text, so a document containing HTML or a script tag is shown, not run.</p></details>
+            <details><summary>Is my JSON uploaded to a server?</summary><p>No. Parsing, formatting, minifying and downloading all happen in your browser and no network request carries your data. This matters because JSON pasted into a formatter routinely contains API keys, tokens and personal data.</p></details>
+            <details><summary>Is this JSON formatter free?</summary><p>Yes. Free, no sign-up, no email address and no limit on document size beyond what your browser can hold.</p></details>
+          </div>
+        </section>
+
+        <!-- ============ RELATED ============ -->
+        <section class="jf-section" aria-labelledby="jf-related-heading">
+          <h2 class="jf-h2" id="jf-related-heading">Related developer tools</h2>
+          <p class="jf-sub">Other ToolAdda converters and formatters that run entirely in your browser.</p>
+          <div class="jf-related">
+            <a href="json-to-yaml.html"><strong>JSON to YAML Converter</strong><span>Convert JSON to YAML and back, with validation.</span></a>
+            <a href="json-to-typescript.html"><strong>JSON to TypeScript</strong><span>Generate interfaces, types and enums from JSON.</span></a>
+            <a href="yaml-to-xml.html"><strong>YAML to XML Converter</strong><span>Turn YAML documents into structured XML.</span></a>
+            <a href="responsive-design-tester.html"><strong>Responsive Design Tester</strong><span>Preview any site at real phone, tablet and desktop sizes.</span></a>
+            <a href="../json-to-csv-converter.html"><strong>JSON to CSV Converter</strong><span>Flatten JSON arrays into spreadsheet rows.</span></a>
+            <a href="../csv-to-json-converter.html"><strong>CSV to JSON Converter</strong><span>Turn delimited data into JSON objects.</span></a>
+            <a href="../json-to-xml-converter.html"><strong>JSON to XML Converter</strong><span>Convert JSON documents into XML.</span></a>
+            <a href="../xml-to-json-converter.html"><strong>XML to JSON Converter</strong><span>Parse XML back into clean JSON.</span></a>
+            <a href="../jwt-debugger.html"><strong>JWT Debugger</strong><span>Decode and verify JSON Web Tokens.</span></a>
+            <a href="../text-tools/base64-encoder-decoder.html"><strong>Base64 Encoder &amp; Decoder</strong><span>Encode and decode text, JSON and files.</span></a>
+            <a href="../url-encoder-decoder.html"><strong>URL Encoder &amp; Decoder</strong><span>Encode and decode URL components.</span></a>
+          </div>
+        </section>
+
+        <p class="jf-disclaimer">
+          This formatter runs entirely in your browser. Your JSON is parsed with <code>JSON.parse</code> — never <code>eval</code> — no network request carries your data, nothing is logged, and the document is gone when you close the tab. Formatting and minifying change whitespace only; the parsed data is identical either way.
+        </p>
+      </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+          <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links"><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../privacy-policy.html">Privacy</a><a href="../terms.html">Terms</a></div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/json-formatter.js"></script>
+    <script src="../assets/js/inline-ads.js" data-in-article defer></script>
+  <script src="../assets/js/side-ads.js" defer></script>
+  </body>
+</html>

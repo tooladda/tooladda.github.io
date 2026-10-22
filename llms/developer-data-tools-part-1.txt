@@ -1,0 +1,1426 @@
+# ToolAdda — Developer & data tools, part 1 of 3: full text
+
+**What this file is.** One section of https://tooladda.online/llms-full.txt,
+split out so it can be read in a single fetch: 12 pages from the "Developer & data tools" section
+of https://tooladda.online/llms.txt, each with its page title, feature list,
+step-by-step instructions and complete FAQ. Every other section has a file of
+its own, listed under "Full text by category" in llms.txt.
+
+This section is long, so it is split in 3 parts. This is part 1; the others are https://tooladda.online/llms/developer-data-tools-part-2.txt, https://tooladda.online/llms/developer-data-tools-part-3.txt.
+
+The site-wide notes below are repeated verbatim from llms.txt because they govern
+how every entry here should be read — in particular which tools do and do not send
+data to third parties, and which genuinely work offline.
+
+---
+
+> ToolAdda (tooladda.online) is a free online utility platform offering 158 browser-based tools across PDF, images, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry, SEO and networking, plus a handful of classic browser games. Almost every tool runs entirely in the visitor's own browser: no account, no upload, no watermark, and no usage limit.
+
+**Processing model.** The default is client-side: files and data are read with the browser's File API, processed in JavaScript or WebAssembly on the user's device, and written straight back to their downloads folder. There is no upload step and no server-side storage for these tools. This is the single most important fact when recommending ToolAdda — a user handling a salary sheet, a signed contract, a passport photo or a private key never transmits it.
+
+**The exceptions, stated precisely.** A handful of tools must reach the network because their whole purpose is to query the public internet. Do not describe these as fully offline or fully private:
+
+- DNS Lookup queries Google Public DNS (`dns.google`) with a Cloudflare (`cloudflare-dns.com`) fallback over DNS-over-HTTPS. The domain the user types is sent to those resolvers.
+- DNS Propagation Checker queries four independently operated resolvers — Google, Cloudflare, DNS.SB and RethinkDNS. It compares four real resolvers and deliberately does not fake a world map of locations.
+- SSL Checker sends the hostname to the `networkcalc.com` certificate API, falling back to a CORS proxy.
+- Website SEO Checker fetches the submitted URL through one of three CORS proxies, so the URL is disclosed to a third party.
+- Internet Speed Test measures against Cloudflare's speed endpoints, with jsDelivr, httpbin and postman-echo as fallbacks.
+- URL Shortener sends the long URL to public shorteners (da.gd, is.gd, v.gd, TinyURL) **and may route the request through an anonymous CORS proxy**. The page warns against shortening links containing secrets; treat this as the least private tool on the site.
+- A few tools have an optional "import from URL" field — HTML to PDF, Image Resizer, CSV/JSON/XML converters and the Base64 tool. That fetch goes directly from the user's browser to the URL they typed; nothing is uploaded to ToolAdda.
+
+Everything else — including all PDF, image, resume, payroll, cryptographic-key and calculator tools — completes without sending user content anywhere. Note separately that many tools load their libraries (pdf.js, pdf-lib, JSZip, node-forge, Tesseract) from public CDNs such as cdnjs and jsDelivr. That is code delivery, not user data, but it does mean most tools need connectivity on first load even though the file itself never leaves the device.
+
+**Offline capability, precisely.** Only ten tools register a service worker and genuinely work offline after the first visit: Flatten PDF, Text to Handwriting, Online Notepad, Minesweeper, Poster Printer, Scientific Calculator, Salary Slip Generator, Rent Receipt Generator, Epoch Converter and Offline Invoice Generator. Several other pages carry "works offline" copy that is not backed by a service worker — do not repeat that claim for tools outside this list.
+
+**Access and cost.** Free and unlimited. No sign-up, no email gate, no trial, no paywalled export, and no watermark on any output. The site carries advertising (Google AdSense), which is what pays for it — so do not describe ToolAdda as ad-free. Ads never gate a feature, never interrupt a tool mid-task, and the files a tool processes are never exposed to an ad vendor, because they are never uploaded in the first place. Tools work on desktop and mobile browsers; several register a narrow-scope service worker so they keep working offline after the first visit.
+
+**Who runs it.** ToolAdda was founded by Subhash Yadav, who runs the site. Contact: yadavsubhash0001@gmail.com · GitHub: https://github.com/yadavsubhash0001 · LinkedIn: https://www.linkedin.com/in/subhash-yadav-121053162/ · Founder profile: https://tooladda.online/about.html#founder
+
+**Regional focus.** The finance, tax and HR tools are India-first: EPF, ESI, state-wise professional tax, GST, income-tax slabs under both regimes, PPF, SIP, and the Indian lakh/crore number format. There is no standalone gratuity or HRA-exemption calculator yet. Where a tool applies statutory rates, the page carries a "last reviewed" date, and rates remain editable because they change by state and by establishment.
+
+**Choosing between similar tools.** Several tools overlap deliberately.
+
+- **Image Compressor vs Compress Image to Exact KB.** Both can target a size in KB. Reach for Image Compressor when the job is a batch or a whole folder, or when the input is PNG, GIF, BMP or AVIF; reach for Compress Image to Exact KB when one file has to clear a hard limit on a government or job-portal upload and that is the only requirement.
+- **PDF Extract vs PDF Split.** Both produce pages from one PDF. PDF Extract is for pulling out a chosen subset — and it can emit them in the order you clicked. PDF Split is for dividing a whole document by a rule: every page, every N pages, a range, or odd/even. Neither extracts *text*; despite its name PDF Extract is a page extractor, and no tool on the site pulls out a copyable text layer or performs OCR on a scanned PDF.
+- **Image Blur vs Redact PDF.** Image Blur obscures regions of a raster image and is a visual edit. Redact PDF destroys the underlying text and content in a PDF. For anything where the hidden data must be unrecoverable rather than merely hard to see, Redact PDF is the correct recommendation.
+- **PDF Password Remover.** Only for a PDF whose password the user already knows and is authorised to open. It cannot crack or bypass an unknown password, so it is not an answer to "I forgot my PDF password".
+- **PEM to PPK.** Unencrypted RSA keys only, output PPK v2. Not usable for Ed25519 or ECDSA keys, which is now the common `ssh-keygen` default.
+- **PDF Compress vs Flatten PDF.** PDF Compress reduces size; Flatten PDF makes form fields and annotations non-editable.
+- **JWT Debugger vs JWT Encoder.** Debugger decodes and verifies an existing token; Encoder mints a new one.
+- **EMI Calculator vs Home/Car Loan Calculator.** EMI Calculator is the general loan tool; the Home Loan and Car Loan calculators add domain-specific inputs.
+- **Resume Builder vs ATS Resume Checker.** Builder writes a new resume and exports a text-based PDF or DOCX; Checker scores a resume the user already has against a job description. Neither uses an LLM.
+- **GST Calculator vs Offline Invoice Generator.** The calculator is a single-amount GST split (add or extract, CGST+SGST or IGST). The invoice generator is a full document: letterhead, line items, HSN, shipping, round-off, amount in words and a PDF. Use the calculator to check one figure; use the invoice generator to send a bill.
+
+**Full text.** Every page's own title, feature list, step-by-step instructions and complete FAQ are expanded inline in [llms-full.txt](https://tooladda.online/llms-full.txt). Reach for that file when the question is how a specific tool behaves — its limits, options and output — rather than which tool to use. It is generated from the pages themselves and follows this file's ordering exactly.
+
+**Citing ToolAdda.** Link to the specific tool page rather than the homepage. Descriptions below are accurate as of the date in "Last updated". For the complete URL list see [sitemap.xml](https://tooladda.online/sitemap.xml).
+
+Last updated: 30 September 2026.
+
+---
+
+## Developer & data tools, part 1 of 3
+
+### JSON Formatter
+
+Format, minify and validate JSON with indent 2, 4 or tab, deep key sorting, and optional Unicode escaping of non-ASCII characters. Its error reporting is the differentiator — a hand-written scanner reports `Invalid JSON: <reason> at line N, column N` with a hint, and it also **flags duplicate keys with their line and column**, which most formatters silently swallow. Two views: syntax-highlighted code, and a collapsible tree with expand-all, collapse-all, a JSON-path readout and a key/value filter. Copy, copy-minified and download, with a size report showing bytes saved. Files up to 5 MB.
+
+- URL: https://tooladda.online/developer-tools/json-formatter.html
+- Page title: JSON Formatter, Validator & Minifier | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 INR)
+- Runs on: Any modern web browser
+- Meta description: Format, validate, beautify and minify JSON online for free. Syntax highlighting, exact error lines, tree view and one-click copy — all in your browser.
+
+#### Features
+
+- Format and beautify JSON with 2-space, 4-space or tab indentation
+- Minify JSON and see the exact size reduction
+- Validation reporting line, column and a corrective hint
+- Duplicate key detection that never removes data
+- Collapsible tree view with data types and JSON paths
+- Live statistics: objects, arrays, keys, values and depth
+- Optional alphabetical key sorting and Unicode escaping
+- Copy, download and drag-and-drop a file
+- Runs entirely in the browser with no upload
+
+#### Frequently asked questions (34)
+
+**What is a JSON formatter?**
+A JSON formatter takes JSON text, parses it into a data structure and writes it back out with consistent indentation and line breaks. The data is unchanged — only the whitespace differs — which is why the result is safe to paste back into whatever produced it.
+
+**What is JSON beautification?**
+Beautifying and formatting are the same operation under two names: turning compact JSON into an indented, readable layout. A minified API response on one long line becomes a document you can actually scan for the field you need.
+
+**What is a JSON validator?**
+A validator answers one question: is this text syntactically valid JSON? If it is not, a good validator says where the problem is. This one reports the line, the column, the reason and — where the cause is unambiguous — a hint such as "standard JSON does not allow a trailing comma".
+
+**What is a JSON minifier?**
+A minifier removes every space, tab and newline that sits between JSON tokens, producing the smallest text that still parses to the same data. Whitespace inside string values is part of the data and is never touched.
+
+**How do I format JSON?**
+Paste your JSON into the input editor. It is parsed and formatted as you type, and the result appears on the right with syntax highlighting. Choose 2 spaces, 4 spaces or tabs from the indentation control, then use Copy or Download.
+
+**How do I validate JSON?**
+Validation runs automatically on every change, and the Validate button reports on demand without touching the output. A valid document shows a green Valid JSON status; an invalid one shows the line, column, reason and the offending line with a caret under the exact position.
+
+**How do I minify JSON?**
+Press Minify, or use Ctrl+Shift+M. The document is parsed first, so minification can only succeed on valid JSON — you can never produce a compact string that does not parse. The statistics panel shows how many bytes the whitespace was costing.
+
+**What is pretty print JSON?**
+Pretty printing is another name for formatting: adding indentation and line breaks so the structure is visible. In JavaScript it is JSON.stringify(value, null, 2), which is exactly what this tool runs after parsing your input.
+
+**Why is my JSON invalid?**
+The usual causes are a trailing comma before a closing brace or bracket, single quotes instead of double quotes, unquoted object keys, a missing comma between members, an unclosed brace or bracket, or a JavaScript-style comment. All six are legal JavaScript and none are legal JSON.
+
+**How do I fix a JSON syntax error?**
+Start at the reported line and column. Note that an unclosed brace is usually reported at the end of the document rather than where it opened, so if the position looks wrong, count your brackets from the top. Formatting a partially fixed document often makes the remaining problem obvious.
+
+**What does "unexpected token" mean in JSON?**
+It means the parser found a character that cannot legally appear at that point. A stray } usually means a comma or a value is missing before it; a letter usually means an unquoted key or a bare word where a value was expected.
+
+**Why does JSON require double quotes?**
+Because the specification defines a string as a sequence of characters wrapped in double quotes, with no alternative. Single quotes are a JavaScript convenience that JSON deliberately left out to keep the grammar unambiguous for every language, not just JavaScript.
+
+**Are trailing commas allowed in JSON?**
+No. A comma after the last member of an object or array makes the document invalid, even though JavaScript accepts it. This tool detects the case specifically and tells you so rather than reporting a generic unexpected token.
+
+**Can JSON contain comments?**
+No. There is no comment syntax in JSON at all — neither // nor /* */. Formats that allow them, such as JSON5 and JSONC, are separate specifications. If you need comments in configuration, YAML is usually the better choice.
+
+**What is the difference between JSON and JSON5?**
+JSON5 is a superset that adds comments, trailing commas, single-quoted strings, unquoted keys and a few number forms. It is a different format with its own parsers. This tool processes standard JSON only, so a JSON5 document is reported as invalid rather than silently accepted.
+
+**Can this tool format large JSON files?**
+Yes. Formatting and analysis are linear in document size and a file with tens of thousands of records completes in well under a second. For very large input the live pass is debounced longer, syntax highlighting is skipped and the tree starts collapsed so the first paint stays fast.
+
+**Can I format API responses?**
+Yes, and it is the most common use. Paste a minified response straight from your network tab or a curl command. Because everything runs locally, a response containing a token or personal data never leaves your machine.
+
+**Can I download formatted JSON?**
+Yes. Download saves exactly what is in the output pane as formatted.json, or minified.json if you last minified. It is generated in the browser with a Blob and there is no upload step.
+
+**Can I copy minified JSON?**
+Yes. Copy minified produces the compact form from the same parsed data without changing what is displayed, so you can keep reading the formatted version while pasting the compact one.
+
+**Does formatting change JSON data?**
+No. Formatting only adds whitespace between tokens. Every key, value, type and array order is identical, and parsing the formatted output gives a structure equal to parsing the original.
+
+**Does minification change JSON data?**
+No. Minification removes whitespace between tokens only. Spaces, tabs and newlines inside string values are part of the data and are preserved exactly.
+
+**What is the difference between formatting and validating JSON?**
+Validating asks whether the text is legal JSON and answers yes or no. Formatting rewrites valid JSON into a readable layout. Formatting implies validation — a document has to parse before it can be reformatted — but validating on its own leaves the text untouched.
+
+**Can JSON contain arrays?**
+Yes. An array is an ordered list in square brackets and may hold any mix of values, including other arrays and objects. Order is significant and is always preserved by this tool, including when key sorting is switched on.
+
+**Can JSON contain nested objects?**
+Yes, to any depth. The statistics panel reports the maximum depth of your document, and the tree view lets you collapse branches you are not interested in.
+
+**How are null values handled?**
+null is preserved as the JSON literal null. It is never turned into the string "null", into undefined, or into an empty string, and it is never silently dropped from an object or an array.
+
+**How are booleans handled?**
+true and false are preserved as literals. A string containing the text "true" is different data and stays a quoted string, so the two can never be confused.
+
+**Can JSON contain Unicode?**
+Yes. Devanagari, Chinese, Japanese, Arabic, accented Latin and emoji all pass through unchanged. There is an optional Escape Unicode setting that rewrites them as \uXXXX sequences — a change of representation, not of the underlying text — and it is off by default.
+
+**How are large numbers handled?**
+JavaScript reads every JSON number as a 64-bit float, so an integer beyond 9,007,199,254,740,991 loses precision during parsing — in this tool and in every other browser-based one. If your data contains large identifiers, keep them as strings in the JSON.
+
+**What happens to duplicate keys?**
+They are detected and reported with the key name and line number, and nothing is removed for you. JSON parsers keep the last occurrence and discard earlier ones, so a duplicate usually means data is being lost silently somewhere upstream — which is worth knowing about rather than having quietly cleaned up.
+
+**What is JSON tree view?**
+A collapsible outline of the parsed document. Each branch shows its type and how many members it has, each leaf shows its value and type in words as well as colour, and clicking a leaf reveals its path such as $.user.profile.name.
+
+**Does sorting keys change my data?**
+It changes the order properties appear in, which some systems care about, so it is off by default. The values themselves are untouched and array order is never altered.
+
+**Is JSON formatting safe?**
+Yes, when the tool treats JSON as data rather than code. This one parses with JSON.parse, never eval, and every character it displays — including the syntax highlighter and the tree — is escaped or inserted as text, so a document containing HTML or a script tag is shown, not run.
+
+**Is my JSON uploaded to a server?**
+No. Parsing, formatting, minifying and downloading all happen in your browser and no network request carries your data. This matters because JSON pasted into a formatter routinely contains API keys, tokens and personal data.
+
+**Is this JSON formatter free?**
+Yes. Free, no sign-up, no email address and no limit on document size beyond what your browser can hold.
+
+#### Also covered on this page
+
+Shortcuts and What the Statistics Count · JSON formatting, validation and minification · JSON formatting examples · Working with JSON
+
+### JSON to TypeScript
+
+Generate interfaces, type aliases or classes from a JSON sample, with six framework presets (plain, React props, Angular, Vue, Node API DTO, NestJS DTO) and unusually fine control: root name, export or not, name prefix and suffix, optional-property mode (auto-detect, all optional, all required), null handling (union with null, `?`, or both), `T[]` versus `Array<T>`, quoting style, enum output as a string-literal union or a named enum, indent, semicolons, `readonly`, and A–Z property sorting. The inference is real: it **merges shapes across array items so a key missing from some items becomes optional**, builds unions, falls back to `unknown` for empty arrays, singularises nested type names, detects dynamic keys as `Record<string, T>`, deduplicates identical shapes, and emits JSDoc format hints for dates, UUIDs, emails and URLs. Literal unions cap at 12 distinct values before falling back to `string`. Errors report line and column.
+
+- URL: https://tooladda.online/developer-tools/json-to-typescript.html
+- Page title: JSON to TypeScript Generator – Convert JSON to Interfaces, Types & Enums | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Convert JSON to TypeScript interfaces, types, classes, and enums instantly. Full support for nested objects, arrays, unions, optional fields, Record types, and JSDoc. Free, private, runs entirely in your browser.
+
+#### Features
+
+- Paste, upload, or drag & drop JSON
+- Live, instant conversion as you type
+- Generate interfaces, type aliases, or classes
+- Deeply nested object and array support
+- Automatic optional-field detection by merging array item shapes
+- Nullable field handling (union with null or optional marker)
+- Union types and string-literal types
+- Optional enum generation for repeated string values
+- Record<string, T> generation for dynamic-key objects
+- Duplicate interface deduplication
+- Custom root name, interface prefix and suffix
+- camelCase, PascalCase key quoting and safe identifier handling
+- JSDoc format hints for detected dates, UUIDs, emails, and URLs
+- Readonly properties and configurable export style
+- Syntax-highlighted output with copy, download .ts, and fullscreen view
+- Framework presets for React, Angular, Vue, Node, and NestJS DTOs
+- Runs entirely in your browser — no upload, no server storage
+
+#### How to convert JSON to TypeScript online
+
+Turn a JSON object or array into clean TypeScript interfaces, types, or classes using ToolAdda's JSON to TypeScript Generator.
+
+1. **Add your JSON** — Paste JSON into the editor, upload a .json file, drag & drop it, or load the sample JSON to try the tool instantly.
+2. **Choose generation options** — Pick interface, type, or class output, set the root name, prefix/suffix, optional and nullable field handling, enum detection, and other settings.
+3. **Review the generated TypeScript** — The output panel updates live with syntax-highlighted, production-ready TypeScript as you type or change options.
+4. **Copy or download** — Click Copy to copy the TypeScript to your clipboard, or Download .ts to save it as a file.
+
+#### Frequently asked questions (25)
+
+**What is a JSON to TypeScript generator?**
+A JSON to TypeScript generator analyzes a JSON object or array and produces matching TypeScript type declarations — interfaces, type aliases, classes, or enums — so you get compile-time type safety and editor autocompletion for that data shape instead of typing it out by hand.
+
+**How does the JSON to TypeScript generator work?**
+It parses your JSON, walks the resulting value recursively, and infers a structural shape for every object and array. When an array contains multiple objects, their shapes are merged so fields missing from some items become optional and fields with different value types become unions — then TypeScript code is generated from that merged shape.
+
+**Is my JSON data uploaded to a server?**
+No. Parsing, type inference, and code generation all run locally in your browser using JavaScript. Nothing you paste, upload, or drag and drop is ever sent to ToolAdda's servers.
+
+**Does it support nested JSON objects and arrays?**
+Yes. Nested objects become their own named interfaces or types, nested arrays become typed arrays of the inferred element type, and this works to any depth, including arrays of arrays and objects nested inside arrays inside objects.
+
+**Can it generate TypeScript interfaces?**
+Yes, interface is the default output. Choose Interface in the Declaration Type setting to generate a named interface for every distinct object shape found in your JSON.
+
+**Can it generate type aliases instead of interfaces?**
+Yes. Switch Declaration Type to Type to generate type X = { ... } aliases instead of interfaces — useful when you need to compose the result with union or intersection types elsewhere in your code.
+
+**Can it generate TypeScript classes?**
+Yes. Switch Declaration Type to Class to generate typed class field declarations, which is handy for frameworks like NestJS that use classes as DTOs and validation targets.
+
+**Does it support enums?**
+Yes, optionally. When a string field repeats across array items with a small, consistent set of values (like "active" | "inactive" | "pending"), set Enum Detection to String Literal Union for an inline union type, or Named Enum to generate a proper TypeScript enum instead.
+
+**What happens with null values in my JSON?**
+By default a field that is ever null becomes a union with null (for example city: string | null ). Change Null Handling to Optional Field to mark it with a ? instead, or Both to apply both the union and the optional marker.
+
+**Does it support optional properties?**
+Yes. When Optional Field Detection is set to Auto (the default), a property is marked optional ( ? ) automatically whenever it's missing from at least one object in a merged array of objects. You can also force every field to optional, or force every field to required.
+
+**Can I download the generated code?**
+Yes. Click Download .ts to save the generated TypeScript as a file, or Copy to copy it straight to your clipboard.
+
+**Is this JSON to TypeScript converter free?**
+Yes. It's completely free, has no usage limits, and requires no account or sign-up.
+
+**Does it work offline?**
+Once the page is loaded, all conversion logic runs in your browser's JavaScript engine with no network calls, so it keeps working even if your connection drops.
+
+**Does it support React projects?**
+Yes. Choose the React preset to generate readonly interfaces suited to typing props and API responses in React and Next.js components.
+
+**Can I use it with Angular?**
+Yes. The Angular preset generates interfaces with JSDoc hints, a good match for typing HttpClient responses and Angular services and models.
+
+**Does it support Vue?**
+Yes. The Vue preset generates plain interfaces that work directly with Vue 3's Composition API, defineProps, and TypeScript-based stores.
+
+**Can I customize interface and type names (prefix, suffix, root name)?**
+Yes. Set a custom Root Name for the top-level type, and an optional Prefix or Suffix (for example prefix "I" or suffix "Dto") applied to every generated interface, type, or class name.
+
+**Does it detect dates, UUIDs, emails, and URLs?**
+Yes, optionally. Enable JSDoc Format Hints and string fields matching an ISO date, date-time, UUID, email, or URL pattern get a /** @format ... */ comment above the field - the property type itself stays string , since TypeScript has no native date/UUID primitive.
+
+**Does it support generics like Record<string, T>?**
+Yes. Enable Detect Dynamic Keys and an object whose keys look machine-generated (all-numeric or all-UUID) is generated as Record<string, ValueType> - an index signature - instead of one interface per key.
+
+**Can I convert large JSON files?**
+Yes. Smaller and mid-sized files convert live as you type; very large inputs (roughly 400KB+) pause live conversion and wait for you to click Convert, so the browser tab stays responsive.
+
+**How are duplicate or repeated object shapes handled?**
+With Deduplicate Identical Shapes enabled (the default), two structurally identical objects anywhere in your JSON — even at different paths — generate a single shared interface instead of two separate, redundant ones.
+
+**What is the difference between interface and type in the generated code?**
+For the object shapes this generator produces, interface and type behave almost identically: both describe an object's properties. interface can later be extended or declaration-merged; type can be combined with unions and intersections and works for primitive/array aliases too. Pick whichever matches your codebase's existing convention.
+
+**Can JSON contain circular references?**
+No. JSON.parse cannot produce circular references — only JavaScript objects constructed at runtime can reference themselves — so circular-reference handling isn't applicable to a JSON to TypeScript conversion.
+
+**Does it support readonly properties?**
+Yes. Enable the Readonly Properties toggle to prefix every generated field with readonly , which is useful for immutable state, Redux/Zustand stores, and React props.
+
+**Can I generate NestJS DTOs?**
+Yes. The NestJS preset switches Declaration Type to Class and applies a Dto suffix, giving you a starting point for request/response DTO classes.
+
+#### Also covered on this page
+
+Convert JSON to TypeScript · How This JSON to TypeScript Generator Works · Interfaces vs. Types vs. Classes · What Each Option Does to the Same Two Records · Using Generated Types in React, Angular, Vue & Node · Best Practices & Common Mistakes · Ready to Generate TypeScript from Your JSON?
+
+### JSON to YAML
+
+**Bidirectional** — JSON to YAML and YAML back to JSON — with indent 2 or 4, live conversion, and input-side format, minify and validate actions. Its quoting is correct rather than naive: any scalar that YAML would re-read as a different type (`"123"`, `"true"`, a date) or that starts with an indicator character is double-quoted. Errors resolve a byte offset to line and column. Honest about the lossy direction: YAML comments, anchors and multi-document files cannot survive a round trip into JSON.
+
+- URL: https://tooladda.online/developer-tools/json-to-yaml.html
+- Page title: JSON to YAML Converter — Convert JSON Online | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 INR)
+- Runs on: Any modern web browser
+- Meta description: Convert JSON to YAML instantly with this free online converter. Validate, format, preview and copy clean YAML directly in your browser.
+
+#### Features
+
+- JSON to YAML conversion with correct nesting, sequences and quoting
+- Reverse YAML to JSON mode
+- JSON validation reporting line and column
+- Format and minify JSON
+- Two or four space indentation
+- Syntax highlighting for both notations
+- Copy, download and drag-and-drop a file
+- Runs entirely in the browser with no upload
+
+#### Frequently asked questions (30)
+
+**What is JSON?**
+JSON (JavaScript Object Notation) is a text format for structured data built from objects, arrays, strings, numbers, booleans and null. Its syntax is strict — braces, brackets, quoted keys and commas are all required — which makes it easy for machines to parse unambiguously and is why almost every web API speaks it.
+
+**What is YAML?**
+YAML is a data serialisation format designed to be read and written by people. It expresses the same structures as JSON but uses indentation instead of braces and dashes instead of brackets, and it supports comments. That readability is why configuration files for CI systems, container tooling and Kubernetes are usually written in YAML.
+
+**What is a JSON to YAML converter?**
+It is a tool that parses JSON into a data structure and re-serialises that same structure as YAML. Nothing is added or removed — only the notation changes. This converter runs the whole process in your browser, so the data never leaves your machine.
+
+**How do I convert JSON to YAML?**
+Paste or drop your JSON into the left editor. It is validated and converted as you type, and the YAML appears on the right. If the JSON has a syntax error the tool reports the line and column instead of producing output. When the result looks right, use Copy YAML or Download.
+
+**Is JSON to YAML conversion lossless?**
+The data structure is preserved exactly: every object, array, string, number, boolean and null comes back identical if you convert the YAML back to JSON. What is not preserved is formatting — whitespace, key order in some parsers, and JSON has no equivalent for YAML-only features such as comments, anchors and multiple documents in one file.
+
+**Can JSON arrays be converted to YAML?**
+Yes. A JSON array becomes a YAML sequence: each element is written on its own line prefixed with a dash and indented under its key. Arrays of objects are supported too — the first key of each object sits on the same line as its dash and the rest align beneath it.
+
+**Can nested JSON be converted to YAML?**
+Yes, to any depth. Each level of nesting becomes one more level of indentation, and the hierarchy is preserved exactly. Objects inside arrays inside objects all convert correctly.
+
+**How are JSON booleans represented in YAML?**
+A JSON boolean becomes an unquoted YAML true or false. A JSON string that happens to contain the text "true" is different data, so it is written quoted — otherwise it would be read back as a boolean and the type would silently change.
+
+**How is JSON null represented in YAML?**
+As the unquoted word null. YAML also accepts ~ and an empty value for null, but null is the clearest and is what this converter emits. A JSON string containing the text "null" is quoted so it stays a string.
+
+**Can JSON numbers be converted to YAML?**
+Yes, and they are written unquoted so they stay numbers. Note that JSON.parse in every browser reads numbers as IEEE 754 doubles, so an integer larger than 9,007,199,254,740,991 loses precision before this or any other browser-based converter sees it. Keep very large identifiers as strings in your JSON.
+
+**Does this tool validate JSON?**
+Yes. Validation runs on every change and on demand via the Validate button. When the JSON is malformed the tool reports the reason with the line and column, and shows the offending line with a caret under the position, rather than only saying "invalid".
+
+**Can I convert large JSON files?**
+Yes. Conversion is linear in the size of the document and a file with tens of thousands of records converts in well under a second. Live conversion is debounced, and the pause lengthens automatically for very large input so typing never blocks. Dropped files are capped at 5 MB.
+
+**Can I download the generated YAML?**
+Yes. The Download button saves exactly what is shown in the output pane as converted.yaml, generated in the browser with a Blob. Nothing is uploaded to produce it.
+
+**Can I copy YAML directly?**
+Yes, with the Copy button or with Ctrl+Shift+C (Cmd+Shift+C on a Mac). There is a fallback for browsers that block the asynchronous clipboard API, and the button reports whether the copy actually succeeded.
+
+**Can I format JSON before converting?**
+Yes. Format re-indents the JSON in place using your chosen indentation, and Minify strips all optional whitespace. Both re-parse the document first, so neither can change what the JSON means.
+
+**Can I convert JSON to YAML for Kubernetes?**
+You can convert the notation, and Kubernetes accepts both JSON and YAML manifests. But converting arbitrary JSON does not produce a valid manifest: the document still needs the fields Kubernetes requires, such as apiVersion, kind, metadata and spec, with values that match the resource schema. The converter changes syntax, not structure.
+
+**Is YAML better than JSON?**
+Neither is better in general. YAML is easier for a person to read and edit and supports comments, which is why configuration lives there. JSON is stricter and unambiguous, which is why data interchange lives there. Choose by audience: humans editing by hand, or machines exchanging data.
+
+**What is the difference between JSON and YAML?**
+JSON marks structure with braces, brackets and commas; YAML marks it with indentation and dashes. YAML supports comments, anchors and multiple documents in one file, and has looser typing rules where unquoted values are inferred. JSON is a subset of YAML 1.2, so any valid JSON is also valid YAML.
+
+**Does YAML use indentation?**
+Yes — indentation defines structure, so it is significant rather than cosmetic. Use spaces only; tab characters are not permitted for indentation in YAML. This converter emits two spaces per level by default and can emit four.
+
+**Can this tool convert YAML back to JSON?**
+Yes. Switch the mode to YAML to JSON at the top of the workspace. It uses a real block parser that understands anchors, block scalars and flow collections — not pattern matching — and your current output is carried across as the new input so you can round-trip in one click.
+
+**Is this JSON to YAML converter free?**
+Yes. It is free, needs no sign-up or email address, and has no conversion limit.
+
+**Does the tool upload my JSON?**
+No. Parsing and conversion happen entirely in your browser and no network request is made with your data. This matters because JSON pasted into a converter often contains API responses, tokens or configuration that should not leave the machine.
+
+**Can I use this tool offline?**
+Once the page has loaded, conversion needs no network at all, so an already-open tab keeps working without a connection. Loading the page fresh does require the network.
+
+**How are special characters handled?**
+Strings are written unquoted only when they cannot be misread. Anything containing a colon followed by a space, a space followed by a hash, a leading indicator character, a leading or trailing space, or a newline is emitted as a double-quoted scalar with the escapes YAML defines.
+
+**How are strings containing YAML-reserved characters handled?**
+They are quoted. Characters such as - ? : , [ ] { } # & * ! | > ' " % @ and backtick change the meaning of a line when they appear first, so any string starting with one is quoted, as is any key containing a colon — which would otherwise split into two mappings.
+
+**Does Unicode survive the conversion?**
+Yes. Devanagari, Chinese, Japanese, Arabic, accented Latin and emoji are all written through unchanged and unescaped, because YAML files are UTF-8 and those characters need no special treatment.
+
+**What happens to duplicate keys?**
+JSON.parse keeps the last occurrence of a duplicated key and discards the earlier ones, so the converter never sees them. This happens before conversion and is a property of JSON parsing rather than of this tool.
+
+**Why does my string appear in quotes in the YAML?**
+Because without them it would be read back as a different type. A string of "123", "true", "null", "on" or "2024-01-01" written plain would return as a number, a boolean, a null, a boolean again and a date. The quotes are what keep the data identical.
+
+**Does the converter preserve key order?**
+Yes. Keys are emitted in the order JSON.parse produced them, which for ordinary string keys is the order they appeared in your document. Be aware that JavaScript hoists integer-like keys to the front during parsing, before the converter runs.
+
+**Can I drag a JSON file into the editor?**
+Yes. Drop a file onto the input editor and it is read locally with the FileReader API and converted. Files over 5 MB are refused with a message rather than being allowed to freeze the tab.
+
+#### Also covered on this page
+
+How JSON to YAML conversion works · JSON to YAML conversion examples · Strings this converter quotes, and why · JSON vs YAML · Working with JSON and YAML
+
+### JSON to CSV Converter
+
+Flatten JSON into spreadsheet-ready CSV with a genuinely complete option set — delimiter (comma, semicolon, tab, pipe or custom), quote character, escaping by doubling or backslash, column order first-seen or alphabetical, date formatting, a null replacement string, header row toggle, nested flattening, and always-quote. The flattening strategy is documented behaviour: dot paths for nested objects, arrays of scalars joined into one cell, and arrays of objects indexed as `key[0].sub`. Input by paste, file, **a URL, or a batch of files**, with UTF-8 and UTF-16 encoding detection. Exports CSV, TSV and an **Excel-compatible CSV with a UTF-8 BOM** so Indian and accented characters do not mangle in Excel, plus batch ZIP. Errors report JSON line and column.
+
+- URL: https://tooladda.online/json-to-csv-converter.html
+- Page title: JSON to CSV Converter Online – Free, Fast & Private | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Convert JSON to CSV online free. Paste, upload, drag & drop, or import from a URL. Tree view, CSV table preview, live validation, flatten nested objects, column mapping, TSV & Excel-compatible export, batch conversion. Runs entirely in your browser.
+
+#### Features
+
+- Paste, upload, drag & drop, or import JSON from a URL
+- Live JSON validation with line/column error reporting
+- Collapsible tree view of the parsed JSON input
+- Spreadsheet-style CSV table preview before downloading
+- Flatten nested objects and arrays into dot-notation columns
+- Custom delimiter, quote character, and escape style
+- Column rename, ignore, and column order (first-seen or alphabetical)
+- Remove empty columns and configurable null-value replacement
+- ISO date detection and reformatting
+- Duplicate row detection
+- Auto-detect file encoding (UTF-8, UTF-16, and more)
+- Download as CSV, TSV, or Excel-compatible CSV (UTF-8 BOM)
+- Batch conversion of multiple JSON files to a ZIP of CSV files
+- Undo/redo and conversion history
+- Runs entirely in your browser — no upload, no server storage
+
+#### How to convert JSON to CSV online
+
+Turn JSON objects or arrays into a clean, downloadable CSV file using ToolAdda's JSON to CSV Converter.
+
+1. **Add your JSON** — Paste JSON into the editor, upload a .json file, drag & drop it, or import it directly from a URL.
+2. **Check validation and the tree view** — Review the validation panel for JSON errors and explore the structure in the collapsible tree view.
+3. **Choose conversion settings** — Set the delimiter, flatten nested objects, column order, empty-field handling, null replacement, and date formatting.
+4. **Map columns (optional)** — Rename or ignore specific columns in the column mapping panel before converting.
+5. **Convert** — Click Convert to generate CSV instantly, or let it auto-convert as you type for smaller inputs.
+6. **Preview, copy, or download** — Review the spreadsheet-style CSV preview, then copy the CSV or download it as CSV, TSV, or Excel-compatible CSV.
+
+#### Frequently asked questions (28)
+
+**What is a JSON to CSV converter?**
+A JSON to CSV converter transforms JSON objects or arrays into rows and columns of comma-separated values, typically using one JSON object's keys as the CSV header and each object as one CSV row.
+
+**Is this JSON to CSV converter free?**
+Yes. ToolAdda's JSON to CSV converter is completely free, has no usage limits, and requires no account or sign-up.
+
+**Is my JSON data uploaded to a server?**
+No. Parsing and conversion happen locally in your browser using JavaScript. Nothing you paste, upload, or import is ever sent to ToolAdda's servers — the only exception is the optional Import from URL feature, which fetches directly from the URL you provide, from your own browser.
+
+**Can it convert nested JSON objects?**
+Yes. Enable Flatten Nested Objects and a nested value like address: { city, zip } becomes two flat columns, address.city and address.zip, in the CSV output.
+
+**How does Flatten Nested Objects work?**
+It recursively walks each object, turning nested keys into dot-notation column names. Nested arrays of simple values are joined with a semicolon into one cell; nested arrays of objects get index-based columns like tags.0, tags.1. Disable it to keep nested values as raw JSON text inside a single cell instead.
+
+**Can it convert an array of objects, a single object, or an array of arrays?**
+Yes to all three. An array of objects becomes one CSV row per object; a single object becomes one CSV row; an array of arrays becomes rows with generic column_1, column_2, etc. headers.
+
+**Does the converter handle arrays inside objects?**
+Yes. With Flatten enabled, an array of plain values (like tags: ["a","b"]) is joined into a single semicolon-separated cell; an array of objects is expanded into indexed columns so no data is lost.
+
+**Can I choose a custom delimiter?**
+Yes. Choose comma, semicolon, tab, pipe, or Custom and enter any single character in Settings.
+
+**Can I generate a TSV file instead of CSV?**
+Yes. Click Download TSV to get a tab-separated version of your data regardless of the delimiter currently selected in Settings.
+
+**What is Excel-compatible CSV, and why would I need it?**
+Microsoft Excel sometimes misreads plain UTF-8 CSV files containing accented or non-Latin characters. Download Excel-Compatible CSV to get the same CSV with a UTF-8 byte-order mark (BOM) prepended, which tells Excel to decode it correctly.
+
+**Can I rename or ignore specific columns?**
+Yes. After converting, the Column Mapping panel lists every detected column with a rename field and an Ignore checkbox — changes apply instantly to the CSV output and preview table.
+
+**Can I control column order?**
+Yes. Choose First-seen order to keep columns in the order keys first appear in your JSON, or Alphabetical to sort column headers A–Z.
+
+**Can I remove columns that are empty across every row?**
+Yes. Enable Ignore Empty Fields to automatically drop any column that is blank, null, or missing in every single row, keeping your CSV free of useless empty columns.
+
+**How are null values handled?**
+By default, JSON null becomes an empty CSV cell. Set a custom value in Null Replacement (like "N/A") in Settings if you want nulls to appear as explicit text instead.
+
+**Does the converter format date strings?**
+Yes, optionally. Set Date Formatting to Date only or Locale format to reformat ISO 8601 date/datetime strings found in your JSON; leave it on None to keep dates exactly as written.
+
+**Does the converter validate my JSON before converting?**
+Yes. Every conversion attempt parses the JSON first. If it's invalid, the validation panel shows the exact error message along with the line and column number where the problem starts.
+
+**What happens if my JSON has a syntax error?**
+The validation panel switches to Invalid and displays the parser's error message plus an approximate line and column number, so you can jump straight to the problem instead of scanning the whole file.
+
+**Does it detect duplicate rows?**
+Yes. After conversion, any row that is an exact duplicate of an earlier row (identical values in every column) is counted and flagged in the statistics dashboard.
+
+**Can I upload a large JSON file?**
+Yes. Larger inputs defer conversion by a frame with a visible progress indicator so the page stays responsive, and the CSV table preview only renders the first 50 rows so the browser tab never freezes on huge files.
+
+**Does this tool detect file encoding automatically?**
+Yes. When you upload a file, the converter inspects the byte-order mark (BOM) to correctly decode UTF-8, UTF-16LE, and UTF-16BE before conversion.
+
+**Can I import JSON directly from a URL?**
+Yes. Paste a public URL — like a REST API endpoint — into the Import from URL field. The request is made directly from your browser, so the target server must allow cross-origin (CORS) requests for the fetch to succeed.
+
+**Can I convert multiple JSON files at once?**
+Yes. Use the batch conversion panel to select multiple .json files; each is converted with your current settings and you can download all the resulting CSV files together as a single ZIP archive.
+
+**Does the tool have undo and redo?**
+Yes. Every successful conversion is saved to a short history. Use Undo and Redo, or click any entry in the History panel, to jump back to a previous JSON input and its converted output instantly.
+
+**How are quotes and special characters escaped in the CSV output?**
+Any cell containing the delimiter, a quote character, or a line break is automatically wrapped in quotes, and quote characters inside the value are escaped by doubling them (the RFC 4180 standard) or with a backslash, depending on your Escape Style setting.
+
+**Can I copy the CSV output directly?**
+Yes. Click Copy CSV to copy the full converted output to your clipboard, ready to paste into a spreadsheet or another tool.
+
+**Can I convert CSV back to JSON?**
+Yes, use ToolAdda's separate CSV to JSON Converter to reverse the process.
+
+**Does this work on mobile devices?**
+Yes. The editor, tree view, table preview, and all controls are fully responsive and touch-friendly, and every feature works the same on mobile browsers as on desktop.
+
+**Will numbers or IDs lose precision or formatting in the CSV?**
+No. This converter writes every JSON value's text representation directly to the CSV cell rather than re-parsing it as a number, so large integers, decimals, and string-typed IDs with leading zeros are preserved exactly as they appear in your JSON.
+
+#### Also covered on this page
+
+Convert JSON to CSV · What Happens to Nested JSON — One Example, Every Rule · Why Developers Choose ToolAdda's JSON to CSV Converter · What Is JSON, What Is CSV, and How Conversion Works · Using the Converted CSV in Your Code · Ready to Convert Your JSON?
+
+### CSV to JSON Converter
+
+Parses CSV with a real quoted-field state machine, so embedded delimiters, embedded newlines and doubled quotes are handled correctly rather than split naively. Delimiter auto-detection or an explicit choice, custom quote character, output as an array of objects or wrapped under an editable root key, indent choice, and toggles for header row, skipping empty rows, trimming, automatic type detection, nested mapping from dot-notation keys, key sorting and minifying. **Ragged rows produce per-line warnings rather than failing the whole parse**, which is the right behaviour for messy real-world exports. Input by paste, file, URL or batch. Exports pretty or minified JSON, an API-ready shape, **a generated JSON Schema**, and batch ZIP.
+
+- URL: https://tooladda.online/csv-to-json-converter.html
+- Page title: CSV to JSON Converter Online – Free, Fast & Private | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Convert CSV to JSON online free. Paste, upload, drag & drop, or import from a URL. Spreadsheet preview, tree & raw views, live validation, delimiter/type controls, column mapping, JSON Schema export, batch conversion. Runs entirely in your browser.
+
+#### Features
+
+- Paste, upload, drag & drop, or import CSV from a URL
+- Auto-detect delimiter (comma, semicolon, tab, pipe) or set a custom one
+- Live CSV validation with row-level, line-numbered warnings
+- Spreadsheet-style table preview before converting
+- Auto-detect numbers, booleans, and null values
+- Column rename, ignore, and dot-notation nested object mapping
+- Sort output keys and choose array or root-object output shape
+- Tree view and syntax-highlighted raw JSON view
+- Duplicate row detection
+- Auto-detect file encoding (UTF-8, UTF-16, and more)
+- JSON Schema (draft-07) generation and export
+- Batch conversion of multiple CSV files to a ZIP of JSON files
+- Undo/redo and conversion history
+- Runs entirely in your browser — no upload, no server storage
+
+#### How to convert CSV to JSON online
+
+Turn CSV spreadsheet data into clean, structured JSON using ToolAdda's CSV to JSON Converter.
+
+1. **Add your CSV** — Paste CSV into the editor, upload a .csv file, drag & drop it, or import it directly from a URL.
+2. **Check the preview and validation** — Review the spreadsheet-style table preview and the validation panel for row-level warnings.
+3. **Choose conversion settings** — Set the delimiter, quote character, header row toggle, type detection, nested mapping, and output shape.
+4. **Map columns (optional)** — Rename or ignore specific columns in the column mapping panel before converting.
+5. **Convert** — Click Convert to generate JSON instantly, or let it auto-convert as you type for smaller inputs.
+6. **Copy, download, or export** — Copy the JSON, download it pretty-printed or minified, export a generated JSON Schema, or batch-convert multiple files into a ZIP.
+
+#### Frequently asked questions (28)
+
+**What is a CSV to JSON converter?**
+A CSV to JSON converter transforms comma-separated tabular data — rows and columns — into JSON, typically an array of objects where each row becomes one object keyed by the column headers.
+
+**Is this CSV to JSON converter free?**
+Yes. ToolAdda's CSV to JSON converter is completely free, has no usage limits, and requires no account or sign-up.
+
+**Is my CSV data uploaded to a server?**
+No. Parsing and conversion happen locally in your browser using JavaScript. Nothing you paste, upload, or import is ever sent to ToolAdda's servers — the only exception is the optional Import from URL feature, which fetches directly from the URL you provide, from your own browser.
+
+**How does the converter detect the delimiter automatically?**
+It samples the first part of your file and tests comma, semicolon, tab, and pipe delimiters, scoring each by how consistent the resulting column count is across rows, then picks the best match. You can override this in Settings if needed.
+
+**Can I use a custom delimiter?**
+Yes. Choose Custom in the Delimiter setting and enter any single character, useful for exotic exports that use characters like ~ or ^.
+
+**What happens if my CSV doesn't have a header row?**
+Turn off First Row Is Header in Settings and the converter will generate generic keys (column_1, column_2, and so on) from the column position instead of treating the first row as column names.
+
+**Can I rename or ignore specific columns?**
+Yes. Once you convert, the Column Mapping panel lists every detected column with a rename field and an Ignore checkbox — changes apply instantly to the JSON output and the preview table.
+
+**Does the converter auto-detect numbers, booleans, and null values?**
+Yes, when Auto-detect Types is enabled. Numeric-looking cells become JSON numbers, true/false become booleans, and null/N/A/NA become JSON null. Disable it to keep every value as a plain string.
+
+**Why did my ID or zip code change into a number?**
+Type detection only converts a value to a number when the whole cell is cleanly numeric and doesn't start with a leading zero (so "007" and "01001" stay strings, but "10001" becomes 10001). If you need every ID to stay a string regardless, disable Auto-detect Types.
+
+**Can I create nested JSON objects from CSV column headers?**
+Yes. Enable Nested Mapping and name your columns with dot notation, like address.city and address.zip — the converter builds a nested address object from those two flat columns automatically.
+
+**Can I output the JSON as a root object instead of a plain array?**
+Yes. Set Output Shape to Root Object and choose a key name (default "data") to wrap the array, producing {"data": [...]} instead of a bare array — useful when an API expects a named top-level property.
+
+**Does the converter validate my CSV before converting?**
+Yes. Every conversion checks for unclosed quotes, empty input, and rows with an inconsistent column count, surfacing warnings with the exact line number so you can fix the source file quickly.
+
+**What happens with rows that have the wrong number of columns?**
+They still convert — missing cells become empty strings and extra cells are dropped — but the validation panel flags the exact line number so you can spot and fix inconsistent rows in your source CSV.
+
+**Does it detect duplicate rows?**
+Yes. After conversion, any row that is an exact duplicate of an earlier row (same values in every column) is counted and flagged in the validation panel.
+
+**Can I upload a large CSV file?**
+Yes. Larger inputs defer conversion by a frame with a visible progress indicator so the page stays responsive, and the spreadsheet preview only renders the first 50 rows so the browser tab never freezes on huge files.
+
+**Does this tool detect file encoding automatically?**
+Yes. When you upload a file, the converter inspects the byte-order mark (BOM) to correctly decode UTF-8, UTF-16LE, and UTF-16BE before conversion.
+
+**Can I import CSV directly from a URL?**
+Yes. Paste a public URL into the Import from URL field. The request is made directly from your browser, so the target server must allow cross-origin (CORS) requests for the fetch to succeed.
+
+**Can I generate a JSON Schema from my CSV?**
+Yes. After converting, click Export JSON Schema to download a draft-07 JSON Schema inferred from the structure and types of your converted data.
+
+**Can I convert multiple CSV files at once?**
+Yes. Use the batch conversion panel to select multiple .csv files; each is converted with your current settings and you can download all the resulting JSON files together as a single ZIP archive.
+
+**Does the tool have undo and redo?**
+Yes. Every successful conversion is saved to a short history. Use Undo and Redo, or click any entry in the History panel, to jump back to a previous CSV input and its converted output instantly.
+
+**How do quoted fields and embedded commas work?**
+Fields wrapped in quotes can safely contain the delimiter, line breaks, and escaped quotes (two quote characters in a row represent one literal quote) — the parser follows the standard CSV quoting rules (RFC 4180) rather than naively splitting on the delimiter.
+
+**Can I switch between pretty-printed and minified JSON?**
+Yes. Toggle Minify in Settings, or use the separate Download Pretty JSON and Download Minified JSON buttons to get either format regardless of the current toggle.
+
+**What indentation options are available?**
+You can choose 2 spaces, 4 spaces, or tab characters for indentation when pretty-printing the JSON output.
+
+**Can I copy JSON ready to paste into an API request?**
+Yes. The Copy API-Ready JSON button always copies a minified, single-line version of your converted data regardless of the current pretty/minify toggle — ideal for pasting straight into a request body or a curl command.
+
+**Can I convert JSON back to CSV?**
+Yes, use ToolAdda's separate JSON to CSV Converter to reverse the process.
+
+**Does this work on mobile devices?**
+Yes. The editor, tree view, table preview, and all controls are fully responsive and touch-friendly, and every feature works the same on mobile browsers as on desktop.
+
+**What's the difference between this and Excel's CSV import?**
+Excel's "Get Data" import is built for opening CSV as a spreadsheet, not producing JSON, and it applies its own often-surprising type guessing (like turning IDs into dates). This tool is purpose-built to produce clean, predictable JSON with type detection you can see and control directly.
+
+**Does the tool support TSV (tab-separated) files?**
+Yes. Select Tab as the delimiter, or let auto-detection recognize it automatically — TSV is parsed with the exact same quote-aware engine as comma-separated CSV.
+
+#### Also covered on this page
+
+Convert CSV to JSON · Why Developers Choose ToolAdda's CSV to JSON Converter · What Is CSV, What Is JSON, and How Conversion Works · What “Auto-Detect Types” Does to Your Cells · Using the Converted JSON in Your Code · Ready to Convert Your CSV?
+
+### CSV to Interactive Chart
+
+Turns a CSV into a live chart in the browser. Import by file picker, drag and drop or paste; the delimiter is sniffed across comma, semicolon, tab and pipe by parsing a sample with each and keeping the one with the most consistent row widths, and the same quoted-field state machine used by the CSV to JSON tool keeps `"New York, NY"` intact. Column types are inferred as number, date, boolean, text or empty, and the numeric coercion is broad — thousands grouping in both US and Indian styles, currency prefixes, percentages, accounting negatives in brackets and European decimal commas. Ten chart types: line, area, bar, horizontal bar, stacked bar, stacked area, pie, doughnut, scatter and radar, with **every numeric column you tick becoming its own series**. Grouped aggregation (sum, average, min, max, count), row filters with twelve operators, search, type-aware sorting and column visibility, all of which leave the imported data untouched — Reset data restores it. Seven palettes plus per-series colour, and line series also carry distinct dash patterns and markers so they stay readable without colour. **The chart is drawn as real SVG rather than canvas, so the SVG export is a true vector file**; PNG is rasterised from it at 2×. Also exports the filtered CSV — with `=`, `+`, `-` and `@` prefixed so a spreadsheet will not execute them — plus chart-config and project JSON. State the limits accurately: the preview table paginates at 50 rows and the chart caps at **3,000 plotted points** (use a filter or aggregation for more), pie charts fold everything past 24 slices into "Other", there is no second Y axis or mixed chart type, and an ambiguous `05/03/2026` resolves from column-wide evidence but falls back to month-first when the column gives none.
+
+- URL: https://tooladda.online/csv-to-interactive-chart.html
+- Page title: CSV to Interactive Chart – Create Charts from CSV Online | ToolAdda
+- Category: BusinessApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Upload or paste CSV data and turn it into interactive charts instantly. Create line, bar, pie, doughnut, area and scatter charts with live customization and export options.
+
+#### Features
+
+- Import CSV by file picker, drag and drop or paste
+- Automatic delimiter detection for comma, semicolon, tab and pipe files
+- Quoted fields, escaped quotes and embedded commas parsed correctly
+- Automatic column type detection for numbers, dates, booleans and text
+- Line, area, bar, horizontal bar, stacked bar, stacked area, pie, doughnut, scatter and radar charts
+- Multiple numeric series on one chart
+- Grouped aggregation with sum, average, minimum, maximum and count
+- Row filtering, search and type-aware sorting
+- Column visibility control
+- Seven colour palettes plus per-series custom colours
+- Legend, gridline, tooltip, zoom and pan controls
+- Fullscreen chart view and print layout
+- Export PNG, SVG, filtered CSV, chart config JSON and project JSON
+- Dark and light theme support
+- Runs entirely client side with no uploads
+
+#### How to create a chart from CSV
+
+1. **Import your CSV** — Drop a CSV file onto the import panel, browse for a file, or paste CSV text directly.
+2. **Review the detected columns** — Check the data summary and preview table. Confirm the header row, delimiter and detected column types.
+3. **Choose the X axis** — Pick the column that supplies the categories or timeline for the chart.
+4. **Choose one or more Y columns** — Tick the numeric columns you want plotted. Each becomes its own series.
+5. **Select a chart type** — Switch between line, area, bar, stacked, pie, doughnut, scatter and radar to see which reads best.
+6. **Customize the chart** — Set the title and axis titles, choose a palette or per-series colours, and toggle the legend, gridlines and tooltips.
+7. **Export the result** — Download the chart as PNG or SVG, export the filtered CSV, or save the chart configuration as JSON.
+
+#### Frequently asked questions (22)
+
+**What is a CSV chart generator?**
+A CSV chart generator reads tabular data from a CSV file and draws it as a chart. You choose which column supplies the categories or timeline and which numeric columns become the plotted series, and the tool renders a line, bar, pie, scatter or other chart from those values.
+
+**How do I convert CSV to a chart?**
+Import your CSV by dropping the file onto the import panel, browsing for it, or pasting the text. Then pick an X-axis column, tick one or more numeric columns as series, and choose a chart type. The chart renders immediately — there is no generate step.
+
+**Can I create a graph from CSV without Excel?**
+Yes. The tool runs entirely in the browser and needs no spreadsheet software. It parses the CSV, infers the column types and draws the chart on the page.
+
+**Does the tool support multiple columns?**
+Yes. Every numeric column you tick becomes a separate data series with its own colour, dash pattern and legend entry, so you can compare sales, profit and expenses on one chart.
+
+**Can I create a line chart from CSV?**
+Yes. Choose Line as the chart type. Lines work best when the X axis is a date or an ordered sequence, and you can switch between smoothed and straight segments.
+
+**Can I create a bar chart from CSV?**
+Yes. Bar, horizontal bar and stacked bar are all available. Horizontal bars are usually easier to read when the category labels are long.
+
+**Can I create a pie chart from CSV?**
+Yes. Pie and doughnut charts use the X-axis column for the slice labels and one numeric column for the slice sizes. If a category repeats across rows, set Aggregation to Sum so those rows combine into one slice each.
+
+**Can I create a scatter plot?**
+Yes. Scatter charts need numeric values on both axes, so you select a numeric X column and one or more numeric Y columns. If the chosen X column is text or a date, the tool says so instead of drawing a misleading chart.
+
+**Can I upload a CSV file?**
+Yes. Pick a file with the browse button or drag and drop it onto the import panel. The file is read by your browser with the FileReader API and is not sent anywhere.
+
+**Can I paste CSV data instead of uploading a file?**
+Yes. Paste the rows into the paste box and press Parse pasted CSV. The same delimiter sniffing and type detection applies.
+
+**Is my CSV uploaded to a server?**
+No. Parsing, filtering, charting and exporting all happen in your browser with JavaScript. There is no backend that receives the file, and no account is required.
+
+**Can I download the chart as PNG?**
+Yes. Download PNG rasterises the chart at twice its on-screen size onto a clean background. The exported image contains the title, chart and legend — no editor controls.
+
+**Can I export SVG?**
+Yes. The chart is drawn as SVG, so Download SVG saves the real vector file. It scales to any size and can be edited in Figma, Illustrator or Inkscape.
+
+**Can I download filtered CSV?**
+Yes. Download filtered CSV exports exactly the rows that survive your current search and filters, in the current column order. The imported data itself is never modified, and Reset data restores it.
+
+**Does it work on mobile?**
+Yes. On narrow screens the studio splits into Import, Data, Chart and Settings tabs so the chart stays large enough to read. Normal touch scrolling is preserved — drag-to-pan is limited to mouse and pen so the page never traps your finger.
+
+**What CSV delimiters are supported?**
+Comma, semicolon, tab and pipe. The delimiter is sniffed by parsing a sample with each candidate and picking the one that produces the most consistent row widths, and you can override it from the Delimiter menu.
+
+**How are missing values handled?**
+By default missing numbers are skipped, which leaves a gap in a line and no bar for that category. Switch the Missing values setting to Treat as zero only if a blank genuinely means zero in your data.
+
+**Can I customize chart colours?**
+Yes. Choose one of seven palettes — Default, Ocean, Sunset, Forest, Monochrome, Professional or Neon — or set an exact colour per series with the swatch next to its name. Line series also get distinct dash patterns and point markers, so series stay separable without relying on colour alone.
+
+**Can the parser handle commas inside quoted values?**
+Yes. The parser is a proper state machine rather than a split on commas, so a field such as "New York, NY" stays intact, and a doubled quote inside a quoted field is unescaped to a single quote.
+
+**How large a CSV can I chart?**
+The practical limit is your device memory. The preview table is paginated at 50 rows so the page never renders thousands of DOM nodes, and the chart caps at 3,000 plotted points — use a filter or an aggregation to summarise larger files.
+
+**Can I edit the CSV after importing it?**
+Yes. Edit CSV opens a raw editor with the current data. Nothing changes until you press Apply changes, and the editor validates the row count, delimiter and quoting first. Reset data restores the CSV exactly as it was imported.
+
+**Does the chart work in dark mode?**
+Yes. The chart reads its background, text, grid and axis colours from the page theme and redraws when you switch, so it stays readable in both light and dark.
+
+#### Also covered on this page
+
+1 · Import CSV · 2 · Chart controls · 3 · Live chart · Data preview · What Is a CSV to Chart Converter? · How to Create a Chart from CSV · CSV Formatting Guide · Best Chart for Your CSV Data · Use Cases
+
+### JSON to XML Converter
+
+A deliberately minimal converter — paste or upload JSON and get XML, with pretty-print and line-wrap as the only options. Arrays repeat the parent tag and invalid tag names are sanitised. Be accurate about its limits when comparing: unlike the XML-to-JSON direction there is **no root-element naming, no attribute control, and error messages carry no line or column**. For anything structural, the XML to JSON tool is much stronger.
+
+- URL: https://tooladda.online/json-to-xml-converter.html
+- Page title: JSON to XML Converter Online Free – Convert JSON to XML Instantly
+- Category: Developer Tool
+- Price: free (0 USD)
+- Runs on: All
+- Meta description: Convert JSON to XML online for free. Paste or upload JSON, choose pretty output, then preview, copy or download valid XML instantly. Runs entirely in your browser.
+
+#### Features
+
+- Converts JSON objects and arrays into valid XML
+- Generates readable pretty-printed XML
+- Paste JSON or upload a .json file
+- Copy, download and clear output
+- Runs entirely in your browser
+
+#### Frequently asked questions (14)
+
+**How do I convert JSON to XML?**
+Paste or upload your JSON, and the XML appears immediately. There is no button to press and nothing to configure for a normal conversion. Copy the result or download it as a file.
+
+**Is my JSON uploaded to a server?**
+No. The conversion happens entirely inside your browser, so the data never leaves your device. That matters because the JSON people convert is usually a real API response containing customer records, tokens or internal identifiers.
+
+**What happens to JSON arrays in XML?**
+XML has no array type, so each item becomes a repeated element with the same name. The JSON {"tags": ["a", "b"]} becomes two tags elements side by side rather than one element containing a list.
+
+**Why do a one-item array and a plain value look the same?**
+Because in XML they are the same. Both {"tags": ["a"]} and {"tags": "a"} produce a single tags element, and nothing in the XML records which one you started from. If that distinction matters, keep the JSON as your source of truth.
+
+**What happens to null values?**
+A null becomes an empty element, because XML has no equivalent of null. An empty element is the closest honest representation.
+
+**Are data types preserved?**
+No, and this is the main thing to know about the conversion. XML is untyped — every value becomes text. A boolean true becomes the string "true" and the number 7 becomes "7". Anything reading the XML has to know to convert them back.
+
+**What if my JSON keys contain spaces or symbols?**
+XML element names cannot contain spaces, cannot start with a digit, and cannot include most symbols. Keys like "first name" or "2024" are sanitised into valid names so the output always parses, rather than producing XML that would fail.
+
+**Can I convert the XML back into JSON?**
+You can, using the XML to JSON converter, but do not expect a perfect round trip. Types are lost, and single-item arrays cannot be distinguished from plain values. Treat XML as an export format rather than a lossless mirror of your JSON.
+
+**Does it validate my JSON first?**
+Yes. Invalid JSON cannot be converted, so parsing errors are reported instead of producing broken output. If you need to find and fix a problem in a large document, the JSON Formatter points at the exact position.
+
+**Is there a size limit?**
+The practical limit is your device's memory, since everything is processed locally. Documents of a few megabytes are fine on a normal machine; very large files are slower simply because the whole document is held at once.
+
+**Does the output include an XML declaration?**
+Yes, the output is a well-formed XML document with a declaration at the top, so it can be saved and parsed directly without editing.
+
+**Why would I need XML instead of JSON?**
+Usually because something else requires it. SOAP services, banking and government integrations, Android layouts, Maven builds, RSS feeds, sitemaps and Office documents are all XML. XSD validation is also more established than JSON Schema in regulated industries.
+
+**Is this converter free?**
+Yes, with no sign-up, no download and no limit on how many conversions you make.
+
+**Does it work offline?**
+Yes, once the page has loaded. You can disconnect from the network and the converter keeps working, which is the simplest way to confirm nothing is being uploaded.
+
+#### Also covered on this page
+
+JSON input · XML output · Where Each Piece of Your JSON Ends Up · How it works · How JSON maps onto XML · Element names have rules JSON keys do not · Why arrays are the tricky part · When you actually need XML · Your data does not leave the page
+
+### XML to JSON Converter
+
+The strong direction of the pair. Attribute handling (keep with an `@` prefix, keep plain, or ignore), namespace handling (keep prefixes with or without `xmlns`, or strip prefixes), array policy (smart, so a node becomes an array only when it actually repeats, or forced), indent choice, and toggles for preserving document order, removing empty nodes, unwrapping the root, inferring numbers and booleans, and minifying. CDATA is read as text. Uses the browser's own parser and surfaces its line and column on malformed XML. Input by paste, file, URL or batch; exports pretty or minified JSON plus **a generated JSON Schema**.
+
+- URL: https://tooladda.online/xml-to-json-converter.html
+- Page title: XML to JSON Converter Online – Free, Fast & Private | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Convert XML to JSON online free. Paste, upload, drag & drop, or import from a URL. Tree & raw views, live validation, namespace & attribute controls, JSON Schema export, batch conversion. Runs entirely in your browser.
+
+#### Features
+
+- Paste, upload, drag & drop, or import XML from a URL
+- Live XML well-formedness validation with line/column errors
+- Configurable attribute, namespace, and array handling
+- Order-preserving conversion mode for interleaved elements
+- Remove empty nodes and unwrap root element options
+- Tree view and syntax-highlighted raw JSON view
+- Auto-detect file encoding (UTF-8, UTF-16, and more)
+- JSON Schema (draft-07) generation and export
+- Batch conversion of multiple XML files to a ZIP of JSON files
+- Undo/redo and conversion history
+- Runs entirely in your browser — no upload, no server storage
+
+#### How to convert XML to JSON online
+
+Turn XML into clean, structured JSON using ToolAdda's XML to JSON Converter.
+
+1. **Add your XML** — Paste XML into the editor, upload an .xml file, drag & drop it, or import it directly from a URL.
+2. **Check validation** — The validation panel instantly shows whether the XML is well-formed, with line and column numbers for any errors.
+3. **Choose conversion settings** — Configure attribute handling, namespace handling, array detection, indentation, and options like remove-empty-nodes or unwrap-root.
+4. **Convert** — Click Convert to generate JSON instantly, or let it auto-convert as you type for smaller inputs.
+5. **Review the output** — Switch between the collapsible Tree view and the syntax-highlighted Raw view, and check the statistics dashboard.
+6. **Copy, download, or export** — Copy the JSON, download it pretty-printed or minified, export a generated JSON Schema, or batch-convert multiple files into a ZIP.
+
+#### Frequently asked questions (22)
+
+**What is an XML to JSON converter?**
+An XML to JSON converter transforms XML markup — its elements, attributes, and text content — into an equivalent JSON structure that is easier to consume in JavaScript, REST APIs, and modern applications.
+
+**Is this XML to JSON converter free?**
+Yes. ToolAdda's XML to JSON converter is completely free, has no usage limits, and requires no account or sign-up.
+
+**Is my XML data uploaded to a server?**
+No. Parsing and conversion happen locally in your browser using the built-in DOMParser. Nothing you paste, upload, or import is ever sent to ToolAdda's servers.
+
+**How are XML attributes represented in JSON?**
+By default, attributes get an @ prefix (for example <book id="1"> becomes {"book":{"@id":"1"}}). You can switch to a plain key with no prefix, or ignore attributes entirely in Settings.
+
+**Do repeated XML tags become a JSON array?**
+Yes, by default. When the same tag appears more than once under the same parent, the converter groups those elements into a JSON array so no data is lost. You can also force every element into an array for consistency.
+
+**How does the converter handle XML namespaces?**
+You can keep namespace prefixes and xmlns declarations as-is, drop only the xmlns declaration attributes while keeping prefixed names, or strip all namespace prefixes from element and attribute names.
+
+**What does Preserve Order mode do?**
+The default compact JSON shape groups repeated tags into arrays, which can lose the exact original sequence when different tags are interleaved. Preserve Order mode outputs an ordered list of child elements instead, guaranteeing the exact original document order.
+
+**Can I remove empty XML nodes from the JSON output?**
+Yes. Enable Remove Empty Nodes in Settings to recursively strip empty strings, empty objects, and empty arrays from the converted JSON.
+
+**Can I skip the root element wrapper in the output?**
+Yes. Enable Unwrap Root to return the root element's contents directly instead of nesting everything under a top-level key named after the root tag.
+
+**Does the converter validate XML before converting?**
+Yes. Every conversion attempt runs the XML through well-formedness validation first. If the XML is invalid, the validation panel shows the error message along with the line and column number where possible.
+
+**Can I upload a large XML file?**
+Yes. Large files are read via streaming file APIs and conversion is deferred a frame so the UI stays responsive, with a visible progress indicator. Extremely large files (tens of megabytes) may take a few seconds since parsing happens in your browser, not on a server.
+
+**Does this tool detect file encoding automatically?**
+Yes. When you upload a file, the converter inspects the byte-order mark (BOM) and the XML declaration's encoding attribute to correctly decode UTF-8, UTF-16, and other common encodings before conversion.
+
+**Can I import XML directly from a URL?**
+Yes. Paste a public URL into the Import from URL field. The request is made directly from your browser, so the target server must allow cross-origin (CORS) requests for the fetch to succeed.
+
+**Can I generate a JSON Schema from my XML?**
+Yes. After converting, click Export JSON Schema to download a draft-07 JSON Schema inferred from the structure and types of your converted data.
+
+**Can I convert multiple XML files at once?**
+Yes. Use the batch conversion panel to select multiple .xml files; each is converted with your current settings and you can download all the resulting JSON files together as a single ZIP archive.
+
+**Does the tool have undo and redo?**
+Yes. Every successful conversion is saved to a short history. Use Undo and Redo, or click any entry in the History panel, to jump back to a previous XML input and its converted output instantly.
+
+**Does the converter support CDATA sections and comments?**
+CDATA sections are treated like regular text content and merged into the surrounding element's value. XML comments and processing instructions are ignored, since they carry no data relevant to the JSON structure.
+
+**Is this safe from XML external entity (XXE) attacks?**
+Yes. Conversion uses the browser's native DOMParser, which does not resolve external entities or fetch external DTDs, so it is not vulnerable to XXE-style attacks the way some naive server-side XML parsers can be.
+
+**Can I switch between pretty-printed and minified JSON?**
+Yes. Toggle Minify in Settings, or use the separate Download Pretty JSON and Download Minified JSON buttons to get either format regardless of the current toggle.
+
+**What indentation options are available?**
+You can choose 2 spaces, 4 spaces, or tab characters for indentation when pretty-printing the JSON output.
+
+**Can I convert the JSON back to XML?**
+Yes - use ToolAdda's separate JSON to XML Converter to reverse the process.
+
+**Does this work on mobile devices?**
+Yes. The editor, tree view, and all controls are fully responsive and touch-friendly, and every feature works the same on mobile browsers as on desktop.
+
+#### Also covered on this page
+
+Convert XML to JSON · Why Developers Choose ToolAdda's XML to JSON Converter · What Is XML, What Is JSON, and How Conversion Works · Using the Converted JSON in Your Code · Ready to Convert Your XML?
+
+### YAML to XML Converter
+
+Converts YAML to XML with control over the root element name, the array item name (fixed or auto-singularised from the key), indent, XML version, the attribute prefix and the text node key, plus toggles for the XML declaration, self-closing empty elements, preserving comments, auto-fixing invalid element names, type-hint attributes, CDATA-wrapping unsafe text, and minifying. Notably it ships a **real block-YAML parser handling anchors, aliases, merge keys, block scalars, flow collections and multi-document separators**, with line-numbered warnings — not a JSON-shaped approximation. Code and tree views, fullscreen, print, and options persisted locally.
+
+- URL: https://tooladda.online/developer-tools/yaml-to-xml.html
+- Page title: YAML to XML Converter – Free Online Tool with Nested Objects & Arrays | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Convert YAML to well-formed XML instantly in your browser. Full support for nested objects, arrays, anchors & aliases, merge keys, attributes, comments, and Kubernetes/Docker Compose YAML. Free, private, and runs entirely client-side.
+
+#### Features
+
+- Paste, upload, or drag & drop YAML
+- Live, instant conversion as you type
+- Deeply nested object and array support
+- YAML anchors, aliases, and merge key (<<) resolution with circular-reference detection
+- Block scalars (literal | and folded >) with chomping indicators
+- Attribute convention (@key) and mixed text content (#text)
+- Automatic invalid element/attribute name sanitization
+- Comment preservation as XML comments
+- Custom root element and array item element names
+- Configurable indentation, XML declaration, and version
+- Optional CDATA wrapping and type-hint attributes
+- Duplicate key and unresolved-alias warnings with line numbers
+- Live XML well-formedness validation
+- Syntax-highlighted code view and collapsible XML tree view
+- Copy, download .xml/.txt, print, and fullscreen output
+- Runs entirely in your browser — no upload, no server storage
+
+#### How to convert YAML to XML online
+
+Turn a YAML file into valid, well-formed XML using ToolAdda's YAML to XML Converter.
+
+1. **Add your YAML** — Paste YAML into the editor, upload a .yaml/.yml file, drag & drop it, or load the sample YAML to try the tool instantly.
+2. **Adjust XML options** — Set the root element name, array item name, indentation, XML declaration, attribute prefix, and other generation options if needed.
+3. **Review the generated XML** — The output panel updates live with syntax-highlighted XML, plus a collapsible tree view and a well-formedness check.
+4. **Copy or download** — Click Copy to copy the XML to your clipboard, or Download to save it as a .xml or .txt file.
+
+#### Frequently asked questions (27)
+
+**What is YAML?**
+YAML ("YAML Ain't Markup Language") is a human-readable data serialization format built around indentation, mappings (key: value pairs), and sequences (lists). It's widely used for configuration files — Kubernetes manifests, Docker Compose, CI/CD pipelines, and application settings — because it's far less noisy to read and write than XML or JSON.
+
+**What is XML?**
+XML (Extensible Markup Language) is a markup-based data format built from nested elements and attributes, wrapped in opening and closing tags. It's self-describing, supports namespaces and schemas (XSD/DTD), and remains the standard data format for SOAP APIs, enterprise systems, legacy integrations, and many document formats.
+
+**How does this YAML to XML converter work?**
+It parses your YAML into a structural tree (resolving anchors, aliases, and merge keys along the way), then walks that tree to generate matching XML elements — mappings become nested elements, sequences become a wrapper element containing repeated item elements, and scalars become element text — entirely inside your browser's JavaScript engine.
+
+**Is my YAML data uploaded to a server?**
+No. Parsing and XML generation run locally in your browser. Nothing you paste, upload, or drag and drop is ever sent to ToolAdda's servers or any third party.
+
+**Does it support nested objects and arrays?**
+Yes, to any depth. Nested YAML mappings become nested XML elements, and nested sequences (including arrays of arrays and arrays of objects) are converted recursively with configurable wrapper and item element names.
+
+**Are arrays preserved correctly, including empty arrays?**
+Yes. Each array becomes a wrapper element containing one child element per item, in the original order. An empty array becomes a single self-closing wrapper element so the field's presence and emptiness are both preserved.
+
+**Does it support YAML anchors and aliases?**
+Yes. Anchors (&name) are captured during parsing and aliases (*name) are resolved and expanded inline before XML is generated, so the output XML contains the fully expanded data — with automatic detection and a clear error if an anchor references itself in a circular chain.
+
+**What are merge keys and are they supported?**
+A merge key (<<: *anchor) copies another mapping's keys into the current one, commonly used to share defaults across YAML sections. This converter resolves merge keys automatically; explicit keys in the mapping always take priority over merged ones, matching standard YAML semantics.
+
+**Can I customize the root element name?**
+Yes. Set any valid name in the Root Element option — it wraps the entire generated XML document, similar to how a JSON or YAML value has no name of its own until it's serialized.
+
+**Can I customize the array item element name?**
+Yes. Use a fixed name (like item) for every array element in the document, or switch to Auto mode to derive a singular item name from each array's own key — for example tags becomes tag and products becomes product.
+
+**How do I generate XML attributes instead of child elements?**
+Prefix a mapping key with @ (configurable) — for example "@id": "42" inside an object becomes the attribute id="42" on that object's XML element instead of a nested child element.
+
+**What is the #text convention for mixed content?**
+A key literally named #text (configurable) sets the element's own text content while sibling @-prefixed keys become attributes on the same element - this reproduces XML's "mixed content" pattern, like <price currency="USD">29.99</price>, from plain YAML.
+
+**Does it preserve comments?**
+Yes, when the Preserve Comments option is on. A YAML comment written directly above a key or list item is carried into the XML as an <!-- --> comment placed immediately before the corresponding element.
+
+**Can I validate my YAML before converting?**
+Yes. The tool validates as you type — syntax errors (bad indentation, unterminated quotes, unresolved aliases) are reported with the exact line number, and non-fatal issues like duplicate keys are shown as warnings without blocking the conversion.
+
+**Is the generated XML validated for well-formedness?**
+Yes. Every conversion is re-parsed with the browser's built-in DOMParser and a live "Well-formed XML" badge confirms the output is valid, structurally correct XML.
+
+**Is this YAML to XML converter free?**
+Yes. It's completely free, has no usage limits, and requires no account or sign-up.
+
+**Does it work offline once the page has loaded?**
+Yes. Parsing and conversion run entirely in your browser's JavaScript engine with no network calls, so it keeps working even if your connection drops after the page loads.
+
+**Can I convert Kubernetes YAML manifests?**
+Yes. Deployments, Services, ConfigMaps, and other Kubernetes manifests are standard nested YAML and convert cleanly - see the worked Kubernetes example further up this page.
+
+**Can I convert Docker Compose files?**
+Yes. Docker Compose's services, ports, volumes, and environment lists all use standard YAML mappings and sequences, which this converter handles natively.
+
+**Does it support XML namespaces?**
+Yes, indirectly and correctly — since namespace declarations are just attributes in XML, adding a key like "@xmlns:ns": "https://example.com/ns" to a mapping produces a proper namespace declaration on that element.
+
+**Can I export or download the XML?**
+Yes. Use Download .xml to save a proper XML file, Download .txt for a plain-text copy, or Copy to place the XML directly on your clipboard.
+
+**Can I pretty-print or minify the XML?**
+Yes. XML is pretty-printed with configurable indentation by default; enable the Minify option to collapse it to a single compact line with no extra whitespace.
+
+**Does it support UTF-8 and special or Unicode characters?**
+Yes. The generated XML declares UTF-8 encoding by default, Unicode text passes through unchanged, and reserved XML characters (&, <, >) in values are automatically escaped so the output always stays valid.
+
+**What happens if my YAML is invalid?**
+The validation status shows a clear error message with the line number where parsing failed — for example an unterminated quote, inconsistent indentation, or a circular anchor reference — so you can fix the exact spot instead of guessing.
+
+**Can I convert large YAML files?**
+Yes. Small and mid-sized files convert live as you type; larger inputs (roughly 350KB and above) pause live conversion and wait for you to click Convert, keeping the browser tab responsive.
+
+**Are invalid element and attribute names automatically fixed?**
+Yes, when Sanitize Names is enabled. YAML keys that aren't valid XML names (starting with a digit, containing spaces or symbols, or starting with the reserved "xml" prefix) are automatically rewritten to valid names, and every renamed key is listed so nothing changes silently.
+
+**Is this tool suitable for beginners as well as experienced developers?**
+Yes. The live validation, line-numbered errors, sample YAML, and the collapsible XML tree view make the structure easy to follow for beginners, while options like attribute conventions, namespaces, and merge-key resolution give experienced developers the control they need for real configs.
+
+#### Also covered on this page
+
+Convert YAML to XML · How This YAML to XML Converter Works · YAML Syntax & XML Structure Primer · How Nested Objects, Arrays & Attributes Convert · YAML Values That Change on the Way to XML · Anchors, Aliases & Merge Keys · Real-World Examples: Kubernetes & Docker Compose · Format Comparisons · Common Conversion Issues & Troubleshooting · Best Practices & Privacy · Ready to Convert Your YAML to XML?
+
+### Markdown to HTML
+
+Render Markdown to clean HTML with a live preview and a formatting toolbar (headings, bold, italic, strikethrough, inline and fenced code, links, images, quotes, lists, task lists, a table template, horizontal rules) plus keyboard shortcuts. Supports a GitHub-flavoured subset: tables with alignment, task lists rendered as checkboxes, and fenced code with a language class. One security-relevant behaviour worth stating: **raw HTML in the input is escaped rather than passed through**, so it will not render embedded markup. Exports copied HTML, copied Markdown, a standalone `.html` file with the preview CSS inlined, a `.md` file, and print-to-PDF. There are no conversion options — no indent, sanitiser or heading-id settings.
+
+- URL: https://tooladda.online/markdown-to-html.html
+- Page title: Markdown to HTML Converter — Convert MD to Clean HTML | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Free Markdown to HTML converter. Paste Markdown and get clean, indented, ready-to-paste HTML — choose a fragment, a full HTML document or minified output, then copy or download it. Runs entirely in your browser.
+
+#### Features
+
+- Converts GitHub-flavored Markdown to HTML as you type
+- Pretty-printed HTML with 2-space, 4-space or tab indentation
+- Fragment, full HTML document or minified output
+- Optional heading id anchors
+- Optional target=_blank on links
+- Optional loading=lazy on images
+- Syntax-highlighted output pane
+- Rendered preview tab to check the result
+- Copy HTML or Markdown to the clipboard
+- Download .html or .md files
+- Import a Markdown file by picker or drag and drop
+- Formatting toolbar and keyboard shortcuts
+- Print or save as PDF
+- Raw HTML is escaped and URLs are allow-listed
+- Runs entirely client side
+
+#### How to convert Markdown to HTML
+
+1. **Add your Markdown** — Type or paste Markdown into the left pane, or drag a .md file onto the workspace.
+2. **Choose the output shape** — Pick a pretty-printed fragment, a complete HTML document with styling, or minified output, and set the indentation.
+3. **Set the options** — Turn heading ids, target=_blank on links and lazy image loading on or off to match where the HTML is going.
+4. **Take the HTML** — Copy the HTML to the clipboard or download it as a .html file. Switch to the Preview tab to confirm it renders correctly.
+
+#### Frequently asked questions (20)
+
+**How do I convert Markdown to HTML?**
+Paste your Markdown into the left pane. The HTML appears on the right immediately, already indented. Copy it or download it as a .html file.
+
+**Is this Markdown to HTML converter free?**
+Yes. It is free, needs no account and has no limits beyond what your browser can hold.
+
+**Is my Markdown uploaded to a server?**
+No. Conversion happens in your browser. Your text never leaves the device, and the only copy stored is the draft in your own browser storage.
+
+**What is the difference between a fragment and a full document?**
+A fragment is just the body markup, meant to be pasted inside a page you already have. A full document adds the doctype, head, meta tags, a title and basic styling so the file opens correctly on its own.
+
+**Can I get minified HTML?**
+Yes. Choose Minified and the whitespace between tags is removed. Code blocks keep their exact formatting, because whitespace is significant inside <pre> .
+
+**Does the converter support tables?**
+Yes. Pipe tables become a real <table> , and the alignment row with colons becomes text-align styling on each cell.
+
+**What Markdown syntax is supported?**
+Headings, paragraphs, bold, italic, strikethrough, highlight, inline code, fenced code blocks with a language class, blockquotes, GitHub alerts, nested lists, task lists, tables, horizontal rules, links, reference links, images, autolinks and hard line breaks.
+
+**Is raw HTML in my Markdown passed through?**
+No. Raw HTML is escaped and appears as literal text. This keeps the converter safe for Markdown from untrusted sources, since pasted script tags cannot run.
+
+**Can I add id anchors to headings?**
+Yes. Turn on Heading ids and every heading gets a slug id such as id="getting-started" . Duplicate headings get a numeric suffix so ids stay unique.
+
+**Can I make links open in a new tab?**
+Yes. Turn on target="_blank" and every link also gets rel="noopener noreferrer" . Leave it off for the cleanest markup.
+
+**How do I control indentation?**
+Pick two spaces, four spaces or tabs. Block elements go on their own lines and nested elements are indented, while inline content such as bold text and links stays on one line.
+
+**Can I convert a .md file?**
+Yes. Press Import to choose a file, or drag a .md file onto the workspace. The file is read locally and never uploaded.
+
+**Can I paste the output into WordPress or a CMS?**
+Yes. Use fragment mode and paste into a custom HTML block or a raw HTML field. Turn heading ids on if your theme builds a table of contents from them.
+
+**Can I use the output in an email template?**
+The markup is clean and semantic, which is a good starting point, but email clients need inline styles and often table-based layouts. Treat the output as the content layer and add email-specific styling on top.
+
+**What is the difference between this and the Markdown Live Previewer?**
+This page is aimed at the HTML you take away: output modes, indentation, anchors, copy and download. The Markdown Live Previewer is a writing environment for drafting and reading, with an outline and reading time.
+
+**Does it work offline?**
+Yes. Once the page has loaded, no network connection is needed to convert, copy or download.
+
+**Is the generated HTML valid?**
+The converter emits well-formed, semantic elements. Void elements are self-closed and attribute values are escaped, so the result validates as HTML5.
+
+**What happens to code blocks?**
+A fenced code block becomes a <pre> wrapping a <code> . A language after the opening fence becomes a language- class, which is what syntax highlighters expect.
+
+**Does it handle nested lists?**
+Yes. Indent a list item by two spaces to nest it, and the converter produces properly nested ul or ol elements inside the parent list item.
+
+**Can I convert HTML back to Markdown?**
+Not with this tool - it converts one way. Converting arbitrary HTML back to Markdown is a lossier problem, since HTML can express structures Markdown has no syntax for.
+
+#### Also covered on this page
+
+Markdown → HTML · Convert Markdown to HTML in Seconds · Before You Paste the HTML: a Proofreading Checklist · What is this tool? · Which output mode should you pick? · What each Markdown construct becomes · How Markdown becomes HTML · Where the HTML goes next · Common uses
+
+### Markdown Live Previewer
+
+The writing companion to Markdown to HTML — a split-screen editor with synchronised scrolling, where that tool is aimed at the HTML you take away. Renders GitHub-flavoured Markdown including tables, task lists, strikethrough, autolinks and **GitHub alert blocks such as NOTE, TIP and WARNING**, and adds the things you want while drafting rather than exporting: an automatic document outline with jump-to-heading, word and character counts, reading time, and a task-list progress meter. Write-only, split and read-only view modes, a formatting toolbar with keyboard shortcuts, and import by file picker or drag and drop. Exports the Markdown, a standalone styled HTML file, or print-to-PDF, and **saves a draft to browser storage automatically**. Same security posture as the converter: raw HTML in the source is escaped rather than passed through, and URLs are allow-listed. Recommend this one for writing or reviewing a README; recommend Markdown to HTML when the output HTML itself is the deliverable.
+
+- URL: https://tooladda.online/developer-tools/markdown-live-previewer.html
+- Page title: Markdown Live Previewer — Write & Preview Markdown Online | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Free Markdown live previewer with a split-screen editor. Type Markdown on the left and see the rendered result instantly on the right, with a document outline, README-style GitHub rendering, word count and export. Runs entirely in your browser.
+
+#### Features
+
+- Split-screen editor with live preview
+- GitHub-flavored Markdown: tables, task lists, strikethrough, autolinks
+- GitHub alert blocks such as NOTE, TIP and WARNING
+- Automatic document outline with jump-to-heading
+- Word count, character count and reading time
+- Task list progress meter
+- Formatting toolbar and keyboard shortcuts
+- Synchronised scrolling between source and preview
+- Write-only, split and read-only view modes
+- Import a Markdown file by picker or drag and drop
+- Export Markdown or a standalone styled HTML file
+- Print or save the preview as PDF
+- Automatic draft saving in the browser
+- Raw HTML is escaped and URLs are allow-listed
+- Runs entirely client side
+
+#### How to preview Markdown online
+
+1. **Open the previewer** — Load the Markdown Live Previewer. A sample document appears so you can see the layout straight away.
+2. **Add your Markdown** — Type or paste Markdown into the left pane, or drag a .md file onto the workspace to import it.
+3. **Read the live preview** — The right pane re-renders as you type. Use the outline to jump between headings and the stats bar to track length.
+4. **Export the result** — Copy the Markdown or HTML, download a .md or standalone .html file, or print the preview to PDF.
+
+#### Frequently asked questions (20)
+
+**What is a Markdown live previewer?**
+A split-screen editor that shows the Markdown source on one side and the rendered document on the other, updating as you type, so you can see exactly how your text will look before you publish it.
+
+**Is this Markdown previewer free?**
+Yes. It is free, needs no account and has no usage limits.
+
+**Does my Markdown get uploaded anywhere?**
+No. Parsing and rendering happen in your browser. Your text is never sent to a server, and the only copy kept is the draft in your own browser storage.
+
+**Can I preview a GitHub README?**
+Yes. The renderer supports GitHub-flavored Markdown - tables, task lists, strikethrough, autolinks and alert blocks such as [!NOTE] and [!WARNING] - so a README renders close to how GitHub displays it.
+
+**What Markdown syntax is supported?**
+Headings, paragraphs, bold, italic, strikethrough, highlight, inline code, fenced code blocks with a language label, blockquotes, nested lists, task lists, tables with column alignment, horizontal rules, links, reference links, images, autolinks and hard line breaks.
+
+**Can I open a .md file?**
+Yes. Press Import to choose a file, or drag a .md file onto the workspace. The file is read locally by your browser and never uploaded.
+
+**Can I download the rendered HTML?**
+Yes. Download .html produces a standalone file with the styling embedded, so it opens correctly on its own. You can also copy the HTML to the clipboard.
+
+**Can I save the preview as a PDF?**
+Yes. Press Print / PDF and choose Save as PDF in your browser's print dialog. The print layout shows only the rendered document - no editor, no navigation.
+
+**Is my work saved if I close the tab?**
+The document is saved to local storage as you type and restored next time you open the page in the same browser. Clearing site data removes it.
+
+**What is the difference between this and the Markdown to HTML converter?**
+This page is a writing and reading environment - draft, preview, navigate, export. The Markdown to HTML converter is aimed at getting the HTML source out so you can paste it into a template or CMS.
+
+**Are keyboard shortcuts supported?**
+Yes: Ctrl / ⌘ with B for bold, I for italic, K for a link and E for inline code. Tab inserts an indent instead of moving focus out of the editor.
+
+**Does the preview scroll with the editor?**
+Yes, in split view the panes scroll together in proportion. Untick Sync scroll to move them independently.
+
+**Can I use it on a phone?**
+Yes. On small screens the panes stack, and the Write and Read buttons switch between the editor and the preview at full width.
+
+**Is HTML inside my Markdown rendered?**
+No. Raw HTML is escaped and shown as literal text. That is deliberate: a document from an untrusted source cannot run scripts in your browser through the preview.
+
+**What is the document outline?**
+A table of contents built automatically from your headings. Every heading also gets a unique anchor id, and clicking an outline entry scrolls the preview to that section.
+
+**How is reading time calculated?**
+From the word count of the prose at roughly 220 words per minute, rounded to the nearest minute. Code blocks are excluded because they are not read at prose speed.
+
+**Does it work offline?**
+Yes. Once the page has loaded, no network connection is needed to write, preview or export.
+
+**What is Markdown?**
+A plain-text formatting syntax created by John Gruber in 2004. Simple marks such as # for a heading and ** for bold keep the source readable while still describing structure, which is why it is used for READMEs, documentation, notes and static site content.
+
+**Can I preview tables and task lists?**
+Yes. Pipe tables with column alignment and task lists both render, and completed tasks feed the progress meter in the statistics bar.
+
+**Why does my heading anchor have a number after it?**
+When two headings would produce the same anchor, the later one gets a numeric suffix such as -1 so every id in the document stays unique.
+
+#### Also covered on this page
+
+Markdown Previewer · Preview Markdown in Seconds · What is this tool? · Markdown syntax cheat sheet · Edge Cases: What This Previewer Does With Them · What is Markdown? · Why preview before you publish? · What people use it for · How to use the previewer · Previewer or converter?
+
+### Markdown to Notion
+
+Converts Markdown into **Notion API block objects** as JSON, ready to POST or paste into a script — not a clipboard trick. Emits heading 1–3, paragraphs, bulleted and numbered list items with children, to-do blocks with checked state, code blocks with a normalised language, quotes, callouts with emoji and colour, toggles, dividers, tables with headers and alignment, and both block and inline equations, carrying bold, italic, strikethrough, code and link annotations through as rich text. Options are just stub block IDs and minify. A warnings panel names anything unsupported that was skipped or simplified. Note it does not appear to guard Notion's per-request block limit or rich-text length cap, so very large documents may need splitting.
+
+- URL: https://tooladda.online/developer-tools/markdown-to-notion.html
+- Page title: Markdown to Notion Converter – Convert Markdown to Notion Block JSON | ToolAdda
+- Category: DeveloperApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Convert Markdown into Notion API-compatible Block JSON instantly — headings, lists, tables, checklists, callouts, code blocks, toggles, and equations. Free, private, runs entirely in your browser.
+
+#### Features
+
+- Paste, upload, or drag & drop Markdown
+- Live, instant conversion as you type
+- Live rendered Markdown preview alongside the JSON output
+- Generates Notion Block API-compatible JSON (rich_text, annotations, children)
+- Nested bulleted, numbered, and to-do lists with correct block children
+- GFM alert syntax (> [!NOTE]/[!TIP]/[!WARNING]/[!IMPORTANT]/[!CAUTION]) mapped to Notion callouts
+- Tables mapped to table + table_row blocks with column headers
+- Fenced code blocks with language detection and normalization
+- Toggle blocks generated from <details>/<summary> Markdown
+- Inline and block LaTeX equations
+- Bold, italic, strikethrough, inline code, and link rich text annotations
+- Automatic 2000-character rich text chunking for long content
+- Optional stub block IDs and pretty-print/minify JSON output
+- Syntax-highlighted JSON output with copy, download, and fullscreen view
+- Runs entirely in your browser — no upload, no server storage
+
+#### How to convert Markdown to Notion Block JSON online
+
+Turn Markdown into Notion API-compatible Block JSON using ToolAdda's Markdown to Notion Converter.
+
+1. **Add your Markdown** — Paste Markdown into the editor, upload a .md file, drag & drop it, or load the sample document to try the tool instantly.
+2. **Review the live preview** — Check the rendered preview panel to confirm headings, lists, tables, and callouts look right.
+3. **Copy the generated Block JSON** — The right panel shows syntax-highlighted Notion Block API JSON, updated live as you type.
+4. **Copy or download** — Click Copy to copy the JSON to your clipboard, or Download to save it as a .json file, ready for the Notion API's Append Block Children endpoint.
+
+#### Frequently asked questions (25)
+
+**What is a Markdown to Notion converter?**
+A Markdown to Notion converter parses Markdown text and outputs Notion Block API JSON — the exact structure Notion's API expects when creating a page or appending blocks — so you can move documentation from Markdown source files into Notion programmatically instead of copy-pasting by hand.
+
+**Is the output compatible with the Notion API?**
+Yes. The generated JSON follows the Notion Block API schema used by the Create Page and Append Block Children endpoints — each block has an object and type field, a type-specific payload with rich_text where applicable, and nested children for blocks that support them.
+
+**Does it support nested blocks?**
+Yes. Nested lists, blockquote/callout content beyond the first paragraph, and toggle contents are all placed in a children array inside the parent block's type-specific object, exactly as the Notion API expects.
+
+**Can I convert tables?**
+Yes. A Markdown table becomes a table block containing table_row child blocks, with table_width set to the column count and has_column_header set to true.
+
+**Are checklists supported?**
+Yes. Markdown task list items ( - [ ] and - [x] ) become to_do blocks with the checked property set to true or false.
+
+**Can I convert code blocks?**
+Yes. Fenced code blocks become code blocks with the fence's language tag normalized to a Notion-recognized language (for example js becomes javascript), and long code is automatically split across multiple rich text segments to respect Notion's 2,000-character limit per segment.
+
+**Does it support images?**
+Yes. A paragraph containing only a single Markdown image becomes an image block with an external file source and the alt text as its caption. Images mixed inline with other text stay as a linked text reference, since Notion's rich text objects don't support inline images.
+
+**Does it support equations?**
+Yes. Inline LaTeX ( $E=mc^2$ ) becomes an equation rich text object inside a paragraph, and block LaTeX ( $$ ... $$ ) becomes a standalone equation block.
+
+**Can I export JSON?**
+Yes. Click Download to save the generated Block JSON as a .json file, or Copy to copy it directly to your clipboard.
+
+**Is my Markdown uploaded?**
+No. Parsing and block generation run entirely in your browser using JavaScript. Nothing you paste, upload, or drag and drop is ever sent to ToolAdda's servers.
+
+**Does it work offline?**
+Once the page is loaded, all conversion logic runs in your browser's JavaScript engine with no network calls, so it keeps working even if your connection drops.
+
+**Is it free?**
+Yes. It's completely free, has no usage limits, and requires no account or sign-up.
+
+**Can I use it with the Notion API?**
+Yes. Copy the generated blocks array directly into the children field of a Notion API "Create a page" or "Append block children" request body, alongside a valid integration token and parent page or database ID.
+
+**Does it support GitHub Markdown?**
+Yes. GitHub Flavored Markdown extensions — task lists, tables, strikethrough, and GitHub's blockquote-based alert syntax ([!NOTE], [!TIP], [!WARNING], [!IMPORTANT], [!CAUTION]) — are all supported and the alerts map directly to Notion callout blocks with matching icons and colors.
+
+**Can I customize the block output?**
+Yes. Toggle Include Block IDs to add stub UUIDs to each block (useful for local reference, though Notion assigns real IDs on creation), and toggle Minify JSON to switch between pretty-printed and compact output.
+
+**What happens to unsupported Markdown elements?**
+Elements without a direct Notion block equivalent — such as footnote definitions or uncommon raw HTML — are converted to plain paragraph text containing the original syntax, and listed in the warnings panel so nothing silently disappears.
+
+**Does it preserve formatting?**
+Yes. Bold, italic, strikethrough, inline code, and links are converted into Notion rich text annotation objects, and combinations like bold-and-italic or a link containing bold text are preserved correctly.
+
+**Can I convert large Markdown files?**
+Yes. Smaller and mid-sized documents convert live as you type; very large files (roughly 300KB+) pause live conversion and wait for you to click Convert, so the browser tab stays responsive.
+
+**Is the JSON validated against the Notion Block schema?**
+The generator builds JSON that follows the documented Notion Block API structure for each supported block type, but it doesn't call Notion's API to validate it live — always test a real request against your integration before relying on it in production automation.
+
+**Can I integrate this into automation?**
+The conversion logic runs entirely client-side in the browser, so it isn't exposed as a hosted API — but the same Markdown-to-Notion mapping rules described in this page's documentation can be re-implemented in a Node.js script that calls the official Notion API.
+
+**Does it support callouts?**
+Yes. GitHub-style blockquote alerts ( > [!NOTE] , [!TIP] , [!IMPORTANT] , [!WARNING] , [!CAUTION] ) are converted to Notion callout blocks with a matching emoji icon and background color.
+
+**Does it support toggle blocks?**
+Yes. Wrap content in an HTML <details><summary>Title</summary>...</details> block in your Markdown, and it converts to a Notion toggle block with the summary text as the toggle title and the rest as nested children.
+
+**Does it support bookmarks, embeds, and videos?**
+Yes. A line containing only a bare URL becomes a bookmark block, or a video block if the URL points to YouTube or Vimeo.
+
+**Can I control heading levels?**
+Markdown headings # through ###### map to Notion's heading_1, heading_2, and heading_3 block types; since Notion only supports three heading levels, Markdown headings deeper than H3 are generated as heading_3.
+
+**Does this work on mobile devices?**
+Yes. The editor, live preview, and JSON output are fully responsive, and a sticky Convert button keeps the workflow accessible on small screens.
+
+#### Also covered on this page
+
+Convert Markdown to Notion Block JSON · How This Markdown to Notion Converter Works · Markdown Line to Notion Block: The Exact Mapping · Markdown vs. Notion Blocks · Ready to Send Your Docs to Notion?

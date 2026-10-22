@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+    <meta name="description" content="Create CSS box shadows visually with this free Box Shadow Generator. Adjust offset, blur, spread, color and opacity, preview live and copy CSS instantly." />
+    <title>Box Shadow Generator — Create CSS Shadows Online | ToolAdda</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <meta name="theme-color" content="#a21caf" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="ToolAdda" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <link rel="canonical" href="https://tooladda.online/css-tools/shadow-generator.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+    <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta property="og:title" content="Box Shadow Generator — Create CSS Shadows Online | ToolAdda" />
+    <meta property="og:description" content="Build CSS box shadows visually: multiple layers, inset, presets, live preview and instant copy-ready CSS. Free, no signup, runs in your browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tooladda.online/css-tools/shadow-generator.html" />
+    <meta property="og:site_name" content="ToolAdda" />
+    <meta property="og:image" content="https://tooladda.online/assets/images/og/css-tools-shadow-generator.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content="Box Shadow Generator — free CSS box-shadow tool on ToolAdda, runs in your browser with no sign-up." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Box Shadow Generator — Create CSS Shadows Online | ToolAdda" />
+    <meta name="twitter:description" content="Build CSS box shadows visually: multiple layers, inset, presets, live preview and instant copy-ready CSS. Free, no signup, runs in your browser." />
+    <meta name="twitter:image" content="https://tooladda.online/assets/images/og/css-tools-shadow-generator.jpg" />
+    <meta name="twitter:image:alt" content="Box Shadow Generator — free CSS box-shadow tool on ToolAdda, runs in your browser with no sign-up." />
+
+    <style id="sg-styles">
+      /* ============================================================
+         Box Shadow Generator — page-scoped design system.
+
+         The subject is light falling on surfaces, so the page is built
+         as a studio: a warm paper canvas, raised panels that carry
+         real shadows of their own, and one saturated fuchsia accent
+         standing in for the light source. Deliberately not the indigo
+         of the site chrome, the lime of the SIP calculator or the
+         teal of the RD calculator.
+
+         The code panel is always dark, in both themes, because that
+         is where a developer expects code to live and it keeps the
+         syntax colours stable regardless of the page theme.
+
+         The preview stage is the hero. Its background is switchable
+         precisely because a shadow that reads on white can vanish on
+         dark, and the tool should let you find that out here rather
+         than in production.
+         ============================================================ */
+
+      .sg-page {
+        --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+        --r-sm: 8px;
+        --r-md: 12px;
+        --r-lg: 18px;
+
+        --app-bg: #f6f4f8;
+        --surface: #ffffff;
+        --surface-raised: #fbfafc;
+        --surface-hover: #f1ecf5;
+        --text-primary: #1c1420;
+        --text-secondary: #4b3f53;
+        --muted: #7a6d82;
+        --border: rgba(28, 20, 32, .12);
+        --border-strong: rgba(28, 20, 32, .22);
+
+        --accent: #a21caf;
+        --accent-deep: #86198f;
+        --accent-soft: rgba(162, 28, 175, .10);
+
+        --preview-bg: #e9e4ee;
+        --preview-grid: rgba(28, 20, 32, .09);
+
+        --code-bg: #17111c;
+        --code-text: #eadff2;
+        --code-prop: #f0abfc;
+        --code-num: #7dd3fc;
+        --code-color: #86efac;
+        --code-var: #fcd34d;
+
+        --success: #15803d;
+        --warning: #92610a;
+        --warning-soft: rgba(146, 97, 10, .12);
+        --danger: #b3261e;
+        --danger-soft: rgba(179, 38, 30, .11);
+        --focus: #a21caf;
+
+        --panel-shadow: 0 1px 2px rgba(28, 20, 32, .05), 0 14px 38px rgba(28, 20, 32, .08);
+
+        color: var(--text-primary);
+        background: transparent;
+        padding-bottom: 3rem;
+      }
+
+      [data-theme="dark"] .sg-page {
+        --app-bg: #100b13;
+        --surface: #191220;
+        --surface-raised: #201828;
+        --surface-hover: #2a2033;
+        --text-primary: #f2e9f7;
+        --text-secondary: #c6b6d0;
+        --muted: #9585a0;
+        --border: rgba(242, 233, 247, .13);
+        --border-strong: rgba(242, 233, 247, .24);
+
+        --accent: #e879f9;
+        --accent-deep: #f5abff;
+        --accent-soft: rgba(232, 121, 249, .14);
+
+        --preview-bg: #241b2c;
+        --preview-grid: rgba(242, 233, 247, .10);
+
+        --success: #6ee7a0;
+        --warning: #e0b054;
+        --warning-soft: rgba(224, 176, 84, .13);
+        --danger: #fca5a5;
+        --danger-soft: rgba(252, 165, 165, .12);
+        --focus: #e879f9;
+
+        --panel-shadow: 0 16px 46px rgba(0, 0, 0, .55);
+
+        background: transparent;
+      }
+
+      /* Follow the OS until the visitor uses the site's own toggle. */
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) .sg-page {
+          --app-bg: #100b13;
+          --surface: #191220;
+          --surface-raised: #201828;
+          --surface-hover: #2a2033;
+          --text-primary: #f2e9f7;
+          --text-secondary: #c6b6d0;
+          --muted: #9585a0;
+          --border: rgba(242, 233, 247, .13);
+          --border-strong: rgba(242, 233, 247, .24);
+          --accent: #e879f9;
+          --accent-deep: #f5abff;
+          --accent-soft: rgba(232, 121, 249, .14);
+          --preview-bg: #241b2c;
+          --preview-grid: rgba(242, 233, 247, .10);
+          --success: #6ee7a0;
+          --warning: #e0b054;
+          --warning-soft: rgba(224, 176, 84, .13);
+          --danger: #fca5a5;
+          --danger-soft: rgba(252, 165, 165, .12);
+          --focus: #e879f9;
+          --panel-shadow: 0 16px 46px rgba(0, 0, 0, .55);
+          background: transparent;
+        }
+      }
+
+      /* ---------- page shell ---------- */
+      html:has(body.sg-page-shell) { background-color: #f6f4f8; }
+      html[data-theme="dark"]:has(body.sg-page-shell) { background-color: #100b13; }
+      .sg-page-shell {
+        --pg-bg: #f6f4f8;
+        --pg-dot: rgba(162, 28, 175, .16);
+      }
+      [data-theme="dark"] .sg-page-shell {
+        --pg-bg: #100b13;
+        --pg-dot: rgba(232, 121, 249, .12);
+      }
+      body.sg-page-shell {
+        position: relative;
+        isolation: isolate;
+        background-color: transparent !important;
+        background-image:
+          radial-gradient(920px 480px at 6% -8%, rgba(162, 28, 175, .10), transparent 58%),
+          radial-gradient(780px 420px at 100% 0%, rgba(192, 38, 211, .08), transparent 52%),
+          radial-gradient(640px 340px at 50% 100%, rgba(162, 28, 175, .06), transparent 55%) !important;
+        background-size: auto, auto, auto !important;
+        background-repeat: no-repeat, no-repeat, no-repeat !important;
+        background-attachment: scroll !important;
+        --accent: #a21caf;
+        --accent-strong: #86198f;
+        --accent-soft: rgba(162, 28, 175, .14);
+      }
+      body.sg-page-shell::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background-color: var(--pg-bg);
+        background-image: radial-gradient(circle, var(--pg-dot) 1px, transparent 1px);
+        background-size: 18px 18px;
+        background-repeat: repeat;
+      }
+      [data-theme="dark"] body.sg-page-shell {
+        background-image:
+          radial-gradient(920px 480px at 6% -8%, rgba(232, 121, 249, .12), transparent 58%),
+          radial-gradient(780px 420px at 100% 0%, rgba(192, 38, 211, .08), transparent 52%),
+          radial-gradient(640px 340px at 50% 100%, rgba(162, 28, 175, .07), transparent 55%) !important;
+        --accent: #e879f9;
+        --accent-strong: #f5abff;
+        --accent-soft: rgba(232, 121, 249, .14);
+      }
+      .sg-page-shell .navbar {
+        border-color: rgba(162, 28, 175, .14) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .95) inset, 0 16px 48px rgba(162, 28, 175, .10), 0 4px 12px rgba(28, 20, 32, .05) !important;
+      }
+      [data-theme="dark"] .sg-page-shell .navbar { border-color: rgba(232, 121, 249, .2) !important; }
+      .sg-page-shell .brand-mark {
+        background: linear-gradient(145deg, #a21caf, #86198f, #e879f9) !important;
+        box-shadow: 0 8px 22px rgba(162, 28, 175, .35) !important;
+      }
+      .sg-page-shell .nav-links { background: rgba(162, 28, 175, .05) !important; border-color: rgba(162, 28, 175, .08) !important; }
+      .sg-page-shell .icon-btn { border-color: rgba(162, 28, 175, .12) !important; }
+      .sg-page-shell a:not(.btn):not(.nav-tools-cta):not(.primary-btn):not(.sg-hero-btn):not(.sg-btn) { color: var(--accent); }
+      .sg-page-shell .sg-related a { color: inherit; }
+      .sg-page-shell .site-footer a:not(.btn) { color: var(--accent); }
+      .sg-page-shell main > .related-tools-section {
+        width: min(1180px, calc(100% - 2rem));
+        margin: 2.5rem auto 0; padding-bottom: 1rem;
+      }
+      .sg-page-shell main > .related-tools-section .container { padding: 0; max-width: none; }
+      .sg-page-shell main > .related-tools-section .related-tools-eyebrow { color: var(--accent-deep); }
+      .sg-page-shell main > .related-tools-section .related-tools-title { color: var(--text-primary); }
+      @media (max-width: 768px) { body.sg-page-shell { overflow-x: hidden; } }
+      .sg-page [id] { scroll-margin-top: 6.5rem; }
+
+      .sg-page :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 5px; }
+      .sg-page [hidden] { display: none !important; }
+      /* 1180px: isse side banner ads (assets/js/side-ads.js) gutters me fit ho jate hain. */
+      .sg-wrap { max-width: 1180px; margin: 0 auto; padding: 0 1rem; }
+      .sg-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+      /* ---------- breadcrumb + hero ---------- */
+      .sg-crumb { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; padding: 1rem 0 .2rem; font-size: .85rem; color: var(--muted); }
+      .sg-crumb a { color: var(--accent); font-weight: 600; text-decoration: none; }
+      .sg-crumb a:hover { text-decoration: underline; }
+      .sg-crumb span[aria-hidden] { opacity: .5; }
+
+      .sg-hero {
+        display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+        gap: 1.5rem; align-items: center;
+        margin-bottom: .35rem; padding: 1.1rem 1.2rem 1.15rem;
+        border: 1px solid var(--border-strong); border-radius: var(--r-lg);
+        background: linear-gradient(180deg, var(--surface), color-mix(in srgb, var(--surface-raised) 42%, var(--surface)));
+        box-shadow: var(--panel-shadow);
+        position: relative; overflow: hidden;
+      }
+      .sg-hero::before {
+        content: "";
+        position: absolute; inset: 0 auto auto 0; width: 100%; height: 3px;
+        background: linear-gradient(90deg, var(--accent), #d946ef, var(--accent-deep));
+        opacity: .92;
+      }
+      .sg-hero::after {
+        content: "";
+        position: absolute; right: -3rem; top: -3rem; width: 10rem; height: 10rem;
+        border-radius: 50%;
+        background: radial-gradient(circle, var(--accent-soft), transparent 68%);
+        pointer-events: none;
+      }
+      .sg-hero > * { position: relative; z-index: 1; }
+      @media (max-width: 900px) { .sg-hero { grid-template-columns: 1fr; gap: 1.25rem; } }
+      @media (max-width: 900px) { .sg-hero__mock { display: none !important; } }
+      .sg-eyebrow {
+        display: inline-flex; align-items: center; gap: .4rem;
+        font-family: var(--mono); font-size: .69rem; font-weight: 700;
+        letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+        padding: .3rem .62rem; border-radius: 999px;
+        background: var(--accent-soft); border: 1px solid var(--accent-soft);
+      }
+      .sg-h1 { margin: .7rem 0 .45rem; font-size: clamp(1.9rem, 4.6vw, 2.8rem); font-weight: 800; letter-spacing: -.024em; line-height: 1.08; }
+      .sg-lede { margin: 0; max-width: 66ch; color: var(--text-secondary); font-size: 1.02rem; line-height: 1.65; }
+      .sg-trust { display: flex; flex-wrap: wrap; gap: .4rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+      .sg-trust li {
+        display: inline-flex; align-items: center; gap: .35rem;
+        font-size: .78rem; font-weight: 700; color: var(--text-secondary);
+        padding: .32rem .68rem; border-radius: 999px;
+        border: 1px solid var(--border-strong); background: var(--surface);
+      }
+      .sg-trust svg { width: 13px; height: 13px; color: var(--accent); flex: none; }
+      .sg-hero-cta { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .85rem; }
+      a.sg-hero-btn {
+        padding: .58rem 1rem; font-size: .86rem; font-weight: 750;
+        text-decoration: none; border-radius: var(--r-sm);
+        display: inline-flex; align-items: center; justify-content: center; gap: .35rem;
+        transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
+      }
+      a.sg-hero-btn--primary {
+        background: linear-gradient(135deg, var(--accent), var(--accent-deep)) !important;
+        color: #fff !important; -webkit-text-fill-color: #fff;
+        border: 1px solid rgba(255, 255, 255, .16);
+        box-shadow: 0 6px 18px rgba(162, 28, 175, .28);
+      }
+      a.sg-hero-btn--primary:hover { filter: brightness(1.04); transform: translateY(-1px); }
+      [data-theme="dark"] a.sg-hero-btn--primary { color: #17111c !important; -webkit-text-fill-color: #17111c; }
+      a.sg-hero-btn--ghost {
+        background: var(--surface) !important; color: var(--text-primary) !important;
+        -webkit-text-fill-color: var(--text-primary);
+        border: 1px solid var(--border-strong);
+      }
+      a.sg-hero-btn--ghost:hover { border-color: var(--accent); background: var(--accent-soft) !important; transform: translateY(-1px); }
+      @media (max-width: 520px) { .sg-hero-cta a.sg-hero-btn { flex: 1 1 100%; justify-content: center; } }
+      .sg-hero__mock {
+        border: 1px solid var(--border-strong); border-radius: var(--r-lg);
+        background: var(--preview-bg); overflow: hidden; box-shadow: var(--panel-shadow);
+        padding: 1.25rem 1rem; min-height: 9rem;
+        display: grid; place-items: center;
+      }
+      .sg-hero__mock-stack { position: relative; width: 9.5rem; height: 6.5rem; }
+      .sg-hero__mock-card {
+        position: absolute; left: 50%; transform: translateX(-50%);
+        width: 7.2rem; border-radius: 12px; background: var(--surface);
+        border: 1px solid var(--border);
+      }
+      .sg-hero__mock-card--back {
+        bottom: 0; height: 3.2rem; opacity: .72;
+        box-shadow: 0 18px 36px rgba(28, 20, 32, .18);
+      }
+      .sg-hero__mock-card--mid {
+        bottom: 1.1rem; height: 3.4rem; width: 8rem; opacity: .88;
+        box-shadow: 0 12px 28px rgba(28, 20, 32, .16), 0 2px 6px rgba(28, 20, 32, .08);
+      }
+      .sg-hero__mock-card--front {
+        bottom: 2.3rem; height: 3.6rem; width: 8.6rem;
+        display: grid; place-items: center;
+        font-family: var(--mono); font-size: .62rem; font-weight: 700;
+        letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+        box-shadow: 0 8px 22px rgba(162, 28, 175, .22), 0 2px 8px rgba(28, 20, 32, .10);
+      }
+
+      /* ---------- studio shell ---------- */
+      .sg-studio {
+        border: 1px solid var(--border-strong); border-radius: var(--r-lg);
+        background: var(--surface); overflow: hidden; box-shadow: var(--panel-shadow);
+        position: relative; scroll-margin-top: 5.5rem;
+      }
+      .sg-studio::before {
+        content: ""; position: absolute; inset: 0 0 auto; height: 3px; z-index: 4;
+        background: linear-gradient(90deg, var(--accent), #d946ef, var(--accent-deep));
+        opacity: .88;
+      }
+      .sg-bar {
+        display: flex; align-items: center; justify-content: space-between; gap: .5rem 1rem; flex-wrap: wrap;
+        padding: .6rem 1rem; background-color: var(--surface-raised);
+        background-image: radial-gradient(var(--border) .9px, transparent .9px);
+        background-size: 11px 11px;
+        border-bottom: 1px solid var(--border);
+      }
+      .sg-bar__title { margin: 0; font-family: var(--mono); font-size: .68rem; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; color: var(--text-secondary); }
+      .sg-bar__privacy {
+        display: inline-flex; align-items: center; gap: .32rem; white-space: nowrap;
+        font-size: .72rem; font-weight: 650; color: var(--success);
+        background: var(--accent-soft); border: 1px solid var(--accent-soft);
+        padding: .24rem .55rem; border-radius: 999px;
+      }
+
+      /* ---------- preview stage ----------
+
+         The stage sits beside the controls rather than above them, so
+         a slider and its effect are on screen together. Full-width at
+         the top looked impressive and meant you could never see what
+         you were adjusting and what it did at the same time. */
+      .sg-stage {
+        position: relative;
+        display: grid; place-items: center;
+        min-height: 232px; padding: 1.4rem 1rem;
+        border: 1px solid var(--border);
+        border-radius: var(--r-md);
+        background-color: var(--preview-bg);
+        overflow: hidden;
+      }
+      /* Backgrounds are switchable because a shadow that reads on
+         white can disappear on dark — better to find that out here. */
+      .sg-stage[data-bg="light"] { background-color: #ffffff; background-image: none; }
+      .sg-stage[data-bg="dark"] { background-color: #16121a; background-image: none; }
+      .sg-stage[data-bg="checker"] {
+        background-color: var(--preview-bg);
+        background-image:
+          linear-gradient(45deg, var(--preview-grid) 25%, transparent 25%),
+          linear-gradient(-45deg, var(--preview-grid) 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, var(--preview-grid) 75%),
+          linear-gradient(-45deg, transparent 75%, var(--preview-grid) 75%);
+        background-size: 20px 20px;
+        background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+      }
+      .sg-stage[data-bg="grid"] {
+        background-color: var(--preview-bg);
+        background-image:
+          linear-gradient(var(--preview-grid) 1px, transparent 1px),
+          linear-gradient(90deg, var(--preview-grid) 1px, transparent 1px);
+        background-size: 24px 24px;
+      }
+      .sg-box {
+        max-width: 100%;
+        display: grid; place-items: center;
+        font-family: var(--mono); font-size: .72rem; font-weight: 600;
+        color: rgba(28, 20, 32, .38); letter-spacing: .1em; text-transform: uppercase;
+        transition: box-shadow .12s linear;
+      }
+
+      /* ---------- grid ----------
+
+         The output column comes FIRST in the DOM so that a phone —
+         which stacks in source order — shows the preview before the
+         controls. Explicit column placement puts it back on the right
+         at desktop width, so neither layout compromises the other. */
+      .sg-grid { display: grid; grid-template-columns: minmax(0, 348px) minmax(0, 1fr); align-items: start; }
+      .sg-col { min-width: 0; padding: 1rem; }
+      .sg-stagewrap { min-width: 0; padding: 1rem 1rem .25rem; }
+
+      /* Three separate grid items rather than two nested ones. The
+         stage, the controls and the code each place themselves, so the
+         desktop arrangement (controls left, preview above code on the
+         right) and the phone arrangement (preview, controls, code) can
+         both be source-ordered correctly. */
+      .sg-stagewrap { grid-column: 2; grid-row: 1; }
+      .sg-col--in { grid-column: 1; grid-row: 1 / span 2; border-right: 1px solid var(--border); }
+      .sg-col--out { grid-column: 2; grid-row: 2; }
+      .sg-col--full { grid-column: 1 / -1; border-top: 1px solid var(--border); padding: 1rem; }
+
+      @media (max-width: 940px) {
+        .sg-grid { grid-template-columns: 1fr; }
+        .sg-stagewrap, .sg-col--in, .sg-col--out { grid-column: 1; grid-row: auto; }
+        .sg-col--in { border-right: none; }
+        .sg-stagewrap { padding: 0; }
+        /* On a phone the preview pins below the header, so dragging a
+           slider further down the page still shows what it is doing.
+           This is the whole reason the stage is its own grid item. */
+        .sg-stage {
+          position: sticky;
+          top: calc(var(--header-overlap, 5.5rem) - 1rem);
+          z-index: 4;
+          min-height: 156px;
+          padding: .9rem;
+          border-radius: 0;
+          border-left: 0; border-right: 0;
+        }
+      }
+
+      .sg-label { display: block; font-size: .71rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); margin-bottom: .5rem; }
+      .sg-hint { margin: .4rem 0 0; font-size: .8rem; line-height: 1.55; color: var(--muted); }
+
+      /* ---------- numeric controls ---------- */
+      /* Tight by design: five of these stack in one column, so every
+         spare pixel of padding costs a slider off the bottom of the
+         screen. */
+      .sg-control + .sg-control { margin-top: .5rem; }
+      .sg-control__head { display: flex; align-items: center; justify-content: space-between; gap: .6rem; margin-bottom: .1rem; }
+      .sg-control__label { font-size: .82rem; font-weight: 700; color: var(--text-primary); }
+      .sg-control__value { display: inline-flex; align-items: center; gap: .2rem; }
+      .sg-control__hint { margin: 0; font-size: .7rem; line-height: 1.4; color: var(--muted); }
+
+      .sg-num {
+        width: 4.6rem; box-sizing: border-box; font: inherit;
+        font-family: var(--mono); font-size: .92rem; font-weight: 700; text-align: right;
+        color: var(--text-primary); background: var(--surface-raised);
+        border: 1.5px solid var(--border-strong); border-radius: var(--r-sm);
+        padding: .4rem .45rem; min-height: 40px;
+      }
+      .sg-num:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+      /* Keyboard focus must still show a real outline: this file sets
+         `outline: none` above at equal specificity to the page-level
+         :focus-visible rule, and the later rule would otherwise win. */
+      .sg-num:focus-visible, .sg-text:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+      .sg-num::-webkit-outer-spin-button, .sg-num::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+      .sg-num { -moz-appearance: textfield; appearance: textfield; }
+      .sg-unit { font-family: var(--mono); font-size: .78rem; color: var(--muted); width: 1.4rem; }
+
+      .sg-range {
+        -webkit-appearance: none; appearance: none; width: 100%;
+        height: 26px; background: none; cursor: pointer; margin: 0;
+      }
+      .sg-range::-webkit-slider-runnable-track { height: 5px; border-radius: 999px; background: var(--border-strong); }
+      .sg-range::-moz-range-track { height: 5px; border-radius: 999px; background: var(--border-strong); }
+      .sg-range::-webkit-slider-thumb {
+        -webkit-appearance: none; appearance: none; margin-top: -8px;
+        width: 21px; height: 21px; border-radius: 50%;
+        background: var(--accent); border: 2px solid var(--surface); box-shadow: 0 1px 4px rgba(0,0,0,.35);
+      }
+      .sg-range::-moz-range-thumb {
+        width: 21px; height: 21px; border-radius: 50%; border: 2px solid var(--surface);
+        background: var(--accent); box-shadow: 0 1px 4px rgba(0,0,0,.35);
+      }
+
+      /* ---------- colour + switch ---------- */
+      .sg-colorrow { display: flex; align-items: center; gap: .5rem; }
+      .sg-swatch {
+        width: 46px; height: 44px; padding: 0; flex: none; cursor: pointer;
+        border: 1.5px solid var(--border-strong); border-radius: var(--r-sm); background: none;
+      }
+      .sg-swatch::-webkit-color-swatch-wrapper { padding: 3px; }
+      .sg-swatch::-webkit-color-swatch { border: 0; border-radius: 5px; }
+      .sg-text {
+        flex: 1 1 auto; min-width: 0; box-sizing: border-box; font: inherit;
+        font-family: var(--mono); font-size: .9rem; font-weight: 650;
+        color: var(--text-primary); background: var(--surface-raised);
+        border: 1.5px solid var(--border-strong); border-radius: var(--r-sm);
+        padding: .5rem .6rem; min-height: 44px;
+      }
+      .sg-text:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+      .sg-switch { display: flex; align-items: center; gap: .55rem; min-height: 44px; cursor: pointer; font-size: .86rem; font-weight: 650; color: var(--text-secondary); }
+      .sg-switch input { width: 19px; height: 19px; flex: none; accent-color: var(--accent); }
+
+      /* ---------- buttons ---------- */
+      .sg-btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+        font: inherit; font-weight: 650; line-height: 1.15; cursor: pointer; text-decoration: none;
+        min-height: 44px; padding: .6rem 1rem; border-radius: var(--r-md);
+        border: 1px solid transparent; color: inherit; background: none;
+        transition: background .15s, border-color .15s, color .15s, transform .1s;
+      }
+      .sg-btn:active { transform: translateY(1px); }
+      .sg-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+      .sg-btn--accent { background: var(--accent); color: #fff; }
+      .sg-btn--accent:hover:not(:disabled) { background: var(--accent-deep); }
+      [data-theme="dark"] .sg-btn--accent { color: #17111c; }
+      .sg-btn--ghost { background: var(--surface); color: var(--text-secondary); border-color: var(--border-strong); }
+      .sg-btn--ghost:hover:not(:disabled) { background: var(--surface-hover); color: var(--text-primary); }
+      .sg-btn--hero { min-height: 52px; font-size: 1.02rem; font-weight: 750; width: 100%; }
+      .sg-btn--sm { min-height: 40px; padding: .4rem .75rem; font-size: .83rem; border-radius: var(--r-sm); }
+
+      .sg-seg { display: inline-flex; padding: 3px; gap: 3px; border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--surface-raised); }
+      .sg-seg button {
+        font: inherit; font-size: .8rem; font-weight: 700; cursor: pointer;
+        min-height: 36px; padding: .3rem .7rem; border-radius: var(--r-sm);
+        border: none; background: none; color: var(--muted);
+      }
+      .sg-seg button.is-on { background: var(--accent); color: #fff; }
+      [data-theme="dark"] .sg-seg button.is-on { color: #17111c; }
+
+      .sg-chiprow { display: flex; flex-wrap: wrap; gap: .3rem; }
+      .sg-chip {
+        font: inherit; font-size: .78rem; font-weight: 650; cursor: pointer;
+        padding: .3rem .62rem; min-height: 36px; border-radius: 999px;
+        border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-secondary);
+      }
+      .sg-chip:hover, .sg-chip.is-on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+      /* ---------- layers ---------- */
+      .sg-layers { list-style: none; margin: .5rem 0 0; padding: 0; display: grid; gap: .4rem; }
+      .sg-layer {
+        display: flex; align-items: center; gap: .4rem;
+        padding: .35rem .45rem; border-radius: var(--r-md);
+        border: 1px solid var(--border); background: var(--surface-raised);
+      }
+      .sg-layer.is-active { border-color: var(--accent); background: var(--accent-soft); }
+      .sg-layer__select {
+        display: flex; align-items: center; gap: .55rem; flex: 1 1 auto; min-width: 0;
+        font: inherit; text-align: left; cursor: pointer; background: none; border: 0;
+        padding: .25rem; min-height: 44px; color: inherit;
+      }
+      .sg-layer__chip {
+        width: 40px; height: 30px; flex: none; border-radius: 6px;
+        display: grid; place-items: center; background: var(--surface); border: 1px solid var(--border);
+      }
+      .sg-layer__chip > span { display: block; width: 20px; height: 14px; border-radius: 3px; background: var(--surface); }
+      .sg-layer__meta { min-width: 0; display: grid; gap: .1rem; }
+      .sg-layer__name { font-size: .8rem; font-weight: 700; color: var(--text-primary); }
+      .sg-layer__css {
+        font-family: var(--mono); font-size: .68rem; color: var(--muted);
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; max-width: 100%;
+      }
+      .sg-layer__tools { display: flex; gap: .15rem; flex: none; }
+      .sg-icon {
+        width: 36px; height: 44px; display: grid; place-items: center;
+        font: inherit; font-size: .9rem; cursor: pointer;
+        border: 0; background: none; border-radius: var(--r-sm); color: var(--muted);
+      }
+      .sg-icon:hover:not(:disabled) { background: var(--surface-hover); color: var(--text-primary); }
+      .sg-icon:disabled { opacity: .3; cursor: not-allowed; }
+      .sg-icon--danger:hover:not(:disabled) { background: var(--danger-soft); color: var(--danger); }
+
+      /* ---------- code panel ---------- */
+      .sg-codewrap { border-radius: var(--r-md); overflow: hidden; border: 1px solid var(--border-strong); background: var(--code-bg); }
+      .sg-codehead {
+        display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap;
+        padding: .5rem .7rem; border-bottom: 1px solid rgba(255,255,255,.09);
+      }
+      .sg-codehead .sg-label { color: rgba(234, 223, 242, .6); margin: 0; }
+      .sg-codehead .sg-seg { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.12); }
+      .sg-codehead .sg-seg button { color: rgba(234, 223, 242, .65); }
+      .sg-code {
+        margin: 0; padding: .9rem 1rem; overflow-x: auto; overscroll-behavior: auto;
+        -webkit-overflow-scrolling: touch;
+        font-family: var(--mono); font-size: .86rem; line-height: 1.75;
+        color: var(--code-text); white-space: pre; tab-size: 2;
+      }
+      .tok-prop { color: var(--code-prop); }
+      .tok-num { color: var(--code-num); }
+      .tok-color { color: var(--code-color); }
+      .tok-var { color: var(--code-var); }
+
+      .sg-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(130px, 100%), 1fr)); gap: .4rem; margin-top: .7rem; }
+
+      /* ---------- presets ---------- */
+      .sg-presets { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(106px, 100%), 1fr)); gap: .4rem; }
+      .sg-preset {
+        display: grid; gap: .05rem; justify-items: center; text-align: center;
+        font: inherit; cursor: pointer; padding: .55rem .4rem .5rem;
+        border-radius: var(--r-md); border: 1px solid var(--border); background: var(--surface-raised);
+        color: var(--text-secondary); min-height: 44px;
+      }
+      .sg-preset:hover { border-color: var(--accent); background: var(--accent-soft); }
+      .sg-preset__demo { display: grid; place-items: center; width: 100%; height: 34px; margin-bottom: .25rem; }
+      .sg-preset__demo > span { display: block; width: 40px; height: 24px; border-radius: 6px; background: var(--surface); }
+      .sg-preset__name { font-size: .78rem; font-weight: 700; color: var(--text-primary); }
+      .sg-preset__hint { font-size: .65rem; color: var(--muted); line-height: 1.3; }
+      /* The hint is useful once and noise afterwards; on a phone the
+         name alone is enough and the row fits in half the height. */
+      @media (max-width: 560px) { .sg-preset__hint { display: none; } }
+
+      /* ---------- collapsible advanced blocks ---------- */
+      .sg-details { border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface-raised); }
+      .sg-details + .sg-details { margin-top: .5rem; }
+      .sg-details > summary {
+        list-style: none; cursor: pointer; padding: .7rem .85rem; min-height: 44px;
+        display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+        font-size: .71rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--muted);
+      }
+      .sg-details > summary::-webkit-details-marker { display: none; }
+      .sg-details > summary::after { content: "+"; font-family: var(--mono); font-size: 1.05rem; }
+      .sg-details[open] > summary::after { content: "−"; }
+      .sg-details[open] > summary { border-bottom: 1px solid var(--border); }
+      .sg-details__body { padding: .85rem; }
+
+      /* ---------- settings rows ---------- */
+      .sg-settings { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr)); gap: .9rem; }
+      .sg-setting { min-width: 0; }
+
+      /* ---------- content ---------- */
+      .sg-section {
+        margin-top: 2rem; padding: 1.2rem 1.25rem;
+        border: 1px solid var(--border-strong); border-radius: var(--r-lg);
+        background: var(--surface); box-shadow: var(--panel-shadow);
+      }
+      .sg-h2 { margin: 0 0 .45rem; font-size: clamp(1.32rem, 2.6vw, 1.72rem); font-weight: 760; letter-spacing: -.016em; line-height: 1.22; }
+      .sg-h2::before {
+        content: ""; display: block; width: 26px; height: 3px; border-radius: 3px;
+        margin-bottom: .55rem;
+        background: linear-gradient(90deg, var(--accent), var(--accent-deep));
+      }
+      .sg-h3 { margin: 1.6rem 0 .4rem; font-size: 1.06rem; font-weight: 720; }
+      .sg-sub { margin: 0 0 1rem; color: var(--text-secondary); max-width: 74ch; line-height: 1.65; }
+      .sg-section p, .sg-section li { color: var(--text-secondary); line-height: 1.72; }
+      .sg-section > p, .sg-section > ul, .sg-section > ol { max-width: 74ch; }
+      .sg-section > p { margin: 0 0 .85rem; }
+      .sg-section > ul, .sg-section > ol { margin: 0 0 .95rem; padding-left: 1.15rem; }
+      .sg-section li { margin-bottom: .35rem; }
+      .sg-section strong { color: var(--text-primary); font-weight: 700; }
+      .sg-section a { color: var(--accent); font-weight: 600; }
+      .sg-section code { font-family: var(--mono); font-size: .87em; padding: .1rem .32rem; border-radius: 4px; background: var(--surface-hover); border: 1px solid var(--border); color: var(--text-primary); }
+
+      .sg-snippet {
+        margin: 0 0 1rem; padding: .85rem 1rem; border-radius: var(--r-md);
+        background: var(--code-bg); color: var(--code-text);
+        font-family: var(--mono); font-size: .85rem; line-height: 1.75;
+        overflow-x: auto; white-space: pre;
+      }
+      .sg-snippet .tok-prop { color: var(--code-prop); }
+      .sg-snippet .tok-num { color: var(--code-num); }
+      .sg-snippet .tok-color { color: var(--code-color); }
+
+      .sg-callout { padding: .8rem .9rem; border-radius: var(--r-md); font-size: .86rem; line-height: 1.65; background: var(--warning-soft); border: 1px solid var(--warning-soft); color: var(--text-secondary); }
+      .sg-callout strong { color: var(--warning); }
+
+      .sg-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(238px, 100%), 1fr)); gap: .7rem; }
+      .sg-card { min-width: 0; padding: .95rem; border-radius: var(--r-md); border: 1px solid var(--border); background: var(--surface); }
+      .sg-card h3 { margin: 0 0 .35rem; font-size: .98rem; font-weight: 750; }
+      .sg-card p { margin: 0; font-size: .85rem; line-height: 1.62; color: var(--text-secondary); }
+      .sg-card code { display: block; margin-top: .5rem; font-family: var(--mono); font-size: .74rem; padding: .5rem .55rem; border-radius: 6px; background: var(--code-bg); color: var(--code-text); overflow-x: auto; white-space: pre; border: 0; }
+
+      .sg-anatomy { display: grid; gap: .4rem; margin: 0 0 1rem; padding: 0; list-style: none; }
+      .sg-anatomy li {
+        display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: .6rem; align-items: baseline;
+        padding: .55rem .7rem; border-radius: var(--r-sm); background: var(--surface-raised); border: 1px solid var(--border);
+      }
+      .sg-anatomy code { font-family: var(--mono); font-size: .8rem; font-weight: 700; color: var(--accent); background: none; border: 0; padding: 0; }
+      .sg-anatomy span { font-size: .87rem; color: var(--text-secondary); line-height: 1.6; }
+      @media (max-width: 520px) { .sg-anatomy li { grid-template-columns: 1fr; gap: .1rem; } }
+
+      .sg-faq { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: .55rem; align-items: start; }
+      .sg-faq details { border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); transition: border-color .15s, box-shadow .15s; }
+      .sg-faq details:hover { border-color: color-mix(in srgb, var(--accent) 28%, var(--border)); }
+      .sg-faq details[open] { border-color: color-mix(in srgb, var(--accent) 32%, var(--border)); box-shadow: inset 3px 0 0 var(--accent); }
+      .sg-faq summary { cursor: pointer; padding: .8rem .9rem; min-height: 44px; font-weight: 660; font-size: .93rem; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: .6rem; }
+      .sg-faq summary::-webkit-details-marker { display: none; }
+      .sg-faq summary::after {
+        content: "+"; flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center;
+        width: 1.4rem; height: 1.4rem; border-radius: 50%;
+        font-family: var(--mono); font-size: .95rem; color: var(--accent);
+        background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+      }
+      .sg-faq details[open] summary::after { content: "−"; }
+      .sg-faq p { margin: 0; padding: 0 .9rem .85rem; font-size: .87rem; line-height: 1.65; color: var(--text-secondary); }
+
+      .sg-related { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(228px, 100%), 1fr)); gap: .6rem; }
+      .sg-related a {
+        display: block; padding: .85rem .9rem; border-radius: var(--r-md);
+        border: 1px solid var(--border); background: var(--surface-raised);
+        text-decoration: none; color: inherit;
+        transition: border-color .16s, transform .16s, box-shadow .16s, background .16s;
+      }
+      .sg-related a:hover {
+        border-color: var(--accent); background: var(--accent-soft);
+        transform: translateY(-2px); box-shadow: 0 10px 22px rgba(162, 28, 175, .12);
+      }
+      .sg-related a:hover strong { color: var(--accent); }
+      .sg-related strong { display: block; font-size: .93rem; margin-bottom: .18rem; color: var(--text-primary); }
+      .sg-related span { font-size: .8rem; color: var(--muted); line-height: 1.5; }
+
+      .sg-disclaimer {
+        margin-top: 2rem; padding: .95rem 1.1rem;
+        border-radius: var(--r-md); border: 1px solid var(--border-strong);
+        background: var(--surface); box-shadow: var(--panel-shadow);
+        font-size: .82rem; line-height: 1.65; color: var(--muted);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .sg-page *, .sg-page *::before, .sg-page *::after {
+          transition-duration: .01ms !important; animation-duration: .01ms !important;
+        }
+        .sg-box, .sg-related a:hover, a.sg-hero-btn:hover { transition: none !important; transform: none !important; }
+      }
+
+      @media print {
+        .site-header, .site-footer, .skip-link, .sg-crumb, .sg-trust,
+        .sg-actions, .sg-bar__privacy, .sg-faq, .sg-related { display: none !important; }
+        .sg-page { background: #fff !important; color: #000 !important; }
+        .sg-code, .sg-snippet { background: #f4f4f4 !important; color: #000 !important; }
+        a[href]::after { content: ""; }
+      }
+    </style>
+
+    <script type="application/ld+json" data-tooladda-page-schema="true">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://tooladda.online/#website",
+          "name": "ToolAdda",
+          "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+          "url": "https://tooladda.online/",
+          "inLanguage": "en",
+          "publisher": { "@id": "https://tooladda.online/#organization" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://tooladda.online/#organization",
+          "name": "ToolAdda",
+          "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+          "url": "https://tooladda.online/",
+          "logo": { "@type": "ImageObject", "url": "https://tooladda.online/assets/images/logo.svg" }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://tooladda.online/css-tools/shadow-generator.html#webpage",
+          "url": "https://tooladda.online/css-tools/shadow-generator.html",
+          "name": "Box Shadow Generator — Create CSS Box Shadows Online",
+          "description": "Create CSS box shadows visually. Adjust offset, blur, spread, color and opacity, stack multiple layers, preview live and copy CSS instantly.",
+          "inLanguage": "en",
+          "isPartOf": { "@id": "https://tooladda.online/#website" },
+          "breadcrumb": { "@id": "https://tooladda.online/css-tools/shadow-generator.html#breadcrumb" },
+          "mainEntity": { "@id": "https://tooladda.online/css-tools/shadow-generator.html#app" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://tooladda.online/css-tools/shadow-generator.html#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://tooladda.online/" },
+            { "@type": "ListItem", "position": 2, "name": "CSS Tools", "item": "https://tooladda.online/#developer" },
+            { "@type": "ListItem", "position": 3, "name": "Box Shadow Generator" }
+          ]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://tooladda.online/css-tools/shadow-generator.html#app",
+          "name": "Box Shadow Generator",
+          "url": "https://tooladda.online/css-tools/shadow-generator.html",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Any modern web browser",
+          "description": "A visual CSS box-shadow generator with live preview, multiple shadow layers, inset support, presets and copy-ready CSS output.",
+          "inLanguage": "en",
+          "isAccessibleForFree": true,
+          "featureList": [
+            "Independent X and Y offsets, including negative values",
+            "Blur, spread, colour and opacity controls",
+            "Inset shadows",
+            "Up to 12 stacked shadow layers with reordering",
+            "Thirteen ready-made presets",
+            "Switchable preview background and box styling",
+            "Copy the rule, the declaration or the value",
+            "CSS custom property output mode",
+            "Runs entirely in the browser"
+          ],
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+          "publisher": { "@id": "https://tooladda.online/#organization" }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://tooladda.online/css-tools/shadow-generator.html#faq",
+          "isPartOf": { "@id": "https://tooladda.online/css-tools/shadow-generator.html#webpage" },
+          "mainEntity": [
+            { "@type": "Question", "name": "What is a CSS box shadow?", "acceptedAnswer": { "@type": "Answer", "text": "A box shadow is a shadow painted around (or inside) an element's border box using the CSS box-shadow property. It is drawn outside the layout flow, so adding one never changes the size or position of anything on the page." } },
+            { "@type": "Question", "name": "What does box-shadow do in CSS?", "acceptedAnswer": { "@type": "Answer", "text": "It paints one or more shadows following the shape of the element's border box, including its border radius. You control the horizontal and vertical offset, how soft the edge is, how far the shadow spreads, its colour, and whether it sits outside the element or inside it." } },
+            { "@type": "Question", "name": "What is the syntax for box-shadow?", "acceptedAnswer": { "@type": "Answer", "text": "box-shadow: [inset] offset-x offset-y blur-radius spread-radius color; Only offset-x and offset-y are required. Blur defaults to 0, spread defaults to 0, and if you omit the colour the browser uses the element's currentColor." } },
+            { "@type": "Question", "name": "What are the four main box-shadow values?", "acceptedAnswer": { "@type": "Answer", "text": "Offset-x moves the shadow horizontally, offset-y moves it vertically, blur-radius controls how soft the edge is, and spread-radius grows or shrinks the whole shadow before it is blurred. A colour follows them." } },
+            { "@type": "Question", "name": "What is offset-x in box-shadow?", "acceptedAnswer": { "@type": "Answer", "text": "The horizontal distance the shadow is moved. A positive value pushes it right, a negative value pushes it left, and 0 keeps it centred under the element. Most interface shadows use 0 because real overhead lighting casts shadows straight down." } },
+            { "@type": "Question", "name": "What is offset-y in box-shadow?", "acceptedAnswer": { "@type": "Answer", "text": "The vertical distance the shadow is moved. A positive value pushes it down, a negative value pushes it up. Downward offsets read as an object lifted above the page, which is why nearly every card and button shadow uses a positive offset-y." } },
+            { "@type": "Question", "name": "What is blur-radius in box-shadow?", "acceptedAnswer": { "@type": "Answer", "text": "How far the shadow fades out at its edge. Zero gives a hard-edged copy of the element's shape; larger values give a softer, more diffuse shadow. Blur cannot be negative." } },
+            { "@type": "Question", "name": "What is spread-radius in box-shadow?", "acceptedAnswer": { "@type": "Answer", "text": "How much the shadow grows or shrinks before the blur is applied. A positive spread makes the shadow larger than the element on every side; a negative spread pulls it in, which is a common way to keep a large soft shadow from leaking out sideways." } },
+            { "@type": "Question", "name": "What does inset mean in box-shadow?", "acceptedAnswer": { "@type": "Answer", "text": "The inset keyword draws the shadow inside the element's border box instead of outside it, so the element looks recessed rather than raised. It goes first in the value: box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.15)." } },
+            { "@type": "Question", "name": "Can CSS have multiple box shadows?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Separate each shadow with a comma. The first shadow in the list is painted on top of the ones after it, so order changes the result. Stacking two or three layers is how convincing depth is usually built." } },
+            { "@type": "Question", "name": "How do I create a soft shadow in CSS?", "acceptedAnswer": { "@type": "Answer", "text": "Use a modest downward offset, a blur several times larger than that offset, and a low opacity: box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15). The large blur-to-offset ratio is what makes it read as soft rather than heavy." } },
+            { "@type": "Question", "name": "How do I create a strong shadow?", "acceptedAnswer": { "@type": "Answer", "text": "Increase the offset and the opacity while keeping the blur moderate: box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25). Raising opacity alone tends to look muddy; raising the offset alongside it is what reads as height." } },
+            { "@type": "Question", "name": "How do I make an inner shadow in CSS?", "acceptedAnswer": { "@type": "Answer", "text": "Add the inset keyword: box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.15). Inner shadows suit inputs, wells and pressed button states, where the element should look pushed into the surface." } },
+            { "@type": "Question", "name": "How do I create a card shadow?", "acceptedAnswer": { "@type": "Answer", "text": "Stack a tight shadow for the contact edge with a wider, softer one for the ambient light: box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 8px 24px -4px rgba(0, 0, 0, 0.12). A single shadow rarely looks as convincing." } },
+            { "@type": "Question", "name": "How do I create a button shadow?", "acceptedAnswer": { "@type": "Answer", "text": "Keep it small — buttons sit close to the surface. Something like box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.12) works, and reducing the offset on :active makes the button feel pressed." } },
+            { "@type": "Question", "name": "How do I create a neumorphic shadow?", "acceptedAnswer": { "@type": "Answer", "text": "Use two shadows with opposite offsets, a light one where the light source is and a darker one opposite it: box-shadow: -8px -8px 16px rgba(255, 255, 255, 0.9), 8px 8px 16px rgba(154, 165, 177, 0.6). The element and its background must be the same colour for the effect to work." } },
+            { "@type": "Question", "name": "What is the difference between box-shadow and text-shadow?", "acceptedAnswer": { "@type": "Answer", "text": "box-shadow follows the element's rectangular border box and its border radius; text-shadow follows the glyph shapes of the text itself. text-shadow also has no spread value and no inset keyword." } },
+            { "@type": "Question", "name": "What is the difference between box-shadow and filter: drop-shadow?", "acceptedAnswer": { "@type": "Answer", "text": "box-shadow always follows the border box, so a transparent PNG inside a div still casts a rectangular shadow. filter: drop-shadow() follows the actual painted pixels including transparency, which is what you want for logos and irregular shapes. drop-shadow has no spread and no inset." } },
+            { "@type": "Question", "name": "Can box-shadow use rgba colours?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, and it is usually the right choice. A semi-transparent black blends with whatever is behind the element, whereas a solid grey only looks correct on one background colour." } },
+            { "@type": "Question", "name": "Can box-shadow use hex colours?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Six-digit hex works, and eight-digit hex with an alpha channel is supported in all current browsers. This generator emits plain hex when opacity is 100% and rgba() below that." } },
+            { "@type": "Question", "name": "Can box-shadow use CSS variables?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Storing the whole value in a custom property is the usual way design systems handle elevation: --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.15); then box-shadow: var(--shadow-card). Switch on CSS Variable Mode in this tool to get that form." } },
+            { "@type": "Question", "name": "Does box-shadow affect layout?", "acceptedAnswer": { "@type": "Answer", "text": "No. Shadows are painted outside the layout flow and take up no space, so adding one never pushes neighbouring elements around or changes the element's size. This is the main difference from adding a border." } },
+            { "@type": "Question", "name": "Does box-shadow follow border-radius?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The shadow follows the element's border box including its rounded corners, so a pill-shaped button casts a pill-shaped shadow automatically. You do not need to change the shadow when you change the radius." } },
+            { "@type": "Question", "name": "Does box-shadow work on mobile?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, on every current mobile browser. Very large blur radii on many elements at once can cost performance on low-end devices, so prefer a few well-chosen shadows over a large blur on every card in a long list." } },
+            { "@type": "Question", "name": "Which browsers support box-shadow?", "acceptedAnswer": { "@type": "Answer", "text": "All of them. box-shadow has been unprefixed and universally supported for well over a decade, including multiple shadows, inset and negative spread. Vendor prefixes such as -webkit-box-shadow are obsolete and this tool does not emit them." } },
+            { "@type": "Question", "name": "How do I remove a box shadow?", "acceptedAnswer": { "@type": "Answer", "text": "Set box-shadow: none. That is also the correct way to override an inherited or utility-class shadow, since there is no way to remove just one layer from a multi-layer value without rewriting the whole declaration." } },
+            { "@type": "Question", "name": "How do I make a shadow less visible?", "acceptedAnswer": { "@type": "Answer", "text": "Lower the opacity first, then reduce the offset. Reducing blur usually makes a shadow look sharper rather than lighter, which is the opposite of what people expect when they want a subtler effect." } },
+            { "@type": "Question", "name": "Why does my shadow look grey and muddy?", "acceptedAnswer": { "@type": "Answer", "text": "Usually because it is a solid grey rather than a transparent black, or because the opacity is high with very little blur. Try a low-opacity black instead of a mid-grey, and make the blur at least twice the vertical offset." } },
+            { "@type": "Question", "name": "Can I animate box-shadow?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, box-shadow is animatable, but animating it on hover can be costly because the shadow is repainted every frame. A common alternative is to keep a static shadow and animate the opacity of a pseudo-element that carries a second shadow." } },
+            { "@type": "Question", "name": "Is this box shadow generator free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. It is free, needs no sign-up, and runs entirely in your browser — nothing you build here is sent to a server." } }
+          ]
+        }
+      ]
+    }
+    </script>
+      <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 162, 28, 175; }
+      [data-theme="dark"] { --pca: 232, 121, 249; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 232, 121, 249; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/css-tools/shadow-generator.html#webpage",
+      "url": "https://tooladda.online/css-tools/shadow-generator.html",
+      "inLanguage": "en",
+      "datePublished": "2026-06-30",
+      "dateModified": "2026-09-24",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+  <body class="sg-page-shell no-side-ad-squeeze">
+    <a class="skip-link" href="#sgStudio">Skip to Shadow Studio</a>
+    <header class="site-header">
+      <div class="container navbar">
+        <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../privacy-policy.html">Privacy</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+              <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+              <path d="M3.1 16.9h10.8" />
+              <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+            </svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+          <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+          <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" class="sg-page">
+      <div class="sg-wrap">
+        <aside class="ta-support" aria-label="Support ToolAdda">
+          <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+        </aside>
+
+
+        <nav class="sg-crumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">/</span><a href="/#developer">CSS Tools</a><span aria-hidden="true">/</span><span>Box Shadow Generator</span>
+        </nav>
+
+        <div class="sg-hero">
+          <div>
+            <span class="sg-eyebrow">CSS Generator</span>
+            <h1 class="sg-h1">Box Shadow Generator</h1>
+            <p class="sg-lede">Create beautiful CSS box shadows visually with live preview, multiple shadow layers, presets and instant CSS code.</p>
+            <ul class="sg-trust">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="4"/></svg>Free</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>No signup</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>Instant preview</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>Browser-based</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy CSS instantly</li>
+            </ul>
+            <div class="sg-hero-cta">
+              <a class="sg-hero-btn sg-hero-btn--primary" href="#sgStudio">▶ Open Shadow Studio</a>
+              <a class="sg-hero-btn sg-hero-btn--ghost" href="bento-grid-generator.html">Bento grids</a>
+            </div>
+          </div>
+          <div class="sg-hero__mock" aria-hidden="true">
+            <div class="sg-hero__mock-stack">
+              <span class="sg-hero__mock-card sg-hero__mock-card--back"></span>
+              <span class="sg-hero__mock-card sg-hero__mock-card--mid"></span>
+              <span class="sg-hero__mock-card sg-hero__mock-card--front">Preview</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ STUDIO ============ -->
+        <section class="sg-studio" id="sgStudio" data-sg-root aria-label="Box shadow generator">
+          <div class="sg-bar">
+            <p class="sg-bar__title">Shadow Studio</p>
+            <span class="sg-bar__privacy">🔒 Your CSS is generated locally in your browser</span>
+          </div>
+
+          <div class="sg-grid">
+
+            <!-- ---------- preview stage ---------- -->
+            <div class="sg-stagewrap">
+              <div class="sg-stage" data-sg-stage data-bg="checker">
+                <div class="sg-box" data-sg-box>Preview</div>
+              </div>
+            </div>
+
+            <!-- ---------- shadow controls ---------- -->
+            <div class="sg-col sg-col--in">
+              <span class="sg-label">Shadow settings</span>
+              <div data-sg-controls></div>
+
+              <div style="margin-top:.7rem">
+                <label class="sg-label" for="sgHex">Shadow colour</label>
+                <div class="sg-colorrow">
+                  <input class="sg-swatch" type="color" id="sgColor" value="#000000" aria-label="Shadow colour picker" />
+                  <input class="sg-text" type="text" id="sgHex" value="#000000" spellcheck="false"
+                         autocomplete="off" aria-label="Shadow colour hex value" />
+                </div>
+              </div>
+
+              <label class="sg-switch">
+                <input type="checkbox" id="sgInset" />
+                <span>Inset — draw the shadow inside the box</span>
+              </label>
+
+              <!-- Layers sit with the controls they drive, so selecting
+                   a layer and editing it does not span two screens. -->
+              <div style="margin-top:.4rem">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:wrap">
+                  <span class="sg-label" style="margin:0">Layers <span data-sg-layer-count style="font-weight:600;letter-spacing:0;text-transform:none"></span></span>
+                  <button type="button" class="sg-btn sg-btn--ghost sg-btn--sm" data-sg-add-layer>+ Add</button>
+                </div>
+                <ul class="sg-layers" data-sg-layers></ul>
+                <p class="sg-hint">The first layer paints on top — use ↑ ↓ to reorder.</p>
+              </div>
+            </div>
+
+            <!-- ---------- generated CSS ---------- -->
+            <div class="sg-col sg-col--out">
+              <div class="sg-codewrap">
+                <div class="sg-codehead">
+                  <span class="sg-label">Generated CSS</span>
+                  <div class="sg-seg" role="group" aria-label="Output format">
+                    <button type="button" data-sg-format="readable" class="is-on" aria-pressed="true">Readable</button>
+                    <button type="button" data-sg-format="compact" aria-pressed="false">Compact</button>
+                  </div>
+                </div>
+                <pre class="sg-code" data-sg-code>.box {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}</pre>
+              </div>
+
+              <button type="button" class="sg-btn sg-btn--accent sg-btn--hero" data-sg-copy-css
+                      style="margin-top:.6rem">Copy CSS</button>
+
+              <div class="sg-actions">
+                <button type="button" class="sg-btn sg-btn--ghost sg-btn--sm" data-sg-copy-property>Copy property</button>
+                <button type="button" class="sg-btn sg-btn--ghost sg-btn--sm" data-sg-copy-value>Copy value</button>
+                <button type="button" class="sg-btn sg-btn--ghost sg-btn--sm" data-sg-download>Download</button>
+                <button type="button" class="sg-btn sg-btn--ghost sg-btn--sm" data-sg-share>Share link</button>
+                <button type="button" class="sg-btn sg-btn--ghost sg-btn--sm" data-sg-random>Randomize</button>
+                <button type="button" class="sg-btn sg-btn--ghost sg-btn--sm" data-sg-reset>Reset</button>
+              </div>
+
+              <details class="sg-details" style="margin-top:.6rem">
+                <summary>CSS variable mode</summary>
+                <div class="sg-details__body">
+                  <label class="sg-switch" style="min-height:auto">
+                    <input type="checkbox" id="sgVarMode" />
+                    <span>Output a reusable custom property</span>
+                  </label>
+                  <div data-sg-var-row hidden style="margin-top:.45rem">
+                    <label class="sg-label" for="sgVarName">Custom property name</label>
+                    <input class="sg-text" type="text" id="sgVarName" value="--shadow-card" spellcheck="false" autocomplete="off" />
+                  </div>
+                </div>
+              </details>
+
+              <p class="sg-sr" role="status" aria-live="polite" data-sg-announce></p>
+            </div>
+
+            <!-- ---------- presets + advanced ---------- -->
+            <div class="sg-col sg-col--full">
+              <span class="sg-label">Presets</span>
+              <div class="sg-presets" data-sg-presets></div>
+
+              <details class="sg-details" style="margin-top:.8rem">
+                <summary>Preview settings — stage, box colour, radius, size</summary>
+                <div class="sg-details__body">
+                  <p class="sg-hint" style="margin:0 0 .7rem">These change the preview only. None of them appear in the generated <code>box-shadow</code>.</p>
+
+                  <div class="sg-settings">
+                    <div class="sg-setting">
+                      <span class="sg-label">Stage background</span>
+                      <div class="sg-chiprow" role="group" aria-label="Preview background">
+                        <button type="button" class="sg-chip" data-sg-bg="checker" aria-pressed="false">Checker</button>
+                        <button type="button" class="sg-chip" data-sg-bg="grid" aria-pressed="false">Grid</button>
+                        <button type="button" class="sg-chip" data-sg-bg="light" aria-pressed="false">Light</button>
+                        <button type="button" class="sg-chip" data-sg-bg="dark" aria-pressed="false">Dark</button>
+                      </div>
+                    </div>
+
+                    <div class="sg-setting">
+                      <label class="sg-label" for="sgBoxColor">Box colour</label>
+                      <div class="sg-colorrow">
+                        <input class="sg-swatch" type="color" id="sgBoxColor" value="#ffffff" aria-label="Preview box colour" />
+                      </div>
+                    </div>
+
+                    <div class="sg-setting">
+                      <label class="sg-label" for="sgRadius">Border radius <span data-sg-radius-out style="font-weight:600;letter-spacing:0;text-transform:none"></span></label>
+                      <input class="sg-range" type="range" id="sgRadius" min="0" max="120" step="1" value="16" />
+                      <div class="sg-chiprow" data-sg-radius-presets style="margin-top:.3rem">
+                        <button type="button" class="sg-chip" data-sg-radius="0">0</button>
+                        <button type="button" class="sg-chip" data-sg-radius="4">4</button>
+                        <button type="button" class="sg-chip" data-sg-radius="8">8</button>
+                        <button type="button" class="sg-chip" data-sg-radius="12">12</button>
+                        <button type="button" class="sg-chip" data-sg-radius="16">16</button>
+                        <button type="button" class="sg-chip" data-sg-radius="24">24</button>
+                        <button type="button" class="sg-chip" data-sg-radius="70">Pill</button>
+                      </div>
+                    </div>
+
+                    <div class="sg-setting">
+                      <label class="sg-label" for="sgBoxWidth">Box width</label>
+                      <input class="sg-range" type="range" id="sgBoxWidth" min="40" max="420" step="10" value="220" />
+                      <label class="sg-label" for="sgBoxHeight" style="margin-top:.4rem">Box height</label>
+                      <input class="sg-range" type="range" id="sgBoxHeight" min="40" max="320" step="10" value="140" />
+                    </div>
+                  </div>
+                </div>
+              </details>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ ANATOMY ============ -->
+        <section class="sg-section" aria-labelledby="sg-syntax-heading">
+          <h2 class="sg-h2" id="sg-syntax-heading">CSS box shadow syntax</h2>
+          <p class="sg-sub">Every shadow this tool produces follows the standard property. Only the two offsets are required; everything else has a sensible default.</p>
+
+          <pre class="sg-snippet"><span class="tok-prop">box-shadow</span>: [inset] &lt;offset-x&gt; &lt;offset-y&gt; &lt;blur-radius&gt; &lt;spread-radius&gt; &lt;color&gt;;</pre>
+
+          <ul class="sg-anatomy">
+            <li><code>offset-x</code><span>Moves the shadow horizontally. Positive is right, negative is left, <code>0</code> keeps it centred.</span></li>
+            <li><code>offset-y</code><span>Moves the shadow vertically. Positive is down, negative is up. Most interface shadows use a positive value, because light usually comes from above.</span></li>
+            <li><code>blur-radius</code><span>How far the edge fades. <code>0</code> is a hard edge; larger values are softer. Cannot be negative.</span></li>
+            <li><code>spread-radius</code><span>Grows or shrinks the shadow before blurring. Negative values pull it in, which stops a large soft shadow leaking out sideways.</span></li>
+            <li><code>color</code><span>Any CSS colour. A low-opacity black blends with whatever is behind the element; a solid grey only looks right on one background.</span></li>
+            <li><code>inset</code><span>Optional keyword, written first. Draws the shadow inside the border box so the element looks recessed.</span></li>
+          </ul>
+
+          <p>For more than one shadow, separate them with commas. The first one in the list is painted on top:</p>
+          <pre class="sg-snippet"><span class="tok-prop">box-shadow</span>:
+  <span class="tok-num">0</span> <span class="tok-num">4px</span> <span class="tok-num">6px</span> <span class="tok-color">rgba(0, 0, 0, 0.1)</span>,
+  <span class="tok-num">0</span> <span class="tok-num">10px</span> <span class="tok-num">20px</span> <span class="tok-color">rgba(0, 0, 0, 0.08)</span>;</pre>
+
+          <div class="sg-callout"><strong>Order matters.</strong> Swapping two layers changes what you see, because each is painted over the one after it. The layer list above lets you reorder with ↑ and ↓ so you can watch the difference rather than guess at it.</div>
+        </section>
+
+        <!-- ============ RECIPES ============ -->
+        <section class="sg-section" aria-labelledby="sg-recipes-heading">
+          <h2 class="sg-h2" id="sg-recipes-heading">Shadow recipes</h2>
+          <p class="sg-sub">Starting points worth knowing by heart. Every one of these is reproducible in the controls above — they are the same values the presets load.</p>
+
+          <div class="sg-cards">
+            <article class="sg-card">
+              <h3>Basic</h3>
+              <p>The smallest shadow that still separates an element from the page.</p>
+              <code>box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);</code>
+            </article>
+            <article class="sg-card">
+              <h3>Soft</h3>
+              <p>Blur several times the offset, low opacity. Reads as diffuse daylight.</p>
+              <code>box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);</code>
+            </article>
+            <article class="sg-card">
+              <h3>Strong</h3>
+              <p>Bigger offset and higher opacity, blur kept moderate so it stays crisp.</p>
+              <code>box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);</code>
+            </article>
+            <article class="sg-card">
+              <h3>Inset</h3>
+              <p>For inputs, wells and pressed states — the element sinks into the surface.</p>
+              <code>box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.15);</code>
+            </article>
+            <article class="sg-card">
+              <h3>Card</h3>
+              <p>A tight contact shadow plus a wide ambient one. Two layers beat one.</p>
+              <code>box-shadow:
+  0 1px 3px rgba(0, 0, 0, 0.1),
+  0 8px 24px -4px rgba(0, 0, 0, 0.12);</code>
+            </article>
+            <article class="sg-card">
+              <h3>Neumorphic</h3>
+              <p>Opposite offsets, light where the light is. Box and background must match.</p>
+              <code>box-shadow:
+  -8px -8px 16px rgba(255, 255, 255, 0.9),
+  8px 8px 16px rgba(154, 165, 177, 0.6);</code>
+            </article>
+          </div>
+        </section>
+
+        <!-- ============ ARTICLE ============ -->
+        <section class="sg-section" aria-labelledby="sg-guide-heading">
+          <h2 class="sg-h2" id="sg-guide-heading">Working with CSS box shadows</h2>
+
+          <h3 class="sg-h3">What is a CSS box shadow?</h3>
+          <p>A box shadow is a shadow painted around — or inside — an element's border box using the <code>box-shadow</code> property. It follows the shape of that box exactly, including any <code>border-radius</code>, so a pill-shaped button automatically casts a pill-shaped shadow with no extra work.</p>
+          <p>The single most useful thing to know about it is that a shadow occupies no space. It is painted outside the layout flow, so adding one never resizes the element, never pushes its neighbours around and never triggers a reflow. That is the fundamental difference between a shadow and a border, and it is why shadows are the safe way to add depth to a layout that is already working.</p>
+          <p>Because shadows are painted rather than laid out, they can also overlap each other and the elements around them. That is what makes multi-layer shadows possible, and it is also why a shadow with a very large blur can bleed further across the page than you expected.</p>
+
+          <h3 class="sg-h3">What is a box shadow generator?</h3>
+          <p>A box shadow generator is a visual editor for one CSS property. Instead of typing five numbers, reloading and squinting at the result, you move controls and watch the shadow change immediately. When it looks right, you copy the CSS.</p>
+          <p>The value of doing it visually is not that the syntax is hard — it is not. It is that the relationship between the numbers and the result is genuinely difficult to hold in your head. The difference between <code>0 4px 8px</code> and <code>0 8px 16px</code> is obvious once you see them side by side and almost impossible to predict from the digits alone. Shadow design is an eye problem, not a maths problem.</p>
+          <p>This particular generator adds a few things beyond the usual four sliders: independent X and Y offsets including negative values, unlimited-order stacking of up to twelve layers, inset support, a switchable preview background, and output either as a plain rule or as a reusable CSS custom property.</p>
+
+          <h3 class="sg-h3">How to use this generator</h3>
+          <ol>
+            <li>Drag the <strong>Y offset</strong> until the element sits at about the height you want it to appear.</li>
+            <li>Raise the <strong>blur</strong> until the edge stops looking like a duplicate of the box. A useful starting ratio is a blur roughly two to three times the offset.</li>
+            <li>Drop the <strong>opacity</strong> until the shadow stops competing with your content. Most interface shadows live between 8% and 20%.</li>
+            <li>Add a second layer if it still looks flat — real objects cast more than one shadow.</li>
+            <li>Switch the <strong>stage background</strong> to dark and check the shadow still reads there.</li>
+            <li>Press <strong>Copy CSS</strong>.</li>
+          </ol>
+
+          <h3 class="sg-h3">Understanding offset-x</h3>
+          <p>The horizontal offset moves the shadow left or right. Positive values push it right, negative values push it left, and zero leaves it centred beneath the element.</p>
+          <p>In practice, most user-interface shadows use an X offset of exactly zero. That is not a convention for its own sake: overhead lighting, which is what interfaces implicitly simulate, casts shadows straight down. A horizontal offset implies a light source off to one side, which is a deliberate stylistic choice rather than a default. When you do want it, keep it small — beyond about 8px it starts to look like the element is falling over.</p>
+          <p>The old version of this tool could not express an X offset different from Y at all, which meant every shadow it produced was a 45-degree diagonal. That is worth stating plainly because it is exactly the kind of limitation that is easy to miss: the tool worked, it just could not make the shadow almost everyone actually wants.</p>
+
+          <h3 class="sg-h3">Understanding offset-y</h3>
+          <p>The vertical offset is the one that carries the illusion. It moves the shadow down (positive) or up (negative), and the distance reads directly as height above the page.</p>
+          <p>A 2px offset says "this is resting on the surface". A 24px offset says "this is floating well above it". Modals and dropdowns use large offsets because they genuinely are above everything; buttons use tiny ones because they are not. Getting this number wrong is the most common reason a shadow feels off even when every other value is reasonable.</p>
+          <p>Negative Y offsets — shadows cast upward — are unusual but not wrong. They suit elements anchored to the bottom of the viewport, such as a sticky action bar, where the light logically comes from the content above.</p>
+
+          <h3 class="sg-h3">Understanding blur-radius</h3>
+          <p>Blur controls how quickly the shadow fades out at its edge. At zero you get a hard-edged duplicate of the element's silhouette. As it increases, the edge softens and the shadow spreads outward.</p>
+          <p>The number that matters is not the blur on its own but its ratio to the offset. A large offset with little blur reads as a sticker sitting on the page; a small offset with a large blur reads as something barely lifted. Somewhere around two to three times the offset is where most natural-looking shadows sit.</p>
+          <p>Blur cannot be negative — the browser will reject the declaration. If you want a shadow smaller than the element, that is what spread is for.</p>
+
+          <h3 class="sg-h3">Understanding spread-radius</h3>
+          <p>Spread grows or shrinks the shadow before the blur is applied. A spread of <code>4px</code> makes the shadow 4px larger than the element on every side; a spread of <code>-4px</code> pulls it in by the same amount.</p>
+          <p>Negative spread is the more useful of the two and the more commonly overlooked. When you use a large blur to get a soft shadow, the blur pushes the shadow out sideways as well as down, and the element ends up sitting in a grey halo. Pulling the spread in by a few pixels removes the sideways bleed while leaving the downward softness intact. That is why so many good card shadows look like <code>0 8px 24px -4px</code> rather than <code>0 8px 24px</code>.</p>
+          <p>Positive spread with zero blur and zero offset gives you something else entirely: a solid outline that follows the border radius. It is a useful trick for focus rings, because unlike a border it does not affect layout.</p>
+
+          <h3 class="sg-h3">Understanding shadow colour</h3>
+          <p>The most common mistake in shadow design is using a solid grey. A grey shadow only looks correct on one background colour; put the same element on a tinted panel and the shadow reads as a dirty smudge, because it is not transparent and therefore cannot pick up what is behind it.</p>
+          <p>Use a low-opacity black instead. <code>rgba(0, 0, 0, 0.15)</code> looks like a shadow on white, on grey, on a coloured card and on a photograph, because it darkens whatever is underneath rather than replacing it.</p>
+          <p>Tinting the shadow towards the hue of the surface it falls on is a refinement worth knowing. A shadow on a warm cream page looks better as a very dark brown than a pure black; on a deep blue interface, a dark navy shadow reads more naturally. Keep the opacity low and the effect is subtle but real.</p>
+          <p>This generator emits plain hex when opacity is 100% and <code>rgba()</code> below it. Both are valid CSS; the hex form is simply shorter when there is no transparency to express.</p>
+
+          <h3 class="sg-h3">How inset shadows work</h3>
+          <p>The <code>inset</code> keyword flips the shadow inside the element's border box. Instead of the element appearing to sit above the page, it appears to be cut into it.</p>
+          <p>The mental model stays the same: offset, blur and spread behave exactly as before, they are just applied to the inside of the box. An inset shadow with a positive Y offset darkens the top inside edge, because that is where the rim of the recess would block the light.</p>
+          <p>Inset shadows suit text inputs, progress tracks, wells and pressed button states. They are also the standard way to build a "pressed" affordance: swap the outer shadow for an inset one on <code>:active</code> and the button genuinely feels like it moves.</p>
+          <p>One limitation worth knowing: inset shadows are clipped by the element's border box, so they never extend beyond it. You cannot use inset to draw anything outside the element.</p>
+
+          <h3 class="sg-h3">How multiple box shadows work</h3>
+          <p>Separate shadows with commas and the browser paints all of them, first in the list on top. This is the single biggest step up in shadow quality available, and it costs nothing.</p>
+          <p>The reason it works is that real objects do not cast one shadow. There is a tight, dark contact shadow immediately beneath the object where it meets the surface, and a much wider, fainter ambient shadow from diffuse light in the room. Simulating both is what makes a card look like an object rather than a rectangle with a grey blob under it.</p>
+          <p>A practical two-layer recipe: a small tight shadow at low blur for contact, then a large soft one with negative spread for ambience. Three layers, as used in Material Design's elevation scale, adds a middle term and buys a little more realism at the cost of a longer declaration.</p>
+          <p>Because the layers paint in order, moving one changes the result. There is no way to remove a single layer from an existing multi-layer value in CSS either — <code>box-shadow</code> is one property, so overriding it means rewriting the whole declaration. That is a good argument for storing shadows in custom properties.</p>
+
+          <h3 class="sg-h3">CSS shadow best practices</h3>
+          <ul>
+            <li><strong>Build an elevation scale, not one-off shadows.</strong> Three or four defined levels used consistently will look more coherent than a bespoke shadow on every component.</li>
+            <li><strong>Store them in custom properties.</strong> <code>--shadow-sm</code> through <code>--shadow-xl</code> makes the scale enforceable and lets you retune everything from one place. Switch on CSS Variable Mode above to get that form directly.</li>
+            <li><strong>Keep the light source consistent.</strong> If one component casts its shadow downward and another to the upper-left, the interface reads as physically incoherent even if nobody can say why.</li>
+            <li><strong>Check both themes.</strong> A shadow tuned on white frequently disappears on a dark surface. Dark interfaces often need a lighter inset rim rather than a darker drop shadow.</li>
+            <li><strong>Do not use shadows to signal state on their own.</strong> A shadow change is invisible to a screen reader and easy to miss for low-vision users. Pair it with a colour, an outline or a label.</li>
+            <li><strong>Prefer opacity over darkness.</strong> Reaching for a heavier grey is usually the wrong move; a lower-opacity black with a wider blur almost always looks better.</li>
+          </ul>
+
+          <h3 class="sg-h3">Common box shadow mistakes</h3>
+          <ul>
+            <li><strong>Solid grey instead of transparent black.</strong> Looks acceptable on white and wrong everywhere else.</li>
+            <li><strong>Blur too small for the offset.</strong> Produces a hard duplicate of the element that reads as a printing error rather than depth.</li>
+            <li><strong>Forgetting negative spread on large blurs.</strong> The shadow bleeds sideways and the element floats in a grey halo.</li>
+            <li><strong>One shadow where two are needed.</strong> A single blob rarely looks like real light.</li>
+            <li><strong>Opacity far too high.</strong> Anything above about 30% starts to compete with your actual content.</li>
+            <li><strong>Animating box-shadow on hover across a long list.</strong> Each frame repaints the shadow; on low-end devices this is visibly expensive.</li>
+            <li><strong>Adding vendor prefixes.</strong> <code>-webkit-box-shadow</code> and <code>-moz-box-shadow</code> have been unnecessary for over a decade and only add bytes.</li>
+            <li><strong>Using box-shadow on a transparent image.</strong> It follows the rectangular border box, not the artwork. Use <code>filter: drop-shadow()</code> for that.</li>
+          </ul>
+
+          <h3 class="sg-h3">Browser compatibility</h3>
+          <p><code>box-shadow</code> is supported unprefixed in every browser in current use, and has been for well over a decade. That includes multiple comma-separated shadows, the <code>inset</code> keyword, negative spread and <code>rgba()</code> colours — there is no meaningful compatibility question left to answer for any of them.</p>
+          <p>This tool therefore emits modern, standard CSS only. It does not generate <code>-webkit-box-shadow</code> or <code>-moz-box-shadow</code>, because those prefixes target browsers that no longer exist and adding them makes stylesheets larger without making anything work.</p>
+          <p>The one genuine consideration is performance rather than support. Very large blur radii are expensive to paint, and a page with a 60px blur on every item of a long scrolling list can drop frames on low-end mobile hardware. This is not a reason to avoid shadows; it is a reason to be deliberate about how many large ones a single screen carries.</p>
+        </section>
+
+        <!-- ============ FAQ ============ -->
+        <section class="sg-section" aria-labelledby="sg-faq-heading">
+          <h2 class="sg-h2" id="sg-faq-heading">Frequently asked questions</h2>
+          <div class="sg-faq">
+            <details><summary>What is a CSS box shadow?</summary><p>A box shadow is a shadow painted around (or inside) an element's border box using the CSS box-shadow property. It is drawn outside the layout flow, so adding one never changes the size or position of anything on the page.</p></details>
+            <details><summary>What does box-shadow do in CSS?</summary><p>It paints one or more shadows following the shape of the element's border box, including its border radius. You control the horizontal and vertical offset, how soft the edge is, how far the shadow spreads, its colour, and whether it sits outside the element or inside it.</p></details>
+            <details><summary>What is the syntax for box-shadow?</summary><p>box-shadow: [inset] offset-x offset-y blur-radius spread-radius color; Only offset-x and offset-y are required. Blur defaults to 0, spread defaults to 0, and if you omit the colour the browser uses the element's currentColor.</p></details>
+            <details><summary>What are the four main box-shadow values?</summary><p>Offset-x moves the shadow horizontally, offset-y moves it vertically, blur-radius controls how soft the edge is, and spread-radius grows or shrinks the whole shadow before it is blurred. A colour follows them.</p></details>
+            <details><summary>What is offset-x in box-shadow?</summary><p>The horizontal distance the shadow is moved. A positive value pushes it right, a negative value pushes it left, and 0 keeps it centred under the element. Most interface shadows use 0 because real overhead lighting casts shadows straight down.</p></details>
+            <details><summary>What is offset-y in box-shadow?</summary><p>The vertical distance the shadow is moved. A positive value pushes it down, a negative value pushes it up. Downward offsets read as an object lifted above the page, which is why nearly every card and button shadow uses a positive offset-y.</p></details>
+            <details><summary>What is blur-radius in box-shadow?</summary><p>How far the shadow fades out at its edge. Zero gives a hard-edged copy of the element's shape; larger values give a softer, more diffuse shadow. Blur cannot be negative.</p></details>
+            <details><summary>What is spread-radius in box-shadow?</summary><p>How much the shadow grows or shrinks before the blur is applied. A positive spread makes the shadow larger than the element on every side; a negative spread pulls it in, which is a common way to keep a large soft shadow from leaking out sideways.</p></details>
+            <details><summary>What does inset mean in box-shadow?</summary><p>The inset keyword draws the shadow inside the element's border box instead of outside it, so the element looks recessed rather than raised. It goes first in the value: box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.15).</p></details>
+            <details><summary>Can CSS have multiple box shadows?</summary><p>Yes. Separate each shadow with a comma. The first shadow in the list is painted on top of the ones after it, so order changes the result. Stacking two or three layers is how convincing depth is usually built.</p></details>
+            <details><summary>How do I create a soft shadow in CSS?</summary><p>Use a modest downward offset, a blur several times larger than that offset, and a low opacity: box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15). The large blur-to-offset ratio is what makes it read as soft rather than heavy.</p></details>
+            <details><summary>How do I create a strong shadow?</summary><p>Increase the offset and the opacity while keeping the blur moderate: box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25). Raising opacity alone tends to look muddy; raising the offset alongside it is what reads as height.</p></details>
+            <details><summary>How do I make an inner shadow in CSS?</summary><p>Add the inset keyword: box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.15). Inner shadows suit inputs, wells and pressed button states, where the element should look pushed into the surface.</p></details>
+            <details><summary>How do I create a card shadow?</summary><p>Stack a tight shadow for the contact edge with a wider, softer one for the ambient light: box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 8px 24px -4px rgba(0, 0, 0, 0.12). A single shadow rarely looks as convincing.</p></details>
+            <details><summary>How do I create a button shadow?</summary><p>Keep it small — buttons sit close to the surface. Something like box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.12) works, and reducing the offset on :active makes the button feel pressed.</p></details>
+            <details><summary>How do I create a neumorphic shadow?</summary><p>Use two shadows with opposite offsets, a light one where the light source is and a darker one opposite it: box-shadow: -8px -8px 16px rgba(255, 255, 255, 0.9), 8px 8px 16px rgba(154, 165, 177, 0.6). The element and its background must be the same colour for the effect to work.</p></details>
+            <details><summary>What is the difference between box-shadow and text-shadow?</summary><p>box-shadow follows the element's rectangular border box and its border radius; text-shadow follows the glyph shapes of the text itself. text-shadow also has no spread value and no inset keyword.</p></details>
+            <details><summary>What is the difference between box-shadow and filter: drop-shadow?</summary><p>box-shadow always follows the border box, so a transparent PNG inside a div still casts a rectangular shadow. filter: drop-shadow() follows the actual painted pixels including transparency, which is what you want for logos and irregular shapes. drop-shadow has no spread and no inset.</p></details>
+            <details><summary>Can box-shadow use rgba colours?</summary><p>Yes, and it is usually the right choice. A semi-transparent black blends with whatever is behind the element, whereas a solid grey only looks correct on one background colour.</p></details>
+            <details><summary>Can box-shadow use hex colours?</summary><p>Yes. Six-digit hex works, and eight-digit hex with an alpha channel is supported in all current browsers. This generator emits plain hex when opacity is 100% and rgba() below that.</p></details>
+            <details><summary>Can box-shadow use CSS variables?</summary><p>Yes. Storing the whole value in a custom property is the usual way design systems handle elevation: --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.15); then box-shadow: var(--shadow-card). Switch on CSS Variable Mode in this tool to get that form.</p></details>
+            <details><summary>Does box-shadow affect layout?</summary><p>No. Shadows are painted outside the layout flow and take up no space, so adding one never pushes neighbouring elements around or changes the element's size. This is the main difference from adding a border.</p></details>
+            <details><summary>Does box-shadow follow border-radius?</summary><p>Yes. The shadow follows the element's border box including its rounded corners, so a pill-shaped button casts a pill-shaped shadow automatically. You do not need to change the shadow when you change the radius.</p></details>
+            <details><summary>Does box-shadow work on mobile?</summary><p>Yes, on every current mobile browser. Very large blur radii on many elements at once can cost performance on low-end devices, so prefer a few well-chosen shadows over a large blur on every card in a long list.</p></details>
+            <details><summary>Which browsers support box-shadow?</summary><p>All of them. box-shadow has been unprefixed and universally supported for well over a decade, including multiple shadows, inset and negative spread. Vendor prefixes such as -webkit-box-shadow are obsolete and this tool does not emit them.</p></details>
+            <details><summary>How do I remove a box shadow?</summary><p>Set box-shadow: none. That is also the correct way to override an inherited or utility-class shadow, since there is no way to remove just one layer from a multi-layer value without rewriting the whole declaration.</p></details>
+            <details><summary>How do I make a shadow less visible?</summary><p>Lower the opacity first, then reduce the offset. Reducing blur usually makes a shadow look sharper rather than lighter, which is the opposite of what people expect when they want a subtler effect.</p></details>
+            <details><summary>Why does my shadow look grey and muddy?</summary><p>Usually because it is a solid grey rather than a transparent black, or because the opacity is high with very little blur. Try a low-opacity black instead of a mid-grey, and make the blur at least twice the vertical offset.</p></details>
+            <details><summary>Can I animate box-shadow?</summary><p>Yes, box-shadow is animatable, but animating it on hover can be costly because the shadow is repainted every frame. A common alternative is to keep a static shadow and animate the opacity of a pseudo-element that carries a second shadow.</p></details>
+            <details><summary>Is this box shadow generator free?</summary><p>Yes. It is free, needs no sign-up, and runs entirely in your browser — nothing you build here is sent to a server.</p></details>
+          </div>
+        </section>
+
+        <!-- ============ RELATED ============ -->
+        <section class="sg-section" aria-labelledby="sg-related-heading">
+          <h2 class="sg-h2" id="sg-related-heading">Related tools</h2>
+          <p class="sg-sub">Other ToolAdda utilities that pair with front-end work.</p>
+          <div class="sg-related">
+            <a href="../css-to-tailwind.html"><strong>CSS to Tailwind Converter</strong><span>Turn plain CSS declarations into Tailwind utility classes.</span></a>
+            <a href="../developer-tools/responsive-design-tester.html"><strong>Responsive Design Tester</strong><span>Preview any page at real device viewport sizes.</span></a>
+            <a href="../image-color-picker.html"><strong>Image Color Picker</strong><span>Pull exact hex values and palettes out of any image.</span></a>
+            <a href="../svg-optimizer.html"><strong>SVG Optimizer</strong><span>Minify, validate and convert SVG assets.</span></a>
+            <a href="../favicon-generator.html"><strong>Favicon Generator</strong><span>Every icon size plus the web manifest, from one image.</span></a>
+            <a href="../developer-tools/json-formatter.html"><strong>JSON Formatter</strong><span>Format, validate and inspect JSON payloads.</span></a>
+            <a href="../regex-tester.html"><strong>Regex Tester</strong><span>Test regular expressions with live match highlighting.</span></a>
+          </div>
+        </section>
+
+        <p class="sg-disclaimer">
+          The Box Shadow Generator runs entirely in your browser. Nothing you create is uploaded, and the shadow you are working on is remembered only in this browser's local storage until you reset it. Generated CSS is standard, unprefixed <code>box-shadow</code> that works in every current browser.
+        </p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+          <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links"><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../privacy-policy.html">Privacy</a><a href="../terms.html">Terms</a></div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/shadow-generator.js"></script>
+    <script src="../assets/js/side-ads.js" defer></script>
+    <script src="../assets/js/inline-ads.js" data-in-article defer></script>
+  </body>
+</html>

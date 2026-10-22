@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+  <meta name="description" content="Free Case Converter Tool — Instantly convert your text to UPPERCASE, lowercase, Title Case, or Sentence case. Features offline support, word count, and 1-click copy." />
+  <title>Case Converter Tool — Change Text to Uppercase, Lowercase, Title Case | ToolAdda</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <style>
+    /* =====================================================================
+       Case Converter — "the compositor's type case".
+       Capitals were once kept in the upper of two wooden type cases and
+       small letters in the lower one, which is where the words come from.
+       So: cream newsprint, walnut drawers with brass label holders, black
+       ink for the chosen case, and walnut brown as the one accent.
+       Every rule is scoped to .cc-page (or body.cc-body) so the shared
+       header and site tokens stay untouched.
+       ===================================================================== */
+    body.cc-body { background: #f4eee3; }
+    [data-theme="dark"] body.cc-body { background: #110e0b; }
+    .cc-page {
+      --cc-a: #7c4a1f;          /* walnut */
+      --cc-deep: #6a3d17;
+      --cc-press: #1e1914;      /* selected pill = ink */
+      --cc-press-text: #fbf5ea;
+      --cc-soft: rgba(124, 74, 31, 0.08);
+      --cc-ring: rgba(124, 74, 31, 0.32);
+      --cc-card: #fffcf6;
+      --cc-well: #f5eee2;
+      --cc-line: rgba(70, 48, 26, 0.14);
+      --cc-line-2: rgba(70, 48, 26, 0.26);
+      --cc-ink: #1e1914;
+      --cc-ink-2: #3b3129;
+      --cc-mute: #6c6053;
+      --cc-out: #fffaf1;
+      --cc-ok: #15803d;
+      --cc-wood: #86562a;
+      --cc-wood-2: #5f3b1b;
+      --cc-brass: #c29a4a;
+      --cc-serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+      --cc-mono: ui-monospace, SFMono-Regular, Consolas, monospace;
+      --cc-shadow: 0 1px 0 rgba(70, 48, 26, 0.06), 0 16px 36px -22px rgba(70, 48, 26, 0.45);
+      --accent: var(--cc-a); --text: var(--cc-ink); --text-muted: var(--cc-mute); --surface: var(--cc-card); --surface-strong: var(--cc-well); --border: var(--cc-line);
+      display: block;
+      background: repeating-linear-gradient(180deg, transparent 0 31px, rgba(70, 48, 26, 0.04) 31px 32px), #f4eee3;
+      padding-bottom: 1rem;
+    }
+    [data-theme="dark"] .cc-page {
+      --cc-a: #e4b27c;
+      --cc-deep: #f0c999;
+      --cc-press: #f3eadc;
+      --cc-press-text: #17120d;
+      --cc-soft: rgba(228, 178, 124, 0.12);
+      --cc-ring: rgba(228, 178, 124, 0.38);
+      --cc-card: #1b1612;
+      --cc-well: #15110d;
+      --cc-line: rgba(243, 234, 220, 0.11);
+      --cc-line-2: rgba(243, 234, 220, 0.22);
+      --cc-ink: #f3eadc;
+      --cc-ink-2: #dccfbd;
+      --cc-mute: #a8998a;
+      --cc-out: #17130f;
+      --cc-ok: #4ade80;
+      --cc-wood: #5c3a1b;
+      --cc-wood-2: #3a2410;
+      --cc-shadow: 0 1px 0 rgba(0, 0, 0, 0.4), 0 18px 40px -22px rgba(0, 0, 0, 0.85);
+      background: repeating-linear-gradient(180deg, transparent 0 31px, rgba(243, 234, 220, 0.025) 31px 32px), #110e0b;
+    }
+    .cc-page [hidden] { display: none !important; }
+    .cc-shell { padding: .6rem 0 3rem; }
+    .container.cc-main { width: min(1120px, calc(100% - 2rem)); }
+    .cc-page .breadcrumb { margin: .35rem 0 .9rem; font-size: .86rem; color: var(--cc-mute); }
+    .cc-page .breadcrumb a { color: var(--cc-deep); font-weight: 700; }
+    #tool { scroll-margin-top: calc(var(--header-overlap, 5.5rem) + .75rem); }
+
+    /* ---------- top: cover, tool, ad ----------
+       Under 700px one column: cover, the tool, the ad, then the notes.
+       From 700px the cover is a band on top and the 300x250 sits beside the
+       tool — never above it. */
+    .cc-top { display: grid; gap: 1rem; align-items: start; grid-template-areas: "cover" "tool" "ad"; }
+    .cc-top > * { min-width: 0; }
+    .cc-cover { grid-area: cover; }
+    .cc-card { grid-area: tool; }
+    .cc-ad-zone { grid-area: ad; }
+    @media (min-width: 700px) {
+      .cc-top { grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "cover cover" "tool ad"; column-gap: 1.1rem; }
+    }
+    /* One 300x250 at every width: inline-ads.js only shows .ta-inline-ad
+       below 1000px, so it is forced on here; data-unit="inline" sizes it. */
+    .cc-page .cc-ad-zone { text-align: center; }
+    .cc-page .cc-ad-zone .ta-inline-ad { display: block !important; margin: 0 auto !important; }
+    @media (max-width: 340px) { .cc-ad-zone { margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); } }
+
+    /* ---------- cover ---------- */
+    .cc-cover {
+      position: relative; display: grid; gap: 1rem 1.6rem; align-items: center; overflow: hidden;
+      padding: 1.1rem 1.3rem; border-radius: 16px; border: 1px solid var(--cc-line); background: var(--cc-card); box-shadow: var(--cc-shadow);
+    }
+    /* a strip of wood along the top edge, like the rail of a type cabinet */
+    .cc-cover::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; background: linear-gradient(90deg, var(--cc-wood-2), var(--cc-wood) 30%, var(--cc-wood-2) 60%, var(--cc-wood)); }
+    @media (min-width: 900px) { .cc-cover { grid-template-columns: minmax(0, 1fr) auto; padding: 1.25rem 1.3rem 1.1rem 1.6rem; } }
+    .cc-hero-top { display: flex; flex-wrap: wrap; gap: .45rem; margin: 0 0 .6rem; }
+    .cc-badge { display: inline-flex; align-items: center; gap: .35rem; padding: .3rem .7rem; border-radius: 999px; background: var(--cc-press); color: var(--cc-press-text); font-size: .7rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .cc-chip { display: inline-flex; align-items: center; gap: .4rem; padding: .28rem .7rem; border-radius: 999px; background: var(--cc-well); border: 1px solid var(--cc-line); color: var(--cc-ink-2); font-size: .76rem; font-weight: 700; }
+    .cc-chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--cc-ok); box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.14); }
+    .cc-page .cc-h1 { margin: 0 0 .4rem; font-family: var(--cc-serif); font-size: clamp(2rem, 1.2rem + 2.6vw, 2.9rem); font-weight: 700; line-height: 1.05; letter-spacing: -.02em; color: var(--cc-ink); background: none; -webkit-text-fill-color: currentColor; }
+    /* "Case" set as a block of type: ink on a wooden body */
+    .cc-t1 { display: inline-block; padding: .02em .22em .06em; margin-right: .04em; border-radius: 6px; background: var(--cc-press); color: var(--cc-press-text); box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .28), 0 3px 0 var(--cc-wood), 0 8px 16px -8px rgba(0, 0, 0, .5); letter-spacing: .01em; }
+    .cc-t2 { font-style: italic; color: var(--cc-deep); }
+    .cc-page .subtitle { margin: 0; max-width: 60ch; color: var(--cc-mute); font-size: 1rem; line-height: 1.6; }
+
+    /* the type case: capitals in the upper drawer, small letters in the
+       lower one. Every letter comes from data-t (decoration only). */
+    .cc-case-art { display: grid; gap: 6px; padding: 9px; border-radius: 8px; background: linear-gradient(160deg, var(--cc-wood), var(--cc-wood-2)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), 0 12px 22px -14px rgba(0, 0, 0, .7); }
+    .cc-drawer { position: relative; display: grid; grid-template-columns: repeat(7, 30px); gap: 3px; padding: 16px 5px 5px; border-radius: 4px; background: rgba(0, 0, 0, .28); }
+    .cc-drawer::before { content: attr(data-t); position: absolute; top: 3px; left: 50%; transform: translateX(-50%); padding: 0 .45rem; border-radius: 2px; background: linear-gradient(180deg, #e2c27a, var(--cc-brass)); color: #3a2710; font: 800 .5rem/1.35 var(--cc-mono); letter-spacing: .16em; }
+    .cc-drawer i { display: grid; place-items: center; height: 28px; border-radius: 2px; background: #efe3cb; box-shadow: inset 0 2px 3px rgba(0, 0, 0, .28); font: 700 1rem/1 var(--cc-serif); font-style: normal; color: #2a2016; }
+    .cc-drawer i::before { content: attr(data-t); }
+    [data-theme="dark"] .cc-drawer i { background: #d9ccb2; }
+    .cc-drawer--lower i { font-style: normal; }
+    .cc-drawer i.is-pick { background: var(--cc-a); color: #fff; }
+    [data-theme="dark"] .cc-drawer i.is-pick { color: #17120d; }
+
+    /* ---------- the studio (the tool) ---------- */
+    .cc-page .cc-card { background: none; border: 0; box-shadow: none; padding: 0; margin: 0; }
+    .cc-studio { container-type: inline-size; overflow: hidden; border-radius: 16px; border: 1px solid var(--cc-line); border-top: 4px solid var(--cc-a); background: var(--cc-card); box-shadow: var(--cc-shadow); }
+    .cc-modes { display: grid; gap: .5rem; padding: .85rem 1rem .8rem; border-bottom: 1px solid var(--cc-line); background: var(--cc-well); }
+    .cc-mode-row { display: flex; align-items: center; gap: .6rem; min-width: 0; }
+    .cc-mode-label { flex: none; width: 4.4rem; font-size: .66rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; color: var(--cc-mute); }
+    .cc-cases { display: flex; flex-wrap: wrap; gap: .35rem; padding: .15rem; margin: -.15rem; min-width: 0; }
+    .cc-case {
+      flex: none; display: inline-flex; align-items: center; min-height: 2.35rem; padding: 0 .85rem; border-radius: 8px;
+      border: 1px solid var(--cc-line-2); border-bottom-width: 3px; background: var(--cc-card); color: var(--cc-ink-2);
+      font: inherit; font-size: .86rem; font-weight: 700; cursor: pointer; white-space: nowrap;
+      transition: border-color .15s ease, background .15s ease, color .15s ease, transform .15s ease;
+    }
+    .cc-case.is-code { font-family: var(--cc-mono); font-size: .8rem; font-weight: 600; }
+    .cc-case:hover { border-color: var(--cc-a); color: var(--cc-deep); }
+    .cc-case[aria-pressed="true"] { background: var(--cc-press); border-color: var(--cc-press); color: var(--cc-press-text); transform: translateY(1px); border-bottom-width: 2px; }
+    .cc-case:focus-visible, .cc-btn:focus-visible, .cc-icon-btn:focus-visible { outline: 3px solid var(--cc-ring); outline-offset: 2px; }
+
+    .cc-panes { display: grid; grid-template-columns: minmax(0, 1fr); }
+    @container (min-width: 620px) {
+      .cc-panes { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+      .cc-pane + .cc-pane { border-left: 1px solid var(--cc-line); border-top: 0 !important; }
+    }
+    .cc-pane { display: flex; flex-direction: column; min-width: 0; }
+    .cc-pane + .cc-pane { border-top: 1px solid var(--cc-line); }
+    .cc-pane-head { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .6rem 1rem .15rem; min-height: 2.7rem; }
+    .cc-label { font-size: .7rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--cc-mute); }
+    .cc-label .cc-mode-name { color: var(--cc-deep); letter-spacing: .02em; text-transform: none; font-size: .8rem; }
+    .cc-pane-actions { display: flex; gap: .25rem; }
+    .cc-icon-btn { display: inline-flex; align-items: center; gap: .3rem; min-height: 2rem; padding: 0 .55rem; border-radius: 8px; border: 1px solid transparent; background: transparent; color: var(--cc-mute); font: inherit; font-size: .8rem; font-weight: 700; cursor: pointer; }
+    .cc-icon-btn:hover { background: var(--cc-soft); color: var(--cc-deep); }
+    .cc-icon-btn:disabled { opacity: .45; cursor: not-allowed; background: transparent; color: var(--cc-mute); }
+    .cc-icon-btn.is-done { color: var(--cc-ok); }
+
+    .cc-page textarea#textInput, .cc-page #output {
+      width: 100%; min-height: 260px; margin: 0; padding: .55rem 1rem 1rem; border: 0; border-radius: 0;
+      font: inherit; font-size: 1.02rem; line-height: 1.65; color: var(--cc-ink); background: transparent;
+    }
+    .cc-page textarea#textInput { flex: 1; resize: vertical; outline: none; background: repeating-linear-gradient(180deg, transparent 0 32px, rgba(70, 48, 26, .06) 32px 33px) 0 .55rem; background-attachment: local; }
+    .cc-page textarea#textInput::placeholder { color: var(--cc-mute); opacity: .75; }
+    .cc-input-pane:focus-within { box-shadow: inset 3px 0 0 var(--cc-a); }
+    .cc-page #output { flex: 1; background: var(--cc-out); white-space: pre-wrap; overflow-wrap: anywhere; overflow-y: auto; max-height: 62vh; outline: none; }
+    .cc-page #output:focus-visible { box-shadow: inset 0 0 0 2px var(--cc-ring); }
+    .cc-page #output.is-code { font-family: var(--cc-mono); font-size: .94rem; }
+    .cc-page #output.is-empty, .cc-page #output.is-hint { display: grid; place-content: center; text-align: center; color: var(--cc-mute); font-size: .94rem; }
+    .cc-empty-art { display: block; margin-bottom: .4rem; font-family: var(--cc-serif); font-size: 1.8rem; color: var(--cc-deep); opacity: .9; }
+
+    .cc-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .7rem; padding: .7rem 1rem; border-top: 1px solid var(--cc-line); background: var(--cc-well); }
+    .cc-page .stats-bar { display: flex; flex-wrap: wrap; gap: .3rem 1rem; margin: 0; font-size: .82rem; font-weight: 600; color: var(--cc-mute); font-variant-numeric: tabular-nums; }
+    .cc-page .stats-bar b { color: var(--cc-ink); font-weight: 800; }
+    .cc-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; }
+    .cc-btn { display: inline-flex; align-items: center; justify-content: center; gap: .35rem; min-height: 2.5rem; padding: 0 .9rem; border-radius: 9px; border: 1px solid var(--cc-line-2); background: var(--cc-card); color: var(--cc-ink); font: inherit; font-size: .86rem; font-weight: 700; cursor: pointer; text-decoration: none; transition: border-color .15s ease, color .15s ease, background .15s ease; }
+    .cc-btn:hover:not(:disabled) { border-color: var(--cc-a); color: var(--cc-deep); }
+    .cc-btn:disabled { opacity: .45; cursor: not-allowed; }
+    .cc-btn.cc-primary { background: var(--cc-a); border-color: var(--cc-a); color: #fff; }
+    [data-theme="dark"] .cc-btn.cc-primary { color: #17120d; }
+    .cc-btn.cc-primary:hover:not(:disabled) { background: var(--cc-deep); border-color: var(--cc-deep); color: #fff; }
+    [data-theme="dark"] .cc-btn.cc-primary:hover:not(:disabled) { color: #17120d; }
+    .cc-btn.cc-primary.is-done { background: var(--cc-ok); border-color: var(--cc-ok); }
+    .cc-kbd-hint { font-size: .74rem; color: var(--cc-mute); }
+    .cc-kbd-hint kbd, .cc-page kbd { font-family: var(--cc-mono); font-size: .72rem; padding: .05rem .35rem; border: 1px solid var(--cc-line-2); border-bottom-width: 2px; border-radius: 5px; background: var(--cc-card); color: var(--cc-ink); }
+    .cc-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    /* ---------- intro strip (after the tool) ---------- */
+    .cc-strip { display: grid; gap: .6rem; margin-top: 1.4rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+    .cc-strip > div { display: flex; gap: .7rem; align-items: flex-start; padding: .8rem .9rem; border-radius: 12px; border: 1px solid var(--cc-line); background: var(--cc-card); }
+    .cc-strip b.cc-strip-k { flex: none; display: grid; place-items: center; width: 2.1rem; height: 2.1rem; border-radius: 6px; background: var(--cc-press); color: var(--cc-press-text); font: 700 1rem/1 var(--cc-serif); box-shadow: 0 2px 0 var(--cc-wood); }
+    .cc-strip b.cc-strip-k::before { content: attr(data-t); }
+    .cc-strip strong { display: block; color: var(--cc-ink); font-size: .92rem; }
+    .cc-strip span { display: block; color: var(--cc-mute); font-size: .84rem; line-height: 1.5; }
+
+    /* ---------- the older article under the tool ---------- */
+    .cc-page .seo-content { margin-top: 2.2rem; padding: clamp(1.1rem, 3vw, 1.9rem); border-radius: 14px; border: 1px solid var(--cc-line); background: var(--cc-card); box-shadow: var(--cc-shadow); }
+    .cc-page .seo-content h2 { margin: 0 0 1rem; font-family: var(--cc-serif); font-size: clamp(1.4rem, 3vw, 1.85rem); letter-spacing: -.01em; color: var(--cc-ink); }
+    .cc-page .seo-content h3 { margin: 1.5rem 0 .5rem; padding-left: .7rem; border-left: 4px solid var(--cc-a); font-size: 1.08rem; color: var(--cc-ink); }
+    .cc-page .seo-content p, .cc-page .seo-content li { color: var(--cc-ink-2); line-height: 1.75; }
+    .cc-page .seo-content p { margin-bottom: 1rem; }
+    .cc-page .seo-content strong { color: var(--cc-ink); }
+    .cc-page .seo-content li::marker { color: var(--cc-a); }
+
+    /* ---------- the guide (.tg, shared rules above the markup) ---------- */
+    .cc-page .container.cc-main .tg { width: auto; max-width: none; margin: 0 0 1rem; }
+    .cc-page .tg-section { margin-top: 2.2rem; padding: clamp(1.1rem, 3vw, 1.8rem); border-radius: 14px; border: 1px solid var(--cc-line); background: var(--cc-card); box-shadow: var(--cc-shadow); }
+    .cc-page .tg-section h2 { position: relative; margin: 0 0 .9rem; padding-bottom: .55rem; font-family: var(--cc-serif); font-size: clamp(1.3rem, 2.6vw, 1.7rem); font-weight: 700; color: var(--cc-ink); }
+    .cc-page .tg-section h2::after { content: ""; position: absolute; left: 0; bottom: 0; width: 3.2rem; height: 5px; border-radius: 2px; background: linear-gradient(90deg, var(--cc-wood-2), var(--cc-wood)); }
+    .cc-page .tg p, .cc-page .tg li { color: var(--cc-ink-2); }
+    .cc-page .tg-card { background: var(--cc-well); border-color: var(--cc-line); border-radius: 11px; }
+    .cc-page .tg-card strong { color: var(--cc-ink); }
+    .cc-page .tg-tablewrap { border-color: var(--cc-line); border-radius: 11px; background: var(--cc-card); }
+    .cc-page .tg-table { min-width: 0; }
+    .cc-page .tg-table th { background: var(--cc-well); color: var(--cc-ink); }
+    .cc-page .tg-table td { color: var(--cc-ink-2); vertical-align: top; }
+    .cc-page .tg-table td:first-child { color: var(--cc-ink); }
+    .cc-page .tg-table td:last-child { color: var(--cc-mute); }
+    .cc-page .tg-faq-grid { align-items: start; }
+    @media (min-width: 900px) { .cc-page .tg-faq-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    .cc-page .tg-faq { padding: 0; border-radius: 10px; border-color: var(--cc-line); border-left: 3px solid var(--cc-brass); background: var(--cc-well); }
+    .cc-page .tg-faq[open] { border-left-color: var(--cc-a); }
+    .cc-page .tg-faq summary { position: relative; padding: .75rem 2.2rem .75rem .9rem; list-style: none; line-height: 1.4; }
+    .cc-page .tg-faq summary::-webkit-details-marker { display: none; }
+    .cc-page .tg-faq summary::after { content: "+"; position: absolute; right: .9rem; top: .7rem; font-weight: 900; color: var(--cc-deep); }
+    .cc-page .tg-faq[open] summary::after { content: "\2212"; }
+    .cc-page .tg-faq p { margin: 0; padding: 0 .9rem .85rem; }
+    .cc-page .tg code { color: var(--cc-deep); background: var(--cc-well); border-color: var(--cc-line); }
+    /* the history / style-guide section (new) */
+    .cc-story { display: grid; gap: 1rem; align-items: center; }
+    @media (min-width: 820px) { .cc-story { grid-template-columns: minmax(0, 1fr) auto; } }
+    .cc-story .cc-case-art { justify-self: center; }
+    .cc-rules th:not(:first-child), .cc-rules td:not(:first-child) { white-space: normal; }
+
+    /* Related tools (added by app.js) in this page's palette */
+    .cc-page .related-tools-section { margin-top: 2.2rem; background: var(--cc-card); border-color: var(--cc-line); border-radius: 14px; box-shadow: var(--cc-shadow); }
+    .cc-page .related-tools-eyebrow { color: var(--cc-deep); }
+    .cc-page .related-tools-title { color: var(--cc-ink); }
+    .cc-page .related-tools-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: .6rem; }
+    .cc-page .related-tool-card { min-width: 0; background: var(--cc-well); border-color: var(--cc-line); box-shadow: none; color: var(--cc-ink); }
+    .cc-page .related-tool-card:hover, .cc-page .related-tool-card:focus-visible { border-color: var(--cc-a); }
+    .cc-page .related-tool-body { min-width: 0; }
+
+    /* ---------- smaller screens ---------- */
+    @media (max-width: 899px) { .cc-cover .cc-case-art { display: none; } }
+    @container (max-width: 619px) {
+      .cc-page textarea#textInput, .cc-page #output { min-height: 180px; }
+      .cc-page #output { max-height: 50vh; }
+      .cc-kbd-hint { display: none; }
+    }
+    @media (max-width: 699px) {
+      /* phones: the cover keeps the headline only, and until there is text
+         the tool shows the cases and the input — so the ad after it reaches
+         the first screen. The result and the buttons appear with the text. */
+      .cc-cover { padding: 1rem .95rem .85rem; }
+      .cc-hero-top, .cc-page .subtitle { display: none; }
+      .cc-page .cc-h1 { margin: 0; font-size: clamp(2rem, 10vw, 2.6rem); }
+      .cc-modes { padding: .7rem .75rem .65rem; gap: .45rem; }
+      .cc-mode-label { width: 3.6rem; font-size: .6rem; }
+      /* one sideways-scrolling row per group */
+      .cc-cases { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-right: 1.4rem; -webkit-mask-image: linear-gradient(90deg, #000 86%, transparent); mask-image: linear-gradient(90deg, #000 86%, transparent); }
+      .cc-cases::-webkit-scrollbar { display: none; }
+      .cc-case { min-height: 2.3rem; padding: 0 .75rem; font-size: .84rem; }
+      .cc-pane-head { padding: .5rem .8rem .1rem; }
+      .cc-page textarea#textInput, .cc-page #output { padding: .45rem .8rem .8rem; font-size: 16px; }
+      .cc-studio:has(#textInput:placeholder-shown) :is(.cc-output-pane, .cc-foot) { display: none; }
+      .cc-studio:has(#textInput:placeholder-shown) textarea#textInput { min-height: 124px; }
+      .cc-foot { padding: .65rem .8rem; }
+      .cc-actions { width: 100%; }
+      .cc-actions .cc-btn { flex: 1 1 auto; }
+      .cc-actions .cc-primary { flex-basis: 100%; }
+    }
+    @media (max-width: 559px) {
+      /* 10px gutters: a 320px phone then has the 300px its ads need */
+      .cc-page .container.cc-main, .cc-page .ta-support { width: calc(100% - 20px); }
+      .cc-page .breadcrumb { display: none; }
+      .cc-page .related-tools-section { padding: 1rem .85rem; }
+      .cc-drawer { grid-template-columns: repeat(7, 26px); }
+    }
+    @media (max-width: 640px) {
+      .cc-page .tg-table, .cc-page .tg-table tbody, .cc-page .tg-table tr, .cc-page .tg-table td { display: block; width: 100%; }
+      .cc-page .tg-tablewrap { overflow: visible; border: 0; background: none; }
+      .cc-page .tg-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+      .cc-page .tg-table tr { margin-bottom: .5rem; padding: .55rem .8rem; border: 1px solid var(--cc-line); border-radius: 10px; background: var(--cc-well); }
+      .cc-page .tg-table td { padding: .12rem 0; border: 0; }
+      .cc-page .tg-table td[data-label]::before { content: attr(data-label) ": "; color: var(--cc-ink); font-weight: 700; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cc-page *, .cc-page *::before, .cc-page *::after { transition: none !important; }
+    }
+    @media print {
+      .site-header, .site-footer, .cc-cover, .cc-ad-zone, .cc-strip, .breadcrumb, .cc-modes, .cc-foot { display: none !important; }
+    }
+  </style>
+      <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 124, 74, 31; }
+      [data-theme="dark"] { --pca: 228, 178, 124; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 228, 178, 124; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+
+  <meta name="theme-color" content="#7c4a1f" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="author" content="ToolAdda" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  
+  <link rel="canonical" href="https://tooladda.online/text-tools/case-converter.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+  <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+  <link rel="manifest" href="/manifest.json" />
+  
+  <meta property="og:title" content="Case Converter Tool — Change Text Case | ToolAdda" />
+  <meta property="og:description" content="Quickly convert text to UPPERCASE, lowercase, Title Case, or Sentence case instantly. Free, offline, and private." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tooladda.online/text-tools/case-converter.html" />
+  <meta property="og:site_name" content="ToolAdda" />
+  <meta property="og:image" content="https://tooladda.online/assets/images/og/text-tools-case-converter.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Case Converter Tool — Change Text to Uppercase, Lowercase, Title Case — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="Case Converter Tool — Change Text to Uppercase, Lowercase, Title Case — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Case Converter Tool — Change Text Case | ToolAdda" />
+  <meta name="twitter:description" content="Quickly convert text to UPPERCASE, lowercase, Title Case, or Sentence case. Works offline and instantly in your browser." />
+  <meta name="twitter:image" content="https://tooladda.online/assets/images/og/text-tools-case-converter.jpg" />
+  
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/text-tools/case-converter.html",
+      "url": "https://tooladda.online/text-tools/case-converter.html",
+      "name": "Case Converter — Text Case Converter | ToolAdda",
+      "description": "Convert text to uppercase, lowercase, title case or sentence case. Offline and instant in your browser with word count and copy features.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "ToolAdda",
+        "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+        "url": "https://tooladda.online/"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "ToolAdda Case Converter",
+      "operatingSystem": "Browser",
+      "applicationCategory": "UtilityApplication",
+      "url": "https://tooladda.online/text-tools/case-converter.html",
+      "description": "A powerful, offline text case converter for quick formatting tasks with 1-click copy.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I convert text to uppercase or lowercase?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Paste your text and choose the case you want. The result appears immediately and can be copied straight back out. There is nothing to install and no button sequence to learn."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between Title Case and Capitalized Case?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Strict title case leaves short words such as a, the, of and in lowercase unless they start the title. Capitalized case capitalises every word without exception. Both are widely used — the important thing is being consistent within a document."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is sentence case?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Only the first letter of the sentence is capitalised, along with anything that would normally be capitalised anyway, such as names. It is the right default for body text, descriptions and most interface copy."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I fix text I typed with caps lock on?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Paste it in and choose sentence case. That fixes an accidentally shouted paragraph in one step rather than retyping it, which is the most common reason people reach for this tool."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is text in all capitals harder to read?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because readers recognise the overall shape of a word rather than reading it letter by letter, and the ascenders and descenders that give words their shape disappear in capitals. Every word becomes the same rectangle, so reading measurably slows."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is uppercase text an accessibility problem?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For anything longer than a short label, yes. Accessibility guidance discourages long runs of capitals, and some screen readers spell out extended capitals letter by letter because they mistake them for acronyms. Use bold for emphasis instead."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why would I lowercase everything?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Usually to normalise data before comparing or storing it. Lowercasing both sides is the standard way to compare text case-insensitively, and it makes messy imported data consistent before you work with it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it handle accented and non-English characters?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The conversion uses your browser's own Unicode-aware case rules, so accented Latin characters and other scripts are handled correctly rather than being stripped or mangled."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my text sent to a server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Everything happens in your browser as you type, so the text never leaves your device. That matters because what people paste into a case converter is often a real document — a customer list, a draft email, an internal announcement."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a limit on how much text I can convert?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The practical limit is your device's memory, since the work is done locally. Ordinary documents of any realistic length convert instantly."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it preserve my line breaks and paragraphs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Only letter casing changes — spacing, line breaks and punctuation are left exactly as they were, so pasted formatting survives the conversion."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I undo a conversion?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your original text stays in the input box, so you can switch between cases freely or copy the original back out. Nothing is destroyed by choosing a case."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work offline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, once the page has loaded. Disconnecting from the network and watching it keep working is the simplest way to confirm nothing is being uploaded."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Completely. No sign-up, no download and no limit on how many times you use it."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+  <script type="application/ld+json" data-tooladda-page-schema="true">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://tooladda.online/#website",
+        "name": "ToolAdda",
+        "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+        "url": "https://tooladda.online/",
+        "inLanguage": "en",
+        "publisher": {
+          "@id": "https://tooladda.online/#organization"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://tooladda.online/#organization",
+        "name": "ToolAdda",
+        "alternateName": ["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],
+        "url": "https://tooladda.online/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://tooladda.online/assets/images/logo.svg"
+        }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://tooladda.online/text-tools/case-converter.html#webpage",
+        "url": "https://tooladda.online/text-tools/case-converter.html",
+        "name": "Case Converter Tool — Change Text to Uppercase, Lowercase, Title Case | ToolAdda",
+        "description": "Free Case Converter Tool — Instantly convert your text to UPPERCASE, lowercase, Title Case, or Sentence case. Features offline support, word count, and 1-click copy.",
+        "inLanguage": "en",
+        "isPartOf": {
+          "@id": "https://tooladda.online/#website"
+        },
+        "breadcrumb": {
+          "@id": "https://tooladda.online/text-tools/case-converter.html#breadcrumb"
+        },
+        "mainEntity": {
+          "@id": "https://tooladda.online/text-tools/case-converter.html#app"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://tooladda.online/text-tools/case-converter.html#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://tooladda.online/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Case Converter"
+          }
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://tooladda.online/text-tools/case-converter.html#app",
+        "name": "Case Converter",
+        "url": "https://tooladda.online/text-tools/case-converter.html",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any modern web browser",
+        "description": "Free Case Converter Tool — Instantly convert your text to UPPERCASE, lowercase, Title Case, or Sentence case. Features offline support, word count, and 1-click copy.",
+        "inLanguage": "en",
+        "isAccessibleForFree": true,
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "INR"
+        },
+        "publisher": {
+          "@id": "https://tooladda.online/#organization"
+        }
+      }
+    ]
+  }
+  </script>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/text-tools/case-converter.html#webpage",
+      "url": "https://tooladda.online/text-tools/case-converter.html",
+      "inLanguage": "en",
+      "datePublished": "2026-06-30",
+      "dateModified": "2026-09-22",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="cc-body">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a href="../privacy-policy.html">Privacy</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+            <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+            <path d="M3.1 16.9h10.8" />
+            <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+          </svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+        <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="cc-page">
+    <div class="cc-shell">
+      <aside class="ta-support" aria-label="Support ToolAdda">
+        <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+        <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+      </aside>
+
+      <div class="container cc-main">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span><a href="/">Text Tools</a><span>/</span><span aria-current="page">Case Converter</span>
+    </nav>
+
+        <!-- One grid (.cc-top) places these. Under 700px: cover, tool, ad.
+             From 700px the cover is a band on top and the ad sits beside the
+             tool — never above it. -->
+        <div class="cc-top">
+          <header class="cc-cover">
+            <div class="cc-hero">
+            <div class="cc-hero-top">
+              <span class="cc-badge">✍️ Text tool</span>
+              <span class="cc-chip">Live · stays on your device</span>
+            </div>
+              <h1 class="section-title cc-h1"><span class="cc-t1">Case</span> <span class="cc-t2">Converter</span></h1>
+              <p class="subtitle">Transform your text instantly for essays, headlines, social media, or code formatting.</p>
+            </div>
+            <div class="cc-case-art" aria-hidden="true">
+              <span class="cc-drawer" data-t="UPPER CASE"><i data-t="A"></i><i data-t="B"></i><i data-t="C" class="is-pick"></i><i data-t="D"></i><i data-t="E"></i><i data-t="F"></i><i data-t="G"></i></span>
+              <span class="cc-drawer cc-drawer--lower" data-t="LOWER CASE"><i data-t="a"></i><i data-t="b"></i><i data-t="c"></i><i data-t="d"></i><i data-t="e"></i><i data-t="f"></i><i data-t="g"></i></span>
+            </div>
+          </header>
+
+          <section class="cc-card" id="tool" aria-label="Case converter tool">
+          <div class="cc-studio">
+            <div class="cc-modes">
+              <div class="cc-mode-row">
+                <span class="cc-mode-label" id="ccWritingLabel">Writing</span>
+                <div class="cc-cases" role="group" aria-labelledby="ccWritingLabel">
+                  <button type="button" class="cc-case" data-case="sentence" aria-pressed="false">Sentence case</button>
+                  <button type="button" class="cc-case" data-case="title" aria-pressed="false" title="Short words like a, the, of stay lowercase">Title Case</button>
+                  <button type="button" class="cc-case" data-case="capitalized" aria-pressed="false" title="Every word capitalised">Capitalized Case</button>
+                  <button type="button" class="cc-case" data-case="upper" aria-pressed="false">UPPERCASE</button>
+                  <button type="button" class="cc-case" data-case="lower" aria-pressed="false">lowercase</button>
+                </div>
+              </div>
+              <div class="cc-mode-row">
+                <span class="cc-mode-label" id="ccCodeLabel">Code</span>
+                <div class="cc-cases" role="group" aria-labelledby="ccCodeLabel">
+                  <button type="button" class="cc-case is-code" data-case="camel" aria-pressed="false">camelCase</button>
+                  <button type="button" class="cc-case is-code" data-case="pascal" aria-pressed="false">PascalCase</button>
+                  <button type="button" class="cc-case is-code" data-case="snake" aria-pressed="false">snake_case</button>
+                  <button type="button" class="cc-case is-code" data-case="kebab" aria-pressed="false">kebab-case</button>
+                  <button type="button" class="cc-case is-code" data-case="constant" aria-pressed="false">CONSTANT_CASE</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="cc-panes">
+              <div class="cc-pane cc-input-pane">
+                <div class="cc-pane-head">
+                  <label class="cc-label" for="textInput">Your text</label>
+                  <div class="cc-pane-actions">
+                    <button type="button" class="cc-icon-btn" id="ccPasteBtn" hidden>📋 Paste</button>
+                    <button type="button" class="cc-icon-btn" id="ccSampleBtn">✨ Sample</button>
+                    <button type="button" class="cc-icon-btn" id="ccClearBtn">✕ Clear</button>
+                  </div>
+                </div>
+                <textarea id="textInput" placeholder="Type or paste your text here..." spellcheck="false"></textarea>
+              </div>
+
+              <div class="cc-pane cc-output-pane">
+                <div class="cc-pane-head">
+                  <span class="cc-label" id="ccOutLabel">Result<span class="cc-mode-name" id="ccModeName"></span></span>
+                  <div class="cc-pane-actions">
+                    <button type="button" class="cc-icon-btn" id="ccUndoBtn" hidden>↶ Undo</button>
+                    <button type="button" class="cc-icon-btn" id="copyBtn" aria-label="Copy to clipboard" title="Copy to clipboard" disabled>📋 Copy</button>
+                  </div>
+                </div>
+                <div id="output" class="is-empty" role="region" aria-live="polite" aria-labelledby="ccOutLabel" tabindex="0"></div>
+              </div>
+            </div>
+
+            <div class="cc-foot">
+              <p class="stats-bar" aria-live="off">
+                <span id="charCount"><b>0</b> characters</span>
+                <span id="wordCount"><b>0</b> words</span>
+                <span id="sentenceCount"><b>0</b> sentences</span>
+                <span id="lineCount"><b>0</b> lines</span>
+              </p>
+              <div class="cc-actions">
+                <span class="cc-kbd-hint"><kbd>Ctrl</kbd> + <kbd>Enter</kbd> copies</span>
+                <button type="button" class="cc-btn" id="ccUseBtn" disabled title="Replace your text with the result">⤴ Use as input</button>
+                <button type="button" class="cc-btn" id="ccDownloadBtn" disabled>⬇ .txt</button>
+                <button type="button" id="ccCopyMain" class="cc-btn cc-primary" disabled>Copy result</button>
+              </div>
+            </div>
+            <p class="cc-sr" id="ccStatus" role="status" aria-live="polite"></p>
+          </div>
+          </section>
+
+          <!-- Ad: one 300x250 (see .cc-ad-zone CSS) — beside the tool from
+               700px, straight after it below that. -->
+          <div class="cc-ad-zone">
+            <div class="ta-inline-ad" data-unit="inline"></div>
+          </div>
+        </div>
+
+        <div class="cc-strip">
+          <div><b class="cc-strip-k" data-t="Aa" aria-hidden="true"></b><p><strong>Five writing cases</strong><span>Sentence, Title, Capitalized, UPPER and lower — for essays, headlines and fixing caps lock.</span></p></div>
+          <div><b class="cc-strip-k" data-t="{}" aria-hidden="true"></b><p><strong>Five code cases</strong><span>camelCase, PascalCase, snake_case, kebab-case and CONSTANT_CASE for variables, files and URLs.</span></p></div>
+          <div><b class="cc-strip-k" data-t="✓" aria-hidden="true"></b><p><strong>Live and private</strong><span>The result updates as you type, in your browser. Nothing you paste is uploaded.</span></p></div>
+        </div>
+
+<!-- SEO Content Section to boost keyword rankings -->
+        <article class="seo-content">
+          <h2>Free Online Text Case Converter Tool</h2>
+          <p>Whether you're a student writing an essay, a marketer drafting social media posts, or a developer formatting data, our <strong>free online text case converter</strong> is designed to save you time. Accidentally typed a whole paragraph with Caps Lock on? Don't retype your document! Just paste your text into the editor above and instantly convert it to your desired format with a single click.</p>
+          
+          <h3>Available Text Case Options & How to Use Them</h3>
+          <ul>
+            <li><strong>UPPERCASE:</strong> Converts every single letter into large caps (e.g., THIS IS UPPERCASE). Great for emphasizing warnings, specific formatting requirements in legal documents, or standing out in plain text.</li>
+            <li><strong>lowercase:</strong> Transforms all characters to small letters (e.g., this is lowercase). Ideal for normalizing messy data, cleaning up email lists, or preparing text for database entry.</li>
+            <li><strong>Title Case:</strong> Capitalizes the first letter of every word (e.g., This Is Title Case). Perfect for formatting blog post titles, book headlines, YouTube video titles, and academic essays.</li>
+            <li><strong>Sentence case:</strong> Capitalizes only the very first letter of the first word in a sentence, leaving the rest lowercase (e.g., This is sentence case.). It is the standard format for most articles, paragraphs, and formal writing.</li>
+            <li><strong>Capitalized Case:</strong> Similar to Title Case, it ensures the first letter of every word is capitalized, which is highly useful for names and proper nouns.</li>
+          </ul>
+
+          <h3>Who Can Benefit From This Text Formatting Tool?</h3>
+          <p>Our <strong>change text case tool</strong> is built for everyone who works with text daily:</p>
+          <ul>
+            <li><strong>Copywriters & SEO Professionals:</strong> Quickly format H1, H2, and H3 meta tags to Title Case for better click-through rates on search engines.</li>
+            <li><strong>Software Developers:</strong> Normalize user inputs, format JSON data, or clean up strings without writing extra code.</li>
+            <li><strong>Data Entry Specialists:</strong> Standardize messy spreadsheets by converting thousands of rows into a uniform lowercase or capitalized format instantly.</li>
+          </ul>
+
+          <h3>Frequently Asked Questions (FAQs)</h3>
+          <p><strong>How do I change uppercase to lowercase online?</strong><br>Simply copy the uppercase text, paste it into the ToolAdda input box above, and click the "lowercase" button. The text will instantly transform.</p>
+          
+          <p><strong>Is this case conversion tool secure and private?</strong><br>Yes, 100%. This tool operates entirely locally within your web browser. No text data, documents, or sensitive information is ever sent to or stored on our servers.</p>
+          
+          <p><strong>Can I copy the converted text easily?</strong><br>Absolutely! Once you convert your text, a convenient "Copy to Clipboard" button appears in the top right corner of the output box, allowing you to copy your formatted text with just one click.</p>
+          
+          <p><strong>Is there a limit to how many words I can convert?</strong><br>No, there are no word or character limits. You can convert short titles or paste entire essays and articles. Our tool handles large blocks of text instantly.</p>
+        </article>
+
+        <style>
+      /* Guide section shared by the expanded tool pages. Prefix: tg- */
+      .tg { width: min(1100px, 100% - 2rem); margin: 2.4rem auto 3rem; }
+      .tg-section { margin-top: 2.2rem; }
+      .tg-section h2 {
+        margin: 0 0 .8rem; font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+        font-weight: 900; letter-spacing: -.015em; color: var(--text);
+      }
+      .tg-section h3 { margin: 1.2rem 0 .4rem; font-size: 1rem; font-weight: 800; color: var(--text); }
+      .tg p, .tg li { color: var(--text-muted); line-height: 1.75; font-size: .94rem; }
+      .tg p { margin: 0 0 .85rem; }
+      .tg ul, .tg ol { margin: 0 0 .9rem; padding-left: 1.2rem; display: grid; gap: .42rem; }
+      .tg strong { color: var(--text); }
+      .tg code {
+        font-family: ui-monospace, Consolas, monospace; font-size: .86em;
+        padding: .12rem .34rem; border-radius: 5px;
+        background: var(--surface-strong); border: 1px solid var(--border); color: var(--accent);
+      }
+      .tg-grid { display: grid; gap: .7rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+      .tg-card { border: 1px solid var(--border); border-radius: 15px; background: var(--surface); padding: .95rem 1.05rem; }
+      .tg-card strong { display: block; margin-bottom: .3rem; font-size: .93rem; }
+      .tg-card p { margin: 0; font-size: .86rem; }
+      .tg-tablewrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; margin: .3rem 0 1rem; }
+      .tg-table { width: 100%; border-collapse: collapse; font-size: .89rem; min-width: 430px; }
+      .tg-table th, .tg-table td { padding: .58rem .85rem; text-align: left; border-bottom: 1px solid var(--border); }
+      .tg-table th { background: var(--surface-strong); font-size: .72rem; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+      .tg-table td { color: var(--text-muted); }
+      .tg-table td:first-child { color: var(--text); font-weight: 700; }
+      .tg-table tr:last-child td { border-bottom: 0; }
+      .tg-faq-grid { display: grid; gap: .55rem; }
+      .tg-faq { border: 1px solid var(--border); border-radius: 14px; background: var(--surface); padding: .8rem 1rem; }
+      .tg-faq summary { cursor: pointer; font-size: .92rem; font-weight: 700; color: var(--text); }
+      .tg-faq p { margin: .55rem 0 0; font-size: .88rem; }
+      .tg-note {
+        border: 1px solid var(--border); border-left: 3px solid var(--accent);
+        border-radius: 10px; padding: .8rem 1rem; background: var(--surface);
+        font-size: .88rem !important;
+      }
+    </style>
+      <div class="tg">
+        <section class="tg-section" aria-labelledby="tg-cases-h">
+          <h2 id="tg-cases-h">The five cases, and when each one is right</h2>
+          <div class="tg-tablewrap">
+            <table class="tg-table">
+              <thead>
+                <tr><th scope="col">Case</th><th scope="col">Example</th><th scope="col">Use it for</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Sentence case</td><td data-label="Example">The quick brown fox</td><td data-label="Use it for">Body text, descriptions, most user interface copy.</td></tr>
+                <tr><td>Title Case</td><td data-label="Example">The Quick Brown Fox</td><td data-label="Use it for">Headlines and titles, in styles that call for it.</td></tr>
+                <tr><td>Capitalized Case</td><td data-label="Example">The Quick Brown Fox</td><td data-label="Use it for">Every word capitalised, including short ones.</td></tr>
+                <tr><td>UPPERCASE</td><td data-label="Example">THE QUICK BROWN FOX</td><td data-label="Use it for">Short labels, acronyms, and nothing longer.</td></tr>
+                <tr><td>lowercase</td><td data-label="Example">the quick brown fox</td><td data-label="Use it for">Normalising messy input before comparing or storing it.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            The difference between Title Case and Capitalized Case catches people out. Strict title
+            case leaves short words like <em>a</em>, <em>the</em>, <em>of</em> and <em>in</em>
+            lowercase unless they begin the title. Capitalized case simply capitalises everything.
+            Both are common; pick one and be consistent within a document.
+          </p>
+        </section>
+
+        <section class="tg-section" aria-labelledby="tg-styles-h">
+          <h2 id="tg-styles-h">Title case in AP, Chicago and APA style</h2>
+          <p>
+            "Title case" is not one rule. The big style guides agree on the principle &mdash; capitalise
+            the important words &mdash; but disagree about the small ones, mostly prepositions. If your
+            publication follows a guide, check which words it keeps lowercase.
+          </p>
+          <div class="tg-tablewrap">
+            <table class="tg-table cc-rules">
+              <thead>
+                <tr><th scope="col">Words</th><th scope="col">AP</th><th scope="col">Chicago</th><th scope="col">APA</th><th scope="col">This page</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Articles: a, an, the</td><td data-label="AP">lowercase</td><td data-label="Chicago">lowercase</td><td data-label="APA">lowercase</td><td data-label="This page">lowercase</td></tr>
+                <tr><td>Short prepositions: of, in, on, to</td><td data-label="AP">lowercase</td><td data-label="Chicago">lowercase</td><td data-label="APA">lowercase</td><td data-label="This page">lowercase</td></tr>
+                <tr><td>Longer prepositions: from, with, into</td><td data-label="AP">Capitalised (four letters or more)</td><td data-label="Chicago">lowercase, whatever the length</td><td data-label="APA">Capitalised (four letters or more)</td><td data-label="This page">lowercase</td></tr>
+                <tr><td>Conjunctions: and, but, or, nor</td><td data-label="AP">lowercase</td><td data-label="Chicago">lowercase</td><td data-label="APA">lowercase</td><td data-label="This page">lowercase</td></tr>
+                <tr><td>First and last word</td><td data-label="AP">Always capitalised</td><td data-label="Chicago">Always capitalised</td><td data-label="APA">Always capitalised</td><td data-label="This page">Always capitalised</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            This page's Title Case also capitalises the first word after a colon, so a subtitle starts
+            with a capital. If you need every word capitalised with no exceptions, use Capitalized Case
+            instead.
+          </p>
+        </section>
+
+        <section class="tg-section" aria-labelledby="tg-origin-h">
+          <h2 id="tg-origin-h">Why they are called upper case and lower case</h2>
+          <div class="cc-story">
+            <div>
+              <p>
+                The names are older than keyboards. A printer setting text by hand picked each metal
+                letter out of a shallow wooden tray divided into small compartments, called a case.
+                Capitals and small letters lived in two separate cases, propped one above the other on
+                a sloping stand.
+              </p>
+              <p>
+                The capitals went in the upper case, further from the hand because they are needed less
+                often. The small letters, used all the time, sat in the lower case within easy reach. The
+                trays are long gone from most print shops, but the words stuck, and "upper case" and
+                "lower case" still mean capitals and small letters.
+              </p>
+            </div>
+            <div class="cc-case-art" aria-hidden="true">
+              <span class="cc-drawer" data-t="UPPER CASE"><i data-t="A"></i><i data-t="B"></i><i data-t="C"></i><i data-t="D"></i><i data-t="E"></i><i data-t="F"></i><i data-t="G"></i></span>
+              <span class="cc-drawer cc-drawer--lower" data-t="LOWER CASE"><i data-t="a"></i><i data-t="b"></i><i data-t="c"></i><i data-t="d"></i><i data-t="e"></i><i data-t="f"></i><i data-t="g"></i></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="tg-section" aria-labelledby="tg-caps-h">
+          <h2 id="tg-caps-h">Why long text in capitals is a bad idea</h2>
+          <p>
+            This is worth knowing before you uppercase a paragraph. Readers do not process words
+            letter by letter &mdash; they recognise the overall shape of a word, and ascenders and
+            descenders like the <em>h</em> in "the" or the <em>g</em> in "going" are a large part of
+            that shape.
+          </p>
+          <p>
+            Capitals remove all of it. Every word becomes the same rectangle, so shape recognition
+            stops helping and reading slows measurably. Accessibility guidance discourages it for
+            the same reason, and some screen readers spell out longer runs of capitals letter by
+            letter, mistaking them for acronyms.
+          </p>
+          <p>
+            Capitals are fine for a button label or a three-word heading. For a sentence, use
+            sentence case and bold if you need emphasis.
+          </p>
+        </section>
+
+        <section class="tg-section" aria-labelledby="tg-uses-h">
+          <h2 id="tg-uses-h">When you actually need this</h2>
+          <div class="tg-grid">
+            <div class="tg-card"><strong>Fixing caps lock</strong><p>A paragraph typed with caps lock on, rescued in one click rather than retyped.</p></div>
+            <div class="tg-card"><strong>Cleaning imported data</strong><p>Names and addresses arriving from a form or spreadsheet in inconsistent case.</p></div>
+            <div class="tg-card"><strong>Headlines and titles</strong><p>Converting a working title into the case your publication or CMS expects.</p></div>
+            <div class="tg-card"><strong>Normalising before comparison</strong><p>Lowercasing both sides is the standard way to compare text case-insensitively.</p></div>
+          </div>
+        </section>
+
+        <section class="tg-section" aria-labelledby="tg-privacy-h">
+          <h2 id="tg-privacy-h">Your text stays in the page</h2>
+          <p>
+            The conversion happens in your browser as you type. Nothing is uploaded, which matters
+            because the text people paste into a case converter is often a real document &mdash; a
+            customer list, a draft email, an internal announcement. You can disconnect from the
+            network and it keeps working.
+          </p>
+        </section>
+
+        <section class="tg-section" aria-labelledby="tg-faq-h">
+          <h2 id="tg-faq-h">Frequently asked questions</h2>
+          <div class="tg-faq-grid">
+            <details class="tg-faq">
+              <summary><strong>How do I convert text to uppercase or lowercase?</strong></summary>
+              <p>Paste your text and choose the case you want. The result appears immediately and can be copied straight back out. There is nothing to install and no button sequence to learn.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>What is the difference between Title Case and Capitalized Case?</strong></summary>
+              <p>Strict title case leaves short words such as a, the, of and in lowercase unless they start the title. Capitalized case capitalises every word without exception. Both are widely used — the important thing is being consistent within a document.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>What is sentence case?</strong></summary>
+              <p>Only the first letter of the sentence is capitalised, along with anything that would normally be capitalised anyway, such as names. It is the right default for body text, descriptions and most interface copy.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>How do I fix text I typed with caps lock on?</strong></summary>
+              <p>Paste it in and choose sentence case. That fixes an accidentally shouted paragraph in one step rather than retyping it, which is the most common reason people reach for this tool.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Why is text in all capitals harder to read?</strong></summary>
+              <p>Because readers recognise the overall shape of a word rather than reading it letter by letter, and the ascenders and descenders that give words their shape disappear in capitals. Every word becomes the same rectangle, so reading measurably slows.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Is uppercase text an accessibility problem?</strong></summary>
+              <p>For anything longer than a short label, yes. Accessibility guidance discourages long runs of capitals, and some screen readers spell out extended capitals letter by letter because they mistake them for acronyms. Use bold for emphasis instead.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Why would I lowercase everything?</strong></summary>
+              <p>Usually to normalise data before comparing or storing it. Lowercasing both sides is the standard way to compare text case-insensitively, and it makes messy imported data consistent before you work with it.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Does it handle accented and non-English characters?</strong></summary>
+              <p>Yes. The conversion uses your browser's own Unicode-aware case rules, so accented Latin characters and other scripts are handled correctly rather than being stripped or mangled.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Is my text sent to a server?</strong></summary>
+              <p>No. Everything happens in your browser as you type, so the text never leaves your device. That matters because what people paste into a case converter is often a real document — a customer list, a draft email, an internal announcement.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Is there a limit on how much text I can convert?</strong></summary>
+              <p>The practical limit is your device's memory, since the work is done locally. Ordinary documents of any realistic length convert instantly.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Does it preserve my line breaks and paragraphs?</strong></summary>
+              <p>Yes. Only letter casing changes — spacing, line breaks and punctuation are left exactly as they were, so pasted formatting survives the conversion.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Can I undo a conversion?</strong></summary>
+              <p>Your original text stays in the input box, so you can switch between cases freely or copy the original back out. Nothing is destroyed by choosing a case.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Does it work offline?</strong></summary>
+              <p>Yes, once the page has loaded. Disconnecting from the network and watching it keep working is the simplest way to confirm nothing is being uploaded.</p>
+            </details>
+            <details class="tg-faq">
+              <summary><strong>Is it free?</strong></summary>
+              <p>Completely. No sign-up, no download and no limit on how many times you use it.</p>
+            </details>
+          </div>
+        </section>
+      </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+      </div>
+      <div>
+        <h3>Explore</h3>
+        <div class="footer-links">
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../privacy-policy.html">Privacy Policy</a>
+          <a href="../terms.html">Terms</a>
+        </div>
+      </div>
+      <div>
+        <h3>Stay updated</h3>
+        <p>© <span data-year></span> ToolAdda. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    var input = document.getElementById('textInput');
+    var output = document.getElementById('output');
+    var copyBtns = [document.getElementById('copyBtn'), document.getElementById('ccCopyMain')].filter(Boolean);
+    var useBtn = document.getElementById('ccUseBtn');
+    var downloadBtn = document.getElementById('ccDownloadBtn');
+    var undoBtn = document.getElementById('ccUndoBtn');
+    var pasteBtn = document.getElementById('ccPasteBtn');
+    var sampleBtn = document.getElementById('ccSampleBtn');
+    var clearBtn = document.getElementById('ccClearBtn');
+    var modeName = document.getElementById('ccModeName');
+    var status = document.getElementById('ccStatus');
+    var caseBtns = Array.prototype.slice.call(document.querySelectorAll('.cc-case'));
+    var STORE = 'tooladda-case-converter-mode';
+    var NAMES = {
+      sentence: 'Sentence case', title: 'Title Case', capitalized: 'Capitalized Case', upper: 'UPPERCASE', lower: 'lowercase',
+      camel: 'camelCase', pascal: 'PascalCase', snake: 'snake_case', kebab: 'kebab-case', constant: 'CONSTANT_CASE'
+    };
+    var CODE = { camel: 1, pascal: 1, snake: 1, kebab: 1, constant: 1 };
+    var SAMPLE = 'the lord of the rings: the return of the king\nTHIS PARAGRAPH WAS TYPED WITH CAPS LOCK ON. i think it needs fixing!\nuser account id';
+    var mode = null;
+    var undoText = null;
+
+    /* ---------------- case rules (Unicode-aware) ---------------- */
+    // Short words strict title case keeps lowercase unless they open or close the title.
+    var SMALL = new Set(['a', 'an', 'and', 'as', 'at', 'but', 'by', 'en', 'for', 'from', 'if', 'in', 'into', 'nor', 'of', 'off', 'on', 'onto', 'or', 'per', 'so', 'the', 'to', 'up', 'via', 'vs', 'with', 'yet']);
+    var LETTER = /\p{L}/u;
+
+    function upperFirstLetter(word) {
+      return word.replace(/^(\P{L}*)(\p{L})/u, function (m, lead, ch) { return lead + ch.toLocaleUpperCase(); });
+    }
+    function toCapitalized(text) {
+      // Not after apostrophes, so "don't" stays "Don't".
+      return text.toLocaleLowerCase().replace(/(^|[\s\-\/(\[{"“‘])(\p{L})/gu, function (m, pre, ch) { return pre + ch.toLocaleUpperCase(); });
+    }
+    function toTitle(text) {
+      return text.split(/(\r?\n)/).map(function (line) {
+        if (!LETTER.test(line)) return line;
+        var tokens = line.split(/(\s+)/);
+        var words = [];
+        tokens.forEach(function (t, i) { if (LETTER.test(t)) words.push(i); });
+        var first = words[0], last = words[words.length - 1];
+        var capNext = false;
+        return tokens.map(function (t, i) {
+          if (!/\S/.test(t)) return t;
+          var lower = t.toLocaleLowerCase();
+          var bare = lower.replace(/^\P{L}+|\P{L}+$/gu, '');
+          var force = i === first || i === last || capNext;
+          capNext = /[:.!?—–]["'”’)]*$/.test(t);
+          if (!LETTER.test(t)) return t;
+          if (!force && SMALL.has(bare)) return lower;
+          return lower.split('-').map(upperFirstLetter).join('-');
+        }).join('');
+      }).join('');
+    }
+    function toSentence(text) {
+      var s = text.toLocaleLowerCase();
+      s = s.replace(/(^|[.!?]["'”’)\]]*\s+|\n)([\s"'“‘(\[]*)(\p{L})/gu, function (m, pre, mid, ch) { return pre + mid + ch.toLocaleUpperCase(); });
+      // The pronoun "I" (and I'm, I've, I'll, I'd) — but not "i.e.".
+      s = s.replace(/(^|[^\p{L}\p{N}])i(?=$|[^\p{L}\p{N}.]|\.(?!\p{L})|['’](?:m|ve|ll|d)\b)/gu, function (m, pre) { return pre + 'I'; });
+      return s;
+    }
+    // Code cases work line by line, so a pasted list of names converts in one go.
+    function splitWords(line) {
+      return line
+        .replace(/([\p{Ll}\p{N}])(\p{Lu})/gu, '$1 $2')        // camelCase -> camel Case
+        .replace(/(\p{Lu}+)(\p{Lu}\p{Ll})/gu, '$1 $2')        // HTTPServer -> HTTP Server
+        .split(/[^\p{L}\p{N}]+/u)
+        .filter(Boolean)
+        .map(function (w) { return w.toLocaleLowerCase(); });
+    }
+    function toCode(text, m) {
+      return text.split(/\r?\n/).map(function (line) {
+        var w = splitWords(line);
+        if (!w.length) return '';
+        if (m === 'snake') return w.join('_');
+        if (m === 'kebab') return w.join('-');
+        if (m === 'constant') return w.join('_').toLocaleUpperCase();
+        var caps = w.map(upperFirstLetter);
+        if (m === 'pascal') return caps.join('');
+        return w[0] + caps.slice(1).join('');
+      }).join('\n');
+    }
+    function convertText(text, m) {
+      if (m === 'upper') return text.toLocaleUpperCase();
+      if (m === 'lower') return text.toLocaleLowerCase();
+      if (m === 'title') return toTitle(text);
+      if (m === 'sentence') return toSentence(text);
+      if (m === 'capitalized') return toCapitalized(text);
+      if (CODE[m]) return toCode(text, m);
+      return text;
+    }
+
+    /* ---------------- UI ---------------- */
+    function setCount(id, n, word) {
+      document.getElementById(id).innerHTML = '<b>' + n.toLocaleString() + '</b> ' + word + (n === 1 ? '' : 's');
+    }
+    function updateStats() {
+      var text = input.value;
+      var trimmed = text.trim();
+      setCount('charCount', text.length, 'character');
+      setCount('wordCount', trimmed ? trimmed.split(/\s+/).length : 0, 'word');
+      setCount('sentenceCount', trimmed ? (trimmed.match(/[^.!?\n]+(?:[.!?]+|(?=\n)|$)/g) || []).filter(function (s) { return /\p{L}|\p{N}/u.test(s); }).length : 0, 'sentence');
+      setCount('lineCount', text === '' ? 0 : text.split(/\r?\n/).length, 'line');
+    }
+    function setOutputState(state, content) {
+      output.classList.toggle('is-empty', state === 'empty');
+      output.classList.toggle('is-hint', state === 'hint');
+      output.classList.toggle('is-code', state === 'result' && !!CODE[mode]);
+      if (state === 'empty') {
+        output.innerHTML = '<span><span class="cc-empty-art" aria-hidden="true">Aa → AA</span>Pick a case above — the result updates as you type.</span>';
+      } else {
+        output.textContent = content;
+      }
+      var ready = state === 'result';
+      copyBtns.forEach(function (b) { b.disabled = !ready; });
+      useBtn.disabled = !ready;
+      downloadBtn.disabled = !ready;
+    }
+    function render() {
+      updateStats();
+      if (!mode) { setOutputState('empty'); return; }
+      if (!input.value.trim()) { setOutputState('hint', 'Type or paste some text on the left, or press ✨ Sample to try it.'); return; }
+      setOutputState('result', convertText(input.value, mode));
+    }
+    function selectCase(m, fromClick) {
+      mode = m;
+      caseBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.case === m)); });
+      modeName.textContent = m ? ' · ' + NAMES[m] : '';
+      try { localStorage.setItem(STORE, m); } catch (e) {}
+      render();
+      if (fromClick && !input.value.trim()) input.focus();
+      else if (fromClick && window.matchMedia('(max-width: 820px)').matches) {
+        var r = output.getBoundingClientRect();
+        if (r.top > window.innerHeight - 120) output.scrollIntoView({ block: 'nearest', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      }
+    }
+    function flash(btn, label) {
+      if (!btn) return;
+      var old = btn.dataset.label || btn.textContent;
+      btn.dataset.label = old;
+      btn.textContent = label;
+      btn.classList.add('is-done');
+      clearTimeout(btn._t);
+      btn._t = setTimeout(function () { btn.textContent = old; btn.classList.remove('is-done'); }, 1600);
+    }
+    function copyText(btn) {
+      var text = output.textContent;
+      if (useBtn.disabled || !text) return;
+      var done = function () {
+        flash(btn || copyBtns[copyBtns.length - 1], 'Copied ✓');
+        status.textContent = 'Result copied to clipboard';
+      };
+      var fallback = function () {
+        var t = document.createElement('textarea');
+        t.value = text; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.left = '-9999px';
+        document.body.appendChild(t); t.select();
+        var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(t);
+        if (ok) done(); else status.textContent = 'Copy failed — select the result and copy it manually.';
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback);
+      else fallback();
+    }
+    function setUndo(text) {
+      undoText = text;
+      undoBtn.hidden = text === null;
+    }
+
+    caseBtns.forEach(function (b) { b.addEventListener('click', function () { selectCase(b.dataset.case, true); }); });
+    input.addEventListener('input', function () { if (undoText !== null) setUndo(null); render(); });
+    copyBtns.forEach(function (b) { b.addEventListener('click', function () { copyText(b); }); });
+    useBtn.addEventListener('click', function () {
+      if (useBtn.disabled) return;
+      setUndo(input.value);
+      input.value = output.textContent;
+      render();
+      status.textContent = 'Your text now holds the ' + NAMES[mode] + ' result. Press Undo to get the original back.';
+      input.focus();
+    });
+    undoBtn.addEventListener('click', function () {
+      if (undoText === null) return;
+      input.value = undoText;
+      setUndo(null);
+      render();
+      status.textContent = 'Original text restored';
+      input.focus();
+    });
+    downloadBtn.addEventListener('click', function () {
+      if (downloadBtn.disabled) return;
+      var url = URL.createObjectURL(new Blob([output.textContent], { type: 'text/plain;charset=utf-8' }));
+      var a = document.createElement('a');
+      a.href = url; a.download = 'text-' + mode + '.txt';
+      document.body.appendChild(a); a.click();
+      setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 500);
+      flash(downloadBtn, 'Saved ✓');
+    });
+    sampleBtn.addEventListener('click', function () {
+      input.value = SAMPLE;
+      setUndo(null);
+      if (!mode) selectCase('title', false); else render();
+      input.focus();
+    });
+    clearBtn.addEventListener('click', function () {
+      if (input.value) setUndo(input.value);
+      input.value = '';
+      render();
+      if (undoText !== null) status.textContent = 'Text cleared. Press Undo to bring it back.';
+      input.focus();
+    });
+    if (navigator.clipboard && navigator.clipboard.readText) {
+      pasteBtn.hidden = false;
+      pasteBtn.addEventListener('click', function () {
+        navigator.clipboard.readText().then(function (t) {
+          if (!t) return;
+          input.value = t; setUndo(null); render(); input.focus();
+        }, function () { status.textContent = 'Paste was blocked — press Ctrl+V (or long-press) in the box instead.'; input.focus(); });
+      });
+    }
+    document.addEventListener('keydown', function (e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !useBtn.disabled) {
+        e.preventDefault();
+        copyText(document.getElementById('ccCopyMain'));
+      }
+    });
+
+    var saved = null;
+    try { saved = localStorage.getItem(STORE); } catch (e) {}
+    if (saved && NAMES[saved]) selectCase(saved, false); else render();
+  })();
+  </script>
+  <script src="../assets/js/side-ads.js" defer></script>
+  <script src="../assets/js/inline-ads.js" data-in-article defer></script>
+</body>
+</html>

@@ -1,0 +1,2523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+  <meta name="description" content="Free fancy font & stylish text generator — 50 copy-paste Unicode styles for Instagram bios, WhatsApp, Discord, Free Fire &amp; BGMI names. No app, no signup, works offline." />
+  <title>Fancy Font & Stylish Text Generator | ToolAdda</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <style>
+    /* ================================================================
+       TYPE STUDIO — a dark, full-bleed specimen-sheet UI.
+       The product here IS typography, so the chrome recedes to hairlines
+       and space, and the styled output is the largest thing on screen.
+       ================================================================ */
+    body.ffg-page {
+      --ffg-ink:    #07080a;
+      --ffg-ink-2:  #0b0d0a;
+      --ffg-ink-3:  #10130d;
+      --ffg-line:   rgba(255,255,255,.09);
+      --ffg-line-2: rgba(255,255,255,.18);
+      --ffg-fg:     #f7fbef;
+      --ffg-mut:    #a8b39b;
+      --ffg-acc:    #d6ff7a;
+      --ffg-hot:    #3ee6ff;
+      --ffg-cyan:   #22d3ee;
+      --ffg-gold:   #fbbf24;
+      --ffg-grad:   linear-gradient(125deg,#c6ff3d 0%,#7dffb0 50%,#3ee6ff 100%);
+      --ffg-grad-soft: linear-gradient(125deg,rgba(198,255,61,.22),rgba(62,230,255,.16),rgba(245,158,11,.12));
+      --ffg-glass:  rgba(255,255,255,.045);
+      --ffg-glass-2: rgba(255,255,255,.07);
+      --ffg-shadow: 0 24px 80px rgba(0,0,0,.45);
+      --ffg-mono:   ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      overflow-x: clip;
+    }
+    .ffg-page #main-content { overflow-x: clip; max-width: 100%; }
+    .ffg-page #main-content > .ffg-stage:first-child {
+      padding-top: calc(var(--header-overlap, 5.5rem) + 0.35rem);
+    }
+    .ffg-page #main-content > .ffg-stage:first-child::before {
+      background: var(--ffg-ink);
+    }
+
+    /* ---- Navbar: Neon Type Studio (this page only) ---- */
+    .ffg-page .site-header,
+    .ffg-page .site-header.site-header--scrolled {
+      background: transparent !important;
+    }
+    .ffg-page .navbar {
+      background: rgba(10, 7, 18, 0.78);
+      border: 1px solid rgba(214,255,122,0.22);
+      backdrop-filter: blur(22px) saturate(1.35);
+      -webkit-backdrop-filter: blur(22px) saturate(1.35);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.07) inset,
+        0 16px 48px rgba(0, 0, 0, 0.38),
+        0 0 36px rgba(150,210,30,0.14);
+    }
+    .ffg-page .navbar::before {
+      background: linear-gradient(135deg, rgba(198,255,61,.6), rgba(62,230,255,.42), rgba(251,191,36,.32));
+      opacity: .85;
+    }
+    .ffg-page .site-header--scrolled .navbar {
+      background: rgba(8, 5, 14, 0.9);
+      border-color: rgba(214,255,122,0.3);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.08) inset,
+        0 20px 56px rgba(0, 0, 0, 0.48),
+        0 0 44px rgba(62,230,255,0.12);
+    }
+    .ffg-page .brand > span:not(.brand-mark) {
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #f7fbef, #efffd0 42%, #b8f6ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .ffg-page .brand-mark {
+      background: linear-gradient(145deg, #c6ff3d 0%, #3ee6ff 50%, #f59e0b 100%);
+      box-shadow: 0 8px 22px rgba(62,230,255,0.38);
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+    .ffg-page .brand:hover .brand-mark {
+      box-shadow: 0 12px 28px rgba(62,230,255,0.48);
+    }
+    .ffg-page .nav-links {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(214,255,122,0.16);
+    }
+    .ffg-page .nav-links a {
+      color: #a8b39b;
+    }
+    .ffg-page .nav-links a:hover,
+    .ffg-page .nav-links a:focus-visible {
+      color: #f7fbef;
+      background: rgba(198,255,61,0.2);
+      border-color: rgba(214,255,122,0.28);
+      box-shadow: 0 4px 14px rgba(150,210,30,0.22);
+    }
+    .ffg-page .nav-links a.is-active {
+      color: #fff;
+      background: var(--ffg-grad);
+      border-color: rgba(255, 255, 255, 0.16);
+      box-shadow: 0 8px 22px rgba(62,230,255,0.38);
+    }
+    .ffg-page .icon-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(214,255,122,0.22);
+      color: #efffd0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    .ffg-page .icon-btn:hover {
+      background: rgba(198,255,61,0.22);
+      border-color: rgba(62,230,255,0.38);
+      box-shadow: 0 6px 18px rgba(62,230,255,0.22);
+      color: #fff;
+    }
+    .ffg-page .mobile-toggle[aria-expanded="true"] {
+      background: linear-gradient(135deg, rgba(198,255,61,.28), rgba(62,230,255,.22));
+      border-color: rgba(62,230,255,0.38);
+      color: #f7fbef;
+    }
+    @media (max-width: 900px) {
+      .ffg-page .navbar {
+        background: rgba(10, 7, 18, 0.86);
+      }
+      .ffg-page .nav-open .nav-links {
+        background: rgba(8, 5, 14, 0.97) !important;
+        border-color: rgba(214,255,122,0.24);
+        box-shadow: 0 24px 56px rgba(0, 0, 0, 0.52), 0 0 36px rgba(150,210,30,0.16);
+      }
+      .ffg-page .nav-open .nav-links a {
+        color: #d6ff7a;
+      }
+      .ffg-page .nav-open .nav-links a:hover,
+      .ffg-page .nav-open .nav-links a:focus-visible {
+        color: #fff;
+        background: rgba(198,255,61,0.16);
+        border-color: rgba(214,255,122,0.2);
+      }
+    }
+
+    /* ---- Full-bleed dark stage ---- */
+    .ffg-stage {
+      position: relative; isolation: isolate;
+      padding: 1.1rem 0 2.8rem;
+      color: var(--ffg-fg);
+      overflow-x: clip;
+      max-width: 100%;
+      background:
+        radial-gradient(ellipse 900px 520px at 8% -8%, rgba(198,255,61,.38), transparent 58%),
+        radial-gradient(ellipse 760px 480px at 96% 4%, rgba(62,230,255,.28), transparent 55%),
+        radial-gradient(ellipse 640px 420px at 52% 108%, rgba(245,158,11,.16), transparent 58%),
+        radial-gradient(ellipse 500px 360px at 72% 42%, rgba(34,211,238,.08), transparent 50%),
+        linear-gradient(175deg, var(--ffg-ink) 0%, var(--ffg-ink-2) 42%, var(--ffg-ink-3) 100%);
+    }
+    .ffg-stage::before {
+      content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .45;
+      background-image: radial-gradient(rgba(255,255,255,.08) 1px, transparent 1px);
+      background-size: 22px 22px;
+      -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 78%);
+      mask-image: linear-gradient(180deg, #000 0%, transparent 78%);
+    }
+    .ffg-stage::after {
+      content: "";
+      position: absolute;
+      width: 320px; height: 320px;
+      top: 18%; right: -80px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(62,230,255,.18), transparent 68%);
+      filter: blur(28px);
+      pointer-events: none;
+      z-index: -1;
+      animation: ffg-orb 11s ease-in-out infinite;
+    }
+    @keyframes ffg-orb {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: .85; }
+      50% { transform: translate(-24px, 18px) scale(1.08); opacity: 1; }
+    }
+    .ffg-crumb { margin: 0 0 1.1rem; color: var(--ffg-mut); font-size: .84rem; }
+    .ffg-crumb a { color: var(--ffg-acc); }
+    .ffg-crumb span[aria-current] { color: var(--ffg-fg); }
+    .ffg-stage > .container { max-width: 100%; overflow-x: clip; }
+
+    /* ---- Two-column app layout: sticky control rail + results canvas.
+       This is the core fix — 50 result rows and ~8 control groups can't
+       share one narrow column without reading as clutter. ---- */
+    .ffg-layout { display: grid; grid-template-columns: 1fr; gap: 1.5rem; max-width: 100%; overflow-x: clip; }
+    /* Grid items default to min-width:auto, which lets the nowrap category row
+       blow the column out to its full scroll width. Both tracks must be clamped. */
+    .ffg-rail, .ffg-results { min-width: 0; }
+    @media (min-width: 1000px) {
+      .ffg-layout { grid-template-columns: 360px minmax(0,1fr); gap: 2rem; align-items: start; }
+      .ffg-rail {
+        position: sticky; top: calc(88px + .75rem);
+        max-height: calc(100vh - 88px - 1.5rem); overflow-y: auto;
+        padding: 1.2rem 1rem 1.2rem 1.2rem;
+        border-radius: 22px;
+        border: 1px solid rgba(255,255,255,.11);
+        background: linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.025));
+        backdrop-filter: blur(22px);
+        -webkit-backdrop-filter: blur(22px);
+        box-shadow: var(--ffg-shadow), inset 0 1px 0 rgba(255,255,255,.08);
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255,255,255,.18) transparent;
+      }
+      .ffg-results {
+        padding: 1.15rem 1.1rem 1.25rem;
+        border-radius: 22px;
+        border: 1px solid rgba(255,255,255,.09);
+        background: linear-gradient(165deg, rgba(255,255,255,.045), rgba(255,255,255,.02));
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+      }
+      .ffg-rail::-webkit-scrollbar { width: 6px; }
+      .ffg-rail::-webkit-scrollbar-thumb { background: rgba(255,255,255,.16); border-radius: 99px; }
+    }
+
+    /* ---- Rail typography ---- */
+    .ffg-eyebrow {
+      margin: 0 0 .75rem; display: inline-flex; align-items: center; gap: .45rem;
+      font-family: var(--ffg-mono); font-size: .64rem; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase; color: #efffd0;
+      padding: .38rem .78rem; border-radius: 999px;
+      background: var(--ffg-grad-soft);
+      border: 1px solid rgba(214,255,122,.28);
+      box-shadow: 0 8px 24px rgba(150,210,30,.18);
+    }
+    .ffg-eyebrow::before { content: "✦"; width: auto; height: auto; background: none; opacity: 1; font-size: .58rem; }
+    .ffg-page .ffg-stage h1 {
+      margin: 0 0 .55rem; color: #fff; font-weight: 900;
+      font-size: clamp(1.6rem, 2.5vw, 2.15rem); line-height: 1.06; letter-spacing: -.03em;
+    }
+    .ffg-page .ffg-stage h1 em {
+      font-style: normal;
+      background: linear-gradient(115deg,#efffd0 0%,#b8f6ff 42%,#fde68a 88%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .ffg-lead { margin: 0 0 1rem; color: var(--ffg-mut); font-size: .94rem; line-height: 1.65; }
+    .ffg-lead b { color: var(--ffg-fg); font-weight: 700; }
+
+    /* ---- Rail sections: hairline dividers, no nested boxes ---- */
+    .ffg-rail-divider { height: 1px; background: var(--ffg-line); margin: 1.15rem 0; }
+    .ffg-controls-label {
+      margin: 0 0 .6rem; font-family: var(--ffg-mono); font-size: .64rem; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase; color: var(--ffg-mut);
+    }
+
+    /* ---- Input: gradient ring + deep glass field ---- */
+    .ffg-editor-wrap {
+      position: relative;
+      padding: 1.5px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(198,255,61,.55), rgba(62,230,255,.45), rgba(251,191,36,.35));
+      box-shadow: 0 12px 36px rgba(150,210,30,.2);
+    }
+    #ffgInput {
+      width: 100%; min-height: 92px; padding: .95rem 1rem; border-radius: 14.5px;
+      border: none; background: rgba(8,5,14,.88);
+      color: var(--ffg-fg); font-size: 1.08rem; line-height: 1.55; resize: vertical; font-family: inherit;
+      transition: box-shadow .18s ease, background .18s ease;
+    }
+    #ffgInput:focus { outline: none; background: rgba(12,8,20,.95); box-shadow: inset 0 0 0 1px rgba(62,230,255,.35); }
+    #ffgInput::placeholder { color: rgba(247,244,255,.34); }
+
+    .ffg-meta-row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; justify-content: space-between; margin-top: .6rem; font-size: .8rem; color: var(--ffg-mut); }
+    .ffg-meta-actions { display: flex; gap: .4rem; flex-wrap: wrap; align-items: center; }
+    #ffgCharCount { font-family: var(--ffg-mono); font-size: .74rem; }
+    .ffg-page .ffg-stage .secondary-btn {
+      height: 2.1rem; padding: 0 .75rem; font-size: .78rem; font-weight: 700; border-radius: 999px;
+      background: rgba(255,255,255,.07); border: 1px solid var(--ffg-line-2); color: var(--ffg-fg);
+    }
+    .ffg-page .ffg-stage .secondary-btn:hover { background: rgba(255,255,255,.13); border-color: var(--ffg-acc); }
+    .ffg-limit-chip {
+      font-family: var(--ffg-mono); font-size: .68rem; font-weight: 700; padding: .18rem .5rem; border-radius: 6px;
+      border: 1px solid var(--ffg-line); background: rgba(255,255,255,.05); color: var(--ffg-mut);
+    }
+    .ffg-limit-chip.is-over { color: #fff; background: #dc2626; border-color: #dc2626; }
+    .ffg-limit-chip.is-near { color: #1c1206; background: #fbbf24; border-color: #fbbf24; }
+
+    .ffg-symbol-row { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .6rem; }
+    .ffg-symbol-btn {
+      border: 1px solid var(--ffg-line); background: rgba(255,255,255,.05); border-radius: 9px;
+      width: 2.05rem; height: 2.05rem; font-size: .95rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: background .15s, border-color .15s;
+    }
+    .ffg-symbol-btn:hover { border-color: var(--ffg-hot); background: rgba(62,230,255,.18); box-shadow: 0 0 16px rgba(62,230,255,.25); transform: translateY(-1px); }
+
+    /* ---- Presets / search / categories / advanced — all on the rail, flat ---- */
+    .ffg-preset-row { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .ffg-preset-btn {
+      display: inline-flex; align-items: center; gap: .35rem; cursor: pointer;
+      border: 1px solid var(--ffg-line-2); background: rgba(255,255,255,.05); color: var(--ffg-fg);
+      border-radius: 999px; padding: .42rem .8rem; font-size: .8rem; font-weight: 700;
+      transition: background .15s, border-color .15s, transform .15s;
+    }
+    .ffg-preset-btn:hover { background: rgba(255,255,255,.11); transform: translateY(-1px); }
+    .ffg-preset-btn.is-active { background: var(--ffg-grad); color: #fff; border-color: transparent; box-shadow: 0 10px 28px -8px rgba(62,230,255,.75), 0 0 0 1px rgba(255,255,255,.12) inset; }
+    .ffg-preset-note {
+      display: none; align-items: center; gap: .5rem; margin: .6rem 0 0; font-size: .78rem; font-weight: 600;
+      color: var(--ffg-acc); background: rgba(214,255,122,.1); border: 1px solid rgba(214,255,122,.28);
+      border-radius: 10px; padding: .4rem .65rem;
+    }
+    .ffg-preset-note.is-visible { display: flex; flex-wrap: wrap; }
+    .ffg-preset-note button { border: none; background: transparent; color: var(--ffg-hot); font-weight: 800; cursor: pointer; text-decoration: underline; font-size: .78rem; }
+
+    .ffg-search-row { position: relative; margin-bottom: .7rem; }
+    .ffg-search-row input {
+      width: 100%; padding: .68rem .9rem .68rem 2.4rem; font-size: .9rem; border-radius: 10px;
+      border: 1px solid var(--ffg-line-2); background: rgba(255,255,255,.05); color: var(--ffg-fg);
+    }
+    .ffg-search-row input::placeholder { color: rgba(247,244,255,.34); }
+    .ffg-search-row input:focus { outline: none; border-color: var(--ffg-acc); box-shadow: 0 0 0 3px rgba(214,255,122,.16); }
+    .ffg-search-icon { position: absolute; left: .85rem; top: 50%; transform: translateY(-50%); opacity: .5; pointer-events: none; font-size: .85rem; }
+
+    .ffg-cat-row { display: flex; gap: .35rem; flex-wrap: wrap; max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .ffg-cat-row::-webkit-scrollbar { display: none; }
+    .ffg-cat-chip {
+      display: inline-flex; align-items: center; gap: .4rem; cursor: pointer; white-space: nowrap;
+      border: 1px solid var(--ffg-line); background: rgba(255,255,255,.04); color: var(--ffg-mut);
+      border-radius: 999px; padding: .3rem .7rem; font-size: .78rem; font-weight: 600;
+      transition: background .15s, border-color .15s, color .15s;
+    }
+    .ffg-cat-chip i { font-style: normal; width: 7px; height: 7px; border-radius: 50%; background: var(--cat-color, var(--ffg-acc)); flex-shrink: 0; }
+    .ffg-cat-chip:hover { color: var(--ffg-fg); background: rgba(255,255,255,.09); border-color: var(--ffg-line-2); }
+    .ffg-cat-chip[aria-pressed="true"] {
+      color: #fff;
+      background: linear-gradient(135deg, rgba(198,255,61,.35), rgba(62,230,255,.25));
+      border-color: var(--cat-color, var(--ffg-acc));
+      box-shadow: 0 6px 18px rgba(150,210,30,.25);
+    }
+
+    .ffg-adv > summary {
+      cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between;
+      font-family: var(--ffg-mono); font-size: .64rem; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--ffg-mut);
+    }
+    .ffg-adv > summary::-webkit-details-marker { display: none; }
+    .ffg-adv > summary::after { content: "+"; font-size: .95rem; color: var(--ffg-acc); }
+    .ffg-adv[open] > summary::after { content: "\2212"; }
+    .ffg-toolbar { display: grid; gap: .7rem; margin-top: .85rem; }
+    .ffg-toolbar-group { display: grid; gap: .3rem; }
+    .ffg-toolbar label { font-family: var(--ffg-mono); font-size: .62rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ffg-mut); }
+    .ffg-toolbar select {
+      border: 1px solid var(--ffg-line-2); background: rgba(255,255,255,.05); color: var(--ffg-fg);
+      border-radius: 9px; padding: .45rem .55rem; font-size: .82rem; cursor: pointer; width: 100%;
+    }
+    .ffg-toolbar select option { background: #131711; color: var(--ffg-fg); }
+    .ffg-shuffle-btn {
+      border: 1px solid var(--ffg-line-2); background: rgba(255,255,255,.06); color: var(--ffg-fg);
+      border-radius: 999px; padding: .5rem .9rem; font-size: .82rem; font-weight: 700; cursor: pointer; width: 100%;
+      transition: background .15s, border-color .15s;
+    }
+    .ffg-shuffle-btn:hover { background: rgba(255,255,255,.13); border-color: var(--ffg-hot); }
+
+    .ffg-trust-strip { display: flex; flex-wrap: wrap; gap: .35rem; }
+    .ffg-trust-chip {
+      display: inline-flex; align-items: center; gap: .35rem; font-size: .72rem; font-weight: 600; color: var(--ffg-mut);
+      background: rgba(255,255,255,.04); border: 1px solid var(--ffg-line); border-radius: 999px; padding: .28rem .6rem .28rem .32rem;
+    }
+    .ffg-trust-chip i { font-style: normal; display: inline-flex; align-items: center; justify-content: center; width: 17px; height: 17px; border-radius: 50%; background: rgba(255,255,255,.09); font-size: .68rem; }
+
+    .ffg-stat-line {
+      display: inline-flex; align-items: center; gap: .45rem; margin: 0 0 1.1rem;
+      font-family: var(--ffg-mono); font-size: .72rem; color: var(--ffg-mut);
+      padding: .35rem .7rem; border-radius: 999px;
+      background: rgba(62,230,255,.08); border: 1px solid rgba(62,230,255,.22);
+    }
+    .ffg-stat-line strong { font-size: 1rem; color: var(--ffg-hot); font-weight: 800; }
+
+    /* ---- Results canvas ---- */
+    .ffg-results { min-width: 0; }
+    .ffg-section-title-row { display: flex; align-items: baseline; justify-content: space-between; gap: .6rem; flex-wrap: wrap; padding-bottom: .5rem; border-bottom: 1px solid var(--ffg-line); margin-bottom: .2rem; }
+    .ffg-section-title {
+      margin: 0; font-family: var(--ffg-mono); font-size: .68rem; font-weight: 700;
+      letter-spacing: .15em; text-transform: uppercase; color: var(--ffg-mut);
+    }
+    .ffg-copyall-btn {
+      border: 1px solid var(--ffg-line-2); background: rgba(255,255,255,.05); color: var(--ffg-fg);
+      border-radius: 999px; padding: .32rem .8rem; font-size: .74rem; font-weight: 700; cursor: pointer;
+      transition: background .15s, border-color .15s;
+    }
+    .ffg-copyall-btn:hover { background: rgba(255,255,255,.12); border-color: var(--ffg-acc); box-shadow: 0 6px 18px rgba(150,210,30,.2); }
+
+    /* ---- Specimen cards: glass tiles ---- */
+    .ffg-grid { display: grid; grid-template-columns: 1fr; gap: .5rem; margin-bottom: 1.2rem; min-width: 0; }
+    .fc-card {
+      position: relative; display: block; min-width: 0; overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: linear-gradient(145deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    }
+    .fc-card:hover {
+      border-color: rgba(214,255,122,.28);
+      box-shadow: 0 10px 30px rgba(0,0,0,.22);
+      transform: translateY(-1px);
+    }
+    .fc-card.is-highlight { animation: ffg-highlight 1.6s ease; }
+    @keyframes ffg-highlight { 0%,100% { background: transparent; } 25%,65% { background: rgba(214,255,122,.14); } }
+
+    .fc-copy {
+      position: relative; width: 100%; display: grid; gap: .3rem; text-align: left; cursor: pointer;
+      background: transparent; border: 0; border-radius: 12px;
+      padding: .95rem 6.2rem .95rem 3rem; min-height: 86px;
+      transition: background .16s ease;
+    }
+    /* Specimen number. Set as a data attribute by JS rather than a CSS counter,
+       because `content-visibility: auto` on .fc-card implies style containment,
+       which scopes counters per element and makes every row render as "01". */
+    .fc-copy::before {
+      content: attr(data-num);
+      position: absolute; left: .55rem; top: 1.15rem;
+      font-family: var(--ffg-mono); font-size: .68rem; font-weight: 700;
+      color: rgba(255,255,255,.25); transition: color .16s ease;
+    }
+    .fc-copy::after {
+      content: ""; position: absolute; left: 0; top: .8rem; bottom: .8rem; width: 2px; border-radius: 2px;
+      background: var(--fc-accent, var(--ffg-acc)); opacity: 0; transition: opacity .16s ease;
+    }
+    .fc-copy:hover { background: rgba(198,255,61,.08); }
+    .fc-copy:hover::after, .fc-copy:focus-visible::after { opacity: 1; }
+    .fc-copy:hover::before { color: var(--fc-accent, var(--ffg-acc)); }
+    .fc-copy:focus-visible { outline: 2px solid var(--ffg-hot); outline-offset: -2px; }
+
+    .fc-head { display: flex; align-items: center; gap: .55rem; flex-wrap: wrap; }
+    .fc-label {
+      font-family: var(--ffg-mono); font-size: .64rem; font-weight: 700; letter-spacing: .13em;
+      text-transform: uppercase; color: var(--fc-accent, var(--ffg-mut));
+    }
+    .fc-compat { display: inline-flex; gap: .2rem; font-size: .72rem; }
+    .fc-compat span { opacity: .35; }
+    .fc-compat span.is-ok { opacity: .95; }
+
+    /* The styled output is the hero of every row */
+    .fc-text {
+      margin: 0; font-size: clamp(1.3rem, 2.2vw, 1.7rem); line-height: 1.42; color: #fff;
+      word-break: break-word; overflow-wrap: anywhere; white-space: pre-wrap; overflow: hidden; max-height: 5.8em;
+    }
+    .fc-copy-hint {
+      position: absolute; right: 3.6rem; top: 1.1rem;
+      font-family: var(--ffg-mono); font-size: .64rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--ffg-mut); opacity: 0; transition: opacity .16s ease;
+    }
+    .fc-copy:hover .fc-copy-hint, .fc-copy:focus-visible .fc-copy-hint { opacity: 1; }
+
+    .fc-fav {
+      position: absolute; right: .5rem; top: 50%; transform: translateY(-50%); z-index: 2;
+      width: 2.4rem; height: 2.4rem; border-radius: 50%; border: 1px solid transparent;
+      background: transparent; font-size: 1.05rem; cursor: pointer; color: rgba(255,255,255,.3);
+      transition: color .15s, background .15s, border-color .15s;
+    }
+    .fc-fav:hover { color: #fcd34d; background: rgba(255,255,255,.08); border-color: var(--ffg-line-2); }
+    .fc-fav[aria-pressed="true"] { color: #fbbf24; }
+    .fc-fav:focus-visible { outline: 2px solid var(--ffg-hot); outline-offset: 2px; }
+
+    .fc-card.is-copied .fc-copy { background: rgba(34,197,94,.1); }
+    .fc-card.is-copied .fc-copy-hint { opacity: 0 !important; }
+    .fc-card.is-copied::after {
+      content: "✓ Copied"; position: absolute; right: 3.4rem; top: 1.05rem; z-index: 3;
+      background: linear-gradient(120deg,#22c55e,#16a34a); color: #fff;
+      font-family: var(--ffg-mono); font-size: .64rem; font-weight: 700; letter-spacing: .08em;
+      padding: .28rem .6rem; border-radius: 999px; pointer-events: none;
+      animation: ffg-check-fade 1s ease forwards;
+    }
+    @keyframes ffg-check-fade { 0% { opacity: 0; transform: translateY(-4px); } 15% { opacity: 1; transform: none; } 75% { opacity: 1; } 100% { opacity: 0; } }
+
+    .ffg-empty-note { color: var(--ffg-mut); font-size: .92rem; padding: 2.5rem 0; text-align: center; }
+    .ffg-sentinel { height: 1px; }
+    .ffg-tip { margin: 0; font-family: var(--ffg-mono); font-size: .68rem; line-height: 1.6; color: rgba(168,179,155,.75); }
+
+    /* ---- Platform mockup preview: your text in real context ---- */
+    .ffg-mockup {
+      margin-bottom: 1.6rem; min-width: 0;
+      padding: 1rem;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: var(--ffg-grad-soft);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+    }
+    .ffg-ig-mock, .ffg-ff-mock { min-width: 0; }
+    .ffg-ig-mock > div:last-child, .ffg-ff-mock > div:last-child { min-width: 0; flex: 1; }
+    .ffg-mockup-tabs { display: flex; gap: .35rem; margin-bottom: .9rem; }
+    .ffg-mockup-tab {
+      border: 1px solid var(--ffg-line-2); background: rgba(255,255,255,.05); color: var(--ffg-mut);
+      border-radius: 999px; padding: .35rem .8rem; font-size: .76rem; font-weight: 700; cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .ffg-mockup-tab:hover { color: var(--ffg-fg); background: rgba(255,255,255,.1); }
+    .ffg-mockup-tab.is-active { background: var(--ffg-grad); color: #fff; border-color: transparent; }
+    .ffg-mockup-hint { margin: .8rem 0 0; font-family: var(--ffg-mono); font-size: .68rem; color: var(--ffg-mut); }
+    .ffg-mockup-hint strong { color: var(--ffg-acc); }
+
+    .ffg-ig-mock, .ffg-ff-mock { display: flex; align-items: center; gap: 1rem; padding: 1.1rem 1.2rem; border-radius: 16px; }
+    .ffg-ig-mock { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+    .ffg-ig-avatar, .ffg-ff-avatar {
+      flex-shrink: 0; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+    }
+    .ffg-ig-avatar { border-radius: 50%; background: linear-gradient(135deg,#8b5cf6,#ec4899,#f59e0b); }
+    .ffg-ig-name { margin: 0; font-size: 1.15rem; font-weight: 700; color: #fff; word-break: break-word; }
+    .ffg-ig-handle { margin: .1rem 0 .45rem; font-family: var(--ffg-mono); font-size: .72rem; color: var(--ffg-mut); }
+    .ffg-ig-stats { display: flex; gap: 1.1rem; font-size: .72rem; color: var(--ffg-mut); }
+    .ffg-ig-stats b { color: var(--ffg-fg); }
+    .ffg-ff-mock { background: linear-gradient(125deg, rgba(120,53,15,.65), rgba(30,20,6,.75)); border: 1px solid rgba(245,158,11,.4); box-shadow: 0 8px 28px rgba(245,158,11,.12); }
+    .ffg-ff-avatar { border-radius: 14px; background: linear-gradient(135deg,#f59e0b,#dc2626); }
+    .ffg-ff-name { margin: 0; font-size: 1.2rem; font-weight: 800; color: #fde68a; word-break: break-word; }
+    .ffg-ff-id { margin: .25rem 0 0; font-family: var(--ffg-mono); font-size: .7rem; color: rgba(253,230,138,.55); }
+
+    .ffg-bookmark-nudge {
+      display: none; align-items: center; justify-content: space-between; gap: .6rem; margin-bottom: 1.2rem;
+      background: rgba(214,255,122,.1); border: 1px solid rgba(214,255,122,.3); border-radius: 12px;
+      padding: .65rem .9rem; font-size: .82rem; font-weight: 600; color: var(--ffg-acc);
+    }
+    .ffg-bookmark-nudge.is-visible { display: flex; flex-wrap: wrap; }
+    .ffg-bookmark-nudge kbd { font-family: var(--ffg-mono); background: rgba(255,255,255,.1); padding: .1rem .35rem; border-radius: 4px; }
+    .ffg-bookmark-nudge button { border: 1px solid var(--ffg-line-2); background: rgba(255,255,255,.08); color: var(--ffg-fg); font-weight: 700; cursor: pointer; padding: .28rem .7rem; border-radius: 999px; font-size: .76rem; }
+
+    .ffg-toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translate(-50%,20px) scale(.96);
+      background: rgba(12,8,20,.94); border: 1px solid rgba(214,255,122,.35); color: #fff;
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      padding: .75rem 1.25rem; border-radius: 999px; font-weight: 700; font-size: .9rem;
+      opacity: 0; pointer-events: none; z-index: 200;
+      box-shadow: 0 20px 50px rgba(0,0,0,.55), 0 0 24px rgba(150,210,30,.25);
+      transition: opacity .25s ease, transform .25s cubic-bezier(.2,.8,.3,1);
+    }
+    .ffg-toast.is-visible { opacity: 1; transform: translate(-50%,0) scale(1); }
+
+    .ffg-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    /* ---- Article below the stage returns to the normal site surface ---- */
+    .ffg-page .primary-btn {
+      background: var(--ffg-grad); border: none;
+      box-shadow: 0 12px 28px -8px rgba(150,210,30,.6);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .ffg-page .primary-btn:hover { transform: translateY(-1px); box-shadow: 0 16px 32px -8px rgba(62,230,255,.55); }
+    .ffg-page table.ffg-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: .92rem; }
+    .ffg-page table.ffg-table caption { text-align: left; font-weight: 700; margin-bottom: .4rem; color: var(--text-muted); }
+    .ffg-page table.ffg-table th, .ffg-page table.ffg-table td { border: 1px solid var(--border); padding: .5rem .65rem; text-align: left; vertical-align: top; }
+    .ffg-page table.ffg-table th { background: rgba(150,210,30,.1); color: var(--text); font-weight: 800; }
+    .ffg-page .table-scroll { overflow-x: auto; max-width: 100%; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+
+    /* ---- SEO article: polished guide below the dark stage ---- */
+    .ffg-seo-section {
+      margin: 2rem 0 2.5rem;
+      padding: clamp(1.2rem, 2.5vw, 1.85rem);
+      border-radius: 26px;
+      border: 1px solid rgba(150,210,30,0.16);
+      background:
+        radial-gradient(ellipse 520px 280px at 8% 0%, rgba(198,255,61,.12), transparent 55%),
+        radial-gradient(ellipse 480px 260px at 92% 8%, rgba(62,230,255,.1), transparent 52%),
+        linear-gradient(145deg, rgba(255,255,255,0.99), rgba(250,253,242,0.72), rgba(240,252,255,0.55));
+      box-shadow: 0 24px 70px rgba(40,60,0,0.1);
+    }
+    [data-theme="dark"] .ffg-seo-section {
+      background:
+        radial-gradient(ellipse 520px 280px at 8% 0%, rgba(198,255,61,.14), transparent 55%),
+        linear-gradient(145deg, rgba(17, 24, 39, 0.96), rgba(16, 20, 12, 0.9));
+      border-color: rgba(148, 163, 184, 0.16);
+    }
+    .ffg-seo-section > h2 {
+      margin: 0 0 0.65rem;
+      font-size: clamp(1.45rem, 3vw, 1.95rem);
+      line-height: 1.15;
+      scroll-margin-top: 90px;
+      background: linear-gradient(135deg, #0b0d06 0%, #4b6b00 45%, #3ee6ff 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+    }
+    [data-theme="dark"] .ffg-seo-section > h2 {
+      background: linear-gradient(135deg, #f5f3ff, #d6ff7a 45%, #b8f6ff);
+      -webkit-background-clip: text; background-clip: text;
+    }
+    .ffg-seo-intro {
+      margin: 0 0 1rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      line-height: 1.75;
+      max-width: 72ch;
+    }
+    .ffg-seo-toc {
+      display: flex; flex-wrap: wrap; gap: 0.4rem;
+      margin: 0 0 1.25rem; padding: 0.85rem;
+      border-radius: 14px;
+      border: 1px solid rgba(150,210,30,0.14);
+      background: rgba(255,255,255,0.85);
+      list-style: none;
+    }
+    .ffg-seo-toc a {
+      font-size: 0.78rem; font-weight: 700; text-decoration: none;
+      color: #4b6b00;
+      padding: 0.32rem 0.65rem; border-radius: 999px;
+      border: 1px solid rgba(150,210,30,0.18);
+      background: #fff;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+    .ffg-seo-toc a:hover { border-color: #3ee6ff; color: #3ee6ff; }
+    .ffg-seo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin: 1rem 0 1.5rem;
+    }
+    .ffg-seo-box {
+      padding: 1rem;
+      border-radius: 16px;
+      border: 1px solid rgba(150,210,30,0.12);
+      background: linear-gradient(135deg, rgba(150,210,30,0.06), rgba(62,230,255,0.04));
+    }
+    .ffg-seo-box h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+      color: #4b6b00;
+    }
+    .ffg-seo-box p, .ffg-seo-box ul, .ffg-seo-box ol {
+      margin: 0;
+      color: var(--text-muted);
+      font-weight: 600;
+      line-height: 1.68;
+      font-size: 0.92rem;
+    }
+    .ffg-seo-box ul, .ffg-seo-box ol { padding-left: 1.15rem; }
+    .ffg-seo-section h3 {
+      margin: 1.75rem 0 0.55rem;
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      scroll-margin-top: 90px;
+      padding-left: 0.65rem;
+      border-left: 3px solid #8fc31a;
+    }
+    .ffg-seo-section > p, .ffg-seo-section > ul, .ffg-seo-section > ol {
+      color: var(--text-muted);
+      font-weight: 600;
+      line-height: 1.75;
+      max-width: 72ch;
+    }
+    .ffg-benefit-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.65rem;
+      margin: 1rem 0 1.5rem;
+    }
+    .ffg-benefit {
+      padding: 0.9rem 0.75rem;
+      border-radius: 14px;
+      text-align: center;
+      border: 1px solid rgba(150,210,30,0.14);
+      background: rgba(255,255,255,0.9);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .ffg-benefit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(150,210,30,.12);
+    }
+    .ffg-benefit span { display: block; font-size: 1.35rem; margin-bottom: 0.25rem; }
+    .ffg-benefit strong { display: block; font-size: 0.82rem; margin-bottom: 0.2rem; color: var(--text); }
+    .ffg-benefit p { margin: 0; font-size: 0.74rem; color: var(--text-muted); line-height: 1.45; font-weight: 600; }
+    .ffg-faq-list { display: grid; gap: 0.65rem; margin-top: 0.85rem; }
+    .ffg-seo-section .faq-item, .ffg-faq-item {
+      padding: 0.95rem 1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(150,210,30,0.12);
+      background: rgba(255,255,255,0.92);
+    }
+    .ffg-seo-section .faq-item summary, .ffg-faq-item summary {
+      cursor: pointer;
+      font-weight: 800;
+      color: #4b6b00;
+      font-size: 0.94rem;
+    }
+    .ffg-seo-section .faq-item p, .ffg-faq-item p {
+      margin: 0.45rem 0 0;
+      color: var(--text-muted);
+      font-weight: 600;
+      line-height: 1.65;
+      font-size: 0.92rem;
+    }
+    .ffg-seo-cta {
+      margin-top: 1.5rem;
+      padding: 1.35rem 1.1rem;
+      border-radius: 20px;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(150,210,30,0.14), rgba(62,230,255,0.12), rgba(245,158,11,0.08));
+      border: 1px solid rgba(150,210,30,0.22);
+      box-shadow: 0 12px 32px rgba(150,210,30,.1);
+    }
+    .ffg-seo-cta h2 { margin: 0 0 0.35rem; font-size: 1.25rem; border: none; padding: 0; }
+    .ffg-seo-cta p { margin: 0 0 0.85rem; max-width: none; text-align: center; }
+    [data-theme="dark"] .ffg-seo-box,
+    [data-theme="dark"] .ffg-benefit,
+    [data-theme="dark"] .ffg-seo-section .faq-item {
+      background: rgba(30, 41, 59, 0.88);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fc-copy, .ffg-toast, .fc-card, .ffg-preset-btn, .ffg-stage::after, .ffg-benefit { transition: none !important; animation: none !important; }
+    }
+
+    @media (max-width: 999px) {
+      /* Advanced controls collapse on tablet/phone so results stay reachable */
+      .ffg-adv:not([open]) .ffg-toolbar { display: none; }
+    }
+    @media (max-width: 640px) {
+      .ffg-stage { padding: .75rem 0 2rem; }
+      .ffg-crumb { margin-bottom: .7rem; font-size: .78rem; }
+      .ffg-eyebrow { margin-bottom: .5rem; font-size: .6rem; }
+      .ffg-page .ffg-stage h1 { font-size: 1.42rem; margin-bottom: .4rem; }
+      /* Trim the lead to two lines and drop the stat line so the input stays
+         inside the first viewport on a 360px phone. */
+      .ffg-lead { font-size: .84rem; margin-bottom: .8rem; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+      .ffg-stat-line { display: none; }
+      #ffgInput { min-height: 74px; font-size: 1.02rem; padding: .8rem .85rem; }
+      .ffg-symbol-row { margin-top: .5rem; }
+      .ffg-rail-divider { margin: .95rem 0; }
+      .ffg-cat-row { flex-wrap: nowrap; }
+      .ffg-trust-chip:nth-child(n+5) { display: none; }
+      .ffg-mockup-tab { font-size: .72rem; padding: .32rem .6rem; }
+      .ffg-ig-mock, .ffg-ff-mock { padding: .9rem; gap: .8rem; }
+      .ffg-ig-avatar, .ffg-ff-avatar { width: 46px; height: 46px; font-size: 1.2rem; }
+      .fc-copy { padding: .85rem 3.2rem .85rem 2.5rem; min-height: 78px; }
+      .fc-text { font-size: 1.18rem; }
+      .fc-copy-hint { display: none; }
+      .fc-card.is-copied::after { right: 3rem; top: .9rem; }
+      /* Sticky input — sits below site header, full-width backdrop */
+      .ffg-editor-wrap.is-sticky-mobile {
+        position: sticky;
+        top: calc(var(--header-overlap, 5.5rem) + 0.15rem);
+        z-index: 40;
+        padding: 0.55rem 0 0.75rem;
+        margin: 0 -0.25rem;
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+      }
+      .ffg-editor-wrap.is-sticky-mobile::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        z-index: -1;
+        background: rgba(8, 5, 14, 0.96);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(214,255,122,.2);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+        border-radius: 0 0 14px 14px;
+      }
+      .ffg-seo-grid, .ffg-benefit-row { grid-template-columns: 1fr; }
+      .ffg-seo-section { content-visibility: auto; contain-intrinsic-size: auto 520px; }
+    }
+
+    /* =====================================================================
+       Night market — the page's new skin.
+       A neon sign shop after dark: ink-black stage, one acid-lime tube and
+       one cyan tube for the accents, and the styled text itself as the
+       brightest thing on screen. The rules above keep the studio's inner
+       components (their violet/pink values were remapped to lime/cyan when
+       this block was written); this block sets the layout and the frame.
+       The article below the stage goes back to paper, with a darker lime
+       that reads on white.
+       ===================================================================== */
+    body.ffg-page {
+      --ffg-lime: #c6ff3d;
+      --ffg-lime-ink: #0b0d06;
+      --ffg-cyan-2: #3ee6ff;
+      --ffg-olive: #4b6b00;
+    }
+    [data-theme="dark"] body.ffg-page { --ffg-olive: #c6ff3d; }
+    .ffg-page .ffg-stage {
+      background:
+        radial-gradient(ellipse 820px 460px at 6% -10%, rgba(198,255,61,.16), transparent 60%),
+        radial-gradient(ellipse 700px 420px at 98% 2%, rgba(62,230,255,.14), transparent 56%),
+        linear-gradient(178deg, var(--ffg-ink) 0%, var(--ffg-ink-2) 45%, var(--ffg-ink-3) 100%);
+    }
+    /* a fine grid, like the pegboard behind a sign-maker's bench */
+    .ffg-page .ffg-stage::before {
+      opacity: .6;
+      background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    .ffg-page .ffg-stage::after { background: radial-gradient(circle, rgba(198,255,61,.12), transparent 68%); }
+    .container.ffg-main { width: min(1120px, calc(100% - 2rem)); }
+
+    /* ---------- top: cover, input, ad, studio ----------
+       Under 700px one column: cover, the input, the ad, then the preview,
+       the controls and the styles. From 700px the cover is a band on top
+       and the 300x250 sits beside the input — never above the tool. */
+    .ffg-top { display: grid; gap: 1rem; align-items: start; grid-template-areas: "cover" "input" "ad" "studio"; }
+    .ffg-top > * { min-width: 0; }
+    .ffg-cover { grid-area: cover; }
+    .ffg-inputcard { grid-area: input; }
+    .ffg-ad-zone { grid-area: ad; }
+    .ffg-top > .ffg-layout { grid-area: studio; }
+    @media (min-width: 700px) {
+      .ffg-top { grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "cover cover" "input ad" "studio studio"; column-gap: 1.1rem; }
+    }
+    /* One 300x250 at every width: inline-ads.js only shows .ta-inline-ad
+       below 1000px, so it is forced on here; data-unit="inline" sizes it. */
+    body.ffg-page .ffg-ad-zone { text-align: center; }
+    body.ffg-page .ffg-ad-zone .ta-inline-ad { display: block !important; margin: 0 auto !important; }
+    body.ffg-page .ffg-ad-zone .ta-ad-label { color: rgba(255,255,255,.5); }
+    @media (max-width: 340px) { .ffg-ad-zone { margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); } }
+
+    /* ---------- cover: a neon sign ---------- */
+    .ffg-cover {
+      position: relative; overflow: hidden; display: grid; gap: .8rem 1.6rem; align-items: center;
+      padding: 1.15rem 1.3rem; border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.07);
+    }
+    @media (min-width: 900px) { .ffg-cover { grid-template-columns: minmax(0, 1fr) auto; } }
+    .ffg-page .ffg-stage .ffg-cover h1 { margin: 0 0 .45rem; font-size: clamp(1.8rem, 1.1rem + 2.4vw, 2.6rem); }
+    .ffg-page .ffg-stage .ffg-cover h1 em { background: linear-gradient(100deg, #efffd0 0%, #c6ff3d 45%, #3ee6ff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: none; filter: drop-shadow(0 0 14px rgba(198,255,61,.35)); }
+    .ffg-cover .ffg-lead { margin: 0; max-width: 70ch; font-size: .92rem; }
+    .ffg-cover-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .7rem; margin: 0 0 .55rem; }
+    .ffg-cover-meta .ffg-eyebrow, .ffg-cover-meta .ffg-stat-line { margin: 0; }
+    .ffg-cover-meta .ffg-stat-line { padding: .3rem .65rem; }
+    .ffg-cover-meta .ffg-stat-line strong { font-size: .85rem; }
+    /* the site header's call-to-action in this page's neon */
+    .ffg-page .nav-tools-cta { background: linear-gradient(135deg, #c6ff3d, #3ee6ff) !important; color: #0b0d06 !important; box-shadow: 0 10px 24px -10px rgba(198,255,61,.6) !important; }
+    .ffg-page .ffg-mockup-tab { white-space: nowrap; }
+    /* the navbar is dark on this page in both themes, so the wordmark is too */
+    .ffg-page .brand-name { background: linear-gradient(135deg, #f7fbef 0%, #efffd0 45%, #b8f6ff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .ffg-page .brand-tagline { color: #a8b39b; }
+    /* the support strip sits on the dark stage in both themes */
+    .ffg-page .ffg-stage .ta-support { background: rgba(255,255,255,.045); border-color: rgba(198,255,61,.22); box-shadow: none; }
+    .ffg-page .ffg-stage .ta-support-text { color: #a8b39b; }
+    .ffg-page .ffg-stage .ta-support-text strong { color: #f7fbef; }
+    .ffg-page .ffg-stage .ta-support-ic { color: #c6ff3d; }
+    /* the sign: a word in two neon tubes, drawn with text-shadow; its text
+       is data-t, so it is decoration only */
+    .ffg-sign { position: relative; padding: .7rem 1.1rem .8rem; border-radius: 14px; border: 1px solid rgba(255,255,255,.12); background: #050605; box-shadow: inset 0 0 30px rgba(0,0,0,.8); text-align: center; }
+    .ffg-sign::before { content: attr(data-t); display: block; font: italic 700 2.1rem/1.05 "Brush Script MT", "Segoe Script", "Lucida Handwriting", cursive; color: #f4ffd9; text-shadow: 0 0 4px #c6ff3d, 0 0 12px #c6ff3d, 0 0 26px rgba(198,255,61,.8), 0 0 48px rgba(198,255,61,.45); }
+    .ffg-sign::after { content: attr(data-t2); display: block; margin-top: .35rem; font: 700 .7rem/1 var(--ffg-mono); letter-spacing: .32em; color: #d9fbff; text-shadow: 0 0 4px #3ee6ff, 0 0 12px #3ee6ff, 0 0 22px rgba(62,230,255,.7); }
+    @media (prefers-reduced-motion: no-preference) { .ffg-sign::before { animation: ffg-flicker 7s infinite; } }
+    @keyframes ffg-flicker { 0%, 91%, 94%, 100% { opacity: 1; } 92%, 93.5% { opacity: .45; } }
+
+    /* ---------- input card ---------- */
+    .ffg-inputcard {
+      display: grid; gap: 1rem; align-items: start; padding: 1.05rem 1.1rem 1.1rem; border-radius: 18px;
+      border: 1px solid rgba(198,255,61,.28);
+      background: linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.025));
+      box-shadow: var(--ffg-shadow), inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .ffg-in-label { margin: 0 0 .5rem; font-family: var(--ffg-mono); font-size: .64rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ffg-lime); }
+    .ffg-in-label::before { content: attr(data-t); }
+    @container ffgin (min-width: 640px) {
+      .ffg-inputcard-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+    }
+    .ffg-inputcard { container: ffgin / inline-size; }
+    .ffg-inputcard-grid { display: grid; gap: 1rem; align-items: start; min-width: 0; }
+    .ffg-inputcard-grid > * { min-width: 0; }
+    .ffg-inputcard .ffg-mockup { margin: 0; }
+    .ffg-page .ffg-editor-wrap { background: linear-gradient(135deg, #c6ff3d, #3ee6ff); box-shadow: 0 0 0 1px rgba(198,255,61,.15), 0 12px 30px -12px rgba(198,255,61,.45); }
+    .ffg-page #ffgInput:focus { box-shadow: inset 0 0 0 1px rgba(62,230,255,.45); }
+
+    /* ---------- studio: controls rail | styles ---------- */
+    @media (min-width: 1000px) {
+      .ffg-page .ffg-rail { top: calc(var(--header-overlap, 5.5rem) + .5rem); max-height: calc(100vh - var(--header-overlap, 5.5rem) - 1.2rem); }
+    }
+    .ffg-page .ffg-layout { margin-top: .2rem; }
+
+    /* buttons whose fill is now the lime/cyan tube take dark ink */
+    .ffg-page .ffg-preset-btn.is-active,
+    .ffg-page .ffg-mockup-tab.is-active,
+    .ffg-page .nav-links a.is-active,
+    .ffg-page .primary-btn { color: var(--ffg-lime-ink) !important; }
+    .ffg-page .primary-btn { box-shadow: 0 12px 28px -10px rgba(198,255,61,.55); }
+    .ffg-page .ffg-cat-chip[aria-pressed="true"] { background: rgba(198,255,61,.16); }
+
+    /* ---------- limits table (new) + the article: back on paper ---------- */
+    .ffg-limits { margin: 2rem 0 0; padding: clamp(1.1rem, 2.5vw, 1.7rem); border-radius: 18px; border: 1px solid var(--border); background: var(--surface); box-shadow: 0 18px 40px -30px rgba(10, 20, 0, .5); }
+    .ffg-limits h2 { margin: 0 0 .5rem; font-size: clamp(1.35rem, 2.8vw, 1.8rem); line-height: 1.2; }
+    .ffg-limits p { margin: 0 0 .9rem; color: var(--text-muted); font-weight: 600; line-height: 1.7; max-width: 72ch; }
+    .ffg-limits .ffg-table td:nth-child(2) { font-family: var(--ffg-mono); font-weight: 800; white-space: nowrap; }
+    .ffg-page table.ffg-table th { background: rgba(120,170,0,.1); }
+    .ffg-page .ffg-seo-section { border-color: rgba(90,130,0,.18); box-shadow: 0 24px 70px rgba(40,60,0,.08);
+      background: radial-gradient(ellipse 520px 280px at 8% 0%, rgba(198,255,61,.14), transparent 55%), radial-gradient(ellipse 480px 260px at 92% 8%, rgba(62,230,255,.1), transparent 52%), linear-gradient(145deg, #ffffff, #fbfdf5); }
+    [data-theme="dark"] .ffg-page .ffg-seo-section { background: radial-gradient(ellipse 520px 280px at 8% 0%, rgba(198,255,61,.08), transparent 55%), linear-gradient(145deg, #111410, #0c0f0b); border-color: rgba(198,255,61,.14); }
+    .ffg-page .ffg-seo-section > h2 { background: linear-gradient(120deg, #0b0d06 0%, #3d5a00 55%, #0e7490 100%); -webkit-background-clip: text; background-clip: text; }
+    [data-theme="dark"] .ffg-page .ffg-seo-section > h2 { background: linear-gradient(120deg, #f4ffd9, #c6ff3d 50%, #3ee6ff); -webkit-background-clip: text; background-clip: text; }
+    .ffg-page .ffg-seo-toc a, .ffg-page .ffg-seo-box h3, .ffg-page .ffg-seo-section .faq-item summary, .ffg-page .ffg-faq-item summary { color: var(--ffg-olive); }
+    .ffg-page .ffg-seo-toc a:hover { color: #0e7490; border-color: #0e7490; }
+    [data-theme="dark"] .ffg-page .ffg-seo-toc a:hover { color: #3ee6ff; border-color: #3ee6ff; }
+    [data-theme="dark"] .ffg-page .ffg-seo-toc, [data-theme="dark"] .ffg-page .ffg-seo-toc a { background: rgba(255,255,255,.04); }
+    .ffg-page .ffg-seo-section h3 { border-left-color: #8fc31a; }
+    .ffg-page .ffg-seo-box { background: linear-gradient(135deg, rgba(198,255,61,.1), rgba(62,230,255,.05)); }
+    .ffg-page .ffg-seo-cta { background: linear-gradient(135deg, rgba(198,255,61,.18), rgba(62,230,255,.12)); border-color: rgba(120,170,0,.3); }
+
+    /* ---------- smaller screens ---------- */
+    @media (max-width: 899px) { .ffg-cover .ffg-sign { display: none; } }
+    @media (max-width: 699px) {
+      /* phones: the cover keeps the headline, and the preview mock-up moves
+         after the ad — so the ad sits right under the input on the first
+         screen, and the styles follow. */
+      .ffg-top { display: flex; flex-direction: column; align-items: stretch; gap: .8rem; }
+      .ffg-inputcard { display: contents; }
+      .ffg-inputcard-grid { display: contents; }
+      .ffg-in-main { order: 2; padding: .85rem .85rem .8rem; border-radius: 16px; border: 1px solid rgba(198,255,61,.28); background: linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.025)); }
+      .ffg-cover { order: 1; padding: .85rem .95rem .9rem; }
+      .ffg-ad-zone { order: 3; }
+      .ffg-inputcard .ffg-mockup { order: 4; }
+      .ffg-top > .ffg-layout { order: 5; }
+      .ffg-cover-meta, .ffg-cover .ffg-lead { display: none; }
+      .ffg-page .ffg-stage .ffg-cover h1 { margin: 0; font-size: clamp(1.45rem, 7vw, 1.9rem); line-height: 1.1; }
+      .ffg-page .ffg-stage .ffg-cover h1 em { display: block; font-size: 1.28em; line-height: 1.05; }
+      .ffg-page #ffgInput { min-height: 64px; }
+      .ffg-in-label { display: none; }
+    }
+    @media (max-width: 559px) {
+      /* 10px gutters: a 320px phone then has the 300px its ads need */
+      body.ffg-page .container.ffg-main, body.ffg-page .ta-support { width: calc(100% - 20px); }
+      .ffg-page .ffg-crumb { display: none; }
+    }
+    /* the phone "sticky input" class no longer has a long parent to stick
+       within, so keep the field plain */
+    .ffg-page .ffg-editor-wrap.is-sticky-mobile { position: relative; top: auto; margin: 0; padding: 1.5px; z-index: auto; }
+    .ffg-page .ffg-editor-wrap.is-sticky-mobile::before { display: none; }
+  </style>
+
+  <meta name="theme-color" content="#07080a" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="author" content="ToolAdda" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+
+  <link rel="canonical" href="https://tooladda.online/text-tools/fancy-font-generator.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+  <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+  <link rel="manifest" href="/manifest.json" />
+
+  <meta property="og:title" content="Fancy Font & Stylish Text Generator | ToolAdda" />
+  <meta property="og:description" content="Turn plain text into 50 copy-paste Unicode styles — bold, cursive, gothic, bubble, glitch &amp; more — for Instagram, WhatsApp, Discord, Free Fire and BGMI." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tooladda.online/text-tools/fancy-font-generator.html" />
+  <meta property="og:site_name" content="ToolAdda" />
+  <meta property="og:image" content="https://tooladda.online/assets/images/og/text-tools-fancy-font-generator.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Fancy Font &amp; Stylish Text Generator — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="Fancy Font &amp; Stylish Text Generator — free online tool on ToolAdda, runs in your browser with no sign-up." />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Fancy Font & Stylish Text Generator | ToolAdda" />
+  <meta name="twitter:description" content="50 copy-paste Unicode text styles for Instagram, WhatsApp, Discord, Free Fire &amp; BGMI. Free, offline, instant." />
+  <meta name="twitter:image" content="https://tooladda.online/assets/images/og/text-tools-fancy-font-generator.jpg" />
+
+  <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/text-tools/fancy-font-generator.html",
+      "url": "https://tooladda.online/text-tools/fancy-font-generator.html",
+      "name": "Fancy Font & Stylish Text Generator | ToolAdda",
+      "description": "Generate 50 copy-paste Unicode text styles from plain text: bold, italic, cursive, gothic, bubble, upside-down, glitch, and decorated styles for Instagram, WhatsApp, Discord, Free Fire, and BGMI.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://tooladda.online/text-tools/fancy-font-generator.html#breadcrumb"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "ToolAdda",
+        "alternateName": [
+          "Tool Adda",
+          "Tools Adda",
+          "ToolsAdda",
+          "Tooladda",
+          "ToolAdda.online"
+        ],
+        "url": "https://tooladda.online/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tooladda.online/text-tools/fancy-font-generator.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Fancy Font Generator"
+        }
+      ]
+    },
+    {
+      "@type": "WebApplication",
+      "name": "ToolAdda Fancy Font & Stylish Text Generator",
+      "url": "https://tooladda.online/text-tools/fancy-font-generator.html",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any (browser-based)",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": "50 Unicode text styles, category filters, style search, platform presets for Instagram/Free Fire/Discord/WhatsApp/YouTube, favourites, recently copied, Zalgo intensity control, case and spacing controls, decoration wrappers, deep links, dark mode, keyboard navigation",
+      "browserRequirements": "Requires a modern browser with Clipboard API or execCommand fallback"
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to make fancy text with the ToolAdda generator",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Type your text",
+          "text": "Type or paste your name, bio, or nickname into the input box. A sample is pre-filled so you see real styled output immediately."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Browse or filter styles",
+          "text": "Scroll the list, tap a category chip (Bold, Cursive, Gothic, Bubble...), search by style name, or tap a platform preset like Instagram or Free Fire."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Tap to copy",
+          "text": "Tap any styled card. The text is copied to your clipboard instantly — no separate copy button needed."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Paste it anywhere",
+          "text": "Paste into your Instagram bio, WhatsApp status, Discord nickname, or game name field using your device's normal paste action."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I use the fancy font generator?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Type your text in the box at the top. Every style card below updates live - tap any card to copy that styled version instantly."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this fancy text generator free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, completely free with no signup and no limits."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are these real fonts?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No - they're Unicode characters that resemble bold, italic, or cursive letters, which is why they work in apps that don't support custom fonts."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does my fancy text show as boxes or question marks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Some styles use characters outside your device's font or outside the Basic Multilingual Plane, which a few older devices or systems don't render or accept. Try a different style."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will fancy fonts work in my Instagram bio?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — Instagram's bio and caption fields accept full Unicode text, so styled text pastes and displays correctly there."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use fancy text in my Instagram username?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No - usernames only allow letters, numbers, periods, and underscores; fancy styles work in your display name and bio instead."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I make a stylish name for Free Fire or BGMI?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use the Free Fire / BGMI preset button above the style list — it filters to styles that are popular and generally accepted in game nickname fields, then tap to copy and paste it into your in-game name field."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does fancy text work on WhatsApp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, WhatsApp renders standard Unicode text, so styled text works in your name, status, and chats."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work on Discord?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes for your server nickname/display name; Discord's global @username is restricted like Instagram's."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use fancy text on iPhone and Android?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, both platforms render Unicode text the same way since it's plain text, not an installed font — copy here and paste anywhere on either device."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to install an app or keyboard?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Everything runs in your browser — there's nothing to download or install."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use fancy text in my resume, email, or website?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We'd advise against it for body content — screen readers often can't read styled Unicode characters correctly, and it can look unprofessional or broken in some email clients and document editors. It's best kept to bios, nicknames, and social captions."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do some styles miss certain letters or numbers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A handful of Unicode style blocks were never fully completed with every letter, digit, or punctuation mark — where a character is missing, this tool falls back to the original plain character instead of breaking the output."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does fancy text work in other languages?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "These styles remap the Latin alphabet (A-Z, a-z) and digits 0-9. Non-Latin characters (Hindi, Arabic, Chinese, etc.) are passed through unchanged rather than broken."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my typed text stored or sent anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Every conversion happens locally in your browser with JavaScript. Nothing you type is uploaded to a server."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I add symbols and borders around my name?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, use the \"Wrap with symbols\" control to add decorative borders to every result."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will fancy text hurt my SEO or accessibility?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "If used in body content meant for everyone, yes - it can be unreadable to screen readers and won't match plain-text search. It's fine for bios and nicknames."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/text-tools/fancy-font-generator.html#webpage",
+      "url": "https://tooladda.online/text-tools/fancy-font-generator.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-26",
+      "dateModified": "2026-09-22",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="ffg-page">
+  <a class="skip-link" href="#ffgInput">Skip to fancy text generator</a>
+
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+        <a href="../privacy-policy.html">Privacy</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+            <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+            <path d="M3.1 16.9h10.8" />
+            <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+          </svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+        <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- ============ TOOL: full-bleed dark type studio ============ -->
+    <div class="ffg-stage">
+      <aside class="ta-support" aria-label="Support ToolAdda">
+        <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+        <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+      </aside>
+
+      <div class="container ffg-main">
+        <nav class="breadcrumb ffg-crumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span>/</span><a href="/">Text Tools</a><span>/</span><span aria-current="page">Fancy Font Generator</span>
+        </nav>
+
+        <!-- One grid (.ffg-top) places these. Under 700px: cover, input, ad,
+             then the preview, the controls and the styles. From 700px the
+             cover is a band on top and the ad sits beside the input — never
+             above the tool. -->
+        <div class="ffg-top">
+          <header class="ffg-cover">
+            <div>
+              <div class="ffg-cover-meta">
+              <p class="ffg-eyebrow">Fancy &amp; Stylish Text</p>
+              <p class="ffg-stat-line"><strong data-copy-total-display>0</strong> copied on this device</p>
+              </div>
+              <h1><span class="ffg-t1">Fancy Font &amp;</span> <em>Stylish Text</em> <span class="ffg-t3">Generator</span></h1>
+            <p class="ffg-lead">Type once, get <b><span data-style-count>50</span> copy-paste Unicode styles</b> — for your Instagram bio, WhatsApp, Discord, Free Fire or BGMI name.</p>
+            </div>
+            <div class="ffg-sign" data-t="Stylish" data-t2="COPY · PASTE" aria-hidden="true"></div>
+          </header>
+
+          <section class="ffg-inputcard" aria-label="Type your text">
+            <div class="ffg-inputcard-grid">
+              <div class="ffg-in-main">
+                <p class="ffg-in-label" data-t="Type your name or bio" aria-hidden="true"></p>
+                <div class="ffg-editor-wrap" data-editor-wrap>
+                  <label for="ffgInput" class="ffg-sr-only">Your text to convert into fancy styles</label>
+                  <textarea id="ffgInput" placeholder="Type your name or bio…" maxlength="300" spellcheck="false" aria-describedby="ffgCharCount"></textarea>
+                </div>
+
+                <div class="ffg-meta-row">
+                  <div class="ffg-meta-actions" role="list" aria-label="Character limit guide">
+                    <span id="ffgCharCount" role="listitem">0 characters</span>
+                    <span class="ffg-limit-chip" data-limit-chip="bio" role="listitem">BIO 150</span>
+                    <span class="ffg-limit-chip" data-limit-chip="username" role="listitem">USER 30</span>
+                    <span class="ffg-limit-chip" data-limit-chip="x" role="listitem">X 160</span>
+                  </div>
+                  <div class="ffg-meta-actions">
+                    <button type="button" class="secondary-btn" data-paste-btn>Paste</button>
+                    <button type="button" class="secondary-btn" id="ffgClearBtn">Clear</button>
+                  </div>
+                </div>
+
+                <div class="ffg-symbol-row" role="group" aria-label="Insert a symbol into your text">
+                  <button type="button" class="ffg-symbol-btn" data-insert-symbol="✨">✨</button>
+                  <button type="button" class="ffg-symbol-btn" data-insert-symbol="★">★</button>
+                  <button type="button" class="ffg-symbol-btn" data-insert-symbol="♡">♡</button>
+                  <button type="button" class="ffg-symbol-btn" data-insert-symbol="🔥">🔥</button>
+                  <button type="button" class="ffg-symbol-btn" data-insert-symbol="👑">👑</button>
+                  <button type="button" class="ffg-symbol-btn" data-insert-symbol="💎">💎</button>
+                  <button type="button" class="ffg-symbol-btn" data-insert-symbol="⚡">⚡</button>
+                  <button type="button" class="ffg-symbol-btn" data-insert-symbol="🌸">🌸</button>
+                </div>
+              </div>
+              <div class="ffg-mockup" aria-label="Live preview in context">
+                <div class="ffg-mockup-tabs" role="group" aria-label="Preview platform">
+                  <button type="button" class="ffg-mockup-tab is-active" data-mockup-tab="instagram" aria-pressed="true">📸 Instagram bio</button>
+                  <button type="button" class="ffg-mockup-tab" data-mockup-tab="freefire" aria-pressed="false">🎮 Free Fire nameplate</button>
+                </div>
+                <div class="ffg-mockup-stage" data-mockup-stage="instagram">
+                  <div class="ffg-ig-mock">
+                    <div class="ffg-ig-avatar" aria-hidden="true">🙂</div>
+                    <div>
+                      <p class="ffg-ig-name" data-mockup-text></p>
+                      <p class="ffg-ig-handle">@yourhandle</p>
+                      <div class="ffg-ig-stats"><span><b>128</b> posts</span><span><b>4.2k</b> followers</span><span><b>512</b> following</span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="ffg-mockup-stage hidden" data-mockup-stage="freefire">
+                  <div class="ffg-ff-mock">
+                    <div class="ffg-ff-avatar" aria-hidden="true">🔥</div>
+                    <div>
+                      <p class="ffg-ff-name" data-mockup-text-ff></p>
+                      <p class="ffg-ff-id">ID: 5023xxxxxx</p>
+                    </div>
+                  </div>
+                </div>
+                <p class="ffg-mockup-hint">Previewing <strong data-mockup-style-label>Script</strong> — filter or search to change it.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Ad: one 300x250 (see .ffg-ad-zone CSS) — beside the input from
+               700px, straight after it below that. -->
+          <div class="ffg-ad-zone">
+            <div class="ta-inline-ad" data-unit="inline"></div>
+          </div>
+
+          <div class="ffg-layout">
+            <!-- ---------- CONTROL RAIL ---------- -->
+            <aside class="ffg-rail">
+              <p class="ffg-controls-label">Popular for</p>
+              <div class="ffg-preset-row" role="group" aria-label="Filter styles for a specific platform">
+                <button type="button" class="ffg-preset-btn" data-preset="instagram">📸 Instagram</button>
+                <button type="button" class="ffg-preset-btn" data-preset="freefire">🎮 Free Fire</button>
+                <button type="button" class="ffg-preset-btn" data-preset="discord">💬 Discord</button>
+                <button type="button" class="ffg-preset-btn" data-preset="whatsapp">📱 WhatsApp</button>
+                <button type="button" class="ffg-preset-btn" data-preset="youtube">▶️ YouTube</button>
+              </div>
+              <p class="ffg-preset-note" data-preset-note><span data-preset-note-text></span> <button type="button" data-preset-clear>Show all</button></p>
+
+              <div class="ffg-rail-divider"></div>
+
+              <p class="ffg-controls-label">Find a style</p>
+              <div class="ffg-search-row">
+                <span class="ffg-search-icon" aria-hidden="true">🔍</span>
+                <label for="ffgStyleSearch" class="ffg-sr-only">Search styles by name</label>
+                <input type="search" id="ffgStyleSearch" placeholder="cursive, bold, glitch…" autocomplete="off" />
+              </div>
+              <div class="ffg-cat-row" role="group" aria-label="Filter by style category" data-cat-row></div>
+
+              <div class="ffg-rail-divider"></div>
+
+              <details class="ffg-adv" open>
+                <summary>Transform options</summary>
+                <div class="ffg-toolbar">
+                  <div class="ffg-toolbar-group">
+                    <label for="ffgCase">Case</label>
+                    <select id="ffgCase" data-case-select>
+                      <option value="normal">Normal</option>
+                      <option value="upper">UPPERCASE</option>
+                      <option value="lower">lowercase</option>
+                      <option value="title">Title Case</option>
+                      <option value="anti">aNtIcAsE</option>
+                    </select>
+                  </div>
+                  <div class="ffg-toolbar-group">
+                    <label for="ffgSpacing">Spacing</label>
+                    <select id="ffgSpacing" data-spacing-select>
+                      <option value="normal">Normal</option>
+                      <option value="wide">W i d e</option>
+                      <option value="extra">E  x  t  r  a</option>
+                    </select>
+                  </div>
+                  <div class="ffg-toolbar-group">
+                    <label for="ffgDecor">Wrap with symbols</label>
+                    <select id="ffgDecor" data-decor-select>
+                      <option value="none">None</option>
+                      <option value="sparkle">✧･ﾟ: text :･ﾟ✧</option>
+                      <option value="star">★彡 text 彡★</option>
+                      <option value="heart">❀ text ❀</option>
+                      <option value="brackets">『 text 』</option>
+                      <option value="dots">⋆.ೃ࿔ text ࿔｡⋆</option>
+                    </select>
+                  </div>
+                  <div class="ffg-toolbar-group">
+                    <label for="ffgZalgo">Glitch intensity</label>
+                    <select id="ffgZalgo" data-zalgo-select>
+                      <option value="1">Light</option>
+                      <option value="2">Medium</option>
+                      <option value="3">Heavy</option>
+                    </select>
+                  </div>
+                  <div class="ffg-toolbar-group">
+                    <button type="button" class="ffg-shuffle-btn" data-shuffle-btn>🎲 Surprise me</button>
+                  </div>
+                </div>
+              </details>
+
+              <div class="ffg-rail-divider"></div>
+
+              <div class="ffg-trust-strip" role="list" aria-label="Trust and privacy facts">
+                <span class="ffg-trust-chip" role="listitem"><i>🔒</i>In your browser</span>
+                <span class="ffg-trust-chip" role="listitem"><i>🚫</i>No signup</span>
+                <span class="ffg-trust-chip" role="listitem"><i>⚡</i>Instant copy</span>
+                <span class="ffg-trust-chip" role="listitem"><i>📴</i>Works offline</span>
+                <span class="ffg-trust-chip" role="listitem"><i data-style-count-icon>✨</i><span data-style-count-2>50</span>&nbsp;styles</span>
+                <span class="ffg-trust-chip" role="listitem"><i>🆓</i>Free forever</span>
+              </div>
+            </aside>
+
+            <!-- ---------- RESULTS CANVAS ---------- -->
+            <div class="ffg-results">
+              <div class="ffg-bookmark-nudge" data-bookmark-nudge role="status">
+                <span>🔖 Nice streak! Press <kbd>Ctrl/Cmd + D</kbd> to bookmark this page.</span>
+                <button type="button" data-bookmark-dismiss>Got it</button>
+              </div>
+
+              <div data-favorites-section class="hidden">
+                <div class="ffg-section-title-row"><h2 class="ffg-section-title">★ Favourites</h2></div>
+                <div class="ffg-grid" data-favorites-grid></div>
+              </div>
+              <div data-recents-section class="hidden">
+                <div class="ffg-section-title-row"><h2 class="ffg-section-title">🕓 Recently copied</h2></div>
+                <div class="ffg-grid" data-recents-grid></div>
+              </div>
+
+              <div class="ffg-section-title-row">
+                <h2 class="ffg-section-title" data-results-heading>All styles</h2>
+                <button type="button" class="ffg-copyall-btn" data-copyall-btn>Copy all visible</button>
+              </div>
+              <div class="ffg-grid" data-main-grid></div>
+              <p class="ffg-empty-note hidden" data-no-results>No styles match that search — try a different word.</p>
+
+              <p class="ffg-tip">Tip — double-click any row to copy a shareable link to that exact style and text.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div aria-live="polite" class="ffg-sr-only" data-live-announcer></div>
+
+      <!-- ================= SEO CONTENT ================= -->
+
+      <!-- ================= LIMITS (new) ================= -->
+      <section class="ffg-limits" aria-labelledby="ffg-limits-heading">
+        <h2 id="ffg-limits-heading">Name and Bio Character Limits by App</h2>
+        <p>Styled text still has to fit the box you paste it into. These are the usual limits for the places people use fancy names most. The chips under the text box track the first three as you type.</p>
+        <div class="table-scroll">
+          <table class="ffg-table">
+            <thead><tr><th scope="col">Where</th><th scope="col">Limit</th><th scope="col">Fancy text allowed?</th></tr></thead>
+            <tbody>
+              <tr><td>Instagram bio</td><td>150</td><td>Yes</td></tr>
+              <tr><td>Instagram username</td><td>30</td><td>No — letters, numbers, full stops and underscores only</td></tr>
+              <tr><td>X (Twitter) bio</td><td>160</td><td>Yes</td></tr>
+              <tr><td>X display name</td><td>50</td><td>Yes</td></tr>
+              <tr><td>TikTok bio</td><td>80</td><td>Yes</td></tr>
+              <tr><td>WhatsApp name</td><td>25</td><td>Yes</td></tr>
+              <tr><td>WhatsApp About</td><td>139</td><td>Yes</td></tr>
+              <tr><td>Discord About Me</td><td>190</td><td>Yes</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Most styled letters are stored as two units of code rather than one, so some apps count each one twice. If a name that looks short is rejected as too long, that is usually why — shorten it or mix in a few plain letters.</p>
+      </section>
+
+      <section class="ffg-seo-section section" aria-labelledby="ffg-content-heading">
+          <h2 id="ffg-content-heading">Fancy Font Generator — Complete Guide &amp; Unicode Text Styles</h2>
+          <p class="ffg-seo-intro">Turn plain text into <strong>50+ copy-paste Unicode styles</strong> for Instagram bios, WhatsApp statuses, Discord nicknames, Free Fire / BGMI names, and YouTube titles — free, instant, and private in your browser.</p>
+
+          <nav aria-label="Page contents">
+            <ul class="ffg-seo-toc">
+              <li><a href="#ffg-what-is">What is it?</a></li>
+              <li><a href="#ffg-how-unicode">Unicode</a></li>
+              <li><a href="#ffg-how-to">How to use</a></li>
+              <li><a href="#ffg-platforms">Platforms</a></li>
+              <li><a href="#ffg-compatibility">Compatibility</a></li>
+              <li><a href="#ffg-tips">Tips</a></li>
+              <li><a href="#ffg-faq">FAQ</a></li>
+            </ul>
+          </nav>
+
+          <div class="ffg-benefit-row">
+            <div class="ffg-benefit"><span>✨</span><strong>50+ styles</strong><p>Bold, cursive, gothic, bubble &amp; more</p></div>
+            <div class="ffg-benefit"><span>📋</span><strong>Tap to copy</strong><p>One tap copies any styled row</p></div>
+            <div class="ffg-benefit"><span>🔒</span><strong>100% private</strong><p>Runs locally — nothing uploaded</p></div>
+            <div class="ffg-benefit"><span>📱</span><strong>Works everywhere</strong><p>Instagram, WhatsApp, games</p></div>
+          </div>
+
+          <div class="ffg-seo-grid">
+            <article class="ffg-seo-box" id="ffg-what-is">
+              <h3>What is a fancy font generator?</h3>
+              <p>A fancy font generator turns plain text into stylized text you can copy and paste anywhere — Instagram bios, WhatsApp statuses, Discord nicknames, game names — without installing a new font or app. Type your name once and get dozens of ready-to-use variations instantly.</p>
+            </article>
+            <article class="ffg-seo-box" id="ffg-how-to">
+              <h3>How to use this tool</h3>
+              <ol>
+                <li>Type or paste your text in the box above.</li>
+                <li>Filter by category, search, or tap a platform preset.</li>
+                <li>Tap any styled card to copy instantly.</li>
+                <li>Paste into your bio, status, or nickname field.</li>
+              </ol>
+            </article>
+            <article class="ffg-seo-box" id="ffg-how-unicode">
+              <h3>These aren't real fonts</h3>
+              <p>This tool maps each letter to a <em>different Unicode character</em> that looks bold, italic, or cursive — from Mathematical Alphanumeric Symbols, Enclosed Alphanumerics, and related blocks. Because they're plain characters, they paste into any app that accepts text.</p>
+            </article>
+            <article class="ffg-seo-box">
+              <h3>Why choose ToolAdda?</h3>
+              <ul>
+                <li>50 styles with live preview &amp; platform mockups</li>
+                <li>Category filters, favourites, undo-friendly copy</li>
+                <li>Honest compatibility guidance per platform</li>
+                <li>Free forever — no signup, no watermark</li>
+              </ul>
+            </article>
+          </div>
+
+          <h3 id="ffg-platforms">Platform guides — Instagram, games, WhatsApp &amp; more</h3>
+          <p>Type your bio text here, pick a style, copy it, then paste into Instagram → Edit Profile → Bio. For Free Fire / BGMI, use the <strong>Free Fire preset</strong> above for safer nickname styles. WhatsApp, Discord, Facebook, and X all accept styled Unicode in display names, bios, and messages — but not in @handles or global usernames.</p>
+
+          <h3>All text styles explained</h3>
+          <div class="table-scroll">
+            <table class="ffg-table">
+              <caption>A sample of the available styles (not an exhaustive list — see the live tool above for all of them)</caption>
+              <thead><tr><th>Style family</th><th>Example</th><th>Built from</th></tr></thead>
+              <tbody>
+                <tr><td>Bold</td><td>𝐓𝐨𝐨𝐥𝐀𝐝𝐝𝐚</td><td>Mathematical Alphanumeric Symbols</td></tr>
+                <tr><td>Italic</td><td>𝘛𝘰𝘰𝘭𝘈𝘥𝘥𝘢</td><td>Mathematical Alphanumeric Symbols</td></tr>
+                <tr><td>Script / Cursive</td><td>𝒯𝑜𝑜𝓁𝒜𝒹𝒹𝒶</td><td>Mathematical Script</td></tr>
+                <tr><td>Gothic / Fraktur</td><td>𝔗𝔬𝔬𝔩𝔄𝔡𝔡𝔞</td><td>Mathematical Fraktur</td></tr>
+                <tr><td>Bubble</td><td>ⓉⓄⓄⓁⒶⒹⒹⒶ</td><td>Enclosed Alphanumerics</td></tr>
+                <tr><td>Square</td><td>🅃🄾🄾🄻🄰🄳🄳🄰</td><td>Enclosed Alphanumeric Supplement</td></tr>
+                <tr><td>Small Caps</td><td>ᴛᴏᴏʟᴀᴅᴅᴀ</td><td>IPA / Phonetic Extensions</td></tr>
+                <tr><td>Upside Down</td><td>ɐpplooʇ</td><td>Latin / IPA lookalikes, reversed</td></tr>
+                <tr><td>Strikethrough</td><td>T̶o̶o̶l̶A̶d̶d̶a̶</td><td>Combining Diacritical Marks</td></tr>
+                <tr><td>Glitch / Zalgo</td><td>T̸̢̛o̴͇͝o̶̅͜l̴̳̊A̷̘̚d̴̗͌d̶̙̿a̸͈̽</td><td>Stacked Combining Diacriticals</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 id="ffg-compatibility">Which platforms support which styles</h3>
+          <div class="table-scroll">
+            <table class="ffg-table">
+              <caption>General platform compatibility guide (platforms change their filters over time — always preview before committing to a permanent name)</caption>
+              <thead><tr><th>Field</th><th>Fancy Unicode styles</th><th>Notes</th></tr></thead>
+              <tbody>
+                <tr><td>Instagram bio / display name</td><td>✅ Full support</td><td>Any style works</td></tr>
+                <tr><td>Instagram @username</td><td>❌ Not supported</td><td>Letters, numbers, periods, underscores only</td></tr>
+                <tr><td>WhatsApp name / status</td><td>✅ Full support</td><td>Any style works</td></tr>
+                <tr><td>Discord nickname (per server)</td><td>✅ Full support</td><td>Any style works</td></tr>
+                <tr><td>Discord global @username</td><td>❌ Not supported</td><td>Restricted character set since the 2023 username change</td></tr>
+                <tr><td>Free Fire / BGMI in-game name</td><td>⚠️ Mostly supported</td><td>BMP-safe styles (small caps, bubble, upside-down) are the safest bet; heavier styles occasionally get rejected</td></tr>
+                <tr><td>Facebook / X name &amp; posts</td><td>✅ Full support</td><td>Any style works</td></tr>
+                <tr><td>YouTube channel name</td><td>✅ Full support</td><td>Keep video titles mostly plain-text for search matching</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Where you should NOT use fancy text (and why)</h3>
+          <p>This is the part most competitors skip, and it matters. Fancy Unicode text is genuinely great for a bio, a nickname, or a one-off caption — but it has real downsides you should know before using it more broadly:</p>
+          <ul>
+            <li><strong>Accessibility.</strong> Screen readers pronounce most styled Unicode characters letter by painful letter, or skip them entirely, because they're technically different characters, not styled versions of the same letter. A visually impaired visitor hearing "𝓗𝓮𝓵𝓵𝓸" read as "script h script e script l script l script o" (or silence) is a real, common failure — never use fancy text for content that needs to be genuinely readable by everyone.</li>
+            <li><strong>Searchability.</strong> Search engines and in-app search boxes match plain text. A bio, headline, or product title written entirely in stylish Unicode often won't match when someone searches your actual name or keyword, because "𝐇𝐞𝐥𝐥𝐨" is not the same string as "Hello" as far as a search index is concerned.</li>
+            <li><strong>SEO.</strong> The same logic applies to web content — page titles, headings, and body text in fancy Unicode can hurt how search engines parse and rank your page, since they don't reliably map back to the plain keyword you're targeting.</li>
+          </ul>
+          <p>Our honest advice: use fancy text where it's <em>decorative and optional</em> — bios, nicknames, captions, one-off social posts — and keep anything that needs to be read, searched, or understood by everyone (headings, resumes, official documents, accessible content) in plain text.</p>
+
+          <h3>Decorative symbols, borders, and aesthetic characters</h3>
+          <p>Beyond letter styling, this generator can wrap your styled text in symbol borders — sparkles, stars, hearts, brackets — using the "Wrap with symbols" control above the tool. These decorative wraps are especially popular for Instagram bios and gaming names, where a short symbol frame around a name reads as more polished than the name alone.</p>
+
+          <h3>Fancy text on Android vs iPhone vs Windows</h3>
+          <div class="table-scroll">
+            <table class="ffg-table">
+              <caption>Rendering support by operating system</caption>
+              <thead><tr><th>OS</th><th>Support</th><th>Notes</th></tr></thead>
+              <tbody>
+                <tr><td>Android (recent)</td><td>✅ Full</td><td>Modern Android ships fonts covering nearly all styles here</td></tr>
+                <tr><td>Android (older / budget devices)</td><td>⚠️ Partial</td><td>A few rarer symbol styles may show as boxes on very old or ultra-budget phones</td></tr>
+                <tr><td>iPhone / iPad (iOS)</td><td>✅ Full</td><td>Apple's system font covers essentially every style used here</td></tr>
+                <tr><td>Windows 10/11</td><td>✅ Full</td><td>Segoe UI covers the vast majority of these Unicode blocks</td></tr>
+                <tr><td>Older Windows / legacy browsers</td><td>⚠️ Partial</td><td>Rarer supplementary-plane characters may not render</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 id="ffg-tips">Tips for choosing a style that actually looks good</h3>
+          <ul>
+            <li>Match the vibe: script/cursive and decorated styles suit bios and aesthetics; bold and sans-serif suit anything meant to look clean and legible.</li>
+            <li>Test it where it'll live — paste it into the actual app before committing, since rendering can vary slightly by platform font.</li>
+            <li>Don't overdo combining-mark styles (strikethrough, underline, glitch) on long text — they get visually noisy fast.</li>
+            <li>For anything permanent (a game name, a username you'll keep for months), favour the safer, BMP-only styles flagged in the compatibility icons.</li>
+          </ul>
+
+          <h3>Privacy — everything runs in your browser</h3>
+          <p>Every character transformation happens locally with JavaScript the moment you type. Nothing you type is uploaded to a server, logged, or stored anywhere except your own browser's local storage — and only for the favourites and recents features, which stay on your device.</p>
+
+          <h3>Why choose our fancy font generator?</h3>
+          <p>Most fancy text sites are single-purpose: fast copy grids with almost no explanation, or content-heavy pages with a clunky tool. This page combines a fast, accessible, keyboard-friendly generator with genuine platform guidance (what actually works on Instagram vs. Discord vs. Free Fire), honest accessibility advice nobody else gives, and real Unicode depth — not just a wall of styled text.</p>
+
+          <h2 id="ffg-faq">Frequently asked questions</h2>
+          <div class="ffg-faq-list grid-2">
+            <details class="faq-item"><summary><strong>How do I use the fancy font generator?</strong></summary><p>Type your text in the box at the top. Every style card below updates live — tap any card to copy that styled version instantly.</p></details>
+            <details class="faq-item"><summary><strong>Is this fancy text generator free?</strong></summary><p>Yes, completely free with no signup and no limits.</p></details>
+            <details class="faq-item"><summary><strong>Are these real fonts?</strong></summary><p>No — they're Unicode characters that resemble bold, italic, or cursive letters, which is why they work in apps that don't support custom fonts.</p></details>
+            <details class="faq-item"><summary><strong>Why does my fancy text show as boxes or question marks?</strong></summary><p>Some styles use characters outside your device's font or outside the Basic Multilingual Plane, which a few older devices or systems don't render or accept. Try a different style.</p></details>
+            <details class="faq-item"><summary><strong>Will fancy fonts work in my Instagram bio?</strong></summary><p>Yes, Instagram's bio field accepts full Unicode text.</p></details>
+            <details class="faq-item"><summary><strong>Can I use fancy text in my Instagram username?</strong></summary><p>No — usernames only allow letters, numbers, periods, and underscores; fancy styles work in your display name and bio instead.</p></details>
+            <details class="faq-item"><summary><strong>How do I make a stylish name for Free Fire or BGMI?</strong></summary><p>Use the Free Fire / BGMI preset above the tool, then tap a card to copy and paste it into your in-game name field.</p></details>
+            <details class="faq-item"><summary><strong>Does fancy text work on WhatsApp?</strong></summary><p>Yes, WhatsApp renders standard Unicode text everywhere.</p></details>
+            <details class="faq-item"><summary><strong>Does it work on Discord?</strong></summary><p>Yes for your server nickname/display name; Discord's global @username is restricted like Instagram's.</p></details>
+            <details class="faq-item"><summary><strong>Can I use fancy text on iPhone and Android?</strong></summary><p>Yes, both render Unicode text the same way — copy here and paste on either device.</p></details>
+            <details class="faq-item"><summary><strong>Do I need to install an app or keyboard?</strong></summary><p>No, everything runs in your browser.</p></details>
+            <details class="faq-item"><summary><strong>Can I use fancy text in my resume, email, or website?</strong></summary><p>We'd advise against it for body content — it can break for screen readers and look unprofessional. Keep it to bios and captions.</p></details>
+            <details class="faq-item"><summary><strong>Why do some styles miss certain letters or numbers?</strong></summary><p>A few Unicode blocks were never completed with every character; missing ones fall back to plain text instead of breaking.</p></details>
+            <details class="faq-item"><summary><strong>Does fancy text work in other languages?</strong></summary><p>These styles remap A-Z and 0-9; non-Latin characters pass through unchanged.</p></details>
+            <details class="faq-item"><summary><strong>Is my typed text stored or sent anywhere?</strong></summary><p>No, everything happens locally in your browser.</p></details>
+            <details class="faq-item"><summary><strong>Can I add symbols and borders around my name?</strong></summary><p>Yes, use the "Wrap with symbols" control to add decorative borders to every result.</p></details>
+            <details class="faq-item"><summary><strong>Will fancy text hurt my SEO or accessibility?</strong></summary><p>If used in body content meant for everyone, yes — it can be unreadable to screen readers and won't match plain-text search. It's fine for bios and nicknames.</p></details>
+          </div>
+
+          <aside class="related-tools-section" style="margin-top:2rem" aria-label="Related text tools">
+            <div class="related-tools-section__header">
+              <div><p class="related-tools-eyebrow">Related tools</p><h2 class="related-tools-title">More text &amp; bio tools</h2></div>
+            </div>
+            <div class="related-tools-grid">
+              <a class="related-tool-card" href="../emoji-kaomoji-picker.html"><div class="related-tool-icon">😀</div><div><strong>Emoji &amp; Kaomoji Picker</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Add emoji &amp; kaomoji to your bio</span></div></a>
+              <a class="related-tool-card" href="case-converter.html"><div class="related-tool-icon">🔠</div><div><strong>Case Converter</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">UPPER, lower, Title Case text</span></div></a>
+              <a class="related-tool-card" href="character-counter.html"><div class="related-tool-icon">🔢</div><div><strong>Character Counter</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Check bio &amp; caption limits</span></div></a>
+              <a class="related-tool-card" href="text-sorter.html"><div class="related-tool-icon">↕️</div><div><strong>Text Sorter</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Sort and de-duplicate lines</span></div></a>
+            </div>
+          </aside>
+
+          <div class="ffg-seo-cta">
+            <h2>Ready to style your name?</h2>
+            <p>50 Unicode styles, zero signup, instant copy — paste into Instagram, WhatsApp, Discord, or your game name.</p>
+            <a class="primary-btn" href="#ffgInput">Generate fancy text now</a>
+          </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+      </div>
+      <div>
+        <h3>Explore</h3>
+        <div class="footer-links">
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../privacy-policy.html">Privacy Policy</a>
+          <a href="../terms.html">Terms</a>
+        </div>
+      </div>
+      <div>
+        <h3>Stay updated</h3>
+        <p>© <span data-year></span> ToolAdda. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="ffg-toast" data-toast></div>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      // ================= Unicode mapping engine =================
+      function mathAlpha(str, cfg) {
+        var upperStart = cfg.upperStart, lowerStart = cfg.lowerStart, digitStart = cfg.digitStart;
+        var upperEx = cfg.upperExceptions || {}, lowerEx = cfg.lowerExceptions || {};
+        var out = [];
+        Array.from(str).forEach(function (ch) {
+          var code = ch.codePointAt(0);
+          if (ch >= 'A' && ch <= 'Z') {
+            if (upperEx[ch]) { out.push(upperEx[ch]); return; }
+            if (upperStart == null) { out.push(ch); return; }
+            out.push(String.fromCodePoint(upperStart + (code - 65)));
+          } else if (ch >= 'a' && ch <= 'z') {
+            if (lowerEx[ch]) { out.push(lowerEx[ch]); return; }
+            if (lowerStart == null) { out.push(ch); return; }
+            out.push(String.fromCodePoint(lowerStart + (code - 97)));
+          } else if (ch >= '0' && ch <= '9') {
+            if (digitStart == null) { out.push(ch); return; }
+            out.push(String.fromCodePoint(digitStart + (code - 48)));
+          } else {
+            out.push(ch);
+          }
+        });
+        return out.join('');
+      }
+      function withCombining(str, mark) {
+        return str.split('\n').map(function (line) { return Array.from(line).map(function (ch) { return ch === ' ' ? ch : ch + mark; }).join(''); }).join('\n');
+      }
+      function wrap(str, left, right) { return left + ' ' + str + ' ' + right; }
+      function circledDigit(d) { return d === '0' ? '⓪' : String.fromCodePoint(0x2460 + (d.charCodeAt(0) - 49)); }
+      function toCircled(str) {
+        return Array.from(str).map(function (ch) {
+          if (ch >= '0' && ch <= '9') return circledDigit(ch);
+          if (ch >= 'A' && ch <= 'Z') return String.fromCodePoint(0x24B6 + (ch.charCodeAt(0) - 65));
+          if (ch >= 'a' && ch <= 'z') return String.fromCodePoint(0x24D0 + (ch.charCodeAt(0) - 97));
+          return ch;
+        }).join('');
+      }
+      function negCircledDigit(d) { return d === '0' ? '⓿' : String.fromCodePoint(0x2775 + (d.charCodeAt(0) - 48)); }
+      function toNegativeCircled(str) {
+        return Array.from(str).map(function (ch) {
+          if (ch >= '0' && ch <= '9') return negCircledDigit(ch);
+          var up = ch.toUpperCase();
+          if (up >= 'A' && up <= 'Z') return String.fromCodePoint(0x1F150 + (up.charCodeAt(0) - 65));
+          return ch;
+        }).join('');
+      }
+      function toSquared(str) {
+        return Array.from(str).map(function (ch) {
+          var up = ch.toUpperCase();
+          if (up >= 'A' && up <= 'Z') return String.fromCodePoint(0x1F130 + (up.charCodeAt(0) - 65));
+          return ch;
+        }).join('');
+      }
+      function toNegativeSquared(str) {
+        return Array.from(str).map(function (ch) {
+          var up = ch.toUpperCase();
+          if (up >= 'A' && up <= 'Z') return String.fromCodePoint(0x1F170 + (up.charCodeAt(0) - 65));
+          return ch;
+        }).join('');
+      }
+      function toFullwidth(str) {
+        return Array.from(str).map(function (ch) {
+          if (ch === ' ') return '　';
+          if (ch >= 'A' && ch <= 'Z') return String.fromCodePoint(0xFF21 + (ch.charCodeAt(0) - 65));
+          if (ch >= 'a' && ch <= 'z') return String.fromCodePoint(0xFF41 + (ch.charCodeAt(0) - 97));
+          if (ch >= '0' && ch <= '9') return String.fromCodePoint(0xFF10 + (ch.charCodeAt(0) - 48));
+          return ch;
+        }).join('');
+      }
+      var SUPER_MAP = { '0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹', a:'ᵃ',b:'ᵇ',c:'ᶜ',d:'ᵈ',e:'ᵉ',f:'ᶠ',g:'ᵍ',h:'ʰ',i:'ⁱ',j:'ʲ',k:'ᵏ',l:'ˡ', m:'ᵐ',n:'ⁿ',o:'ᵒ',p:'ᵖ',r:'ʳ',s:'ˢ',t:'ᵗ',u:'ᵘ',v:'ᵛ',w:'ʷ',x:'ˣ',y:'ʸ',z:'ᶻ', A:'ᴬ',B:'ᴮ',D:'ᴰ',E:'ᴱ',G:'ᴳ',H:'ᴴ',I:'ᴵ',J:'ᴶ',K:'ᴷ',L:'ᴸ',M:'ᴹ',N:'ᴺ', O:'ᴼ',P:'ᴾ',R:'ᴿ',T:'ᵀ',U:'ᵁ',V:'ⱽ',W:'ᵂ' };
+      var SUB_MAP = { '0':'₀','1':'₁','2':'₂','3':'₃','4':'₄','5':'₅','6':'₆','7':'₇','8':'₈','9':'₉', a:'ₐ',e:'ₑ',h:'ₕ',i:'ᵢ',j:'ⱼ',k:'ₖ',l:'ₗ',m:'ₘ',n:'ₙ',o:'ₒ',p:'ₚ',r:'ᵣ', s:'ₛ',t:'ₜ',u:'ᵤ',v:'ᵥ',x:'ₓ' };
+      var SMALLCAPS_MAP = { a:'ᴀ',b:'ʙ',c:'ᴄ',d:'ᴅ',e:'ᴇ',f:'ꜰ',g:'ɢ',h:'ʜ',i:'ɪ',j:'ᴊ',k:'ᴋ',l:'ʟ', m:'ᴍ',n:'ɴ',o:'ᴏ',p:'ᴘ',q:'ǫ',r:'ʀ',s:'s',t:'ᴛ',u:'ᴜ',v:'ᴠ',w:'ᴡ',x:'x',y:'ʏ',z:'ᴢ' };
+      var UPSIDE_MAP = { a:'ɐ',b:'q',c:'ɔ',d:'p',e:'ǝ',f:'ɟ',g:'ƃ',h:'ɥ',i:'ı',j:'ɾ',k:'ʞ',l:'l',m:'ɯ', n:'u',o:'o',p:'d',q:'b',r:'ɹ',s:'s',t:'ʇ',u:'n',v:'ʌ',w:'ʍ',x:'x',y:'ʎ',z:'z', A:'∀',B:'ᗺ',C:'Ɔ',D:'ᗡ',E:'Ǝ',F:'Ⅎ',G:'⅁',H:'H',I:'I',J:'ſ',K:'ʞ',L:'˥', M:'W',N:'N',O:'O',P:'Ԁ',Q:'Ò',R:'ᴚ',S:'S',T:'⊥',U:'∩',V:'Λ',W:'M',X:'X',Y:'⅄',Z:'Z', '0':'0','1':'Ɩ','2':'ᄅ','3':'Ɛ','4':'ㄣ','5':'5','6':'6','7':'ㄥ','8':'8','9':'6', '.':'˙',',':"'","'":',','"':',,','!':'¡','?':'¿','(':')',')':'(','[':']',']':'[','{':'}','}':'{','<':'>','>':'<','&':'⅋','_':'‾' };
+      var MIRROR_MAP = { b:'d', d:'b', p:'q', q:'p', S:'Ƨ', Z:'Ƹ', z:'ƹ', E:'Ǝ', N:'N', '3':'E' };
+      function toSuperscript(str) { return Array.from(str).map(function (ch) { return SUPER_MAP[ch] != null ? SUPER_MAP[ch] : ch; }).join(''); }
+      function toSubscript(str) { return Array.from(str).map(function (ch) { return SUB_MAP[ch] != null ? SUB_MAP[ch] : ch; }).join(''); }
+      function toSmallCaps(str) { return Array.from(str).map(function (ch) { var l = ch.toLowerCase(); return SMALLCAPS_MAP[l] != null ? SMALLCAPS_MAP[l] : ch; }).join(''); }
+      function toUpsideDown(str) {
+        return str.split('\n').map(function (line) { return Array.from(line).map(function (ch) { return UPSIDE_MAP[ch] != null ? UPSIDE_MAP[ch] : ch; }).reverse().join(''); }).join('\n');
+      }
+      function toMirrored(str) {
+        return str.split('\n').map(function (line) { return Array.from(line).map(function (ch) { return MIRROR_MAP[ch] != null ? MIRROR_MAP[ch] : ch; }).reverse().join(''); }).join('\n');
+      }
+      function toBubble(str) {
+        return Array.from(str).map(function (ch) {
+          var lower = ch.toLowerCase();
+          if (lower >= 'a' && lower <= 'z') return String.fromCodePoint(0x24D0 + (lower.charCodeAt(0) - 97));
+          if (ch >= '0' && ch <= '9') return circledDigit(ch);
+          return ch;
+        }).join('');
+      }
+      function toVaporwave(str) { return Array.from(str).map(function (ch) { return ch === ' ' ? '　　' : ch; }).join('　'); }
+
+      var ZALGO_UP = [0x0300,0x0301,0x0302,0x0303,0x0304,0x0306,0x0307,0x0308,0x030A,0x0313,0x0314];
+      var ZALGO_DOWN = [0x0316,0x0317,0x0318,0x0319,0x031C,0x031D,0x0320,0x0323,0x0324,0x0325,0x0329];
+      var ZALGO_MID = [0x0334,0x0335,0x0336,0x0337,0x0338];
+      function toZalgo(str, level) {
+        level = level || 1;
+        return str.split('\n').map(function (line) {
+          return Array.from(line).map(function (ch, idx) {
+            if (ch === ' ') return ch;
+            var seed = (ch.codePointAt(0) * 31 + idx * 17) >>> 0;
+            var marks = '';
+            var upCount = level, downCount = level;
+            for (var i = 0; i < upCount; i++) marks += String.fromCharCode(ZALGO_UP[(seed + i * 7) % ZALGO_UP.length]);
+            for (var j = 0; j < downCount; j++) marks += String.fromCharCode(ZALGO_DOWN[(seed + j * 11) % ZALGO_DOWN.length]);
+            if (level >= 3) marks += String.fromCharCode(ZALGO_MID[seed % ZALGO_MID.length]);
+            return ch + marks;
+          }).join('');
+        }).join('\n');
+      }
+
+      // ================= Style registry (50 styles) =================
+      var STYLES = [
+        { key: 'bold-serif', label: 'Bold', cats: ['bold'], nonBmp: true, fn: function (t) { return mathAlpha(t, { upperStart: 0x1D400, lowerStart: 0x1D41A, digitStart: 0x1D7CE }); } },
+        { key: 'italic-serif', label: 'Italic', cats: ['italic'], nonBmp: true, fn: function (t) { return mathAlpha(t, { upperStart: 0x1D434, lowerStart: 0x1D44E, lowerExceptions: { h: 'ℎ' } }); } },
+        { key: 'bold-italic-serif', label: 'Bold Italic', cats: ['bold','italic'], nonBmp: true, fn: function (t) { return mathAlpha(t, { upperStart: 0x1D468, lowerStart: 0x1D482 }); } },
+        { key: 'script', label: 'Script / Cursive', cats: ['script'], nonBmp: true, fn: function (t) { return mathAlpha(t, { upperStart: 0x1D49C, lowerStart: 0x1D4B6, upperExceptions: { B:'ℬ', E:'ℰ', F:'ℱ', H:'ℋ', I:'ℐ', L:'ℒ', M:'ℳ', R:'ℛ' }, lowerExceptions: { e:'ℯ', g:'ℊ', o:'ℴ' } }); } },
+        { key: 'bold-script', label: 'Bold Script', cats: ['script','bold'], nonBmp: true, fn: function (t) { return mathAlpha(t, { upperStart: 0x1D4D0, lowerStart: 0x1D4EA }); } },
+        { key: 'fraktur', label: 'Fraktur (Gothic)', cats: ['gothic'], nonBmp: true, fn: function (t) { return mathAlpha(t, { upperStart: 0x1D504, lowerStart: 0x1D51E, upperExceptions: { C:'ℭ', H:'ℌ', I:'ℑ', R:'ℜ', Z:'ℨ' } }); } },
+        { key: 'bold-fraktur', label: 'Bold Fraktur', cats: ['gothic','bold'], nonBmp: true, fn: function (t) { return mathAlpha(t, { upperStart: 0x1D56C, lowerStart: 0x1D586 }); } },
+        { key: 'double-struck', label: 'Double-Struck', cats: ['aesthetic'], nonBmp: true, fn: function (t) { return mathAlpha(t, { upperStart: 0x1D538, lowerStart: 0x1D552, digitStart: 0x1D7D8, upperExceptions: { C:'ℂ', H:'ℍ', N:'ℕ', P:'ℙ', Q:'ℚ', R:'ℝ', Z:'ℤ' } }); } },
+        { key: 'sans-serif', label: 'Sans-Serif', cats: [], nonBmp: true, fn: function (t) { return mathAlpha(t, { upperStart: 0x1D5A0, lowerStart: 0x1D5BA, digitStart: 0x1D7E2 }); } },
+        { key: 'sans-bold', label: 'Sans-Serif Bold', cats: ['bold'], nonBmp: true, fn: function (t) { return mathAlpha(t, { upperStart: 0x1D5D4, lowerStart: 0x1D5EE, digitStart: 0x1D7EC }); } },
+        { key: 'sans-italic', label: 'Sans-Serif Italic', cats: ['italic'], nonBmp: true, fn: function (t) { return mathAlpha(t, { upperStart: 0x1D608, lowerStart: 0x1D622 }); } },
+        { key: 'sans-bold-italic', label: 'Sans-Serif Bold Italic', cats: ['bold','italic'], nonBmp: true, fn: function (t) { return mathAlpha(t, { upperStart: 0x1D63C, lowerStart: 0x1D656 }); } },
+        { key: 'monospace', label: 'Monospace', cats: ['monospace'], nonBmp: true, fn: function (t) { return mathAlpha(t, { upperStart: 0x1D670, lowerStart: 0x1D68A, digitStart: 0x1D7F6 }); } },
+        { key: 'small-caps', label: 'Small Caps', cats: ['smallcaps'], nonBmp: false, fn: toSmallCaps },
+        { key: 'superscript', label: 'Superscript', cats: ['aesthetic'], nonBmp: false, fn: toSuperscript },
+        { key: 'subscript', label: 'Subscript', cats: ['aesthetic'], nonBmp: false, fn: toSubscript },
+        { key: 'circled', label: 'Circled', cats: ['bubble'], nonBmp: false, fn: toCircled },
+        { key: 'neg-circled', label: 'Negative Circled', cats: ['bubble'], nonBmp: true, fn: toNegativeCircled },
+        { key: 'squared', label: 'Squared', cats: ['square'], nonBmp: true, fn: toSquared },
+        { key: 'neg-squared', label: 'Negative Squared', cats: ['square'], nonBmp: true, fn: toNegativeSquared },
+        { key: 'fullwidth', label: 'Fullwidth', cats: ['aesthetic'], nonBmp: false, fn: toFullwidth },
+        { key: 'upside-down', label: 'Upside Down', cats: ['upsidedown'], nonBmp: false, fn: toUpsideDown },
+        { key: 'mirrored', label: 'Mirrored', cats: ['upsidedown'], nonBmp: false, fn: toMirrored },
+        { key: 'bubble', label: 'Bubble Text', cats: ['bubble'], nonBmp: false, fn: toBubble },
+        { key: 'strikethrough', label: 'Strikethrough', cats: ['strike'], nonBmp: false, fn: function (t) { return withCombining(t, '̶'); } },
+        { key: 'underline', label: 'Underline', cats: ['strike'], nonBmp: false, fn: function (t) { return withCombining(t, '̲'); } },
+        { key: 'slash', label: 'Slash-Through', cats: ['strike'], nonBmp: false, fn: function (t) { return withCombining(t, '̷'); } },
+        { key: 'dotted', label: 'Dotted', cats: ['strike'], nonBmp: false, fn: function (t) { return withCombining(t, '̇'); } },
+        { key: 'wavy-underline', label: 'Wavy Underline', cats: ['strike'], nonBmp: false, fn: function (t) { return withCombining(t, '̰'); } },
+        { key: 'zalgo', label: 'Zalgo / Glitch', cats: ['glitch'], nonBmp: false, dynamic: true, fn: function (t, ctx) { return toZalgo(t, ctx ? ctx.zalgoLevel : 1); } },
+        { key: 'corner-brackets', label: 'Corner Brackets', cats: ['decorated'], nonBmp: false, fn: function (t) { return wrap(t, '「', '」'); } },
+        { key: 'lenticular-brackets', label: 'Lenticular Brackets', cats: ['decorated'], nonBmp: false, fn: function (t) { return wrap(t, '【', '】'); } },
+        { key: 'angle-brackets', label: 'Angle Brackets', cats: ['decorated'], nonBmp: false, fn: function (t) { return wrap(t, '‹', '›'); } },
+        { key: 'wavy-border', label: 'Wavy Border', cats: ['decorated'], nonBmp: false, fn: function (t) { return wrap(t, '〜', '〜'); } },
+        { key: 'tilde-border', label: 'Tilde Border', cats: ['decorated'], nonBmp: false, fn: function (t) { return '~*~' + t + '~*~'; } },
+        { key: 'vaporwave', label: 'Vaporwave Spacing', cats: ['aesthetic'], nonBmp: false, fn: toVaporwave },
+        { key: 'sparkle', label: 'Sparkle Decorated', cats: ['decorated'], nonBmp: false, fn: function (t) { return wrap(t, '✨', '✨'); } },
+        { key: 'hearts', label: 'Hearts Decorated', cats: ['decorated'], nonBmp: false, fn: function (t) { return wrap(t, '💕', '💕'); } },
+        { key: 'arrow', label: 'Arrow Decorated', cats: ['decorated'], nonBmp: false, fn: function (t) { return wrap(t, '➤', '➤'); } },
+        { key: 'flower', label: 'Flower Decorated', cats: ['decorated'], nonBmp: false, fn: function (t) { return wrap(t, '🌸', '🌸'); } },
+        { key: 'fire', label: 'Fire Decorated', cats: ['decorated','gaming'], nonBmp: false, fn: function (t) { return wrap(t, '🔥', '🔥'); } },
+        { key: 'star', label: 'Star Decorated', cats: ['decorated','gaming'], nonBmp: false, fn: function (t) { return wrap(t, '⭐', '⭐'); } },
+        { key: 'crown', label: 'Crown Decorated', cats: ['decorated','gaming'], nonBmp: false, fn: function (t) { return wrap(t, '👑', '👑'); } },
+        { key: 'diamond', label: 'Diamond Decorated', cats: ['decorated','gaming'], nonBmp: false, fn: function (t) { return wrap(t, '💎', '💎'); } },
+        { key: 'lightning', label: 'Lightning Decorated', cats: ['decorated','gaming'], nonBmp: false, fn: function (t) { return wrap(t, '⚡', '⚡'); } },
+        { key: 'skull', label: 'Skull Decorated', cats: ['decorated','gaming'], nonBmp: false, fn: function (t) { return wrap(t, '💀', '💀'); } },
+        { key: 'moon', label: 'Moon Decorated', cats: ['decorated'], nonBmp: false, fn: function (t) { return wrap(t, '🌙', '🌙'); } },
+        { key: 'rose', label: 'Rose Decorated', cats: ['decorated'], nonBmp: false, fn: function (t) { return wrap(t, '🌹', '🌹'); } },
+        { key: 'dagger', label: 'Dagger Decorated', cats: ['decorated','gaming'], nonBmp: false, fn: function (t) { return wrap(t, '†', '†'); } },
+        { key: 'infinity', label: 'Infinity Decorated', cats: ['decorated'], nonBmp: false, fn: function (t) { return wrap(t, '∞', '∞'); } }
+      ];
+      var STYLE_BY_KEY = {};
+      STYLES.forEach(function (s) { STYLE_BY_KEY[s.key] = s; });
+
+      var CATEGORIES = [
+        { key: 'all', label: 'All styles' },
+        { key: 'bold', label: 'Bold' },
+        { key: 'italic', label: 'Italic' },
+        { key: 'script', label: 'Script/Cursive' },
+        { key: 'gothic', label: 'Gothic/Fraktur' },
+        { key: 'bubble', label: 'Bubble' },
+        { key: 'square', label: 'Square' },
+        { key: 'monospace', label: 'Monospace' },
+        { key: 'smallcaps', label: 'Small Caps' },
+        { key: 'upsidedown', label: 'Upside Down' },
+        { key: 'strike', label: 'Strikethrough' },
+        { key: 'aesthetic', label: 'Aesthetic' },
+        { key: 'glitch', label: 'Glitch/Zalgo' },
+        { key: 'decorated', label: 'Decorated' }
+      ];
+
+      // One hue per style family — used for the chip dot and each card's left
+      // accent bar so the list reads as organised rather than a flat grey wall.
+      var CATEGORY_COLORS = {
+        bold: '#f97316', italic: '#f59e0b', script: '#ec4899', gothic: '#7c3aed',
+        bubble: '#06b6d4', square: '#0ea5e9', monospace: '#10b981', smallcaps: '#8b5cf6',
+        upsidedown: '#ef4444', strike: '#64748b', aesthetic: '#d946ef', glitch: '#22c55e',
+        decorated: '#f43f5e', gaming: '#f43f5e'
+      };
+      function colorForStyle(style) { return CATEGORY_COLORS[style.cats[0]] || '#7c3aed'; }
+
+      var PRESETS = {
+        instagram: { label: 'Instagram Bio', keys: ['script','bold-script','italic-serif','bold-italic-serif','fraktur','small-caps','circled','bubble','vaporwave','sparkle','flower','fullwidth'] },
+        freefire: { label: 'Free Fire / BGMI', keys: ['fraktur','bold-fraktur','bold-script','zalgo','circled','squared','fire','crown','star','diamond','corner-brackets','lenticular-brackets','lightning','skull'] },
+        discord: { label: 'Discord', keys: ['bold-serif','italic-serif','script','monospace','small-caps','fullwidth','fraktur','sparkle'] },
+        whatsapp: { label: 'WhatsApp', keys: ['bold-serif','italic-serif','script','bold-italic-serif','small-caps','circled','bubble','fullwidth'] },
+        youtube: { label: 'YouTube', keys: ['bold-serif','sans-bold','monospace','small-caps','fullwidth','double-struck'] }
+      };
+
+      var DECOR_WRAPS = {
+        none: null,
+        sparkle: ['✧･ﾟ:', ':･ﾟ✧'],
+        star: ['★彡', '彡★'],
+        heart: ['❀', '❀'],
+        brackets: ['『', '』'],
+        dots: ['⋆.ೃ࿔', '࿔｡⋆']
+      };
+
+      // ================= DOM refs =================
+      var input = document.getElementById('ffgInput');
+      var editorWrap = document.querySelector('[data-editor-wrap]');
+      var charCount = document.getElementById('ffgCharCount');
+      var clearBtn = document.getElementById('ffgClearBtn');
+      var pasteBtn = document.querySelector('[data-paste-btn]');
+      var mainGrid = document.querySelector('[data-main-grid]');
+      var favSection = document.querySelector('[data-favorites-section]');
+      var favGrid = document.querySelector('[data-favorites-grid]');
+      var recentsSection = document.querySelector('[data-recents-section]');
+      var recentsGrid = document.querySelector('[data-recents-grid]');
+      var noResults = document.querySelector('[data-no-results]');
+      var resultsHeading = document.querySelector('[data-results-heading]');
+      var catRow = document.querySelector('[data-cat-row]');
+      var styleSearch = document.getElementById('ffgStyleSearch');
+      var caseSelect = document.querySelector('[data-case-select]');
+      var spacingSelect = document.querySelector('[data-spacing-select]');
+      var decorSelect = document.querySelector('[data-decor-select]');
+      var zalgoSelect = document.querySelector('[data-zalgo-select]');
+      var shuffleBtn = document.querySelector('[data-shuffle-btn]');
+      var presetBtns = Array.from(document.querySelectorAll('[data-preset]'));
+      var presetNote = document.querySelector('[data-preset-note]');
+      var presetNoteText = document.querySelector('[data-preset-note-text]');
+      var presetClearBtn = document.querySelector('[data-preset-clear]');
+      var toast = document.querySelector('[data-toast]');
+      var liveAnnouncer = document.querySelector('[data-live-announcer]');
+      var copyTotalDisplay = document.querySelector('[data-copy-total-display]');
+      var bookmarkNudge = document.querySelector('[data-bookmark-nudge]');
+      var styleCountEls = document.querySelectorAll('[data-style-count], [data-style-count-2]');
+
+      var STORAGE_FAVORITES = 'tooladda-ffg-favorites';
+      var STORAGE_RECENTS = 'tooladda-ffg-recents';
+      var STORAGE_COPYTOTAL = 'tooladda-ffg-copytotal';
+      function loadList(key) { try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) { return []; } }
+      function saveList(key, list) { try { localStorage.setItem(key, JSON.stringify(list)); } catch (e) {} }
+      function loadNum(key) { try { return parseInt(localStorage.getItem(key), 10) || 0; } catch (e) { return 0; } }
+      function saveNum(key, n) { try { localStorage.setItem(key, String(n)); } catch (e) {} }
+
+      var state = {
+        category: 'all',
+        preset: null,
+        search: '',
+        caseMode: 'normal',
+        spacing: 'normal',
+        decor: 'none',
+        zalgoLevel: 1,
+        favorites: loadList(STORAGE_FAVORITES),
+        recents: loadList(STORAGE_RECENTS),
+        copyTotal: loadNum(STORAGE_COPYTOTAL),
+        sessionCopies: 0,
+        builtCards: {}
+      };
+
+      Array.prototype.forEach.call(styleCountEls, function (el) { el.textContent = STYLES.length; });
+      copyTotalDisplay.textContent = state.copyTotal;
+
+      // ================= Text transforms =================
+      function applyCase(text, mode) {
+        if (mode === 'upper') return text.toUpperCase();
+        if (mode === 'lower') return text.toLowerCase();
+        if (mode === 'title') return text.replace(/\S+/g, function (w) { return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase(); });
+        if (mode === 'anti') {
+          var i = 0;
+          return text.replace(/[A-Za-z]/g, function (c) { var r = i % 2 === 0 ? c.toUpperCase() : c.toLowerCase(); i++; return r; });
+        }
+        return text;
+      }
+      function applySpacing(text, mode) {
+        if (mode === 'normal') return text;
+        var gap = mode === 'extra' ? '  ' : ' ';
+        return text.split('\n').map(function (line) { return Array.from(line).join(gap); }).join('\n');
+      }
+      function preprocessedText() {
+        var t = applyCase(input.value, state.caseMode);
+        t = applySpacing(t, state.spacing);
+        return t;
+      }
+      function renderStyleOutput(style) {
+        var text = preprocessedText();
+        if (!text) return '';
+        var out;
+        try { out = style.dynamic ? style.fn(text, state) : style.fn(text); } catch (err) { out = text; }
+        if (state.decor !== 'none' && DECOR_WRAPS[state.decor]) {
+          out = DECOR_WRAPS[state.decor][0] + ' ' + out + ' ' + DECOR_WRAPS[state.decor][1];
+        }
+        return out;
+      }
+
+      // ================= Card building =================
+      function slugify(name) { return (name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
+
+      function buildCard(style, idx) {
+        var card = document.createElement('div');
+        card.className = 'fc-card';
+        card.dataset.styleKey = style.key;
+        card.style.setProperty('--fc-accent', colorForStyle(style));
+
+        var copyBtn = document.createElement('button');
+        copyBtn.type = 'button';
+        copyBtn.className = 'fc-copy';
+        copyBtn.dataset.num = ('0' + ((idx || 0) + 1)).slice(-2);
+
+        var head = document.createElement('div');
+        head.className = 'fc-head';
+        var label = document.createElement('span');
+        label.className = 'fc-label';
+        label.textContent = style.label;
+        var compat = document.createElement('span');
+        compat.className = 'fc-compat';
+        compat.setAttribute('aria-hidden', 'true');
+        var gameOk = !style.nonBmp;
+        compat.innerHTML =
+          '<span class="is-ok" title="Works on Instagram">📸</span>' +
+          '<span class="is-ok" title="Works on WhatsApp">💬</span>' +
+          '<span class="' + (gameOk ? 'is-ok' : '') + '" title="' + (gameOk ? 'Generally safe for game names' : 'May be rejected/truncated in some game name fields') + '">🎮' + (gameOk ? '' : '⚠') + '</span>';
+        head.appendChild(label);
+        head.appendChild(compat);
+
+        var textEl = document.createElement('p');
+        textEl.className = 'fc-text';
+        textEl.setAttribute('aria-hidden', 'true');
+
+        var hint = document.createElement('span');
+        hint.className = 'fc-copy-hint';
+        hint.textContent = 'Click to copy';
+
+        copyBtn.appendChild(head);
+        copyBtn.appendChild(textEl);
+        copyBtn.appendChild(hint);
+
+        var favBtn = document.createElement('button');
+        favBtn.type = 'button';
+        favBtn.className = 'fc-fav';
+        favBtn.setAttribute('aria-pressed', state.favorites.indexOf(style.key) !== -1 ? 'true' : 'false');
+        favBtn.textContent = state.favorites.indexOf(style.key) !== -1 ? '★' : '☆';
+
+        card.appendChild(copyBtn);
+        card.appendChild(favBtn);
+        updateCardText(card, style);
+        return card;
+      }
+
+      function updateCardText(card, style) {
+        var out = renderStyleOutput(style);
+        var textEl = card.querySelector('.fc-text');
+        var copyBtn = card.querySelector('.fc-copy');
+        textEl.textContent = out;
+        var rawPreview = input.value.length > 40 ? input.value.slice(0, 40) + '…' : input.value;
+        copyBtn.setAttribute('aria-label', 'Copy "' + rawPreview + '" in ' + style.label + ' style');
+      }
+
+      function updateFavButton(card, style) {
+        var favBtn = card.querySelector('.fc-fav');
+        var isFav = state.favorites.indexOf(style.key) !== -1;
+        favBtn.setAttribute('aria-pressed', isFav ? 'true' : 'false');
+        favBtn.textContent = isFav ? '★' : '☆';
+        favBtn.setAttribute('aria-label', (isFav ? 'Remove ' : 'Add ') + style.label + (isFav ? ' from' : ' to') + ' favourites');
+      }
+
+      // ================= Filtering =================
+      function getFilteredStyles() {
+        var base;
+        if (state.preset && PRESETS[state.preset]) {
+          var keys = PRESETS[state.preset].keys;
+          base = STYLES.filter(function (s) { return keys.indexOf(s.key) !== -1; });
+        } else if (state.category === 'all') {
+          base = STYLES.slice();
+        } else {
+          base = STYLES.filter(function (s) { return s.cats.indexOf(state.category) !== -1; });
+        }
+        var q = state.search.trim().toLowerCase();
+        if (q) base = base.filter(function (s) { return s.label.toLowerCase().indexOf(q) !== -1; });
+        return base;
+      }
+
+      // ---- Mobile in-list ad (Adsterra 300x250, assets/js/inline-ads.js) ----
+      // Slot ek baar banta hai aur grid me 8th card ke baad rehta hai: re-render par sirf
+      // cards hatte/judte hain, slot ko hilaya nahi jata - iframe ko DOM me move karne se
+      // wo reload hota aur har search par naya impression girta. Desktop par slot CSS se
+      // chhupa rehta hai aur iframe banta hi nahi.
+      var AD_AFTER = 8;
+      var inlistAd = document.createElement('div');
+      inlistAd.className = 'ta-inline-ad';
+      if (window.TAInlineAd) window.TAInlineAd.fill(inlistAd);
+
+      // ---- Lazy/chunked rendering for the main grid ----
+      function renderMainGrid() {
+        Array.prototype.slice.call(mainGrid.children).forEach(function (el) {
+          if (el !== inlistAd) mainGrid.removeChild(el);
+        });
+        var list = getFilteredStyles();
+        noResults.classList.toggle('hidden', list.length > 0);
+        if (!inlistAd.parentNode) mainGrid.appendChild(inlistAd);
+        inlistAd.hidden = list.length === 0;
+        resultsHeading.textContent = state.preset ? PRESETS[state.preset].label + ' styles' : (state.category === 'all' ? 'All styles' : CATEGORIES.filter(function (c) { return c.key === state.category; })[0].label);
+        updateMockupPreview();
+        if (!list.length) return;
+
+        var index = 0;
+        var batchSize = 12;
+        var sentinel = document.createElement('div');
+        sentinel.className = 'ffg-sentinel';
+        var observer;
+        function renderBatch() {
+          var end = Math.min(list.length, index + batchSize);
+          var frag = document.createDocumentFragment();
+          var before = document.createDocumentFragment();
+          for (; index < end; index++) {
+            (index < AD_AFTER ? before : frag).appendChild(buildCard(list[index], index));
+          }
+          if (before.childNodes.length) mainGrid.insertBefore(before, inlistAd);
+          mainGrid.insertBefore(frag, sentinel);
+          if (index >= list.length) {
+            if (observer) observer.disconnect();
+            if (sentinel.parentNode) sentinel.parentNode.removeChild(sentinel);
+          }
+        }
+        mainGrid.appendChild(sentinel);
+        renderBatch();
+        if (index < list.length) {
+          observer = new IntersectionObserver(function (entries) { if (entries[0].isIntersecting) renderBatch(); }, { rootMargin: '400px' });
+          observer.observe(sentinel);
+        }
+      }
+
+      function renderFavorites() {
+        var items = state.favorites.map(function (k) { return STYLE_BY_KEY[k]; }).filter(Boolean);
+        favSection.classList.toggle('hidden', items.length === 0);
+        favGrid.innerHTML = '';
+        items.forEach(function (style, i) { favGrid.appendChild(buildCard(style, i)); });
+      }
+      function renderRecents() {
+        var items = state.recents.map(function (k) { return STYLE_BY_KEY[k]; }).filter(Boolean);
+        recentsSection.classList.toggle('hidden', items.length === 0);
+        recentsGrid.innerHTML = '';
+        items.forEach(function (style, i) { recentsGrid.appendChild(buildCard(style, i)); });
+      }
+
+      function refreshAllCardText() {
+        Array.prototype.forEach.call(document.querySelectorAll('.fc-card'), function (card) {
+          var style = STYLE_BY_KEY[card.dataset.styleKey];
+          if (style) updateCardText(card, style);
+        });
+        updateMockupPreview();
+      }
+
+      // ---- Platform mockup preview: shows the top currently-visible style in
+      // realistic context, since visual context is what actually sells a copy ----
+      function updateMockupPreview() {
+        var list = getFilteredStyles();
+        var style = list[0] || STYLE_BY_KEY['script'];
+        var out = renderStyleOutput(style) || (input.value || 'Your Name');
+        var igText = document.querySelector('[data-mockup-text]');
+        var ffText = document.querySelector('[data-mockup-text-ff]');
+        var label = document.querySelector('[data-mockup-style-label]');
+        if (igText) igText.textContent = out;
+        if (ffText) ffText.textContent = out;
+        if (label) label.textContent = style.label;
+      }
+
+      // ---- Debounced input handling ----
+      // 80ms: fast enough to feel instant (well under the ~100ms "instant" perception
+      // threshold) but coalesces bursts of keystrokes on slow Android devices so we
+      // don't run 50 style transforms per keypress while the user is still typing.
+      var DEBOUNCE_MS = 80;
+      function updateCharCount() {
+        var len = input.value.length;
+        charCount.textContent = len + ' character' + (len === 1 ? '' : 's');
+        setLimitChip('bio', len, 150);
+        setLimitChip('username', len, 30);
+        setLimitChip('x', len, 160);
+      }
+      function setLimitChip(name, len, limit) {
+        var chip = document.querySelector('[data-limit-chip="' + name + '"]');
+        if (!chip) return;
+        chip.classList.toggle('is-over', len > limit);
+        chip.classList.toggle('is-near', len <= limit && len >= limit - 15);
+      }
+      input.addEventListener('input', function () {
+        updateCharCount();
+        window.clearTimeout(input._debounce);
+        input._debounce = window.setTimeout(refreshAllCardText, DEBOUNCE_MS);
+      });
+
+      // ================= Copy / favourite / recents =================
+      function showToast(text) {
+        toast.textContent = text;
+        toast.classList.add('is-visible');
+        window.clearTimeout(toast._hideTimer);
+        toast._hideTimer = window.setTimeout(function () { toast.classList.remove('is-visible'); }, 1400);
+      }
+      function announce(text) { liveAnnouncer.textContent = text; }
+
+      function execCommandCopy(value) {
+        var temp = document.createElement('textarea');
+        temp.value = value; temp.style.position = 'fixed'; temp.style.left = '-9999px';
+        document.body.appendChild(temp); temp.select();
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+        document.body.removeChild(temp);
+        return ok ? Promise.resolve() : Promise.reject(new Error('execCommand copy failed'));
+      }
+      function copyToClipboard(value) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(value).catch(function () { return execCommandCopy(value); });
+        }
+        return execCommandCopy(value);
+      }
+
+      function bumpCopyTotal() {
+        state.copyTotal += 1;
+        state.sessionCopies += 1;
+        saveNum(STORAGE_COPYTOTAL, state.copyTotal);
+        copyTotalDisplay.textContent = state.copyTotal;
+        if (state.sessionCopies === 3 && !sessionStorage.getItem('tooladda-ffg-nudge-shown')) {
+          bookmarkNudge.classList.add('is-visible');
+          sessionStorage.setItem('tooladda-ffg-nudge-shown', '1');
+        }
+        if (navigator.vibrate) { try { navigator.vibrate(12); } catch (e) {} }
+      }
+
+      function addRecent(key) {
+        state.recents = [key].concat(state.recents.filter(function (k) { return k !== key; })).slice(0, 20);
+        saveList(STORAGE_RECENTS, state.recents);
+        renderRecents();
+      }
+
+      function handleCopyCard(card) {
+        var style = STYLE_BY_KEY[card.dataset.styleKey];
+        if (!style) return;
+        var textEl = card.querySelector('.fc-text');
+        var value = textEl.textContent;
+        if (!value) { showToast('Type something first'); return; }
+        copyToClipboard(value).then(function () {
+          showToast('Copied ' + style.label);
+          announce('Copied ' + style.label + ' style to clipboard');
+          card.classList.remove('is-copied'); void card.offsetWidth; card.classList.add('is-copied');
+          bumpCopyTotal();
+          addRecent(style.key);
+        }).catch(function () {
+          showToast('Copy failed — select and copy manually');
+        });
+      }
+
+      function handleFavToggle(card) {
+        var style = STYLE_BY_KEY[card.dataset.styleKey];
+        if (!style) return;
+        var isFav = state.favorites.indexOf(style.key) !== -1;
+        state.favorites = isFav ? state.favorites.filter(function (k) { return k !== style.key; }) : state.favorites.concat([style.key]);
+        saveList(STORAGE_FAVORITES, state.favorites);
+        showToast(isFav ? 'Removed from favourites' : 'Added to favourites');
+        renderFavorites();
+        Array.prototype.forEach.call(document.querySelectorAll('.fc-card[data-style-key="' + style.key + '"]'), function (c) { updateFavButton(c, style); });
+      }
+
+      function handleShareLink(card) {
+        var style = STYLE_BY_KEY[card.dataset.styleKey];
+        if (!style) return;
+        var url = location.origin + location.pathname + '?style=' + encodeURIComponent(style.key) + '&text=' + encodeURIComponent(input.value);
+        copyToClipboard(url).then(function () { showToast('Link copied'); });
+      }
+
+      // Event delegation: one listener per container instead of per-card, keeping
+      // input responsive even as the results list grows.
+      [mainGrid, favGrid, recentsGrid].forEach(function (container) {
+        container.addEventListener('click', function (event) {
+          var favBtn = event.target.closest('.fc-fav');
+          if (favBtn) { handleFavToggle(favBtn.closest('.fc-card')); return; }
+          var copyBtn = event.target.closest('.fc-copy');
+          if (copyBtn) { handleCopyCard(copyBtn.closest('.fc-card')); return; }
+        });
+        container.addEventListener('dblclick', function (event) {
+          var card = event.target.closest('.fc-card');
+          if (card) { event.preventDefault(); handleShareLink(card); }
+        });
+        var longPressTimer = null;
+        container.addEventListener('touchstart', function (event) {
+          var card = event.target.closest('.fc-card');
+          if (!card) return;
+          longPressTimer = window.setTimeout(function () { handleShareLink(card); }, 600);
+        }, { passive: true });
+        container.addEventListener('touchend', function () { window.clearTimeout(longPressTimer); });
+        container.addEventListener('touchmove', function () { window.clearTimeout(longPressTimer); });
+      });
+
+      // ================= Category chips =================
+      function renderCategoryChips() {
+        catRow.innerHTML = '';
+        CATEGORIES.forEach(function (cat) {
+          var chip = document.createElement('button');
+          chip.type = 'button';
+          chip.className = 'ffg-cat-chip';
+          if (cat.key !== 'all') {
+            chip.style.setProperty('--cat-color', CATEGORY_COLORS[cat.key] || '#7c3aed');
+            var dot = document.createElement('i');
+            chip.appendChild(dot);
+          }
+          chip.appendChild(document.createTextNode(cat.label));
+          chip.setAttribute('aria-pressed', (state.category === cat.key && !state.preset) ? 'true' : 'false');
+          chip.addEventListener('click', function () {
+            state.category = cat.key;
+            state.preset = null;
+            clearPresetUI();
+            renderCategoryChips();
+            renderMainGrid();
+          });
+          catRow.appendChild(chip);
+        });
+      }
+
+      // ================= Presets =================
+      function clearPresetUI() {
+        presetBtns.forEach(function (b) { b.classList.remove('is-active'); });
+        presetNote.classList.remove('is-visible');
+      }
+      presetBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var key = btn.dataset.preset;
+          state.preset = key;
+          state.category = 'all';
+          presetBtns.forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+          presetNoteText.textContent = 'Showing styles picked for ' + PRESETS[key].label + '.';
+          presetNote.classList.add('is-visible');
+          renderCategoryChips();
+          renderMainGrid();
+        });
+      });
+      presetClearBtn.addEventListener('click', function () {
+        state.preset = null;
+        state.category = 'all';
+        clearPresetUI();
+        renderCategoryChips();
+        renderMainGrid();
+      });
+
+      // ================= Search =================
+      styleSearch.addEventListener('input', function () {
+        window.clearTimeout(styleSearch._debounce);
+        styleSearch._debounce = window.setTimeout(function () {
+          state.search = styleSearch.value;
+          renderMainGrid();
+        }, 120);
+      });
+
+      // ================= Toolbar controls =================
+      caseSelect.addEventListener('change', function () { state.caseMode = caseSelect.value; refreshAllCardText(); });
+      spacingSelect.addEventListener('change', function () { state.spacing = spacingSelect.value; refreshAllCardText(); });
+      decorSelect.addEventListener('change', function () { state.decor = decorSelect.value; refreshAllCardText(); });
+      zalgoSelect.addEventListener('change', function () { state.zalgoLevel = parseInt(zalgoSelect.value, 10); refreshAllCardText(); });
+
+      shuffleBtn.addEventListener('click', function () {
+        var pool = STYLES;
+        var pick = pool[Math.floor(Math.random() * pool.length)];
+        state.preset = null; state.category = 'all'; state.search = ''; styleSearch.value = '';
+        clearPresetUI();
+        renderCategoryChips();
+        renderMainGrid();
+        window.setTimeout(function () {
+          var card = mainGrid.querySelector('.fc-card[data-style-key="' + pick.key + '"]');
+          if (card) {
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            card.classList.add('is-highlight');
+            window.setTimeout(function () { card.classList.remove('is-highlight'); }, 1700);
+          }
+        }, 60);
+      });
+
+      // ================= Clear / paste / symbol insert =================
+      clearBtn.addEventListener('click', function () { input.value = ''; input.focus(); updateCharCount(); refreshAllCardText(); });
+      pasteBtn.addEventListener('click', function () {
+        if (navigator.clipboard && navigator.clipboard.readText) {
+          navigator.clipboard.readText().then(function (text) {
+            input.value = text; updateCharCount(); refreshAllCardText();
+          }).catch(function () { input.focus(); });
+        } else { input.focus(); }
+      });
+      Array.prototype.forEach.call(document.querySelectorAll('[data-insert-symbol]'), function (btn) {
+        btn.addEventListener('click', function () {
+          var symbol = btn.dataset.insertSymbol;
+          var start = input.selectionStart || input.value.length;
+          var end = input.selectionEnd || input.value.length;
+          input.value = input.value.slice(0, start) + symbol + input.value.slice(end);
+          input.focus();
+          input.selectionStart = input.selectionEnd = start + symbol.length;
+          updateCharCount(); refreshAllCardText();
+        });
+      });
+
+      bookmarkNudge && document.querySelector('[data-bookmark-dismiss]').addEventListener('click', function () { bookmarkNudge.classList.remove('is-visible'); });
+
+      // ================= Platform mockup preview tabs =================
+      Array.prototype.forEach.call(document.querySelectorAll('[data-mockup-tab]'), function (btn) {
+        btn.addEventListener('click', function () {
+          var target = btn.dataset.mockupTab;
+          Array.prototype.forEach.call(document.querySelectorAll('[data-mockup-tab]'), function (b) {
+            b.classList.toggle('is-active', b === btn);
+            b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+          });
+          Array.prototype.forEach.call(document.querySelectorAll('[data-mockup-stage]'), function (s) {
+            s.classList.toggle('hidden', s.dataset.mockupStage !== target);
+          });
+        });
+      });
+
+      // ================= Bulk "copy all visible styles" export =================
+      var copyAllBtn = document.querySelector('[data-copyall-btn]');
+      copyAllBtn && copyAllBtn.addEventListener('click', function () {
+        var list = getFilteredStyles();
+        if (!list.length || !input.value.trim()) { showToast('Type something first'); return; }
+        var blob = list.map(function (s) { return s.label + ': ' + renderStyleOutput(s); }).join('\n');
+        copyToClipboard(blob).then(function () {
+          showToast('Copied ' + list.length + ' styles');
+          announce('Copied ' + list.length + ' styles to clipboard');
+          bumpCopyTotal();
+        }).catch(function () { showToast('Copy failed — select and copy manually'); });
+      });
+
+      // ================= Keyboard shortcuts =================
+      document.addEventListener('keydown', function (e) {
+        var isTyping = document.activeElement === input || document.activeElement === styleSearch;
+        if (e.key === '/' && !isTyping) { e.preventDefault(); input.focus(); return; }
+        if (e.key === 'Escape' && document.activeElement === input) { input.value = ''; updateCharCount(); refreshAllCardText(); input.blur(); }
+      });
+
+      // ================= Sticky mobile input =================
+      if (window.matchMedia && window.matchMedia('(max-width: 640px)').matches) {
+        editorWrap.classList.add('is-sticky-mobile');
+      }
+      // Collapse the transform options below the two-column breakpoint so the
+      // results list isn't pushed far down the single-column mobile stack.
+      if (window.matchMedia && window.matchMedia('(max-width: 999px)').matches) {
+        var advPanel = document.querySelector('.ffg-adv');
+        if (advPanel) advPanel.removeAttribute('open');
+      }
+      // Desktop-only autofocus — never steal the on-screen keyboard on mobile
+      if (window.matchMedia && window.matchMedia('(min-width: 768px)').matches) {
+        input.focus();
+      }
+
+      // ================= Deep link (?text=&style=) =================
+      function applyDeepLink() {
+        var params = new URLSearchParams(location.search);
+        var text = params.get('text');
+        var styleKey = params.get('style');
+        if (text) { input.value = text; }
+        if (styleKey && STYLE_BY_KEY[styleKey]) {
+          window.setTimeout(function () {
+            var card = mainGrid.querySelector('.fc-card[data-style-key="' + styleKey + '"]');
+            if (card) {
+              card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              card.classList.add('is-highlight');
+              window.setTimeout(function () { card.classList.remove('is-highlight'); }, 1700);
+            }
+          }, 150);
+        }
+      }
+
+      // ================= Init =================
+      input.value = 'Your Name';
+      updateCharCount();
+      renderCategoryChips();
+      renderMainGrid();
+      renderFavorites();
+      renderRecents();
+      applyDeepLink();
+    })();
+  </script>
+  <script src="../assets/js/side-ads.js" defer></script>
+  <script src="../assets/js/inline-ads.js" data-in-article defer></script>
+</body>
+</html>

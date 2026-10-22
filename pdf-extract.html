@@ -1,0 +1,2225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+  <title>Extract PDF Pages Online Free — PDF Page Extractor | ToolAdda</title>
+  <meta name="description" content="Extract pages from PDF free online. Click page thumbnails or type ranges like 1-3, 5, 8-10 to save selected pages as a new PDF. Odd/even, each page separately, no signup, no Adobe — 100% in your browser." />
+  <meta name="author" content="ToolAdda" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="theme-color" content="#2d6a4f" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0c120e" media="(prefers-color-scheme: dark)" />
+  <meta name="format-detection" content="telephone=no" />
+  <link rel="canonical" href="https://tooladda.online/pdf-extract.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+  <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Perf: the PDF engines are fetched only after a file is chosen, so warm the origin early but load nothing now -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+  <link rel="preload" as="style" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Extract PDF Pages Online Free — PDF Page Extractor" />
+  <meta property="og:description" content="Pick pages visually from thumbnails or type ranges like 1-3, 5, 8-10, then save them as one new PDF. Free, no signup, no Adobe, nothing uploaded." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tooladda.online/pdf-extract.html" />
+  <meta property="og:site_name" content="ToolAdda" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:image" content="https://tooladda.online/assets/images/og/pdf-extract.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Extract PDF Pages Online Free — PDF Page Extractor — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="Extract PDF Pages Online Free — PDF Page Extractor — free online tool on ToolAdda, runs in your browser with no sign-up." />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@tooladda" />
+  <meta name="twitter:title" content="Extract PDF Pages Online Free — PDF Page Extractor" />
+  <meta name="twitter:description" content="Select pages from thumbnails or type 1-3, 5, 8-10 and save them as a new PDF. Odd/even, each page separately. Free, private, no Adobe." />
+  <meta name="twitter:image" content="https://tooladda.online/assets/images/og/pdf-extract.jpg" />
+
+  <style>
+    /* ============ Above-the-fold critical styles first ============ */
+    .xp-shell{position:relative;padding:1.75rem 0 3rem;background:radial-gradient(circle at 10% 8%,rgba(79,70,229,.13),transparent 30%),radial-gradient(circle at 90% 12%,rgba(20,184,166,.13),transparent 27%),linear-gradient(150deg,#eef2ff 0%,#f8fafc 46%,#ecfeff 100%);overflow:hidden}
+    [data-theme="dark"] .xp-shell{background:radial-gradient(circle at 10% 8%,rgba(79,70,229,.2),transparent 32%),radial-gradient(circle at 90% 12%,rgba(20,184,166,.12),transparent 28%),linear-gradient(150deg,#0f172a 0%,#111827 52%,#0b1220 100%)}
+    .xp-wrap{max-width:1180px;margin:0 auto}
+    .xp-card{padding:clamp(1.1rem,2.6vw,1.85rem);border-radius:28px;border:1px solid rgba(148,163,184,.22);background:rgba(255,255,255,.86);backdrop-filter:blur(24px);box-shadow:0 24px 90px rgba(15,23,42,.12)}
+    [data-theme="dark"] .xp-card{background:rgba(15,23,42,.85);border-color:rgba(148,163,184,.18)}
+
+    .xp-badge{display:inline-flex;align-items:center;gap:.35rem;padding:.32rem .78rem;border-radius:999px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.6rem;background:linear-gradient(135deg,#4f46e5,#0f766e);color:#fff}
+    .xp-title{margin:0 0 .55rem;font-size:clamp(1.72rem,4.2vw,2.5rem);font-weight:900;line-height:1.13;letter-spacing:-.022em;background:linear-gradient(135deg,#1f2937,#4f46e5 60%,#0f766e);-webkit-background-clip:text;background-clip:text;color:transparent}
+    [data-theme="dark"] .xp-title{background:linear-gradient(135deg,#f8fafc,#a5b4fc 55%,#5eead4);-webkit-background-clip:text;background-clip:text}
+    .xp-lead{margin:0;color:var(--text-muted);line-height:1.66;max-width:70ch;font-size:clamp(.95rem,1.9vw,1.03rem)}
+
+    .xp-trust-row{display:flex;flex-wrap:wrap;gap:.4rem;margin:.95rem 0 0;padding:0;list-style:none}
+    .xp-trust-row li{display:inline-flex;align-items:center;gap:.32rem;font-size:.78rem;font-weight:700;color:var(--text-muted);background:var(--surface-strong);border:1px solid var(--border);border-radius:999px;padding:.33rem .72rem}
+    .xp-trust-row li b{color:var(--text);font-weight:800}
+    .xp-privacy{display:flex;align-items:flex-start;gap:.55rem;font-weight:700;color:#166534;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.24);border-radius:14px;padding:.65rem 1rem;margin:.95rem 0 0;font-size:.87rem;line-height:1.55}
+    [data-theme="dark"] .xp-privacy{color:#86efac}
+
+    /* ============ Steps ============ */
+    .xp-step{margin-top:1.4rem}
+    .xp-step-head{display:flex;align-items:flex-start;gap:.6rem;margin:0 0 .75rem}
+    .xp-step-num{flex:0 0 auto;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;font-weight:900;color:#fff;background:linear-gradient(135deg,#4f46e5,#0f766e)}
+    .xp-step-head h2{margin:0;font-size:1.02rem;font-weight:800;letter-spacing:-.01em}
+    .xp-step-hint{margin:.18rem 0 0;font-size:.84rem;color:var(--text-muted);line-height:1.5}
+
+    /* ============ Drop zone ============ */
+    .xp-drop{border:2px dashed rgba(79,70,229,.34);border-radius:22px;padding:clamp(1.6rem,4vw,2.6rem);text-align:center;background:radial-gradient(circle at 50% 0%,rgba(79,70,229,.06),transparent 58%),var(--surface-strong);cursor:pointer;transition:border-color .2s,background .2s,transform .15s,box-shadow .2s}
+    .xp-drop:hover,.xp-drop.is-drag,.xp-drop:focus-visible{border-color:#4f46e5;background:rgba(79,70,229,.06);outline:none;transform:translateY(-1px);box-shadow:0 12px 36px rgba(79,70,229,.12)}
+    .xp-drop.is-invalid{border-color:#dc2626;background:rgba(220,38,38,.06)}
+    .xp-drop-icon{font-size:2.7rem;line-height:1;margin-bottom:.5rem}
+    .xp-drop-title{margin:0 0 .3rem;font-weight:800;font-size:clamp(1rem,2.4vw,1.14rem)}
+    .xp-drop-sub{margin:0 0 .85rem;font-size:.87rem;color:var(--text-muted)}
+    .xp-drop-browse{border:none;border-radius:14px;padding:.7rem 1.5rem;font-family:inherit;font-weight:800;font-size:.94rem;color:#fff;cursor:pointer;background:linear-gradient(135deg,#4f46e5,#0f766e);box-shadow:0 10px 28px rgba(79,70,229,.26)}
+    .xp-drop-browse:hover{transform:translateY(-1px)}
+    .xp-drop-meta{margin:.85rem 0 0;font-size:.78rem;color:var(--text-muted)}
+
+    /* ============ File card ============ */
+    .xp-file{display:grid;grid-template-columns:auto 1fr auto;gap:.85rem;align-items:center;padding:.9rem 1rem;border-radius:18px;border:1px solid rgba(34,197,94,.4);background:var(--surface-strong)}
+    .xp-file-thumb{width:44px;height:56px;border-radius:8px;border:1px solid var(--border);background:#fff;display:block}
+    .xp-file-body{min-width:0}
+    .xp-file-name{margin:0;font-weight:800;font-size:.95rem;word-break:break-word;line-height:1.35}
+    .xp-file-meta{margin:.22rem 0 0;font-size:.8rem;color:var(--text-muted);display:flex;flex-wrap:wrap;gap:.5rem}
+    .xp-file-meta b{color:var(--text);font-weight:800}
+    .xp-file-ok{color:#15803d;font-weight:800}
+    [data-theme="dark"] .xp-file-ok{color:#4ade80}
+    .xp-file-remove{border:1px solid var(--border);background:var(--surface);border-radius:12px;width:2.3rem;height:2.3rem;cursor:pointer;font-size:1rem;color:var(--text);font-family:inherit;display:inline-flex;align-items:center;justify-content:center;gap:.4rem}
+    .xp-remove-txt{display:none;font-size:.85rem;font-weight:700}
+    .xp-file-remove:hover{border-color:#dc2626;color:#dc2626}
+
+    /* ============ Mode grid ============ */
+    .xp-modes{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
+    .xp-mode{position:relative;display:block;cursor:pointer}
+    .xp-mode input{position:absolute;opacity:0;width:1px;height:1px}
+    .xp-mode-face{display:block;height:100%;border:2px solid var(--border);border-radius:16px;padding:.75rem .85rem;background:var(--surface-strong);transition:border-color .18s,background .18s,box-shadow .18s}
+    .xp-mode:hover .xp-mode-face{border-color:#4f46e5}
+    .xp-mode input:focus-visible+.xp-mode-face{outline:3px solid #4f46e5;outline-offset:2px}
+    .xp-mode input:checked+.xp-mode-face{border-color:#4f46e5;background:rgba(79,70,229,.07);box-shadow:0 0 0 3px rgba(79,70,229,.12)}
+    .xp-mode-face strong{display:block;font-size:.89rem;font-weight:800;margin-bottom:.16rem}
+    .xp-mode-face span{display:block;font-size:.77rem;color:var(--text-muted);line-height:1.45}
+
+    /* ============ Selection toolbar ============ */
+    .xp-seltools{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin-bottom:.7rem}
+    .xp-chip{border:1px solid var(--border);background:var(--surface-strong);color:var(--text);font-family:inherit;font-size:.79rem;font-weight:700;padding:.4rem .8rem;border-radius:999px;cursor:pointer;white-space:nowrap;transition:border-color .18s,color .18s}
+    .xp-chip:hover{border-color:#4f46e5;color:#4f46e5}
+    .xp-chip[aria-pressed="true"]{background:#4f46e5;color:#fff;border-color:#4f46e5}
+    .xp-range-row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:flex-end;margin-bottom:.8rem}
+    .xp-field{flex:1 1 240px;min-width:0}
+    .xp-field label{display:block;font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--text-muted);margin-bottom:.32rem}
+    .xp-input{width:100%;min-height:2.7rem;border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:12px;padding:.6rem .85rem;font-size:.92rem;font-family:inherit;box-sizing:border-box}
+    .xp-input:focus{outline:none;border-color:#4f46e5;box-shadow:0 0 0 3px rgba(79,70,229,.13)}
+    .xp-input.is-invalid{border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.12)}
+    .xp-input-help{margin:.3rem 0 0;font-size:.76rem;color:var(--text-muted)}
+    .xp-input-help.is-error{color:#b91c1c;font-weight:700}
+    [data-theme="dark"] .xp-input-help.is-error{color:#fca5a5}
+
+    .xp-zoom{display:inline-flex;align-items:center;gap:.35rem;margin-left:auto}
+    .xp-zoom button{width:30px;height:30px;border-radius:9px;border:1px solid var(--border);background:var(--surface-strong);color:var(--text);font-weight:900;cursor:pointer;line-height:1;font-family:inherit}
+    .xp-zoom button:hover{border-color:#4f46e5;color:#4f46e5}
+    .xp-zoom output{font-size:.76rem;font-weight:800;min-width:52px;text-align:center;color:var(--text-muted)}
+
+    /* ============ Thumbnails ============ */
+    .xp-selbar{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;justify-content:space-between;padding:.6rem .85rem;border-radius:14px;background:rgba(79,70,229,.07);border:1px solid rgba(79,70,229,.18);margin-bottom:.7rem;font-size:.86rem;font-weight:700}
+    .xp-selbar b{color:#4338ca}
+    [data-theme="dark"] .xp-selbar b{color:#a5b4fc}
+    .xp-thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--xp-tw,124px),1fr));gap:.6rem;max-height:min(560px,70vh);overflow-y:auto;padding:.3rem;border:1px solid var(--border);border-radius:16px;background:var(--surface-strong)}
+    .xp-thumb{position:relative;border:2px solid var(--border);border-radius:12px;padding:0;background:var(--surface);cursor:pointer;overflow:hidden;text-align:left;font-family:inherit;transition:border-color .16s,box-shadow .16s,transform .16s}
+    .xp-thumb:hover{border-color:#818cf8;transform:translateY(-2px)}
+    .xp-thumb:focus-visible{outline:3px solid #4f46e5;outline-offset:2px}
+    .xp-thumb[aria-pressed="true"]{border-color:#4f46e5;box-shadow:0 0 0 3px rgba(79,70,229,.22)}
+    .xp-thumb-frame{aspect-ratio:3/4;background:#f1f5f9;display:grid;place-items:center;overflow:hidden}
+    [data-theme="dark"] .xp-thumb-frame{background:#1e293b}
+    .xp-thumb-frame canvas{display:block;width:100%;height:auto}
+    .xp-skel{width:100%;height:100%;background:linear-gradient(90deg,var(--border),var(--surface-strong),var(--border));background-size:200% 100%;animation:xpShimmer 1.25s linear infinite}
+    @keyframes xpShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    .xp-thumb-num{display:block;text-align:center;font-size:.74rem;font-weight:800;padding:.34rem;background:var(--surface);border-top:1px solid var(--border)}
+    .xp-thumb-tick{position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid var(--border);display:grid;place-items:center;font-size:.72rem;font-weight:900;color:transparent;transition:background .16s,border-color .16s,color .16s}
+    .xp-thumb[aria-pressed="true"] .xp-thumb-tick{background:#4f46e5;border-color:#4f46e5;color:#fff}
+    .xp-thumb-order{position:absolute;top:6px;left:6px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#0f766e;color:#fff;font-size:.68rem;font-weight:900;display:none;place-items:center}
+    .xp-thumb[aria-pressed="true"] .xp-thumb-order{display:grid}
+    .xp-thumb.is-hidden{display:none}
+
+    /* ============ Progress / actions ============ */
+    .xp-progress{margin:.9rem 0 0}
+    .xp-progress[hidden]{display:none}
+    .xp-progress-track{height:9px;border-radius:999px;background:var(--border);overflow:hidden}
+    .xp-progress-fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#4f46e5,#0d9488);transition:width .2s}
+    .xp-progress-text{margin:.42rem 0 0;font-size:.83rem;font-weight:700;color:var(--text-muted)}
+
+    .xp-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
+    .xp-btn-primary{flex:1 1 240px;border:none;border-radius:14px;min-height:3rem;padding:.75rem 1.5rem;font-family:inherit;font-weight:800;font-size:1rem;color:#fff;cursor:pointer;background:linear-gradient(135deg,#4f46e5,#0f766e);box-shadow:0 12px 30px rgba(79,70,229,.28);transition:transform .15s,box-shadow .15s}
+    .xp-btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 16px 38px rgba(79,70,229,.34)}
+    .xp-btn-primary:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+    .xp-btn-ghost{border:1px solid var(--border);background:var(--surface-strong);color:var(--text);font-family:inherit;font-weight:700;font-size:.9rem;padding:.7rem 1.2rem;border-radius:14px;cursor:pointer;min-height:3rem}
+    .xp-btn-ghost:hover{border-color:#4f46e5;color:#4f46e5}
+    .xp-reassure{width:100%;margin:.6rem 0 0;font-size:.8rem;color:var(--text-muted);display:flex;align-items:center;gap:.4rem}
+
+    .xp-msg{margin-top:.85rem;padding:.75rem .95rem;border-radius:12px;font-size:.89rem;font-weight:600;line-height:1.55;border:1px solid transparent}
+    .xp-msg[hidden]{display:none}
+    .xp-msg.error{background:rgba(220,38,38,.1);color:#991b1b;border-color:rgba(220,38,38,.24)}
+    .xp-msg.info{background:rgba(56,189,248,.1);color:#075985;border-color:rgba(56,189,248,.26)}
+    [data-theme="dark"] .xp-msg.error{color:#fca5a5}
+    [data-theme="dark"] .xp-msg.info{color:#7dd3fc}
+
+    /* ============ Success screen ============ */
+    .xp-done{text-align:center;padding:clamp(1.3rem,3vw,2rem);border-radius:22px;border:1px solid rgba(34,197,94,.3);background:linear-gradient(160deg,rgba(34,197,94,.1),rgba(13,148,136,.06))}
+    .xp-done-icon{font-size:2.6rem;line-height:1}
+    .xp-done h3{margin:.4rem 0 .3rem;font-size:clamp(1.1rem,2.6vw,1.4rem);font-weight:900}
+    .xp-done p{margin:0 auto 1rem;color:var(--text-muted);max-width:52ch;line-height:1.6}
+    .xp-done-file{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem .9rem;border-radius:12px;background:var(--surface-strong);border:1px solid var(--border);font-size:.85rem;font-weight:700;margin-bottom:1rem;max-width:100%;word-break:break-all}
+    .xp-done-actions{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center}
+    .xp-dl{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;border-radius:14px;min-height:3rem;padding:.75rem 1.7rem;font-weight:800;font-size:1rem;color:#fff;text-decoration:none;background:linear-gradient(135deg,#15803d,#0f766e);box-shadow:0 12px 30px rgba(21,128,61,.28)}
+    .xp-dl:hover{transform:translateY(-1px)}
+
+    /* ============ Sticky mobile bar ============ */
+    .xp-sticky{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:.6rem .9rem calc(.6rem + env(safe-area-inset-bottom));background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-top:1px solid var(--border);display:none;gap:.5rem;align-items:center}
+    [data-theme="dark"] .xp-sticky{background:rgba(15,23,42,.94)}
+    .xp-sticky span{font-size:.8rem;font-weight:800;color:var(--text-muted);white-space:nowrap}
+    .xp-sticky .xp-btn-primary{flex:1;min-height:2.85rem;font-size:.94rem;margin:0}
+
+    /* ============ Marketing sections ============ */
+    .xp-section{max-width:1180px;margin:2.1rem auto 0;padding:clamp(1.1rem,2.4vw,1.75rem);border-radius:26px;border:1px solid var(--border);background:var(--surface);box-shadow:var(--shadow)}
+    .xp-section>h2{margin-top:0;font-size:clamp(1.24rem,2.6vw,1.58rem);font-weight:900;letter-spacing:-.02em}
+    .xp-section h3{font-size:1.02rem;font-weight:800;margin:1.4rem 0 .45rem}
+    .xp-section h4{font-size:.94rem;font-weight:800;margin:1rem 0 .3rem}
+    .xp-section p,.xp-section li{line-height:1.75;color:var(--text-muted)}
+    .xp-section strong{color:var(--text)}
+    .xp-eyebrow{font-size:.73rem;font-weight:900;text-transform:uppercase;letter-spacing:.09em;color:#4f46e5;margin:0 0 .3rem}
+    [data-theme="dark"] .xp-eyebrow{color:#a5b4fc}
+
+    .xp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:.85rem;margin:1rem 0}
+    .xp-tile{border:1px solid var(--border);border-radius:18px;padding:1rem 1.1rem;background:var(--surface-strong)}
+    .xp-tile h3,.xp-tile h4{margin:.15rem 0 .38rem;font-size:.97rem;font-weight:800}
+    .xp-tile p{margin:0;font-size:.87rem;line-height:1.65}
+    .xp-tile-icon{font-size:1.4rem;line-height:1}
+
+    .xp-toc{display:flex;flex-wrap:wrap;gap:.38rem;padding:0;margin:.9rem 0 0;list-style:none}
+    .xp-toc a{font-size:.79rem;font-weight:700;border:1px solid var(--border);border-radius:999px;padding:.3rem .7rem;text-decoration:none;color:var(--text-muted);background:var(--surface-strong)}
+    .xp-toc a:hover{border-color:#4f46e5;color:#4f46e5}
+
+    .xp-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:14px;margin:1rem 0}
+    .xp-table{width:100%;border-collapse:collapse;font-size:.87rem}
+    .xp-table th,.xp-table td{padding:.6rem .7rem;border-bottom:1px solid var(--border);text-align:left}
+    .xp-table thead th{font-size:.73rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);font-weight:800;background:var(--surface-strong)}
+    .xp-table tbody th{font-weight:700;color:var(--text)}
+    .xp-table .yes{color:#15803d;font-weight:800}
+    .xp-table .no{color:#b91c1c;font-weight:800}
+    [data-theme="dark"] .xp-table .yes{color:#4ade80}
+    [data-theme="dark"] .xp-table .no{color:#f87171}
+    .xp-table .own{background:rgba(79,70,229,.08)}
+
+    .xp-faq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:.65rem;margin-top:1rem}
+    .xp-faq{border:1px solid var(--border);border-radius:14px;background:var(--surface-strong);padding:.15rem .95rem}
+    .xp-faq summary{cursor:pointer;font-weight:800;font-size:.92rem;padding:.75rem 0;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:.6rem}
+    .xp-faq summary::-webkit-details-marker{display:none}
+    .xp-faq summary::after{content:"+";font-size:1.2rem;font-weight:900;color:#4f46e5;flex:0 0 auto}
+    .xp-faq[open] summary::after{content:"−"}
+    .xp-faq summary:focus-visible{outline:3px solid #4f46e5;outline-offset:2px;border-radius:8px}
+    .xp-faq p{margin:0 0 .85rem;font-size:.87rem;line-height:1.7}
+
+    .xp-related{display:grid;grid-template-columns:repeat(auto-fit,minmax(184px,1fr));gap:.65rem;margin-top:1rem}
+    .xp-related a{display:flex;flex-direction:column;gap:.2rem;border:1px solid var(--border);border-radius:14px;padding:.85rem .95rem;background:var(--surface-strong);text-decoration:none;transition:border-color .18s,transform .18s}
+    .xp-related a:hover{border-color:#4f46e5;transform:translateY(-2px)}
+    .xp-related b{font-size:.91rem;color:var(--text);font-weight:800}
+    .xp-related span{font-size:.78rem;color:var(--text-muted);line-height:1.5}
+
+    .xp-cta{max-width:1180px;margin:2.1rem auto 0;padding:clamp(1.4rem,3vw,2.2rem);border-radius:26px;text-align:center;background:linear-gradient(135deg,#4f46e5,#0f766e);color:#fff}
+    .xp-cta h2{margin:0 0 .5rem;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:900;color:#fff}
+    .xp-cta p{margin:0 auto 1.1rem;max-width:60ch;color:rgba(255,255,255,.93);line-height:1.65}
+    .xp-cta a.btn{display:inline-block;background:#fff;color:#4338ca;font-weight:800;padding:.75rem 1.8rem;border-radius:999px;text-decoration:none;box-shadow:0 12px 30px rgba(0,0,0,.18)}
+    .xp-cta ul{list-style:none;padding:0;margin:1.1rem 0 0;display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;font-size:.82rem;font-weight:700;color:rgba(255,255,255,.93)}
+
+    .xp-sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+    /* ============ Responsive ============ */
+    @media (max-width:900px){.xp-modes{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:768px){
+      .xp-sticky.is-on{display:flex}
+      body.xp-has-sticky{padding-bottom:4.6rem}
+      .xp-actions .xp-btn-primary,.xp-actions .xp-btn-ghost{flex:1 1 100%}
+    }
+    @media (max-width:560px){
+      .xp-modes{grid-template-columns:1fr}
+      .xp-file{grid-template-columns:auto 1fr;grid-template-areas:"t b" "r r"}
+      .xp-file-remove{grid-area:r;width:100%;margin-top:.2rem}
+      .xp-remove-txt{display:inline}
+      .xp-zoom{margin-left:0;width:100%;justify-content:flex-end}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+      .xp-skel{animation:none;background:var(--border)}
+    }
+    @media print{.site-header,.site-footer,.xp-sticky,.xp-actions,.xp-seltools{display:none!important}}
+    @media (forced-colors:active){
+      .xp-mode input:checked+.xp-mode-face{border:3px solid Highlight}
+      .xp-thumb[aria-pressed="true"]{border:3px solid Highlight}
+      .xp-chip[aria-pressed="true"]{border:3px solid Highlight}
+    }
+    /* =====================================================================
+       Extract PDF Pages — "the cutting mat". Pages are laid out on a green
+       self-healing mat (12 mm grid, a ruler along the edge, the 45° guide
+       line) and the ones you pick are cut out along a dashed line. Mat green
+       #2d6a4f / #74c69d is the one accent; the mat's yellow ruler ink is
+       decoration only, and red keeps its meaning for errors. The rules
+       above are the previous design's; this block sets the palette, the
+       layout and the frame, and wins by coming last.
+       ===================================================================== */
+    body.xp-body {
+      --xm-page: #eef2ec;
+      --xm-card: #ffffff;
+      --xm-well: #f5f8f3;
+      --xm-line: rgba(22, 40, 30, .12);
+      --xm-line-2: rgba(22, 40, 30, .22);
+      --xm-ink: #16231b;
+      --xm-ink-2: #34463a;
+      --xm-mute: #5b6d60;
+      --xm-accent: #2d6a4f;
+      --xm-accent-hover: #1f4d39;
+      --xm-accent-ink: #ffffff;
+      --xm-accent-text: #2d6a4f;
+      --xm-accent-soft: rgba(45, 106, 79, .08);
+      --xm-ring: rgba(45, 106, 79, .32);
+      --xm-grid: rgba(45, 106, 79, .09);
+      --xm-mat: #2f6b50;
+      --xm-mat-line: rgba(232, 244, 235, .12);
+      --xm-mat-major: rgba(232, 244, 235, .24);
+      --xm-mat-ink: #f2d45c;
+      --xm-shadow: 0 1px 0 rgba(22, 40, 30, .05), 0 16px 36px -24px rgba(22, 40, 30, .5);
+      background: var(--xm-page);
+    }
+    [data-theme="dark"] body.xp-body {
+      --xm-page: #0c120e;
+      --xm-card: #141d17;
+      --xm-well: #101813;
+      --xm-line: rgba(226, 240, 230, .1);
+      --xm-line-2: rgba(226, 240, 230, .2);
+      --xm-ink: #e8f1ea;
+      --xm-ink-2: #c4d4c8;
+      --xm-mute: #93a697;
+      --xm-accent: #74c69d;
+      --xm-accent-hover: #95d5b2;
+      --xm-accent-ink: #0b2618;
+      --xm-accent-text: #74c69d;
+      --xm-accent-soft: rgba(116, 198, 157, .12);
+      --xm-ring: rgba(116, 198, 157, .42);
+      --xm-grid: rgba(116, 198, 157, .08);
+      --xm-mat: #1d4a36;
+      --xm-shadow: 0 1px 0 rgba(0, 0, 0, .4), 0 20px 44px -26px rgba(0, 0, 0, .9);
+    }
+    /* the site rules and the reused ones read these */
+    .xp-main { --accent: var(--xm-accent); --accent-soft: var(--xm-accent-soft); --text: var(--xm-ink); --text-muted: var(--xm-mute); --surface: var(--xm-card); --surface-strong: var(--xm-well); --border: var(--xm-line-2); }
+    .xp-body .xp-shell { padding: .6rem 0 3rem; overflow: visible; background: none; }
+    [data-theme="dark"] .xp-body .xp-shell { background: none; }
+    .xp-main .breadcrumb { margin: .35rem 0 .9rem; font-size: .86rem; color: var(--xm-mute); }
+    .xp-main .breadcrumb a { color: var(--xm-accent-text); font-weight: 700; }
+    #extract-tool, .xp-main [data-step-select], .xp-main [data-step-done] { scroll-margin-top: calc(var(--header-overlap, 5.5rem) + .75rem); }
+    .xp-main :is(.xp-btn-primary, .xp-btn-ghost, .xp-drop-browse, .xp-chip, .xp-zoom button, .xp-dl, .xp-file-remove, .xp-toc a, .xp-related a):focus-visible { outline: 3px solid var(--xm-ring); outline-offset: 2px; }
+
+    /* ---------- cover: the cutting mat ---------- */
+    .xp-cover {
+      position: relative; overflow: hidden; display: grid; gap: 1rem 1.8rem; align-items: center; margin: 0 0 1rem;
+      padding: 1.55rem 1.5rem 1.2rem; border-radius: 14px; color: #eef6f0;
+      background-color: var(--xm-mat);
+      background-image:
+        linear-gradient(var(--xm-mat-major) 1px, transparent 1px), linear-gradient(90deg, var(--xm-mat-major) 1px, transparent 1px),
+        linear-gradient(var(--xm-mat-line) 1px, transparent 1px), linear-gradient(90deg, var(--xm-mat-line) 1px, transparent 1px);
+      background-size: 60px 60px, 60px 60px, 12px 12px, 12px 12px;
+      background-position: -1px 11px, -1px 11px, -1px 11px, -1px 11px;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12), var(--xm-shadow);
+    }
+    /* the ruler along the top edge: a tick every 12px, a long yellow one every 60px */
+    .xp-cover::before {
+      content: ""; position: absolute; left: 0; right: 0; top: 0; height: 12px; pointer-events: none;
+      background:
+        repeating-linear-gradient(90deg, var(--xm-mat-ink) 0 1px, transparent 1px 60px) -1px 0 / 100% 12px no-repeat,
+        repeating-linear-gradient(90deg, rgba(232, 244, 235, .6) 0 1px, transparent 1px 12px) -1px 0 / 100% 6px no-repeat;
+      opacity: .85;
+    }
+    /* the 45° guide line every mat has */
+    .xp-cover::after {
+      content: ""; position: absolute; right: -40px; bottom: -40px; width: 260px; height: 260px; pointer-events: none;
+      background: linear-gradient(135deg, transparent calc(50% - .75px), rgba(242, 212, 92, .38) 50%, transparent calc(50% + .75px));
+    }
+    .xp-cover > * { position: relative; z-index: 1; }
+    @media (min-width: 900px) { .xp-cover { grid-template-columns: minmax(0, 1fr) auto; } }
+    .xp-main .xp-cover .xp-badge { margin: 0 0 .55rem; border-radius: 4px; background: rgba(0, 0, 0, .2); border: 1px solid rgba(242, 212, 92, .45); color: var(--xm-mat-ink); letter-spacing: .08em; }
+    .xp-main .xp-cover .xp-title { margin: 0; font-size: clamp(1.8rem, 1.05rem + 2.2vw, 2.55rem); line-height: 1.1; color: #f4faf5; background: none; -webkit-background-clip: border-box; background-clip: border-box; -webkit-text-fill-color: currentColor; }
+    [data-theme="dark"] .xp-main .xp-cover .xp-title { background: none; }
+    .xp-t1 { color: var(--xm-mat-ink); }
+    .xp-t2 { color: #f4faf5; }
+    .xp-cover-note { margin: .5rem 0 0; font-size: .93rem; color: rgba(238, 246, 240, .82); }
+    /* five pages on the mat, three of them cut out; every label is data-t */
+    .xp-cut { display: flex; align-items: flex-end; gap: .55rem; padding: .9rem .2rem .2rem; }
+    .xp-cut i { position: relative; flex: none; width: 40px; height: 52px; border-radius: 2px; background: #fbfdf9 linear-gradient(#cfd9d2, #cfd9d2) 7px 8px / 22px 3px no-repeat; box-shadow: 0 6px 12px -8px rgba(0, 0, 0, .7); }
+    .xp-cut i::before { content: ""; position: absolute; left: 7px; right: 7px; top: 15px; height: 17px; background: repeating-linear-gradient(#e2e9e4 0 2px, transparent 2px 5px); }
+    .xp-cut i::after { content: attr(data-t); position: absolute; left: 0; right: 0; bottom: 3px; text-align: center; font: 800 .62rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; color: #3b4d41; }
+    .xp-cut i.on { transform: translateY(-9px) rotate(-2deg); outline: 1.5px dashed var(--xm-mat-ink); outline-offset: 4px; }
+    .xp-cut i.on:nth-of-type(4) { transform: translateY(-9px) rotate(2deg); }
+    .xp-cut-arrow { align-self: center; margin: 0 .15rem; font: 800 1.1rem/1 ui-monospace, monospace; color: var(--xm-mat-ink); }
+    .xp-cut-arrow::before { content: attr(data-t); }
+    .xp-cut-out { position: relative; flex: none; width: 50px; height: 64px; border-radius: 2px; background: #fbfdf9; box-shadow: 4px -4px 0 -1px #e6ede8, 8px -8px 0 -2px #d3ddd6, 0 10px 18px -10px rgba(0, 0, 0, .8); }
+    .xp-cut-out::after { content: attr(data-t); position: absolute; left: 0; right: 0; bottom: 6px; text-align: center; font: 800 .56rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--xm-accent-hover); }
+    [data-theme="dark"] .xp-cut-out::after { color: #1f4d39; }
+    .xp-cut-out::before { content: "PDF"; position: absolute; left: 7px; top: 8px; padding: 1px 4px; border-radius: 2px; background: #2d6a4f; color: #fff; font: 900 .5rem/1.3 system-ui, sans-serif; letter-spacing: .06em; }
+
+    /* ---------- top: the tool grid ----------
+       Under 700px one column: step 1 (upload), the ad, then steps 2–3 once a
+       file is open. From 700px the 300x250 sits beside the tool and spans
+       every row — the ad is never above the tool, and nothing else lives
+       inside the grid, so it can stay sticky. */
+    .xp-top { display: grid; align-items: start; grid-template-areas: "up" "ad" "work"; }
+    .xp-top > * { min-width: 0; }
+    .xp-top > .xp-box--up { grid-area: up; }
+    .xp-ad-zone { grid-area: ad; margin: 1rem 0 0; }
+    .xp-work { grid-area: work; }
+    @media (min-width: 700px) {
+      .xp-top { grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "up ad" "work ad"; grid-template-rows: auto 1fr; column-gap: 1.1rem; }
+      .xp-ad-zone { margin: 0; position: sticky; top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+    }
+    /* One 300x250 at every width: inline-ads.js only shows .ta-inline-ad
+       below 1000px, so it is forced on here; data-unit="inline" sizes it. */
+    body.xp-body .xp-ad-zone { text-align: center; }
+    body.xp-body .xp-ad-zone .ta-inline-ad { display: block !important; margin: 0 auto !important; }
+    @media (max-width: 340px) { .xp-ad-zone { margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); } }
+
+    /* ---------- the step cards ---------- */
+    .xp-main .xp-top .xp-step { margin: 0; padding: 1rem 1.1rem 1.1rem; border-radius: 12px; border: 1px solid var(--xm-line); background: var(--xm-card); box-shadow: var(--xm-shadow); }
+    .xp-main .xp-work > .xp-step { margin-top: 1rem; }
+    .xp-main .xp-top .xp-box--up { border-top: 4px solid var(--xm-accent); }
+    .xp-main .xp-work > [data-step-done] { padding: 0; border: 0; background: none; box-shadow: none; }
+    .xp-main .xp-step-head { align-items: center; }
+    .xp-main .xp-step-num { width: 1.6rem; height: 1.6rem; border-radius: 4px; background: var(--xm-accent); color: var(--xm-accent-ink); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .xp-main .xp-step-head h2 { color: var(--xm-ink); }
+    .xp-main .xp-step-hint { color: var(--xm-mute); }
+
+    /* the drop zone is a small cutting mat */
+    .xp-main .xp-drop {
+      border: 2px dashed var(--xm-accent); border-radius: 10px; padding: clamp(1.3rem, 3.4vw, 2.1rem) 1rem;
+      background-color: var(--xm-well);
+      background-image: linear-gradient(var(--xm-grid) 1px, transparent 1px), linear-gradient(90deg, var(--xm-grid) 1px, transparent 1px);
+      background-size: 16px 16px;
+    }
+    .xp-main .xp-drop:hover, .xp-main .xp-drop.is-drag, .xp-main .xp-drop:focus-visible { border-color: var(--xm-accent-hover); background-color: var(--xm-accent-soft); box-shadow: 0 12px 30px -18px var(--xm-accent); }
+    .xp-main .xp-drop.is-invalid { border-color: #dc2626; background-color: rgba(220, 38, 38, .06); }
+    .xp-main .xp-drop-icon { display: inline-grid; place-items: center; width: 3.2rem; height: 3.2rem; margin-bottom: .55rem; border-radius: 10px; background: var(--xm-card); border: 1px solid var(--xm-line); font-size: 1.7rem; box-shadow: var(--xm-shadow); }
+    .xp-main .xp-drop-title { color: var(--xm-ink); }
+    .xp-main .xp-drop-browse { border-radius: 10px; background: var(--xm-accent); color: var(--xm-accent-ink); box-shadow: 0 10px 22px -12px var(--xm-accent); }
+    .xp-main .xp-drop-browse:hover { background: var(--xm-accent-hover); color: var(--xm-accent-ink); }
+    .xp-main .xp-file { border-color: var(--xm-accent); border-radius: 10px; background: var(--xm-well); }
+    .xp-main .xp-file-ok { color: var(--xm-accent-text); }
+
+    /* selection */
+    .xp-main .xp-input { border-radius: 10px; border-color: var(--xm-line-2); background: var(--xm-card); color: var(--xm-ink); }
+    .xp-main .xp-input:focus { border-color: var(--xm-accent); box-shadow: 0 0 0 3px var(--xm-accent-soft); }
+    .xp-main .xp-input.is-invalid { border-color: #dc2626; box-shadow: 0 0 0 3px rgba(220, 38, 38, .12); }
+    .xp-main .xp-chip { border-radius: 8px; background: var(--xm-card); border-color: var(--xm-line-2); }
+    .xp-main .xp-chip:hover { border-color: var(--xm-accent); color: var(--xm-accent-text); background: var(--xm-accent-soft); }
+    .xp-main .xp-chip[aria-pressed="true"] { background: var(--xm-accent); border-color: var(--xm-accent); color: var(--xm-accent-ink); }
+    .xp-main .xp-zoom button { border-radius: 8px; background: var(--xm-card); }
+    .xp-main .xp-zoom button:hover { border-color: var(--xm-accent); color: var(--xm-accent-text); }
+    .xp-main .xp-selbar { border-radius: 10px; background: var(--xm-accent-soft); border-color: var(--xm-line-2); border-left: 4px solid var(--xm-accent); }
+    .xp-main .xp-selbar b, [data-theme="dark"] .xp-main .xp-selbar b { color: var(--xm-accent-text); }
+    /* the pages lie on the mat */
+    .xp-main .xp-thumbs {
+      padding: .55rem; border-radius: 10px; border-color: var(--xm-line-2); background-color: var(--xm-well);
+      background-image: linear-gradient(var(--xm-grid) 1px, transparent 1px), linear-gradient(90deg, var(--xm-grid) 1px, transparent 1px);
+      background-size: 16px 16px; background-attachment: local;
+    }
+    .xp-main .xp-thumb { border-radius: 6px; border-color: var(--xm-line-2); background: var(--xm-card); }
+    .xp-main .xp-thumb:hover { border-color: var(--xm-accent); }
+    .xp-main .xp-thumb:focus-visible { outline: 3px solid var(--xm-ring); outline-offset: 2px; }
+    /* a picked page is "cut out": solid edge plus a dashed cut line around it */
+    .xp-main .xp-thumb[aria-pressed="true"] { border-color: var(--xm-accent); box-shadow: 0 0 0 3px var(--xm-card), 0 0 0 4.5px var(--xm-accent); }
+    .xp-main .xp-thumb[aria-pressed="true"] .xp-thumb-num { background: var(--xm-accent); color: var(--xm-accent-ink); border-top-color: var(--xm-accent); }
+    .xp-main .xp-thumb[aria-pressed="true"] .xp-thumb-tick { background: var(--xm-accent); border-color: var(--xm-accent); color: var(--xm-accent-ink); }
+    .xp-main .xp-thumb-order { border-radius: 4px; background: var(--xm-ink); color: var(--xm-card); }
+    .xp-main .xp-thumb-num { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+    /* output and actions */
+    .xp-main .xp-mode-face { border-radius: 10px; border-color: var(--xm-line-2); background: var(--xm-card); }
+    .xp-main .xp-mode:hover .xp-mode-face { border-color: var(--xm-accent); }
+    .xp-main .xp-mode input:focus-visible + .xp-mode-face { outline: 3px solid var(--xm-ring); }
+    .xp-main .xp-mode input:checked + .xp-mode-face { border-color: var(--xm-accent); background: var(--xm-accent-soft); box-shadow: 0 0 0 3px var(--xm-accent-soft); }
+    .xp-body .xp-btn-primary { border-radius: 10px; background: var(--xm-accent); color: var(--xm-accent-ink); box-shadow: 0 12px 26px -14px var(--xm-accent); }
+    .xp-body .xp-btn-primary:hover:not(:disabled) { background: var(--xm-accent-hover); color: var(--xm-accent-ink); box-shadow: 0 14px 30px -14px var(--xm-accent); }
+    .xp-main .xp-btn-ghost { border-radius: 10px; background: var(--xm-card); border-color: var(--xm-line-2); color: var(--xm-ink); }
+    .xp-main .xp-btn-ghost:hover { border-color: var(--xm-accent); color: var(--xm-accent-text); background: var(--xm-accent-soft); }
+    .xp-main .xp-progress-fill { background: repeating-linear-gradient(90deg, var(--xm-accent) 0 10px, var(--xm-accent-hover) 10px 12px); }
+    .xp-main .xp-done { border-radius: 12px; border: 1px solid var(--xm-accent); border-top-width: 4px; background: var(--xm-card); box-shadow: var(--xm-shadow); }
+    .xp-main .xp-done-file { border-radius: 8px; border-style: dashed; border-color: var(--xm-accent); background: var(--xm-accent-soft); }
+    .xp-main .xp-dl { border-radius: 10px; background: var(--xm-accent); color: var(--xm-accent-ink); box-shadow: 0 12px 26px -14px var(--xm-accent); }
+    .xp-main .xp-dl:hover { background: var(--xm-accent-hover); color: var(--xm-accent-ink); }
+    .xp-body .xp-sticky { background: var(--xm-card); border-top-color: var(--xm-line-2); }
+    [data-theme="dark"] .xp-body .xp-sticky { background: var(--xm-card); }
+
+    /* ---------- below the tool ---------- */
+    .xp-intro { display: grid; gap: .8rem 1.5rem; margin-top: 1.3rem; align-items: start; }
+    @media (min-width: 900px) { .xp-intro { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); } }
+    .xp-main .xp-intro .xp-lead { max-width: none; padding-left: .85rem; border-left: 3px solid var(--xm-accent); color: var(--xm-ink-2); }
+    .xp-main .xp-intro .xp-trust-row { margin: 0; }
+    .xp-main .xp-trust-row li { border-radius: 6px; background: var(--xm-card); border-color: var(--xm-line); }
+    .xp-main .xp-intro .xp-privacy { margin: .7rem 0 0; border-radius: 10px; color: var(--xm-ink-2); background: var(--xm-accent-soft); border-color: var(--xm-line-2); }
+
+    .xp-main .xp-section { max-width: none; margin-top: 1.6rem; border-radius: 12px; border-color: var(--xm-line); background: var(--xm-card); box-shadow: var(--xm-shadow); }
+    .xp-main .xp-section > h2 { display: flex; align-items: center; gap: .6rem; color: var(--xm-ink); }
+    /* each heading gets a ruler tab */
+    .xp-main .xp-section > h2::before { content: ""; flex: none; width: 18px; height: 18px; border-radius: 3px; background: var(--xm-accent) repeating-linear-gradient(90deg, rgba(255, 255, 255, .7) 0 1px, transparent 1px 4px) 0 0 / 100% 6px no-repeat; }
+    [data-theme="dark"] .xp-main .xp-section > h2::before { background: var(--xm-accent) repeating-linear-gradient(90deg, rgba(0, 0, 0, .55) 0 1px, transparent 1px 4px) 0 0 / 100% 6px no-repeat; }
+    .xp-main .xp-eyebrow, [data-theme="dark"] .xp-main .xp-eyebrow { color: var(--xm-accent-text); }
+    .xp-main .xp-tile, .xp-main .xp-faq, .xp-main .xp-related a { border-radius: 10px; border-color: var(--xm-line); background: var(--xm-well); }
+    .xp-main .xp-related a:hover { border-color: var(--xm-accent); }
+    .xp-main .xp-faq-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+    .xp-main .xp-related { grid-template-columns: repeat(auto-fit, minmax(min(100%, 184px), 1fr)); }
+    .xp-main .xp-toc a { border-radius: 6px; }
+    .xp-main .xp-toc a:hover { border-color: var(--xm-accent); color: var(--xm-accent-text); }
+    .xp-main .xp-section :is(p, li:not(.xp-toc li)) > a { color: var(--xm-accent-text); font-weight: 700; }
+    .xp-main .xp-faq summary::after { color: var(--xm-accent-text); }
+    .xp-main .xp-faq summary:focus-visible { outline: 3px solid var(--xm-ring); }
+    .xp-main .xp-table-wrap { border-radius: 10px; }
+    .xp-main .xp-table .own { background: var(--xm-accent-soft); }
+    .xp-main .xp-cta {
+      max-width: none; margin-top: 1.6rem; border-radius: 14px; color: #eef6f0; background-color: var(--xm-mat);
+      background-image: linear-gradient(var(--xm-mat-line) 1px, transparent 1px), linear-gradient(90deg, var(--xm-mat-line) 1px, transparent 1px);
+      background-size: 12px 12px;
+    }
+    .xp-main .xp-cta a.btn { border-radius: 10px; color: #1f4d39; background: #fbfdf9; }
+    .xp-main .xp-cta a.btn:hover { background: var(--xm-mat-ink); color: #1f3b2c; }
+
+    /* the new cheat sheet */
+    .xp-cheat-grid { display: grid; gap: 1rem 1.6rem; margin-top: .6rem; }
+    @media (min-width: 900px) { .xp-cheat-grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); } }
+    .xp-main .xp-cheat-h3 { margin: .2rem 0 .6rem; font-size: .98rem; color: var(--xm-ink); }
+    .xp-main .xp-cheat .xp-table-wrap { margin: 0; }
+    .xp-main .xp-table--ranges th[scope="row"] { white-space: nowrap; font-weight: 700; }
+    .xp-main .xp-cheat code { padding: .1rem .35rem; border-radius: 4px; background: var(--xm-accent-soft); color: var(--xm-ink); font-size: .86em; white-space: nowrap; }
+    .xp-main .xp-cheat-note { margin: .7rem 0 0; font-size: .88rem; }
+    .xp-keys, .xp-names { margin: 0 0 1rem; padding: 0; list-style: none; display: grid; gap: .45rem; }
+    .xp-main .xp-keys li { display: grid; grid-template-columns: minmax(0, 9.5rem) minmax(0, 1fr); gap: .8rem; align-items: baseline; padding: .5rem .7rem; border-radius: 8px; border: 1px solid var(--xm-line); background: var(--xm-well); font-size: .88rem; line-height: 1.5; }
+    .xp-keys li > span:first-child { color: var(--xm-ink); font-size: .82rem; }
+    .xp-main .xp-cheat kbd { display: inline-block; min-width: 1.4em; padding: .05rem .38rem; border-radius: 4px; border: 1px solid var(--xm-line-2); border-bottom-width: 2px; background: var(--xm-card); color: var(--xm-ink); font: 700 .78rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; text-align: center; }
+    .xp-main .xp-names li { display: grid; gap: .2rem; padding: .6rem .75rem; border-radius: 8px; border: 1px dashed var(--xm-accent); background: var(--xm-card); font-size: .86rem; line-height: 1.5; }
+    .xp-names strong { color: var(--xm-ink); }
+    .xp-names li > code { justify-self: start; }
+
+    /* ---------- smaller screens ---------- */
+    @media (max-width: 899px) { .xp-cover .xp-cut, .xp-cover-note { display: none; } }
+    @media (max-width: 699px) {
+      /* phones: headline only in the cover and a slim drop zone, so the ad
+         after step 1 reaches the first screen */
+      .xp-cover { padding: 1.45rem 1.25rem 1.15rem; }
+      .xp-main .xp-cover .xp-badge { display: none; }
+      .xp-main .xp-cover .xp-title { display: grid; gap: .3rem; }
+      .xp-t1 { font-size: clamp(1.7rem, 8.6vw, 2.3rem); line-height: 1.02; }
+      .xp-t2 { font-size: .6em; font-weight: 800; line-height: 1.25; color: rgba(244, 250, 245, .9); }
+      .xp-main .xp-top .xp-step { padding: .85rem .85rem .95rem; }
+      .xp-main .xp-box--up .xp-step-hint, .xp-main .xp-drop-icon, .xp-main .xp-drop-sub, .xp-main .xp-drop-meta { display: none; }
+      .xp-main .xp-step-head { margin-bottom: .6rem; }
+      .xp-main .xp-drop { padding: 1rem .8rem; }
+      .xp-main .xp-drop-title { margin-bottom: .6rem; }
+      .xp-main .xp-keys li { grid-template-columns: 1fr; gap: .15rem; }
+    }
+    @media (max-width: 559px) {
+      /* 10px gutters: a 320px phone then has the 300px its ads need */
+      body.xp-body .container.xp-main, body.xp-body .ta-support { width: calc(100% - 20px); }
+      .xp-main .breadcrumb { display: none; }
+      .xp-main .xp-section { padding: 1rem .9rem; }
+      /* the comparison and range tables become stacked cards */
+      .xp-main .xp-table-wrap { border: 0; overflow: visible; }
+      .xp-main .xp-table thead { display: none; }
+      .xp-main .xp-table, .xp-main .xp-table tbody, .xp-main .xp-table tr { display: block; }
+      .xp-main .xp-table tr { margin-bottom: .55rem; border: 1px solid var(--xm-line); border-radius: 10px; background: var(--xm-well); overflow: hidden; }
+      .xp-main .xp-table tbody th { display: block; padding: .55rem .75rem; background: var(--xm-accent-soft); border-bottom: 1px solid var(--xm-line); white-space: normal; }
+      .xp-main .xp-table td { display: grid; grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr); gap: .6rem; padding: .45rem .75rem; border-bottom: 1px solid var(--xm-line); }
+      .xp-main .xp-table td:last-child { border-bottom: 0; }
+      .xp-main .xp-table td::before { content: attr(data-label); font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: var(--xm-mute); }
+      .xp-main .xp-table--ranges td { grid-template-columns: 1fr; gap: 0; }
+      .xp-main .xp-table--ranges td::before { display: none; }
+      .xp-main .xp-table .own { background: var(--xm-accent-soft); }
+    }
+  </style>
+      <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 45, 106, 79; }
+      [data-theme="dark"] { --pca: 116, 198, 157; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 116, 198, 157; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+
+  <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://tooladda.online/#website",
+      "name": "ToolAdda",
+      "alternateName": "Tool Adda",
+      "url": "https://tooladda.online/",
+      "inLanguage": "en",
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "alternateName": [
+        "Tool Adda",
+        "Tools Adda",
+        "ToolsAdda",
+        "Tooladda",
+        "ToolAdda.online"
+      ],
+      "url": "https://tooladda.online/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tooladda.online/assets/images/logo.svg",
+        "width": 512,
+        "height": 512
+      },
+      "description": "ToolAdda builds privacy-first browser-based PDF, document and developer utilities that run entirely on the user's device."
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/pdf-extract.html#webpage",
+      "url": "https://tooladda.online/pdf-extract.html",
+      "name": "Extract PDF Pages Online Free — PDF Page Extractor | ToolAdda",
+      "description": "Extract pages from a PDF free online. Select page thumbnails or type ranges like 1-3, 5, 8-10 and save the chosen pages as a new PDF. Runs entirely in your browser.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "about": {
+        "@id": "https://tooladda.online/pdf-extract.html#software"
+      },
+      "breadcrumb": {
+        "@id": "https://tooladda.online/pdf-extract.html#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://tooladda.online/pdf-extract.html#software"
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://tooladda.online/assets/images/logo.svg"
+      },
+      "significantLink": [
+        "https://tooladda.online/pdf-split.html",
+        "https://tooladda.online/pdf-merge.html",
+        "https://tooladda.online/pdf-rotate.html",
+        "https://tooladda.online/pdf-compress.html",
+        "https://tooladda.online/pdf-watermark.html",
+        "https://tooladda.online/compare-pdfs.html",
+        "https://tooladda.online/flatten-pdf.html"
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://tooladda.online/pdf-extract.html#software",
+      "name": "ToolAdda PDF Page Extractor",
+      "alternateName": [
+        "Extract PDF Pages",
+        "Extract Pages from PDF",
+        "PDF Page Extractor",
+        "PDF Extractor Tool"
+      ],
+      "url": "https://tooladda.online/pdf-extract.html",
+      "applicationCategory": "UtilitiesApplication",
+      "applicationSubCategory": "PDF Page Extraction",
+      "operatingSystem": "Web browser (Windows, macOS, Linux, Android, iOS)",
+      "browserRequirements": "Requires a modern browser with JavaScript enabled. No plugins and no Adobe Acrobat required.",
+      "softwareVersion": "2.0",
+      "description": "Free online PDF page extractor. Pick pages visually from thumbnails or type page numbers and ranges such as 1-3, 5, 8-10, then save the selected pages as a single new PDF or export each page as a separate file. Includes odd/even selection, select all, invert, page search and keyboard selection. All processing happens locally in the browser — no file is uploaded.",
+      "featureList": [
+        "Visual page thumbnails with click-to-select",
+        "Shift-click and keyboard range selection",
+        "Page range input such as 1-3, 5, 8-10",
+        "Extract odd pages or even pages in one click",
+        "Select all, clear selection and invert selection",
+        "Save selected pages as one new PDF",
+        "Export each selected page as a separate PDF in a ZIP",
+        "Selection order shown on each page",
+        "Thumbnail zoom and page search",
+        "Original PDF quality preserved — no re-compression",
+        "Works on mobile, tablet and desktop",
+        "100% client-side — files are never uploaded",
+        "No signup, no watermark, no page limit"
+      ],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "priceValidUntil": "2027-12-31"
+      },
+      "isAccessibleForFree": true,
+      "permissions": "No account, no permissions and no file upload required.",
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tooladda.online/pdf-extract.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "PDF Tools",
+          "item": "https://tooladda.online/#pdf-tools"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Extract PDF Pages",
+          "item": "https://tooladda.online/pdf-extract.html"
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "@id": "https://tooladda.online/pdf-extract.html#howto",
+      "name": "How to extract pages from a PDF online",
+      "description": "Select the pages you want from a PDF and save them as a new PDF file in under a minute, free and without Adobe Acrobat.",
+      "totalTime": "PT1M",
+      "estimatedCost": {
+        "@type": "MonetaryAmount",
+        "currency": "USD",
+        "value": "0"
+      },
+      "supply": [
+        {
+          "@type": "HowToSupply",
+          "name": "The PDF file you want to extract pages from"
+        }
+      ],
+      "tool": [
+        {
+          "@type": "HowToTool",
+          "name": "ToolAdda PDF Page Extractor (web browser)"
+        }
+      ],
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Upload your PDF",
+          "text": "Drag your PDF onto the upload box or click to browse. The file is read on your device and is never uploaded to a server.",
+          "url": "https://tooladda.online/pdf-extract.html#extract-tool"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Check the file details",
+          "text": "The tool shows the file name, size and total page count, then renders a thumbnail of every page so you can see what you are selecting.",
+          "url": "https://tooladda.online/pdf-extract.html#extract-tool"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Select the pages to extract",
+          "text": "Click page thumbnails to select them, shift-click to select a run of pages, or type page numbers and ranges such as 1-3, 5, 8-10. You can also select all, invert the selection, or pick only odd or even pages.",
+          "url": "https://tooladda.online/pdf-extract.html#extract-tool"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Choose the output",
+          "text": "Save the selected pages as one combined PDF, or export each selected page as its own separate PDF delivered in a ZIP file.",
+          "url": "https://tooladda.online/pdf-extract.html#extract-tool"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Extract and download",
+          "text": "Click Extract pages. The new PDF is built in your browser and offered as a download immediately, with the original file left untouched.",
+          "url": "https://tooladda.online/pdf-extract.html#extract-tool"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://tooladda.online/pdf-extract.html#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I extract pages from a PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Upload your PDF, then click the thumbnails of the pages you want - or type page numbers and ranges such as 1-3, 5, 8-10 in the range box. Choose whether you want one combined PDF or each page as a separate file, then click Extract pages and download the result. The whole process takes under a minute and nothing is uploaded to a server."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I extract one page from a PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Click the single page you want in the thumbnail grid, or type just its number in the range box, then extract. You get a one-page PDF containing exactly that page, with its original formatting, fonts and quality intact."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I extract multiple pages from a PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Click as many pages as you like — they do not have to be next to each other. Selected pages are numbered in the order you picked them, and by default they are combined into a single new PDF in page order."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I extract a page range from a PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Type a range such as 4-9 in the range box, or shift-click the first and last page in the thumbnail grid to select everything between them. You can mix ranges and single pages freely, for example 1-3, 7, 12-15."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this PDF extractor free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, completely free. No trial, no credit card, no account, no watermark on the output and no daily limit on how many PDFs you process or pages you extract."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need Adobe Acrobat to extract PDF pages?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Page extraction in Adobe requires Acrobat Pro, a paid desktop subscription - the free Acrobat Reader can't do it. This tool runs in any modern browser on Windows, macOS, Linux, Android and iOS with nothing to install and no Adobe account."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will extracting pages change my PDF quality?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Pages are copied at the object level rather than re-rendered or re-compressed, so text stays selectable and searchable, images keep their original resolution, and vector graphics stay sharp. The extracted pages are byte-for-byte the same content as in the source document."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I extract pages on mobile?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The layout is mobile-first: thumbnails reflow into a compact grid, tapping a page selects it, and a sticky bar at the bottom keeps the page count and the Extract button visible while you scroll through a long document."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I extract pages from scanned PDFs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. A scanned PDF is just pages containing images, and extraction copies those pages exactly as they are, at unchanged quality. Note that extraction doesn't add a text layer - if you need searchable text, run OCR separately."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my file secure when I extract PDF pages online?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Your PDF is read and processed entirely inside your browser using client-side JavaScript. No file, page or page image is ever transmitted to a server, so there is no upload to intercept and no server-side copy to retain. The page is served over HTTPS and keeps working offline once loaded."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are files deleted automatically?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "There's nothing to delete on a server, because nothing is ever uploaded. Your PDF exists only in your browser's memory for the session and is discarded the moment you close or reload the tab. Remove file clears it immediately."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I extract odd or even pages?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. One-click Odd pages and Even pages buttons select every odd or even numbered page. This is the fastest way to recover one side of a double-sided scan, or to separate fronts from backs after scanning a stack of documents."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I save extracted pages as a new PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - that's exactly what the tool produces. Your selected pages are written into a brand-new PDF that you download, and your original document is never modified, overwritten or re-saved."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I extract pages from large PDFs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Because processing is local there's no upload size cap - the practical limit is your device's memory. Thumbnails render lazily as you scroll, so a document with hundreds of pages stays responsive and only the pages you actually look at get drawn."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work on all browsers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. It works in current versions of Chrome, Edge, Firefox, Safari, Brave and Opera on desktop and mobile. It needs JavaScript enabled and a browser from roughly the last five years - no extension, plugin or app install required."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I extract each page into its own separate PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Choose the Each page separately output option and every selected page becomes its own one-page PDF, delivered together in a single ZIP download so you don't have to accept dozens of individual downloads."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the difference between extracting and splitting a PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Extracting pulls the specific pages you choose into one new PDF, leaving the original whole - use it when you want a clean subset to send to someone. Splitting divides a document into several separate files. If that's what you need, use Split PDF instead."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does extracting remove the pages from my original PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Extraction is a copy operation and is completely non-destructive - your source file is opened read-only and never written to. If you want a document without certain pages, select all the pages you want to keep and extract those; the result is your new file."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/pdf-extract.html#webpage",
+      "url": "https://tooladda.online/pdf-extract.html",
+      "inLanguage": "en",
+      "datePublished": "2026-06-30",
+      "dateModified": "2026-09-16",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="xp-body">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+      <nav class="nav-links" aria-label="Primary"><a href="/">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy</a></nav>
+      <div class="nav-actions">
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+            <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+            <path d="M3.1 16.9h10.8" />
+            <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+          </svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+        <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <div class="xp-shell">
+      <aside class="ta-support" aria-label="Support ToolAdda">
+        <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+        <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+      </aside>
+      <div class="container xp-main">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">/</span><a href="/#pdf-tools">PDF Tools</a><span aria-hidden="true">/</span><span aria-current="page">Extract PDF Pages</span>
+        </nav>
+
+        <header class="xp-cover">
+          <div>
+            <p class="xp-badge">📄 PDF Page Extractor</p>
+            <h1 class="xp-title"><span class="xp-t1">Extract PDF Pages</span> <span class="xp-t2">— Save Selected Pages as a New PDF</span></h1>
+            <p class="xp-cover-note">Lay the pages out, pick the ones you want, and cut them into a new PDF.</p>
+          </div>
+          <div class="xp-cut" aria-hidden="true"><i data-t="1"></i><i class="on" data-t="2"></i><i data-t="3"></i><i class="on" data-t="4"></i><i class="on" data-t="5"></i><span class="xp-cut-arrow" data-t="→"></span><b class="xp-cut-out" data-t="2·4·5"></b></div>
+        </header>
+
+        <!-- One grid (.xp-top) is the tool. Under 700px: step 1, the ad,
+             then steps 2-3 once a PDF is open. From 700px the ad sits beside
+             the steps — never above the tool, and nothing else lives inside
+             the grid. -->
+        <div class="xp-top" id="extract-tool">
+          <section class="xp-step xp-box--up" aria-labelledby="xp-s1">
+            <div class="xp-step-head">
+              <span class="xp-step-num" aria-hidden="true">1</span>
+              <div>
+                <h2 id="xp-s1">Upload your PDF</h2>
+                <p class="xp-step-hint">Drag and drop, or browse. Your file stays on your device.</p>
+              </div>
+            </div>
+
+            <div data-stage="upload">
+              <input type="file" accept="application/pdf,.pdf" hidden data-file-input aria-label="Choose a PDF file to extract pages from" />
+              <div class="xp-drop" data-drop tabindex="0" role="button"
+                   aria-label="Upload a PDF. Press Enter or Space to browse for a file, or drag a PDF onto this area."
+                   aria-describedby="xp-upload-status">
+                <div class="xp-drop-icon" aria-hidden="true">📄</div>
+                <p class="xp-drop-title">Drag &amp; drop your PDF here</p>
+                <p class="xp-drop-sub">or choose a file from your device</p>
+                <button class="xp-drop-browse" type="button" data-browse>📂 Select PDF file</button>
+                <p class="xp-drop-meta">No signup · no watermark · no page limit · nothing uploaded</p>
+              </div>
+            </div>
+
+            <div hidden data-file-card>
+              <div class="xp-file">
+                <canvas class="xp-file-thumb" data-file-thumb width="44" height="56" aria-hidden="true"></canvas>
+                <div class="xp-file-body">
+                  <p class="xp-file-name" data-file-name></p>
+                  <p class="xp-file-meta">
+                    <span><b data-file-pages>0</b> pages</span>
+                    <span><b data-file-size></b></span>
+                    <span class="xp-file-ok" data-file-status>✓ Ready</span>
+                  </p>
+                </div>
+                <button class="xp-file-remove" type="button" data-remove aria-label="Remove this PDF and start over" title="Remove file"><span aria-hidden="true">✕</span><span class="xp-remove-txt">Remove</span></button>
+              </div>
+            </div>
+
+            <p id="xp-upload-status" class="xp-sr" role="status" aria-live="polite"></p>
+            <p class="xp-msg error" data-error hidden role="alert"></p>
+          </section>
+
+          <!-- Ad: one 300x250 (see .xp-ad-zone CSS) — beside the tool from
+               700px, straight after step 1 below that. -->
+          <div class="xp-ad-zone">
+            <div class="ta-inline-ad" data-unit="inline"></div>
+          </div>
+
+          <div class="xp-work">
+            <!-- ---------- STEP 2: select ---------- -->
+            <section class="xp-step" hidden data-step-select aria-labelledby="xp-s2">
+              <div class="xp-step-head">
+                <span class="xp-step-num" aria-hidden="true">2</span>
+                <div>
+                  <h2 id="xp-s2">Select the pages to extract</h2>
+                  <p class="xp-step-hint">Click a page to select it. Shift-click to select a run of pages. Or type page numbers below.</p>
+                </div>
+              </div>
+
+              <div class="xp-range-row">
+                <div class="xp-field">
+                  <label for="xpRange">Pages to extract</label>
+                  <input class="xp-input" id="xpRange" type="text" inputmode="numeric" placeholder="e.g. 1-3, 5, 8-10" autocomplete="off" spellcheck="false"
+                         aria-describedby="xpRangeHelp" />
+                  <p class="xp-input-help" id="xpRangeHelp">Type single pages and ranges separated by commas. Leave blank and click thumbnails instead.</p>
+                </div>
+                <div class="xp-field" style="flex:0 1 190px">
+                  <label for="xpSearch">Jump to page</label>
+                  <input class="xp-input" id="xpSearch" type="number" min="1" inputmode="numeric" placeholder="Page no." autocomplete="off" />
+                </div>
+              </div>
+
+              <div class="xp-seltools">
+                <button class="xp-chip" type="button" data-sel="all">☑️ Select all</button>
+                <button class="xp-chip" type="button" data-sel="none">✖️ Clear</button>
+                <button class="xp-chip" type="button" data-sel="invert">🔄 Invert</button>
+                <button class="xp-chip" type="button" data-sel="odd">1️⃣ Odd pages</button>
+                <button class="xp-chip" type="button" data-sel="even">2️⃣ Even pages</button>
+                <div class="xp-zoom" role="group" aria-label="Thumbnail size">
+                  <button type="button" data-zoom="-1" aria-label="Smaller thumbnails">−</button>
+                  <output data-zoom-label aria-live="polite">Medium</output>
+                  <button type="button" data-zoom="1" aria-label="Larger thumbnails">+</button>
+                </div>
+              </div>
+
+              <p class="xp-selbar" data-selbar>
+                <span><b data-sel-count>0</b> of <b data-total-count>0</b> pages selected</span>
+                <span data-sel-summary style="font-weight:600;color:var(--text-muted)"></span>
+              </p>
+
+              <div class="xp-thumbs" data-thumbs role="group" aria-label="PDF pages — press Space or Enter to select a page, arrow keys to move, Shift and arrow keys to extend the selection"></div>
+              <p class="xp-sr" role="status" aria-live="polite" data-sel-announce></p>
+            </section>
+
+            <!-- ---------- STEP 3: output + extract ---------- -->
+            <section class="xp-step" hidden data-step-output aria-labelledby="xp-s3">
+              <div class="xp-step-head">
+                <span class="xp-step-num" aria-hidden="true">3</span>
+                <div>
+                  <h2 id="xp-s3">Choose the output and extract</h2>
+                </div>
+              </div>
+
+              <fieldset style="border:0;padding:0;margin:0 0 .9rem">
+                <legend class="xp-sr">Output format</legend>
+                <div class="xp-modes" role="radiogroup" aria-label="Output format">
+                  <label class="xp-mode">
+                    <input type="radio" name="xpOut" value="single" checked />
+                    <span class="xp-mode-face">
+                      <strong>📑 One combined PDF</strong>
+                      <span>All selected pages in a single new PDF, kept in page order.</span>
+                    </span>
+                  </label>
+                  <label class="xp-mode">
+                    <input type="radio" name="xpOut" value="separate" />
+                    <span class="xp-mode-face">
+                      <strong>🗂️ Each page separately</strong>
+                      <span>Every selected page becomes its own PDF, delivered as one ZIP.</span>
+                    </span>
+                  </label>
+                  <label class="xp-mode">
+                    <input type="radio" name="xpOut" value="order" />
+                    <span class="xp-mode-face">
+                      <strong>🔢 In my click order</strong>
+                      <span>One PDF, but pages appear in the order you selected them.</span>
+                    </span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <div class="xp-actions">
+                <button class="xp-btn-primary" type="button" data-extract disabled>✂️ Extract pages</button>
+                <button class="xp-btn-ghost" type="button" data-remove2>🗑️ Remove file</button>
+                <p class="xp-reassure"><span aria-hidden="true">🔒</span> Extraction happens on your device — your original PDF is never modified or uploaded.</p>
+              </div>
+
+              <div class="xp-progress" data-progress hidden>
+                <div class="xp-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Extraction progress" data-progress-bar>
+                  <div class="xp-progress-fill" data-progress-fill></div>
+                </div>
+                <p class="xp-progress-text" data-progress-text aria-live="polite">Preparing…</p>
+              </div>
+            </section>
+
+            <!-- ---------- SUCCESS ---------- -->
+            <section class="xp-step" hidden data-step-done aria-labelledby="xp-done-h">
+              <div class="xp-done">
+                <div class="xp-done-icon" aria-hidden="true">🎉</div>
+                <h3 id="xp-done-h">Your pages are ready</h3>
+                <p data-done-text></p>
+                <p class="xp-done-file"><span aria-hidden="true">📄</span> <span data-done-file></span></p>
+                <div class="xp-done-actions">
+                  <a class="xp-dl" data-download download>⬇️ Download</a>
+                  <button class="xp-btn-ghost" type="button" data-back>↩️ Change selection</button>
+                  <button class="xp-btn-ghost" type="button" data-again>🔄 Extract from another PDF</button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div class="xp-intro">
+          <div>
+              <p class="xp-lead">Pick the pages you need by clicking their thumbnails, or type ranges like <strong>1-3, 5, 8-10</strong>. Save them as one new PDF or export each page separately. Original quality is preserved, your source file is never modified, and nothing is uploaded — extraction runs entirely inside your browser.</p>
+          </div>
+          <div>
+              <ul class="xp-trust-row">
+                <li>🔒 <b>No upload</b> — runs in your browser</li>
+                <li>🆓 <b>Free</b>, no signup</li>
+                <li>💧 <b>No watermark</b></li>
+                <li>📄 <b>No page limit</b></li>
+                <li>📱 <b>Works on mobile</b></li>
+              </ul>
+              <p class="xp-privacy"><span aria-hidden="true">🔒</span><span>Your PDF is opened on this device and never leaves it. Safe for contracts, invoices, medical records, bank statements and anything else confidential.</span></p>
+          </div>
+        </div>
+
+        <!-- ================= CHEAT SHEET ================= -->
+        <section class="xp-section xp-cheat" aria-labelledby="xp-cheat-h">
+          <p class="xp-eyebrow">Quick reference</p>
+          <h2 id="xp-cheat-h">Page Ranges, Shortcuts and File Names</h2>
+          <p>The range box and the thumbnails stay in sync, so you can type a rough selection and then fix it by clicking. This is exactly what the box accepts and what the download is called.</p>
+          <div class="xp-cheat-grid">
+            <div>
+              <h3 class="xp-cheat-h3">What you type, and the pages you get</h3>
+              <div class="xp-table-wrap">
+                <table class="xp-table xp-table--ranges">
+                  <caption class="xp-sr">Pages the range box selects for each kind of input</caption>
+                  <thead><tr><th scope="col">You type</th><th scope="col">Pages selected</th></tr></thead>
+                  <tbody>
+                    <tr><th scope="row"><code>1-3, 5, 8-10</code></th><td data-label="Selects">1, 2, 3, 5, 8, 9 and 10</td></tr>
+                    <tr><th scope="row"><code>5-</code></th><td data-label="Selects">Page 5 to the last page</td></tr>
+                    <tr><th scope="row"><code>-4</code></th><td data-label="Selects">Pages 1 to 4</td></tr>
+                    <tr><th scope="row"><code>9-4</code></th><td data-label="Selects">Pages 4 to 9 — a backwards range is flipped</td></tr>
+                    <tr><th scope="row"><code>2–6</code></th><td data-label="Selects">Pages 2 to 6 — an en or em dash works like a hyphen</td></tr>
+                    <tr><th scope="row"><code>1; 3; 5</code></th><td data-label="Selects">Pages 1, 3 and 5 — semicolons work like commas</td></tr>
+                    <tr><th scope="row"><code>1-3, 2-4</code></th><td data-label="Selects">Pages 1 to 4 — overlaps count once</td></tr>
+                    <tr><th scope="row"><code>0</code>, or a page past the end</th><td data-label="Selects">Nothing changes — the box turns red and names the pages that exist</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="xp-cheat-note">Typed pages are always taken in page order. For a custom order, choose <strong>In my click order</strong> and click the thumbnails in the order you want them.</p>
+            </div>
+            <div>
+              <h3 class="xp-cheat-h3">Selecting with the mouse and keyboard</h3>
+              <ul class="xp-keys">
+                <li><span><kbd>Click</kbd></span><span>Select or deselect a page</span></li>
+                <li><span><kbd>Shift</kbd> + <kbd>Click</kbd></span><span>Select every page between the one you clicked last and this one</span></li>
+                <li><span><kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd></span><span>Move between pages; <kbd>Home</kbd> and <kbd>End</kbd> jump to the first and last</span></li>
+                <li><span><kbd>Space</kbd> / <kbd>Enter</kbd></span><span>Select or deselect the page that has focus</span></li>
+                <li><span><kbd>Shift</kbd> + arrows</span><span>Stretch the selection as you move</span></li>
+                <li><span><kbd>Ctrl</kbd> / <kbd>⌘</kbd> + <kbd>A</kbd></span><span>Select every page while a thumbnail has focus</span></li>
+              </ul>
+              <h3 class="xp-cheat-h3">What the download is called</h3>
+              <ul class="xp-names">
+                <li><strong>One combined PDF</strong><code>report-pages-1-3_5.pdf</code><span>With more than six pages: <code>report-9-pages.pdf</code></span></li>
+                <li><strong>In my click order</strong><code>report-pages-5_2_9.pdf</code><span>The name lists the pages in the order they appear in the file.</span></li>
+                <li><strong>Each page separately</strong><code>report-4-pages.zip</code><span>Inside: <code>report-page-2.pdf</code>, <code>report-page-5.pdf</code> and so on.</span></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <!-- ================= TRUST ================= -->
+        <section class="xp-section" aria-labelledby="xp-trust-h">
+          <p class="xp-eyebrow">Built for documents you can't afford to leak</p>
+          <h2 id="xp-trust-h">Why this PDF page extractor is safe to use</h2>
+          <p>Extracting pages usually means handling exactly the documents you would least like a stranger to hold: a signed contract, a payslip, a passport scan, a medical report. Every point below is a property of how the tool is built, not a promise about how a server behaves.</p>
+          <div class="xp-grid">
+            <article class="xp-tile"><span class="xp-tile-icon" aria-hidden="true">🔒</span><h3>Nothing is uploaded</h3><p>Your PDF is read with the browser's own file API and processed by JavaScript in your tab. No page, image or byte of the file crosses the network.</p></article>
+            <article class="xp-tile"><span class="xp-tile-icon" aria-hidden="true">🛡️</span><h3>SSL-encrypted delivery</h3><p>The page is served over HTTPS with strict referrer and content-type policies, so the code running on your device is the code we published.</p></article>
+            <article class="xp-tile"><span class="xp-tile-icon" aria-hidden="true">🧹</span><h3>Files clear themselves</h3><p>Your document lives only in browser memory. Close the tab, reload, or press <strong>Remove file</strong> and it's gone — there is no server copy to retain or delete.</p></article>
+            <article class="xp-tile"><span class="xp-tile-icon" aria-hidden="true">✅</span><h3>No registration required</h3><p>No account, no email, no credit card, no trial countdown. Open the page and extract.</p></article>
+            <article class="xp-tile"><span class="xp-tile-icon" aria-hidden="true">💧</span><h3>No watermark, ever</h3><p>The extracted PDF contains your pages and nothing else. No branding is stamped on the output and no page cap is applied.</p></article>
+            <article class="xp-tile"><span class="xp-tile-icon" aria-hidden="true">⚡</span><h3>Fast, with no queue</h3><p>There is no upload wait and no server queue. Extraction of a handful of pages completes in well under a second on a normal laptop.</p></article>
+            <article class="xp-tile"><span class="xp-tile-icon" aria-hidden="true">🎯</span><h3>Original quality preserved</h3><p>Pages are copied at the object level, not re-rendered. Text stays selectable, images keep their resolution, and vectors stay sharp.</p></article>
+            <article class="xp-tile"><span class="xp-tile-icon" aria-hidden="true">🌐</span><h3>Works on every device</h3><p>Chrome, Edge, Firefox and Safari on Windows, macOS, Linux, Android and iOS. Nothing to install, no plugin, no Acrobat licence.</p></article>
+          </div>
+        </section>
+
+        <!-- ================= GUIDE ================= -->
+        <article class="xp-section" aria-labelledby="xp-guide-h">
+          <p class="xp-eyebrow">Complete guide</p>
+          <h2 id="xp-guide-h">How to extract pages from a PDF: the complete guide</h2>
+          <p>Everything worth knowing about pulling pages out of a PDF — what extraction actually does to your file, how to select pages quickly, and which approach fits your document.</p>
+          <ul class="xp-toc">
+            <li><a href="#what-is">What is PDF page extraction?</a></li>
+            <li><a href="#how-to">How to extract pages online</a></li>
+            <li><a href="#why">Why extract selected pages?</a></li>
+            <li><a href="#one-page">Extract one page</a></li>
+            <li><a href="#multiple">Extract multiple pages</a></li>
+            <li><a href="#ranges">Extract page ranges</a></li>
+            <li><a href="#save-new">Save as a new PDF</a></li>
+            <li><a href="#use-cases">Common use cases</a></li>
+            <li><a href="#business">Business</a></li>
+            <li><a href="#students">Students &amp; education</a></li>
+            <li><a href="#legal">Legal &amp; office</a></li>
+            <li><a href="#mobile">Mobile extraction</a></li>
+            <li><a href="#privacy">Privacy &amp; security</a></li>
+            <li><a href="#why-us">Why choose this extractor</a></li>
+          </ul>
+
+          <h3 id="what-is">1. What is PDF page extraction?</h3>
+          <p><strong>PDF page extraction</strong> is the process of copying selected pages out of a PDF document and saving them as a brand-new PDF file. The key word is <em>copying</em>. Extraction is non-destructive: your source document is opened read-only, never written to, and comes out of the process with every page exactly where it was. What you get back is a second, smaller file containing only the pages you asked for.</p>
+          <p>That distinction matters more than it sounds, because three different operations get confused with each other constantly:</p>
+          <ul>
+            <li><strong>Extracting</strong> takes the pages you choose and produces <em>one new document</em> containing just those pages. The original is untouched. This is what you want when someone asks you to "send me just the signature page."</li>
+            <li><strong>Splitting</strong> divides one document into <em>several separate files</em> — for example, turning a 90-page report into nine 10-page chunks. Use our <a href="pdf-split.html">Split PDF</a> tool when that's the goal.</li>
+            <li><strong>Deleting pages</strong> produces a document that is the original <em>minus</em> the pages you removed. You can achieve the same result here by selecting everything you want to <em>keep</em> and extracting that.</li>
+          </ul>
+          <p>Technically, a good extractor copies page objects rather than re-rendering them. Each PDF page is a container that references fonts, images, vector drawing instructions and metadata. A proper extraction carries those references across intact, which is why the output looks identical to the source and why the text remains selectable and searchable. A poor extractor — or a tool that converts pages to images along the way — will produce a file that looks superficially right but has lost its text layer, ballooned in size, and become unsearchable. This tool copies at the object level, so none of that happens.</p>
+
+          <h3 id="how-to">2. How to extract pages from PDF online</h3>
+          <p>The full workflow takes under a minute:</p>
+          <ol>
+            <li><strong>Upload your PDF.</strong> Drag it onto the box or click to browse. It is read on your device — there is no upload progress bar because there is no upload.</li>
+            <li><strong>Check the file details.</strong> The tool immediately shows the file name, size and total page count, so you can confirm you grabbed the right document before doing anything else.</li>
+            <li><strong>Look at the page thumbnails.</strong> Every page is rendered as a preview so you are selecting what you can see, rather than guessing at page numbers. Thumbnails load lazily as you scroll, so even a 400-page document stays fast.</li>
+            <li><strong>Select your pages.</strong> Click a thumbnail to select it. Shift-click a second page to select the whole run between them. Or type numbers and ranges in the box — <code>1-3, 5, 8-10</code> works exactly as written. Buttons for select all, clear, invert, odd and even cover the common cases in one click.</li>
+            <li><strong>Choose your output.</strong> One combined PDF (the default), each page as its own PDF in a ZIP, or one PDF in the exact order you clicked the pages.</li>
+            <li><strong>Extract and download.</strong> The new file is built in your browser and offered as a download straight away.</li>
+          </ol>
+          <p>If you prefer the keyboard, the thumbnail grid is fully navigable: arrow keys move between pages, Space or Enter toggles selection, and holding Shift while using the arrow keys extends the selection — the same conventions you already know from a file manager.</p>
+
+          <h3 id="why">3. Why extract selected PDF pages?</h3>
+          <p>Nearly every reason comes down to the same thing: <em>you need to give someone part of a document without giving them all of it.</em> Sending a 200-page master agreement when the recipient asked for the pricing annexe is at best unhelpful and at worst a disclosure problem.</p>
+          <div class="xp-grid">
+            <article class="xp-tile"><h4>Share less, not more</h4><p>Send only the clause, the invoice or the certificate that was asked for, instead of an entire file full of unrelated information.</p></article>
+            <article class="xp-tile"><h4>Cut the file size</h4><p>Three pages out of three hundred is a fraction of the bytes — often the difference between an email that sends and one that bounces.</p></article>
+            <article class="xp-tile"><h4>Meet upload limits</h4><p>Portals for tax filings, visa applications and job applications frequently cap uploads at a few megabytes or a set number of pages.</p></article>
+            <article class="xp-tile"><h4>Redact by omission</h4><p>The safest way to hide a page is not to include it. Extraction removes the page entirely rather than covering it up.</p></article>
+            <article class="xp-tile"><h4>Reuse without rebuilding</h4><p>Pull a chart, a template page or an appendix out of an old document to drop into a new one.</p></article>
+            <article class="xp-tile"><h4>Archive what matters</h4><p>Keep the two pages that have long-term value instead of storing the whole bundle forever.</p></article>
+          </div>
+
+          <h3 id="one-page">4. Extract one page from a PDF</h3>
+          <p>The single most common request. Click the page you want in the thumbnail grid — or type just its number in the range box — and extract. You get a one-page PDF containing exactly that page, with its original fonts, layout, images and quality intact.</p>
+          <p>Two practical notes. First, <strong>check the page number carefully</strong> if you're typing it. PDF page numbers here are physical positions in the file, counting from 1 — they are not the numbers printed on the page. A report with a cover and two roman-numeral front-matter pages will have "page 1" of its printed body sitting at physical page 4. This is exactly why the thumbnails exist: select what you can see and the ambiguity disappears.</p>
+          <p>Second, if the page you want is a <strong>scan</strong>, extraction preserves it perfectly but does not make it searchable — a scanned page contains an image, not text, and copying it doesn't change that. That's expected behaviour, not a fault in the extraction.</p>
+
+          <h3 id="multiple">5. Extract multiple pages from a PDF</h3>
+          <p>Selected pages do not have to be next to each other. Click page 2, then page 9, then page 40 and all three are collected. By default they are written into the new PDF in page order, so the output reads naturally regardless of the order you clicked.</p>
+          <p>If you specifically want them in the order you picked — say you're assembling a short brief where the summary should come first even though it sits at the back of the source document — choose the <strong>In my click order</strong> output option. Each selected page shows a small numbered badge indicating its position in that sequence, so you can see the running order before you commit.</p>
+          <p>For scanned documents, the <strong>Odd pages</strong> and <strong>Even pages</strong> buttons are worth knowing. Feeding a stack of double-sided sheets through a single-sided scanner produces a file with all the fronts followed by all the backs, or fronts and backs interleaved. One click separates them.</p>
+
+          <h3 id="ranges">6. Extract page ranges from a PDF</h3>
+          <p>The range box accepts the notation you'd write by hand. <code>4-9</code> gives you six consecutive pages. <code>1-3, 7, 12-15</code> mixes ranges and single pages in one expression. Whitespace is ignored, so <code>1 - 3 , 7</code> works identically, and duplicates are collapsed automatically — asking for <code>2-5, 3</code> does not put page 3 in twice.</p>
+          <p>Typing into the range box and clicking thumbnails are two views of the same selection, kept in sync in both directions. Type a range and the matching thumbnails light up; click a few more pages and the box updates to describe what you now have. That means you can start with a rough range, then refine it by eye — which is usually faster than getting the numbers exactly right first time.</p>
+          <p>For a contiguous block, <strong>shift-click</strong> is often quickest of all: click the first page, then shift-click the last, and everything between them is selected.</p>
+
+          <h3 id="save-new">7. Save selected pages as a new PDF</h3>
+          <p>The output is a genuinely new PDF document, not a modified copy of your original. The file is named after your source document with a page summary appended — so extracting pages 3 to 5 from <code>contract.pdf</code> gives you <code>contract-pages-3-5.pdf</code>, which stays meaningful in a downloads folder six months later.</p>
+          <p>What carries over: page content, fonts, embedded images, vector graphics, page dimensions and rotation. What does not carry over: document-level features that belong to the file as a whole rather than to individual pages — bookmarks pointing at pages you didn't select, form-field data, and the original document's metadata. This is normal for page extraction in any tool, and it's usually what you want: a clean, self-contained subset with no dangling references to pages that aren't there.</p>
+          <p>If you need the extracted pages to be locked down before sending, run the result through <a href="pdf-password-protector.html">Protect PDF</a>. If you need them flattened so form fields and annotations can't be edited, use <a href="flatten-pdf.html">Flatten PDF</a>.</p>
+
+          <h3 id="use-cases">8. Common use cases</h3>
+          <p>The pattern repeats across almost every kind of document work:</p>
+          <ul>
+            <li><strong>Pull one invoice</strong> out of a monthly billing statement to forward to a client or attach to an expense claim.</li>
+            <li><strong>Extract a bank statement page</strong> showing a single transaction, without exposing your entire balance history.</li>
+            <li><strong>Send only the signature page</strong> of an agreement for countersignature.</li>
+            <li><strong>Take the specification pages</strong> for one product out of a full catalogue.</li>
+            <li><strong>Separate a boarding pass or ticket</strong> from a multi-passenger booking confirmation.</li>
+            <li><strong>Grab the summary and conclusions</strong> from a long report for people who won't read the rest.</li>
+            <li><strong>Split a double-sided scan</strong> into fronts and backs using odd/even selection.</li>
+            <li><strong>Extract a form</strong> from a bundled instruction pack so recipients get only the part they fill in.</li>
+          </ul>
+
+          <h3 id="business">9. Business use cases</h3>
+          <p>In an office, extraction is usually about controlling what leaves the building. Procurement teams pull the commercial terms out of a master agreement for the finance approver, who has no business reading the technical schedules. Sales teams extract the two slides that matter from a fifty-slide deck for a follow-up email. HR extracts a single policy from a two-hundred-page handbook so a new starter can actually find it.</p>
+          <p>Accounts payable is a particularly heavy user: supplier statements arrive as one long PDF and each invoice needs to become a separate document to attach to its own ledger entry. The <strong>each page separately</strong> output handles that in one pass and returns everything as a ZIP, rather than making you extract, download and rename thirty times.</p>
+          <p>There is also a compliance angle. Under data-minimisation principles found in GDPR and similar regimes, sharing only the pages a recipient actually needs is not just tidier — it is the defensible choice. Extraction that never uploads the source document keeps that whole exercise inside your own perimeter.</p>
+
+          <h3 id="students">10. Student and education use cases</h3>
+          <p>Students extract pages constantly, usually to make something large into something readable. Pull the three chapters that are on the syllabus out of a whole textbook PDF so the file opens quickly on a phone. Take last year's past-paper questions out of a combined examinations bundle. Extract the reading assigned for one seminar from a compiled course pack, so the tablet you take to class isn't carrying four hundred pages.</p>
+          <p>Teachers work in the other direction: extract a single worksheet from a resource pack to hand out, or pull the answer key out before distributing the questions — a case where extraction is a genuine safeguard, because a hidden or covered-up page can still be recovered, while a page that was never in the file cannot.</p>
+          <p>For submissions, extraction is often mandatory rather than convenient. University portals commonly cap uploads by size or page count, and a dissertation appendix routinely has to be submitted as a separate document from the main body.</p>
+
+          <h3 id="legal">11. Legal and office document use cases</h3>
+          <p>Legal work runs on precise page references, which makes extraction a daily tool. Pull the specific exhibit a court or counterparty asked for out of a closing bundle. Extract the executed signature pages from a document set to circulate proof of execution. Take one clause and its definitions out of a master agreement for a query, without disclosing commercially sensitive schedules elsewhere in the file.</p>
+          <p>The privilege point is the important one. Sending a whole document when only one page was requested can waive confidentiality over material you never intended to share, and once it's sent it cannot be recalled. Extracting exactly the requested pages — and doing so in a tool where the source file never leaves your device — keeps both the disclosure and the processing inside the boundary you control.</p>
+          <p>In general office administration the same logic applies to certificates, licences, insurance schedules and registration documents: extract the page that proves the thing, send that, keep the rest.</p>
+
+          <h3 id="mobile">12. Extracting PDF pages on mobile</h3>
+          <p>Documents arrive as email attachments on phones far more often than on desktops, so extracting on mobile should not be an afterthought. Here it isn't: the thumbnail grid reflows into a compact layout sized for thumbs, tapping a page selects it, and a sticky bar pinned to the bottom of the screen keeps the running page count and the Extract button visible while you scroll through a long document — so you never have to scroll back up to find the button.</p>
+          <p>Two tips for large files on a phone. Use the thumbnail size control to shrink previews, which fits more pages on screen and lightens rendering. And prefer the range box for documents of a few hundred pages: typing <code>120-135</code> is faster than scrolling to page 120, and the thumbnails will confirm your choice afterwards.</p>
+          <p>Because everything runs locally, extraction also works on a flaky connection or none at all — once the page has loaded, no network is needed to finish the job.</p>
+
+          <h3 id="privacy">13. Privacy and file security</h3>
+          <p>Most online PDF tools work by uploading your document to a server, processing it there, and letting you download the result. That means your file is transmitted across the internet, written to storage you don't control, in a jurisdiction you probably haven't checked, under a retention policy you almost certainly haven't read. For a holiday brochure, fine. For a payslip, a medical letter or a signed contract, considerably less so.</p>
+          <p>This tool avoids the entire category of risk by never uploading anything:</p>
+          <ul>
+            <li>Your PDF is read with the browser's file API and stays in the tab's memory.</li>
+            <li>Page rendering and page copying both execute as JavaScript on your device.</li>
+            <li>No network request carries file content. You can verify this yourself — open your browser's developer tools, switch to the Network tab, and extract a page. You'll see the page's own assets load and nothing else.</li>
+            <li>Closing or reloading the tab discards everything. There is no server-side copy, so there is nothing to expire, leak or subpoena.</li>
+            <li>Once loaded, the tool keeps working offline — a practical demonstration that no server is involved in the work itself.</li>
+          </ul>
+          <p>This is what makes it usable for material covered by NDAs, professional privilege, HIPAA, GDPR or an internal data-classification policy that forbids third-party document processing. Check your own organisation's rules as always — but "the file never leaves the device" is a much shorter conversation with a security team than "they say they delete it after an hour."</p>
+
+          <h3 id="why-us">14. Why choose this PDF extractor</h3>
+          <p>Most free extractors give you a text box and hope you know your page numbers. Most polished ones upload your file. This tool aims squarely at the overlap: visual page selection, real output options, and nothing leaving your machine.</p>
+          <div class="xp-table-wrap">
+            <table class="xp-table">
+              <caption class="xp-sr">How ToolAdda's PDF page extractor compares to other tools</caption>
+              <thead><tr><th scope="col">Capability</th><th scope="col" class="own">ToolAdda</th><th scope="col">Typical online extractor</th><th scope="col">Adobe Acrobat</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Price</th><td data-label="ToolAdda" class="own yes">Free, uncapped</td><td data-label="Typical online">Free tier with daily limits</td><td data-label="Adobe Acrobat" class="no">Paid subscription (Pro)</td></tr>
+                <tr><th scope="row">File uploaded to a server</th><td data-label="ToolAdda" class="own yes">Never</td><td data-label="Typical online" class="no">Usually yes</td><td data-label="Adobe Acrobat" class="yes">No (desktop app)</td></tr>
+                <tr><th scope="row">Install required</th><td data-label="ToolAdda" class="own yes">None</td><td data-label="Typical online" class="yes">None</td><td data-label="Adobe Acrobat" class="no">Desktop app</td></tr>
+                <tr><th scope="row">Visual page thumbnails</th><td data-label="ToolAdda" class="own yes">✔ every page</td><td data-label="Typical online">Sometimes</td><td data-label="Adobe Acrobat" class="yes">✔</td></tr>
+                <tr><th scope="row">Shift-click range selection</th><td data-label="ToolAdda" class="own yes">✔</td><td data-label="Typical online" class="no">Rare</td><td data-label="Adobe Acrobat" class="yes">✔</td></tr>
+                <tr><th scope="row">Odd / even one-click</th><td data-label="ToolAdda" class="own yes">✔</td><td data-label="Typical online" class="no">Rare</td><td data-label="Adobe Acrobat">Via other dialogs</td></tr>
+                <tr><th scope="row">Each page as separate PDF</th><td data-label="ToolAdda" class="own yes">✔ ZIP</td><td data-label="Typical online">Sometimes</td><td data-label="Adobe Acrobat" class="yes">✔</td></tr>
+                <tr><th scope="row">Custom page order in output</th><td data-label="ToolAdda" class="own yes">✔</td><td data-label="Typical online" class="no">✘</td><td data-label="Adobe Acrobat">Via reorder step</td></tr>
+                <tr><th scope="row">Watermark on output</th><td data-label="ToolAdda" class="own yes">None</td><td data-label="Typical online" class="no">Sometimes</td><td data-label="Adobe Acrobat" class="yes">None</td></tr>
+                <tr><th scope="row">Signup required</th><td data-label="ToolAdda" class="own yes">No</td><td data-label="Typical online" class="no">Often</td><td data-label="Adobe Acrobat" class="no">Adobe account</td></tr>
+                <tr><th scope="row">Works offline once loaded</th><td data-label="ToolAdda" class="own yes">✔</td><td data-label="Typical online" class="no">✘</td><td data-label="Adobe Acrobat" class="yes">✔</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="xp-step-hint">Competitor features and pricing change — check their own sites before making a purchasing decision.</p>
+
+          <h4>How to extract PDF pages without Adobe Acrobat</h4>
+          <p>Adobe's page-extraction feature lives in Acrobat Pro, a paid desktop subscription; the free Acrobat Reader cannot extract pages at all. For an occasional job, or on a locked-down work laptop where you can't install software, that's a hard stop.</p>
+          <p>This tool covers the same core task with no licence, no installer and no admin rights: open the page in whatever browser you already have, select, extract, close the tab. It runs on a Chromebook, on a managed corporate desktop and on a phone.</p>
+          <p>The honest limits, so you know before you rely on it: extraction does not add OCR, so a scanned page stays an image; document-level bookmarks and form data don't survive extraction (as in any extractor); and very large files are bounded by your device's memory rather than by a server farm. For the overwhelming majority of extraction jobs, none of these matter.</p>
+        </article>
+
+        <!-- ================= FAQ ================= -->
+        <section class="xp-section" aria-labelledby="xp-faq-h">
+          <p class="xp-eyebrow">Answers</p>
+          <h2 id="xp-faq-h">Extract PDF pages — frequently asked questions</h2>
+          <div class="xp-faq-grid">
+            <details class="xp-faq"><summary>How do I extract pages from a PDF?</summary><p>Upload your PDF, then click the thumbnails of the pages you want — or type page numbers and ranges such as <code>1-3, 5, 8-10</code> in the range box. Choose whether you want one combined PDF or each page as a separate file, then click <strong>Extract pages</strong> and download the result. The whole process takes under a minute and nothing is uploaded to a server.</p></details>
+            <details class="xp-faq"><summary>Can I extract one page from a PDF?</summary><p>Yes. Click the single page you want in the thumbnail grid, or type just its number in the range box, then extract. You get a one-page PDF containing exactly that page, with its original formatting, fonts and quality intact.</p></details>
+            <details class="xp-faq"><summary>Can I extract multiple pages?</summary><p>Yes, and they don't have to be next to each other. Click as many pages as you like — selected pages are numbered in the order you picked them, and by default the output is a single new PDF with the pages in document order.</p></details>
+            <details class="xp-faq"><summary>Can I extract a page range?</summary><p>Yes. Type a range such as <code>4-9</code>, or shift-click the first and last page in the grid to select everything between them. You can mix ranges and single pages freely, for example <code>1-3, 7, 12-15</code>.</p></details>
+            <details class="xp-faq"><summary>Is this PDF extractor free?</summary><p>Yes, completely free. No trial, no credit card, no account, no watermark on the output and no daily limit on how many PDFs you process or pages you extract.</p></details>
+            <details class="xp-faq"><summary>Do I need Adobe Acrobat to extract PDF pages?</summary><p>No. Page extraction in Adobe requires Acrobat Pro, a paid desktop subscription — the free Acrobat Reader can't do it. This tool runs in any modern browser on Windows, macOS, Linux, Android and iOS with nothing to install and no Adobe account.</p></details>
+            <details class="xp-faq"><summary>Will my PDF quality change?</summary><p>No. Pages are copied at the object level rather than re-rendered or re-compressed, so text stays selectable and searchable, images keep their original resolution, and vector graphics stay sharp. The extracted pages are the same content as in the source document.</p></details>
+            <details class="xp-faq"><summary>Can I extract pages on mobile?</summary><p>Yes. The layout is mobile-first: thumbnails reflow into a compact grid, tapping a page selects it, and a sticky bar at the bottom keeps the page count and the Extract button visible while you scroll through a long document.</p></details>
+            <details class="xp-faq"><summary>Can I extract pages from scanned PDFs?</summary><p>Yes. A scanned PDF is just pages containing images, and extraction copies those pages exactly as they are, at unchanged quality. Note that extraction doesn't add a text layer — if you need searchable text, run OCR separately.</p></details>
+            <details class="xp-faq"><summary>Is my file secure?</summary><p>Yes. Your PDF is read and processed entirely inside your browser. No file or page is ever transmitted, so there's no upload to intercept and no server-side copy to retain. The page is served over HTTPS and keeps working offline once loaded.</p></details>
+            <details class="xp-faq"><summary>Are files deleted automatically?</summary><p>There's nothing to delete on a server, because nothing is ever uploaded. Your PDF exists only in your browser's memory for the session and is discarded the moment you close or reload the tab. <strong>Remove file</strong> clears it immediately.</p></details>
+            <details class="xp-faq"><summary>Can I extract odd or even pages?</summary><p>Yes. One-click <strong>Odd pages</strong> and <strong>Even pages</strong> buttons select every odd or even numbered page. This is the fastest way to recover one side of a double-sided scan, or to separate fronts from backs after scanning a stack of documents.</p></details>
+            <details class="xp-faq"><summary>Can I save extracted pages as a new PDF?</summary><p>Yes — that's exactly what the tool produces. Your selected pages are written into a brand-new PDF that you download, and your original document is never modified, overwritten or re-saved.</p></details>
+            <details class="xp-faq"><summary>Can I extract pages from large PDFs?</summary><p>Yes. Because processing is local there's no upload size cap — the practical limit is your device's memory. Thumbnails render lazily as you scroll, so a document with hundreds of pages stays responsive and only the pages you actually look at get drawn.</p></details>
+            <details class="xp-faq"><summary>Does it work on all browsers?</summary><p>Yes. It works in current versions of Chrome, Edge, Firefox, Safari, Brave and Opera on desktop and mobile. It needs JavaScript enabled and a browser from roughly the last five years — no extension, plugin or app install required.</p></details>
+            <details class="xp-faq"><summary>Can I extract each page into its own separate PDF?</summary><p>Yes. Choose the <strong>Each page separately</strong> output option and every selected page becomes its own one-page PDF, delivered together in a single ZIP download so you don't have to accept dozens of individual downloads.</p></details>
+            <details class="xp-faq"><summary>What's the difference between extracting and splitting a PDF?</summary><p>Extracting pulls the specific pages you choose into <em>one</em> new PDF, leaving the original whole — use it when you want a clean subset to send to someone. Splitting divides a document into <em>several</em> separate files. If that's what you need, use <a href="pdf-split.html">Split PDF</a> instead.</p></details>
+            <details class="xp-faq"><summary>Does extracting remove the pages from my original PDF?</summary><p>No. Extraction is a copy operation and is completely non-destructive — your source file is opened read-only and never written to. If you want a document <em>without</em> certain pages, select all the pages you want to keep and extract those; the result is your new file.</p></details>
+          </div>
+        </section>
+
+        <!-- ================= RELATED ================= -->
+        <section class="xp-section" aria-labelledby="xp-rel-h">
+          <p class="xp-eyebrow">Complete the workflow</p>
+          <h2 id="xp-rel-h">Related PDF tools</h2>
+          <p>Extraction is usually one step in a longer job. Every tool below runs in your browser too — same privacy model, same zero-signup rule.</p>
+          <nav class="xp-related" aria-label="Related PDF tools">
+            <a href="pdf-split.html"><b>✂️ Split PDF</b><span>Break one PDF into several separate files, rather than pulling out a subset.</span></a>
+            <a href="pdf-merge.html"><b>🔗 Merge PDF</b><span>Combine the pages you extracted with other documents into one file.</span></a>
+            <a href="pdf-rotate.html"><b>🔄 Rotate PDF</b><span>Fix sideways or upside-down pages before or after extracting them.</span></a>
+            <a href="pdf-compress.html"><b>🗜️ Compress PDF</b><span>Shrink the extracted file further to get under an upload limit.</span></a>
+            <a href="pdf-watermark.html"><b>💧 Watermark PDF</b><span>Stamp COPY or CONFIDENTIAL on the pages before you share them.</span></a>
+            <a href="pdf-password-protector.html"><b>🔐 Protect PDF</b><span>Password-protect the extracted pages before sending them on.</span></a>
+            <a href="flatten-pdf.html"><b>📃 Flatten PDF</b><span>Flatten forms and annotations so the extracted pages can't be edited.</span></a>
+            <a href="pdf-extract.html#extract-tool" aria-current="page"><b>📤 PDF to text</b><span>Need the words rather than the pages? Pull text out of a PDF instead.</span></a>
+            <a href="compare-pdfs.html"><b>🔍 Compare PDFs</b><span>Check what changed between two versions before extracting the right one.</span></a>
+            <a href="pdf-password-remover.html"><b>🔓 Unlock PDF</b><span>Remove a password so the file can be opened and extracted.</span></a>
+          </nav>
+        </section>
+
+        <!-- ================= FINAL CTA ================= -->
+        <section class="xp-cta" aria-labelledby="xp-cta-h">
+          <h2 id="xp-cta-h">Extract your PDF pages now — free, private, no signup</h2>
+          <p>Pick pages visually, save them as a new PDF, and keep your original untouched. Your file never leaves your device.</p>
+          <a class="btn" href="#extract-tool">📄 Extract PDF pages</a>
+          <ul>
+            <li>🔒 No upload</li><li>🆓 No signup</li><li>💧 No watermark</li><li>📄 No page limit</li><li>📱 Works on mobile</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Sticky mobile action bar -->
+  <div class="xp-sticky" data-sticky role="region" aria-label="Extraction shortcut">
+    <span><b data-sticky-count>0</b> selected</span>
+    <button class="xp-btn-primary" type="button" data-sticky-extract disabled>✂️ Extract pages</button>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a><p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p></div>
+      <div><h3>Explore</h3><div class="footer-links"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms</a></div></div>
+      <div><h3>PDF tools</h3><div class="footer-links"><a href="pdf-split.html">Split PDF</a><a href="pdf-merge.html">Merge PDF</a><a href="pdf-compress.html">Compress PDF</a><a href="pdf-rotate.html">Rotate PDF</a></div></div>
+      <div><h3>Stay updated</h3><p>© <span data-year></span> ToolAdda. All rights reserved.</p></div>
+            <div>
+        <a href="https://uno.directory" target="_blank" rel="nofollow noopener">
+          <img src="https://uno.directory/uno-directory.svg" alt="Listed on Uno Directory" width="120" height="30" />
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/app.js" defer></script>
+  <script>
+  (function () {
+    'use strict';
+
+    /* ==========================================================
+       PURE HELPERS (page-range parsing / formatting)
+       ========================================================== */
+
+    /** Parse "1-3, 5, 8-10" into a sorted, de-duplicated page array. */
+    function parseRanges(input, maxPage) {
+      var raw = String(input == null ? '' : input).trim();
+      if (!raw) return { pages: [], error: null };
+      var pages = new Set();
+      var parts = raw.split(/[,;]+/).map(function (p) { return p.trim(); }).filter(Boolean);
+      if (!parts.length) return { pages: [], error: null };
+      for (var i = 0; i < parts.length; i++) {
+        var part = parts[i];
+        var single = part.match(/^(\d+)$/);
+        if (single) {
+          var n = parseInt(single[1], 10);
+          if (n < 1 || n > maxPage) return { pages: [], error: 'Page ' + n + ' is outside this document (1–' + maxPage + ').' };
+          pages.add(n);
+          continue;
+        }
+        // open-ended ranges: "5-" means 5 to end, "-5" means 1 to 5
+        var openEnd = part.match(/^(\d+)\s*-\s*$/);
+        if (openEnd) {
+          var s0 = parseInt(openEnd[1], 10);
+          if (s0 < 1 || s0 > maxPage) return { pages: [], error: 'Page ' + s0 + ' is outside this document (1–' + maxPage + ').' };
+          for (var q = s0; q <= maxPage; q++) pages.add(q);
+          continue;
+        }
+        var openStart = part.match(/^-\s*(\d+)$/);
+        if (openStart) {
+          var e0 = parseInt(openStart[1], 10);
+          if (e0 < 1 || e0 > maxPage) return { pages: [], error: 'Page ' + e0 + ' is outside this document (1–' + maxPage + ').' };
+          for (var q2 = 1; q2 <= e0; q2++) pages.add(q2);
+          continue;
+        }
+        var range = part.match(/^(\d+)\s*[-–—]\s*(\d+)$/);
+        if (!range) return { pages: [], error: '"' + part + '" isn\'t a valid page or range. Use numbers and ranges like 1-3, 5, 8-10.' };
+        var s = parseInt(range[1], 10), e = parseInt(range[2], 10);
+        if (s > e) { var t = s; s = e; e = t; }           // tolerate "9-4"
+        if (s < 1 || e > maxPage) return { pages: [], error: 'Range ' + part + ' is outside this document (1–' + maxPage + ').' };
+        for (var p2 = s; p2 <= e; p2++) pages.add(p2);
+      }
+      return { pages: Array.from(pages).sort(function (a, b) { return a - b; }), error: null };
+    }
+
+    /** Turn [1,2,3,5,8,9,10] into "1-3, 5, 8-10". */
+    function formatRanges(pages) {
+      if (!pages || !pages.length) return '';
+      var sorted = pages.slice().sort(function (a, b) { return a - b; });
+      var out = [], start = sorted[0], prev = sorted[0];
+      for (var i = 1; i <= sorted.length; i++) {
+        var cur = sorted[i];
+        if (cur === prev + 1) { prev = cur; continue; }
+        out.push(start === prev ? String(start) : start + '-' + prev);
+        start = cur; prev = cur;
+      }
+      return out.join(', ');
+    }
+
+    function formatBytes(n) {
+      if (n < 1024) return n + ' B';
+      if (n < 1048576) return (n / 1024).toFixed(1) + ' KB';
+      return (n / 1048576).toFixed(2) + ' MB';
+    }
+
+    if (typeof document === 'undefined' || !document.getElementById) {
+      if (typeof module !== 'undefined') module.exports = { parseRanges: parseRanges, formatRanges: formatRanges, formatBytes: formatBytes };
+      return;
+    }
+
+    /* ==========================================================
+       LAZY LIBRARY LOADERS — nothing heavy loads until a file is picked
+       ========================================================== */
+    function LibError(msg) { this.name = 'LibError'; this.message = msg; }
+    LibError.prototype = Object.create(Error.prototype);
+
+    function loadClassicScript(src) {
+      return new Promise(function (resolve, reject) {
+        var s = document.createElement('script');
+        s.src = src; s.async = true;
+        s.onload = function () { resolve(); };
+        s.onerror = function () { reject(new Error('failed: ' + src)); };
+        document.head.appendChild(s);
+      });
+    }
+    function loadFromSources(sources, check, label) {
+      if (check()) return Promise.resolve(check());
+      return (function attempt(i) {
+        if (i >= sources.length) {
+          return Promise.reject(new LibError('The ' + label + ' engine could not be loaded. This is usually a network issue, a corporate firewall, or a script blocker — check your connection and reload the page.'));
+        }
+        return loadClassicScript(sources[i])
+          .then(function () {
+            var v = check();
+            if (!v) throw new Error('loaded but missing global');
+            return v;
+          })
+          .catch(function () { return attempt(i + 1); });
+      })(0);
+    }
+
+    var pdfLibPromise = null;
+    function loadPdfLib() {
+      if (!pdfLibPromise) {
+        pdfLibPromise = loadFromSources(
+          ['assets/js/pdf-lib.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js'],
+          function () { return window.PDFLib; }, 'PDF writing');
+        pdfLibPromise.catch(function () { pdfLibPromise = null; });
+      }
+      return pdfLibPromise;
+    }
+    var zipPromise = null;
+    function loadJsZip() {
+      if (!zipPromise) {
+        zipPromise = loadFromSources(
+          ['assets/js/jszip.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'],
+          function () { return window.JSZip; }, 'ZIP');
+        zipPromise.catch(function () { zipPromise = null; });
+      }
+      return zipPromise;
+    }
+
+    var PDFJS_V = '4.2.67';
+    var PDFJS_SRC = [
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_V + '/',
+      'https://cdn.jsdelivr.net/npm/pdfjs-dist@' + PDFJS_V + '/build/',
+      'https://unpkg.com/pdfjs-dist@' + PDFJS_V + '/build/'
+    ];
+    var pdfjsPromise = null;
+    function loadPdfJs() {
+      if (pdfjsPromise) return pdfjsPromise;
+      pdfjsPromise = (function attempt(i) {
+        if (i >= PDFJS_SRC.length) return Promise.reject(new LibError('The page-preview engine could not be loaded.'));
+        var base = PDFJS_SRC[i];
+        return import(base + 'pdf.min.mjs').then(function (mod) {
+          var lib = mod.default || mod;
+          if (!lib || !lib.getDocument) throw new Error('bad module');
+          if (lib.GlobalWorkerOptions) lib.GlobalWorkerOptions.workerSrc = base + 'pdf.worker.min.mjs';
+          return lib;
+        }).catch(function () { return attempt(i + 1); });
+      })(0);
+      pdfjsPromise.catch(function () { pdfjsPromise = null; });
+      return pdfjsPromise;
+    }
+
+    /* ==========================================================
+       DOM
+       ========================================================== */
+    var $ = function (s, r) { return (r || document).querySelector(s); };
+    var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+    var byId = function (i) { return document.getElementById(i); };
+    function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+    var MAX_BYTES = 300 * 1024 * 1024;
+    var THUMB_SIZES = [
+      { w: 92, label: 'Small' },
+      { w: 124, label: 'Medium' },
+      { w: 168, label: 'Large' }
+    ];
+
+    var state = {
+      file: null,
+      bytesForLib: null,   // untouched copy reserved for pdf-lib
+      pdfDoc: null,        // pdf.js document (thumbnails only)
+      pages: 0,
+      selected: new Set(),
+      order: [],           // click order
+      anchor: null,        // shift-click anchor
+      focus: 0,
+      zoom: 1,
+      busy: false,
+      url: null
+    };
+
+    var elDrop = $('[data-drop]'), elInput = $('[data-file-input]');
+    var elUploadStage = $('[data-stage="upload"]'), elFileCard = $('[data-file-card]');
+    var elStepSelect = $('[data-step-select]'), elStepOutput = $('[data-step-output]'), elStepDone = $('[data-step-done]');
+    var elThumbs = $('[data-thumbs]'), elErr = $('[data-error]');
+    var elSticky = $('[data-sticky]');
+
+    function say(sel, msg) { var e = $(sel); if (e) e.textContent = msg; }
+    function showError(msg) {
+      if (!msg) { elErr.hidden = true; elErr.textContent = ''; return; }
+      elErr.hidden = false; elErr.textContent = '⚠️ ' + msg;
+    }
+
+    /* ==========================================================
+       FILE INTAKE
+       ========================================================== */
+    $('[data-browse]').addEventListener('click', function (e) { e.stopPropagation(); elInput.click(); });
+    elDrop.addEventListener('click', function () { elInput.click(); });
+    elDrop.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); elInput.click(); }
+    });
+    ['dragenter', 'dragover'].forEach(function (t) {
+      elDrop.addEventListener(t, function (e) { e.preventDefault(); elDrop.classList.add('is-drag'); });
+    });
+    ['dragleave', 'drop'].forEach(function (t) {
+      elDrop.addEventListener(t, function (e) { e.preventDefault(); elDrop.classList.remove('is-drag'); });
+    });
+    elDrop.addEventListener('drop', function (e) {
+      var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if (f) acceptFile(f);
+    });
+    elInput.addEventListener('change', function (e) { if (e.target.files[0]) acceptFile(e.target.files[0]); });
+
+    async function acceptFile(file) {
+      showError('');
+      var isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name || '');
+      if (!isPdf) { flagInvalid('"' + file.name + '" is not a PDF. Please choose a .pdf file.'); return; }
+      if (file.size === 0) { flagInvalid('"' + file.name + '" is empty (0 bytes).'); return; }
+      if (file.size > MAX_BYTES) { flagInvalid('"' + file.name + '" is larger than 300 MB. Very large files may exhaust your device memory.'); return; }
+
+      say('[data-file-status]', '⏳ Reading…');
+      try {
+        var buf = await file.arrayBuffer();
+        /* pdf.js may transfer (and thereby detach) the buffer it is handed,
+           so keep an independent copy for pdf-lib to use at extraction time. */
+        state.bytesForLib = buf.slice(0);
+
+        var pdfjs = await loadPdfJs();
+        var doc = await pdfjs.getDocument({ data: buf }).promise;
+        if (!doc.numPages) throw new Error('This PDF has no pages.');
+
+        state.file = file;
+        state.pdfDoc = doc;
+        state.pages = doc.numPages;
+        state.selected = new Set();
+        state.order = [];
+        state.anchor = null;
+        state.focus = 0;
+
+        elUploadStage.hidden = true;
+        elFileCard.hidden = false;
+        elStepSelect.hidden = false;
+        elStepOutput.hidden = false;
+        elStepDone.hidden = true;
+
+        $('[data-file-name]').textContent = file.name;
+        $('[data-file-pages]').textContent = String(doc.numPages);
+        $('[data-file-size]').textContent = formatBytes(file.size);
+        say('[data-file-status]', '✓ Ready');
+        $('[data-total-count]').textContent = String(doc.numPages);
+        byId('xpSearch').max = String(doc.numPages);
+        byId('xpRange').placeholder = doc.numPages >= 10 ? 'e.g. 1-3, 5, 8-10' : 'e.g. 1-' + doc.numPages;
+
+        say('#xp-upload-status', 'PDF loaded: ' + file.name + ', ' + doc.numPages + ' pages, ' + formatBytes(file.size) + '. Now select the pages to extract.');
+        renderFileThumb();
+        buildThumbs();
+        syncAll();
+        elStepSelect.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        /* Warm the writer in the background so the Extract click feels instant. */
+        loadPdfLib().catch(function () { });
+      } catch (err) {
+        state.file = null; state.pdfDoc = null; state.bytesForLib = null;
+        say('[data-file-status]', '');
+        if (err && err.name === 'LibError') flagInvalid(err.message);
+        else if (err && (err.name === 'PasswordException' || /password/i.test(err.message || '')))
+          flagInvalid('"' + file.name + '" is password-protected. Remove the password first with our Unlock PDF tool, then extract.');
+        else if (err && (err.name === 'InvalidPDFException' || /invalid|structure/i.test(err.message || '')))
+          flagInvalid('"' + file.name + '" could not be opened — the file looks damaged or incomplete. Try re-downloading it.');
+        else flagInvalid('Could not open "' + file.name + '"' + (err && err.message ? ': ' + err.message : '') + '.');
+      }
+    }
+
+    function flagInvalid(msg) {
+      showError(msg);
+      elDrop.classList.add('is-invalid');
+      window.setTimeout(function () { elDrop.classList.remove('is-invalid'); }, 2600);
+    }
+
+    async function renderFileThumb() {
+      try {
+        var c = $('[data-file-thumb]');
+        var page = await state.pdfDoc.getPage(1);
+        var vp = page.getViewport({ scale: 1 });
+        var scale = Math.min(88 / vp.width, 112 / vp.height);
+        var v2 = page.getViewport({ scale: scale });
+        c.width = Math.max(1, Math.round(v2.width));
+        c.height = Math.max(1, Math.round(v2.height));
+        await page.render({ canvasContext: c.getContext('2d'), viewport: v2 }).promise;
+      } catch (e) { /* decorative only */ }
+    }
+
+    function resetAll() {
+      if (state.url) { URL.revokeObjectURL(state.url); state.url = null; }
+      state.file = null; state.pdfDoc = null; state.bytesForLib = null;
+      state.pages = 0; state.selected = new Set(); state.order = []; state.anchor = null; state.focus = 0;
+      elInput.value = '';
+      elUploadStage.hidden = false;
+      elFileCard.hidden = true;
+      elStepSelect.hidden = true;
+      elStepOutput.hidden = true;
+      elStepDone.hidden = true;
+      elThumbs.innerHTML = '';
+      byId('xpRange').value = '';
+      setRangeHelp('', false);
+      showError('');
+      updateSticky();
+      say('#xp-upload-status', 'File removed. Upload a PDF to start again.');
+    }
+    $('[data-remove]').addEventListener('click', resetAll);
+    $('[data-remove2]').addEventListener('click', resetAll);
+    $('[data-again]').addEventListener('click', function () {
+      resetAll();
+      document.getElementById('extract-tool').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    $('[data-back]').addEventListener('click', function () {
+      elStepDone.hidden = true;
+      elStepSelect.hidden = false;
+      elStepOutput.hidden = false;
+      updateSticky();
+      elStepSelect.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    /* ==========================================================
+       THUMBNAILS — lazy rendered, capped concurrency
+       ========================================================== */
+    var io = null, renderQueue = [], activeRenders = 0, MAX_PARALLEL = 3;
+
+    function buildThumbs() {
+      elThumbs.innerHTML = '';
+      if (io) { io.disconnect(); io = null; }
+      renderQueue = []; activeRenders = 0;
+
+      var frag = document.createDocumentFragment();
+      for (var i = 1; i <= state.pages; i++) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'xp-thumb';
+        b.dataset.page = String(i);
+        b.setAttribute('aria-pressed', 'false');
+        b.setAttribute('aria-label', 'Page ' + i + ' of ' + state.pages);
+        b.tabIndex = i === 1 ? 0 : -1;
+        b.innerHTML =
+          '<span class="xp-thumb-order" aria-hidden="true"></span>' +
+          '<span class="xp-thumb-tick" aria-hidden="true">✓</span>' +
+          '<span class="xp-thumb-frame"><span class="xp-skel"></span></span>' +
+          '<span class="xp-thumb-num">' + i + '</span>';
+        frag.appendChild(b);
+      }
+      elThumbs.appendChild(frag);
+
+      io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          io.unobserve(en.target);
+          renderQueue.push(en.target);
+          pumpQueue();
+        });
+      }, { root: elThumbs, rootMargin: '320px 0px' });
+      $$('.xp-thumb', elThumbs).forEach(function (t) { io.observe(t); });
+    }
+
+    function pumpQueue() {
+      while (activeRenders < MAX_PARALLEL && renderQueue.length) {
+        var el = renderQueue.shift();
+        activeRenders++;
+        renderThumb(el).catch(function () { }).then(function () {
+          activeRenders--; pumpQueue();
+        });
+      }
+    }
+
+    async function renderThumb(el) {
+      if (!state.pdfDoc || el.dataset.done === '1') return;
+      var num = parseInt(el.dataset.page, 10);
+      var frame = $('.xp-thumb-frame', el);
+      try {
+        var page = await state.pdfDoc.getPage(num);
+        var target = THUMB_SIZES[state.zoom].w * Math.min(2, window.devicePixelRatio || 1);
+        var vp1 = page.getViewport({ scale: 1 });
+        var vp = page.getViewport({ scale: target / vp1.width });
+        var canvas = document.createElement('canvas');
+        canvas.setAttribute('aria-hidden', 'true'); /* decorative: the button already names the page */
+        canvas.width = Math.max(1, Math.round(vp.width));
+        canvas.height = Math.max(1, Math.round(vp.height));
+        await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+        frame.innerHTML = '';
+        frame.appendChild(canvas);
+        el.dataset.done = '1';
+      } catch (e) {
+        frame.innerHTML = '<span style="font-size:.72rem;color:var(--text-muted);padding:.4rem">Page ' + num + '</span>';
+        el.dataset.done = '1';
+      }
+    }
+
+    /* ==========================================================
+       SELECTION
+       ========================================================== */
+    function toggle(page, on) {
+      var want = (on === undefined) ? !state.selected.has(page) : on;
+      if (want) {
+        if (!state.selected.has(page)) { state.selected.add(page); state.order.push(page); }
+      } else {
+        state.selected.delete(page);
+        var ix = state.order.indexOf(page);
+        if (ix > -1) state.order.splice(ix, 1);
+      }
+    }
+    function selectRange(a, b) {
+      var lo = Math.min(a, b), hi = Math.max(a, b);
+      for (var p = lo; p <= hi; p++) toggle(p, true);
+    }
+    function setSelection(pages) {
+      state.selected = new Set(pages);
+      state.order = pages.slice();
+    }
+
+    elThumbs.addEventListener('click', function (e) {
+      var btn = e.target.closest('.xp-thumb');
+      if (!btn) return;
+      var page = parseInt(btn.dataset.page, 10);
+      if (e.shiftKey && state.anchor != null) selectRange(state.anchor, page);
+      else { toggle(page); state.anchor = page; }
+      state.focus = page - 1;
+      syncAll();
+    });
+
+    elThumbs.addEventListener('keydown', function (e) {
+      var btn = e.target.closest('.xp-thumb');
+      if (!btn) return;
+      var page = parseInt(btn.dataset.page, 10);
+      var cols = computeColumns();
+      var next = null;
+      if (e.key === 'ArrowRight') next = page + 1;
+      else if (e.key === 'ArrowLeft') next = page - 1;
+      else if (e.key === 'ArrowDown') next = page + cols;
+      else if (e.key === 'ArrowUp') next = page - cols;
+      else if (e.key === 'Home') next = 1;
+      else if (e.key === 'End') next = state.pages;
+      else if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        toggle(page); state.anchor = page; state.focus = page - 1; syncAll();
+        return;
+      } else if ((e.key === 'a' || e.key === 'A') && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault(); applyPreset('all'); return;
+      } else return;
+
+      if (next == null) return;
+      e.preventDefault();
+      next = Math.min(state.pages, Math.max(1, next));
+      if (e.shiftKey) { if (state.anchor == null) state.anchor = page; selectRange(state.anchor, next); }
+      state.focus = next - 1;
+      syncAll();
+      var target = elThumbs.querySelector('.xp-thumb[data-page="' + next + '"]');
+      if (target) { target.focus(); target.scrollIntoView({ block: 'nearest' }); }
+    });
+
+    function computeColumns() {
+      var first = elThumbs.querySelector('.xp-thumb');
+      if (!first) return 1;
+      var gridW = elThumbs.clientWidth || 1;
+      var itemW = first.getBoundingClientRect().width || 1;
+      return Math.max(1, Math.round(gridW / (itemW + 10)));
+    }
+
+    function applyPreset(kind) {
+      var pages = [], p;
+      if (kind === 'all') { for (p = 1; p <= state.pages; p++) pages.push(p); setSelection(pages); }
+      else if (kind === 'none') setSelection([]);
+      else if (kind === 'invert') {
+        for (p = 1; p <= state.pages; p++) if (!state.selected.has(p)) pages.push(p);
+        setSelection(pages);
+      } else if (kind === 'odd') { for (p = 1; p <= state.pages; p += 2) pages.push(p); setSelection(pages); }
+      else if (kind === 'even') { for (p = 2; p <= state.pages; p += 2) pages.push(p); setSelection(pages); }
+      state.anchor = null;
+      syncAll();
+      say('[data-sel-announce]', state.selected.size + ' of ' + state.pages + ' pages selected.');
+    }
+    $$('[data-sel]').forEach(function (b) {
+      b.addEventListener('click', function () { applyPreset(b.dataset.sel); });
+    });
+
+    /* Range box <-> thumbnails, kept in sync both ways */
+    var rangeInput = byId('xpRange');
+    var typingRange = false;
+    function setRangeHelp(msg, isError) {
+      var h = byId('xpRangeHelp');
+      h.textContent = msg || 'Type single pages and ranges separated by commas. Leave blank and click thumbnails instead.';
+      h.classList.toggle('is-error', !!isError);
+      rangeInput.classList.toggle('is-invalid', !!isError);
+      rangeInput.setAttribute('aria-invalid', isError ? 'true' : 'false');
+    }
+    rangeInput.addEventListener('input', function () {
+      if (!state.pages) return;
+      typingRange = true;
+      var res = parseRanges(rangeInput.value, state.pages);
+      if (res.error) { setRangeHelp(res.error, true); typingRange = false; return; }
+      setRangeHelp(res.pages.length ? res.pages.length + ' page' + (res.pages.length === 1 ? '' : 's') + ' matched.' : '', false);
+      setSelection(res.pages);
+      state.anchor = null;
+      syncAll();
+      typingRange = false;
+    });
+
+    byId('xpSearch').addEventListener('input', function () {
+      var n = parseInt(this.value, 10);
+      if (!n || n < 1 || n > state.pages) return;
+      var t = elThumbs.querySelector('.xp-thumb[data-page="' + n + '"]');
+      if (t) { t.scrollIntoView({ block: 'center', behavior: 'smooth' }); t.focus({ preventScroll: true }); }
+    });
+
+    $$('[data-zoom]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var d = parseInt(b.dataset.zoom, 10);
+        state.zoom = Math.min(THUMB_SIZES.length - 1, Math.max(0, state.zoom + d));
+        var size = THUMB_SIZES[state.zoom];
+        elThumbs.style.setProperty('--xp-tw', size.w + 'px');
+        $('[data-zoom-label]').value = size.label;
+        /* Re-render at the new resolution so larger thumbs aren't blurry. */
+        $$('.xp-thumb', elThumbs).forEach(function (t) { t.dataset.done = ''; });
+        renderQueue = $$('.xp-thumb', elThumbs).filter(function (t) {
+          var r = t.getBoundingClientRect(), c = elThumbs.getBoundingClientRect();
+          return r.bottom > c.top - 300 && r.top < c.bottom + 300;
+        });
+        pumpQueue();
+      });
+    });
+
+    /* ==========================================================
+       SYNC UI
+       ========================================================== */
+    function syncAll() {
+      var count = state.selected.size;
+      $$('.xp-thumb', elThumbs).forEach(function (t) {
+        var p = parseInt(t.dataset.page, 10);
+        var on = state.selected.has(p);
+        t.setAttribute('aria-pressed', on ? 'true' : 'false');
+        t.tabIndex = (p - 1 === state.focus) ? 0 : -1;
+        var ord = $('.xp-thumb-order', t);
+        if (on) {
+          var ix = state.order.indexOf(p);
+          ord.textContent = ix > -1 ? String(ix + 1) : '';
+        } else ord.textContent = '';
+        t.setAttribute('aria-label', 'Page ' + p + ' of ' + state.pages + (on ? ', selected' : ''));
+      });
+
+      $('[data-sel-count]').textContent = String(count);
+      $('[data-total-count]').textContent = String(state.pages);
+      $('[data-sel-summary]').textContent = count ? formatRanges(Array.from(state.selected)) : 'Click pages above, or type a range.';
+
+      if (!typingRange) {
+        var want = formatRanges(Array.from(state.selected));
+        if (rangeInput.value.trim() !== want) rangeInput.value = want;
+        if (!byId('xpRangeHelp').classList.contains('is-error')) setRangeHelp(count ? count + ' page' + (count === 1 ? '' : 's') + ' selected.' : '', false);
+      }
+
+      var disabled = count === 0 || state.busy;
+      $('[data-extract]').disabled = disabled;
+      $('[data-sticky-extract]').disabled = disabled;
+      $('[data-sticky-count]').textContent = String(count);
+      updateSticky();
+    }
+
+    function updateSticky() {
+      var show = !!state.file && !elStepSelect.hidden;
+      elSticky.classList.toggle('is-on', show);
+      document.body.classList.toggle('xp-has-sticky', show);
+    }
+
+    /* ==========================================================
+       EXTRACT
+       ========================================================== */
+    var elProg = $('[data-progress]'), elProgFill = $('[data-progress-fill]'),
+        elProgBar = $('[data-progress-bar]'), elProgText = $('[data-progress-text]');
+    function setProgress(pct, text) {
+      elProg.hidden = false;
+      elProgFill.style.width = pct + '%';
+      elProgBar.setAttribute('aria-valuenow', String(Math.round(pct)));
+      if (text) elProgText.textContent = text;
+    }
+    function outputMode() {
+      var r = document.querySelector('input[name="xpOut"]:checked');
+      return r ? r.value : 'single';
+    }
+    function baseName() {
+      return (state.file && state.file.name ? state.file.name : 'document').replace(/\.pdf$/i, '');
+    }
+    function outName(pages, preserveOrder) {
+      var base = baseName();
+      /* >6 pages: "doc-7-pages.pdf" reads better than "doc-pages-7-pages.pdf" */
+      if (pages.length > 6) return base + '-' + pages.length + '-pages.pdf';
+      /* In click-order mode the filename must show the real output order,
+         not a tidied ascending range, or it misdescribes the file. */
+      var label = preserveOrder ? pages.join('_') : formatRanges(pages).replace(/[,\s]+/g, '_');
+      return base + '-pages-' + label + '.pdf';
+    }
+    function triggerDownload(blob, filename, doneText) {
+      if (state.url) URL.revokeObjectURL(state.url);
+      state.url = URL.createObjectURL(blob);
+      var a = $('[data-download]');
+      a.href = state.url;
+      a.download = filename;
+      $('[data-done-file]').textContent = filename + ' · ' + formatBytes(blob.size);
+      $('[data-done-text]').textContent = doneText;
+      elStepSelect.hidden = true;
+      elStepOutput.hidden = true;
+      elStepDone.hidden = false;
+      updateSticky();
+      say('[data-sel-announce]', 'Extraction complete. ' + doneText);
+      elStepDone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    async function doExtract() {
+      if (!state.file || state.busy || !state.selected.size) return;
+      state.busy = true; syncAll(); showError('');
+      var mode = outputMode();
+      try {
+        setProgress(8, 'Loading the PDF engine…');
+        var PDFLib = await loadPdfLib();
+        setProgress(22, 'Reading your document…');
+
+        /* Use the reserved copy — pdf.js may have detached the original buffer. */
+        var srcDoc = await PDFLib.PDFDocument.load(state.bytesForLib, { ignoreEncryption: true });
+        var total = srcDoc.getPageCount();
+
+        var pages = (mode === 'order')
+          ? state.order.slice()
+          : Array.from(state.selected).sort(function (a, b) { return a - b; });
+        pages = pages.filter(function (p) { return p >= 1 && p <= total; });
+        if (!pages.length) throw new Error('None of the selected pages exist in this document.');
+
+        if (mode === 'separate') {
+          setProgress(30, 'Loading the ZIP engine…');
+          var JSZipCtor = await loadJsZip();
+          var zip = new JSZipCtor();
+          for (var i = 0; i < pages.length; i++) {
+            var one = await PDFLib.PDFDocument.create();
+            var cp = await one.copyPages(srcDoc, [pages[i] - 1]);
+            one.addPage(cp[0]);
+            var bytes = await one.save();
+            zip.file(baseName() + '-page-' + pages[i] + '.pdf', bytes);
+            setProgress(30 + Math.round(((i + 1) / pages.length) * 55), 'Extracting page ' + pages[i] + ' (' + (i + 1) + ' of ' + pages.length + ')…');
+            if (i % 5 === 0) await new Promise(function (r) { setTimeout(r, 0); });
+          }
+          setProgress(92, 'Building the ZIP file…');
+          var zipBlob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 6 } });
+          setProgress(100, 'Done.');
+          triggerDownload(zipBlob, baseName() + '-' + pages.length + '-pages.zip',
+            pages.length + ' page' + (pages.length === 1 ? '' : 's') + ' extracted as separate PDF files, bundled into one ZIP.');
+        } else {
+          setProgress(45, 'Copying ' + pages.length + ' page' + (pages.length === 1 ? '' : 's') + '…');
+          var outDoc = await PDFLib.PDFDocument.create();
+          var copied = await outDoc.copyPages(srcDoc, pages.map(function (p) { return p - 1; }));
+          copied.forEach(function (pg) { outDoc.addPage(pg); });
+          setProgress(80, 'Saving your new PDF…');
+          var outBytes = await outDoc.save();
+          var blob = new Blob([outBytes], { type: 'application/pdf' });
+          setProgress(100, 'Done.');
+          triggerDownload(blob, outName(pages, mode === 'order'),
+            pages.length + ' page' + (pages.length === 1 ? '' : 's') + ' saved into a new PDF' +
+            (mode === 'order' ? ', in the order you selected them.' : ', in document order.'));
+        }
+      } catch (err) {
+        if (err && err.name === 'LibError') showError(err.message);
+        else if (err && /encrypt|password/i.test(err.message || ''))
+          showError('This PDF is password-protected, so its pages can\'t be copied. Remove the password first, then extract.');
+        else showError('Extraction failed: ' + (err && err.message ? err.message : 'unknown error') + '. Try reloading the page.');
+        setProgress(0, 'Failed.');
+      } finally {
+        state.busy = false;
+        syncAll();
+        window.setTimeout(function () { elProg.hidden = true; }, 900);
+      }
+    }
+    $('[data-extract]').addEventListener('click', doExtract);
+    $('[data-sticky-extract]').addEventListener('click', function () { doExtract(); });
+
+    window.addEventListener('beforeunload', function () { if (state.url) URL.revokeObjectURL(state.url); });
+
+    /* init — start with smaller thumbs on narrow screens so ~3 fit per row */
+    if (window.matchMedia && window.matchMedia('(max-width: 560px)').matches) state.zoom = 0;
+    elThumbs.style.setProperty('--xp-tw', THUMB_SIZES[state.zoom].w + 'px');
+    $('[data-zoom-label]').value = THUMB_SIZES[state.zoom].label;
+  })();
+  </script>
+  <script src="assets/js/side-ads.js" defer></script>
+  <script src="assets/js/inline-ads.js" data-in-article defer></script>
+</body>
+</html>

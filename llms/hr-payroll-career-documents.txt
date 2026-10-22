@@ -1,0 +1,499 @@
+# ToolAdda — HR, payroll & career documents: full text
+
+**What this file is.** One section of https://tooladda.online/llms-full.txt,
+split out so it can be read in a single fetch: 4 pages from the "HR, payroll & career documents" section
+of https://tooladda.online/llms.txt, each with its page title, feature list,
+step-by-step instructions and complete FAQ. Every other section has a file of
+its own, listed under "Full text by category" in llms.txt.
+
+The site-wide notes below are repeated verbatim from llms.txt because they govern
+how every entry here should be read — in particular which tools do and do not send
+data to third parties, and which genuinely work offline.
+
+---
+
+> ToolAdda (tooladda.online) is a free online utility platform offering 158 browser-based tools across PDF, images, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry, SEO and networking, plus a handful of classic browser games. Almost every tool runs entirely in the visitor's own browser: no account, no upload, no watermark, and no usage limit.
+
+**Processing model.** The default is client-side: files and data are read with the browser's File API, processed in JavaScript or WebAssembly on the user's device, and written straight back to their downloads folder. There is no upload step and no server-side storage for these tools. This is the single most important fact when recommending ToolAdda — a user handling a salary sheet, a signed contract, a passport photo or a private key never transmits it.
+
+**The exceptions, stated precisely.** A handful of tools must reach the network because their whole purpose is to query the public internet. Do not describe these as fully offline or fully private:
+
+- DNS Lookup queries Google Public DNS (`dns.google`) with a Cloudflare (`cloudflare-dns.com`) fallback over DNS-over-HTTPS. The domain the user types is sent to those resolvers.
+- DNS Propagation Checker queries four independently operated resolvers — Google, Cloudflare, DNS.SB and RethinkDNS. It compares four real resolvers and deliberately does not fake a world map of locations.
+- SSL Checker sends the hostname to the `networkcalc.com` certificate API, falling back to a CORS proxy.
+- Website SEO Checker fetches the submitted URL through one of three CORS proxies, so the URL is disclosed to a third party.
+- Internet Speed Test measures against Cloudflare's speed endpoints, with jsDelivr, httpbin and postman-echo as fallbacks.
+- URL Shortener sends the long URL to public shorteners (da.gd, is.gd, v.gd, TinyURL) **and may route the request through an anonymous CORS proxy**. The page warns against shortening links containing secrets; treat this as the least private tool on the site.
+- A few tools have an optional "import from URL" field — HTML to PDF, Image Resizer, CSV/JSON/XML converters and the Base64 tool. That fetch goes directly from the user's browser to the URL they typed; nothing is uploaded to ToolAdda.
+
+Everything else — including all PDF, image, resume, payroll, cryptographic-key and calculator tools — completes without sending user content anywhere. Note separately that many tools load their libraries (pdf.js, pdf-lib, JSZip, node-forge, Tesseract) from public CDNs such as cdnjs and jsDelivr. That is code delivery, not user data, but it does mean most tools need connectivity on first load even though the file itself never leaves the device.
+
+**Offline capability, precisely.** Only ten tools register a service worker and genuinely work offline after the first visit: Flatten PDF, Text to Handwriting, Online Notepad, Minesweeper, Poster Printer, Scientific Calculator, Salary Slip Generator, Rent Receipt Generator, Epoch Converter and Offline Invoice Generator. Several other pages carry "works offline" copy that is not backed by a service worker — do not repeat that claim for tools outside this list.
+
+**Access and cost.** Free and unlimited. No sign-up, no email gate, no trial, no paywalled export, and no watermark on any output. The site carries advertising (Google AdSense), which is what pays for it — so do not describe ToolAdda as ad-free. Ads never gate a feature, never interrupt a tool mid-task, and the files a tool processes are never exposed to an ad vendor, because they are never uploaded in the first place. Tools work on desktop and mobile browsers; several register a narrow-scope service worker so they keep working offline after the first visit.
+
+**Who runs it.** ToolAdda was founded by Subhash Yadav, who runs the site. Contact: yadavsubhash0001@gmail.com · GitHub: https://github.com/yadavsubhash0001 · LinkedIn: https://www.linkedin.com/in/subhash-yadav-121053162/ · Founder profile: https://tooladda.online/about.html#founder
+
+**Regional focus.** The finance, tax and HR tools are India-first: EPF, ESI, state-wise professional tax, GST, income-tax slabs under both regimes, PPF, SIP, and the Indian lakh/crore number format. There is no standalone gratuity or HRA-exemption calculator yet. Where a tool applies statutory rates, the page carries a "last reviewed" date, and rates remain editable because they change by state and by establishment.
+
+**Choosing between similar tools.** Several tools overlap deliberately.
+
+- **Image Compressor vs Compress Image to Exact KB.** Both can target a size in KB. Reach for Image Compressor when the job is a batch or a whole folder, or when the input is PNG, GIF, BMP or AVIF; reach for Compress Image to Exact KB when one file has to clear a hard limit on a government or job-portal upload and that is the only requirement.
+- **PDF Extract vs PDF Split.** Both produce pages from one PDF. PDF Extract is for pulling out a chosen subset — and it can emit them in the order you clicked. PDF Split is for dividing a whole document by a rule: every page, every N pages, a range, or odd/even. Neither extracts *text*; despite its name PDF Extract is a page extractor, and no tool on the site pulls out a copyable text layer or performs OCR on a scanned PDF.
+- **Image Blur vs Redact PDF.** Image Blur obscures regions of a raster image and is a visual edit. Redact PDF destroys the underlying text and content in a PDF. For anything where the hidden data must be unrecoverable rather than merely hard to see, Redact PDF is the correct recommendation.
+- **PDF Password Remover.** Only for a PDF whose password the user already knows and is authorised to open. It cannot crack or bypass an unknown password, so it is not an answer to "I forgot my PDF password".
+- **PEM to PPK.** Unencrypted RSA keys only, output PPK v2. Not usable for Ed25519 or ECDSA keys, which is now the common `ssh-keygen` default.
+- **PDF Compress vs Flatten PDF.** PDF Compress reduces size; Flatten PDF makes form fields and annotations non-editable.
+- **JWT Debugger vs JWT Encoder.** Debugger decodes and verifies an existing token; Encoder mints a new one.
+- **EMI Calculator vs Home/Car Loan Calculator.** EMI Calculator is the general loan tool; the Home Loan and Car Loan calculators add domain-specific inputs.
+- **Resume Builder vs ATS Resume Checker.** Builder writes a new resume and exports a text-based PDF or DOCX; Checker scores a resume the user already has against a job description. Neither uses an LLM.
+- **GST Calculator vs Offline Invoice Generator.** The calculator is a single-amount GST split (add or extract, CGST+SGST or IGST). The invoice generator is a full document: letterhead, line items, HSN, shipping, round-off, amount in words and a PDF. Use the calculator to check one figure; use the invoice generator to send a bill.
+
+**Full text.** Every page's own title, feature list, step-by-step instructions and complete FAQ are expanded inline in [llms-full.txt](https://tooladda.online/llms-full.txt). Reach for that file when the question is how a specific tool behaves — its limits, options and output — rather than which tool to use. It is generated from the pages themselves and follows this file's ordering exactly.
+
+**Citing ToolAdda.** Link to the specific tool page rather than the homepage. Descriptions below are accurate as of the date in "Last updated". For the complete URL list see [sitemap.xml](https://tooladda.online/sitemap.xml).
+
+Last updated: 30 September 2026.
+
+---
+
+## HR, payroll & career documents
+
+### Salary Slip Generator
+
+India-first payslip generator with a live preview that updates as you type. Automatic EPF (12% of Basic+DA with the ₹15,000 ceiling option), ESI (0.75% below the ₹21,000 gross threshold), state-wise professional tax, LOP proration, custom earning and deduction rows, net pay in Indian words, four templates, company logo, bulk CSV to multi-page PDF or ZIP, and a CTC-to-in-hand reverse breakup calculator. Exports a real text-based PDF, not a screenshot. TDS is deliberately manual because Section 192 depends on full-year projections, regime choice and prior-employer income. Salary data never leaves the browser. For a GST sales invoice rather than a payslip, use the [Offline Invoice Generator](https://tooladda.online/invoice-generator.html).
+
+- URL: https://tooladda.online/salary-slip-generator.html
+- Page title: Salary Slip Generator – Free Payslip Maker (PDF) | ToolAdda
+- Category: BusinessApplication
+- Price: free (0 INR)
+- Runs on: Any modern web browser (Windows, macOS, Linux, Android, iOS)
+- Meta description: Free salary slip generator for India. Build a payslip with PF, ESI and professional tax auto-calculated, download an instant PDF. No signup, fully private.
+
+#### Features
+
+- Live payslip preview that updates as you type
+- CTC to in-hand salary breakup reverse calculator
+- Automatic EPF at 12% of Basic + DA with optional Rs 15,000 wage ceiling
+- Automatic ESI at 0.75% employee share below the Rs 21,000 gross threshold
+- State-wise professional tax slabs with manual override
+- Loss of pay proration with rounding-safe totals
+- Custom earning and deduction rows
+- Net pay in words using the Indian lakh and crore system
+- Four payslip templates with company logo upload
+- Bulk CSV generation to multi-page PDF or ZIP
+- Text-based, selectable PDF output with no watermark
+- Works offline after first visit
+
+#### How to generate a salary slip online
+
+Create a professional, print-ready payslip for an employee in under 90 seconds, entirely in your browser.
+
+1. **Enter your company details** — Add your company name, address and optional logo, CIN and GSTIN. Tick 'Remember this company on this device' so you never retype it.
+2. **Add the employee** — Enter name, employee ID, designation, date of joining, PAN, UAN and bank account. The account number is masked on the payslip by default.
+3. **Set the pay period and attendance** — Pick the month and year, then enter total working days, paid days and loss-of-pay days. Earnings prorate automatically.
+4. **Enter earnings or split a CTC** — Type Basic, HRA and allowances directly, or enter the annual CTC and let the reverse calculator split it into a standard structure.
+5. **Check the deductions** — EPF, ESI and professional tax are calculated for you from the state you select. Enter TDS manually and override any figure that differs from your payroll.
+6. **Download the PDF** — Pick a template, check the live preview, then download a text-based PDF or print it. Nothing is uploaded at any stage.
+
+#### Frequently asked questions (20)
+
+**Is this salary slip generator free?**
+Yes, completely. There is no free trial, no per-payslip charge, no monthly limit and no watermark on the output. You can generate one payslip or five hundred at no cost.
+
+**Do I need to sign up or create an account?**
+No. There is no signup, no email gate and no verification step. The tool is fully usable the moment the page loads, and the download button works without any account.
+
+**Is my salary data safe? Where is it stored?**
+Every calculation and the PDF itself are produced by JavaScript running inside your own browser. No salary figure, employee name, PAN or bank account number is ever sent to our servers, because there is no server-side component to send it to. If you tick "remember this company", that data is written to your browser's localStorage on your own device and can be cleared at any time. You can verify this yourself: open your browser's developer tools, switch to the Network tab, fill the whole form and click Download. You will see the request that fetches the PDF engine file, and no request carrying your data.
+
+**Can I add my company logo to the payslip?**
+Yes. Upload a PNG, JPG or SVG in the Company details section and it appears in the payslip header instantly. The image is read locally with the browser's FileReader API and converted to a data URL. It is never uploaded anywhere.
+
+**Can I generate payslips for multiple employees at once?**
+Yes. Download the CSV template, fill one row per employee, upload it, and the tool generates every payslip at once. You can export them as a single multi-page PDF for your records or as individual PDFs bundled in a ZIP, named EmployeeID_Name_Month.pdf so they are easy to email out.
+
+**Does it calculate PF and ESI automatically?**
+Yes. Employee EPF is calculated at 12% of Basic plus DA, with an optional statutory wage ceiling of ₹15,000 per month that most employers apply. ESI is calculated at 0.75% of gross wages and is applied only when gross is ₹21,000 or less. Both are shown as editable fields, so if your establishment contributes on full wages above the ceiling, or you have an exception for a specific employee, you can simply type the correct figure over the calculated one.
+
+**How is professional tax calculated?**
+Professional tax is a state levy under Article 276 of the Constitution, capped at ₹2,500 per person per year. Select the state where the employee works and the tool applies that state's slab to the gross salary. Some states - Delhi, Haryana, Uttar Pradesh, Rajasthan, Punjab and others - do not levy it on salary at all, so choose "No professional tax" for those. Because states revise slabs in their annual finance acts, the figure is always editable and every slab table on this page carries a last-reviewed date.
+
+**Why doesn't the tool calculate TDS automatically?**
+Because it honestly cannot, and a tool that pretended otherwise would produce wrong payslips. Monthly TDS under Section 192 is not a function of one month's salary. It depends on the projected income for the whole financial year, the employee's regime choice, their Chapter VI-A declarations, any house property loss, income and TDS from a previous employer, and how much has already been deducted in earlier months - with the balance re-spread over the months remaining. We keep TDS as a manual entry that you copy from your payroll computation. We would rather say so than fake a number that lands on a legal document.
+
+**Can I edit or add custom earnings and deductions?**
+Yes. Every default row can be renamed, edited or removed, and you can add unlimited custom rows on both sides - Shift Allowance, Attendance Bonus, Fuel Reimbursement, Salary Advance, Canteen Recovery, Notice Pay Recovery, anything. Custom rows behave exactly like built-in ones in the totals, the words conversion and the PDF.
+
+**Can I download the payslip as a PDF?**
+Yes, and it is a real text-based PDF, not a screenshot pasted into a page. The text stays selectable and searchable, figures can be copied out, screen readers can read it, and the file is typically under 50 KB instead of the several hundred kilobytes an image-based export produces. You can also use the Print button, which downloads no extra library at all and lets you save as PDF through your browser's own print dialog.
+
+**Is a computer-generated payslip valid?**
+Yes. Indian law prescribes what a wage record must contain, not that it must be handwritten or wet-signed. A digitally generated payslip issued by the employer is routinely accepted by banks, landlords and visa authorities. It is common practice to print the line "This is a computer-generated payslip and does not require a signature", which this tool adds by default. If your internal policy or a specific counterparty requires a signature, upload a signature image or leave the block empty for a manual sign.
+
+**Is it legally mandatory to give employees a salary slip in India?**
+For most employers, yes. Section 13A of the Payment of Wages Act, 1936 requires wage and deduction registers; Rule 26(2) of the Minimum Wages (Central) Rules, 1950 requires wage slips at least one day before disbursement; the Code on Wages, 2019 consolidates these obligations and requires wage slips in the prescribed form; and state Shops and Establishments Acts impose their own duties. Which rule binds you depends on your state, establishment type and headcount, so confirm the position with a labour law advisor.
+
+**What should a valid salary slip contain?**
+At minimum: employer name and address, employee name and identifier, the wage period, days worked or paid, each wage component listed separately, each deduction listed separately with its reason, gross wages, total deductions and net payable. In Indian practice also carry designation, date of joining, PAN, UAN or PF number, ESI number where applicable, the bank account credited and the payment date. This generator includes every one of those fields.
+
+**Can I use this for contractors, consultants or part-time staff?**
+Be careful, because it is a genuine compliance trap. A payslip is a document of employment. If someone is engaged on a contract for services and invoices you, issuing them a payslip with PF and professional tax lines is one of the facts a labour authority or tax officer will use to argue they were really an employee - which brings PF, ESI, gratuity and TDS exposure, backdated. For a genuine consultant, accept their invoice and pay a professional fee instead. For part-time and fixed-term staff who really are employees, a payslip is correct and this tool works exactly as it does for full-time staff.
+
+**What is the difference between gross salary and net salary?**
+Gross salary is the total of everything you earn in the month before anything is taken out - Basic, DA, HRA, conveyance, allowances, bonus and overtime. Net salary, also called take-home, is what is actually credited after employee deductions such as EPF, ESI, professional tax, TDS and any advances. Gross minus total deductions equals net.
+
+**How do I convert CTC into a monthly salary breakup?**
+Divide annual CTC by twelve, then subtract the employer's own contributions - employer EPF, employer ESI where applicable, and any gratuity provision - because those are part of CTC but were never yours to take home. What remains is gross salary. Basic is normally 40-50% of CTC, HRA is 50% of Basic in Delhi, Mumbai, Kolkata and Chennai or 40% elsewhere, and the balance becomes special allowance. The CTC breakup mode in this tool does all of that in one click, then subtracts employee EPF, ESI and professional tax to show your real in-hand figure.
+
+**Does it work on mobile?**
+Yes. The form is built mobile-first with numeric keypads on money fields, a sticky Preview button that opens the payslip full screen, and a sticky Download bar. The PDF is generated at true A4 dimensions regardless of screen size, so a payslip made on a phone prints identically to one made on a desktop.
+
+**Can I use it for a company outside India?**
+Yes, with a caveat. Switch off the statutory helpers, choose your currency and date format, rename the rows to your local components, and it becomes a clean generic payslip builder. What it will not do is apply another country's statutory rules - for UK PAYE and National Insurance, US federal and state withholding, or UAE WPS formatting, treat the output as a formatting aid and take the figures from your local payroll system.
+
+**Can I use this payslip for a loan or visa application?**
+A payslip issued by your employer that reflects the salary you were actually paid can be submitted anywhere payslips are accepted, whether it was produced by this tool, by SAP or by a spreadsheet. What matters is that the employer issued it and the figures are true. Creating a payslip for yourself showing salary you were not actually paid, or inflating figures on a real one, is a fabricated document. Submitting it to a bank, an embassy or a landlord is misrepresentation and, depending on the circumstances, can amount to forgery and cheating under Indian criminal law - with the loan recalled and the visa refused as the smaller consequences. This tool exists to help employers issue accurate payslips. Please do not use it for anything else.
+
+**Does the payslip prorate automatically for loss of pay?**
+Yes. Enter total working days and LOP days, and every earning marked as prorated is scaled by paid days ÷ working days. Fixed reimbursements can be excluded from proration with a single toggle. Rounding is handled so the printed rows always add up exactly to the printed gross - the mismatch most spreadsheet templates get wrong.
+
+#### Also covered on this page
+
+Calculated totals · Why this payslip generator is safe to use · What is a salary slip (payslip)? · Why a salary slip is legally required in India · How to generate a salary slip online, step by step · What information must a salary slip contain? · Salary slip components explained — earnings · Salary slip components explained — deductions · Gross salary vs net salary vs CTC vs take-home · How to break up a CTC into a salary structure · Worked example: a ₹6,00,000 CTC, rupee by rupee · EPF explained — rates, ceiling, and how it appears on a payslip · ESI explained — eligibility, rates and the continuation rule · Professional tax by state · TDS on salary — why it varies, and why we don't auto-calculate it · How LOP and attendance affect your salary · Salary slip format for small businesses and startups · Payslips for contractors, consultants and freelancers · Common salary slip mistakes employers make · How to read and verify your own salary slip · Salary slip vs salary certificate vs Form 16 · Digital payslips, record-keeping and retention · Privacy — your salary data never leaves your device · Why choose this salary slip generator? · Who should use this tool — and responsible use · Ready to issue this month's payslips? · Payslip downloaded
+
+### Rent Receipt Generator
+
+Multi-country rent receipt generator with live preview. Country modules for India, USA, UK, Canada, Australia, Germany and the UAE, each with correct field labels and a named legal reference, plus a generic international mode. Locale-correct currency and dates via Intl, amount-in-words per locale including the Indian lakh/crore system, seven interface languages with RTL for Arabic, receipt language independent of UI language, bulk generation of a full tax year with sequential numbering, separate deposit/utilities/late-fee lines, signature pad, and an India HRA exemption calculator. Text-based PDF, fully client-side, no signup.
+
+- URL: https://tooladda.online/rent-receipt-generator.html
+- Page title: Rent Receipt Generator – Free Printable Receipts | ToolAdda
+- Category: FinanceApplication
+- Price: free (0 USD)
+- Runs on: Any modern web browser (Windows, macOS, Linux, Android, iOS)
+- Meta description: Free rent receipt generator for any country and currency. Bulk 12-month receipts, HRA calculator for India, instant PDF. No signup — 100% private.
+
+#### Features
+
+- Works in any country with locale-correct currency and date formatting
+- Country modules for India, USA, UK, Canada, Australia, Germany, UAE and a generic international mode
+- Live receipt preview that updates as you type
+- Bulk generation of up to a full year of receipts in one click
+- Sequential receipt numbering with a custom prefix
+- Amount in words per locale, including the Indian lakh and crore system
+- India HRA exemption calculator with the statutory three-way minimum
+- Security deposit, utilities and late fee lines kept separate from rent
+- Signature by drawing, typing or upload
+- Seven interface languages with full right-to-left support for Arabic
+- Text-based selectable PDF with no watermark
+- Works offline after the first visit
+
+#### How to make a rent receipt online
+
+Create a professional, print-ready rent receipt in any country and currency, entirely in your browser.
+
+1. **Confirm your country and currency** — The tool detects your country from your device and sets the currency, date format and legal note. Change it with one tap if the detection is wrong.
+2. **Enter the landlord's details** — Name, address and, where your country uses one, the landlord's tax identifier. Property managers can add a logo.
+3. **Enter the tenant and the property** — Tenant name and contact, plus the full address of the rented property.
+4. **Add the payment details** — Rent amount, payment method, payment date and any transaction reference. Add deposit, utilities or a late fee on separate lines so they are never confused with rent.
+5. **Set the period and frequency** — Choose weekly, fortnightly, monthly, quarterly or yearly, then set the period covered. Use bulk generation to produce an entire tax year at once.
+6. **Download or print** — Pick a template, check the live preview, then download a text-based PDF or print it. Nothing is uploaded at any stage.
+
+#### Frequently asked questions (21)
+
+**Is this rent receipt generator free?**
+Yes, completely. There is no trial, no per-receipt charge, no monthly cap and no watermark. Generate one receipt or a full year of them at no cost.
+
+**Do I need to sign up?**
+No. There is no account, no email gate and no verification step. The download button works the moment the page loads.
+
+**Is my data safe? Where is it stored?**
+Every calculation and the PDF itself are produced by JavaScript running inside your own browser. Names, addresses, tax identifiers and amounts are never sent to our servers, because there is no server-side component to send them to. If you choose to save a landlord or property profile, it is written to your browser's localStorage on your own device and you can clear it at any time. You can verify this: open your browser's developer tools, switch to the Network tab, fill in the whole form and click Download. The only outbound requests are the PDF engine file and, if you changed language, a small static JSON file.
+
+**Which countries and currencies are supported?**
+Any country. The tool ships dedicated modules for India, the United States, the United Kingdom, Canada, Australia, Germany and the UAE - each with the correct field labels and a country-specific legal note - plus a generic international mode that makes no country-specific claims. Currency formatting uses the browser's own Intl support, so it covers essentially every ISO currency and renders each the way that locale actually writes it: ₹1,25,000.00, $125,000.00, 125.000,00 € and so on.
+
+**Can I generate 12 months of receipts at once?**
+Yes, and it is why most people arrive here in tax season. Set the frequency and period, press Generate all periods , and the tool produces one receipt per period with sequential numbering, as a single multi-page PDF or separate files in a ZIP. Generation is chunked so the page never freezes, with a progress bar. You can also apply a mid-year rent increase across the run.
+
+**Is a digital or computer-generated rent receipt valid?**
+In general yes. What matters legally is that the receipt is genuine, accurate and issued by the person who received the money - not whether it was handwritten. Some processes still expect a signature or a physical stamp, which is why this tool supports both. If a specific authority has told you it needs a wet signature, follow that instruction.
+
+**Does a rent receipt need a signature?**
+A receipt is much stronger with the landlord's signature, because that is what turns a statement into an acknowledgement of receipt. For cash payments it is effectively essential. The tool lets the landlord draw, type or upload a signature, and you can leave the block blank to sign on paper.
+
+**Does a rent receipt need a revenue stamp?**
+This is an India-specific convention. Indian practice is to affix a ₹1 revenue stamp when a single payment is made in cash above a threshold commonly applied at ₹5,000, with the landlord signing across the stamp. It comes from the receipt article of the Indian Stamp Act, 1899 and its state amendments, so the threshold and stamp value vary by state. It does not apply to bank transfers, UPI or cheques, and has no equivalent in the other countries supported here. Verify the current position for your state.
+
+**Is landlord PAN mandatory to claim HRA in India?**
+Where rent paid to one landlord exceeds ₹1,00,000 in a financial year, the standard requirement is to report the landlord's PAN to your employer in your Form 12BB declaration. If the landlord genuinely has no PAN, the long-standing practice has been to obtain a declaration instead - but employers apply this inconsistently and it invites scrutiny. The tool warns you as soon as your rent crosses the threshold without a PAN.
+
+**Can I claim HRA if I pay rent to my parents?**
+Yes, if it is genuine. The rent must actually be paid, ideally by bank transfer; your parents must declare it as income in their own return; and you should hold a rent agreement and receipts. What does not work is a paper arrangement with no money moving, or paying rent for a property you already co-own. This is one of the most scrutinised HRA claims there is.
+
+**What if my landlord refuses to give a receipt?**
+First check whether they are obliged to - in Ontario they are, on request and free of charge; in the UK a rent book is required for weekly tenancies; several Australian states and US states require a receipt for cash. If they still refuse, pay by a traceable method with the period in the reference line and keep your bank statements. Do not create a receipt yourself and present it as one your landlord issued.
+
+**Is a landlord legally required to provide a rent receipt?**
+It depends entirely on where you are; there is no global rule. Ontario: yes, on request. UK: a rent book for weekly periodic tenancies. Australia: generally yes unless the payment method already creates a record. USA: varies by state. India: no general duty on the landlord, but receipts are what your employer needs for HRA. The country note inside the tool states the position for the country you select.
+
+**Can I use a rent receipt as proof of address?**
+Sometimes, but it is usually the weakest option, because it is issued by a private individual rather than an institution. A tenancy agreement, utility bill, bank statement or government letter is normally accepted more readily. Where a receipt is accepted it is generally alongside the tenancy agreement rather than instead of it.
+
+**What is the difference between a rent receipt and a rent agreement?**
+The agreement is the contract, signed once at the start, setting out parties, property, rent, deposit and term. The receipt is evidence of performance, issued each time rent is paid. You need the agreement to show what was owed and the receipts to show it was paid; neither replaces the other.
+
+**Can I add a security deposit to the receipt?**
+Yes, and the tool deliberately puts it on its own line rather than adding it into the rent. A deposit is refundable and is not rent, so folding it in inflates the rent you appear to have paid - exactly the discrepancy that triggers a query on a tax claim. Utilities and late fees are handled the same way.
+
+**How do I show rent paid in cash?**
+Select Cash as the payment method. The receipt then becomes your primary evidence, since no bank record exists, which makes the landlord's signature considerably more important and triggers India's revenue stamp convention. Where you have a choice, a bank transfer with the period in the reference line is far stronger evidence than any cash receipt.
+
+**Can I use this if I pay rent weekly?**
+Yes. Weekly and fortnightly frequencies are fully supported, which matters in the UK and Australia where weekly rent is normal and most receipt tools assume a monthly cycle. Bulk generation understands them, so you can produce a year of weekly receipts with sequential numbering in one action.
+
+**Can landlords use this to issue receipts to tenants?**
+Yes - landlords and property managers are a primary audience. Add a logo, save profiles for multiple properties, set a receipt-number prefix per property, issue a whole year in one action, and export the data as CSV for your accountant or rent ledger.
+
+**Does it work on mobile?**
+Yes. The form is mobile-first with numeric keypads on money fields, a sticky Preview button that opens the receipt full screen, and a sticky Download bar. The PDF is produced at true A4 dimensions regardless of screen size.
+
+**Can I edit a receipt after downloading it?**
+Not the PDF itself - deliberately, since an easily editable receipt is worth little as evidence. Instead, come back, change the details and download a fresh copy; with "remember my details" ticked the form reloads filled in. If a receipt has already been given to someone, issue a clearly marked corrected receipt rather than quietly replacing it.
+
+**Can I create a receipt for rent I have not actually paid?**
+No. A receipt states that money was received on a given date. Creating one for rent that was never paid - to claim a tax exemption, support an application, or satisfy a lender - is document fraud, and where it reduces tax it is tax evasion. Tax authorities cross-verify. In India the landlord PAN you report is matched against that landlord's own return, and claimed rent that never appears as their income is a straightforward mismatch to find. This tool exists so that people who genuinely pay rent can document it properly.
+
+#### Also covered on this page
+
+Calculated totals · Why this rent receipt generator is safe to use · What is a rent receipt? · Why rent receipts matter — tax, deposits, disputes and proof of address · How to generate a rent receipt online, step by step · What information a valid rent receipt must contain · Rent receipt rules by country · India — rent receipts, HRA, landlord PAN and the revenue stamp · How the HRA exemption is calculated — with a worked example · United States — receipts, state requirements and renter's credits · United Kingdom — rent books, deposits, and why there is no rent tax relief · Canada — provincial rules and rent-related credits · Australia — receipts under state and territory tenancy law · Europe and other regions · Cash versus bank transfer — how proof of payment differs · Security deposit receipts · Rent receipts for landlords — record-keeping that survives an audit · Rent receipts for shared flats and co-tenants · Common rent receipt mistakes that cause rejection · Rent receipt vs rent agreement vs rent ledger · Digital versus handwritten receipts — are digital receipts valid? · Privacy — your data never leaves your device · Why choose this rent receipt generator? · Who should use this tool — and responsible use · Ready to create this month's receipt? · Receipt downloaded
+
+### Resume Builder
+
+Six templates — ATS-Safe (recommended), Classic, Modern, Compact, Academic and Two-Column, with an explicit ATS warning on the two-column layout. Eleven sections that can be reordered or hidden: summary, work experience, education, skills (grouped or flat), projects, certifications, achievements, publications, languages, volunteer work and a free-form custom section, plus an optional India block for PAN, date of birth, notice period and CTC. Exports a **real text-based PDF** drawn as text rather than a screenshot, so it stays parseable, plus DOCX, plain TXT and a JSON backup. Live preview with a page-count estimate and a fit-to-one-page suggestion, autosave to local storage with named saved versions, and import from JSON, PDF or DOCX — though import is deliberately shallow, recovering name, email, phone, a summary guess and one experience entry. A built-in ATS panel flags missing contact details, unquantified bullets, non-standard headings, an included photo, two-column layout and over-long bullets. No watermark, no sign-up.
+
+- URL: https://tooladda.online/resume-builder.html
+- Page title: Free Resume Builder — No Signup, No Watermark, ATS-Friendly PDF | ToolAdda
+- Category: BusinessApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Free resume builder with no signup and no watermark. Create ATS-friendly resumes, export real-text PDF, DOCX, or TXT — 100% in your browser. Live preview, writing help, and import from PDF or Word.
+
+#### Features
+
+- ATS-friendly templates
+- Real-text PDF export
+- DOCX and TXT export
+- Live preview with page count
+- Bullet quality checker
+- Action verb library
+- Import from PDF or DOCX
+- Auto-save with named versions
+- 100% client-side — no upload
+
+#### How to build a resume online for free
+
+1. **Enter your details** — Fill in your name, contact info, work experience, education, and skills. All sections except name are optional.
+2. **Choose a template** — Pick an ATS-safe template (recommended) or a styled template. Adjust font, spacing, and accent color in Settings.
+3. **Preview and check ATS score** — Review the live preview, page count estimate, and ATS sidebar for missing dates, unquantified bullets, and other issues.
+4. **Download your resume** — Export as PDF (real selectable text), DOCX, or plain TXT. No watermark, no signup required.
+
+#### Frequently asked questions (21)
+
+**Is this resume builder really free?**
+Yes — completely free with no signup, no credit card, and no hidden paywall. All features including PDF, DOCX, and TXT export are available at no cost.
+
+**Does the exported PDF have a watermark?**
+No. ToolAdda never adds a watermark, logo, or "made with" branding to your resume - every export (PDF, DOCX, TXT) is clean and yours to use.
+
+**Is the resume ATS-friendly?**
+The default ATS-safe template uses standard headings, single-column layout, real text (not images), and no photo by default — all best practices for Applicant Tracking Systems. The ATS sidebar scores your resume and flags issues.
+
+**Should I include a photo on my resume?**
+For US, UK, and most ATS systems, no — photos can cause parsing errors and bias filters. Photo is off by default. Enable it only if applying in countries where photos are expected.
+
+**PDF or Word — which should I submit?**
+Submit PDF unless the employer specifically asks for Word. PDF preserves formatting; our PDF uses real selectable text (not a screenshot) so ATS can read it. DOCX is also exported with real text if Word is required.
+
+**How do I fit my resume on one page?**
+Use the compact template, reduce font size and margins in Settings, shorten bullet points, and remove older or less relevant entries. The preview shows estimated page count and fit-to-one-page suggestions.
+
+**Can I import my existing resume?**
+Yes - upload PDF or DOCX. Text is extracted and fields populated best-effort for you to edit.
+
+**Do I need to create an account or sign up?**
+No. There's no sign-up, no login, and no email required. Open the page and start building immediately — your draft auto-saves in your own browser.
+
+**Is my resume data actually private?**
+Yes. Everything - your text, your photo, your saved versions - is stored only in your browser's local storage. Nothing is uploaded to ToolAdda's servers, and no account means there's no server-side profile of you to begin with.
+
+**What happens to my resume if I clear my browser cache or switch devices?**
+Local storage is tied to your specific browser on your specific device, so clearing site data or switching devices will remove your saved draft. Use the JSON export/import feature to back up your resume or move it to another device - think of the JSON file as your portable save file.
+
+**What is the difference between a resume and a CV?**
+In the US and most of Asia, "resume" means a concise 1-2 page summary of relevant experience. "CV" (curriculum vitae) usually means a longer, exhaustive academic document listing every publication, presentation, and credential - common in academia, research, and parts of Europe. This tool works well for both; use the Academic template and add a Publications section for CV-style documents.
+
+**Should I write a different resume for every job application?**
+Yes, ideally. Tailoring your summary, skills, and bullet emphasis to match each job description significantly improves both ATS keyword matches and human reviewer relevance. Use Save Version before major edits so you can keep a tailored copy for each application without losing your master draft.
+
+**How many bullet points should each job have?**
+3-5 bullets per role is a common sweet spot - enough to show impact without overwhelming the reader. Prioritize your most recent and most relevant roles with more detail, and compress or drop bullets from older, less relevant positions.
+
+**Can I use this resume builder on my phone?**
+Yes. The layout adapts to mobile screens - tap "Edit Form" to toggle between the form and the live preview. For heavy editing sessions, a larger screen is more comfortable, but every feature works on mobile.
+
+**Does this tool write my resume content for me?**
+No, and intentionally so - a resume that reads like generic AI output is a red flag to experienced recruiters. Instead, the Writing Help tab gives you an action verb library and 45+ sample bullets across 16 roles as inspiration to personalize, plus a live bullet checker that flags weak openers, missing metrics, and first-person phrasing as you type your own content.
+
+**What's the difference between the ATS score here and the full ATS Resume Checker?**
+This sidebar checks structural, formatting-level ATS-friendliness - headings, layout, dates, photo, bullet quality - as you build. The dedicated ATS Resume Checker goes further, comparing your finished resume's keywords directly against a specific job description to estimate match strength.
+
+**Can I keep multiple resume drafts at once?**
+Yes. Use Save Version to snapshot your current draft under a name (e.g. "Frontend roles" or "Startup applications"), keep editing, and switch between versions anytime from the version dropdown in the toolbar - all stored locally in your browser.
+
+**Why is my resume more than one page?**
+The live preview estimates page count as you type and shows a "Fit to one page" suggestion once you cross the limit - usually recommending the Compact template, a smaller font size, tighter margins, shorter bullets, or trimming older/less relevant entries.
+
+**Does the two-column template work well with ATS systems?**
+Not reliably - multi-column layouts can cause some older ATS parsers to read text in the wrong order or merge columns together. The tool shows a warning when you select Two-Column, and the ATS-Safe template remains the recommended choice for any resume you're submitting through an online application system.
+
+**Can I add a section that isn't in the default list, like Awards or Hobbies?**
+Yes. Use the Custom Section option in the Sections tab to add a freeform section with its own title and entries - useful for awards, hobbies, patents, references, or anything else specific to your field.
+
+**Is this resume builder suitable for freshers with no work experience?**
+Yes. Lead with Education, Projects, and Skills instead of Work Experience, and check the Writing Help tab's "Fresher / Intern" sample bullets for ideas on how to present coursework, internships, and academic projects with measurable impact.
+
+#### Also covered on this page
+
+Resume Workspace · Free Resume Builder — Build, Preview, Download · The Complete Guide to Building a Job-Winning Resume · ' + esc(title) + '
+
+### ATS Resume Checker
+
+Upload a PDF or DOCX, or paste plain text, and score it against a pasted job description. The overall score is weighted across five dimensions — Parseability 35%, Structure 20%, Keywords 20%, Content 15%, Formatting 10% — with a separate Red Flags tab. Parseability tests extractable-text volume, multi-column layouts, reading order, headers and footers, layout tables and replacement characters. Structure detects the five standard sections, suggests renames for non-standard headings, pulls contact details including from PDF link annotations, and computes years of experience against what the job asks for. Content measures the share of bullets carrying a number, weak openers, action verbs repeated four or more times, first-person usage, buzzwords and over-long bullets. Red Flags catches date of birth, photo, full address, marital status, "references available", salary or CTC, and self-focused objectives. Job-description keywords are weighted higher when they appear inside a requirements or qualifications block, matched through a synonym map and a light stemmer, penalised when a skill is listed but never demonstrated in the body, and flagged for stuffing. With no job description it falls back to one of twelve role presets. Optional Tesseract OCR handles image-only PDFs. Output is the score ring, five sub-scores, top-three prioritised fixes, template-based before/after bullet rewrites, the extracted text with matched keywords highlighted, and a downloadable PDF report. Two things worth stating when recommending it: the analysis is **rule-based, not AI or an LLM**, and it runs entirely in the browser, so a resume containing a phone number and address is never uploaded. The page itself says it cannot guarantee interviews and that real ATS platforms parse differently.
+
+- URL: https://tooladda.online/ats-resume-checker.html
+- Page title: Free ATS Resume Checker — Score My Resume Online | ToolAdda
+- Category: BusinessApplication
+- Price: free (0 USD)
+- Runs on: Web
+- Meta description: Free ATS resume checker — upload your resume PDF or DOCX for instant parseability, keyword match, and structure analysis. 100% client-side, no upload to servers. Honest scoring with actionable fixes.
+
+#### Features
+
+- PDF and DOCX parsing
+- Paste resume text directly
+- Side-by-side ATS text view
+- Keyword match vs job description
+- Role-based keyword suggestions
+- Structure and section detection
+- Red flag detection
+- Content quality and action verb analysis
+- Downloadable ATS report
+- Shareable summary without resume content
+- Optional OCR for image-only PDFs
+
+#### How to check your resume for ATS compatibility
+
+1. **Add your resume** — Drag and drop or browse for a PDF or DOCX file, or switch to Paste Resume Text for the most accurate browser-only analysis. Legacy .doc files are not supported — save as DOCX or PDF first.
+2. **Add job context (optional)** — Paste a job description or pick a target role for keyword matching. Without a JD, role-based defaults are used.
+3. **Review parseability** — Compare the visual PDF render with the extracted text panel — this is what most ATS systems see.
+4. **Fix top issues** — Follow the prioritized fix list, download the PDF report, or rebuild your resume in ToolAdda's free resume builder.
+
+#### Frequently asked questions (31)
+
+**What is an ATS Resume Checker?**
+A tool that analyzes your resume the way an Applicant Tracking System would — checking parseability, structure, keyword coverage, and formatting so recruiters can actually find and read your information.
+
+**How does an ATS Resume Checker work?**
+It extracts text from your resume, checks structure and formatting for parsing risks, and — if you add a job description — compares your language against the job's key terms to calculate a keyword match score.
+
+**Is this ATS Resume Checker free?**
+Yes, it's completely free with no watermark on the results or downloadable report.
+
+**Do I need to sign up?**
+No account, email, or signup is required to use the checker.
+
+**Is my resume uploaded to a server?**
+No. Parsing and analysis run entirely in your browser. Your resume file never leaves your device.
+
+**Can I check my resume against a job description?**
+Yes — paste a job description and the tool extracts its key terms to calculate a keyword match percentage, plus matched and missing keywords.
+
+**What is a good ATS resume score?**
+Generally, 75+ is strong, 50–74 needs improvement, and under 50 signals real parseability or content problems worth fixing before applying.
+
+**Can this tool guarantee that my resume will pass ATS?**
+No tool can guarantee that. Real ATS platforms parse differently from each other. This checker improves the two things you can control: parseability and keyword relevance.
+
+**How do I improve my ATS score?**
+Start with the Top 3 Fixes after analysis, then work through the Parseability, Keyword Match, and Content Quality tabs — they're ordered roughly by impact.
+
+**What keywords should I add to my resume?**
+The ones your target job description repeats or lists under "Requirements" - the Keyword Match tab shows exactly which ones are missing from your resume.
+
+**Can I use this for tech jobs?**
+Yes — pick a technical role or paste a tech job description; the checker recognizes programming languages, frameworks, cloud platforms, and DevOps tools.
+
+**Can freshers use this resume checker?**
+Yes - select "Fresher / Entry Level" as your target role or paste an internship/entry-level job description for relevant keyword suggestions.
+
+**Can experienced professionals use this tool?**
+Yes — pasting the exact job description you're applying to gives the most useful, role-specific feedback for experienced candidates.
+
+**Does this checker work for PDF resumes?**
+Yes, including a side-by-side visual render next to the extracted text so you can see exactly what an ATS would read.
+
+**Does this checker work for Word resumes?**
+Yes, DOCX files are supported. Legacy .doc (Word 97–2003) is not — save as DOCX or export as PDF first.
+
+**What resume format is best for ATS?**
+A single-column PDF or DOCX with standard section headings, plain-text contact details, and no tables or text boxes.
+
+**Should I use tables in my resume?**
+Avoid them where possible. Tables can cause ATS platforms to read content out of the intended order.
+
+**Should I use graphics or icons in my resume?**
+Avoid relying on icons or graphics to convey information — ATS platforms typically cannot read text embedded in images.
+
+**Can ATS read columns?**
+Many ATS platforms struggle with multi-column layouts, sometimes merging or reordering text incorrectly. Single-column is safest.
+
+**How long should my resume be?**
+Generally one page for under ~5 years of experience, up to two pages beyond that. The Content Quality tab flags resumes that are too short or too long.
+
+**Can I download the ATS report?**
+Yes - after analysis, use "Download ATS Report" to save a PDF summary of your scores and top fixes.
+
+**Does the tool work on mobile?**
+Yes, the entire experience — upload, paste, analysis, and results — is fully responsive and works on phones and tablets.
+
+**Is this better than manual resume review?**
+It's a fast, consistent first pass that catches formatting and keyword issues at scale. It complements, rather than replaces, feedback from a mentor or career coach.
+
+**How often should I check my resume?**
+Re-check every time you tailor your resume for a new job description — keyword match and content scores change based on what you paste.
+
+**Can I use the same resume for every job?**
+You can, but keyword match will typically be lower. Tailoring your resume's language to each job description - honestly, based on real experience - consistently improves match scores.
+
+**Is this a free ATS score checker?**
+Yes — it's a 100% free ATS score checker with no signup and no watermark. You get your full ATS resume checker score, keyword match, and downloadable report at no cost, with no paid plan gating the results.
+
+**Is it an accurate ATS score checker?**
+It's as accurate as a browser-based ATS score checker can be for the things you control — parseability and keyword relevance. For the most accurate result, use it as an ATS score checker according to your job description so the match reflects the exact role, not a generic profile. No online tool can perfectly predict every ATS platform, and we say so honestly.
+
+**Can I use it as an online ATS score checker for my CV?**
+Yes — it works as an online resume and CV ATS score checker for PDF or DOCX files, or pasted text, entirely in your browser.
+
+**Does the ATS score checker work according to a job description (JD)?**
+Yes — paste the JD and it becomes an ATS score checker based on your job description, extracting the posting's key terms and scoring your resume against them, free of charge.
+
+**Is this an ATS score checker and corrector, or just a score?**
+Both — it's an ATS score checker and fixer in one. Alongside the score you get prioritized fixes, missing keywords, and before/after bullet examples, so you know exactly what to correct to improve.
+
+**Is this the best ATS score checker website to use?**
+"Best" depends on your needs, but if you want a free, private, online ATS score checker that shows transparent scoring and how to improve — rather than a black-box number behind a paywall — this one is built for exactly that.
+
+#### Also covered on this page
+
+Resume upload · Job match & analysis · Your ATS report · How Our ATS Resume Checker Works · Why Job Seekers Choose This ATS Resume Checker · Who Should Use This Resume Checker? · How This Compares to Typical Resume Checker Tools · Privacy-First Resume Analysis · The Complete Guide to ATS Resume Checking · Ready to See Your ATS Score?

@@ -1,0 +1,40 @@
+<svg width="96" height="96" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ToolAdda">
+  <title>ToolAdda</title>
+  <!-- A chat bubble with a T in it, on a round tile. An adda is a hangout, so
+       the bubble says "place where people gather", and the T is ToolAdda's
+       initial, the same letter as the header's brand tile.
+
+       The previous mark (a bubble with a spanner, on transparent ground) looked
+       like a smudge in Google results, which show the favicon at about 18px
+       inside a white circle. Four rules follow from that:
+
+       1. Full bleed and round. The tile is a circle filling the whole canvas,
+          so it fills Google's round frame and the browser tab edge to edge
+          instead of floating in transparent corners.
+       2. One light shape, one dark letter. The white bubble carries the
+          contrast at 16px, and the T is cut from the same ramp as the tile, so
+          the three layers read as two tones.
+       3. No masks, clip paths, filters or transforms: favicon rasterisers are
+          the least capable SVG consumers. The T is not knocked out. It is
+          painted with the tile gradient in user space, so it matches the tile
+          exactly.
+       4. The ramp is the header tile's ramp (style.css .brand-mark: #4f46e5,
+          #7c3aed 35%, #c026d3 70%, #ec4899) at the same 45 degrees, running
+          between the circle's tangent points so the whole ramp is visible.
+
+       scripts/make_icons.py mirrors these shapes to build favicon.ico and the
+       PNG app icons. Change one, change the other, then run it. -->
+  <defs>
+    <linearGradient id="tile" x1="7" y1="7" x2="41" y2="41" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4F46E5"/>
+      <stop offset="0.35" stop-color="#7C3AED"/>
+      <stop offset="0.7" stop-color="#C026D3"/>
+      <stop offset="1" stop-color="#EC4899"/>
+    </linearGradient>
+  </defs>
+  <circle cx="24" cy="24" r="24" fill="url(#tile)"/>
+  <rect x="9" y="9.5" width="30" height="24" rx="7" fill="#FFFFFF"/>
+  <path d="M14.5 31 L12.5 39.5 L23 33 Z" fill="#FFFFFF"/>
+  <rect x="15.5" y="14.8" width="17" height="5" rx="1.4" fill="url(#tile)"/>
+  <rect x="21.5" y="14.8" width="5" height="14" rx="1.4" fill="url(#tile)"/>
+</svg>

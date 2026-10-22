@@ -1,0 +1,2634 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+  <title>Poster Printer – Print an Image on Multiple Pages | ToolAdda</title>
+  <meta name="description" content="Free poster printer: split any image across A4, A3, Letter or Tabloid pages and download a print-ready PDF with glue overlaps or trim marks. No signup, nothing uploaded." />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="author" content="ToolAdda" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="theme-color" content="#4f46e5" />
+  <link rel="canonical" href="https://tooladda.online/poster-printer.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+  <link rel="alternate" hreflang="en" href="https://tooladda.online/poster-printer.html" />
+  <link rel="alternate" hreflang="x-default" href="https://tooladda.online/poster-printer.html" />
+  <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+  <link rel="manifest" href="/poster-printer-manifest.json" />
+
+  <meta property="og:title" content="Poster Printer – Print an Image on Multiple Pages" />
+  <meta property="og:description" content="Split any image into a tiled, print-ready multi-page PDF. Glue overlaps or trim marks, printer calibration sheet, assembly guide. 100% in your browser." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tooladda.online/poster-printer.html" />
+  <meta property="og:site_name" content="ToolAdda" />
+  <meta property="og:locale" content="en" />
+  <meta property="og:image" content="https://tooladda.online/assets/images/og/poster-printer.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="A photograph shown split into a 3 by 4 grid of A4 pages with numbered tiles, dashed cut lines and shaded glue overlap bands." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Poster Printer – Print an Image on Multiple Pages" />
+  <meta name="twitter:description" content="Turn any image into a tiled multi-page poster PDF. Free, no signup, nothing uploaded." />
+  <meta name="twitter:image" content="https://tooladda.online/assets/images/og/poster-printer.jpg" />
+  <meta name="twitter:image:alt" content="A photograph shown split into a 3 by 4 grid of A4 pages with numbered tiles, dashed cut lines and shaded glue overlap bands." />
+
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    /* ---------- critical, tool-scoped ---------- */
+    /* ---- page palette -------------------------------------------------
+       Leaf green, hue ~114. Chosen because it is the widest genuinely
+       unclaimed arc on the site: siblings hold olive at 86 and forest at 143,
+       and every blue, teal, purple, orange and red is already spoken for.
+       Scoped to .pp so nothing leaks into style.css, which ~100 other pages
+       share. Dark values are NOT #a3e635 -- the neumorphic designer already
+       uses that as its dark accent.
+       Role split matters here: green means INTERACTIVE on this page (buttons,
+       active chips, focus, selected segments). The privacy trust bar used to
+       be green too and would have merged with it, so it is now a quiet
+       neutral strip -- see .pp-trustbar below. */
+    .pp{--pp-gap:1rem;--pp-r:14px;
+      --pp-accent:#2f7d1a;
+      /* The CTA gradient's lightest stop. #4a9e28 looked better but gave white
+         text only 3.38:1; this is the brightest hue-114 green that still
+         clears WCAG AA (4.63:1) against the white label. */
+      --pp-accent-lift:#2c8622;
+      --pp-accent-deep:#1f5a0f;
+      --pp-accent-soft:#eef7e9;
+      --pp-accent-line:rgba(47,125,26,.3);
+      --pp-accent-glow:rgba(47,125,26,.22);
+      --pp-quiet:#f4f6f4;
+      --pp-quiet-line:rgba(20,49,10,.14);
+      --pp-quiet-text:#3f4a3a}
+    [data-theme="dark"] .pp{
+      --pp-accent:#8fda5c;
+      --pp-accent-lift:#a8e878;
+      --pp-accent-deep:#b6ec8c;
+      --pp-accent-soft:rgba(143,218,92,.13);
+      --pp-accent-line:rgba(143,218,92,.32);
+      --pp-accent-glow:rgba(143,218,92,.2);
+      --pp-quiet:rgba(255,255,255,.045);
+      --pp-quiet-line:rgba(255,255,255,.12);
+      --pp-quiet-text:#c3cdbb}
+    @media (max-width:640px){
+      .pp h1{font-size:clamp(1.45rem,6.2vw,1.9rem);line-height:1.22}
+      .pp .tool-intro,.pp .lead{font-size:.95rem}
+    }
+    .pp-trustbar{display:flex;flex-wrap:wrap;gap:.5rem .9rem;align-items:center;font-size:.86rem;font-weight:650;
+      color:#166534;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.24);
+      border-radius:var(--pp-r);padding:.7rem .9rem;margin:0 0 1rem}
+    [data-theme="dark"] .pp-trustbar{color:#86efac;background:rgba(34,197,94,.09)}
+    .pp-trustbar span{display:inline-flex;align-items:baseline;gap:.35rem;flex-wrap:wrap;min-width:0}
+    /* Let the long first item read as one sentence rather than two columns. */
+    .pp-trustbar span>strong{white-space:normal}
+    .pp-trustbar a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+    .pp-tb-more{font-style:normal}
+    /* On a phone this bar was 216px of the 831px the user had to scroll before
+       reaching the tool at all. As a single nowrap strip it costs one line, and
+       the claims stay readable by swiping rather than being stacked six deep. */
+    @media (max-width:640px){
+      .pp-trustbar{flex-wrap:nowrap;overflow-x:auto;gap:.9rem;padding:.6rem .9rem;
+        scrollbar-width:none;-webkit-overflow-scrolling:touch}
+      .pp-trustbar::-webkit-scrollbar{display:none}
+      .pp-trustbar span{flex:0 0 auto;white-space:nowrap}
+      .pp-tb-more{display:none}
+    }
+
+    /* upload */
+    /* width:100% is load-bearing. aspect-ratio works in BOTH directions, so with
+       the height pinned by min-height the box derived its WIDTH from it instead
+       -- 190 x 16/6 = 507px -- which overflowed every phone viewport by ~160px.
+       That was on the empty state: the first thing every visitor sees. Height now
+       comes from the content inside a clamped range, which also stops the box
+       from opening as a 400px-tall void on a wide desktop. */
+    .pp-upload{width:100%;border:2px dashed var(--border);border-radius:var(--pp-r);background:var(--surface-strong);
+      padding:1.7rem 1rem;text-align:center;transition:border-color .15s,background .15s,box-shadow .15s;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.65rem;
+      min-height:clamp(210px,28vh,290px)}
+    .pp-upload.is-over{box-shadow:0 0 0 4px var(--pp-accent-soft)}
+    .pp-upload>*{max-width:100%}
+    .pp-up-art{width:min(132px,42vw);height:auto;filter:drop-shadow(0 6px 14px var(--pp-accent-glow))}
+    .pp-upload.is-over .pp-up-art{transform:scale(1.04)}
+    .pp-up-art{transition:transform .15s ease}
+    .pp-upload.is-over{border-color:var(--pp-accent);background:var(--pp-accent-soft)}
+    .pp-upload h2{margin:0;font-size:1.05rem}
+    .pp-upload p{margin:0;color:var(--text-muted);font-size:.9rem}
+    .pp-up-actions{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:.3rem}
+    .pp-filelabel{display:inline-flex;align-items:center;gap:.45rem;cursor:pointer;font-weight:700;
+      background:var(--pp-accent);color:#fff;border-radius:999px;padding:.65rem 1.15rem;min-height:44px;font-size:.95rem}
+    .pp-filelabel:focus-within{outline:3px solid var(--pp-accent-deep);outline-offset:3px}
+    .pp-vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+    /* layout */
+    .pp-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,380px);gap:1.25rem;align-items:start}
+    .pp-stage{position:relative;order:1}
+    .pp-panel{order:2;display:flex;flex-direction:column;gap:.85rem;max-height:min(78vh,900px);overflow-y:auto;
+      padding:.25rem .5rem .25rem .25rem;overscroll-behavior:contain;scrollbar-gutter:stable}
+    /* Signals "there is more below" instead of looking like a cut-off row. The
+       sticky action bar sits above the fade, so the CTA is never dimmed. */
+    /* Load-bearing. The panel is a flex column with a max-height, so its children
+       inherited flex-shrink:1 and were COMPRESSED to fit instead of overflowing --
+       and .pp-sec{overflow:hidden} then clipped them. Every open section collapsed
+       to about a summary's height, so the paper, size and margin controls were
+       physically unreachable on desktop and the panel never scrolled, because
+       shrinking left nothing to scroll. */
+    .pp-panel>*{flex:0 0 auto}
+    .pp-panel::after{content:"";position:sticky;bottom:0;display:block;height:34px;margin-top:-34px;
+      pointer-events:none;background:linear-gradient(to bottom,transparent,var(--bg));z-index:1;flex:0 0 auto}
+    @media (max-width:940px){
+      .pp-layout{grid-template-columns:1fr}
+      .pp-panel{max-height:none;overflow:visible}
+      .pp-stage{position:sticky;top:.5rem;z-index:3;background:var(--bg);padding-bottom:.4rem}
+      /* A 4/3 preview at tablet width is ~590px tall and pushes every control off
+         screen. Cap it: the canvas already has max-height:100%, so it just fits. */
+      .pp-canvas-wrap{max-height:min(52vh,460px)}
+    }
+    @media (max-width:560px){
+      .pp-canvas-wrap{max-height:min(46vh,360px)}
+    }
+
+    /* preview */
+    .pp-canvas-wrap{position:relative;border:1px solid var(--border);border-radius:var(--pp-r);overflow:hidden;
+      background:#f1f5f9;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center}
+    [data-theme="dark"] .pp-canvas-wrap{background:#111827}
+    .pp-canvas-wrap canvas{display:block;max-width:100%;max-height:100%;touch-action:none}
+    .pp-overlay-toggles{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
+    .pp-chip{display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--border);background:var(--surface-strong);
+      border-radius:999px;padding:.4rem .75rem;font-size:.8rem;font-weight:650;cursor:pointer;min-height:36px;color:var(--text)}
+    .pp-chip input{margin:0}
+    .pp-chip:has(input:checked){border-color:var(--pp-accent);background:var(--pp-accent-soft);color:var(--pp-accent-deep)}
+
+    /* summary */
+    .pp-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem;margin-top:.7rem}
+    .pp-sum-cell{background:var(--surface-strong);border:1px solid var(--border);border-radius:12px;padding:.55rem .6rem;min-width:0}
+    .pp-sum-cell b{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);font-weight:800}
+    .pp-sum-cell span{display:block;font-size:1rem;font-weight:800;line-height:1.25;overflow-wrap:anywhere}
+    @media (max-width:560px){.pp-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+    /* controls */
+    .pp-sec{border:1px solid var(--border);border-radius:var(--pp-r);background:var(--surface-strong);overflow:hidden}
+    .pp-sec>summary{cursor:pointer;padding:.75rem .9rem;font-weight:800;font-size:.9rem;list-style:none;
+      display:flex;align-items:center;justify-content:space-between;gap:.5rem;min-height:44px}
+    .pp-sec>summary::-webkit-details-marker{display:none}
+    .pp-sec>summary::after{content:"▾";font-size:.8rem;color:var(--text-muted);transition:transform .15s}
+    .pp-sec[open]>summary::after{transform:rotate(180deg)}
+    .pp-sec>summary:focus-visible{outline:3px solid var(--pp-accent);outline-offset:-3px}
+    .pp-sec-body{padding:0 .9rem .9rem;display:flex;flex-direction:column;gap:.75rem}
+    .pp-f{display:flex;flex-direction:column;gap:.3rem;min-width:0}
+    .pp-f>label,.pp-legend{font-weight:700;font-size:.82rem}
+    .pp-f input[type=number],.pp-f input[type=text],.pp-f select{border:1px solid var(--border);background:var(--bg);
+      color:var(--text);border-radius:10px;padding:.55rem .65rem;width:100%;font-size:.95rem;min-height:44px}
+    .pp-f .pp-hint{font-size:.76rem;color:var(--text-muted);margin:0}
+    .pp-row{display:flex;gap:.6rem;flex-wrap:wrap}
+    .pp-row>*{flex:1 1 120px;min-width:0}
+    fieldset.pp-fs{border:0;margin:0;padding:0;min-width:0}
+    .pp-seg{display:flex;gap:.3rem;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:.25rem;flex-wrap:wrap}
+    .pp-seg label{flex:1 1 auto;text-align:center;font-size:.8rem;font-weight:700;padding:.45rem .5rem;border-radius:8px;
+      cursor:pointer;min-height:36px;display:flex;align-items:center;justify-content:center;white-space:nowrap}
+    .pp-seg input{position:absolute;opacity:0;width:0;height:0}
+    .pp-seg label:has(input:checked){background:var(--pp-accent);color:#fff}
+    .pp-seg label:has(input:focus-visible){outline:3px solid var(--pp-accent-deep);outline-offset:2px}
+    .pp-slider{display:grid;grid-template-columns:1fr 86px;gap:.5rem;align-items:center}
+    .pp-slider input[type=range]{width:100%;min-height:44px;accent-color:var(--pp-accent)}
+    .pp-check{display:flex;align-items:flex-start;gap:.5rem;font-size:.85rem;font-weight:600;min-height:36px;cursor:pointer}
+    .pp-check input{margin-top:.25rem;width:18px;height:18px;accent-color:var(--pp-accent)}
+    .pp-presets{display:flex;flex-wrap:wrap;gap:.4rem}
+    .pp-preset{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:999px;
+      padding:.45rem .8rem;font-size:.79rem;font-weight:700;cursor:pointer;min-height:36px}
+    .pp-preset:hover{border-color:var(--pp-accent);color:var(--pp-accent-deep)}
+
+    /* quality */
+    .pp-quality{border-radius:12px;padding:.7rem .8rem;font-size:.85rem;border:1px solid transparent}
+    .pp-quality b{display:block;font-size:.92rem;margin-bottom:.15rem}
+    .pp-quality p{margin:.35rem 0 0}
+    .pp-quality a{font-weight:700}
+    .pp-q-excellent{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.3);color:#14532d}
+    .pp-q-good{background:rgba(59,130,246,.12);border-color:rgba(59,130,246,.3);color:#1e3a8a}
+    .pp-q-acceptable{background:rgba(245,158,11,.14);border-color:rgba(245,158,11,.35);color:#7c2d12}
+    .pp-q-poor{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.32);color:#7f1d1d}
+    [data-theme="dark"] .pp-q-excellent{color:#bbf7d0}[data-theme="dark"] .pp-q-good{color:#bfdbfe}
+    [data-theme="dark"] .pp-q-acceptable{color:#fde68a}[data-theme="dark"] .pp-q-poor{color:#fecaca}
+
+    .pp-warn{border-radius:12px;padding:.7rem .8rem;font-size:.84rem;background:rgba(245,158,11,.14);
+      border:1px solid rgba(245,158,11,.35);color:#7c2d12}
+    [data-theme="dark"] .pp-warn{color:#fde68a}
+
+    /* generate bar */
+    .pp-actions{position:sticky;bottom:0;background:var(--surface-strong);border:1px solid var(--border);
+      border-radius:var(--pp-r);padding:.7rem;display:flex;flex-direction:column;gap:.5rem;z-index:2}
+    .pp-actions .primary-btn{width:100%;min-height:50px;font-size:1rem}
+    .pp-actions-row{display:flex;gap:.5rem;flex-wrap:wrap}
+    .pp-actions-row>*{flex:1 1 130px;min-height:44px}
+    .pp-progress{height:8px;border-radius:999px;background:var(--border);overflow:hidden}
+    .pp-progress i{display:block;height:100%;width:0;background:var(--pp-accent);transition:width .2s}
+
+    .pp-file-meta{display:flex;gap:.7rem;align-items:center;border:1px solid var(--border);border-radius:12px;
+      padding:.55rem .7rem;background:var(--surface-strong);font-size:.82rem;min-width:0}
+    .pp-file-meta img{width:52px;height:52px;object-fit:cover;border-radius:8px;background:var(--bg);flex:0 0 auto}
+    .pp-file-meta div{min-width:0}
+    .pp-file-meta strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .pp-file-meta span{color:var(--text-muted)}
+
+    /* content */
+    .pp-prose{max-width:76ch}
+    .pp-prose h2{margin-top:2.2rem}
+    .pp-prose h3{margin-top:1.5rem;font-size:1.06rem}
+    .pp-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--pp-r);margin:1rem 0}
+    .pp-table{border-collapse:collapse;width:100%;min-width:520px;font-size:.88rem}
+    .pp-table th,.pp-table td{border-bottom:1px solid var(--border);padding:.6rem .75rem;text-align:left}
+    .pp-table th{background:var(--pp-accent-soft);font-weight:800;white-space:nowrap}
+    .pp-table tbody tr:last-child td{border-bottom:0}
+    .pp-fig{margin:1.4rem 0;padding:1rem;border:1px solid var(--border);border-radius:var(--pp-r);background:var(--surface-strong)}
+    .pp-fig svg{width:100%;height:auto;max-width:560px;display:block;margin:0 auto}
+    .pp-fig figcaption{font-size:.83rem;color:var(--text-muted);margin-top:.7rem;text-align:center}
+    .pp-callout{border-left:4px solid var(--pp-accent);background:var(--pp-accent-soft);padding:.85rem 1rem;
+      border-radius:0 12px 12px 0;margin:1.2rem 0;font-size:.92rem}
+    .pp-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:.7rem;margin:1rem 0}
+    .pp-tool{display:block;border:1px solid var(--border);border-radius:12px;padding:.75rem .85rem;
+      background:var(--surface-strong);text-decoration:none;color:var(--text)}
+    .pp-tool:hover{border-color:var(--pp-accent)}
+    .pp-tool strong{display:block;color:var(--pp-accent-deep);font-size:.92rem}
+    .pp-tool span{font-size:.8rem;color:var(--text-muted)}
+
+
+    /* ---- page ground ----------------------------------------------------
+       Same dotted-shell pattern the other upgraded pages use: tokens for the
+       ground and the dot, a fixed ::before that paints both, and soft corner
+       washes on the body itself. 18px grid is the site's dominant spacing for
+       this (26 pages), so the texture matches rather than inventing a new one.
+       The dot is tinted with this page's leaf green instead of the site indigo,
+       so the ground belongs to the page's own palette. */
+    .pp-page-shell{--pg-bg:#f6f8f3;--pg-dot:rgba(47,125,26,.14)}
+    [data-theme="dark"] .pp-page-shell{--pg-bg:#0c1109;--pg-dot:rgba(143,218,92,.12)}
+    body.pp-page-shell{position:relative;isolation:isolate;
+      background-color:transparent!important;
+      background-image:
+        radial-gradient(920px 480px at 6% -8%,rgba(47,125,26,.10),transparent 58%),
+        radial-gradient(780px 420px at 100% 0%,rgba(74,158,40,.08),transparent 52%),
+        radial-gradient(640px 340px at 50% 100%,rgba(47,125,26,.05),transparent 55%)!important;
+      background-size:auto,auto,auto!important;
+      background-repeat:no-repeat,no-repeat,no-repeat!important}
+    /* Fixed rather than scrolling, so the texture stays put behind a long page
+       and never tiles visibly against the footer. z-index -1 with isolation on
+       the body keeps it behind content without touching stacking anywhere else. */
+    body.pp-page-shell::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+      background-color:var(--pg-bg);
+      background-image:radial-gradient(circle,var(--pg-dot) 1px,transparent 1px);
+      background-size:18px 18px;background-repeat:repeat}
+    [data-theme="dark"] body.pp-page-shell{
+      background-image:
+        radial-gradient(920px 480px at 6% -8%,rgba(143,218,92,.10),transparent 58%),
+        radial-gradient(780px 420px at 100% 0%,rgba(143,218,92,.07),transparent 52%),
+        radial-gradient(640px 340px at 50% 100%,rgba(47,125,26,.10),transparent 55%)!important}
+    /* The sticky preview and the panel fade sat on var(--bg); with a textured
+       ground behind them they have to match the page ground instead, or a flat
+       rectangle slides over the dots. */
+    @media (max-width:940px){.pp-stage{background:var(--pg-bg)}}
+    .pp-panel::after{background:linear-gradient(to bottom,transparent,var(--pg-bg))}
+
+    /* ---- visual identity ------------------------------------------------
+       Everything below is scoped to .pp and reads from the tokens above, so
+       re-theming the page is a matter of editing the block at the top. */
+
+    /* The page had four competing colours at once: a green trust bar, a red
+       quality card, an amber print warning and indigo buttons. The status
+       colours have to stay -- they mean something. The trust bar does not, so
+       it becomes a quiet strip and stops fighting the green CTA for attention. */
+    .pp-trustbar{color:var(--pp-quiet-text);background:var(--pp-quiet);
+      border-color:var(--pp-quiet-line)}
+    [data-theme="dark"] .pp-trustbar{color:var(--pp-quiet-text);background:var(--pp-quiet);
+      border-color:var(--pp-quiet-line)}
+    .pp-trustbar strong{color:var(--pp-accent-deep)}
+
+    /* Primary action. The shared style.css gradient is indigo -> #16a34a, which
+       is the site default and why this page looked like every other one. */
+    .pp .primary-btn{background:linear-gradient(135deg,var(--pp-accent-lift),var(--pp-accent));
+      color:#fff;box-shadow:0 10px 24px var(--pp-accent-glow)}
+    .pp .primary-btn:hover{box-shadow:0 14px 30px var(--pp-accent-glow)}
+    [data-theme="dark"] .pp .primary-btn{color:#10240a}
+    .pp .secondary-btn:hover{border-color:var(--pp-accent);color:var(--pp-accent-deep)}
+    .pp :focus-visible{outline:3px solid var(--pp-accent);outline-offset:2px;border-radius:8px}
+
+    /* Dropzone: accent-tinted rather than a plain grey dashed box, and it now
+       reacts on hover as well as on drag, so it reads as a target. */
+    .pp-upload{border-color:var(--pp-accent-line);
+      background:linear-gradient(180deg,var(--pp-accent-soft),transparent 70%),var(--surface-strong)}
+    .pp-upload:hover{border-color:var(--pp-accent)}
+    .pp-upload.is-over{border-color:var(--pp-accent);box-shadow:0 0 0 4px var(--pp-accent-glow)}
+
+    /* Preview frame reads as a sheet of paper on a work surface. */
+    .pp-canvas-wrap{border-color:var(--pp-accent-line);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 6px 18px rgba(20,49,10,.07)}
+    [data-theme="dark"] .pp-canvas-wrap{box-shadow:none}
+
+    /* Section headers pick up the accent only once opened, which gives the
+       panel a sense of "where am I" without colouring everything at once. */
+    .pp-sec[open]>summary{color:var(--pp-accent-deep);background:var(--pp-accent-soft);
+      box-shadow:inset 3px 0 0 var(--pp-accent)}
+    .pp-sec[open]{border-color:var(--pp-accent-line)}
+
+    /* Readout cells: the numbers are the point, so the labels go quiet and the
+       accent hairline ties them to the rest of the page. */
+    .pp-sum-cell{border-left:3px solid var(--pp-accent-line)}
+    .pp-sum-cell span{color:var(--pp-accent-deep)}
+
+    .pp-preset:hover{background:var(--pp-accent-soft);border-color:var(--pp-accent)}
+    .pp-progress i{background:linear-gradient(90deg,var(--pp-accent),var(--pp-accent-deep))}
+
+    @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+    /* The dotted ground must not print. This is a printing tool, so people do
+       enable "Background graphics" here more than anywhere else on the site,
+       and a full-page dot screen would waste ink on every sheet. */
+    @media print{.site-header,.site-footer,.pp-panel,.pp-trustbar,.pp-upload,.breadcrumb,.pp-actions{display:none!important}
+      body.pp-page-shell{background-image:none!important}
+      body.pp-page-shell::before{display:none!important}}
+  </style>
+
+  <script type="application/ld+json" data-tooladda-page-schema="true">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {"@type":"WebSite","@id":"https://tooladda.online/#website","name":"ToolAdda","alternateName":["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],"url":"https://tooladda.online/","inLanguage":"en","publisher":{"@id":"https://tooladda.online/#organization"}},
+      {"@type":"Organization","@id":"https://tooladda.online/#organization","name":"ToolAdda","alternateName":["Tool Adda", "Tools Adda", "ToolsAdda", "Tooladda", "ToolAdda.online"],"url":"https://tooladda.online/","logo":{"@type":"ImageObject","url":"https://tooladda.online/assets/images/logo.svg"}},
+      {"@type":"WebPage","@id":"https://tooladda.online/poster-printer.html#webpage","url":"https://tooladda.online/poster-printer.html","name":"Poster Printer – Print an Image on Multiple Pages","description":"Split any image across A4, A3, Letter or Tabloid pages and download a print-ready multi-page PDF with glue overlaps or trim marks.","inLanguage":"en","isPartOf":{"@id":"https://tooladda.online/#website"},"breadcrumb":{"@id":"https://tooladda.online/poster-printer.html#breadcrumb"},"mainEntity":{"@id":"https://tooladda.online/poster-printer.html#app"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://tooladda.online/assets/images/og/poster-printer.jpg","width":1200,"height":630}},
+      {"@type":"BreadcrumbList","@id":"https://tooladda.online/poster-printer.html#breadcrumb","itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Home","item":"https://tooladda.online/"},
+        {"@type":"ListItem","position":2,"name":"Image Tools","item":"https://tooladda.online/#image-tools"},
+        {"@type":"ListItem","position":3,"name":"Poster Printer"}
+      ]},
+      {"@type":"SoftwareApplication","@id":"https://tooladda.online/poster-printer.html#app","name":"ToolAdda Poster Printer",
+       "url":"https://tooladda.online/poster-printer.html","applicationCategory":"DesignApplication","applicationSubCategory":"Poster and image tiling tool",
+       "operatingSystem":"Any modern web browser (Windows, macOS, Linux, Android, iOS)","browserRequirements":"Requires JavaScript and HTML5 Canvas",
+       "description":"Free browser-based poster printer that splits an image across multiple A4, A3, Letter, Legal or Tabloid pages and exports a print-ready PDF with glue overlaps or trim marks, per-page labels, an assembly guide and a printer calibration sheet. All processing happens on the user's device.",
+       "inLanguage":"en","isAccessibleForFree":true,"softwareVersion":"2.0","datePublished":"2025-07-19","dateModified":"2026-08-08",
+       "offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},
+       "featureList":["Split an image across up to 100 printable pages","A0–A6, ISO B, JIS B, Letter, Legal, Tabloid, Executive and custom paper sizes","Millimetre-accurate tiling with per-edge printer margins","Glue overlap or trim-and-butt-join assembly modes","Live effective-PPI quality advisor","Printer calibration test sheet","Halftone dot poster mode","Printable assembly guide page with ruler check","100% client-side — images are never uploaded"],
+       "publisher":{"@id":"https://tooladda.online/#organization"}},
+      {"@type":"HowTo","@id":"https://tooladda.online/poster-printer.html#howto",
+       "name":"How to print a large poster on multiple A4 or Letter pages",
+       "description":"Split one image across several sheets of ordinary printer paper and assemble them into a large poster.",
+       "totalTime":"PT10M",
+       "supply":[{"@type":"HowToSupply","name":"A digital image (JPG, PNG or WebP)"},{"@type":"HowToSupply","name":"A4 or Letter printer paper"},{"@type":"HowToSupply","name":"Glue stick or clear tape"}],
+       "tool":[{"@type":"HowToTool","name":"Home or office printer"},{"@type":"HowToTool","name":"Scissors or a craft knife and steel ruler"},{"@type":"HowToTool","name":"ToolAdda Poster Printer"}],
+       "step":[
+        {"@type":"HowToStep","position":1,"name":"Upload your image","text":"Drag your image into the upload box, paste it from the clipboard, or press Browse image. Nothing is uploaded to a server — the file is read directly by your browser.","url":"https://tooladda.online/poster-printer.html#tool"},
+        {"@type":"HowToStep","position":2,"name":"Choose paper size and orientation","text":"Pick A4, A3, Letter, Legal, Tabloid or a custom size, then portrait or landscape. The tool preselects A4 or Letter based on your region, and you can change it at any time.","url":"https://tooladda.online/poster-printer.html#tool"},
+        {"@type":"HowToStep","position":3,"name":"Set the finished poster size","text":"Set the size by page grid, by real-world width and height, or by magnification percentage. The live preview and page count update instantly.","url":"https://tooladda.online/poster-printer.html#tool"},
+        {"@type":"HowToStep","position":4,"name":"Check the quality advisor","text":"Read the effective PPI shown for your chosen size. Above 150 PPI prints sharply at arm's length. If it says Poor, reduce the poster size or use a higher-resolution image.","url":"https://tooladda.online/poster-printer.html#quality"},
+        {"@type":"HowToStep","position":5,"name":"Choose how the pages will join","text":"Pick Overlap and glue for a forgiving join with a shaded glue band, or Trim and butt-join for a seamless edge-to-edge finish with printed cut marks.","url":"https://tooladda.online/poster-printer.html#joining"},
+        {"@type":"HowToStep","position":6,"name":"Generate and download the PDF","text":"Press Generate PDF. Each page is rendered one at a time at your chosen DPI and combined into a single multi-page PDF that downloads to your device.","url":"https://tooladda.online/poster-printer.html#tool"},
+        {"@type":"HowToStep","position":7,"name":"Print at 100 percent, not Fit to Page","text":"In your print dialog set Scale to 100% or Actual Size and turn off Fit to Page or Shrink oversized pages. Scaling the print is the single most common reason tiled pages fail to line up.","url":"https://tooladda.online/poster-printer.html#print-100"},
+        {"@type":"HowToStep","position":8,"name":"Assemble the poster","text":"Lay the pages out using the numbered assembly guide, work left to right and top to bottom, trim the leading margins, then glue or tape each sheet to its neighbour.","url":"https://tooladda.online/poster-printer.html#assembly"}
+       ]}
+    ]
+  }
+  </script>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/poster-printer.html#webpage",
+      "url": "https://tooladda.online/poster-printer.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-26",
+      "dateModified": "2026-09-19",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="pp-page-shell">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+      <nav class="nav-links" aria-label="Primary"><a href="/">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy</a></nav>
+      <div class="nav-actions">
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+            <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+            <path d="M3.1 16.9h10.8" />
+            <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+          </svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+        <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="section">
+      <aside class="ta-support" aria-label="Support ToolAdda">
+        <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+        <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+      </aside>
+
+      <div class="container pp">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">›</span>
+          <a href="/#image-tools">Image Tools</a><span aria-hidden="true">›</span>
+          <span aria-current="page">Poster Printer</span>
+        </nav>
+
+        <div class="content-card">
+          <p class="hero-badge">🖨️ Print Tools</p>
+          <h1 class="section-title">Poster Printer — Split an Image Across Multiple Pages</h1>
+          <p>Turn any photo, poster, map or pattern into a large print, tiled across A4, A3, Letter, Legal or Tabloid sheets — with glue overlaps or trim marks, per-page labels and a printable assembly guide. Millimetre-accurate, and your image never leaves your device.</p>
+
+          <div class="pp-trustbar">
+            <span>🔒 <strong>Nothing is uploaded</strong><em class="pp-tb-more"> — open your browser's Network tab and check</em></span>
+            <span>💸 Free, unlimited</span>
+            <span>🙅 No signup</span>
+            <span>💧 No watermark</span>
+            <span>📐 Accurate to the millimetre</span>
+            <span>📶 <a href="#offline">Works offline</a></span>
+          </div>
+
+          <!-- ============== TOOL ============== -->
+          <section id="tool" class="pp-app" aria-label="Poster printer tool" data-pp>
+            <h2 class="pp-vh">Poster printer tool</h2>
+
+            <!-- STEP 1: upload -->
+            <div class="pp-upload" data-drop>
+              <svg class="pp-up-art" viewBox="0 0 132 84" role="img" aria-label="One image split across six sheets of paper">
+                <defs>
+                  <linearGradient id="ppUpArt" x1="0" y1="0" x2="132" y2="84" gradientUnits="userSpaceOnUse">
+                    <stop offset="0" stop-color="#A3E635"/>
+                    <stop offset=".55" stop-color="#4ADE80"/>
+                    <stop offset="1" stop-color="#2F7D1A"/>
+                  </linearGradient>
+                </defs>
+                <g fill="url(#ppUpArt)">
+                  <rect x="2" y="2" width="40" height="38" rx="4"/>
+                  <rect x="46" y="2" width="40" height="38" rx="4"/>
+                  <rect x="90" y="2" width="40" height="38" rx="4"/>
+                  <rect x="2" y="44" width="40" height="38" rx="4"/>
+                  <rect x="46" y="44" width="40" height="38" rx="4"/>
+                  <rect x="90" y="44" width="40" height="38" rx="4"/>
+                </g>
+              </svg>
+              <h2>Drop an image here to start</h2>
+              <p>JPG, PNG, WebP, AVIF, GIF, BMP or SVG · or press <kbd>Ctrl</kbd>+<kbd>V</kbd> to paste</p>
+              <div class="pp-up-actions">
+                <label class="pp-filelabel">
+                  📂 Browse image
+                  <input class="pp-vh" type="file" id="ppFile" accept="image/*,.svg,.heic,.heif" data-file />
+                </label>
+                <button type="button" class="secondary-btn" data-sample>✨ Try a sample image</button>
+              </div>
+              <p style="font-size:.8rem">No account, no upload, no watermark on the result.</p>
+            </div>
+
+            <div class="message-box hidden" role="alert" data-msg></div>
+
+            <!-- STEP 2+: editor -->
+            <div class="pp-layout hidden" data-editor>
+
+              <!-- ---------- PREVIEW ---------- -->
+              <div class="pp-stage">
+                <div class="pp-canvas-wrap">
+                  <canvas data-preview role="img" aria-label="Poster layout preview" data-canvas-desc></canvas>
+                </div>
+
+                <div class="pp-overlay-toggles" role="group" aria-label="Preview overlays">
+                  <label class="pp-chip"><input type="checkbox" data-ov="grid" checked /> Tile grid</label>
+                  <label class="pp-chip"><input type="checkbox" data-ov="nums" checked /> Page numbers</label>
+                  <label class="pp-chip"><input type="checkbox" data-ov="join" checked /> Join bands</label>
+                  <label class="pp-chip"><input type="checkbox" data-ov="marks" /> Cut marks</label>
+                  <button type="button" class="pp-chip" data-fitscreen>⤢ Fit to screen</button>
+                </div>
+
+                <div class="pp-summary" aria-hidden="true">
+                  <div class="pp-sum-cell"><b>Finished size</b><span data-sum-size>—</span></div>
+                  <div class="pp-sum-cell"><b>Pages</b><span data-sum-pages>—</span></div>
+                  <div class="pp-sum-cell"><b>Quality</b><span data-sum-quality>—</span></div>
+                  <div class="pp-sum-cell"><b>Est. PDF</b><span data-sum-filesize>—</span></div>
+                </div>
+                <p class="pp-vh" role="status" aria-live="polite" data-live-summary></p>
+              </div>
+
+              <!-- ---------- CONTROLS ---------- -->
+              <div class="pp-panel">
+
+                <div class="pp-file-meta" data-file-meta hidden>
+                  <img alt="" data-thumb width="52" height="52" />
+                  <div>
+                    <strong data-fm-name>—</strong>
+                    <span data-fm-detail>—</span>
+                  </div>
+                </div>
+
+                <div class="pp-presets" role="group" aria-label="Quick presets">
+                  <button type="button" class="pp-preset" data-preset="a4-a0">A4 → A0 poster</button>
+                  <button type="button" class="pp-preset" data-preset="2x2">2 × 2 pages</button>
+                  <button type="button" class="pp-preset" data-preset="wall">Full wall (5 × 4)</button>
+                  <button type="button" class="pp-preset" data-preset="sewing">1:1 sewing pattern</button>
+                  <button type="button" class="pp-preset" data-preset="map">Classroom map</button>
+                  <button type="button" class="pp-preset" data-preset="banner">Party banner</button>
+                </div>
+
+                <!-- quality advisor -->
+                <div class="pp-quality pp-q-good" data-quality role="status" aria-live="polite">
+                  <b>—</b>
+                </div>
+
+                <!-- paper -->
+                <details class="pp-sec" open>
+                  <summary>Paper &amp; units</summary>
+                  <div class="pp-sec-body">
+                    <fieldset class="pp-fs">
+                      <legend class="pp-legend">Units</legend>
+                      <div class="pp-seg" data-unit-seg>
+                        <label><input type="radio" name="ppUnit" value="mm" /> mm</label>
+                        <label><input type="radio" name="ppUnit" value="cm" checked /> cm</label>
+                        <label><input type="radio" name="ppUnit" value="in" /> inch</label>
+                      </div>
+                    </fieldset>
+                    <div class="pp-f">
+                      <label for="ppPaper">Paper size</label>
+                      <select id="ppPaper"></select>
+                      <p class="pp-hint" data-paper-hint></p>
+                    </div>
+                    <div class="pp-row" data-custom-paper hidden>
+                      <div class="pp-f"><label for="ppPaperW">Paper width (<span data-u>cm</span>)</label><input type="number" id="ppPaperW" inputmode="decimal" step="0.1" min="5" value="21" /></div>
+                      <div class="pp-f"><label for="ppPaperH">Paper height (<span data-u>cm</span>)</label><input type="number" id="ppPaperH" inputmode="decimal" step="0.1" min="5" value="29.7" /></div>
+                    </div>
+                    <fieldset class="pp-fs">
+                      <legend class="pp-legend">Page orientation</legend>
+                      <div class="pp-seg">
+                        <label><input type="radio" name="ppOrient" value="portrait" checked /> Portrait</label>
+                        <label><input type="radio" name="ppOrient" value="landscape" /> Landscape</label>
+                        <label><input type="radio" name="ppOrient" value="auto" /> Auto (fewest pages)</label>
+                      </div>
+                    </fieldset>
+                  </div>
+                </details>
+
+                <!-- poster size -->
+                <details class="pp-sec" open>
+                  <summary>Poster size</summary>
+                  <div class="pp-sec-body">
+                    <fieldset class="pp-fs">
+                      <legend class="pp-legend">Set size by</legend>
+                      <div class="pp-seg">
+                        <label><input type="radio" name="ppMode" value="grid" checked /> Page grid</label>
+                        <label><input type="radio" name="ppMode" value="physical" /> Real size</label>
+                        <label><input type="radio" name="ppMode" value="scale" /> Magnify %</label>
+                      </div>
+                    </fieldset>
+
+                    <div data-mode="grid">
+                      <div class="pp-row">
+                        <div class="pp-f"><label for="ppCols">Columns</label><input type="number" id="ppCols" inputmode="numeric" min="1" max="20" value="3" /></div>
+                        <div class="pp-f"><label for="ppRows">Rows</label><input type="number" id="ppRows" inputmode="numeric" min="1" max="20" value="4" /></div>
+                      </div>
+                      <p class="pp-hint">With <em>Lock aspect ratio</em> on, this is the maximum page envelope — the poster is fitted inside it without distorting your image, so the real page count may be lower.</p>
+                    </div>
+
+                    <div data-mode="physical" hidden>
+                      <div class="pp-row">
+                        <div class="pp-f"><label for="ppPhysW">Width (<span data-u>cm</span>)</label><input type="number" id="ppPhysW" inputmode="decimal" step="0.1" min="1" value="60" /></div>
+                        <div class="pp-f"><label for="ppPhysH">Height (<span data-u>cm</span>)</label><input type="number" id="ppPhysH" inputmode="decimal" step="0.1" min="1" value="80" /></div>
+                      </div>
+                    </div>
+
+                    <div data-mode="scale" hidden>
+                      <div class="pp-f">
+                        <label for="ppMag">Magnification (%)</label>
+                        <div class="pp-slider">
+                          <input type="range" id="ppMagRange" min="25" max="2000" step="25" value="400" aria-label="Magnification percent slider" />
+                          <input type="number" id="ppMag" inputmode="decimal" min="10" max="5000" step="5" value="400" />
+                        </div>
+                      </div>
+                      <div class="pp-f">
+                        <label for="ppSrcPpi">Source image resolution (PPI)</label>
+                        <input type="number" id="ppSrcPpi" inputmode="numeric" min="30" max="1200" value="300" />
+                        <p class="pp-hint">100% = your image printed at this resolution. Read from the file's metadata when present; 300 PPI is the print-industry default otherwise. Changing the output DPI never changes the poster size.</p>
+                      </div>
+                    </div>
+
+                    <label class="pp-check"><input type="checkbox" id="ppLockAspect" checked /> <span>Lock aspect ratio (never distort or crop the image)</span></label>
+
+                    <fieldset class="pp-fs">
+                      <legend class="pp-legend">If the image and poster shapes differ</legend>
+                      <div class="pp-seg">
+                        <label><input type="radio" name="ppFit" value="fit" checked /> Fit (letterbox)</label>
+                        <label><input type="radio" name="ppFit" value="fill" /> Fill (crop)</label>
+                      </div>
+                      <p class="pp-hint" style="margin-top:.4rem">The image is never stretched. Fill crops the overflow; Fit adds a background border.</p>
+                    </fieldset>
+
+                    <div class="pp-row">
+                      <div class="pp-f"><label for="ppBg">Border colour</label><input type="color" id="ppBg" value="#ffffff" style="min-height:44px;padding:.2rem" /></div>
+                      <div class="pp-f">
+                        <label for="ppRotate">Rotate image</label>
+                        <select id="ppRotate"><option value="0">0°</option><option value="90">90°</option><option value="180">180°</option><option value="270">270°</option></select>
+                      </div>
+                    </div>
+                    <div class="pp-row">
+                      <label class="pp-check"><input type="checkbox" id="ppFlipH" /> <span>Flip horizontally</span></label>
+                      <label class="pp-check"><input type="checkbox" id="ppFlipV" /> <span>Flip vertically</span></label>
+                    </div>
+                  </div>
+                </details>
+
+                <!-- joining -->
+                <details class="pp-sec" open>
+                  <summary>Joining &amp; margins</summary>
+                  <div class="pp-sec-body">
+                    <fieldset class="pp-fs">
+                      <legend class="pp-legend">How pages join</legend>
+                      <div class="pp-seg">
+                        <label><input type="radio" name="ppJoin" value="overlap" checked /> Overlap &amp; glue</label>
+                        <label><input type="radio" name="ppJoin" value="trim" /> Trim &amp; butt-join</label>
+                      </div>
+                    </fieldset>
+
+                    <div class="pp-f" data-join="overlap">
+                      <label for="ppOverlap">Overlap flap (<span data-u>cm</span>)</label>
+                      <div class="pp-slider">
+                        <input type="range" id="ppOverlapRange" min="0" max="30" step="1" value="10" aria-label="Overlap width slider, millimetres" />
+                        <input type="number" id="ppOverlap" inputmode="decimal" step="0.1" min="0" value="1" />
+                      </div>
+                      <p class="pp-hint">10 mm is forgiving and easy to glue. Use 15–20 mm for posters larger than 1 metre.</p>
+                    </div>
+
+                    <div class="pp-f" data-join="trim" hidden>
+                      <label for="ppBleed">Trim bleed each side (<span data-u>cm</span>)</label>
+                      <div class="pp-slider">
+                        <input type="range" id="ppBleedRange" min="0" max="10" step="1" value="3" aria-label="Trim bleed slider, millimetres" />
+                        <input type="number" id="ppBleed" inputmode="decimal" step="0.1" min="0" value="0.3" />
+                      </div>
+                      <p class="pp-hint">Extra image printed past each cut line so a slightly wobbly cut still leaves no white gap. Cut down the centre of every dashed line.</p>
+                    </div>
+
+                    <div class="pp-f">
+                      <label for="ppMarginPreset">Printer margin</label>
+                      <select id="ppMarginPreset">
+                        <option value="safe" selected>Safe — works on almost every printer (6.5 mm, 9 mm bottom)</option>
+                        <option value="inkjet">Typical inkjet (3.5 mm all round)</option>
+                        <option value="laser">Typical laser (4.2 mm all round)</option>
+                        <option value="borderless">Borderless printing (0 mm)</option>
+                        <option value="custom">Custom / calibrated…</option>
+                      </select>
+                      <p class="pp-hint">These are conservative conventions, not a reading of your printer. Every printer has an unprintable border, and if yours is bigger than the value here your tiles <em>will</em> misalign. Print the calibration sheet once and use the real numbers.</p>
+                    </div>
+
+                    <div class="pp-row" data-custom-margin hidden>
+                      <div class="pp-f"><label for="ppMT">Top (mm)</label><input type="number" id="ppMT" inputmode="decimal" step="0.5" min="0" max="30" value="6.5" /></div>
+                      <div class="pp-f"><label for="ppMR">Right (mm)</label><input type="number" id="ppMR" inputmode="decimal" step="0.5" min="0" max="30" value="6.5" /></div>
+                      <div class="pp-f"><label for="ppMB">Bottom (mm)</label><input type="number" id="ppMB" inputmode="decimal" step="0.5" min="0" max="30" value="9" /></div>
+                      <div class="pp-f"><label for="ppML">Left (mm)</label><input type="number" id="ppML" inputmode="decimal" step="0.5" min="0" max="30" value="6.5" /></div>
+                    </div>
+
+                    <button type="button" class="secondary-btn" data-calibrate style="min-height:44px">📏 Print printer calibration sheet</button>
+                    <p class="pp-hint">One page. Tells you your printer's real unprintable border and whether it is silently scaling your prints. <a href="#calibration">How to read it</a>.</p>
+                  </div>
+                </details>
+
+                <!-- guides -->
+                <details class="pp-sec">
+                  <summary>Guides on each page</summary>
+                  <div class="pp-sec-body">
+                    <label class="pp-check"><input type="checkbox" id="ppGuidePage" checked /> <span>Assembly guide as page 1 (map, finished size, ruler check)</span></label>
+                    <label class="pp-check"><input type="checkbox" id="ppLabels" checked /> <span>Tile labels (A1, B2 … and “page X of Y”)</span></label>
+                    <label class="pp-check"><input type="checkbox" id="ppCropMarks" checked /> <span>Corner crop marks</span></label>
+                    <label class="pp-check"><input type="checkbox" id="ppRegMarks" /> <span>Registration crosses on shared edges</span></label>
+                    <p class="pp-hint">Labels and marks are printed only inside the glue band or the trimmed-away strip, so they never appear on the finished poster. On the outer edges of the poster they are placed in the paper margin.</p>
+                  </div>
+                </details>
+
+                <!-- output -->
+                <details class="pp-sec">
+                  <summary>Output quality</summary>
+                  <div class="pp-sec-body">
+                    <div class="pp-f">
+                      <label for="ppDpi">Print resolution (DPI)</label>
+                      <select id="ppDpi">
+                        <option value="72">72 — draft / proofing</option>
+                        <option value="150" selected>150 — recommended for posters</option>
+                        <option value="200">200 — high quality</option>
+                        <option value="300">300 — maximum, large files</option>
+                      </select>
+                      <p class="pp-hint">Most home inkjets resolve about 150–200 PPI of real detail on plain paper. Above that you mostly grow the file, not the sharpness.</p>
+                    </div>
+                    <div class="pp-f">
+                      <label for="ppJpegQ">JPEG quality</label>
+                      <div class="pp-slider">
+                        <input type="range" id="ppJpegQRange" min="50" max="100" step="5" value="85" aria-label="JPEG quality slider" />
+                        <input type="number" id="ppJpegQ" inputmode="numeric" min="50" max="100" step="5" value="85" />
+                      </div>
+                    </div>
+                    <label class="pp-check"><input type="checkbox" id="ppGray" /> <span>Greyscale (saves colour ink)</span></label>
+                    <div class="pp-f">
+                      <label for="ppHalftone">Halftone dot art</label>
+                      <select id="ppHalftone"><option value="off" selected>Off</option><option value="mono">Black dots</option><option value="colour">Colour dots</option></select>
+                      <p class="pp-hint">Turns a low-resolution image into a deliberate large-format dot artwork. The dot grid is anchored to the poster, not to each page, so dots stay aligned across every seam.</p>
+                    </div>
+                    <div class="pp-f" data-dotsize hidden>
+                      <label for="ppDot">Dot pitch (mm)</label>
+                      <div class="pp-slider">
+                        <input type="range" id="ppDotRange" min="2" max="30" step="1" value="6" aria-label="Halftone dot pitch slider" />
+                        <input type="number" id="ppDot" inputmode="decimal" min="2" max="40" step="1" value="6" />
+                      </div>
+                    </div>
+                  </div>
+                </details>
+
+                <div class="pp-warn" data-print100>
+                  <strong>⚠️ Before you print:</strong> set <em>Scale</em> to <strong>100% / Actual size</strong> and switch off <em>Fit to page</em>. Printer scaling is the number one reason tiled pages do not line up. <a href="#print-100">Exact steps per platform →</a>
+                </div>
+
+                <div class="pp-actions">
+                  <button type="button" class="primary-btn" data-generate>📄 Generate poster PDF</button>
+                  <div class="pp-progress hidden" data-progress-wrap><i data-progress-bar></i></div>
+                  <p class="pp-hint hidden" data-progress-text role="status" aria-live="polite"></p>
+                  <div class="pp-actions-row">
+                    <button type="button" class="secondary-btn" data-zip>🗂️ Pages as ZIP</button>
+                    <button type="button" class="secondary-btn" data-cancel hidden>✕ Cancel</button>
+                    <button type="button" class="secondary-btn" data-reset>↺ Start over</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- ============== /TOOL ============== -->
+        </div>
+
+        <!-- ============== TRUST ============== -->
+        <section class="content-card" id="trust" style="margin-top:1.5rem">
+          <h2 class="section-title">Why you can trust this poster printer</h2>
+          <div class="pp-tools">
+            <div class="pp-tool"><strong>🔒 Nothing is uploaded</strong><span>Your image is read by the browser with the File API and rendered to a canvas on your own machine. Open DevTools → Network, generate a poster, and you will see no request carrying your file. That matters for paid sewing patterns, client design files and confidential drawings.</span></div>
+            <div class="pp-tool"><strong>💸 Free and unlimited</strong><span>No account, no email, no page cap, no trial. Generate as many posters as you like.</span></div>
+            <div class="pp-tool"><strong>💧 No watermark</strong><span>The PDF contains your artwork and the guides you asked for. Nothing else.</span></div>
+            <div class="pp-tool" id="offline"><strong>📶 Works offline</strong><span>After your first visit the page is cached by a service worker. Turn off Wi-Fi and it still tiles posters — useful in classrooms, workshops and print rooms.</span></div>
+            <div class="pp-tool"><strong>📐 Millimetre-accurate</strong><span>All geometry is calculated in millimetres as floating point and converted to PDF points only at the last step. Page size in the PDF is exact, so a 210 mm page is 210 mm.</span></div>
+            <div class="pp-tool"><strong>📱 Any device</strong><span>Windows, macOS, Linux, Android, iPhone and iPad. Nothing to install.</span></div>
+          </div>
+        </section>
+
+        <!-- ============== CONTENT ============== -->
+        <article class="content-card pp-prose" style="margin-top:1.5rem">
+
+          <h2 id="what-is">What is a poster printer (image tiling) tool?</h2>
+          <p>A poster printer does one deceptively simple job: it takes a single image and cuts it into a grid of rectangles, each sized to fit on a sheet of paper your printer can actually handle. Print the sheets, join them, and you have a picture far larger than your printer was ever designed to produce. The technique is old — sign shops call it <em>tiling</em>, prepress people call it <em>panelling</em>, and the graphics community that popularised the dotted version calls it <em>rasterbation</em>.</p>
+          <p>What makes it hard is not the cutting. It is the joining. A tiled poster is a physical object assembled by hand from parts that were printed independently, and every source of error — your printer's unprintable border, the print dialog quietly scaling to 96%, a cut that wanders half a millimetre — shows up as a visible step in the middle of somebody's face. So the real job of this tool is to give you pages whose edges are mathematically guaranteed to meet, and then to warn you about the two or three things that can still go wrong after the PDF leaves the browser.</p>
+          <p>Everything here runs on your own device. There is no server-side rendering step, which means there is nothing to queue behind, no file size limit imposed by an upload form, and nothing of yours stored anywhere.</p>
+
+          <h2 id="how-to">How to print a large poster on a normal home printer</h2>
+          <ol>
+            <li><strong>Upload your image.</strong> Drag it into the box, paste from the clipboard, or press <em>Browse image</em>. The tool immediately shows the pixel dimensions, file size and format so you know what you are working with.</li>
+            <li><strong>Pick your paper.</strong> A4 in most of the world, Letter in the US and Canada. The tool guesses from your device's locale and you can change it in one tap.</li>
+            <li><strong>Set the finished size.</strong> Three ways: by page grid (“3 columns × 4 rows”), by real-world size (“60 cm wide”), or by magnification (“400%”). They all drive the same underlying number, so you can switch between them freely.</li>
+            <li><strong>Read the quality advisor.</strong> It tells you the effective PPI at the size you chose. Anything above 150 PPI prints sharply; below 100 PPI you will see softness at arm's length.</li>
+            <li><strong>Choose how pages will join.</strong> Overlap and glue is forgiving. Trim and butt-join is invisible but demands a steady hand.</li>
+            <li><strong>Generate the PDF</strong> and open it in your normal PDF viewer.</li>
+            <li><strong>Print at 100%.</strong> Not “Fit to page”. This step is where most tiled posters die — see <a href="#print-100">the section below</a>.</li>
+            <li><strong>Assemble</strong> using the numbered guide page, working left to right and top to bottom.</li>
+          </ol>
+          <p>Start to finish, a first-time user should be holding a downloaded PDF inside a minute. Nothing in the flow requires an account or a payment.</p>
+
+          <h2 id="paper-sizes">Choosing your paper size: A4, A3, Letter, Legal, Tabloid</h2>
+          <p>The world uses two paper systems and this tool speaks both. The ISO A series (A4, A3 …) is used almost everywhere outside North America and has the elegant property that halving the long side gives you the next size down at the same 1:√2 proportion — which is why an A0 poster is exactly sixteen A4 sheets. North America uses Letter, Legal and Tabloid, which have no such relationship, so grids there are chosen by eye rather than by arithmetic.</p>
+          <div class="pp-table-wrap">
+            <table class="pp-table">
+              <caption class="pp-vh">Common paper sizes in millimetres and inches</caption>
+              <thead><tr><th scope="col">Paper</th><th scope="col">Millimetres</th><th scope="col">Inches</th><th scope="col">Typical use</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">A0</th><td>841 × 1189</td><td>33.1 × 46.8</td><td>Sewing patterns, architectural plans, large posters</td></tr>
+                <tr><th scope="row">A1</th><td>594 × 841</td><td>23.4 × 33.1</td><td>Engineering drawings, exhibition panels</td></tr>
+                <tr><th scope="row">A2</th><td>420 × 594</td><td>16.5 × 23.4</td><td>Wall art, classroom charts</td></tr>
+                <tr><th scope="row">A3</th><td>297 × 420</td><td>11.7 × 16.5</td><td>Common “big” size on office printers</td></tr>
+                <tr><th scope="row">A4</th><td>210 × 297</td><td>8.27 × 11.69</td><td>The default sheet in most of the world</td></tr>
+                <tr><th scope="row">A5</th><td>148 × 210</td><td>5.83 × 8.27</td><td>Small tiles, notebooks</td></tr>
+                <tr><th scope="row">Letter</th><td>215.9 × 279.4</td><td>8.5 × 11</td><td>US / Canada default sheet</td></tr>
+                <tr><th scope="row">Legal</th><td>215.9 × 355.6</td><td>8.5 × 14</td><td>Taller tiles, fewer rows</td></tr>
+                <tr><th scope="row">Tabloid / Ledger</th><td>279.4 × 431.8</td><td>11 × 17</td><td>US equivalent of A3</td></tr>
+                <tr><th scope="row">Executive</th><td>184.15 × 266.7</td><td>7.25 × 10.5</td><td>Occasional office stock</td></tr>
+                <tr><th scope="row">JIS B4</th><td>257 × 364</td><td>10.12 × 14.33</td><td>Japan</td></tr>
+                <tr><th scope="row">JIS B5</th><td>182 × 257</td><td>7.17 × 10.12</td><td>Japan</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Practical advice: <strong>bigger paper is nearly always better.</strong> Every seam is a chance to misalign, and A3 halves your seam count compared with A4 for the same finished poster. If you have access to an office A3 machine, use it. If you are stuck with A4, use landscape orientation for wide images — it often removes an entire column.</p>
+
+          <h2 id="page-count">How many pages do you need?</h2>
+          <p>The page count depends on the printable area of each sheet, not the sheet itself, and on how much of each page you give away to the join. With the default safe margin (6.5 mm sides and top, 9 mm bottom) an A4 portrait sheet has a printable area of 197 × 281.5 mm, and a 10 mm glue overlap reduces the useful step to 187 × 271.5 mm. Those are the numbers behind the table below.</p>
+          <div class="pp-table-wrap">
+            <table class="pp-table">
+              <caption class="pp-vh">Approximate finished poster size for common A4 portrait grids</caption>
+              <thead><tr><th scope="col">Grid (cols × rows)</th><th scope="col">Pages</th><th scope="col">Finished size (A4 portrait, 10 mm overlap)</th><th scope="col">Roughly</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">1 × 2</th><td>2</td><td>19.7 × 55.3 cm</td><td>Tall door sign</td></tr>
+                <tr><th scope="row">2 × 2</th><td>4</td><td>38.4 × 55.3 cm</td><td>Just under A2</td></tr>
+                <tr><th scope="row">2 × 3</th><td>6</td><td>38.4 × 82.4 cm</td><td>Tall wall panel</td></tr>
+                <tr><th scope="row">3 × 4</th><td>12</td><td>57.1 × 109.6 cm</td><td>Large wall poster</td></tr>
+                <tr><th scope="row">4 × 4</th><td>16</td><td>75.8 × 109.6 cm</td><td>Close to A0</td></tr>
+                <tr><th scope="row">4 × 6</th><td>24</td><td>75.8 × 163.9 cm</td><td>Life-size figure</td></tr>
+                <tr><th scope="row">5 × 4</th><td>20</td><td>94.5 × 109.6 cm</td><td>Feature wall</td></tr>
+                <tr><th scope="row">6 × 8</th><td>48</td><td>113.2 × 219.2 cm</td><td>Full-height mural</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Two things to note. First, the numbers shrink if your printer's unprintable border is larger than the default — which is exactly what the calibration sheet measures. Second, a poster made of 48 sheets is a two-hour assembly job and about half a colour cartridge, so the grid you <em>can</em> print is not always the grid you <em>should</em>.</p>
+
+          <h2 id="quality">Image resolution explained — why your poster might look blurry</h2>
+          <p>An image has a fixed number of pixels. Printing it larger does not create new ones; it just spreads the ones you have over more paper. The measure that matters is <strong>PPI</strong> — pixels per inch of finished poster:</p>
+          <div class="pp-callout"><strong>Effective PPI = image width in pixels ÷ printed width in inches</strong><br />A 3000 px wide photo printed 60 cm (23.6 in) wide gives 3000 ÷ 23.6 ≈ <strong>127 PPI</strong>.</div>
+          <p>An important subtlety that most tiling tools get wrong: if you crop the image to fill a poster whose shape differs from the photo's, part of the image is thrown away and the remaining pixels are stretched further than the width alone suggests. This tool calculates PPI from the <em>actually drawn</em> rectangle, so the number you see accounts for cropping. If you have used a tiling tool before that promised 150 PPI and delivered mush, this is usually why.</p>
+          <div class="pp-table-wrap">
+            <table class="pp-table">
+              <caption class="pp-vh">Quality rating by effective PPI</caption>
+              <thead><tr><th scope="col">Effective PPI</th><th scope="col">Rating</th><th scope="col">What it looks like</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">200 +</th><td>Excellent</td><td>Sharp at reading distance. Right for patterns, text, line art and anything held in the hand.</td></tr>
+                <tr><th scope="row">150 – 200</th><td>Good</td><td>The sweet spot for wall posters. Detail holds up close and is flawless from a metre.</td></tr>
+                <tr><th scope="row">100 – 150</th><td>Acceptable</td><td>Slightly soft up close, fine from two metres. Normal for large murals.</td></tr>
+                <tr><th scope="row">Below 100</th><td>Poor</td><td>Visibly blurry. Reduce the size, find a better source, or switch to halftone mode and make it a style.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p><strong>Viewing distance is the missing variable.</strong> Billboards are printed at 10–20 PPI and look perfect from across a street. A poster on the far wall of a room is judged at two metres, so 100 PPI is genuinely fine. A sewing pattern is judged at 30 cm with a tape measure, so it needs both high PPI and exact 1:1 scale. Decide which you are making before you worry about the number.</p>
+
+          <h3 id="max-size">How big can you print your photo?</h3>
+          <p>Rearranging the formula gives the maximum sharp width: <strong>pixels ÷ target PPI</strong>. The tool shows this as “your image can print sharply up to X × Y” with a one-tap button that snaps the poster to it.</p>
+          <div class="pp-table-wrap">
+            <table class="pp-table">
+              <caption class="pp-vh">Maximum print width by image resolution</caption>
+              <thead><tr><th scope="col">Image width (px)</th><th scope="col">Typical source</th><th scope="col">At 150 PPI</th><th scope="col">At 100 PPI</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">1080</th><td>Instagram / WhatsApp download</td><td>18 cm</td><td>27 cm</td></tr>
+                <tr><th scope="row">1920</th><td>Screenshot, HD wallpaper</td><td>33 cm</td><td>49 cm</td></tr>
+                <tr><th scope="row">3024</th><td>iPhone photo (12 MP)</td><td>51 cm</td><td>77 cm</td></tr>
+                <tr><th scope="row">4032</th><td>Modern phone, wide camera</td><td>68 cm</td><td>102 cm</td></tr>
+                <tr><th scope="row">6000</th><td>24 MP mirrorless / DSLR</td><td>102 cm</td><td>152 cm</td></tr>
+                <tr><th scope="row">8256</th><td>45 MP full-frame</td><td>140 cm</td><td>210 cm</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>If your source is smaller than you need, you have three honest options: find the original file instead of a messaging-app copy (those are recompressed and downscaled aggressively), enlarge the image first with our <a href="image-resizer.html">image resizer</a> before tiling, or lean into it and use halftone mode, where low resolution becomes the point rather than the problem. What does <em>not</em> work is simply printing bigger and hoping.</p>
+
+          <h2 id="joining">Overlap and glue vs trim and butt-join</h2>
+          <p>Both methods produce a poster with no visible gap. They fail differently, which is how you should choose between them.</p>
+          <figure class="pp-fig">
+            <svg viewBox="0 0 560 230" role="img" aria-labelledby="d1t d1d" xmlns="http://www.w3.org/2000/svg">
+              <title id="d1t">Diagram of the glue overlap join</title>
+              <desc id="d1d">Two pages side by side. The right-hand strip of the left page and the left-hand strip of the right page carry the same duplicated band of image. The right page's leading margin is trimmed off, the page is laid on top of the left page and the two identical bands are aligned before gluing.</desc>
+              <rect x="20" y="30" width="230" height="150" fill="#fff" stroke="#1f2937" stroke-width="2"/>
+              <rect x="200" y="30" width="50" height="150" fill="#4f46e5" fill-opacity=".18"/>
+              <text x="35" y="60" font-size="13" font-weight="700" fill="#1f2937">Page A1</text>
+              <text x="207" y="105" font-size="10" fill="#3730a3" transform="rotate(90 207 105)">shared band</text>
+              <rect x="300" y="30" width="230" height="150" fill="#fff" stroke="#1f2937" stroke-width="2"/>
+              <rect x="300" y="30" width="50" height="150" fill="#4f46e5" fill-opacity=".18"/>
+              <line x1="350" y1="24" x2="350" y2="186" stroke="#dc2626" stroke-width="2" stroke-dasharray="7 5"/>
+              <text x="365" y="60" font-size="13" font-weight="700" fill="#1f2937">Page A2</text>
+              <text x="307" y="105" font-size="10" fill="#3730a3" transform="rotate(90 307 105)">same band</text>
+              <text x="300" y="205" font-size="11" fill="#dc2626">✂ cut the leading margin off, then overlay and glue on the tinted band</text>
+            </svg>
+            <figcaption>Glue overlap — each shared edge is printed twice, so you align two identical strips of image rather than trying to match two cut edges.</figcaption>
+          </figure>
+          <figure class="pp-fig">
+            <svg viewBox="0 0 560 230" role="img" aria-labelledby="d2t d2d" xmlns="http://www.w3.org/2000/svg">
+              <title id="d2t">Diagram of the trim and butt-join method</title>
+              <desc id="d2d">Two pages each carry a small bleed of extra image past a dashed cut line. Both pages are cut down the centre of their dashed lines and the two cut edges are butted together and taped from behind.</desc>
+              <rect x="20" y="30" width="230" height="150" fill="#fff" stroke="#1f2937" stroke-width="2"/>
+              <rect x="222" y="30" width="28" height="150" fill="#f59e0b" fill-opacity=".22"/>
+              <line x1="236" y1="24" x2="236" y2="186" stroke="#dc2626" stroke-width="2" stroke-dasharray="7 5"/>
+              <text x="35" y="60" font-size="13" font-weight="700" fill="#1f2937">Page A1</text>
+              <rect x="300" y="30" width="230" height="150" fill="#fff" stroke="#1f2937" stroke-width="2"/>
+              <rect x="300" y="30" width="28" height="150" fill="#f59e0b" fill-opacity=".22"/>
+              <line x1="314" y1="24" x2="314" y2="186" stroke="#dc2626" stroke-width="2" stroke-dasharray="7 5"/>
+              <text x="365" y="60" font-size="13" font-weight="700" fill="#1f2937">Page A2</text>
+              <text x="150" y="205" font-size="11" fill="#dc2626">✂ cut down the centre of both dashed lines</text>
+              <text x="360" y="205" font-size="11" fill="#7c2d12">bleed</text>
+            </svg>
+            <figcaption>Trim and butt-join — a few millimetres of bleed either side of the cut line mean a slightly wobbly cut still leaves no white gap.</figcaption>
+          </figure>
+          <div class="pp-table-wrap">
+            <table class="pp-table">
+              <caption class="pp-vh">Comparison of joining methods</caption>
+              <thead><tr><th scope="col"></th><th scope="col">Overlap &amp; glue</th><th scope="col">Trim &amp; butt-join</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Visible seam</th><td>A slight ridge where paper doubles</td><td>None if cut accurately</td></tr>
+                <tr><th scope="row">Tolerance for error</th><td>High — slide until the image matches</td><td>Low — a 1 mm cut error shows</td></tr>
+                <tr><th scope="row">Cuts required</th><td>Leading margins only</td><td>Every internal edge, twice</td></tr>
+                <tr><th scope="row">Pages needed</th><td>Slightly more (the overlap costs area)</td><td>Slightly fewer</td></tr>
+                <tr><th scope="row">Best for</th><td>Photos, murals, first attempts, kids' projects</td><td>Line art, patterns, technical drawings, framed work</td></tr>
+                <tr><th scope="row">Time for a 12-page poster</th><td>About 20 minutes</td><td>About 45 minutes</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>If you have never assembled a tiled poster before, use overlap and glue. The ability to nudge a sheet a millimetre until the image lines up is worth far more than a theoretically perfect seam.</p>
+
+          <h2 id="margins">Printer margins: the real reason tiles don't line up</h2>
+          <p>No consumer printer prints to the edge of the paper. There is a strip along each side — usually 3 to 5 mm, and often noticeably larger along the bottom edge where the paper is gripped by the rollers — that the mechanism physically cannot reach. Tools that ignore this produce PDFs that look perfect on screen and misalign on paper, because your printer silently shifted or clipped the artwork to fit inside its own printable box.</p>
+          <p>This tool handles it by treating the printable area, not the sheet, as the tile. You get four separate margin values, a set of conservative presets, and a borderless toggle for printers that support edge-to-edge printing. The defaults are stated openly as conventions rather than measurements:</p>
+          <ul>
+            <li><strong>Safe (default): 6.5 mm sides and top, 9 mm bottom.</strong> Chosen to clear the unprintable border of essentially every consumer inkjet and laser printer with room to spare.</li>
+            <li><strong>Typical inkjet: 3.5 mm all round.</strong> Matches the commonly published minimum for consumer inkjets in normal (non-borderless) mode.</li>
+            <li><strong>Typical laser: 4.2 mm all round.</strong> Approximately 1/6 inch, the figure most desktop laser drivers report.</li>
+            <li><strong>Borderless: 0 mm.</strong> Only for printers with a genuine borderless mode enabled in the driver.</li>
+          </ul>
+          <p>These are starting points, not facts about your machine. The only way to know your printer is to measure it.</p>
+
+          <h3 id="calibration">The calibration sheet — and how to read it</h3>
+          <p>Press <em>Print printer calibration sheet</em> and you get one page containing a 100 mm reference line, a 4 inch reference line, and nested corner markers at 3, 5, 7, 10, 15 and 20 mm from each edge of the paper. Print it at 100%, then:</p>
+          <ol>
+            <li><strong>Measure the 100 mm line with a ruler.</strong> If it measures 100 mm, your printer is not scaling and you are safe. If it measures 96 mm, your print dialog is shrinking to fit — fix that before anything else. (No ruler nearby? Our <a href="screen-ruler.html">on-screen ruler</a> is calibrated in mm and cm.)</li>
+            <li><strong>Find the innermost corner marker that printed completely.</strong> If the 5 mm markers are clipped but the 7 mm markers are whole, your unprintable border on that edge is between 5 and 7 mm — enter 7 as the margin for that edge.</li>
+            <li><strong>Check each edge separately.</strong> The bottom is nearly always the worst.</li>
+            <li>Set <em>Printer margin → Custom</em> and type your four measured numbers. From then on, every poster you make on this printer will tile correctly.</li>
+          </ol>
+          <p>It takes two minutes and one sheet of paper, and it eliminates the most common failure in this entire category. No other free poster tool offers it.</p>
+
+          <h2 id="print-100">Print at 100% — why “Fit to page” ruins alignment</h2>
+          <p>Your PDF is already exactly the right size. Every page in it is precisely A4 or Letter, and the artwork sits at a known offset from the corner. The moment your print dialog scales that page — even by 4% — every tile shrinks by a different absolute amount and the joins no longer meet. This is the single most common reason people say “the tool doesn't work”.</p>
+          <div class="pp-table-wrap">
+            <table class="pp-table">
+              <caption class="pp-vh">Where to find the actual-size setting on each platform</caption>
+              <thead><tr><th scope="col">Where you are printing from</th><th scope="col">What to set</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Adobe Acrobat / Reader</th><td>Page Sizing &amp; Handling → <strong>Actual size</strong> (not “Fit” or “Shrink oversized pages”)</td></tr>
+                <tr><th scope="row">Chrome / Edge built-in PDF viewer</th><td>More settings → Scale → <strong>Custom → 100</strong> (the “Default” option can still shrink)</td></tr>
+                <tr><th scope="row">Firefox PDF viewer</th><td>Scale → <strong>100%</strong>, and untick “Fit to page width”</td></tr>
+                <tr><th scope="row">macOS Preview</th><td>Scale: <strong>100%</strong>, and make sure “Scale to fit” is unticked</td></tr>
+                <tr><th scope="row">Windows built-in PDF handler</th><td>Set “Fit page” to <strong>Actual size</strong></td></tr>
+                <tr><th scope="row">iOS / iPadOS share sheet</th><td>Print previews may auto-fit; for exact scale, print from Adobe Reader or a desktop instead</td></tr>
+                <tr><th scope="row">Android print service</th><td>Scaling behaviour varies by manufacturer — verify with the calibration sheet before a large job</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>The menu wording differs by language as well as by application. If your printer dialog is in German look for <em>Tatsächliche Größe</em>, in French <em>Taille réelle</em>, in Spanish <em>Tamaño real</em>, in Portuguese <em>Tamanho real</em>, in Hindi look for the 100% scale field directly. When in doubt, ignore the wording and simply print the calibration sheet — a 100 mm line that measures 100 mm proves the setting is right regardless of what it is called.</p>
+          <p>Also switch off any “borderless” or “poster / N-up” option in your printer driver itself. Those apply a second transformation on top of the one this tool already did.</p>
+
+          <h2 id="assembly">How to assemble your poster</h2>
+          <p>You need a glue stick or double-sided tape, scissors or a craft knife with a steel rule, a hard flat surface, and about twenty minutes for a twelve-page poster.</p>
+          <figure class="pp-fig">
+            <svg viewBox="0 0 560 260" role="img" aria-labelledby="d3t d3d" xmlns="http://www.w3.org/2000/svg">
+              <title id="d3t">Assembly order for a three by three tiled poster</title>
+              <desc id="d3d">A three by three grid of pages labelled A1 to C3. Arrows show the assembly order: complete row A left to right, then row B, then row C, then join the completed rows to each other from the top down.</desc>
+              <g font-size="15" font-weight="700" text-anchor="middle" fill="#1f2937">
+                <rect x="60" y="20" width="130" height="66" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="125" y="60">A1</text>
+                <rect x="196" y="20" width="130" height="66" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="261" y="60">A2</text>
+                <rect x="332" y="20" width="130" height="66" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="397" y="60">A3</text>
+                <rect x="60" y="92" width="130" height="66" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="125" y="132">B1</text>
+                <rect x="196" y="92" width="130" height="66" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="261" y="132">B2</text>
+                <rect x="332" y="92" width="130" height="66" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="397" y="132">B3</text>
+                <rect x="60" y="164" width="130" height="66" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="125" y="204">C1</text>
+                <rect x="196" y="164" width="130" height="66" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="261" y="204">C2</text>
+                <rect x="332" y="164" width="130" height="66" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="397" y="204">C3</text>
+              </g>
+              <path d="M478 40 L478 210" stroke="#4f46e5" stroke-width="2" marker-end="url(#ar)"/>
+              <defs><marker id="ar" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#4f46e5"/></marker></defs>
+              <text x="492" y="130" font-size="11" fill="#4f46e5" transform="rotate(90 492 130)">then join rows</text>
+              <text x="125" y="252" font-size="11" fill="#64748b">rows first, left → right</text>
+            </svg>
+            <figcaption>Build each row completely before joining rows to each other. Error accumulates along whichever direction you assemble last, so put your longest run first.</figcaption>
+          </figure>
+          <ol>
+            <li><strong>Lay everything out first.</strong> Use the guide page as your map and place all sheets face up in the grid before you touch the glue. Labels are printed in the glue band or trim waste, so they disappear when you assemble.</li>
+            <li><strong>Trim the leading margins.</strong> In overlap mode, cut the white margin off the left and top edges of every sheet that has a neighbour there. A craft knife and steel rule beat scissors for straightness.</li>
+            <li><strong>Work row by row.</strong> Complete row A entirely before starting row B.</li>
+            <li><strong>Align by image, not by paper.</strong> In overlap mode you are matching two identical printed strips — slide until the picture is continuous, then press down. Paper edges lie; the image does not.</li>
+            <li><strong>Glue thinly.</strong> A glue stick applied to the underneath sheet gives you a few seconds of repositioning time. Wet glue buckles paper.</li>
+            <li><strong>Join the completed rows.</strong> Line up the vertical seams you have already made; they are your reference.</li>
+            <li><strong>Press flat.</strong> Put the finished poster under a few heavy books for an hour.</li>
+          </ol>
+
+          <h2 id="use-cases">What people actually use this for</h2>
+          <h3 id="sewing">Sewing and craft patterns at true 1:1 scale</h3>
+          <p>PDF sewing patterns are usually sold at A0 or “copyshop” size, and printing one at home means tiling it across A4 or Letter. Here scale accuracy is everything: a pattern printed at 97% produces a garment that does not fit, and you will not discover it until the fabric is cut. Set magnification to exactly 100%, use trim and butt-join for clean pattern lines, and always verify the test square on the pattern with a ruler before cutting anything. Most commercial patterns include a 10 cm calibration square for precisely this reason — measure it, and if it is not 10 cm your print scaling is wrong.</p>
+          <p>If your pattern arrived as a PDF rather than an image, convert the page you need with our <a href="pdf-to-images.html">PDF to images converter</a> first, then bring the resulting PNG here. Direct PDF input is on the roadmap.</p>
+          <h3 id="cosplay">Cosplay, papercraft and Pepakura templates</h3>
+          <p>Armour templates and Pepakura unfolds are line art, which is the ideal case for tiling: line art stays crisp at low PPI, files compress beautifully, and greyscale mode halves your ink cost. Use trim and butt-join so the fold lines remain continuous, and print on 160 gsm card if your printer accepts it.</p>
+          <h3 id="classroom">Maps, charts and classroom materials</h3>
+          <p>A world map, a periodic table or a times-table chart at A0 costs a fortune from a print shop and about forty pence from your staff-room printer. Teachers are the heaviest repeat users of tools like this, which is why settings are remembered between visits and the page works offline. For worksheets and printable grids, see our <a href="worksheet-generator.html">worksheet generator</a> and <a href="paper-generator.html">printable paper generator</a>.</p>
+          <h3 id="engineering">Engineering drawings and blueprints without a plotter</h3>
+          <p>An A1 drawing tiles neatly onto six A4 sheets. Use trim and butt-join, 100% magnification, greyscale, and 200 DPI or higher so dimension text stays legible. Check the drawing's printed scale bar after assembly — the same discipline as a sewing pattern's test square.</p>
+          <h3 id="grid-method">The grid method for artists</h3>
+          <p>Painters and muralists have used grid transfer for centuries: divide the reference into squares, divide the wall into matching squares, and copy square by square. Printing a reference photo tiled across several sheets gives you a physical, correctly proportioned enlargement to work from, and the page grid itself doubles as the transfer grid.</p>
+          <h3 id="banners">Party and event banners</h3>
+          <p>A single wide image tiled across a row of landscape sheets makes a birthday or welcome banner. For the one-giant-letter-per-page style of banner, that is a different layout problem and is coming as a dedicated tool.</p>
+          <h3 id="halftone">Halftone dot posters</h3>
+          <p>Halftone mode replaces continuous tone with a grid of dots whose size follows the image's darkness — the look made famous by the original rasterbation tools. Because the dot grid is anchored to the poster rather than to each page, dots stay perfectly aligned across every seam. It is the right answer when your source image is simply too small: at 60 PPI a photo looks broken, but a 6 mm dot pattern looks intentional and reads beautifully from across a room. Larger dot pitches also use dramatically less ink.</p>
+
+          <h2 id="cost">Paper, ink and cost</h2>
+          <p>A twelve-page A4 photo poster at 150 DPI uses roughly 12 sheets of paper and — on a typical home inkjet with full-bleed photographic content — somewhere around 8 to 15% of a colour cartridge. Plain 80 gsm copier paper works and is cheapest, but it buckles when glued and shows through; 100–120 gsm is a noticeable upgrade for a few pence a sheet. Matte photo paper gives the best result and the worst price, and is difficult to glue.</p>
+          <p>To cut cost: use greyscale for anything that is not a photograph, use halftone mode (dots use far less ink than solid tone), drop to 150 DPI, and print a single-page proof at reduced size before committing to twenty sheets.</p>
+
+          <h2 id="mounting">Mounting and finishing</h2>
+          <p>Spray adhesive onto 5 mm foam board gives a gallery-quality flat panel and is what most people should use. Cheaper: mount on corrugated card with double-sided tape, or simply blu-tack the assembled poster to the wall. For a longer life, laminate the assembled poster in A4 pouches before joining — the pouches add a millimetre of thickness at every seam, so choose this only for trim-and-butt-joined posters where a small ridge is acceptable.</p>
+
+          <h2 id="privacy">Privacy — your image never leaves your device</h2>
+          <p>Most poster tools upload your file to a server, render there, and send back a PDF. That is easier to build and it means a stranger's disk holds a copy of whatever you printed. This tool does the work in your browser: the file is read with the File API, decoded to a bitmap, drawn to a canvas, encoded to JPEG and assembled into a PDF locally. Nothing is transmitted, so nothing is stored, logged or retained.</p>
+          <p>You do not have to take our word for it. Open your browser's developer tools, switch to the Network tab, upload an image and generate a poster. You will see the page's own assets load and nothing else. That verifiability is why this matters for paid sewing patterns you are licensed to print but not to redistribute, for client design files under NDA, for confidential engineering drawings, and for personal photographs of your family. See our <a href="privacy-policy.html">privacy policy</a> for the full statement.</p>
+
+          <h2 id="why-us">Why choose this poster printer</h2>
+          <div class="pp-table-wrap">
+            <table class="pp-table">
+              <caption class="pp-vh">Comparison with other poster tiling tools</caption>
+              <thead><tr><th scope="col">Feature</th><th scope="col">ToolAdda</th><th scope="col">Typical online tiler</th><th scope="col">Desktop software</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Image stays on your device</th><td>Yes</td><td>Usually uploaded</td><td>Yes</td></tr>
+                <tr><th scope="row">Install required</th><td>No</td><td>No</td><td>Yes</td></tr>
+                <tr><th scope="row">Cost</th><td>Free, unlimited</td><td>Free with ads / limits</td><td>Often paid</td></tr>
+                <tr><th scope="row">Per-edge printer margins</th><td>Yes</td><td>Rarely</td><td>Sometimes</td></tr>
+                <tr><th scope="row">Printer calibration sheet</th><td>Yes</td><td>No</td><td>No</td></tr>
+                <tr><th scope="row">Live quality / PPI advisor</th><td>Yes, crop-aware</td><td>No</td><td>No</td></tr>
+                <tr><th scope="row">Paper sizes</th><td>A0–A6, ISO B, JIS B, Letter, Legal, Tabloid, Executive, custom</td><td>A4 + Letter</td><td>Varies</td></tr>
+                <tr><th scope="row">Usable on a phone</th><td>Yes</td><td>Rarely</td><td>No</td></tr>
+                <tr><th scope="row">Watermark on output</th><td>None</td><td>Sometimes</td><td>Sometimes on free tier</td></tr>
+                <tr><th scope="row">Works offline</th><td>Yes</td><td>No</td><td>Yes</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="related">Related tools</h2>
+          <p>A few of these pair naturally with poster printing. If your source photo is enormous and slow to work with, shrink it first with the <a href="image-compressor.html">image compressor</a>. If you need an exact pixel size before tiling, the <a href="image-resizer.html">image resizer</a> handles that, and it is also the fastest way to enlarge a small source before printing it big. Want to trim your photo to the poster's proportions before you start? Use the <a href="image-crop.html">image cropper</a>. For a cut-out figure on a plain banner, strip the backdrop with the <a href="image-background-remover.html">background remover</a>.</p>
+          <p>On the PDF side: if your source is a document rather than a picture, turn the page you need into an image with the <a href="pdf-to-images.html">PDF to images converter</a>, or go the other way and bundle finished pages with the <a href="images-to-pdf.html">image to PDF converter</a>. A very large poster PDF can be slimmed down with the <a href="pdf-compress.html">PDF compressor</a>, combined with other documents using <a href="pdf-merge.html">PDF merge</a>, or broken into batches for a shared printer with <a href="pdf-split.html">PDF split</a>. iPhone photos in HEIC format need converting first — the <a href="heic-converter.html">HEIC converter</a> does that in the browser too. And if you came here looking for small precise prints rather than large ones, the <a href="passport-photo-maker.html">passport photo maker</a> is probably what you want.</p>
+          <div class="pp-tools">
+            <a class="pp-tool" href="image-compressor.html"><strong>Image Compressor</strong><span>Shrink large photos before tiling</span></a>
+            <a class="pp-tool" href="image-resizer.html"><strong>Image Resizer</strong><span>Set exact pixel dimensions or enlarge a small source</span></a>
+            <a class="pp-tool" href="image-crop.html"><strong>Image Cropper</strong><span>Crop to the poster's aspect ratio first</span></a>
+            <a class="pp-tool" href="image-background-remover.html"><strong>Background Remover</strong><span>Cut-out figures for banners</span></a>
+            <a class="pp-tool" href="pdf-to-images.html"><strong>PDF to Images</strong><span>Turn a PDF pattern or drawing into a tileable image</span></a>
+            <a class="pp-tool" href="images-to-pdf.html"><strong>Image to PDF</strong><span>Bundle finished pages into one document</span></a>
+            <a class="pp-tool" href="pdf-compress.html"><strong>PDF Compress</strong><span>Slim down a large poster PDF</span></a>
+            <a class="pp-tool" href="pdf-merge.html"><strong>PDF Merge</strong><span>Combine posters or add a cover sheet</span></a>
+            <a class="pp-tool" href="pdf-split.html"><strong>PDF Split</strong><span>Send pages to a shared printer in batches</span></a>
+            <a class="pp-tool" href="heic-converter.html"><strong>HEIC Converter</strong><span>Convert iPhone photos to JPG first</span></a>
+            <a class="pp-tool" href="screen-ruler.html"><strong>Screen Ruler</strong><span>Check the calibration sheet without a tape measure</span></a>
+            <a class="pp-tool" href="passport-photo-maker.html"><strong>Passport Photo Maker</strong><span>For small exact prints instead of large ones</span></a>
+          </div>
+        </article>
+
+        <!-- ============== FAQ ============== -->
+        <section class="content-card faq-section" id="faq" style="margin-top:1.5rem">
+          <h2 class="section-title">Frequently asked questions</h2>
+          <div class="grid-2">
+            <details class="faq-item"><summary><strong>Is this poster printer free?</strong></summary><p>Yes, completely and without limits. There is no trial, no page cap, no paid tier and no watermark on the output. You can generate as many posters of as many pages as your device can handle.</p></details>
+            <details class="faq-item"><summary><strong>Do I need to sign up or install anything?</strong></summary><p>No. There is no account, no email capture and nothing to download. It is a web page — open it and use it. You can optionally add it to your home screen to run it like an app and use it without a connection.</p></details>
+            <details class="faq-item"><summary><strong>Is my image uploaded to a server?</strong></summary><p>No. Your image is read directly by your browser and every step — decoding, tiling, rendering and PDF assembly — happens on your device. You can verify this yourself: open developer tools, go to the Network tab, and generate a poster. No request carries your file. This is why the tool is safe for paid sewing patterns, client work under NDA and confidential drawings.</p></details>
+            <details class="faq-item"><summary><strong>What image formats can I use?</strong></summary><p>JPG, PNG, WebP, AVIF, GIF, BMP and SVG all work directly, as long as your browser can decode them. SVG is rasterised at your chosen output DPI so it stays crisp at any size. HEIC (the default iPhone format) cannot be decoded by most desktop browsers — convert it first with our <a href="heic-converter.html">HEIC converter</a>. PDF source files are not yet supported directly; use the <a href="pdf-to-images.html">PDF to images converter</a> in the meantime.</p></details>
+            <details class="faq-item"><summary><strong>Can I use a PDF as the source?</strong></summary><p>Not yet directly. Convert the page you need to a PNG at high resolution with our <a href="pdf-to-images.html">PDF to images converter</a>, then bring that image here. Direct PDF input, including picking a page from a multi-page file, is the next major feature planned.</p></details>
+            <details class="faq-item"><summary><strong>What paper sizes are supported?</strong></summary><p>A0 through A6, the ISO B series, JIS B4 and B5, US Letter, Legal, Tabloid/Ledger and Executive, plus any custom size you type in millimetres, centimetres or inches. Each can be portrait or landscape, and there is an auto option that picks whichever orientation needs fewer pages.</p></details>
+            <details class="faq-item"><summary><strong>How many pages will my poster need?</strong></summary><p>It depends on your paper size, your printer margins and how much area the join consumes. The tool shows the exact count live as you change settings. As a rough guide on A4 portrait with a 10 mm overlap: 4 pages gives about 38 × 55 cm, 12 pages about 57 × 110 cm, and 16 pages is close to A0.</p></details>
+            <details class="faq-item"><summary><strong>Why does my poster look blurry?</strong></summary><p>Because the source image does not have enough pixels for the size you printed. Printing bigger spreads existing pixels further apart; it never adds detail. Check the effective PPI shown in the quality advisor — below 100 PPI will look soft at close range. Either reduce the poster size, find a higher-resolution original (messaging apps heavily recompress photos), enlarge it with the <a href="image-resizer.html">image resizer</a>, or switch to halftone mode where low resolution becomes a deliberate style.</p></details>
+            <details class="faq-item"><summary><strong>What resolution image do I need for a large poster?</strong></summary><p>Multiply the finished width in inches by your target PPI. For a 100 cm (39.4 in) wide poster at a comfortable 150 PPI you want about 5900 pixels of width. At 100 PPI — perfectly acceptable for a wall poster viewed from two metres — about 3900 pixels is enough. A modern phone photo at 4032 px prints well to roughly one metre wide.</p></details>
+            <details class="faq-item"><summary><strong>Why don't my printed pages line up?</strong></summary><p>Almost always one of two things. Either your print dialog scaled the pages — set it to 100% or Actual size and turn off Fit to page — or your printer's unprintable border is larger than the margin you told the tool about. Print the calibration sheet: if its 100 mm reference line does not measure 100 mm, the problem is scaling; if the inner corner markers are clipped, the problem is margins.</p></details>
+            <details class="faq-item"><summary><strong>Should I choose overlap or trim marks?</strong></summary><p>Overlap and glue if you want a forgiving job — the shared strip is printed on both pages so you slide the sheets until the picture matches, which hides small errors. Trim and butt-join if you want an invisible seam and are willing to cut accurately with a knife and steel rule. For a first attempt, or for anything involving children, use overlap.</p></details>
+            <details class="faq-item"><summary><strong>How do I print at actual size instead of fit-to-page?</strong></summary><p>In Adobe Reader choose Page Sizing &amp; Handling → Actual size. In Chrome or Edge open More settings and set Scale to Custom → 100. In Firefox set Scale to 100% and untick Fit to page width. In macOS Preview set Scale to 100% and untick Scale to fit. Also disable any poster, N-up or borderless option in the printer driver itself, since those apply a second transformation.</p></details>
+            <details class="faq-item"><summary><strong>Can I print a sewing pattern at exactly 1:1 scale?</strong></summary><p>Yes. Use Magnify mode set to 100% with the source resolution matching the pattern's, choose trim and butt-join, print at Actual size, and then verify with the pattern's own test square before cutting fabric. If the printed square measures 10 cm you are at true scale. Never cut fabric without checking that square.</p></details>
+            <details class="faq-item"><summary><strong>Can I print on Letter or Legal paper?</strong></summary><p>Yes. Letter, Legal, Tabloid/Ledger and Executive are all supported alongside the ISO sizes, and the tool preselects Letter for visitors whose device locale suggests North America. Units switch to inches at the same time, and every dimension, margin and overlap field follows the unit you choose.</p></details>
+            <details class="faq-item"><summary><strong>Does it work on mobile and iPad?</strong></summary><p>Yes. The layout puts the preview on top and the controls beneath, with a sticky generate button. Pages are rendered one at a time and released immediately so memory stays low, which is what makes large posters survivable on a phone. Note that some mobile print paths auto-fit pages — for a large job, generate on your phone but print from a desktop, or verify with the calibration sheet first.</p></details>
+            <details class="faq-item"><summary><strong>Can I print in black and white to save ink?</strong></summary><p>Yes — switch on greyscale in Output quality. For much bigger savings, try halftone mode with a large dot pitch: it replaces solid tone with dots and can cut ink use dramatically while looking like a deliberate design choice rather than a compromise.</p></details>
+            <details class="faq-item"><summary><strong>How do I assemble and mount the finished poster?</strong></summary><p>Lay every sheet out in the grid first using the guide page, trim the leading margins, then build one complete row at a time before joining the rows to each other. Align by matching the printed image, not the paper edges. Glue sticks give you a few seconds to reposition; wet glue buckles paper. For mounting, spray adhesive onto 5 mm foam board gives the flattest, most durable result.</p></details>
+            <details class="faq-item"><summary><strong>Is there a limit on file size or number of pages?</strong></summary><p>There is no artificial limit, only your device's memory. The tool warns you above about 40 pages and asks for confirmation above 100, because a very large poster at 300 DPI can produce a PDF of several hundred megabytes. If you hit trouble, drop the DPI to 150, lower the JPEG quality, or use the ZIP export which writes pages out individually instead of holding a whole PDF in memory.</p></details>
+            <details class="faq-item"><summary><strong>Can I use my own custom paper size?</strong></summary><p>Yes. Choose Custom in the paper selector and type any width and height in millimetres, centimetres or inches. This covers A3+ / super A3, roll-fed widths, index cards, and the various regional sizes not in the standard list.</p></details>
+            <details class="faq-item"><summary><strong>Are my settings remembered?</strong></summary><p>Yes, in your browser's local storage on your own device — paper size, units, margins, joining mode and output quality come back next time. Nothing is stored anywhere else, and clearing your browser data clears it.</p></details>
+          </div>
+        </section>
+
+        <section class="cta-section content-card" style="margin-top:1.5rem;text-align:center">
+          <h2 class="section-title">Ready to make your poster?</h2>
+          <p>Free, unlimited, no signup, nothing uploaded. Scroll back up, drop in an image, and you will have a print-ready PDF in under a minute.</p>
+          <p><a class="primary-btn" href="#tool">🖨️ Start tiling your poster</a></p>
+        </section>
+
+        <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": "https://tooladda.online/poster-printer.html#faq",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is this poster printer free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, completely and without limits. There is no trial, no page cap, no paid tier and no watermark on the output. You can generate as many posters of as many pages as your device can handle."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to sign up or install anything?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. There is no account, no email capture and nothing to download. It is a web page — open it and use it. You can optionally add it to your home screen to run it like an app and use it without a connection."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my image uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Your image is read directly by your browser and every step - decoding, tiling, rendering and PDF assembly - happens on your device. You can verify this yourself: open developer tools, go to the Network tab, and generate a poster. No request carries your file. This is why the tool is safe for paid sewing patterns, client work under NDA and confidential drawings."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What image formats can I use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "JPG, PNG, WebP, AVIF, GIF, BMP and SVG all work directly, as long as your browser can decode them. SVG is rasterised at your chosen output DPI so it stays crisp at any size. HEIC (the default iPhone format) cannot be decoded by most desktop browsers - convert it first with our HEIC converter . PDF source files are not yet supported directly; use the PDF to images converter in the meantime."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use a PDF as the source?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not yet directly. Convert the page you need to a PNG at high resolution with our PDF to images converter , then bring that image here. Direct PDF input, including picking a page from a multi-page file, is the next major feature planned."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What paper sizes are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A0 through A6, the ISO B series, JIS B4 and B5, US Letter, Legal, Tabloid/Ledger and Executive, plus any custom size you type in millimetres, centimetres or inches. Each can be portrait or landscape, and there is an auto option that picks whichever orientation needs fewer pages."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many pages will my poster need?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends on your paper size, your printer margins and how much area the join consumes. The tool shows the exact count live as you change settings. As a rough guide on A4 portrait with a 10 mm overlap: 4 pages gives about 38 × 55 cm, 12 pages about 57 × 110 cm, and 16 pages is close to A0."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my poster look blurry?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because the source image does not have enough pixels for the size you printed. Printing bigger spreads existing pixels further apart; it never adds detail. Check the effective PPI shown in the quality advisor - below 100 PPI will look soft at close range. Either reduce the poster size, find a higher-resolution original (messaging apps heavily recompress photos), enlarge it with the image resizer , or switch to halftone mode where low resolution becomes a deliberate style."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What resolution image do I need for a large poster?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Multiply the finished width in inches by your target PPI. For a 100 cm (39.4 in) wide poster at a comfortable 150 PPI you want about 5900 pixels of width. At 100 PPI - perfectly acceptable for a wall poster viewed from two metres - about 3900 pixels is enough. A modern phone photo at 4032 px prints well to roughly one metre wide."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why don't my printed pages line up?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Almost always one of two things. Either your print dialog scaled the pages - set it to 100% or Actual size and turn off Fit to page - or your printer's unprintable border is larger than the margin you told the tool about. Print the calibration sheet: if its 100 mm reference line does not measure 100 mm, the problem is scaling; if the inner corner markers are clipped, the problem is margins."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I choose overlap or trim marks?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Overlap and glue if you want a forgiving job - the shared strip is printed on both pages so you slide the sheets until the picture matches, which hides small errors. Trim and butt-join if you want an invisible seam and are willing to cut accurately with a knife and steel rule. For a first attempt, or for anything involving children, use overlap."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I print at actual size instead of fit-to-page?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In Adobe Reader choose Page Sizing & Handling → Actual size. In Chrome or Edge open More settings and set Scale to Custom → 100. In Firefox set Scale to 100% and untick Fit to page width. In macOS Preview set Scale to 100% and untick Scale to fit. Also disable any poster, N-up or borderless option in the printer driver itself, since those apply a second transformation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I print a sewing pattern at exactly 1:1 scale?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Use Magnify mode set to 100% with the source resolution matching the pattern's, choose trim and butt-join, print at Actual size, and then verify with the pattern's own test square before cutting fabric. If the printed square measures 10 cm you are at true scale. Never cut fabric without checking that square."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I print on Letter or Legal paper?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Letter, Legal, Tabloid/Ledger and Executive are all supported alongside the ISO sizes, and the tool preselects Letter for visitors whose device locale suggests North America. Units switch to inches at the same time, and every dimension, margin and overlap field follows the unit you choose."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work on mobile and iPad?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The layout puts the preview on top and the controls beneath, with a sticky generate button. Pages are rendered one at a time and released immediately so memory stays low, which is what makes large posters survivable on a phone. Note that some mobile print paths auto-fit pages - for a large job, generate on your phone but print from a desktop, or verify with the calibration sheet first."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I print in black and white to save ink?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes - switch on greyscale in Output quality. For much bigger savings, try halftone mode with a large dot pitch: it replaces solid tone with dots and can cut ink use dramatically while looking like a deliberate design choice rather than a compromise."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I assemble and mount the finished poster?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Lay every sheet out in the grid first using the guide page, trim the leading margins, then build one complete row at a time before joining the rows to each other. Align by matching the printed image, not the paper edges. Glue sticks give you a few seconds to reposition; wet glue buckles paper. For mounting, spray adhesive onto 5 mm foam board gives the flattest, most durable result."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a limit on file size or number of pages?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is no artificial limit, only your device's memory. The tool warns you above about 40 pages and asks for confirmation above 100, because a very large poster at 300 DPI can produce a PDF of several hundred megabytes. If you hit trouble, drop the DPI to 150, lower the JPEG quality, or use the ZIP export which writes pages out individually instead of holding a whole PDF in memory."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use my own custom paper size?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Choose Custom in the paper selector and type any width and height in millimetres, centimetres or inches. This covers A3+ / super A3, roll-fed widths, index cards, and the various regional sizes not in the standard list."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are my settings remembered?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, in your browser's local storage on your own device - paper size, units, margins, joining mode and output quality come back next time. Nothing is stored anywhere else, and clearing your browser data clears it."
+      }
+    }
+  ]
+}
+  </script>
+
+        <aside class="related-tools-section" data-static-related aria-label="Related printing and image tools">
+          <div class="related-tools-section__header">
+            <div>
+              <p class="related-tools-eyebrow">Related tools</p>
+              <h2 class="related-tools-title">Tools that pair with the poster printer</h2>
+            </div>
+          </div>
+          <div class="related-tools-grid">
+            <a class="related-tool-card" href="pdf-to-images.html"><div class="related-tool-icon">🖼️</div><div><strong>PDF to Images</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Turn a PDF page into a high-resolution image to tile</span></div></a>
+            <a class="related-tool-card" href="heic-converter.html"><div class="related-tool-icon">📸</div><div><strong>HEIC to JPG Converter</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Convert an iPhone HEIC photo before tiling it</span></div></a>
+            <a class="related-tool-card" href="image-resizer.html"><div class="related-tool-icon">📏</div><div><strong>Image Resizer</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Enlarge a source image before printing it big</span></div></a>
+            <a class="related-tool-card" href="screen-ruler.html"><div class="related-tool-icon">📐</div><div><strong>Screen Ruler</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Measure on screen while checking print scale</span></div></a>
+            <a class="related-tool-card" href="images-to-pdf.html"><div class="related-tool-icon">📄</div><div><strong>Images to PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Combine finished sheets into a single PDF</span></div></a>
+            <a class="related-tool-card" href="pdf-tools.html"><div class="related-tool-icon">🗂️</div><div><strong>All PDF Tools</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Merge, split or compress your poster PDF</span></div></a>
+            <a class="related-tool-card" href="image-tools.html"><div class="related-tool-icon">🖼️</div><div><strong>All Image Tools</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Crop, compress or clean up the image first</span></div></a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a><p>ToolAdda (also known as Tool Adda or Tools Adda) — premium utility tools for modern workflows.</p><a class="footer-badge" href="https://twelve.tools" target="_blank" rel="nofollow noopener noreferrer"><img src="https://twelve.tools/badge2-dark.svg" alt="Featured on Twelve Tools" width="148" height="40" decoding="async" loading="lazy"></a></div>
+      <div><h3>Explore</h3><div class="footer-links"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms</a></div></div>
+      <div><h3>Stay updated</h3><p>© <span data-year></span> ToolAdda. All rights reserved.</p></div>
+    </div>
+  </footer>
+
+  <script src="assets/js/app.js" defer></script>
+  <script>
+  (function () {
+    'use strict';
+    var MM_IN = 25.4;
+
+    /* ============================================================
+       PAPER TABLE — all values are exact standard dimensions in mm.
+       ISO A/B are defined by standard; US sizes are exact conversions
+       of their inch definitions (e.g. Letter = 8.5 x 11 in).
+       ============================================================ */
+    var PAPERS = [
+      { g: 'ISO A (most of the world)', id: 'a0', n: 'A0 — 841 × 1189 mm', w: 841, h: 1189 },
+      { g: 'ISO A (most of the world)', id: 'a1', n: 'A1 — 594 × 841 mm', w: 594, h: 841 },
+      { g: 'ISO A (most of the world)', id: 'a2', n: 'A2 — 420 × 594 mm', w: 420, h: 594 },
+      { g: 'ISO A (most of the world)', id: 'a3', n: 'A3 — 297 × 420 mm', w: 297, h: 420 },
+      { g: 'ISO A (most of the world)', id: 'a4', n: 'A4 — 210 × 297 mm', w: 210, h: 297 },
+      { g: 'ISO A (most of the world)', id: 'a5', n: 'A5 — 148 × 210 mm', w: 148, h: 210 },
+      { g: 'ISO A (most of the world)', id: 'a6', n: 'A6 — 105 × 148 mm', w: 105, h: 148 },
+      { g: 'North America', id: 'letter', n: 'Letter — 8.5 × 11 in', w: 215.9, h: 279.4 },
+      { g: 'North America', id: 'legal', n: 'Legal — 8.5 × 14 in', w: 215.9, h: 355.6 },
+      { g: 'North America', id: 'tabloid', n: 'Tabloid / Ledger — 11 × 17 in', w: 279.4, h: 431.8 },
+      { g: 'North America', id: 'executive', n: 'Executive — 7.25 × 10.5 in', w: 184.15, h: 266.7 },
+      { g: 'ISO B', id: 'b3', n: 'B3 — 353 × 500 mm', w: 353, h: 500 },
+      { g: 'ISO B', id: 'b4', n: 'B4 — 250 × 353 mm', w: 250, h: 353 },
+      { g: 'ISO B', id: 'b5', n: 'B5 — 176 × 250 mm', w: 176, h: 250 },
+      { g: 'JIS B (Japan)', id: 'jisb4', n: 'JIS B4 — 257 × 364 mm', w: 257, h: 364 },
+      { g: 'JIS B (Japan)', id: 'jisb5', n: 'JIS B5 — 182 × 257 mm', w: 182, h: 257 },
+      { g: 'Custom', id: 'custom', n: 'Custom size…', w: 210, h: 297 }
+    ];
+    /* Conservative conventions, not measurements of any specific printer. */
+    var MARGIN_PRESETS = {
+      safe:       { t: 6.5, r: 6.5, b: 9,   l: 6.5 },
+      inkjet:     { t: 3.5, r: 3.5, b: 3.5, l: 3.5 },
+      laser:      { t: 4.2, r: 4.2, b: 4.2, l: 4.2 },
+      borderless: { t: 0,   r: 0,   b: 0,   l: 0 }
+    };
+    var LETTER_REGIONS = ['US', 'CA', 'MX', 'PH', 'CL', 'CO', 'VE', 'PR'];
+
+    /* ---------- tiny helpers ---------- */
+    function $(s, r) { return (r || document).querySelector(s); }
+    function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+    function clamp(v, lo, hi) { return Math.min(hi, Math.max(lo, v)); }
+    var nf = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 });
+    var nf2 = new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
+    function fmt(n, d) { return (d === 2 ? nf2 : nf).format(n); }
+    /* fmt() is for DISPLAY only. A number input's .value must use a dot
+       decimal separator, so locale formatting would blank the field for a
+       German or French user. Use raw() whenever writing to input.value. */
+    function raw(n, d) { return String(parseFloat(n.toFixed(d === undefined ? 2 : d))); }
+    function bytes(b) {
+      if (b < 1024) return b + ' B';
+      if (b < 1048576) return fmt(b / 1024) + ' KB';
+      return fmt(b / 1048576) + ' MB';
+    }
+
+    var root = $('[data-pp]');
+    if (!root) return;
+
+    /* ============================================================
+       STATE — the single source of truth. All lengths in mm.
+       ============================================================ */
+    var S = {
+      unit: 'cm', paper: 'a4', paperW: 210, paperH: 297, orient: 'portrait',
+      mode: 'grid', cols: 3, rows: 4, physW: 600, physH: 800, mag: 400, srcPpi: 300,
+      lockAspect: true, fit: 'fit', bg: '#ffffff', rotate: 0, flipH: false, flipV: false,
+      join: 'overlap', overlap: 10, bleed: 3,
+      marginPreset: 'safe', mT: 6.5, mR: 6.5, mB: 9, mL: 6.5,
+      dpi: 150, jpegQ: 85, gray: false, halftone: 'off', dot: 6,
+      guidePage: true, labels: true, cropMarks: true, regMarks: false,
+      ov: { grid: true, nums: true, join: true, marks: false }
+    };
+    var IMG = null;      // { bitmap, w, h, name, size, type }
+    var work = null;     // downsampled + oriented working bitmap
+    var busy = false, cancelled = false;
+
+    /* ---------- unit conversion ---------- */
+    function toMm(v) { return S.unit === 'mm' ? v : S.unit === 'cm' ? v * 10 : v * MM_IN; }
+    function fromMm(v) { return S.unit === 'mm' ? v : S.unit === 'cm' ? v / 10 : v / MM_IN; }
+    function unitLabel() { return S.unit === 'in' ? 'in' : S.unit; }
+    function dimMm(wMm, hMm) { return fmt(fromMm(wMm)) + ' × ' + fmt(fromMm(hMm)) + ' ' + unitLabel(); }
+
+    /* ============================================================
+       GEOMETRY ENGINE
+       Everything below is pure: same inputs -> same numbers, and the
+       PDF is generated from exactly these values. The preview is a
+       scaled drawing of this model, never an approximation of it.
+       ============================================================ */
+    function orientedImage() {
+      if (!IMG) return { w: 1000, h: 1000 };
+      var swap = (S.rotate === 90 || S.rotate === 270);
+      return { w: swap ? IMG.h : IMG.w, h: swap ? IMG.w : IMG.h };
+    }
+    function imgAspect() { var o = orientedImage(); return o.w / o.h; }
+
+    function paperFor(orient) {
+      var w = S.paperW, h = S.paperH;
+      if (orient === 'landscape') { var t = w; w = h; h = t; }
+      return { w: w, h: h };
+    }
+
+    /* Core solve for one orientation. */
+    function solve(orient) {
+      var p = paperFor(orient);
+      var m = { t: S.mT, r: S.mR, b: S.mB, l: S.mL };
+      // Never let margins eat the page: keep at least 20mm of printable area.
+      var maxH = (p.w - 20) / 2, maxV = (p.h - 20) / 2;
+      m.l = clamp(m.l, 0, maxH); m.r = clamp(m.r, 0, maxH);
+      m.t = clamp(m.t, 0, maxV); m.b = clamp(m.b, 0, maxV);
+
+      var printW = p.w - m.l - m.r;
+      var printH = p.h - m.t - m.b;
+
+      // The "join band" is the strip of poster that two neighbouring pages
+      // both carry. Overlap mode glues on it; trim mode cuts down its centre.
+      var band = S.join === 'overlap' ? S.overlap : S.bleed * 2;
+      band = clamp(band, 0, Math.min(printW, printH) * 0.5);
+      var stepW = printW - band, stepH = printH - band;
+      if (stepW < 1) stepW = 1;
+      if (stepH < 1) stepH = 1;
+
+      // ---- poster size (mm) ----
+      var a = imgAspect(), posterW, posterH;
+      if (S.mode === 'grid') {
+        var envW = printW + (S.cols - 1) * stepW;
+        var envH = printH + (S.rows - 1) * stepH;
+        if (S.lockAspect) {
+          if (envW / envH > a) { posterH = envH; posterW = envH * a; }
+          else { posterW = envW; posterH = envW / a; }
+        } else { posterW = envW; posterH = envH; }
+      } else if (S.mode === 'physical') {
+        posterW = S.physW; posterH = S.physH;
+      } else {
+        var o = orientedImage();
+        posterW = (o.w / S.srcPpi) * MM_IN * (S.mag / 100);
+        posterH = (o.h / S.srcPpi) * MM_IN * (S.mag / 100);
+      }
+      posterW = clamp(posterW, 10, 100000);
+      posterH = clamp(posterH, 10, 100000);
+
+      // ---- grid derived FROM the poster, never assumed ----
+      var cols = posterW <= printW ? 1 : Math.ceil((posterW - band) / stepW);
+      var rows = posterH <= printH ? 1 : Math.ceil((posterH - band) / stepH);
+      cols = clamp(cols, 1, 40); rows = clamp(rows, 1, 40);
+
+      var tiles = [], r, c;
+      for (r = 0; r < rows; r++) {
+        for (c = 0; c < cols; c++) {
+          var x = c * stepW, y = r * stepH;
+          tiles.push({
+            row: r, col: c, x: x, y: y,
+            w: Math.min(printW, posterW - x),
+            h: Math.min(printH, posterH - y),
+            L: c > 0, T: r > 0, R: c < cols - 1, B: r < rows - 1
+          });
+        }
+      }
+
+      // ---- image placement inside the poster (mm) ----
+      var dw = S.fit === 'fill' ? Math.max(posterW, posterH * a) : Math.min(posterW, posterH * a);
+      var dh = dw / a;
+      var place = { x: (posterW - dw) / 2, y: (posterH - dh) / 2, w: dw, h: dh };
+
+      // ---- effective PPI, computed from the DRAWN rectangle so that
+      //      Fill-mode cropping is correctly accounted for ----
+      var o2 = orientedImage();
+      var ppi = o2.w / (place.w / MM_IN);
+
+      return {
+        orient: orient, paperW: p.w, paperH: p.h, m: m,
+        printW: printW, printH: printH, band: band, stepW: stepW, stepH: stepH,
+        posterW: posterW, posterH: posterH, cols: cols, rows: rows, tiles: tiles,
+        place: place, ppi: ppi
+      };
+    }
+
+    function geometry() {
+      if (S.orient !== 'auto') return solve(S.orient);
+      var a = solve('portrait'), b = solve('landscape');
+      return b.tiles.length < a.tiles.length ? b : a;
+    }
+
+    function quality(ppi) {
+      if (ppi >= 200) return { k: 'excellent', label: 'Excellent' };
+      if (ppi >= 150) return { k: 'good', label: 'Good' };
+      if (ppi >= 100) return { k: 'acceptable', label: 'Acceptable' };
+      return { k: 'poor', label: 'Poor' };
+    }
+
+    /* Rough PDF size estimate: JPEG bytes/megapixel varies with content
+       and quality; 0.10–0.35 MB/MP is the usual band for photographic
+       tiles. We use a mid figure and label the number as an estimate. */
+    function estimateBytes(G) {
+      var mp = (G.printW / MM_IN * S.dpi) * (G.printH / MM_IN * S.dpi) / 1e6;
+      var perMp = 0.055 + (S.jpegQ - 50) * 0.0075;  // MB per megapixel
+      if (S.gray) perMp *= 0.62;
+      if (S.halftone !== 'off') perMp *= 0.45;
+      var n = G.tiles.length + (S.guidePage ? 1 : 0);
+      return mp * perMp * n * 1048576;
+    }
+
+    /* ============================================================
+       TILE RENDERER — shared verbatim by the Web Worker and the
+       main-thread fallback (stringified into the worker blob).
+       Pure function: no closures, no DOM.
+       ============================================================ */
+    function drawTile(ctx, bmp, cfg, tile) {
+      var MM = 25.4, px = function (mm) { return mm / MM * cfg.dpi; };
+      var W = ctx.canvas.width, H = ctx.canvas.height;
+
+      ctx.fillStyle = cfg.bg;
+      ctx.fillRect(0, 0, W, H);
+
+      // Intersection of this tile with the image rectangle, in poster mm.
+      var p = cfg.place;
+      var ix0 = Math.max(tile.x, p.x), iy0 = Math.max(tile.y, p.y);
+      var ix1 = Math.min(tile.x + tile.w, p.x + p.w), iy1 = Math.min(tile.y + tile.h, p.y + p.h);
+
+      if (ix1 > ix0 && iy1 > iy0 && bmp) {
+        var sx = (ix0 - p.x) / p.w * bmp.width;
+        var sy = (iy0 - p.y) / p.h * bmp.height;
+        var sw = (ix1 - ix0) / p.w * bmp.width;
+        var sh = (iy1 - iy0) / p.h * bmp.height;
+        var dx = px(ix0 - tile.x), dy = px(iy0 - tile.y);
+        var dw = px(ix1 - ix0), dh = px(iy1 - iy0);
+        ctx.imageSmoothingEnabled = true;
+        try { ctx.imageSmoothingQuality = 'high'; } catch (e) {}
+
+        if (cfg.halftone === 'off') {
+          ctx.drawImage(bmp, sx, sy, sw, sh, dx, dy, dw, dh);
+          if (cfg.gray) {
+            var d = ctx.getImageData(0, 0, W, H), a = d.data, i;
+            for (i = 0; i < a.length; i += 4) {
+              var g = (a[i] * 0.2126 + a[i + 1] * 0.7152 + a[i + 2] * 0.0722) | 0;
+              a[i] = a[i + 1] = a[i + 2] = g;
+            }
+            ctx.putImageData(d, 0, 0);
+          }
+        } else {
+          // Halftone. The dot lattice is anchored to the POSTER origin,
+          // not to the page, so dots stay aligned across every seam.
+          var tone = cfg.mk(Math.max(1, Math.round(dw)), Math.max(1, Math.round(dh)));
+          var tctx = tone.getContext('2d');
+          tctx.drawImage(bmp, sx, sy, sw, sh, 0, 0, tone.width, tone.height);
+          var td = tctx.getImageData(0, 0, tone.width, tone.height).data;
+          var pitch = cfg.dot, rMax = px(pitch) * 0.72;
+          var k0 = Math.floor((ix0 - p.x) / pitch), k1 = Math.ceil((ix1 - p.x) / pitch);
+          var l0 = Math.floor((iy0 - p.y) / pitch), l1 = Math.ceil((iy1 - p.y) / pitch);
+          ctx.save();
+          for (var l = l0; l <= l1; l++) {
+            for (var k = k0; k <= k1; k++) {
+              var mx = p.x + (k + 0.5) * pitch, my = p.y + (l + 0.5) * pitch;
+              if (mx < ix0 || mx > ix1 || my < iy0 || my > iy1) continue;
+              var tx = Math.floor((mx - ix0) / (ix1 - ix0) * tone.width);
+              var ty = Math.floor((my - iy0) / (iy1 - iy0) * tone.height);
+              tx = Math.min(tone.width - 1, Math.max(0, tx));
+              ty = Math.min(tone.height - 1, Math.max(0, ty));
+              var o = (ty * tone.width + tx) * 4;
+              var lum = (td[o] * 0.2126 + td[o + 1] * 0.7152 + td[o + 2] * 0.0722) / 255;
+              var rad = rMax * Math.sqrt(1 - lum);
+              if (rad < 0.35) continue;
+              ctx.fillStyle = cfg.halftone === 'colour'
+                ? 'rgb(' + td[o] + ',' + td[o + 1] + ',' + td[o + 2] + ')'
+                : '#111111';
+              ctx.beginPath();
+              ctx.arc(px(mx - tile.x), px(my - tile.y), rad, 0, 6.2832);
+              ctx.fill();
+            }
+          }
+          ctx.restore();
+        }
+      }
+
+      // ---------- guides ----------
+      var bandPx = px(cfg.band);
+      var lw = Math.max(1, cfg.dpi / 150);
+
+      if (cfg.band > 0) {
+        if (cfg.join === 'overlap') {
+          // Shade the strips this page shares with a neighbour, and put a
+          // dashed cut line on the LEADING edges — the ones you trim so the
+          // sheet can lie on top of its neighbour.
+          ctx.save();
+          ctx.fillStyle = 'rgba(79,70,229,0.13)';
+          if (tile.L) ctx.fillRect(0, 0, bandPx, H);
+          if (tile.T) ctx.fillRect(0, 0, W, bandPx);
+          if (tile.R) ctx.fillRect(W - bandPx, 0, bandPx, H);
+          if (tile.B) ctx.fillRect(0, H - bandPx, W, bandPx);
+          ctx.strokeStyle = '#dc2626'; ctx.lineWidth = lw * 1.5;
+          ctx.setLineDash([lw * 9, lw * 6]);
+          if (tile.L) { ctx.beginPath(); ctx.moveTo(0.5, 0); ctx.lineTo(0.5, H); ctx.stroke(); }
+          if (tile.T) { ctx.beginPath(); ctx.moveTo(0, 0.5); ctx.lineTo(W, 0.5); ctx.stroke(); }
+          ctx.setLineDash([]); ctx.restore();
+        } else {
+          // Trim mode: cut down the CENTRE of every band. Both neighbours
+          // carry half a band of bleed, so a slightly off cut leaves no gap.
+          ctx.save();
+          ctx.strokeStyle = '#dc2626'; ctx.lineWidth = lw * 1.5;
+          ctx.setLineDash([lw * 9, lw * 6]);
+          if (tile.L) { ctx.beginPath(); ctx.moveTo(bandPx / 2, 0); ctx.lineTo(bandPx / 2, H); ctx.stroke(); }
+          if (tile.T) { ctx.beginPath(); ctx.moveTo(0, bandPx / 2); ctx.lineTo(W, bandPx / 2); ctx.stroke(); }
+          if (tile.R) { ctx.beginPath(); ctx.moveTo(W - bandPx / 2, 0); ctx.lineTo(W - bandPx / 2, H); ctx.stroke(); }
+          if (tile.B) { ctx.beginPath(); ctx.moveTo(0, H - bandPx / 2); ctx.lineTo(W, H - bandPx / 2); ctx.stroke(); }
+          ctx.setLineDash([]); ctx.restore();
+        }
+      }
+
+      if (cfg.cropMarks) {
+        var len = px(4);
+        ctx.save(); ctx.strokeStyle = '#111827'; ctx.lineWidth = lw;
+        [[0, 0, 1, 1], [W, 0, -1, 1], [0, H, 1, -1], [W, H, -1, -1]].forEach(function (q) {
+          ctx.beginPath(); ctx.moveTo(q[0], q[1]); ctx.lineTo(q[0] + len * q[2], q[1]); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(q[0], q[1]); ctx.lineTo(q[0], q[1] + len * q[3]); ctx.stroke();
+        });
+        ctx.restore();
+      }
+
+      if (cfg.regMarks && bandPx > px(3)) {
+        ctx.save(); ctx.strokeStyle = '#2563eb'; ctx.lineWidth = lw;
+        var rr = px(2.5);
+        var cross = function (x, y) {
+          ctx.beginPath(); ctx.moveTo(x - rr, y); ctx.lineTo(x + rr, y);
+          ctx.moveTo(x, y - rr); ctx.lineTo(x, y + rr); ctx.stroke();
+        };
+        var half = cfg.join === 'overlap' ? bandPx / 2 : bandPx / 2;
+        if (tile.L) cross(half, H / 2);
+        if (tile.R) cross(W - half, H / 2);
+        if (tile.T) cross(W / 2, half);
+        if (tile.B) cross(W / 2, H - half);
+        ctx.restore();
+      }
+
+      if (cfg.labels && bandPx > px(4)) {
+        // Labels live inside a join band so they are glued under or cut away.
+        // Preference: trailing band (hidden by the next sheet), else leading.
+        var fs = Math.max(8, px(3.2));
+        var txt = String.fromCharCode(65 + (tile.row % 26)) + (tile.col + 1) +
+                  '  ·  page ' + (tile.i + 1) + ' of ' + tile.n +
+                  '  ·  row ' + (tile.row + 1) + ', col ' + (tile.col + 1);
+        ctx.save();
+        ctx.font = '600 ' + fs + 'px Helvetica, Arial, sans-serif';
+        ctx.fillStyle = 'rgba(17,24,39,0.72)';
+        ctx.textBaseline = 'middle';
+        if (tile.B) { ctx.fillText(txt, px(2), H - bandPx / 2); }
+        else if (tile.R) {
+          ctx.translate(W - bandPx / 2, H - px(2));
+          ctx.rotate(-Math.PI / 2); ctx.fillText(txt, 0, 0);
+        } else if (tile.T) { ctx.fillText(txt, px(2), bandPx / 2); }
+        else if (tile.L) {
+          ctx.translate(bandPx / 2, H - px(2));
+          ctx.rotate(-Math.PI / 2); ctx.fillText(txt, 0, 0);
+        }
+        ctx.restore();
+      }
+    }
+
+    /* ============================================================
+       WORKING BITMAP
+       One resample of the source, sized to exactly what the output
+       needs (never upsampled), with rotation and flip baked in.
+       This is what keeps 50 MB camera JPEGs and 40-page posters
+       inside a phone's memory budget.
+       ============================================================ */
+    function maxArea() {
+      // iOS Safari caps total canvas area far below desktop. Stay well under.
+      var mobile = /iPad|iPhone|iPod|Android/.test(navigator.userAgent);
+      return mobile ? 16e6 : 60e6;
+    }
+    async function buildWorking(G, forPreviewPx) {
+      var o = orientedImage();
+      var needW = forPreviewPx ? forPreviewPx : Math.ceil(G.place.w / MM_IN * S.dpi);
+      var w = Math.min(o.w, Math.max(64, needW));
+      var h = Math.round(w / imgAspect());
+      var area = w * h, cap = maxArea();
+      if (area > cap) { var f = Math.sqrt(cap / area); w = Math.floor(w * f); h = Math.floor(h * f); }
+      w = clamp(w, 1, 16000); h = clamp(h, 1, 16000);
+
+      var cv = document.createElement('canvas');
+      cv.width = w; cv.height = h;
+      var c = cv.getContext('2d');
+      c.imageSmoothingEnabled = true;
+      try { c.imageSmoothingQuality = 'high'; } catch (e) {}
+      c.save();
+      c.translate(w / 2, h / 2);
+      c.rotate(S.rotate * Math.PI / 180);
+      c.scale(S.flipH ? -1 : 1, S.flipV ? -1 : 1);
+      var dw = (S.rotate === 90 || S.rotate === 270) ? h : w;
+      var dh = (S.rotate === 90 || S.rotate === 270) ? w : h;
+      c.drawImage(IMG.bitmap, -dw / 2, -dh / 2, dw, dh);
+      c.restore();
+      if (window.createImageBitmap) { try { return await createImageBitmap(cv); } catch (e) {} }
+      return cv;
+    }
+
+    /* ============================================================
+       PREVIEW — screen resolution only, rAF-debounced.
+       ============================================================ */
+    var pv = $('[data-preview]', root), pvx = pv.getContext('2d');
+    var previewBmp = null, rafId = 0, lastPreviewKey = '';
+
+    function schedule() {
+      if (rafId) return;
+      rafId = requestAnimationFrame(function () { rafId = 0; paint(); });
+    }
+
+    async function ensurePreviewBmp(G) {
+      var key = [S.rotate, S.flipH, S.flipV, IMG && IMG.name].join('|');
+      if (previewBmp && key === lastPreviewKey) return previewBmp;
+      if (previewBmp && previewBmp.close) { try { previewBmp.close(); } catch (e) {} }
+      previewBmp = await buildWorking(G, 1400);
+      lastPreviewKey = key;
+      return previewBmp;
+    }
+
+    function paint() {
+      if (!IMG) return;
+      var G = geometry();
+      updateReadouts(G);
+
+      var wrap = pv.parentNode;
+      var availW = Math.max(200, wrap.clientWidth - 8);
+      var availH = Math.max(200, wrap.clientHeight - 8);
+      var s = Math.min(availW / G.posterW, availH / G.posterH);
+      var dpr = Math.min(2, window.devicePixelRatio || 1);
+      pv.width = Math.round(G.posterW * s * dpr);
+      pv.height = Math.round(G.posterH * s * dpr);
+      pv.style.width = Math.round(G.posterW * s) + 'px';
+      pv.style.height = Math.round(G.posterH * s) + 'px';
+
+      var k = s * dpr; // mm -> device px
+      pvx.setTransform(1, 0, 0, 1, 0, 0);
+      pvx.fillStyle = S.bg;
+      pvx.fillRect(0, 0, pv.width, pv.height);
+
+      if (previewBmp) {
+        pvx.imageSmoothingEnabled = true;
+        try { pvx.imageSmoothingQuality = 'high'; } catch (e) {}
+        pvx.drawImage(previewBmp, G.place.x * k, G.place.y * k, G.place.w * k, G.place.h * k);
+      }
+
+      // overlays
+      pvx.save();
+      if (S.ov.join && G.band > 0) {
+        pvx.fillStyle = 'rgba(79,70,229,0.16)';
+        G.tiles.forEach(function (t) {
+          if (t.R) pvx.fillRect((t.x + t.w - G.band) * k, t.y * k, G.band * k, t.h * k);
+          if (t.B) pvx.fillRect(t.x * k, (t.y + t.h - G.band) * k, t.w * k, G.band * k);
+        });
+      }
+      if (S.ov.grid) {
+        pvx.strokeStyle = 'rgba(17,24,39,0.85)';
+        pvx.lineWidth = Math.max(1, dpr);
+        G.tiles.forEach(function (t) { pvx.strokeRect(t.x * k, t.y * k, t.w * k, t.h * k); });
+      }
+      if (S.ov.marks && G.band > 0) {
+        pvx.strokeStyle = '#dc2626'; pvx.lineWidth = Math.max(1, dpr);
+        pvx.setLineDash([6, 4]);
+        G.tiles.forEach(function (t) {
+          var off = S.join === 'overlap' ? 0 : G.band / 2;
+          if (t.L) { pvx.beginPath(); pvx.moveTo((t.x + off) * k, t.y * k); pvx.lineTo((t.x + off) * k, (t.y + t.h) * k); pvx.stroke(); }
+          if (t.T) { pvx.beginPath(); pvx.moveTo(t.x * k, (t.y + off) * k); pvx.lineTo((t.x + t.w) * k, (t.y + off) * k); pvx.stroke(); }
+        });
+        pvx.setLineDash([]);
+      }
+      if (S.ov.nums) {
+        var fs = clamp(Math.min(G.printW, G.printH) * k * 0.16, 10, 34);
+        pvx.font = '800 ' + fs + 'px Inter, Arial, sans-serif';
+        pvx.textAlign = 'center'; pvx.textBaseline = 'middle';
+        G.tiles.forEach(function (t, i) {
+          var cx = (t.x + t.w / 2) * k, cy = (t.y + t.h / 2) * k;
+          var lbl = String.fromCharCode(65 + (t.row % 26)) + (t.col + 1);
+          pvx.lineWidth = fs * 0.22; pvx.strokeStyle = 'rgba(255,255,255,0.85)';
+          pvx.strokeText(lbl, cx, cy);
+          pvx.fillStyle = 'rgba(17,24,39,0.9)';
+          pvx.fillText(lbl, cx, cy);
+        });
+      }
+      pvx.restore();
+    }
+
+    /* ============================================================
+       READOUTS + QUALITY ADVISOR
+       ============================================================ */
+    var liveEl = $('[data-live-summary]', root), liveTimer = 0;
+    function updateReadouts(G) {
+      var q = quality(G.ppi), n = G.tiles.length;
+      $('[data-sum-size]', root).textContent = dimMm(G.posterW, G.posterH);
+      $('[data-sum-pages]', root).textContent = n + (S.guidePage ? ' + guide' : '');
+      $('[data-sum-quality]', root).textContent = q.label + ' · ' + Math.round(G.ppi) + ' PPI';
+      $('[data-sum-filesize]', root).textContent = '≈ ' + bytes(estimateBytes(G));
+
+      var qEl = $('[data-quality]', root);
+      qEl.className = 'pp-quality pp-q-' + q.k;
+      var o = orientedImage();
+      var maxW = o.w / 150 * MM_IN, maxH = maxW / imgAspect();
+      var html = '<b>' + ({ excellent: '✅', good: '👍', acceptable: '⚠️', poor: '⛔' })[q.k] +
+        ' ' + q.label + ' quality — ' + Math.round(G.ppi) + ' PPI</b>' +
+        '<p>' + G.cols + ' × ' + G.rows + ' pages (' + n + ' sheet' + (n === 1 ? '' : 's') +
+        '), finished ' + dimMm(G.posterW, G.posterH) + '.</p>';
+      if (q.k === 'poor') {
+        html += '<p>At this size the image will look visibly soft. Your ' + o.w + ' × ' + o.h +
+          ' px image prints sharply up to about <strong>' + dimMm(maxW, maxH) + '</strong>. ' +
+          'Either <button type="button" class="pp-preset" data-snapmax>snap to that size</button>, ' +
+          'enlarge the file first with our <a href="image-resizer.html">image resizer</a>, ' +
+          'or switch on halftone mode and make the low resolution a deliberate style.</p>';
+      } else if (q.k === 'acceptable') {
+        html += '<p>Slightly soft at close range, fine on a wall viewed from two metres. ' +
+          'For crisp detail, keep the poster under <strong>' + dimMm(maxW, maxH) + '</strong> — ' +
+          '<button type="button" class="pp-preset" data-snapmax>snap to it</button>.</p>';
+      } else {
+        html += '<p>Sharp at this size. Remember to print at 100% / Actual size.</p>';
+      }
+      qEl.innerHTML = html;
+
+      pv.setAttribute('aria-label',
+        'Poster layout preview: ' + n + ' pages in a ' + G.cols + ' by ' + G.rows + ' grid on ' +
+        S.paper.toUpperCase() + ' ' + G.orient + ' paper, finished size ' + dimMm(G.posterW, G.posterH) +
+        ', effective resolution ' + Math.round(G.ppi) + ' PPI, ' +
+        (S.join === 'overlap' ? 'joined with ' + fmt(fromMm(S.overlap), 2) + ' ' + unitLabel() + ' glue overlaps.'
+                              : 'joined by trimming and butting the pages edge to edge.'));
+
+      clearTimeout(liveTimer);
+      liveTimer = setTimeout(function () {
+        liveEl.textContent = n + ' pages, ' + dimMm(G.posterW, G.posterH) +
+          ', quality ' + q.label + ' at ' + Math.round(G.ppi) + ' PPI.';
+      }, 700);
+
+      var warn = $('[data-print100]', root);
+      warn.hidden = false;
+      if (n > 40) {
+        warn.innerHTML = '<strong>⚠️ ' + n + ' pages.</strong> That is a big job — expect a large PDF and a long assembly. ' +
+          'Consider larger paper or a smaller poster. Also: print at <strong>100% / Actual size</strong>, never Fit to page. ' +
+          '<a href="#print-100">Steps per platform →</a>';
+      } else {
+        warn.innerHTML = '<strong>⚠️ Before you print:</strong> set <em>Scale</em> to <strong>100% / Actual size</strong> and switch off <em>Fit to page</em>. ' +
+          'Printer scaling is the number one reason tiled pages do not line up. <a href="#print-100">Exact steps per platform →</a>';
+      }
+    }
+
+    /* ============================================================
+       GENERATION — one tile at a time, in a worker when available.
+       ============================================================ */
+    var workerSrc = null;
+    function getWorker() {
+      if (typeof Worker === 'undefined' || typeof OffscreenCanvas === 'undefined') return null;
+      try {
+        if (!workerSrc) {
+          var body = 'var drawTile = ' + drawTile.toString() + ';\n' +
+            'var BMP=null;\n' +
+            'self.onmessage = async function(e){\n' +
+            '  var d=e.data;\n' +
+            '  if(d.type==="init"){ BMP=d.bitmap; self.postMessage({type:"ready"}); return; }\n' +
+            '  if(d.type==="tile"){\n' +
+            '    try{\n' +
+            '      var cv=new OffscreenCanvas(d.wpx,d.hpx), ctx=cv.getContext("2d",{alpha:false});\n' +
+            '      d.cfg.mk=function(w,h){return new OffscreenCanvas(w,h);};\n' +
+            '      drawTile(ctx,BMP,d.cfg,d.tile);\n' +
+            '      var blob=await cv.convertToBlob({type:"image/jpeg",quality:d.cfg.q});\n' +
+            '      self.postMessage({type:"tileDone",i:d.i,blob:blob});\n' +
+            '    }catch(err){ self.postMessage({type:"error",message:String(err&&err.message||err)}); }\n' +
+            '    return;\n' +
+            '  }\n' +
+            '  if(d.type==="close"){ if(BMP&&BMP.close)BMP.close(); self.close(); }\n' +
+            '};';
+          workerSrc = URL.createObjectURL(new Blob([body], { type: 'text/javascript' }));
+        }
+        return new Worker(workerSrc);
+      } catch (e) { return null; }
+    }
+
+    function tileCfg(G) {
+      return {
+        dpi: S.dpi, bg: S.bg, band: G.band, join: S.join,
+        place: { x: G.place.x, y: G.place.y, w: G.place.w, h: G.place.h },
+        gray: S.gray, halftone: S.halftone, dot: S.dot,
+        cropMarks: S.cropMarks, regMarks: S.regMarks, labels: S.labels,
+        q: S.jpegQ / 100
+      };
+    }
+
+    function progress(done, total, label) {
+      var wrap = $('[data-progress-wrap]', root), bar = $('[data-progress-bar]', root), txt = $('[data-progress-text]', root);
+      if (done < 0) { wrap.classList.add('hidden'); txt.classList.add('hidden'); return; }
+      wrap.classList.remove('hidden'); txt.classList.remove('hidden');
+      bar.style.width = (total ? (done / total * 100) : 0) + '%';
+      txt.textContent = label || ('Generating page ' + done + ' of ' + total + '…');
+    }
+
+    function loadScript(src, globalName) {
+      if (window[globalName]) return Promise.resolve(window[globalName]);
+      return new Promise(function (res, rej) {
+        var s = document.createElement('script');
+        s.src = src; s.async = true;
+        s.onload = function () { window[globalName] ? res(window[globalName]) : rej(new Error('load failed')); };
+        s.onerror = function () { rej(new Error('Could not load ' + src)); };
+        document.head.appendChild(s);
+      });
+    }
+
+    async function renderTiles(G, onTile) {
+      var cfg = tileCfg(G), n = G.tiles.length;
+      var wpxOf = function (t) { return Math.max(1, Math.round(t.w / MM_IN * S.dpi)); };
+      var hpxOf = function (t) { return Math.max(1, Math.round(t.h / MM_IN * S.dpi)); };
+
+      var bmp = await buildWorking(G);
+      var w = window.createImageBitmap ? getWorker() : null;
+
+      if (w) {
+        var transferable = (typeof ImageBitmap !== 'undefined' && bmp instanceof ImageBitmap) ? bmp : await createImageBitmap(bmp);
+        await new Promise(function (res) {
+          w.onmessage = function (e) { if (e.data.type === 'ready') res(); };
+          w.postMessage({ type: 'init', bitmap: transferable }, [transferable]);
+        });
+        for (var i = 0; i < n; i++) {
+          if (cancelled) break;
+          var t = G.tiles[i]; t.i = i; t.n = n;
+          var blob = await new Promise(function (res, rej) {
+            w.onmessage = function (e) {
+              if (e.data.type === 'tileDone') res(e.data.blob);
+              else if (e.data.type === 'error') rej(new Error(e.data.message));
+            };
+            w.postMessage({ type: 'tile', i: i, wpx: wpxOf(t), hpx: hpxOf(t), cfg: cfg, tile: t });
+          });
+          await onTile(blob, G.tiles[i], i, n);
+          progress(i + 1, n);
+        }
+        try { w.postMessage({ type: 'close' }); w.terminate(); } catch (e) {}
+      } else {
+        cfg.mk = function (a, b) { var c = document.createElement('canvas'); c.width = a; c.height = b; return c; };
+        for (var j = 0; j < n; j++) {
+          if (cancelled) break;
+          var tt = G.tiles[j]; tt.i = j; tt.n = n;
+          var cv = document.createElement('canvas');
+          cv.width = wpxOf(tt); cv.height = hpxOf(tt);
+          drawTile(cv.getContext('2d', { alpha: false }), bmp, cfg, tt);
+          var b2 = await new Promise(function (res) { cv.toBlob(res, 'image/jpeg', S.jpegQ / 100); });
+          cv.width = cv.height = 1;   // release immediately
+          await onTile(b2, tt, j, n);
+          progress(j + 1, n);
+          await new Promise(function (r) { setTimeout(r, 0); });   // yield to the UI
+        }
+        if (bmp && bmp.close) { try { bmp.close(); } catch (e) {} }
+      }
+    }
+
+    /* ---------- assembly guide page ---------- */
+    async function guideBlob(G) {
+      var wpx = Math.round(G.printW / MM_IN * S.dpi), hpx = Math.round(G.printH / MM_IN * S.dpi);
+      var cv = document.createElement('canvas'); cv.width = wpx; cv.height = hpx;
+      var c = cv.getContext('2d');
+      var px = function (mm) { return mm / MM_IN * S.dpi; };
+      c.fillStyle = '#fff'; c.fillRect(0, 0, wpx, hpx);
+      c.fillStyle = '#111827';
+      c.font = '800 ' + px(7) + 'px Helvetica, Arial, sans-serif';
+      c.fillText('Assembly guide', px(4), px(10));
+      c.font = '400 ' + px(3.6) + 'px Helvetica, Arial, sans-serif';
+      var lines = [
+        G.cols + ' columns × ' + G.rows + ' rows = ' + G.tiles.length + ' pages',
+        'Finished poster: ' + dimMm(G.posterW, G.posterH) + '   ·   effective resolution ' + Math.round(G.ppi) + ' PPI',
+        'Paper: ' + S.paper.toUpperCase() + ' ' + G.orient + '   ·   printer margins T' + G.m.t + ' R' + G.m.r + ' B' + G.m.b + ' L' + G.m.l + ' mm',
+        S.join === 'overlap'
+          ? 'Join: overlap and glue, ' + fmt(S.overlap) + ' mm flap. Trim the LEFT and TOP white margin off each sheet, then lay it over its neighbour and align the tinted band.'
+          : 'Join: trim and butt-join, ' + fmt(S.bleed) + ' mm bleed. Cut down the CENTRE of every dashed line, then butt the cut edges and tape from behind.',
+        '',
+        'PRINT AT 100% / ACTUAL SIZE. Turn off "Fit to page" and any borderless or poster option in the printer driver.',
+        'Verify with the ruler below before printing all ' + G.tiles.length + ' pages.',
+        '',
+        'Assemble one row at a time, left to right, then join the finished rows top to bottom.',
+        'Align by matching the printed image, not the paper edges.'
+      ];
+      var y = px(18);
+      lines.forEach(function (t) { c.fillText(t, px(4), y); y += px(5.2); });
+
+      // ruler check
+      var ry = y + px(4);
+      c.strokeStyle = '#111827'; c.lineWidth = Math.max(1, S.dpi / 150);
+      c.beginPath(); c.moveTo(px(4), ry); c.lineTo(px(104), ry); c.stroke();
+      for (var i = 0; i <= 10; i++) {
+        var x = px(4 + i * 10);
+        c.beginPath(); c.moveTo(x, ry - px(2)); c.lineTo(x, ry + px(2)); c.stroke();
+      }
+      c.font = '600 ' + px(3.2) + 'px Helvetica, Arial, sans-serif';
+      c.fillText('↑ this line must measure exactly 100 mm (10 cm). If it does not, your print is being scaled.', px(4), ry + px(7));
+      var ry2 = ry + px(14);
+      c.beginPath(); c.moveTo(px(4), ry2); c.lineTo(px(4 + 4 * MM_IN), ry2); c.stroke();
+      c.beginPath(); c.moveTo(px(4), ry2 - px(2)); c.lineTo(px(4), ry2 + px(2)); c.stroke();
+      c.beginPath(); c.moveTo(px(4 + 4 * MM_IN), ry2 - px(2)); c.lineTo(px(4 + 4 * MM_IN), ry2 + px(2)); c.stroke();
+      c.fillText('↑ and this one exactly 4 inches.', px(4), ry2 + px(7));
+
+      // map
+      var mapTop = ry2 + px(14);
+      var availW = G.printW - 8, availH = G.printH - (mapTop / S.dpi * MM_IN) - 6;
+      var ms = Math.min(availW / G.posterW, availH / G.posterH);
+      var mw = G.posterW * ms, mh = G.posterH * ms;
+      var ox = px((G.printW - mw) / 2), oy = mapTop;
+      c.fillStyle = S.bg;
+      c.fillRect(ox, oy, px(mw), px(mh));
+      if (previewBmp) {
+        c.drawImage(previewBmp,
+          ox + px(G.place.x * ms), oy + px(G.place.y * ms),
+          px(G.place.w * ms), px(G.place.h * ms));
+      }
+      c.strokeStyle = '#111827'; c.lineWidth = Math.max(1.5, S.dpi / 100);
+      c.font = '800 ' + Math.max(9, px(Math.min(4.5, ms * Math.min(G.printW, G.printH) * 0.16))) + 'px Helvetica, Arial, sans-serif';
+      c.textAlign = 'center'; c.textBaseline = 'middle';
+      G.tiles.forEach(function (t) {
+        c.strokeRect(ox + px(t.x * ms), oy + px(t.y * ms), px(t.w * ms), px(t.h * ms));
+        var lbl = String.fromCharCode(65 + (t.row % 26)) + (t.col + 1);
+        var cx = ox + px((t.x + t.w / 2) * ms), cy = oy + px((t.y + t.h / 2) * ms);
+        c.lineWidth = px(1); c.strokeStyle = '#fff'; c.strokeText(lbl, cx, cy);
+        c.fillStyle = '#111827'; c.fillText(lbl, cx, cy);
+        c.strokeStyle = '#111827'; c.lineWidth = Math.max(1.5, S.dpi / 100);
+      });
+      c.textAlign = 'left'; c.textBaseline = 'alphabetic';
+      var b = await new Promise(function (r) { cv.toBlob(r, 'image/jpeg', 0.9); });
+      cv.width = cv.height = 1;
+      return b;
+    }
+
+    /* ---------- PDF ---------- */
+    function pt(mm) { return mm / MM_IN * 72; }
+
+    async function generatePDF() {
+      if (!IMG || busy) return;
+      var G = geometry();
+      if (G.tiles.length > 100 && !confirm(G.tiles.length + ' pages is a very large job and may exhaust your device\'s memory. Continue?')) return;
+      busy = true; cancelled = false;
+      setBusy(true);
+      try {
+        progress(0, 1, 'Loading PDF engine…');
+        var PDFLib = await loadScript('assets/js/pdf-lib.min.js', 'PDFLib');
+        var doc = await PDFLib.PDFDocument.create();
+        doc.setTitle('Poster — ' + G.cols + '×' + G.rows + ' pages');
+        doc.setProducer('ToolAdda Poster Printer');
+        doc.setCreator('ToolAdda Poster Printer (tooladda.online)');
+
+        var pw = pt(G.paperW), ph = pt(G.paperH);
+        await ensurePreviewBmp(G);
+
+        if (S.guidePage) {
+          progress(0, G.tiles.length + 1, 'Rendering assembly guide…');
+          var gb = await guideBlob(G);
+          var gimg = await doc.embedJpg(await gb.arrayBuffer());
+          var gp = doc.addPage([pw, ph]);
+          gp.drawImage(gimg, { x: pt(G.m.l), y: ph - pt(G.m.t) - pt(G.printH), width: pt(G.printW), height: pt(G.printH) });
+        }
+
+        await renderTiles(G, async function (blob, tile) {
+          var img = await doc.embedJpg(await blob.arrayBuffer());
+          var page = doc.addPage([pw, ph]);
+          // PDF origin is bottom-left; the tile hangs from the top-left margin.
+          page.drawImage(img, {
+            x: pt(G.m.l),
+            y: ph - pt(G.m.t) - pt(tile.h),
+            width: pt(tile.w),
+            height: pt(tile.h)
+          });
+        });
+
+        if (cancelled) { msg('Generation cancelled.', 'error'); return; }
+        progress(G.tiles.length, G.tiles.length, 'Writing PDF…');
+        var out = await doc.save();
+        download(new Blob([out], { type: 'application/pdf' }), 'poster-' + G.cols + 'x' + G.rows + '.pdf');
+        msg('✅ Poster PDF downloaded — ' + G.tiles.length + ' pages, ' + dimMm(G.posterW, G.posterH) +
+            '. Remember: print at 100% / Actual size.', 'success');
+        bump();
+      } catch (err) {
+        msg('Could not generate the PDF: ' + (err && err.message ? err.message : err) +
+            '. Try a lower DPI, fewer pages, or the ZIP export.', 'error');
+      } finally { busy = false; setBusy(false); progress(-1); }
+    }
+
+    async function generateZIP() {
+      if (!IMG || busy) return;
+      var G = geometry();
+      busy = true; cancelled = false; setBusy(true);
+      try {
+        progress(0, 1, 'Loading ZIP engine…');
+        var JSZip = await loadScript('assets/js/jszip.min.js', 'JSZip');
+        var zip = new JSZip();
+        await ensurePreviewBmp(G);
+        if (S.guidePage) zip.file('00-assembly-guide.jpg', await guideBlob(G));
+        await renderTiles(G, async function (blob, tile, i) {
+          var name = String(i + 1).padStart(2, '0') + '-' +
+            String.fromCharCode(65 + (tile.row % 26)) + (tile.col + 1) + '.jpg';
+          zip.file(name, blob);
+        });
+        if (cancelled) { msg('Generation cancelled.', 'error'); return; }
+        progress(G.tiles.length, G.tiles.length, 'Compressing…');
+        var out = await zip.generateAsync({ type: 'blob' });
+        download(out, 'poster-pages-' + G.cols + 'x' + G.rows + '.zip');
+        msg('✅ ' + G.tiles.length + ' page images downloaded as a ZIP.', 'success');
+        bump();
+      } catch (err) {
+        msg('Could not build the ZIP: ' + (err && err.message ? err.message : err), 'error');
+      } finally { busy = false; setBusy(false); progress(-1); }
+    }
+
+    /* ---------- printer calibration sheet (vector, tiny) ---------- */
+    async function calibrationSheet() {
+      try {
+        var PDFLib = await loadScript('assets/js/pdf-lib.min.js', 'PDFLib');
+        var p = paperFor(S.orient === 'auto' ? 'portrait' : S.orient);
+        var doc = await PDFLib.PDFDocument.create();
+        var font = await doc.embedFont(PDFLib.StandardFonts.Helvetica);
+        var bold = await doc.embedFont(PDFLib.StandardFonts.HelveticaBold);
+        var W = pt(p.w), H = pt(p.h);
+        var page = doc.addPage([W, H]);
+        var black = PDFLib.rgb(0, 0, 0), red = PDFLib.rgb(0.86, 0.15, 0.15), grey = PDFLib.rgb(0.45, 0.45, 0.45);
+
+        page.drawText('Printer calibration sheet', { x: pt(25), y: H - pt(28), size: 16, font: bold });
+        page.drawText('Print this page at 100% / Actual size. Do NOT use Fit to page.', { x: pt(25), y: H - pt(36), size: 9, font: font, color: red });
+
+        // 100 mm reference
+        var ry = H - pt(50);
+        page.drawLine({ start: { x: pt(25), y: ry }, end: { x: pt(125), y: ry }, thickness: 1, color: black });
+        for (var i = 0; i <= 10; i++) {
+          var x = pt(25 + i * 10);
+          page.drawLine({ start: { x: x, y: ry - pt(2) }, end: { x: x, y: ry + pt(2) }, thickness: 0.8, color: black });
+        }
+        page.drawText('1. This line must measure exactly 100 mm. If it does not, your print is being scaled — fix that first.',
+          { x: pt(25), y: ry - pt(8), size: 8.5, font: font });
+
+        var ry2 = ry - pt(18);
+        page.drawLine({ start: { x: pt(25), y: ry2 }, end: { x: pt(25 + 4 * MM_IN), y: ry2 }, thickness: 1, color: black });
+        page.drawLine({ start: { x: pt(25), y: ry2 - pt(2) }, end: { x: pt(25), y: ry2 + pt(2) }, thickness: 0.8, color: black });
+        page.drawLine({ start: { x: pt(25 + 4 * MM_IN), y: ry2 - pt(2) }, end: { x: pt(25 + 4 * MM_IN), y: ry2 + pt(2) }, thickness: 0.8, color: black });
+        page.drawText('2. And this one exactly 4 inches (101.6 mm).', { x: pt(25), y: ry2 - pt(8), size: 8.5, font: font });
+
+        page.drawText('3. Look at each edge below. Find the innermost frame that printed COMPLETELY — that number is your',
+          { x: pt(25), y: ry2 - pt(22), size: 8.5, font: font });
+        page.drawText('   unprintable margin for that edge. Enter the four numbers under Printer margin → Custom.',
+          { x: pt(25), y: ry2 - pt(31), size: 8.5, font: font });
+
+        // nested frames at known offsets from the PAPER edge
+        [3, 5, 7, 10, 15, 20].forEach(function (mm) {
+          page.drawRectangle({
+            x: pt(mm), y: pt(mm), width: W - pt(mm * 2), height: H - pt(mm * 2),
+            borderWidth: 0.7, borderColor: mm <= 5 ? red : black, opacity: 0
+          });
+          page.drawText(mm + ' mm', { x: pt(mm + 1.5), y: pt(mm + 1.5), size: 6, font: font, color: grey });
+          page.drawText(mm + ' mm', { x: W - pt(mm + 14), y: H - pt(mm + 6), size: 6, font: font, color: grey });
+        });
+
+        page.drawText('Bottom edge is usually the worst — check it separately.',
+          { x: pt(25), y: pt(30), size: 8.5, font: bold });
+        page.drawText('tooladda.online/poster-printer.html  ·  ' + p.w + ' × ' + p.h + ' mm',
+          { x: pt(25), y: pt(23), size: 7, font: font, color: grey });
+
+        var out = await doc.save();
+        download(new Blob([out], { type: 'application/pdf' }), 'printer-calibration-sheet.pdf');
+        msg('📏 Calibration sheet downloaded. Print it at 100%, measure the 100 mm line, then read the corner frames.', 'success');
+      } catch (e) {
+        msg('Could not build the calibration sheet: ' + (e && e.message ? e.message : e), 'error');
+      }
+    }
+
+    /* ============================================================
+       FILE INPUT
+       ============================================================ */
+    function msg(text, kind) {
+      var box = $('[data-msg]', root);
+      box.textContent = text;
+      box.classList.remove('hidden', 'success', 'error');
+      box.classList.add(kind === 'error' ? 'error' : 'success');
+      box.setAttribute('role', kind === 'error' ? 'alert' : 'status');
+    }
+    function download(blob, name) {
+      var u = URL.createObjectURL(blob), a = document.createElement('a');
+      a.href = u; a.download = name; document.body.appendChild(a); a.click();
+      document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(u); }, 4000);
+    }
+    function setBusy(on) {
+      $('[data-generate]', root).disabled = on;
+      $('[data-zip]', root).disabled = on;
+      $('[data-cancel]', root).hidden = !on;
+    }
+    function bump() {
+      try {
+        var n = (parseInt(localStorage.getItem('ta.pp.count') || '0', 10) || 0) + 1;
+        localStorage.setItem('ta.pp.count', String(n));
+      } catch (e) {}
+    }
+
+    async function decode(file) {
+      var name = (file.name || 'image').toLowerCase();
+      if (/\.(heic|heif)$/.test(name) || /heic|heif/.test(file.type)) {
+        throw new Error('HEIC photos cannot be decoded by most browsers. Convert it to JPG first — our HEIC converter does it in your browser: heic-converter.html');
+      }
+      if (file.type === 'application/pdf' || /\.pdf$/.test(name)) {
+        throw new Error('PDF source files are not supported yet. Convert the page you need with our PDF to images tool, then bring the PNG back here.');
+      }
+      // createImageBitmap honours EXIF orientation when asked; fall back to
+      // <img>, which modern browsers also orient from EXIF by default.
+      if (window.createImageBitmap) {
+        try { return await createImageBitmap(file, { imageOrientation: 'from-image' }); } catch (e) {}
+        try { return await createImageBitmap(file); } catch (e) {}
+      }
+      return await new Promise(function (res, rej) {
+        var im = new Image(), u = URL.createObjectURL(file);
+        im.onload = function () { res(im); };
+        im.onerror = function () { rej(new Error('That file could not be read as an image.')); };
+        im.src = u;
+      });
+    }
+
+    async function loadFile(file) {
+      if (!file) return;
+      try {
+        var bmp = await decode(file);
+        if (IMG && IMG.bitmap && IMG.bitmap.close) { try { IMG.bitmap.close(); } catch (e) {} }
+        IMG = {
+          bitmap: bmp,
+          w: bmp.width || bmp.naturalWidth,
+          h: bmp.height || bmp.naturalHeight,
+          name: file.name || 'image',
+          size: file.size || 0,
+          type: file.type || 'image'
+        };
+        if (!IMG.w || !IMG.h) throw new Error('The image reported zero dimensions.');
+        $('[data-msg]', root).classList.add('hidden');
+        $('[data-editor]', root).classList.remove('hidden');
+        $('.pp-upload', root).style.display = 'none';
+
+        var meta = $('[data-file-meta]', root);
+        meta.hidden = false;
+        $('[data-fm-name]', root).textContent = IMG.name;
+        $('[data-fm-detail]', root).textContent =
+          IMG.w + ' × ' + IMG.h + ' px · ' + (IMG.size ? bytes(IMG.size) + ' · ' : '') +
+          (IMG.type.split('/')[1] || '').toUpperCase();
+        var th = $('[data-thumb]', root);
+        var tc = document.createElement('canvas');
+        tc.width = 104; tc.height = 104;
+        var ratio = Math.max(104 / IMG.w, 104 / IMG.h);
+        tc.getContext('2d').drawImage(bmp, (104 - IMG.w * ratio) / 2, (104 - IMG.h * ratio) / 2, IMG.w * ratio, IMG.h * ratio);
+        th.src = tc.toDataURL('image/jpeg', 0.7);
+        th.alt = 'Thumbnail of ' + IMG.name;
+
+        if (IMG.w < 900 || IMG.h < 900) {
+          msg('Heads up: this image is only ' + IMG.w + ' × ' + IMG.h + ' px. It will print sharply at small sizes only — check the quality advisor before printing a large grid.', 'error');
+        }
+        previewBmp = null; lastPreviewKey = '';
+        syncPhysicalFromAspect();
+        await ensurePreviewBmp(geometry());
+        schedule();
+      } catch (e) {
+        msg(e && e.message ? e.message : 'That file could not be loaded.', 'error');
+      }
+    }
+
+    function sampleImage() {
+      var c = document.createElement('canvas');
+      c.width = 1600; c.height = 1200;
+      var x = c.getContext('2d');
+      var g = x.createLinearGradient(0, 0, 1600, 1200);
+      g.addColorStop(0, '#4f46e5'); g.addColorStop(0.5, '#ec4899'); g.addColorStop(1, '#f59e0b');
+      x.fillStyle = g; x.fillRect(0, 0, 1600, 1200);
+      x.globalAlpha = 0.25; x.fillStyle = '#fff';
+      for (var i = 0; i < 26; i++) {
+        x.beginPath();
+        x.arc(((i * 331) % 1600), ((i * 517) % 1200), 40 + (i % 7) * 34, 0, 6.2832);
+        x.fill();
+      }
+      x.globalAlpha = 1;
+      x.fillStyle = '#fff';
+      x.font = '800 150px Inter, Arial, sans-serif';
+      x.textAlign = 'center'; x.textBaseline = 'middle';
+      x.fillText('POSTER', 800, 560);
+      x.font = '600 62px Inter, Arial, sans-serif';
+      x.fillText('sample image · 1600 × 1200', 800, 690);
+      return new Promise(function (res) {
+        c.toBlob(function (b) {
+          b.name = 'sample-poster.jpg';
+          res(new File([b], 'sample-poster.jpg', { type: 'image/jpeg' }));
+        }, 'image/jpeg', 0.9);
+      });
+    }
+
+    /* ============================================================
+       UI WIRING
+       ============================================================ */
+    // paper select
+    (function buildPaper() {
+      var sel = $('#ppPaper'), groups = {};
+      PAPERS.forEach(function (p) {
+        if (!groups[p.g]) {
+          groups[p.g] = document.createElement('optgroup');
+          groups[p.g].label = p.g;
+          sel.appendChild(groups[p.g]);
+        }
+        var o = document.createElement('option');
+        o.value = p.id; o.textContent = p.n;
+        groups[p.g].appendChild(o);
+      });
+    })();
+
+    function applyPaper() {
+      var p = PAPERS.filter(function (x) { return x.id === S.paper; })[0];
+      var custom = S.paper === 'custom';
+      $('[data-custom-paper]', root).hidden = !custom;
+      if (!custom && p) { S.paperW = p.w; S.paperH = p.h; }
+      else {
+        S.paperW = clamp(toMm(parseFloat($('#ppPaperW').value) || 210), 20, 2000);
+        S.paperH = clamp(toMm(parseFloat($('#ppPaperH').value) || 297), 20, 2000);
+      }
+      var g = geometry();
+      $('[data-paper-hint]', root).textContent =
+        'Sheet ' + dimMm(S.paperW, S.paperH) + ' · printable area ' + dimMm(g.printW, g.printH) +
+        ' after margins. Bigger paper means fewer seams.';
+    }
+
+    function syncUnitLabels() {
+      $$('[data-u]', root).forEach(function (e) { e.textContent = unitLabel(); });
+      $('#ppPhysW').value = raw(fromMm(S.physW));
+      $('#ppPhysH').value = raw(fromMm(S.physH));
+      $('#ppOverlap').value = raw(fromMm(S.overlap));
+      $('#ppBleed').value = raw(fromMm(S.bleed));
+      $('#ppPaperW').value = raw(fromMm(S.paperW));
+      $('#ppPaperH').value = raw(fromMm(S.paperH));
+      var step = S.unit === 'mm' ? 1 : S.unit === 'cm' ? 0.1 : 0.05;
+      ['#ppPhysW', '#ppPhysH', '#ppOverlap', '#ppBleed', '#ppPaperW', '#ppPaperH'].forEach(function (s) { $(s).step = step; });
+    }
+
+    function syncPhysicalFromAspect() {
+      if (!S.lockAspect || !IMG) return;
+      S.physH = S.physW / imgAspect();
+      $('#ppPhysH').value = raw(fromMm(S.physH));
+    }
+
+    function showMode() {
+      $$('[data-mode]', root).forEach(function (e) { e.hidden = e.getAttribute('data-mode') !== S.mode; });
+      $('[data-join="overlap"]', root).hidden = S.join !== 'overlap';
+      $('[data-join="trim"]', root).hidden = S.join !== 'trim';
+      $('[data-dotsize]', root).hidden = S.halftone === 'off';
+      $('[data-custom-margin]', root).hidden = S.marginPreset !== 'custom';
+    }
+
+    function save() {
+      try {
+        localStorage.setItem('ta.pp.v2', JSON.stringify({
+          unit: S.unit, paper: S.paper, orient: S.orient, mode: S.mode,
+          cols: S.cols, rows: S.rows, join: S.join, overlap: S.overlap, bleed: S.bleed,
+          marginPreset: S.marginPreset, mT: S.mT, mR: S.mR, mB: S.mB, mL: S.mL,
+          dpi: S.dpi, jpegQ: S.jpegQ, lockAspect: S.lockAspect, fit: S.fit
+        }));
+      } catch (e) {}
+    }
+    function restore() {
+      var saved = null;
+      try { saved = JSON.parse(localStorage.getItem('ta.pp.v2') || 'null'); } catch (e) {}
+      if (saved) { Object.keys(saved).forEach(function (k) { if (k in S) S[k] = saved[k]; }); return true; }
+      return false;
+    }
+
+    /* locale-aware defaults — a suggestion, never a lock */
+    function localeDefaults() {
+      var region = '';
+      try {
+        var loc = navigator.language || 'en';
+        var parts = loc.split('-');
+        region = (parts[1] || '').toUpperCase();
+        if (!region && Intl.Locale) region = (new Intl.Locale(loc).region || '').toUpperCase();
+      } catch (e) {}
+      if (!region) {
+        try {
+          var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+          if (/America\/(New_York|Chicago|Denver|Los_Angeles|Phoenix|Anchorage|Toronto|Vancouver|Mexico_City)/.test(tz)) region = 'US';
+        } catch (e) {}
+      }
+      if (LETTER_REGIONS.indexOf(region) >= 0) { S.paper = 'letter'; S.unit = 'in'; S.overlap = 12.7; }
+    }
+
+    function pushToDom() {
+      $('#ppPaper').value = S.paper;
+      $$('input[name="ppUnit"]').forEach(function (r) { r.checked = r.value === S.unit; });
+      $$('input[name="ppOrient"]').forEach(function (r) { r.checked = r.value === S.orient; });
+      $$('input[name="ppMode"]').forEach(function (r) { r.checked = r.value === S.mode; });
+      $$('input[name="ppFit"]').forEach(function (r) { r.checked = r.value === S.fit; });
+      $$('input[name="ppJoin"]').forEach(function (r) { r.checked = r.value === S.join; });
+      $('#ppCols').value = S.cols; $('#ppRows').value = S.rows;
+      $('#ppMag').value = S.mag; $('#ppMagRange').value = clamp(S.mag, 25, 2000);
+      $('#ppSrcPpi').value = S.srcPpi;
+      $('#ppLockAspect').checked = S.lockAspect;
+      $('#ppMarginPreset').value = S.marginPreset;
+      $('#ppMT').value = S.mT; $('#ppMR').value = S.mR; $('#ppMB').value = S.mB; $('#ppML').value = S.mL;
+      $('#ppDpi').value = S.dpi;
+      $('#ppJpegQ').value = S.jpegQ; $('#ppJpegQRange').value = S.jpegQ;
+      $('#ppOverlapRange').value = clamp(S.overlap, 0, 30);
+      $('#ppBleedRange').value = clamp(S.bleed, 0, 10);
+      $('#ppDot').value = S.dot; $('#ppDotRange').value = clamp(S.dot, 2, 30);
+      $('#ppGray').checked = S.gray; $('#ppHalftone').value = S.halftone;
+      $('#ppBg').value = S.bg; $('#ppRotate').value = S.rotate;
+      $('#ppFlipH').checked = S.flipH; $('#ppFlipV').checked = S.flipV;
+      $('#ppGuidePage').checked = S.guidePage; $('#ppLabels').checked = S.labels;
+      $('#ppCropMarks').checked = S.cropMarks; $('#ppRegMarks').checked = S.regMarks;
+      syncUnitLabels(); applyPaper(); showMode();
+    }
+
+    function readDom() {
+      S.unit = ($$('input[name="ppUnit"]').filter(function (r) { return r.checked; })[0] || {}).value || S.unit;
+      S.paper = $('#ppPaper').value;
+      S.orient = ($$('input[name="ppOrient"]').filter(function (r) { return r.checked; })[0] || {}).value || S.orient;
+      S.mode = ($$('input[name="ppMode"]').filter(function (r) { return r.checked; })[0] || {}).value || S.mode;
+      S.fit = ($$('input[name="ppFit"]').filter(function (r) { return r.checked; })[0] || {}).value || S.fit;
+      S.join = ($$('input[name="ppJoin"]').filter(function (r) { return r.checked; })[0] || {}).value || S.join;
+      S.cols = clamp(parseInt($('#ppCols').value, 10) || 1, 1, 20);
+      S.rows = clamp(parseInt($('#ppRows').value, 10) || 1, 1, 20);
+      S.physW = clamp(toMm(parseFloat($('#ppPhysW').value) || 10), 10, 100000);
+      S.physH = clamp(toMm(parseFloat($('#ppPhysH').value) || 10), 10, 100000);
+      S.mag = clamp(parseFloat($('#ppMag').value) || 100, 10, 5000);
+      S.srcPpi = clamp(parseFloat($('#ppSrcPpi').value) || 300, 30, 1200);
+      S.lockAspect = $('#ppLockAspect').checked;
+      S.overlap = clamp(toMm(parseFloat($('#ppOverlap').value) || 0), 0, 100);
+      S.bleed = clamp(toMm(parseFloat($('#ppBleed').value) || 0), 0, 50);
+      S.marginPreset = $('#ppMarginPreset').value;
+      if (S.marginPreset !== 'custom') {
+        var mp = MARGIN_PRESETS[S.marginPreset];
+        S.mT = mp.t; S.mR = mp.r; S.mB = mp.b; S.mL = mp.l;
+        $('#ppMT').value = mp.t; $('#ppMR').value = mp.r; $('#ppMB').value = mp.b; $('#ppML').value = mp.l;
+      } else {
+        S.mT = clamp(parseFloat($('#ppMT').value) || 0, 0, 30);
+        S.mR = clamp(parseFloat($('#ppMR').value) || 0, 0, 30);
+        S.mB = clamp(parseFloat($('#ppMB').value) || 0, 0, 30);
+        S.mL = clamp(parseFloat($('#ppML').value) || 0, 0, 30);
+      }
+      S.dpi = parseInt($('#ppDpi').value, 10) || 150;
+      S.jpegQ = clamp(parseInt($('#ppJpegQ').value, 10) || 85, 50, 100);
+      S.dot = clamp(parseFloat($('#ppDot').value) || 6, 1, 60);
+      S.gray = $('#ppGray').checked; S.halftone = $('#ppHalftone').value;
+      S.bg = $('#ppBg').value; S.rotate = parseInt($('#ppRotate').value, 10) || 0;
+      S.flipH = $('#ppFlipH').checked; S.flipV = $('#ppFlipV').checked;
+      S.guidePage = $('#ppGuidePage').checked; S.labels = $('#ppLabels').checked;
+      S.cropMarks = $('#ppCropMarks').checked; S.regMarks = $('#ppRegMarks').checked;
+      $$('[data-ov]', root).forEach(function (c) { S.ov[c.getAttribute('data-ov')] = c.checked; });
+      applyPaper(); showMode(); save();
+    }
+
+    var lastUnit = S.unit, lastRot = S.rotate, lastFlip = '';
+    root.addEventListener('input', onChange);
+    root.addEventListener('change', onChange);
+    function onChange(e) {
+      var t = e.target;
+      if (!t || !t.matches || !t.matches('input,select')) return;
+      // paired range <-> number
+      var pairs = { ppMagRange: 'ppMag', ppMag: 'ppMagRange', ppJpegQRange: 'ppJpegQ', ppJpegQ: 'ppJpegQRange', ppDotRange: 'ppDot', ppDot: 'ppDotRange' };
+      if (pairs[t.id]) $('#' + pairs[t.id]).value = t.value;
+      if (t.id === 'ppOverlapRange') $('#ppOverlap').value = raw(fromMm(parseFloat(t.value)));
+      if (t.id === 'ppOverlap') $('#ppOverlapRange').value = clamp(toMm(parseFloat(t.value) || 0), 0, 30);
+      if (t.id === 'ppBleedRange') $('#ppBleed').value = raw(fromMm(parseFloat(t.value)));
+      if (t.id === 'ppBleed') $('#ppBleedRange').value = clamp(toMm(parseFloat(t.value) || 0), 0, 10);
+
+      var unitChanged = t.name === 'ppUnit';
+      if (unitChanged) { S.unit = t.value; syncUnitLabels(); }
+
+      readDom();
+
+      if (S.lockAspect && IMG && (t.id === 'ppPhysW')) { syncPhysicalFromAspect(); readDom(); }
+      if (S.lockAspect && IMG && (t.id === 'ppPhysH')) {
+        S.physW = S.physH * imgAspect();
+        $('#ppPhysW').value = raw(fromMm(S.physW));
+      }
+      if (t.id === 'ppRotate' || t.id === 'ppFlipH' || t.id === 'ppFlipV') { previewBmp = null; lastPreviewKey = ''; }
+      if (!previewBmp && IMG) { ensurePreviewBmp(geometry()).then(schedule); }
+      schedule();
+    }
+
+    // presets
+    var PRESETS = {
+      'a4-a0':  { paper: 'a4', orient: 'portrait', mode: 'physical', physW: 841, physH: 1189, lockAspect: false, fit: 'fill', join: 'overlap', overlap: 10 },
+      '2x2':    { mode: 'grid', cols: 2, rows: 2, lockAspect: true },
+      'wall':   { mode: 'grid', cols: 5, rows: 4, lockAspect: false, fit: 'fill' },
+      'sewing': { mode: 'scale', mag: 100, srcPpi: 300, join: 'trim', bleed: 3, dpi: 300, lockAspect: true, marginPreset: 'safe' },
+      'map':    { paper: 'a4', orient: 'landscape', mode: 'grid', cols: 4, rows: 3, lockAspect: true, join: 'overlap', overlap: 10 },
+      'banner': { orient: 'landscape', mode: 'grid', cols: 5, rows: 1, lockAspect: false, fit: 'fill', join: 'overlap', overlap: 12 }
+    };
+    $$('[data-preset]', root).forEach(function (b) {
+      b.addEventListener('click', function () {
+        var p = PRESETS[b.getAttribute('data-preset')];
+        Object.keys(p).forEach(function (k) { S[k] = p[k]; });
+        pushToDom();
+        if (IMG && S.mode === 'physical' && S.lockAspect) syncPhysicalFromAspect();
+        readDom(); schedule();
+        msg('Preset applied: ' + b.textContent.trim() + '. Check the quality advisor before printing.', 'success');
+      });
+    });
+
+    // "snap to max sharp size"
+    root.addEventListener('click', function (e) {
+      if (!e.target.matches('[data-snapmax]')) return;
+      var o = orientedImage();
+      S.mode = 'physical';
+      S.physW = o.w / 150 * MM_IN;
+      S.physH = S.physW / imgAspect();
+      S.lockAspect = true; S.fit = 'fit';
+      pushToDom(); readDom(); schedule();
+    });
+
+    // overlays
+    $$('[data-ov]', root).forEach(function (c) {
+      c.addEventListener('change', function () { S.ov[c.getAttribute('data-ov')] = c.checked; schedule(); });
+    });
+    $('[data-fitscreen]', root).addEventListener('click', schedule);
+
+    // file
+    $('[data-file]', root).addEventListener('change', function (e) {
+      loadFile(e.target.files && e.target.files[0]);
+      e.target.value = '';
+    });
+    $('[data-sample]', root).addEventListener('click', async function () {
+      loadFile(await sampleImage());
+    });
+    var dz = $('[data-drop]', root);
+    ['dragenter', 'dragover'].forEach(function (ev) {
+      dz.addEventListener(ev, function (e) { e.preventDefault(); dz.classList.add('is-over'); });
+    });
+    ['dragleave', 'drop'].forEach(function (ev) {
+      dz.addEventListener(ev, function (e) { e.preventDefault(); dz.classList.remove('is-over'); });
+    });
+    dz.addEventListener('drop', function (e) { loadFile(e.dataTransfer.files && e.dataTransfer.files[0]); });
+    window.addEventListener('paste', function (e) {
+      var items = (e.clipboardData || {}).items || [];
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].type && items[i].type.indexOf('image/') === 0) { loadFile(items[i].getAsFile()); break; }
+      }
+    });
+
+    // actions
+    $('[data-generate]', root).addEventListener('click', generatePDF);
+    $('[data-zip]', root).addEventListener('click', generateZIP);
+    $('[data-calibrate]', root).addEventListener('click', calibrationSheet);
+    $('[data-cancel]', root).addEventListener('click', function () { cancelled = true; });
+    $('[data-reset]', root).addEventListener('click', function () {
+      if (IMG && IMG.bitmap && IMG.bitmap.close) { try { IMG.bitmap.close(); } catch (e) {} }
+      IMG = null; previewBmp = null; lastPreviewKey = '';
+      $('[data-editor]', root).classList.add('hidden');
+      $('.pp-upload', root).style.display = '';
+      $('[data-msg]', root).classList.add('hidden');
+      $('[data-file-meta]', root).hidden = true;
+    });
+
+    var rz;
+    window.addEventListener('resize', function () { clearTimeout(rz); rz = setTimeout(schedule, 150); });
+
+    // boot
+    if (!restore()) localeDefaults();
+    pushToDom();
+    readDom();
+
+    // service worker (offline + instant repeat visits)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/poster-printer-sw.js', { scope: '/poster-printer.html' }).catch(function () {});
+      });
+    }
+  })();
+  </script>
+  <script src="assets/js/side-ads.js" defer></script>
+  <script src="assets/js/inline-ads.js" data-in-article defer></script>
+</body>
+</html>

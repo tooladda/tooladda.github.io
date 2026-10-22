@@ -1,0 +1,2158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+  <meta name="description" content="Compress JPG, PNG, WebP, GIF, BMP, and AVIF images online free. Batch compress with Balanced, Maximum Compression, or High Quality modes, compare before/after, resize, and download a ZIP — 100% private, runs entirely in your browser." />
+  <title>Image Compressor — Compress JPG, PNG, WebP & More Free | ToolAdda</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    /* Image Compressor — "the 8×8 block".
+       JPEG and WebP squeeze a photo by cutting it into small blocks and
+       simplifying each one. The cover shows exactly that: one sunset, left half
+       as shot, right half in blocks, with the size it saves. A strip of
+       shrinking squares runs along the top of the cover as the page's mark.
+       Violet is the one action colour; the sunset colours are decoration
+       only, and green/red keep their meaning (smaller / larger file). */
+    body.ic-page {
+      --ic-bg: #f4f2fa;
+      --ic-card: #ffffff;
+      --ic-well: #f8f6fd;
+      --ic-line: rgba(49, 30, 99, .12);
+      --ic-line-2: rgba(49, 30, 99, .24);
+      --ic-ink: #1c1433;
+      --ic-ink-2: #3b3355;
+      --ic-mute: #676083;
+      --ic-accent: #6d28d9;
+      --ic-accent-hover: #5b21b6;
+      --ic-accent-ink: #ffffff;
+      --ic-accent-text: #5b21b6;
+      --ic-accent-soft: rgba(109, 40, 217, .08);
+      --ic-accent-ring: rgba(109, 40, 217, .34);
+      --ic-good: #15803d;
+      --ic-good-soft: rgba(21, 128, 61, .1);
+      --ic-bad: #b91c1c;
+      --ic-bad-soft: rgba(185, 28, 28, .08);
+      --ic-shadow: 0 1px 0 rgba(49, 30, 99, .05), 0 18px 40px -26px rgba(49, 30, 99, .45);
+      --accent: var(--ic-accent);
+      --accent-strong: var(--ic-accent-text);
+      --accent-soft: var(--ic-accent-soft);
+      background: var(--ic-bg);
+    }
+    [data-theme="dark"] body.ic-page {
+      --ic-bg: #100d1a;
+      --ic-card: #181426;
+      --ic-well: #141122;
+      --ic-line: rgba(226, 220, 255, .1);
+      --ic-line-2: rgba(226, 220, 255, .2);
+      --ic-ink: #f1eefc;
+      --ic-ink-2: #d6d0ec;
+      --ic-mute: #a39cc0;
+      --ic-accent: #a78bfa;
+      --ic-accent-hover: #c4b5fd;
+      --ic-accent-ink: #160d2e;
+      --ic-accent-text: #c4b5fd;
+      --ic-accent-soft: rgba(167, 139, 250, .12);
+      --ic-accent-ring: rgba(167, 139, 250, .45);
+      --ic-good: #4ade80;
+      --ic-good-soft: rgba(74, 222, 128, .1);
+      --ic-bad: #fca5a5;
+      --ic-bad-soft: rgba(252, 165, 165, .1);
+      --ic-shadow: 0 1px 0 rgba(0, 0, 0, .4), 0 20px 44px -26px rgba(0, 0, 0, .9);
+    }
+    body.ic-page [hidden] { display: none !important; }
+    #compressor-page { scroll-margin-top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+
+    .ic-shell { padding: .6rem 0 3rem; }
+    .ic-page .breadcrumb { margin: .35rem 0 .9rem; font-size: .86rem; }
+    .ic-page .breadcrumb a { color: var(--ic-accent-text); font-weight: 700; }
+
+    /* ---------- buttons ---------- */
+    .ic-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .45rem;
+      min-height: 2.75rem; padding: .6rem 1.15rem; border-radius: 10px; border: 1px solid transparent;
+      font: inherit; font-size: .92rem; font-weight: 800; line-height: 1.2; text-decoration: none; cursor: pointer;
+      transition: background-color .15s, border-color .15s, color .15s, transform .1s;
+    }
+    .ic-btn svg { width: 18px; height: 18px; flex: none; }
+    .ic-btn:active:not(:disabled) { transform: translateY(1px); }
+    .ic-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .ic-btn--primary { background: var(--ic-accent); color: var(--ic-accent-ink); border-color: var(--ic-accent); box-shadow: 0 8px 18px -10px var(--ic-accent); }
+    .ic-btn--primary:hover:not(:disabled) { background: var(--ic-accent-hover); border-color: var(--ic-accent-hover); color: var(--ic-accent-ink); }
+    .ic-btn--ghost { background: var(--ic-card); color: var(--ic-ink); border-color: var(--ic-line-2); }
+    .ic-btn--ghost:hover:not(:disabled) { border-color: var(--ic-accent); color: var(--ic-accent-text); }
+    .ic-btn--lg { min-height: 3.1rem; padding-inline: 1.5rem; font-size: 1rem; }
+    .ic-btn.hidden { display: none; }
+    /* the camera / URL buttons injected by image-source-picker.js */
+    .ic-page .isp-btn { min-height: 2.75rem; border-radius: 10px; }
+    .ic-page :is(.ic-btn, .ic-mode-btn, .ic-folder-link, .ic-compare-link, .ic-related a, .isp-btn):focus-visible,
+    .ic-page .ic-tool-card :is(input, select):focus-visible, .ic-page .ic-advanced summary:focus-visible {
+      outline: 3px solid var(--ic-accent-ring); outline-offset: 2px;
+    }
+
+    /* ---------- top: cover, tool, ad ----------
+       Under 700px one column: cover, tool, ad, then the lead and the trust
+       cards, so a phone meets the drop zone and then the ad in the first
+       screen. From 700px the cover is a full-width band and the 300x250 sits
+       beside the tool, never above it; it stays in view (sticky) while the
+       tool grows. Between 700 and 899px, once images are added, the tool
+       needs the width back, so the ad drops below it. */
+    .ic-top { display: grid; gap: 1rem; align-items: start; grid-template-areas: "cover" "tool" "ad" "intro" "extras"; }
+    .ic-top > * { min-width: 0; }
+    .ic-cover { grid-area: cover; }
+    .ic-tool-card { grid-area: tool; }
+    .ic-ad-zone { grid-area: ad; }
+    .ic-intro { grid-area: intro; }
+    .ic-extras { grid-area: extras; }
+    @media (min-width: 700px) {
+      .ic-top { grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "cover cover" "tool ad" "intro intro" "extras extras"; column-gap: 1.1rem; }
+      .ic-ad-zone { position: sticky; top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+    }
+    @media (min-width: 700px) and (max-width: 899px) {
+      .ic-top.is-editing { grid-template-columns: minmax(0, 1fr); grid-template-areas: "cover" "tool" "ad" "intro" "extras"; }
+      .ic-top.is-editing .ic-ad-zone { position: static; }
+    }
+
+    /* ---------- ad slot beside / after the tool ----------
+       One 300x250 at every width. inline-ads.js only shows .ta-inline-ad
+       below 1000px, so it is forced on here, and data-unit="inline" gives it
+       its size. */
+    body.ic-page .ic-ad-zone { text-align: center; }
+    body.ic-page .ic-ad-zone .ta-inline-ad { display: block !important; margin: 0 auto !important; }
+    @media (max-width: 340px) { .ic-ad-zone { margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); } }
+
+    /* ---------- cover ---------- */
+    .ic-cover {
+      position: relative; overflow: hidden; padding: 1.5rem 1.4rem 1.25rem; border-radius: 16px; background: var(--ic-card);
+      border: 1px solid var(--ic-line); box-shadow: var(--ic-shadow);
+    }
+    /* the page's mark: a row of squares that shrink and fade, left to right */
+    .ic-cover::before {
+      content: ""; position: absolute; left: 0; right: 0; top: 0; height: 7px;
+      background: repeating-linear-gradient(90deg, var(--ic-accent) 0 12px, transparent 12px 15px);
+      -webkit-mask-image: linear-gradient(90deg, #000 20%, transparent 95%); mask-image: linear-gradient(90deg, #000 20%, transparent 95%);
+    }
+    /* sits in the band's top-right corner, so it adds no height */
+    .ic-badge {
+      position: absolute; top: 1.1rem; right: 1.2rem;
+      display: inline-flex; align-items: center; gap: .35rem; margin: 0; padding: .28rem .62rem; border-radius: 6px;
+      background: var(--ic-accent-soft); border: 1px solid var(--ic-accent-ring); color: var(--ic-accent-text);
+      font-size: .72rem; font-weight: 900; letter-spacing: .05em; text-transform: uppercase;
+    }
+    .ic-title { margin: 0; color: var(--ic-ink); letter-spacing: -.025em; }
+    .ic-title .ic-t1 { display: block; padding-right: 13rem; font-size: clamp(2rem, 1.2rem + 2.6vw, 2.7rem); font-weight: 900; line-height: 1.02; }
+    .ic-title .ic-dash { display: none; }
+    .ic-title .ic-t2 { display: block; margin-top: .45rem; font-size: clamp(1.08rem, .9rem + .9vw, 1.45rem); font-weight: 800; line-height: 1.3; color: var(--ic-ink-2); }
+    .ic-title .ic-free { padding: 0 .3em; border-radius: 5px; background: var(--ic-accent); color: var(--ic-accent-ink); }
+    .ic-title .ic-nw { white-space: nowrap; }
+    .ic-trust-row { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .85rem; }
+    .ic-trust-pill {
+      display: inline-flex; align-items: center; padding: .3rem .6rem; border-radius: 8px; background: var(--ic-well);
+      border: 1px solid var(--ic-line); color: var(--ic-ink-2); font-size: .78rem; font-weight: 700;
+    }
+    .ic-trust-pill:first-child { background: var(--ic-good-soft); border-color: rgba(21, 128, 61, .25); color: var(--ic-good); }
+
+    /* the sample photo: as shot on the left, in blocks on the right. The
+       labels come from data-t, so they are decoration, not page text. */
+    .ic-sample { position: relative; width: 100%; max-width: 360px; margin: 0; overflow: hidden; border-radius: 12px; aspect-ratio: 8 / 5; box-shadow: 0 16px 30px -18px rgba(49, 30, 99, .7); }
+    .ic-sample-art { display: block; width: 100%; height: 100%; }
+    .ic-sample-tag {
+      position: absolute; top: .5rem; padding: .18rem .45rem; border-radius: 5px; background: rgba(15, 10, 30, .62); color: #fff;
+      font: 800 .64rem/1.3 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .04em; white-space: nowrap;
+    }
+    .ic-sample-tag::before { content: attr(data-t); }
+    .ic-sample-tag--a { left: .5rem; }
+    .ic-sample-tag--b { right: .5rem; }
+    .ic-sample-save {
+      position: absolute; left: 50%; bottom: .6rem; transform: translateX(-50%); padding: .25rem .6rem; border-radius: 999px;
+      background: #fff; color: #5b21b6; font: 900 .78rem/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; box-shadow: 0 6px 14px -6px rgba(0, 0, 0, .5);
+    }
+    .ic-sample-save::before { content: attr(data-t); }
+    .ic-sample .ic-blocks { animation: ic-settle 1.2s steps(6) .3s both; }
+    @keyframes ic-settle { from { opacity: .2; } to { opacity: 1; } }
+
+    .ic-intro { display: grid; gap: 1rem; align-items: center; padding: .15rem .2rem 0; }
+    @media (min-width: 700px) { .ic-intro { grid-template-columns: minmax(0, 1fr) minmax(240px, 340px); gap: 1.4rem; } }
+    .ic-lead { margin: 0; max-width: 78ch; padding-left: .85rem; border-left: 3px solid var(--ic-accent); color: var(--ic-ink-2); font-size: .98rem; line-height: 1.7; }
+
+    /* ---------- tool card ---------- */
+    .ic-tool-card {
+      position: relative; padding: 1.1rem; border-radius: 16px; background: var(--ic-card);
+      border: 1px solid var(--ic-line); border-top: 4px solid var(--ic-accent); box-shadow: var(--ic-shadow);
+    }
+    .ic-drop {
+      --isp-accent: var(--ic-accent);
+      display: grid; justify-items: center; gap: .3rem; padding: 1.5rem 1rem 1.3rem; text-align: center; cursor: pointer;
+      border: 2px dashed var(--ic-line-2); border-radius: 12px; background: var(--ic-well); transition: border-color .15s, background-color .15s;
+    }
+    .ic-drop:hover, .ic-drop.active { border-color: var(--ic-accent); background: var(--ic-accent-soft); }
+    .ic-drop-art { width: 118px; height: 76px; margin-bottom: .2rem; }
+    .ic-drop-art .ph { fill: var(--ic-card); stroke: var(--ic-ink-2); stroke-width: 1.6; stroke-linejoin: round; }
+    .ic-drop-art .sky { fill: #e0567a; }
+    .ic-drop-art .sun { fill: #ffd27a; }
+    .ic-drop-art .hill { fill: #6d3a8a; }
+    .ic-drop-art .arrow { fill: none; stroke: var(--ic-accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+    .ic-drop-art .shrink { transform-box: fill-box; transform-origin: center; animation: ic-squeeze 3.2s ease-in-out infinite; }
+    @keyframes ic-squeeze { 0%, 20% { transform: scale(1); } 50%, 75% { transform: scale(.68); } 100% { transform: scale(1); } }
+    .ic-drop-title { margin: .1rem 0 0; font-size: 1.14rem; font-weight: 900; line-height: 1.3; color: var(--ic-ink); }
+    .ic-drop-sub { margin: 0; max-width: 34rem; font-size: .88rem; line-height: 1.5; color: var(--ic-mute); }
+    .ic-drop .isp-actions { margin-top: .65rem; }
+    .ic-folder-link {
+      margin-top: .35rem; padding: .25rem .4rem; border: 0; background: none; color: var(--ic-accent-text);
+      font: inherit; font-size: .84rem; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+    }
+    /* once images are in, the drop zone shrinks to an "add more" strip */
+    .ic-tool-card.has-files .ic-drop { padding: .8rem 1rem; }
+    .ic-tool-card.has-files .ic-drop-art, .ic-tool-card.has-files .ic-drop-sub { display: none; }
+    .ic-tool-card.has-files .ic-drop-title { font-size: .98rem; }
+
+    .ic-page .ic-msg { margin: .8rem 0 0; }
+
+    /* everything below the drop zone waits for the first image */
+    .ic-work { display: none; margin-top: 1rem; }
+    .ic-tool-card.has-files .ic-work { display: block; }
+    .ic-work-title { margin: 0 0 .55rem; font-size: .72rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--ic-mute); }
+
+    .ic-mode-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .55rem; margin: 0 0 .9rem; }
+    .ic-mode-btn {
+      position: relative; display: grid; gap: .2rem; align-content: start; min-width: 0; padding: .8rem .8rem .75rem; text-align: left; cursor: pointer;
+      border: 1px solid var(--ic-line-2); border-radius: 12px; background: var(--ic-card); color: var(--ic-ink); font: inherit;
+      transition: border-color .15s, background-color .15s, box-shadow .15s;
+    }
+    .ic-mode-btn:hover { border-color: var(--ic-accent); }
+    .ic-mode-btn strong { font-size: .9rem; line-height: 1.25; }
+    .ic-mode-btn > span:not(.ic-mode-badge) { font-size: .77rem; line-height: 1.4; color: var(--ic-mute); }
+    .ic-mode-btn.is-active { border-color: var(--ic-accent); background: var(--ic-accent-soft); box-shadow: inset 0 0 0 1px var(--ic-accent); }
+    .ic-mode-btn.is-active strong { color: var(--ic-accent-text); }
+    .ic-mode-badge {
+      position: absolute; top: -.55rem; right: .55rem; padding: .12rem .45rem; border-radius: 999px; background: var(--ic-accent); color: var(--ic-accent-ink);
+      font-size: .6rem; font-weight: 900; letter-spacing: .04em; text-transform: uppercase;
+    }
+
+    .ic-custom-row { display: none; flex-wrap: wrap; gap: 1rem; align-items: flex-end; margin: 0 0 .9rem; padding: .85rem 1rem; border-radius: 12px; border: 1px dashed var(--ic-accent-ring); background: var(--ic-accent-soft); }
+    .ic-custom-row.is-visible { display: flex; }
+    .ic-custom-field { display: grid; gap: .35rem; min-width: 200px; flex: 1; }
+    .ic-custom-field label { font-weight: 800; font-size: .86rem; color: var(--ic-ink); }
+    .ic-custom-field input[type="range"] { width: 100%; accent-color: var(--ic-accent); }
+    .ic-quality-readout { font-size: .78rem; line-height: 1.45; color: var(--ic-mute); }
+    .ic-tool-card input[type="number"], .ic-tool-card select {
+      width: 100%; min-height: 2.5rem; padding: .45rem .65rem; border-radius: 9px; border: 1px solid var(--ic-line-2);
+      background: var(--ic-card); color: var(--ic-ink); font: inherit; font-size: .92rem; box-sizing: border-box;
+    }
+    .ic-tool-card input:disabled { opacity: .5; }
+
+    .ic-advanced { margin: 0 0 .9rem; overflow: hidden; border-radius: 12px; border: 1px solid var(--ic-line); background: var(--ic-well); }
+    .ic-advanced summary { display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .75rem .95rem; list-style: none; cursor: pointer; font-size: .9rem; font-weight: 800; color: var(--ic-ink); }
+    .ic-advanced summary::-webkit-details-marker { display: none; }
+    .ic-advanced summary::after { content: "+"; font-weight: 900; color: var(--ic-accent-text); }
+    .ic-advanced[open] summary::after { content: "\2212"; }
+    .ic-advanced-body { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; padding: .9rem .95rem; border-top: 1px solid var(--ic-line); }
+    .ic-advanced-body label { display: block; margin-bottom: .3rem; font-size: .82rem; font-weight: 800; color: var(--ic-ink); }
+    .ic-advanced-note { margin: 0; padding: 0 .95rem .9rem; font-size: .78rem; line-height: 1.5; color: var(--ic-mute); }
+    .ic-check { display: flex !important; align-items: center; gap: .5rem; min-height: 2.5rem; cursor: pointer; }
+    .ic-check input { width: 17px; height: 17px; accent-color: var(--ic-accent); }
+    .ic-meta-note { display: flex; align-items: flex-start; gap: .45rem; margin: 0 0 .9rem; padding: .55rem .75rem; border-radius: 10px; background: var(--ic-good-soft); border: 1px solid rgba(21, 128, 61, .22); color: var(--ic-good); font-size: .8rem; font-weight: 700; line-height: 1.45; }
+
+    .ic-actions { display: flex; flex-wrap: wrap; gap: .55rem; margin: 0 0 .9rem; }
+    .ic-actions .ic-btn--lg { flex: 1 1 14rem; }
+
+    .ic-progress-wrap { margin: 0 0 .9rem; }
+    .ic-progress-track { height: 10px; overflow: hidden; border-radius: 99px; background: var(--ic-well); border: 1px solid var(--ic-line); }
+    .ic-progress-fill { width: 0; height: 100%; border-radius: 99px; background: var(--ic-accent); transition: width .2s ease; }
+    .ic-progress-text { margin: .35rem 0 0; font-size: .82rem; font-weight: 700; color: var(--ic-mute); }
+
+    /* ---------- file list (rows are built by the script) ---------- */
+    .ic-page .ic-file-list { display: grid; gap: .55rem; margin: 0; padding: 0; list-style: none; }
+    .ic-page .ic-file-list .pdf-file-item { display: none; }
+    .ic-file-row { display: grid; grid-template-columns: 60px minmax(0, 1fr) auto; gap: .85rem; align-items: center; padding: .7rem .8rem; border-radius: 12px; border: 1px solid var(--ic-line); background: var(--ic-well); }
+    .ic-file-row .pdf-image-preview { width: 60px; height: 60px; overflow: hidden; border-radius: 8px; border: 1px solid var(--ic-line); background: repeating-conic-gradient(var(--ic-line) 0% 25%, transparent 0% 50%) 50% / 12px 12px; }
+    .ic-file-row .pdf-image-preview img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .ic-file-meta { min-width: 0; }
+    .ic-file-name { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem; margin: 0 0 .2rem; font-size: .9rem; font-weight: 800; color: var(--ic-ink); overflow-wrap: anywhere; }
+    .ic-format-chip, .ic-alpha-chip { padding: .1rem .4rem; border-radius: 5px; font-size: .64rem; font-weight: 900; letter-spacing: .03em; text-transform: uppercase; }
+    .ic-format-chip { background: var(--ic-accent-soft); color: var(--ic-accent-text); }
+    .ic-alpha-chip { background: var(--ic-line); color: var(--ic-ink-2); }
+    .ic-stat-line { display: flex; flex-wrap: wrap; align-items: center; gap: .2rem .8rem; margin: .1rem 0; font-size: .82rem; color: var(--ic-mute); }
+    .ic-size-ok { color: var(--ic-good); font-weight: 900; }
+    .ic-size-bad { color: var(--ic-bad); font-weight: 900; }
+    .ic-ratio-chip { font-weight: 900; color: var(--ic-accent-text); }
+    .ic-status-tag { padding: .15rem .5rem; border-radius: 999px; background: var(--ic-accent-soft); color: var(--ic-accent-text); font-size: .7rem; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; }
+    .ic-compare-link { padding: 0; border: 0; background: none; color: var(--ic-accent-text); font: inherit; font-size: .82rem; font-weight: 800; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+    .ic-file-actions { display: flex; flex-direction: column; align-items: flex-end; gap: .4rem; }
+    .ic-file-actions .secondary-btn { display: inline-flex; align-items: center; min-height: 2.3rem; padding: .35rem .8rem; border-radius: 8px; border: 1px solid var(--ic-accent); background: var(--ic-accent); color: var(--ic-accent-ink); font-size: .82rem; font-weight: 800; text-decoration: none; }
+    .ic-file-actions .pdf-remove-btn { display: grid; place-items: center; width: 2.1rem; height: 2.1rem; padding: 0; border-radius: 8px; border: 1px solid var(--ic-line-2); background: var(--ic-card); color: var(--ic-bad); box-shadow: none; }
+    .ic-file-actions .pdf-remove-btn:hover { border-color: var(--ic-bad); background: var(--ic-bad-soft); transform: none; }
+
+    /* ---------- summary ---------- */
+    .ic-summary { display: none; margin-top: 1rem; padding: 1rem; border-radius: 12px; background: var(--ic-well); border: 1px solid var(--ic-line); border-left: 4px solid var(--ic-good); }
+    .ic-summary.is-visible { display: block; }
+    .ic-summary-title { margin: 0 0 .75rem; font-size: 1.05rem; font-weight: 900; color: var(--ic-ink); }
+    .ic-summary-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .5rem; }
+    .ic-summary-stat { padding: .6rem; border-radius: 10px; background: var(--ic-card); border: 1px solid var(--ic-line); text-align: center; }
+    .ic-summary-stat strong { display: block; font-size: 1.12rem; font-weight: 900; color: var(--ic-ink); font-variant-numeric: tabular-nums; }
+    .ic-summary-stat span { font-size: .68rem; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; color: var(--ic-mute); }
+    .ic-summary-stat:nth-child(4) strong { color: var(--ic-good); }
+    .ic-summary-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .85rem; }
+
+    .ic-page .message-box.ic-msg { padding: .6rem .8rem; border-radius: 10px; font-size: .88rem; font-weight: 700; line-height: 1.45; box-shadow: none; }
+    .ic-page .message-box.ic-msg.success { background: var(--ic-good-soft); color: var(--ic-good); border: 1px solid rgba(21, 128, 61, .25); }
+    .ic-page .message-box.ic-msg.error { background: var(--ic-bad-soft); color: var(--ic-bad); border: 1px solid rgba(185, 28, 28, .25); }
+
+    .ic-extras { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .55rem; }
+    .ic-trust-card { display: flex; align-items: flex-start; gap: .65rem; padding: .8rem .85rem; border-radius: 12px; background: var(--ic-card); border: 1px solid var(--ic-line); }
+    .ic-trust-card .ic { flex: none; font-size: 1.25rem; line-height: 1.2; }
+    .ic-trust-card strong { display: block; font-size: .86rem; color: var(--ic-ink); }
+    .ic-trust-card p { margin: .15rem 0 0; font-size: .78rem; line-height: 1.45; color: var(--ic-mute); }
+
+    /* ---------- sections below the tool ---------- */
+    .ic-sec { padding: 2.5rem 0 0; }
+    .ic-h2, .ic-sec > .ic-card > h2:first-child, .ic-faq > h2 { color: var(--ic-ink); }
+    .ic-h2 { margin: 0 0 .45rem; text-align: center; font-size: clamp(1.4rem, 2.8vw, 1.9rem); line-height: 1.2; }
+    /* squares shrinking under each section title, like the cover strip */
+    .ic-h2::after, .ic-faq > h2::after {
+      content: ""; display: block; width: 4.6rem; height: 8px; margin: .6rem auto 0;
+      background: linear-gradient(var(--ic-accent), var(--ic-accent)) 0 0 / 8px 8px no-repeat, linear-gradient(var(--ic-accent), var(--ic-accent)) 12px 1px / 6px 6px no-repeat,
+        linear-gradient(var(--ic-accent), var(--ic-accent)) 22px 2px / 4px 4px no-repeat, linear-gradient(var(--ic-accent), var(--ic-accent)) 30px 3px / 2px 2px no-repeat;
+      transform: translateX(1.2rem);
+    }
+    .ic-sub { max-width: 62ch; margin: 0 auto 1.4rem; text-align: center; color: var(--ic-mute); }
+    .ic-card { padding: clamp(1.1rem, 2.6vw, 1.6rem); border-radius: 14px; background: var(--ic-card); border: 1px solid var(--ic-line); box-shadow: var(--ic-shadow); }
+    .ic-card h2 { margin: 0 0 .7rem; padding-left: .8rem; border-left: 5px solid var(--ic-accent); font-size: clamp(1.15rem, 2.3vw, 1.4rem); line-height: 1.3; color: var(--ic-ink); }
+    .ic-card p, .ic-card li { font-size: .95rem; line-height: 1.75; color: var(--ic-ink-2); }
+    .ic-card p:last-child { margin-bottom: 0; }
+    .ic-card ul { padding-left: 1.2rem; margin-bottom: 0; }
+    .ic-card strong { color: var(--ic-ink); }
+    .ic-grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; align-items: stretch; }
+
+    .ic-steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .7rem; margin: 0; padding: 0; list-style: none; }
+    .ic-step { padding: 1rem .9rem; border-radius: 12px; background: var(--ic-card); border: 1px solid var(--ic-line); }
+    .ic-step .n { display: grid; place-items: center; width: 2rem; height: 2rem; margin-bottom: .55rem; border-radius: 7px; background: var(--ic-accent); color: var(--ic-accent-ink); font-weight: 900; }
+    .ic-step h3 { margin: 0 0 .3rem; font-size: .98rem; color: var(--ic-ink); }
+    .ic-step p { margin: 0; font-size: .86rem; line-height: 1.55; color: var(--ic-mute); }
+
+    .ic-table-wrap { overflow: hidden; border-radius: 12px; border: 1px solid var(--ic-line); background: var(--ic-card); }
+    .ic-card .ic-table-wrap { margin-top: .9rem; }
+    .ic-compare-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .ic-compare-table th, .ic-compare-table td { padding: .6rem .75rem; border-bottom: 1px solid var(--ic-line); text-align: left; vertical-align: top; color: var(--ic-ink-2); }
+    .ic-compare-table tbody tr:last-child td { border-bottom: 0; }
+    .ic-compare-table th { background: var(--ic-well); color: var(--ic-ink); font-size: .74rem; font-weight: 900; letter-spacing: .05em; text-transform: uppercase; }
+    .ic-compare-table td:first-child { color: var(--ic-ink); font-weight: 800; }
+    .ic-compare-table .ic-pick { color: var(--ic-accent-text); font-weight: 900; }
+
+    .ic-faq .grid-2 { gap: .55rem; align-items: start; }
+    .ic-faq > h2 { margin: 0 0 1.4rem; text-align: center; font-size: clamp(1.4rem, 2.8vw, 1.9rem); line-height: 1.2; }
+    .ic-page .ic-faq .faq-item { padding: 0; border-radius: 10px; background: var(--ic-card); border: 1px solid var(--ic-line); box-shadow: none; transform: none; }
+    .ic-page .ic-faq .faq-item:hover { border-color: var(--ic-line-2); box-shadow: none; transform: none; }
+    .ic-page .ic-faq summary { position: relative; padding: .8rem 2.2rem .8rem .95rem; list-style: none; cursor: pointer; line-height: 1.4; color: var(--ic-ink); }
+    .ic-page .ic-faq summary::-webkit-details-marker { display: none; }
+    .ic-page .ic-faq summary::after { content: "+"; position: absolute; right: .95rem; top: .75rem; font-weight: 900; color: var(--ic-accent-text); }
+    .ic-page .ic-faq .faq-item[open] summary::after { content: "\2212"; }
+    .ic-page .ic-faq .faq-item p { margin: 0; padding: 0 .95rem .9rem; font-size: .9rem; line-height: 1.65; color: var(--ic-ink-2); }
+
+    /* Related tools (rewritten by app.js) in this page's palette; the shared
+       single column is `1fr`, which a long card can push past a 320px phone. */
+    .ic-page .related-tools-section { margin-top: 2.5rem; background: var(--ic-card); border-color: var(--ic-line); border-radius: 14px; box-shadow: var(--ic-shadow); }
+    .ic-page .related-tools-eyebrow { color: var(--ic-accent-text); }
+    .ic-page .related-tools-title { color: var(--ic-ink); }
+    .ic-page .related-tools-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: .6rem; }
+    .ic-page .related-tool-card { min-width: 0; background: var(--ic-well); border-color: var(--ic-line); box-shadow: none; color: var(--ic-ink); }
+    .ic-page .related-tool-card:hover, .ic-page .related-tool-card:focus-visible { border-color: var(--ic-accent); }
+    .ic-page .related-tool-body { min-width: 0; }
+
+    .ic-final { position: relative; overflow: hidden; margin: 2.5rem 0 0; padding: 2rem 1.25rem; border-radius: 14px; text-align: center; background: var(--ic-card); border: 1px solid var(--ic-line); box-shadow: var(--ic-shadow); }
+    .ic-final::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 7px; background: repeating-linear-gradient(90deg, var(--ic-accent) 0 12px, transparent 12px 15px); -webkit-mask-image: linear-gradient(90deg, transparent 5%, #000 50%, transparent 95%); mask-image: linear-gradient(90deg, transparent 5%, #000 50%, transparent 95%); }
+    .ic-final h2 { margin: 0 0 .45rem; font-size: clamp(1.35rem, 2.8vw, 1.8rem); color: var(--ic-ink); }
+    .ic-final p { max-width: 56ch; margin: 0 auto 1.1rem; color: var(--ic-mute); }
+
+    /* ---------- before/after overlay ---------- */
+    .ic-compare-overlay { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 1rem; background: rgba(12, 8, 24, .75); }
+    .ic-compare-overlay.hidden { display: none; }
+    .ic-compare-panel { width: 100%; max-width: 920px; padding: 1rem; border-radius: 16px; background: var(--ic-card); border: 1px solid var(--ic-line); box-shadow: 0 24px 80px rgba(0, 0, 0, .4); }
+    .ic-compare-head { display: flex; align-items: center; justify-content: space-between; gap: .6rem; margin-bottom: .6rem; }
+    .ic-compare-head p { margin: 0; font-weight: 800; color: var(--ic-ink); overflow-wrap: anywhere; }
+    .ic-compare-stage { position: relative; width: 100%; height: min(60vh, 480px); overflow: hidden; border-radius: 12px; background: #0b0816; }
+    .ic-compare-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+    .ic-compare-stage img[data-compare-after] { clip-path: inset(0 0 0 50%); }
+    .ic-compare-divider { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: #fff; box-shadow: 0 0 0 1px rgba(0, 0, 0, .35); pointer-events: none; }
+    .ic-compare-label { position: absolute; top: .5rem; padding: .2rem .5rem; border-radius: 6px; background: rgba(0, 0, 0, .5); color: #fff; font-size: .7rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; pointer-events: none; }
+    .ic-compare-label.before { left: .5rem; }
+    .ic-compare-label.after { right: .5rem; }
+    .ic-compare-slider { width: 100%; margin-top: .75rem; accent-color: var(--ic-accent); }
+    .ic-compare-stats { margin: .5rem 0 0; font-size: .86rem; text-align: center; color: var(--ic-mute); }
+
+    /* ---------- phone sticky bar ---------- */
+    .ic-sticky-cta {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; padding: .55rem .75rem calc(.55rem + env(safe-area-inset-bottom));
+      background: var(--ic-card); border-top: 1px solid var(--ic-line-2); box-shadow: 0 -14px 30px -20px rgba(0, 0, 0, .45);
+      transform: translateY(110%); visibility: hidden; transition: transform .2s ease, visibility 0s linear .2s;
+    }
+    .ic-sticky-cta.is-visible { transform: none; visibility: visible; transition: transform .2s ease; }
+    .ic-sticky-cta .ic-btn { width: 100%; min-height: 3rem; font-size: 1rem; }
+    body.ic-page.ic-sticky-on { padding-bottom: calc(4.6rem + env(safe-area-inset-bottom)); }
+    @media (min-width: 769px) { .ic-sticky-cta { display: none !important; } }
+
+    /* ---------- smaller screens ---------- */
+    @media (max-width: 1000px) { .ic-mode-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ic-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 860px) { .ic-summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .ic-extras { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 760px) { .ic-grid2, .ic-faq .grid-2 { grid-template-columns: 1fr; } }
+    @media (max-width: 899px) { .ic-title .ic-t1 { padding-right: 0; } .ic-cover .ic-badge { display: none; } }
+    @media (max-width: 699px) { .ic-drop-art { display: none; } }
+    @media (max-width: 699px) {
+      /* phones: the cover keeps only the headline (the chips repeat the trust
+         cards), so the drop zone and the ad after it reach the first screen */
+      .ic-cover { padding: 1.3rem 1.1rem 1.1rem; }
+      .ic-cover .ic-trust-row { display: none; }
+      .ic-title .ic-t1 { font-size: clamp(1.75rem, 8.4vw, 2.4rem); }
+      .ic-title .ic-t2 { margin-top: .35rem; font-size: clamp(1rem, 4.6vw, 1.2rem); }
+      .ic-sample { justify-self: center; }
+    }
+    @media (max-width: 640px) {
+      .ic-compare-table, .ic-compare-table tbody, .ic-compare-table tr, .ic-compare-table td { display: block; width: 100%; }
+      .ic-table-wrap { overflow: visible; border: 0; background: none; }
+      .ic-compare-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+      .ic-compare-table tr { margin-bottom: .55rem; padding: .6rem .8rem; border: 1px solid var(--ic-line); border-radius: 12px; background: var(--ic-card); }
+      .ic-compare-table td { padding: .14rem 0; border: 0; }
+      .ic-compare-table td:first-child { margin-bottom: .2rem; }
+      .ic-compare-table td[data-label]::before { content: attr(data-label) ": "; color: var(--ic-ink); font-weight: 700; }
+      .ic-file-row { grid-template-columns: 52px minmax(0, 1fr); }
+      .ic-file-row .pdf-image-preview { width: 52px; height: 52px; }
+      .ic-file-actions { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; }
+      .ic-advanced-body { grid-template-columns: 1fr; }
+      .ic-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 559px) {
+      /* 10px gutters: a 320px phone then has the 300px its ads need */
+      body.ic-page .ic-main, body.ic-page .ta-support { width: calc(100% - 20px); }
+      .ic-page .breadcrumb { display: none; }
+      .ic-tool-card { padding: .85rem; }
+      .ic-drop { padding: 1rem .7rem .95rem; }
+      .ic-drop-art { display: none; }
+      .ic-drop-sub { font-size: .8rem; }
+      .ic-drop .isp-actions { gap: .4rem; }
+      .ic-drop .isp-actions > .ic-btn, .ic-page .ic-drop .isp-btn { flex: 1 1 auto; min-height: 2.6rem; padding-inline: .5rem; font-size: .8rem; gap: .3rem; }
+      .ic-drop .isp-actions > .ic-btn svg { width: 16px; height: 16px; }
+      /* phones cannot pick a folder, and "Browse" is enough of a label there */
+      .ic-long, .ic-folder-link { display: none; }
+      .ic-extras, .ic-steps { grid-template-columns: 1fr; }
+      .ic-mode-btn { padding: .7rem .65rem; }
+      .ic-page .related-tools-section { padding: 1rem .85rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      body.ic-page *, body.ic-page *::before, body.ic-page *::after { animation: none !important; transition: none !important; }
+    }
+    @media print { .ic-sticky-cta, .ic-ad-zone { display: none !important; } }
+  </style>
+  <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header. --pca is redefined
+         per theme so a deep colour is lifted on dark backgrounds. */
+      :root { --pca: 109, 40, 217; }
+      [data-theme="dark"] { --pca: 139, 92, 246; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 139, 92, 246; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+
+  <meta name="theme-color" content="#6d28d9" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="author" content="ToolAdda" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <link rel="canonical" href="https://tooladda.online/image-compressor.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+  <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+  <link rel="manifest" href="/manifest.json" />
+
+  <meta property="og:title" content="Image Compressor — Compress JPG, PNG, WebP & More Free | ToolAdda" />
+  <meta property="og:description" content="Batch compress JPG, PNG, WebP, GIF, BMP, and AVIF images online for free. Choose a compression mode, compare before/after, resize, and download a ZIP — 100% private and browser-based." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tooladda.online/image-compressor.html" />
+  <meta property="og:site_name" content="ToolAdda" />
+  <meta property="og:image" content="https://tooladda.online/assets/images/og/image-compressor.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Image Compressor — Compress JPG, PNG, WebP &amp; More Free — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="Image Compressor — Compress JPG, PNG, WebP &amp; More Free — free online tool on ToolAdda, runs in your browser with no sign-up." />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Image Compressor — Compress JPG, PNG, WebP & More Free | ToolAdda" />
+  <meta name="twitter:description" content="Free browser-based image compressor with batch compression, live before/after comparison, and ZIP download. Nothing is ever uploaded." />
+  <meta name="twitter:image" content="https://tooladda.online/assets/images/og/image-compressor.jpg" />
+
+  <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/image-compressor.html",
+      "url": "https://tooladda.online/image-compressor.html",
+      "name": "Image Compressor — Compress JPG, PNG, WebP & More Free | ToolAdda",
+      "description": "Compress JPG, PNG, WebP, GIF, BMP, and AVIF images online free. Batch compress, compare before/after, resize, and download a ZIP — 100% private, runs entirely in your browser.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "ToolAdda",
+        "alternateName": [
+          "Tool Adda",
+          "Tools Adda",
+          "ToolsAdda",
+          "Tooladda",
+          "ToolAdda.online"
+        ],
+        "url": "https://tooladda.online/"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "ToolAdda Image Compressor",
+      "operatingSystem": "Browser",
+      "applicationCategory": "UtilityApplication",
+      "url": "https://tooladda.online/image-compressor.html",
+      "description": "A free, private, browser-based image compressor that batch-compresses JPG, PNG, WebP, GIF, BMP, and AVIF images using canvas-based re-encoding, with quality presets, custom quality, target-size compression, resizing, before/after comparison, and ZIP download.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Batch compression for multiple images",
+        "Balanced, Maximum Compression, High Quality, and Custom modes",
+        "Optional exact target file size (KB)",
+        "Resize before compressing",
+        "Automatic transparency preservation for PNG/WebP",
+        "Automatic EXIF and metadata removal",
+        "Before/after slider comparison",
+        "ZIP download for batch results",
+        "100% client-side — no upload, no signup"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tooladda.online/image-compressor.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Image Compressor"
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to compress images online with ToolAdda",
+      "description": "Compress JPG, PNG, WebP, and other images for free directly in your browser — no upload required.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Add your images",
+          "text": "Drag & drop, browse files, or paste one or more JPG, PNG, WebP, GIF, BMP, or AVIF images."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Pick a compression mode",
+          "text": "Choose Balanced, Maximum Compression, High Quality, or Custom (exact quality or target KB size)."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Adjust output settings (optional)",
+          "text": "Choose an output format or enable resizing before compression."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Compress and compare",
+          "text": "Click Compress images, then use the before/after slider to check the result."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Download",
+          "text": "Download each image individually or grab every compressed file at once as a ZIP."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does this image compressor work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Everything runs locally in your browser using the HTML5 Canvas API. Your image is drawn onto an in-memory canvas and re-encoded at a lower quality or smaller file size — no file is ever sent to a server."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my image uploaded anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Compression happens entirely on your device. Images never leave your browser, and nothing is stored or logged."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this tool really free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, completely free with no signup, no watermark, and no daily limit on how many images you can compress."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I compress multiple images at once?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Drag and drop or select as many images as you like, and they'll be compressed as a batch using the same settings."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which image formats can I upload?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "JPG, JPEG, PNG, WebP, GIF, and BMP are supported everywhere. AVIF is supported for upload in browsers that can decode it. TIFF files can't be processed because no web browser can open them directly."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which formats can I compress my images into?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can output JPEG, PNG, or WebP. AVIF output is offered automatically only in browsers that support encoding AVIF from a canvas."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does compressing an image reduce its quality?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Some quality change is inherent to compression. Balanced and High Quality modes keep loss visually unnoticeable; Maximum Compression trades more quality for a smaller file."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the difference between Balanced, Maximum Compression, High Quality, and Custom?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Balanced (75% quality) gives the best size-to-quality ratio for most photos. Maximum Compression (40%) produces the smallest possible file. High Quality (90%) keeps loss minimal for archival or print use. Custom lets you set an exact quality percentage or a target file size yourself."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I compress an image to an exact file size, like 100 KB?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - switch to Custom mode and enter a target size in KB. The tool searches for the highest quality that still fits your target (JPEG/WebP/AVIF output only)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I compress transparent PNG or WebP images?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Transparency is detected automatically and preserved for PNG or WebP output. Choosing JPEG output will fill transparent areas white, since JPEG has no alpha channel."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this tool remove EXIF and other metadata?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, automatically, as a side effect of redrawing the image on a canvas - there's no separate toggle needed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I resize an image before compressing it?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Open the output settings panel, enable resizing, and set a max width and/or height — the image is scaled down before compression, which often gives a smaller file at higher visual quality than compression alone."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work on mobile phones?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The interface is fully responsive and works with your phone's camera roll and file picker."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use this without an internet connection?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Once the page and its scripts are loaded, compression itself needs no network connection, since it runs locally."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are my images stored anywhere after I close the tab?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Everything lives in your browser's memory for the current session only, and is cleared when you close or refresh the tab."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I compress AVIF images?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can upload and compress AVIF images if your browser can decode AVIF. Unsupported files show a clear message instead of failing silently."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens if I upload an animated GIF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Only the first frame is used — browsers can't extract individual frames from a GIF through the Canvas API, so the result is a static compressed image, not an animation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I download all my compressed images at once?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. After compressing a batch, use \"Download all (ZIP)\" to get every result in one file, or download images individually."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why doesn't my PNG shrink as much as a JPG does?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PNG is lossless, so it can only shrink through more efficient encoding, not by discarding pixel data. Try WebP output if file size matters more than format."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which browsers are supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Any modern browser with Canvas API support - Chrome, Edge, Firefox, and Safari all work. AVIF output appears automatically only where supported."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can beginners use this without any technical knowledge?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The default Balanced mode requires no configuration — just add images and click Compress. Advanced controls are optional and tucked away for anyone who wants more precision."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/image-compressor.html#webpage",
+      "url": "https://tooladda.online/image-compressor.html",
+      "inLanguage": "en",
+      "datePublished": "2026-06-30",
+      "dateModified": "2026-09-09",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="ic-page">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/" aria-label="ToolAdda home">
+        <span class="brand-mark" aria-hidden="true">T</span>
+        <span>ToolAdda</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+            <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+            <path d="M3.1 16.9h10.8" />
+            <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+          </svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+        <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <div class="ic-shell">
+      <aside class="ta-support" aria-label="Support ToolAdda">
+        <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+        <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+      </aside>
+
+      <div class="container ic-main">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span>›</span><a href="/">Image Tools</a><span>›</span><span>Image Compressor</span>
+        </nav>
+
+        <!-- One grid (.ic-top) places these. Under 700px: cover, tool, ad, then
+             the lead and the trust cards. From 700px the cover is a band on
+             top and the ad sits beside the tool — never above it. -->
+        <div class="ic-top">
+          <header class="ic-cover">
+            <div class="ic-cover-copy">
+              <p class="ic-badge">🖼️ Image Tools · No Upload</p>
+              <h1 class="ic-title"><span class="ic-t1">Image Compressor</span> <span class="ic-dash">—</span> <span class="ic-t2">Compress JPG, PNG, WebP &amp; <span class="ic-nw">More, <span class="ic-free">Free</span></span></span></h1>
+              <div class="ic-trust-row" aria-label="Trust highlights">
+                <span class="ic-trust-pill">🔒 Private — no upload</span>
+                <span class="ic-trust-pill">✓ Batch + ZIP</span>
+                <span class="ic-trust-pill">✓ 4 compression modes</span>
+                <span class="ic-trust-pill">✓ Before/after compare</span>
+                <span class="ic-trust-pill">✓ Free forever</span>
+              </div>
+            </div>
+          </header>
+
+          <section class="ic-tool-card" id="compressor-page" data-compressor-page aria-label="Image compressor">
+            <input type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/bmp,image/avif,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif" multiple hidden data-file-input />
+            <input type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/bmp,image/avif,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif" multiple webkitdirectory hidden data-folder-input />
+
+            <!-- A group, not a role="button": it holds real buttons. Clicking
+                 any empty part of it still opens the picker. -->
+            <div class="ic-drop" data-drop-zone role="group" aria-label="Add images: drag and drop them here or browse">
+              <svg class="ic-drop-art" viewBox="0 0 118 76" aria-hidden="true" focusable="false">
+                <g class="shrink"><rect class="ph" x="30" y="6" width="58" height="46" rx="4"/><path class="sky" d="M33 9h52v26H33z" opacity=".35"/><circle class="sun" cx="68" cy="22" r="7"/><path class="hill" d="M33 49V38l14-9 11 8 9-6 18 12v6z"/></g>
+                <path class="arrow" d="M8 30h12m-4-4 4 4-4 4M110 30H98m4-4-4 4 4 4"/>
+                <path class="arrow" d="M44 66h30" opacity=".5"/>
+              </svg>
+              <p class="ic-drop-title">Drag &amp; drop images here</p>
+              <p class="ic-drop-sub">JPG, PNG, WebP, GIF, BMP or AVIF · add as many as you like · paste with Ctrl+V</p>
+              <div class="isp-actions">
+                <button class="ic-btn ic-btn--primary" type="button" data-file-picker><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>Browse<span class="ic-long"> images</span></button>
+                <!-- Camera + URL import, wired by assets/js/image-source-picker.js -->
+                <div class="isp-sources" data-image-sources data-isp-noun="image"></div>
+              </div>
+              <button class="ic-folder-link" type="button" data-folder-picker>or choose a whole folder</button>
+            </div>
+
+            <div class="message-box ic-msg hidden" role="status" aria-live="assertive" data-message></div>
+
+            <!-- Shown once the first image is added (.has-files). -->
+            <div class="ic-work">
+              <p class="ic-work-title">Compression mode</p>
+              <div class="ic-mode-grid" role="group" aria-label="Compression mode">
+                <button type="button" class="ic-mode-btn is-active" data-mode="balanced">
+                  <span class="ic-mode-badge">Recommended</span>
+                  <strong>⚖️ Balanced</strong>
+                  <span>Best size-to-quality ratio for everyday photos.</span>
+                </button>
+                <button type="button" class="ic-mode-btn" data-mode="max">
+                  <strong>📉 Maximum Compression</strong>
+                  <span>Smallest possible file size, more visible quality loss.</span>
+                </button>
+                <button type="button" class="ic-mode-btn" data-mode="high">
+                  <strong>💎 High Quality</strong>
+                  <span>Minimal visual loss — good for print or archives.</span>
+                </button>
+                <button type="button" class="ic-mode-btn" data-mode="custom">
+                  <strong>🎛️ Custom</strong>
+                  <span>Set an exact quality % or a target file size.</span>
+                </button>
+              </div>
+
+              <div class="ic-custom-row" data-custom-row>
+                <div class="ic-custom-field">
+                  <label for="icQuality">Quality: <span data-quality-value>75%</span></label>
+                  <input type="range" id="icQuality" min="1" max="100" value="75" data-quality-slider aria-label="Compression quality" />
+                </div>
+                <div class="ic-custom-field">
+                  <label for="icTargetKb">Target size in KB (optional)</label>
+                  <input type="number" id="icTargetKb" min="1" max="20000" step="1" placeholder="e.g. 150" data-target-kb />
+                  <span class="ic-quality-readout">Overrides the quality slider — finds the highest quality that fits. Works for JPEG/WebP/AVIF output only.</span>
+                </div>
+              </div>
+
+              <details class="ic-advanced">
+                <summary>⚙️ Output format &amp; resize</summary>
+                <div class="ic-advanced-body">
+                  <div>
+                    <label for="icOutputFormat">Output format</label>
+                    <select id="icOutputFormat" data-output-format>
+                      <option value="auto">Auto (best for each image)</option>
+                      <option value="jpeg">JPEG</option>
+                      <option value="png">PNG</option>
+                      <option value="webp">WebP</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="ic-check" for="icResizeToggle"><input type="checkbox" id="icResizeToggle" data-resize-toggle /> Resize before compress</label>
+                  </div>
+                  <div>
+                    <label for="icMaxWidth">Max width (px)</label>
+                    <input type="number" id="icMaxWidth" data-max-width min="20" max="10000" step="1" placeholder="e.g. 1600" disabled />
+                  </div>
+                  <div>
+                    <label for="icMaxHeight">Max height (px)</label>
+                    <input type="number" id="icMaxHeight" data-max-height min="20" max="10000" step="1" placeholder="e.g. 1200" disabled />
+                  </div>
+                </div>
+                <p class="ic-advanced-note">AVIF output is added to this list automatically if your browser can encode it. "Auto" keeps transparent PNG/WebP images transparent and uses JPEG for everything else.</p>
+              </details>
+
+              <p class="ic-meta-note">✓ EXIF, GPS, and ICC metadata are removed automatically from every compressed image — no toggle needed.</p>
+
+              <div class="ic-actions">
+                <button class="ic-btn ic-btn--primary ic-btn--lg" type="button" data-compress-btn disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/></svg>Compress images</button>
+                <a class="ic-btn ic-btn--ghost ic-btn--lg hidden" data-download-all href="#compressor-page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Download all (ZIP)</a>
+              </div>
+
+              <div class="ic-progress-wrap hidden" data-progress-wrap>
+                <div class="ic-progress-track"><div class="ic-progress-fill" data-progress-fill></div></div>
+                <p class="ic-progress-text" data-progress-text>Preparing…</p>
+              </div>
+
+              <ul class="pdf-file-list ic-file-list" data-file-list>
+                <li class="pdf-file-item" aria-hidden="true">No images added yet.</li>
+              </ul>
+
+              <div class="ic-summary" data-summary>
+                <h3 class="ic-summary-title">📊 Compression summary</h3>
+                <div class="ic-summary-grid">
+                  <div class="ic-summary-stat"><strong data-summary-count>0</strong><span>Images</span></div>
+                  <div class="ic-summary-stat"><strong data-summary-original>0 KB</strong><span>Original size</span></div>
+                  <div class="ic-summary-stat"><strong data-summary-compressed>0 KB</strong><span>Compressed size</span></div>
+                  <div class="ic-summary-stat"><strong data-summary-saved>0 KB</strong><span>Space saved</span></div>
+                  <div class="ic-summary-stat"><strong data-summary-ratio>—</strong><span>Compression ratio</span></div>
+                </div>
+                <div class="ic-summary-actions">
+                  <button class="ic-btn ic-btn--ghost" type="button" data-copy-report>📋 Copy report</button>
+                  <button class="ic-btn ic-btn--ghost" type="button" data-reset-all>↺ Compress another batch</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Ad: one 300x250 (see .ic-ad-zone CSS) — beside the tool from
+               700px, straight after it below that. Never above the tool. -->
+          <div class="ic-ad-zone">
+            <div class="ta-inline-ad" data-unit="inline"></div>
+          </div>
+
+          <div class="ic-intro">
+            <p class="ic-lead">Shrink photos and graphics without shipping them to a server. Batch-compress JPG, PNG, WebP, GIF, BMP, and AVIF images, pick a compression mode, compare before and after, and download everything as a ZIP — all inside your browser.</p>
+            <figure class="ic-sample" aria-hidden="true">
+              <svg class="ic-sample-art" viewBox="0 0 240 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="icSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b1f7a"/><stop offset=".4" stop-color="#e0567a"/><stop offset=".74" stop-color="#ffb86b"/></linearGradient><clipPath id="icLeft"><rect width="120" height="150"/></clipPath></defs><g clip-path="url(#icLeft)"><rect width="120" height="150" fill="url(#icSky)"/><rect y="110" width="120" height="40" fill="#ffb86b"/><circle cx="120" cy="86" r="28" fill="#ffe29a"/><polygon points="0,150 0,107.5 4,108.7 8,109.9 12,110.8 16,111.6 20,112.3 24,112.7 28,113.0 32,113.0 36,112.8 40,112.4 44,111.8 48,111.0 52,110.1 56,109.0 60,107.8 64,106.5 68,105.1 72,103.8 76,102.4 80,101.0 84,99.8 88,98.6 92,97.6 96,96.7 100,96.0 104,95.4 108,95.1 112,95.0 116,95.1 120,95.4 120,150" fill="#8a4a9a"/><polygon points="0,150 0,126.9 4,126.4 8,125.7 12,125.0 16,124.2 20,123.4 24,122.5 28,121.5 32,120.6 36,119.6 40,118.6 44,117.7 48,116.8 52,115.9 56,115.1 60,114.4 64,113.7 68,113.2 72,112.7 76,112.4 80,112.1 84,112.0 88,112.0 92,112.1 96,112.3 100,112.7 104,113.1 108,113.7 112,114.3 116,115.0 120,115.8 120,150" fill="#3d1f5c"/></g><g class="ic-blocks"><rect x="120" y="0" width="10" height="10" fill="#541c70"/><rect x="130" y="0" width="10" height="10" fill="#541c70"/><rect x="140" y="0" width="10" height="10" fill="#541c70"/><rect x="150" y="0" width="10" height="10" fill="#541c70"/><rect x="160" y="0" width="10" height="10" fill="#541c70"/><rect x="170" y="0" width="10" height="10" fill="#541c70"/><rect x="180" y="0" width="10" height="10" fill="#541c70"/><rect x="190" y="0" width="10" height="10" fill="#541c70"/><rect x="200" y="0" width="10" height="10" fill="#541c70"/><rect x="210" y="0" width="10" height="10" fill="#541c70"/><rect x="220" y="0" width="10" height="10" fill="#541c70"/><rect x="230" y="0" width="10" height="10" fill="#541c70"/><rect x="120" y="10" width="10" height="10" fill="#703870"/><rect x="130" y="10" width="10" height="10" fill="#703870"/><rect x="140" y="10" width="10" height="10" fill="#703870"/><rect x="150" y="10" width="10" height="10" fill="#703870"/><rect x="160" y="10" width="10" height="10" fill="#703870"/><rect x="170" y="10" width="10" height="10" fill="#703870"/><rect x="180" y="10" width="10" height="10" fill="#703870"/><rect x="190" y="10" width="10" height="10" fill="#703870"/><rect x="200" y="10" width="10" height="10" fill="#703870"/><rect x="210" y="10" width="10" height="10" fill="#703870"/><rect x="220" y="10" width="10" height="10" fill="#703870"/><rect x="230" y="10" width="10" height="10" fill="#703870"/><rect x="120" y="20" width="10" height="10" fill="#8c3870"/><rect x="130" y="20" width="10" height="10" fill="#8c3870"/><rect x="140" y="20" width="10" height="10" fill="#8c3870"/><rect x="150" y="20" width="10" height="10" fill="#8c3870"/><rect x="160" y="20" width="10" height="10" fill="#8c3870"/><rect x="170" y="20" width="10" height="10" fill="#8c3870"/><rect x="180" y="20" width="10" height="10" fill="#8c3870"/><rect x="190" y="20" width="10" height="10" fill="#8c3870"/><rect x="200" y="20" width="10" height="10" fill="#8c3870"/><rect x="210" y="20" width="10" height="10" fill="#8c3870"/><rect x="220" y="20" width="10" height="10" fill="#8c3870"/><rect x="230" y="20" width="10" height="10" fill="#8c3870"/><rect x="120" y="30" width="10" height="10" fill="#a83870"/><rect x="130" y="30" width="10" height="10" fill="#a83870"/><rect x="140" y="30" width="10" height="10" fill="#a83870"/><rect x="150" y="30" width="10" height="10" fill="#a83870"/><rect x="160" y="30" width="10" height="10" fill="#a83870"/><rect x="170" y="30" width="10" height="10" fill="#a83870"/><rect x="180" y="30" width="10" height="10" fill="#a83870"/><rect x="190" y="30" width="10" height="10" fill="#a83870"/><rect x="200" y="30" width="10" height="10" fill="#a83870"/><rect x="210" y="30" width="10" height="10" fill="#a83870"/><rect x="220" y="30" width="10" height="10" fill="#a83870"/><rect x="230" y="30" width="10" height="10" fill="#a83870"/><rect x="120" y="40" width="10" height="10" fill="#a85470"/><rect x="130" y="40" width="10" height="10" fill="#a85470"/><rect x="140" y="40" width="10" height="10" fill="#a85470"/><rect x="150" y="40" width="10" height="10" fill="#a85470"/><rect x="160" y="40" width="10" height="10" fill="#a85470"/><rect x="170" y="40" width="10" height="10" fill="#a85470"/><rect x="180" y="40" width="10" height="10" fill="#a85470"/><rect x="190" y="40" width="10" height="10" fill="#a85470"/><rect x="200" y="40" width="10" height="10" fill="#a85470"/><rect x="210" y="40" width="10" height="10" fill="#a85470"/><rect x="220" y="40" width="10" height="10" fill="#a85470"/><rect x="230" y="40" width="10" height="10" fill="#a85470"/><rect x="120" y="50" width="10" height="10" fill="#e05470"/><rect x="130" y="50" width="10" height="10" fill="#c45470"/><rect x="140" y="50" width="10" height="10" fill="#c45470"/><rect x="150" y="50" width="10" height="10" fill="#c45470"/><rect x="160" y="50" width="10" height="10" fill="#c45470"/><rect x="170" y="50" width="10" height="10" fill="#c45470"/><rect x="180" y="50" width="10" height="10" fill="#c45470"/><rect x="190" y="50" width="10" height="10" fill="#c45470"/><rect x="200" y="50" width="10" height="10" fill="#c45470"/><rect x="210" y="50" width="10" height="10" fill="#c45470"/><rect x="220" y="50" width="10" height="10" fill="#c45470"/><rect x="230" y="50" width="10" height="10" fill="#c45470"/><rect x="120" y="60" width="10" height="10" fill="#fce0a8"/><rect x="130" y="60" width="10" height="10" fill="#fcc48c"/><rect x="140" y="60" width="10" height="10" fill="#e07070"/><rect x="150" y="60" width="10" height="10" fill="#e05470"/><rect x="160" y="60" width="10" height="10" fill="#e05470"/><rect x="170" y="60" width="10" height="10" fill="#e05470"/><rect x="180" y="60" width="10" height="10" fill="#e05470"/><rect x="190" y="60" width="10" height="10" fill="#e05470"/><rect x="200" y="60" width="10" height="10" fill="#e05470"/><rect x="210" y="60" width="10" height="10" fill="#e05470"/><rect x="220" y="60" width="10" height="10" fill="#e05470"/><rect x="230" y="60" width="10" height="10" fill="#e05470"/><rect x="120" y="70" width="10" height="10" fill="#fce0a8"/><rect x="130" y="70" width="10" height="10" fill="#fce0a8"/><rect x="140" y="70" width="10" height="10" fill="#fca88c"/><rect x="150" y="70" width="10" height="10" fill="#e07070"/><rect x="160" y="70" width="10" height="10" fill="#e07070"/><rect x="170" y="70" width="10" height="10" fill="#e07070"/><rect x="180" y="70" width="10" height="10" fill="#e07070"/><rect x="190" y="70" width="10" height="10" fill="#e07070"/><rect x="200" y="70" width="10" height="10" fill="#e07070"/><rect x="210" y="70" width="10" height="10" fill="#e07070"/><rect x="220" y="70" width="10" height="10" fill="#e07070"/><rect x="230" y="70" width="10" height="10" fill="#e07070"/><rect x="120" y="80" width="10" height="10" fill="#fce0a8"/><rect x="130" y="80" width="10" height="10" fill="#fce0a8"/><rect x="140" y="80" width="10" height="10" fill="#fcc48c"/><rect x="150" y="80" width="10" height="10" fill="#fc8c70"/><rect x="160" y="80" width="10" height="10" fill="#fc8c70"/><rect x="170" y="80" width="10" height="10" fill="#fc8c70"/><rect x="180" y="80" width="10" height="10" fill="#fc8c70"/><rect x="190" y="80" width="10" height="10" fill="#fc8c70"/><rect x="200" y="80" width="10" height="10" fill="#fc8c70"/><rect x="210" y="80" width="10" height="10" fill="#fc8c70"/><rect x="220" y="80" width="10" height="10" fill="#fc8c70"/><rect x="230" y="80" width="10" height="10" fill="#fc8c70"/><rect x="120" y="90" width="10" height="10" fill="#e0a8a8"/><rect x="130" y="90" width="10" height="10" fill="#e0c4a8"/><rect x="140" y="90" width="10" height="10" fill="#fcc48c"/><rect x="150" y="90" width="10" height="10" fill="#fca870"/><rect x="160" y="90" width="10" height="10" fill="#fca870"/><rect x="170" y="90" width="10" height="10" fill="#fca870"/><rect x="180" y="90" width="10" height="10" fill="#fca870"/><rect x="190" y="90" width="10" height="10" fill="#fca870"/><rect x="200" y="90" width="10" height="10" fill="#fca870"/><rect x="210" y="90" width="10" height="10" fill="#fca870"/><rect x="220" y="90" width="10" height="10" fill="#fca870"/><rect x="230" y="90" width="10" height="10" fill="#fca870"/><rect x="120" y="100" width="10" height="10" fill="#8c54a8"/><rect x="130" y="100" width="10" height="10" fill="#8c54a8"/><rect x="140" y="100" width="10" height="10" fill="#8c548c"/><rect x="150" y="100" width="10" height="10" fill="#c4708c"/><rect x="160" y="100" width="10" height="10" fill="#e08c70"/><rect x="170" y="100" width="10" height="10" fill="#fca870"/><rect x="180" y="100" width="10" height="10" fill="#fca870"/><rect x="190" y="100" width="10" height="10" fill="#fca870"/><rect x="200" y="100" width="10" height="10" fill="#fca870"/><rect x="210" y="100" width="10" height="10" fill="#fca870"/><rect x="220" y="100" width="10" height="10" fill="#e08c70"/><rect x="230" y="100" width="10" height="10" fill="#c4708c"/><rect x="120" y="110" width="10" height="10" fill="#70388c"/><rect x="130" y="110" width="10" height="10" fill="#8c54a8"/><rect x="140" y="110" width="10" height="10" fill="#8c54a8"/><rect x="150" y="110" width="10" height="10" fill="#8c54a8"/><rect x="160" y="110" width="10" height="10" fill="#8c54a8"/><rect x="170" y="110" width="10" height="10" fill="#8c54a8"/><rect x="180" y="110" width="10" height="10" fill="#a8708c"/><rect x="190" y="110" width="10" height="10" fill="#a8708c"/><rect x="200" y="110" width="10" height="10" fill="#a8708c"/><rect x="210" y="110" width="10" height="10" fill="#8c54a8"/><rect x="220" y="110" width="10" height="10" fill="#8c54a8"/><rect x="230" y="110" width="10" height="10" fill="#8c54a8"/><rect x="120" y="120" width="10" height="10" fill="#381c54"/><rect x="130" y="120" width="10" height="10" fill="#381c54"/><rect x="140" y="120" width="10" height="10" fill="#541c70"/><rect x="150" y="120" width="10" height="10" fill="#543870"/><rect x="160" y="120" width="10" height="10" fill="#70388c"/><rect x="170" y="120" width="10" height="10" fill="#70388c"/><rect x="180" y="120" width="10" height="10" fill="#70388c"/><rect x="190" y="120" width="10" height="10" fill="#70388c"/><rect x="200" y="120" width="10" height="10" fill="#70388c"/><rect x="210" y="120" width="10" height="10" fill="#70388c"/><rect x="220" y="120" width="10" height="10" fill="#543870"/><rect x="230" y="120" width="10" height="10" fill="#381c70"/><rect x="120" y="130" width="10" height="10" fill="#381c54"/><rect x="130" y="130" width="10" height="10" fill="#381c54"/><rect x="140" y="130" width="10" height="10" fill="#381c54"/><rect x="150" y="130" width="10" height="10" fill="#381c54"/><rect x="160" y="130" width="10" height="10" fill="#381c54"/><rect x="170" y="130" width="10" height="10" fill="#381c54"/><rect x="180" y="130" width="10" height="10" fill="#381c54"/><rect x="190" y="130" width="10" height="10" fill="#381c54"/><rect x="200" y="130" width="10" height="10" fill="#381c54"/><rect x="210" y="130" width="10" height="10" fill="#381c54"/><rect x="220" y="130" width="10" height="10" fill="#381c54"/><rect x="230" y="130" width="10" height="10" fill="#381c54"/><rect x="120" y="140" width="10" height="10" fill="#381c54"/><rect x="130" y="140" width="10" height="10" fill="#381c54"/><rect x="140" y="140" width="10" height="10" fill="#381c54"/><rect x="150" y="140" width="10" height="10" fill="#381c54"/><rect x="160" y="140" width="10" height="10" fill="#381c54"/><rect x="170" y="140" width="10" height="10" fill="#381c54"/><rect x="180" y="140" width="10" height="10" fill="#381c54"/><rect x="190" y="140" width="10" height="10" fill="#381c54"/><rect x="200" y="140" width="10" height="10" fill="#381c54"/><rect x="210" y="140" width="10" height="10" fill="#381c54"/><rect x="220" y="140" width="10" height="10" fill="#381c54"/><rect x="230" y="140" width="10" height="10" fill="#381c54"/></g><path d="M120 0v150" stroke="#fff" stroke-width="2"/></svg>
+              <span class="ic-sample-tag ic-sample-tag--a" data-t="ORIGINAL 4.8 MB"></span>
+              <span class="ic-sample-tag ic-sample-tag--b" data-t="COMPRESSED 612 KB"></span>
+              <span class="ic-sample-save" data-t="−87%"></span>
+            </figure>
+          </div>
+
+          <div class="ic-extras" aria-label="Why trust this compressor">
+            <div class="ic-trust-card"><div class="ic" aria-hidden="true">🔒</div><div><strong>100% local</strong><p>Runs fully inside your browser using the Canvas API. Nothing is uploaded, ever.</p></div></div>
+            <div class="ic-trust-card"><div class="ic" aria-hidden="true">🎛️</div><div><strong>4 compression modes</strong><p>Balanced, Maximum Compression, High Quality, or full Custom control.</p></div></div>
+            <div class="ic-trust-card"><div class="ic" aria-hidden="true">📦</div><div><strong>Batch + ZIP</strong><p>Compress a whole folder's worth of images, then download them all at once.</p></div></div>
+            <div class="ic-trust-card"><div class="ic" aria-hidden="true">🆓</div><div><strong>Free, no signup</strong><p>No account, no watermark, no daily limits — unlimited compressions.</p></div></div>
+            <div class="ic-trust-card"><div class="ic" aria-hidden="true">📱</div><div><strong>Mobile ready</strong><p>Works from your phone's gallery with a fully responsive interface.</p></div></div>
+            <div class="ic-trust-card"><div class="ic" aria-hidden="true">🧹</div><div><strong>Nothing stored</strong><p>Close the tab and every image is cleared from memory — no server copies exist.</p></div></div>
+          </div>
+        </div>
+
+        <!-- ================= HOW IT WORKS (new) ================= -->
+        <section class="ic-sec" aria-labelledby="ic-how">
+          <h2 class="ic-h2" id="ic-how">How to compress images in five steps</h2>
+          <p class="ic-sub">No account and no upload — the whole batch is processed on your own device.</p>
+          <ol class="ic-steps">
+            <li class="ic-step"><span class="n">1</span><h3>Add your images</h3><p>Drag and drop, browse, pick a whole folder or paste. JPG, PNG, WebP, GIF, BMP and AVIF all work.</p></li>
+            <li class="ic-step"><span class="n">2</span><h3>Pick a mode</h3><p>Balanced suits most photos. Maximum Compression goes smallest, High Quality keeps detail.</p></li>
+            <li class="ic-step"><span class="n">3</span><h3>Adjust if needed</h3><p>Set an exact quality or a target size in KB, change the output format, or resize first.</p></li>
+            <li class="ic-step"><span class="n">4</span><h3>Compress and compare</h3><p>Press Compress, then drag the before/after slider on any image to check the result.</p></li>
+            <li class="ic-step"><span class="n">5</span><h3>Download</h3><p>Save images one by one, or grab the whole batch as a single ZIP file.</p></li>
+          </ol>
+        </section>
+
+        <!-- ================= WHICH MODE (new) ================= -->
+        <section class="ic-sec" aria-labelledby="ic-which">
+          <h2 class="ic-h2" id="ic-which">Which mode should you pick?</h2>
+          <p class="ic-sub">A quick guide for the most common jobs. You can always compress again with another mode — your original is never changed.</p>
+          <div class="ic-table-wrap">
+            <table class="ic-compare-table">
+              <thead><tr><th scope="col">What the image is for</th><th scope="col">Pick</th><th scope="col">Why</th></tr></thead>
+              <tbody>
+                <tr><td>Website photos and blog images</td><td class="ic-pick" data-label="Pick">Balanced + WebP</td><td data-label="Why">Around 75% quality looks the same on screen at a fraction of the size, and WebP shrinks it further.</td></tr>
+                <tr><td>WhatsApp, email or chat attachments</td><td class="ic-pick" data-label="Pick">Maximum Compression</td><td data-label="Why">Viewed small on a phone, so the extra loss is hard to see and the file sends fast.</td></tr>
+                <tr><td>An online form with a size limit (e.g. under 100 KB)</td><td class="ic-pick" data-label="Pick">Custom + target KB</td><td data-label="Why">The tool searches for the highest quality that still fits the limit, so you do not have to guess.</td></tr>
+                <tr><td>Print, portfolio or product close-ups</td><td class="ic-pick" data-label="Pick">High Quality</td><td data-label="Why">Keeps fine texture and edges; the file still gets noticeably smaller.</td></tr>
+                <tr><td>Logos, screenshots or anything with transparency</td><td class="ic-pick" data-label="Pick">Balanced + Auto format</td><td data-label="Why">Auto keeps transparent images in a format with an alpha channel instead of filling them white.</td></tr>
+                <tr><td>A 4000px camera photo shown at 1200px</td><td class="ic-pick" data-label="Pick">Resize, then Balanced</td><td data-label="Why">Scaling down first removes pixels no one will see, which usually beats heavier compression.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="ic-sec">
+          <div class="ic-card">
+            <h2>What Is Image Compression, and Why Does It Matter?</h2>
+            <p>Image compression is the process of reducing an image's file size while keeping it visually usable. Every photo you take on a phone or camera contains far more data than most screens or use cases actually need — a smaller, well-compressed file loads faster, uses less storage, uses less mobile data, and moves faster through email, chat apps, and websites. For website owners specifically, image weight is one of the biggest levers on page speed: images routinely account for more than half of a page's total download size, so compressing them well is often the single highest-impact performance fix available.</p>
+            <p>This tool compresses images the same way desktop software does, except it runs entirely inside your browser tab using the HTML5 Canvas API. Your image is drawn onto an invisible canvas and re-encoded at a chosen quality level or target size — the pixels never leave your device, and no server ever sees the file.</p>
+          </div>
+        </section>
+
+        <section class="ic-sec">
+          <div class="ic-grid2">
+            <article class="ic-card">
+              <h2>Lossy vs Lossless Compression</h2>
+              <p><strong>Lossless</strong> compression (PNG) shrinks a file by encoding pixel data more efficiently, without discarding any information — decompressing it gives back an exact pixel-for-pixel copy. It's ideal for screenshots, logos, and graphics with sharp edges or text, but it rarely shrinks a photograph very much. <strong>Lossy</strong> compression (JPEG, WebP, AVIF) discards visual detail that's hard for the human eye to notice, which is why a photo can shrink by 70–95% and still look essentially identical on screen. Most everyday compression — for websites, email, and social media — should be lossy; reach for lossless PNG only when you need pixel-perfect accuracy, like a logo with flat colors or a screenshot with fine text.</p>
+            </article>
+            <article class="ic-card">
+              <h2>Image Formats Explained: JPG vs PNG vs WebP vs AVIF</h2>
+              <p><strong>JPG/JPEG</strong> is the universal format for photographs — small, lossy, no transparency. <strong>PNG</strong> is lossless with full transparency support — best for graphics, logos, and screenshots, but larger for photos. <strong>WebP</strong> is a modern format that supports both lossy and lossless modes plus transparency, typically 25–35% smaller than an equivalent JPEG or PNG at the same visual quality, and is now supported by every major browser. <strong>AVIF</strong> is the newest format, often 20–50% smaller again than WebP at comparable quality, but browser and software support is still catching up — some tools and older devices can't open it yet.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="ic-sec">
+          <div class="ic-card">
+            <h2>Format Comparison at a Glance</h2>
+            <div class="ic-table-wrap">
+            <table class="ic-compare-table">
+              <thead><tr><th scope="col">Format</th><th scope="col">Compression</th><th scope="col">Transparency</th><th scope="col">Best for</th><th scope="col">Browser support</th></tr></thead>
+              <tbody>
+                <tr><td>JPG / JPEG</td><td data-label="Compression">Lossy</td><td data-label="Transparency">No</td><td data-label="Best for">Photos, camera images</td><td data-label="Browser support">Universal</td></tr>
+                <tr><td>PNG</td><td data-label="Compression">Lossless</td><td data-label="Transparency">Yes</td><td data-label="Best for">Logos, screenshots, graphics</td><td data-label="Browser support">Universal</td></tr>
+                <tr><td>WebP</td><td data-label="Compression">Lossy or lossless</td><td data-label="Transparency">Yes</td><td data-label="Best for">Websites, general-purpose replacement for JPG/PNG</td><td data-label="Browser support">All modern browsers</td></tr>
+                <tr><td>AVIF</td><td data-label="Compression">Lossy or lossless</td><td data-label="Transparency">Yes</td><td data-label="Best for">Maximum compression on modern sites</td><td data-label="Browser support">Most current browsers, growing</td></tr>
+                <tr><td>GIF</td><td data-label="Compression">Lossless, 256 colors</td><td data-label="Transparency">Yes (binary)</td><td data-label="Best for">Simple animations, icons</td><td data-label="Browser support">Universal (first frame only here)</td></tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="ic-sec">
+          <div class="ic-grid2">
+            <article class="ic-card">
+              <h2>Choosing the Best Compression Settings</h2>
+              <p>There's no single "correct" quality setting — it depends on what the image is for. As a starting point: use <strong>Balanced (≈75% quality)</strong> for general web and social use, <strong>Maximum Compression (≈40%)</strong> when file size is the priority and the image will be viewed small (thumbnails, previews), and <strong>High Quality (≈90%)</strong> for print, portfolios, or any image where fine detail matters. If a platform or form specifies an exact size limit, switch to Custom mode and enter that number in the target-size field instead of guessing a quality percentage.</p>
+            </article>
+            <article class="ic-card">
+              <h2>Compressing Images for Websites, Email, Social &amp; E-commerce</h2>
+              <p>For <strong>websites</strong>, compress hero and banner images to roughly 100–300 KB and thumbnails under 50 KB — this directly improves load time. For <strong>email</strong>, keep attachments under 500 KB each so inboxes stay fast on mobile data. For <strong>social media</strong>, most platforms re-compress on upload anyway, but starting from a 200 KB–1 MB file keeps more of your original detail than letting the platform's own aggressive algorithm decide. For <strong>e-commerce product photos</strong>, aim for the smallest file that still shows texture and color accurately at typical zoom — usually WebP at Balanced or High Quality, since shoppers judge product quality from these images directly.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="ic-sec">
+          <div class="ic-card">
+            <h2>SEO, Core Web Vitals &amp; Page Speed</h2>
+            <p>Search engines increasingly factor real-world page experience into rankings, and images are usually the biggest contributor to a slow <strong>Largest Contentful Paint (LCP)</strong> — the Core Web Vital that measures how quickly the main content becomes visible. Oversized, uncompressed images are one of the most common reasons a page fails Google's Core Web Vitals thresholds. Compressing images before you upload them (rather than relying on a CMS or CDN to do it later) reduces LCP directly, cuts hosting bandwidth costs, and improves mobile experience on slower connections — all of which correlate with better search visibility and lower bounce rates.</p>
+          </div>
+        </section>
+
+        <section class="ic-sec">
+          <div class="ic-grid2">
+            <article class="ic-card">
+              <h2>Metadata Removal &amp; Transparency Preservation</h2>
+              <p>Every photo from a phone or camera carries EXIF metadata — camera model, exposure settings, and often precise GPS coordinates of where it was taken. Redrawing an image through a canvas (as this tool does) strips all of that automatically, along with embedded ICC color profiles, which is both a meaningful privacy improvement and a small extra size saving. Transparency is handled the opposite way — carefully preserved: if your source PNG or WebP has an alpha channel, this tool detects it and keeps output in a transparency-capable format (PNG or WebP) unless you explicitly choose JPEG, which has no alpha channel and will fill transparent areas white.</p>
+            </article>
+            <article class="ic-card">
+              <h2>Browser-Based Compression vs Uploading to a Cloud Tool</h2>
+              <p>Many popular compressors work by uploading your image to a remote server, compressing it there, and sending the result back — which means your file (and any metadata, including location data, still attached) briefly exists on someone else's infrastructure. Browser-based compression, using the Canvas API the way this tool does, skips that step entirely: the image is decoded, redrawn, and re-encoded using your own device's processor, and it's technically impossible for the file to leave your machine during that process. The tradeoff is that some advanced codec options (like true AVIF encoding on unsupported browsers) aren't available everywhere — this tool is upfront about that instead of pretending otherwise.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="ic-sec">
+          <div class="ic-card">
+            <h2>Browser-Based vs Cloud-Upload Compression</h2>
+            <div class="ic-table-wrap">
+            <table class="ic-compare-table">
+              <thead><tr><th scope="col">Aspect</th><th scope="col">Browser-based (this tool)</th><th scope="col">Cloud-upload tools</th></tr></thead>
+              <tbody>
+                <tr><td>File leaves your device</td><td data-label="Browser-based (this tool)">Never</td><td data-label="Cloud-upload tools">Yes, temporarily</td></tr>
+                <tr><td>Signup / account</td><td data-label="Browser-based (this tool)">Not required</td><td data-label="Cloud-upload tools">Often required for batches</td></tr>
+                <tr><td>Speed for small batches</td><td data-label="Browser-based (this tool)">Instant, no upload wait</td><td data-label="Cloud-upload tools">Depends on connection speed</td></tr>
+                <tr><td>Works offline once loaded</td><td data-label="Browser-based (this tool)">Yes</td><td data-label="Cloud-upload tools">No</td></tr>
+                <tr><td>Batch + ZIP download</td><td data-label="Browser-based (this tool)">Yes</td><td data-label="Cloud-upload tools">Varies by tool/plan</td></tr>
+                <tr><td>Cost</td><td data-label="Browser-based (this tool)">Free, unlimited</td><td data-label="Cloud-upload tools">Often rate-limited or paid at scale</td></tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="ic-sec">
+          <div class="ic-grid2">
+            <article class="ic-card">
+              <h2>Batch Compression &amp; Mobile Usage</h2>
+              <p>Add as many images as you like in one go — each is compressed sequentially with the same mode and settings, so a folder of vacation photos or product shots can be processed in one pass instead of one file at a time. On mobile, the same interface works with your phone's photo library and file picker; there's no separate app to install, and the results stay on your device just like on desktop.</p>
+            </article>
+            <article class="ic-card">
+              <h2>Best Practices &amp; Common Mistakes</h2>
+              <ul>
+                <li>Always compress from the original, highest-resolution file — re-compressing an already-compressed JPEG stacks quality loss.</li>
+                <li>Resize before compressing when the display size is much smaller than the original (e.g. a 4000px camera photo shown at 800px wide) — it usually beats compression alone.</li>
+                <li>Use WebP instead of PNG when you need transparency but file size matters — it compresses far more aggressively while keeping the alpha channel.</li>
+                <li>Don't over-compress images with fine text or sharp lines (screenshots, diagrams) — artifacts show up fastest there; use High Quality or PNG for these.</li>
+                <li>Keep an original, uncompressed copy — lossy compression can't be reversed once detail is discarded.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="ic-sec">
+          <div class="ic-card">
+            <h2>Troubleshooting</h2>
+            <p><strong>My file didn't shrink much.</strong> PNGs of photographs and already-compressed JPEGs have less room to shrink — try WebP output or Maximum Compression mode. <strong>A file was rejected.</strong> TIFF files can't be opened by any web browser and aren't supported; convert to JPG or PNG first with another tool. <strong>AVIF won't upload.</strong> Your browser may not be able to decode AVIF yet — try a recent version of Chrome or Edge. <strong>Colors look slightly different after compression.</strong> This is expected — canvas-based processing removes the embedded ICC color profile along with other metadata, so the browser falls back to standard sRGB rendering.</p>
+          </div>
+        </section>
+
+        <section class="ic-sec">
+          <div class="ic-card">
+            <h2>Privacy &amp; Security</h2>
+            <p>This tool is built to be private by default: no image is ever transmitted over the network, no account is required, and no compression activity is logged anywhere. Processing happens using your browser's own Canvas API, which means it also works without an internet connection once the page has loaded. If you're compressing sensitive photos — personal documents, ID scans, private images — that privacy guarantee matters as much as the file-size reduction itself.</p>
+          </div>
+        </section>
+
+        <section class="ic-sec ic-faq faq-section">
+          <h2>Frequently asked questions</h2>
+          <div class="grid-2">
+            <details class="faq-item">
+              <summary><strong>How does this image compressor work?</strong></summary>
+              <p>Everything runs locally in your browser using the HTML5 Canvas API. Your image is drawn onto an in-memory canvas and re-encoded at a lower quality or smaller file size — no file is ever sent to a server.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Is my image uploaded anywhere?</strong></summary>
+              <p>No. Compression happens entirely on your device. Images never leave your browser, and nothing is stored or logged.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Is this tool really free?</strong></summary>
+              <p>Yes, completely free with no signup, no watermark, and no daily limit on how many images you can compress.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I compress multiple images at once?</strong></summary>
+              <p>Yes. Drag and drop or select as many images as you like, and they'll be compressed as a batch using the same settings.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Which image formats can I upload?</strong></summary>
+              <p>JPG, JPEG, PNG, WebP, GIF, and BMP are supported everywhere. AVIF is supported for upload in browsers that can decode it. TIFF files can't be processed because no web browser can open them directly.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Which formats can I compress my images into?</strong></summary>
+              <p>You can output JPEG, PNG, or WebP. AVIF output is offered automatically only in browsers that support encoding AVIF from a canvas.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Does compressing an image reduce its quality?</strong></summary>
+              <p>Some quality change is inherent to compression. Balanced and High Quality modes keep loss visually unnoticeable; Maximum Compression trades more quality for a smaller file.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>What's the difference between the four modes?</strong></summary>
+              <p>Balanced (75%) is the best all-round choice. Maximum Compression (40%) gives the smallest file. High Quality (90%) keeps loss minimal. Custom lets you set an exact quality or a target KB size.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I compress an image to an exact file size, like 100 KB?</strong></summary>
+              <p>Yes — switch to Custom mode and enter a target size in KB. The tool searches for the highest quality that still fits your target (JPEG/WebP/AVIF output only).</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I compress transparent PNG or WebP images?</strong></summary>
+              <p>Yes. Transparency is detected automatically and preserved for PNG or WebP output. Choosing JPEG output will fill transparent areas white, since JPEG has no alpha channel.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Does this tool remove EXIF and other metadata?</strong></summary>
+              <p>Yes, automatically, as a side effect of redrawing the image on a canvas — there's no separate toggle needed.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I resize an image before compressing it?</strong></summary>
+              <p>Yes. Open the output settings panel, enable resizing, and set a max width and/or height before compression.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Does it work on mobile phones?</strong></summary>
+              <p>Yes. The interface is fully responsive and works with your phone's camera roll and file picker.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I use this without an internet connection?</strong></summary>
+              <p>Once the page and its scripts are loaded, compression itself needs no network connection, since it runs locally.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Are my images stored anywhere after I close the tab?</strong></summary>
+              <p>No. Everything lives in your browser's memory for the current session only, and is cleared when you close or refresh the tab.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I compress AVIF images?</strong></summary>
+              <p>You can upload and compress AVIF images if your browser can decode AVIF. Unsupported files show a clear message instead of failing silently.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>What happens if I upload an animated GIF?</strong></summary>
+              <p>Only the first frame is used — the result is a static compressed image, not an animation.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can I download all my compressed images at once?</strong></summary>
+              <p>Yes. After compressing a batch, use "Download all (ZIP)" to get every result in one file, or download images individually.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Why doesn't my PNG shrink as much as a JPG does?</strong></summary>
+              <p>PNG is lossless, so it can only shrink through more efficient encoding, not by discarding pixel data. Try WebP output if file size matters more than format.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Which browsers are supported?</strong></summary>
+              <p>Any modern browser with Canvas API support — Chrome, Edge, Firefox, and Safari all work. AVIF output appears automatically only where supported.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>What's the difference between Balanced, Maximum Compression, High Quality, and Custom?</strong></summary>
+              <p>Balanced (75% quality) gives the best size-to-quality ratio for most photos. Maximum Compression (40%) produces the smallest possible file. High Quality (90%) keeps loss minimal for archival or print use. Custom lets you set an exact quality percentage or a target file size yourself.</p>
+            </details>
+            <details class="faq-item">
+              <summary><strong>Can beginners use this without any technical knowledge?</strong></summary>
+              <p>Yes. The default Balanced mode requires no configuration — just add images and click Compress. Advanced controls are optional and tucked away for anyone who wants more precision.</p>
+            </details>
+          </div>
+        </section>
+
+        <aside class="related-tools-section" aria-label="Related image tools">
+          <div class="related-tools-section__header">
+            <div>
+              <p class="related-tools-eyebrow">Related tools</p>
+              <h2 class="related-tools-title">More image tools</h2>
+            </div>
+          </div>
+          <div class="related-tools-grid">
+            <a class="related-tool-card" href="exif-metadata-remover.html"><div class="related-tool-icon">🛡️</div><div><strong>EXIF Metadata Remover</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Strip GPS and photo metadata</span></div></a>
+            <a class="related-tool-card" href="image-compress-to-kb.html"><div class="related-tool-icon">🎯</div><div><strong>Compress Image to KB</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Exact KB target for forms</span></div></a>
+            <a class="related-tool-card" href="signature-resizer.html"><div class="related-tool-icon">✍️</div><div><strong>Signature Resizer</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">SSC, PAN &amp; exam signatures</span></div></a>
+            <a class="related-tool-card" href="image-resizer.html"><div class="related-tool-icon">📐</div><div><strong>Image Resizer</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Resize by pixels or %</span></div></a>
+            <a class="related-tool-card" href="image-crop.html"><div class="related-tool-icon">✂️</div><div><strong>Crop Image</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Crop before compressing</span></div></a>
+            <a class="related-tool-card" href="heic-converter.html"><div class="related-tool-icon">🔄</div><div><strong>HEIC Converter</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">iPhone photos to JPG</span></div></a>
+            <a class="related-tool-card" href="jpg-to-png.html"><div class="related-tool-icon">🖼️</div><div><strong>JPG to PNG</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Convert image format</span></div></a>
+            <a class="related-tool-card" href="png-to-webp.html"><div class="related-tool-icon">⚡</div><div><strong>PNG to WebP</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Smaller web images</span></div></a>
+            <a class="related-tool-card" href="image-background-remover.html"><div class="related-tool-icon">🪄</div><div><strong>Background Remover</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Remove image backgrounds</span></div></a>
+            <a class="related-tool-card" href="images-to-pdf.html"><div class="related-tool-icon">📄</div><div><strong>Images to PDF</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Combine into one PDF</span></div></a>
+          </div>
+        </aside>
+
+        <!-- ================= FINAL CTA ================= -->
+        <section class="ic-final">
+          <h2>Make your next image lighter</h2>
+          <p>Batch compress, compare before and after, and download a ZIP — free, private and entirely in your browser.</p>
+          <a class="ic-btn ic-btn--primary ic-btn--lg" href="#compressor-page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/></svg>Compress an image now</a>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Phone-only bar. The script shows it only while the control it stands in
+       for (the drop zone, Compress, or Download all) is off screen. -->
+  <div class="ic-sticky-cta" aria-hidden="true">
+    <button type="button" class="ic-btn ic-btn--primary" data-sticky-compress-cta tabindex="-1">🗜️ Compress Images — Free</button>
+  </div>
+
+  <div class="ic-compare-overlay hidden" data-compare-overlay role="dialog" aria-modal="true" aria-label="Before and after comparison">
+    <div class="ic-compare-panel">
+      <div class="ic-compare-head">
+        <p data-compare-title>Comparison</p>
+        <button type="button" class="icon-btn" data-compare-close aria-label="Close comparison">✕</button>
+      </div>
+      <div class="ic-compare-stage" data-compare-stage>
+        <img data-compare-before alt="Original image" />
+        <img data-compare-after alt="Compressed image" />
+        <div class="ic-compare-divider" data-compare-divider aria-hidden="true"></div>
+        <span class="ic-compare-label before" aria-hidden="true">Before</span>
+        <span class="ic-compare-label after" aria-hidden="true">After</span>
+      </div>
+      <input type="range" class="ic-compare-slider" min="0" max="100" value="50" data-compare-slider aria-label="Drag to compare before and after" />
+      <p class="ic-compare-stats" data-compare-stats></p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+        <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+      </div>
+      <div>
+        <h3>Explore</h3>
+        <div class="footer-links">
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms.html">Terms</a>
+        </div>
+      </div>
+      <div>
+        <h3>Stay updated</h3>
+        <p>© <span data-year></span> ToolAdda. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+
+  <script src="assets/js/image-source-picker.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var page = document.querySelector('[data-compressor-page]');
+      var fileInput = page.querySelector('[data-file-input]');
+      var folderInput = page.querySelector('[data-folder-input]');
+      var filePickers = Array.from(document.querySelectorAll('[data-file-picker]'));
+      var folderPickers = Array.from(document.querySelectorAll('[data-folder-picker]'));
+      var dropZone = page.querySelector('[data-drop-zone]');
+      var fileListEl = page.querySelector('[data-file-list]');
+      var modeButtons = Array.from(page.querySelectorAll('.ic-mode-btn'));
+      var customRow = page.querySelector('[data-custom-row]');
+      var qualitySlider = page.querySelector('[data-quality-slider]');
+      var qualityValue = page.querySelector('[data-quality-value]');
+      var targetKbInput = page.querySelector('[data-target-kb]');
+      var outputFormatSelect = page.querySelector('[data-output-format]');
+      var resizeToggle = page.querySelector('[data-resize-toggle]');
+      var maxWidthInput = page.querySelector('[data-max-width]');
+      var maxHeightInput = page.querySelector('[data-max-height]');
+      var compressBtn = page.querySelector('[data-compress-btn]');
+      var downloadAllBtn = page.querySelector('[data-download-all]');
+      var messageBox = page.querySelector('[data-message]');
+      var progressWrap = page.querySelector('[data-progress-wrap]');
+      var progressFill = page.querySelector('[data-progress-fill]');
+      var progressText = page.querySelector('[data-progress-text]');
+      var summaryEl = page.querySelector('[data-summary]');
+      var summaryCount = page.querySelector('[data-summary-count]');
+      var summaryOriginal = page.querySelector('[data-summary-original]');
+      var summaryCompressed = page.querySelector('[data-summary-compressed]');
+      var summarySaved = page.querySelector('[data-summary-saved]');
+      var summaryRatio = page.querySelector('[data-summary-ratio]');
+      var copyReportBtn = page.querySelector('[data-copy-report]');
+      var resetAllBtn = page.querySelector('[data-reset-all]');
+
+      var overlay = document.querySelector('[data-compare-overlay]');
+      var overlayTitle = overlay.querySelector('[data-compare-title]');
+      var overlayBefore = overlay.querySelector('[data-compare-before]');
+      var overlayAfter = overlay.querySelector('[data-compare-after]');
+      var overlayDivider = overlay.querySelector('[data-compare-divider]');
+      var overlaySlider = overlay.querySelector('[data-compare-slider]');
+      var overlayStats = overlay.querySelector('[data-compare-stats]');
+      var overlayClose = overlay.querySelector('[data-compare-close]');
+
+      var queue = [];
+      var idCounter = 0;
+      var currentMode = 'balanced';
+      var jsZipPromise = null;
+      var avifSupported = false;
+
+      var MODE_QUALITY = { balanced: 0.75, max: 0.4, high: 0.9 };
+
+      /* ---------- helpers ---------- */
+      function loadJSZip() {
+        if (window.JSZip) return Promise.resolve(window.JSZip);
+        if (!jsZipPromise) {
+          jsZipPromise = new Promise(function (resolve, reject) {
+            var s = document.createElement('script');
+            s.src = 'assets/js/jszip.min.js';
+            s.onload = function () { resolve(window.JSZip); };
+            s.onerror = function () { reject(new Error('Could not load ZIP library.')); };
+            document.head.appendChild(s);
+          });
+        }
+        return jsZipPromise;
+      }
+
+      function detectAvifSupport() {
+        return new Promise(function (resolve) {
+          try {
+            var c = document.createElement('canvas');
+            c.width = 1; c.height = 1;
+            c.toBlob(function (blob) { resolve(!!(blob && blob.type === 'image/avif')); }, 'image/avif');
+          } catch (e) { resolve(false); }
+        });
+      }
+
+      function showMessage(text, type) {
+        messageBox.textContent = text;
+        messageBox.classList.remove('hidden', 'success', 'error');
+        messageBox.classList.add(type === 'error' ? 'error' : 'success');
+      }
+      function clearMessage() {
+        messageBox.textContent = '';
+        messageBox.classList.add('hidden');
+        messageBox.classList.remove('success', 'error');
+      }
+      function formatBytes(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+      }
+
+      function openPicker() { fileInput.click(); }
+      function openFolderPicker() { folderInput.click(); }
+      filePickers.forEach(function (btn) {
+        btn.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); openPicker(); });
+      });
+      folderPickers.forEach(function (btn) {
+        btn.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); openFolderPicker(); });
+      });
+      dropZone.addEventListener('click', function (e) { if (!e.target.closest('button')) openPicker(); });
+      dropZone.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPicker(); }
+      });
+      ['dragenter', 'dragover'].forEach(function (ev) {
+        dropZone.addEventListener(ev, function (e) { e.preventDefault(); dropZone.classList.add('active'); });
+      });
+      ['dragleave', 'drop'].forEach(function (ev) {
+        dropZone.addEventListener(ev, function (e) { e.preventDefault(); dropZone.classList.remove('active'); });
+      });
+      dropZone.addEventListener('drop', function (e) { addFiles(e.dataTransfer.files); });
+      fileInput.addEventListener('change', function (e) { addFiles(e.target.files); e.target.value = ''; });
+      folderInput.addEventListener('change', function (e) { addFiles(e.target.files); e.target.value = ''; });
+      document.addEventListener('paste', function (e) {
+        var items = (e.clipboardData || {}).items || [];
+        var pasted = [];
+        for (var i = 0; i < items.length; i++) {
+          if (items[i].kind === 'file' && items[i].type.indexOf('image/') === 0) {
+            var f = items[i].getAsFile();
+            if (f) pasted.push(f);
+          }
+        }
+        if (pasted.length) addFiles(pasted);
+      });
+
+      /* ---------- mode + settings UI ---------- */
+      modeButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          modeButtons.forEach(function (b) { b.classList.remove('is-active'); });
+          btn.classList.add('is-active');
+          currentMode = btn.dataset.mode;
+          customRow.classList.toggle('is-visible', currentMode === 'custom');
+        });
+      });
+      qualitySlider.addEventListener('input', function () {
+        qualityValue.textContent = qualitySlider.value + '%';
+      });
+      resizeToggle.addEventListener('change', function () {
+        maxWidthInput.disabled = !resizeToggle.checked;
+        maxHeightInput.disabled = !resizeToggle.checked;
+      });
+
+      function readSettings() {
+        var resize = null;
+        if (resizeToggle.checked) {
+          var mw = parseInt(maxWidthInput.value, 10);
+          var mh = parseInt(maxHeightInput.value, 10);
+          if (mw || mh) resize = { maxWidth: mw || Infinity, maxHeight: mh || Infinity };
+        }
+        var targetKb = null;
+        if (currentMode === 'custom') {
+          var t = parseInt(targetKbInput.value, 10);
+          if (t && t > 0) targetKb = t;
+        }
+        return {
+          mode: currentMode,
+          quality: parseInt(qualitySlider.value, 10),
+          outputFormat: outputFormatSelect.value,
+          targetKb: targetKb,
+          resize: resize
+        };
+      }
+
+      /* ---------- file validation & format detection ---------- */
+      function isTiff(file) {
+        var n = (file.name || '').toLowerCase();
+        return file.type === 'image/tiff' || /\.(tif|tiff)$/.test(n);
+      }
+      function isSupported(file) {
+        var n = (file.name || '').toLowerCase();
+        return /^image\/(jpeg|png|webp|gif|bmp|avif)$/.test(file.type) || /\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(n);
+      }
+      function formatLabel(file) {
+        var t = (file.type || '').toLowerCase();
+        var map = { 'image/jpeg': 'JPG', 'image/png': 'PNG', 'image/webp': 'WEBP', 'image/gif': 'GIF', 'image/bmp': 'BMP', 'image/avif': 'AVIF' };
+        if (map[t]) return map[t];
+        var m = (file.name || '').toLowerCase().match(/\.([a-z0-9]+)$/);
+        return m ? m[1].toUpperCase().replace('JPEG', 'JPG') : 'IMG';
+      }
+      function extFromMime(mime) {
+        if (mime === 'image/png') return 'png';
+        if (mime === 'image/webp') return 'webp';
+        if (mime === 'image/avif') return 'avif';
+        return 'jpg';
+      }
+      function mimeSupportsQuality(mime) {
+        return mime === 'image/jpeg' || mime === 'image/webp' || mime === 'image/avif';
+      }
+      function buildDownloadName(originalName, mime) {
+        var base = originalName.replace(/\.[^/.]+$/, '');
+        return base + '-compressed.' + extFromMime(mime);
+      }
+
+      function detectAlpha(img) {
+        try {
+          var size = 48;
+          var scale = Math.min(1, size / Math.max(img.naturalWidth, img.naturalHeight));
+          var w = Math.max(1, Math.round(img.naturalWidth * scale));
+          var h = Math.max(1, Math.round(img.naturalHeight * scale));
+          var c = document.createElement('canvas');
+          c.width = w; c.height = h;
+          var ctx = c.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          var data = ctx.getImageData(0, 0, w, h).data;
+          for (var i = 3; i < data.length; i += 4) {
+            if (data[i] < 255) return true;
+          }
+          return false;
+        } catch (e) {
+          return false;
+        }
+      }
+
+      /* ---------- queue management ---------- */
+      async function addFiles(fileListLike) {
+        var incoming = Array.from(fileListLike || []);
+        var tiffCount = 0, rejectedCount = 0;
+
+        for (var i = 0; i < incoming.length; i++) {
+          var file = incoming[i];
+          if (isTiff(file)) { tiffCount++; continue; }
+          if (!isSupported(file)) { rejectedCount++; continue; }
+
+          var entry = {
+            id: 'f' + (++idCounter),
+            file: file,
+            originalUrl: URL.createObjectURL(file),
+            originalWidth: null,
+            originalHeight: null,
+            format: formatLabel(file),
+            hasAlpha: null,
+            status: 'pending',
+            errorText: '',
+            resultBlob: null,
+            resultUrl: null,
+            resultWidth: null,
+            resultHeight: null,
+            resultMime: null
+          };
+          queue.push(entry);
+          renderList();
+
+          (function (entry) {
+            var probe = new Image();
+            probe.onload = function () {
+              entry.originalWidth = probe.naturalWidth;
+              entry.originalHeight = probe.naturalHeight;
+              entry.hasAlpha = /^image\/(png|webp|gif|avif)$/.test(entry.file.type) || /\.(png|webp|gif|avif)$/i.test(entry.file.name)
+                ? detectAlpha(probe)
+                : false;
+              renderList();
+            };
+            probe.onerror = function () {
+              entry.status = 'error';
+              entry.errorText = 'This file could not be decoded by your browser.';
+              renderList();
+            };
+            probe.src = entry.originalUrl;
+          })(entry);
+        }
+
+        if (tiffCount && rejectedCount) {
+          showMessage('TIFF files aren\'t supported by any web browser, and some other files were skipped — only JPG, PNG, WebP, GIF, BMP, and AVIF are supported.', 'error');
+        } else if (tiffCount) {
+          showMessage('TIFF files can\'t be opened by web browsers and were skipped. Please convert to JPG or PNG first.', 'error');
+        } else if (rejectedCount) {
+          showMessage('Some files were skipped — only JPG, PNG, WebP, GIF, BMP, and AVIF images are supported.', 'error');
+        } else {
+          clearMessage();
+        }
+
+        compressBtn.disabled = queue.length === 0;
+        renderList();
+      }
+
+      function removeEntry(id) {
+        var idx = queue.findIndex(function (q) { return q.id === id; });
+        if (idx === -1) return;
+        var entry = queue[idx];
+        if (entry.originalUrl) URL.revokeObjectURL(entry.originalUrl);
+        if (entry.resultUrl) URL.revokeObjectURL(entry.resultUrl);
+        queue.splice(idx, 1);
+        compressBtn.disabled = queue.length === 0;
+        renderList();
+        updateDownloadAllVisibility();
+        renderSummary();
+      }
+
+      // Before the first image only the drop zone shows, which keeps the ad
+      // beside or after the tool in the first screen; the settings follow.
+      var topGrid = page.closest('.ic-top');
+      function renderList() {
+        page.classList.toggle('has-files', queue.length > 0);
+        if (topGrid) topGrid.classList.toggle('is-editing', queue.length > 0);
+        updateSticky();
+        fileListEl.innerHTML = '';
+        if (queue.length === 0) {
+          fileListEl.innerHTML = '<li class="pdf-file-item" aria-hidden="true">No images added yet.</li>';
+          return;
+        }
+        queue.forEach(function (entry) { fileListEl.appendChild(buildRow(entry)); });
+      }
+
+      function buildRow(entry) {
+        var li = document.createElement('li');
+        li.className = 'ic-file-row';
+        li.dataset.id = entry.id;
+
+        var thumb = document.createElement('div');
+        thumb.className = 'pdf-image-preview';
+        thumb.innerHTML = '<img src="' + entry.originalUrl + '" alt="' + entry.file.name.replace(/"/g, '') + ' preview" />';
+
+        var meta = document.createElement('div');
+        meta.className = 'ic-file-meta';
+
+        var name = document.createElement('p');
+        name.className = 'ic-file-name';
+        var chips = '<span class="ic-format-chip">' + entry.format + '</span>';
+        if (entry.hasAlpha) chips += '<span class="ic-alpha-chip">Transparent</span>';
+        name.innerHTML = escapeHtml(entry.file.name) + ' ' + chips;
+
+        var origLine = document.createElement('p');
+        origLine.className = 'ic-stat-line';
+        var dims = entry.originalWidth ? (entry.originalWidth + '×' + entry.originalHeight + 'px') : 'Reading…';
+        origLine.innerHTML = '<span>Original: ' + formatBytes(entry.file.size) + '</span><span>' + dims + '</span>';
+
+        var resultLine = document.createElement('p');
+        resultLine.className = 'ic-stat-line';
+
+        if (entry.status === 'pending') {
+          var tag = document.createElement('span');
+          tag.className = 'ic-status-tag';
+          tag.textContent = 'Ready to compress';
+          resultLine.appendChild(tag);
+        } else if (entry.status === 'processing') {
+          resultLine.innerHTML = '<span>⏳ Compressing…</span>';
+        } else if (entry.status === 'error') {
+          resultLine.innerHTML = '<span class="ic-size-bad">' + escapeHtml(entry.errorText || 'Could not compress this file.') + '</span>';
+        } else if (entry.status === 'done') {
+          var okClass = entry.resultBlob.size < entry.file.size ? 'ic-size-ok' : 'ic-size-bad';
+          var pct = Math.round((1 - entry.resultBlob.size / entry.file.size) * 100);
+          var ratio = entry.resultBlob.size ? (entry.file.size / entry.resultBlob.size).toFixed(1) : '1.0';
+          resultLine.innerHTML = '<span class="' + okClass + '">Compressed: ' + formatBytes(entry.resultBlob.size) + '</span>' +
+            '<span>' + entry.resultWidth + '×' + entry.resultHeight + 'px</span>' +
+            '<span>' + (pct >= 0 ? pct + '% smaller' : Math.abs(pct) + '% larger') + '</span>' +
+            '<span class="ic-ratio-chip">' + ratio + 'x</span>';
+          var compareBtn = document.createElement('button');
+          compareBtn.type = 'button';
+          compareBtn.className = 'ic-compare-link';
+          compareBtn.textContent = '🔍 Compare before/after';
+          compareBtn.addEventListener('click', function () { openCompare(entry); });
+          resultLine.appendChild(compareBtn);
+        }
+
+        meta.appendChild(name);
+        meta.appendChild(origLine);
+        meta.appendChild(resultLine);
+
+        var actions = document.createElement('div');
+        actions.className = 'ic-file-actions';
+
+        if (entry.status === 'done') {
+          var dl = document.createElement('a');
+          dl.className = 'secondary-btn';
+          dl.textContent = '⬇️ Download';
+          dl.href = entry.resultUrl;
+          dl.download = buildDownloadName(entry.file.name, entry.resultMime);
+          actions.appendChild(dl);
+        } else if (entry.status === 'error') {
+          var retryBtn = document.createElement('button');
+          retryBtn.type = 'button';
+          retryBtn.className = 'secondary-btn';
+          retryBtn.textContent = '↻ Retry';
+          retryBtn.addEventListener('click', function () { runCompression([entry]); });
+          actions.appendChild(retryBtn);
+        }
+
+        var removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'icon-btn pdf-remove-btn';
+        removeBtn.setAttribute('aria-label', 'Remove ' + entry.file.name);
+        removeBtn.textContent = '✕';
+        removeBtn.addEventListener('click', function () { removeEntry(entry.id); });
+        actions.appendChild(removeBtn);
+
+        li.appendChild(thumb);
+        li.appendChild(meta);
+        li.appendChild(actions);
+        return li;
+      }
+
+      function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+
+      /* ---------- compression engine ---------- */
+      function loadImageEl(url) {
+        return new Promise(function (resolve, reject) {
+          var img = new Image();
+          img.onload = function () { resolve(img); };
+          img.onerror = reject;
+          img.src = url;
+        });
+      }
+      function canvasToBlob(canvas, type, quality) {
+        return new Promise(function (resolve, reject) {
+          canvas.toBlob(function (blob) {
+            if (blob) resolve(blob); else reject(new Error('Could not encode image.'));
+          }, type, quality);
+        });
+      }
+      function drawScaled(img, width, height, mime) {
+        var canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        var ctx = canvas.getContext('2d');
+        if (mime === 'image/jpeg') {
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, width, height);
+        }
+        ctx.drawImage(img, 0, 0, width, height);
+        return canvas;
+      }
+
+      function resolveMime(entry, settings) {
+        if (settings.outputFormat === 'jpeg') return 'image/jpeg';
+        if (settings.outputFormat === 'png') return 'image/png';
+        if (settings.outputFormat === 'webp') return 'image/webp';
+        if (settings.outputFormat === 'avif') return avifSupported ? 'image/avif' : 'image/webp';
+        return entry.hasAlpha ? 'image/webp' : 'image/jpeg';
+      }
+      function resolveQuality(settings) {
+        if (settings.mode === 'custom') return settings.quality / 100;
+        return MODE_QUALITY[settings.mode] || 0.75;
+      }
+      function fitDimensions(naturalWidth, naturalHeight, resize) {
+        if (!resize) return { w: naturalWidth, h: naturalHeight };
+        var fitScale = Math.min(1, resize.maxWidth / naturalWidth, resize.maxHeight / naturalHeight);
+        if (fitScale >= 1) return { w: naturalWidth, h: naturalHeight };
+        return { w: Math.max(1, Math.round(naturalWidth * fitScale)), h: Math.max(1, Math.round(naturalHeight * fitScale)) };
+      }
+
+      async function compressToTargetGeneric(img, naturalWidth, naturalHeight, mime, targetKb, onProgress) {
+        var targetBytes = Math.max(1, Math.round(targetKb * 1024));
+        var scale = 1;
+        var maxScaleSteps = 18;
+
+        for (var attempt = 1; attempt <= maxScaleSteps; attempt++) {
+          var w = Math.max(20, Math.round(naturalWidth * scale));
+          var h = Math.max(20, Math.round(naturalHeight * scale));
+          var canvas = drawScaled(img, w, h, mime);
+
+          var lo = 0.1, hi = 1.0, best = null;
+          for (var i = 0; i < 8; i++) {
+            var mid = (lo + hi) / 2;
+            var blob = await canvasToBlob(canvas, mime, mid);
+            if (onProgress) onProgress(mid, blob.size, targetBytes);
+            if (blob.size <= targetBytes) { best = { blob: blob, quality: mid }; lo = mid; }
+            else { hi = mid; }
+          }
+
+          if (best) return { blob: best.blob, width: w, height: h, mime: mime };
+          if (w <= 24 || h <= 24) break;
+          scale *= 0.9;
+        }
+
+        var finalW = Math.max(20, Math.round(naturalWidth * scale));
+        var finalH = Math.max(20, Math.round(naturalHeight * scale));
+        var finalCanvas = drawScaled(img, finalW, finalH, mime);
+        var finalBlob = await canvasToBlob(finalCanvas, mime, 0.1);
+        return { blob: finalBlob, width: finalW, height: finalH, mime: mime };
+      }
+
+      async function compressOne(entry, settings, onProgress) {
+        var img = await loadImageEl(entry.originalUrl);
+        var mime = resolveMime(entry, settings);
+        var natural = fitDimensions(entry.originalWidth || img.naturalWidth, entry.originalHeight || img.naturalHeight, settings.resize);
+
+        if (settings.targetKb && mimeSupportsQuality(mime)) {
+          return await compressToTargetGeneric(img, natural.w, natural.h, mime, settings.targetKb, onProgress);
+        }
+
+        var quality = resolveQuality(settings);
+        var canvas = drawScaled(img, natural.w, natural.h, mime);
+        var blob = await canvasToBlob(canvas, mime, mime === 'image/png' ? undefined : quality);
+        return { blob: blob, width: natural.w, height: natural.h, mime: mime };
+      }
+
+      async function runCompression(entries) {
+        var settings = readSettings();
+        var total = entries.length;
+        var jpegAlphaCount = 0;
+
+        clearMessage();
+        compressBtn.disabled = true;
+        updateSticky();
+        progressWrap.classList.remove('hidden');
+
+        for (var f = 0; f < total; f++) {
+          var entry = entries[f];
+          entry.status = 'processing';
+          renderList();
+
+          var overallPct = Math.round((f / total) * 100);
+          progressFill.style.width = overallPct + '%';
+          progressText.textContent = 'File ' + (f + 1) + ' of ' + total + ': compressing "' + entry.file.name + '"…';
+
+          try {
+            var result = await compressOne(entry, settings, function (quality, size) {
+              progressText.textContent = 'File ' + (f + 1) + ' of ' + total + ': testing quality ' + Math.round(quality * 100) + '% → ' + formatBytes(size);
+            });
+            if (entry.hasAlpha && result.mime === 'image/jpeg') jpegAlphaCount++;
+            if (entry.resultUrl) URL.revokeObjectURL(entry.resultUrl);
+            entry.resultBlob = result.blob;
+            entry.resultUrl = URL.createObjectURL(result.blob);
+            entry.resultWidth = result.width;
+            entry.resultHeight = result.height;
+            entry.resultMime = result.mime;
+            entry.status = 'done';
+          } catch (err) {
+            entry.status = 'error';
+            entry.errorText = 'Could not compress this file — it may be corrupted or unsupported.';
+          }
+          renderList();
+        }
+
+        progressFill.style.width = '100%';
+        progressText.textContent = 'Done — ' + total + ' image' + (total === 1 ? '' : 's') + ' processed.';
+        window.setTimeout(function () { progressWrap.classList.add('hidden'); }, 1200);
+
+        if (jpegAlphaCount) {
+          showMessage(jpegAlphaCount + ' transparent image' + (jpegAlphaCount === 1 ? '' : 's') + ' were converted to JPEG with a white background, since JPEG has no transparency channel.', 'error');
+        } else {
+          showMessage('Compression complete.', 'success');
+        }
+
+        compressBtn.disabled = false;
+        updateDownloadAllVisibility();
+        renderSummary();
+      }
+
+      compressBtn.addEventListener('click', function () {
+        if (!queue.length) return;
+        runCompression(queue.slice());
+      });
+
+      /* ---------- summary dashboard ---------- */
+      function renderSummary() {
+        var done = queue.filter(function (e) { return e.status === 'done'; });
+        if (!done.length) { summaryEl.classList.remove('is-visible'); return; }
+        var totalOrig = 0, totalComp = 0;
+        done.forEach(function (e) { totalOrig += e.file.size; totalComp += e.resultBlob.size; });
+        var saved = Math.max(0, totalOrig - totalComp);
+        var ratio = totalComp ? (totalOrig / totalComp).toFixed(1) + 'x' : '—';
+
+        summaryCount.textContent = done.length;
+        summaryOriginal.textContent = formatBytes(totalOrig);
+        summaryCompressed.textContent = formatBytes(totalComp);
+        summarySaved.textContent = formatBytes(saved);
+        summaryRatio.textContent = ratio;
+        summaryEl.classList.add('is-visible');
+      }
+
+      copyReportBtn.addEventListener('click', async function () {
+        var done = queue.filter(function (e) { return e.status === 'done'; });
+        if (!done.length) return;
+        var lines = ['ToolAdda Image Compressor — Report', ''];
+        done.forEach(function (e) {
+          lines.push(e.file.name + ': ' + formatBytes(e.file.size) + ' → ' + formatBytes(e.resultBlob.size));
+        });
+        var totalOrig = done.reduce(function (s, e) { return s + e.file.size; }, 0);
+        var totalComp = done.reduce(function (s, e) { return s + e.resultBlob.size; }, 0);
+        lines.push('', 'Total: ' + formatBytes(totalOrig) + ' → ' + formatBytes(totalComp) + ' (' + (totalComp ? (totalOrig / totalComp).toFixed(1) : '1.0') + 'x smaller)');
+        try {
+          await navigator.clipboard.writeText(lines.join('\n'));
+          showMessage('Report copied to clipboard.', 'success');
+        } catch (e) {
+          showMessage('Could not copy the report automatically — please copy it manually.', 'error');
+        }
+      });
+
+      resetAllBtn.addEventListener('click', function () {
+        queue.forEach(function (e) {
+          if (e.originalUrl) URL.revokeObjectURL(e.originalUrl);
+          if (e.resultUrl) URL.revokeObjectURL(e.resultUrl);
+        });
+        queue = [];
+        renderList();
+        compressBtn.disabled = true;
+        summaryEl.classList.remove('is-visible');
+        updateDownloadAllVisibility();
+        clearMessage();
+        dropZone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+
+      /* ---------- ZIP download ---------- */
+      function updateDownloadAllVisibility() {
+        var hasDownloadable = queue.some(function (e) { return e.status === 'done'; });
+        downloadAllBtn.classList.toggle('hidden', !hasDownloadable);
+        updateSticky();
+      }
+
+      downloadAllBtn.addEventListener('click', async function (e) {
+        e.preventDefault();
+        var downloadable = queue.filter(function (en) { return en.status === 'done'; });
+        if (!downloadable.length) return;
+
+        if (downloadable.length === 1) {
+          var only = downloadable[0];
+          var a1 = document.createElement('a');
+          a1.href = only.resultUrl;
+          a1.download = buildDownloadName(only.file.name, only.resultMime);
+          document.body.appendChild(a1);
+          a1.click();
+          document.body.removeChild(a1);
+          return;
+        }
+
+        var origLabel = downloadAllBtn.textContent;
+        try {
+          downloadAllBtn.textContent = '⏳ Building ZIP…';
+          var JSZip = await loadJSZip();
+          var zip = new JSZip();
+          var usedNames = {};
+          downloadable.forEach(function (entry) {
+            var name = buildDownloadName(entry.file.name, entry.resultMime);
+            if (usedNames[name]) { usedNames[name]++; name = name.replace(/(\.[^.]+)$/, '-' + usedNames[name] + '$1'); }
+            else usedNames[name] = 1;
+            zip.file(name, entry.resultBlob);
+          });
+          var zipBlob = await zip.generateAsync({ type: 'blob' });
+          var zipUrl = URL.createObjectURL(zipBlob);
+          var za = document.createElement('a');
+          za.href = zipUrl;
+          za.download = 'compressed-images.zip';
+          document.body.appendChild(za);
+          za.click();
+          document.body.removeChild(za);
+          window.setTimeout(function () { URL.revokeObjectURL(zipUrl); }, 4000);
+        } catch (err) {
+          showMessage('Could not build ZIP — downloading files individually instead.', 'error');
+          downloadable.forEach(function (entry, idx) {
+            window.setTimeout(function () {
+              var a = document.createElement('a');
+              a.href = entry.resultUrl;
+              a.download = buildDownloadName(entry.file.name, entry.resultMime);
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            }, idx * 350);
+          });
+        } finally {
+          downloadAllBtn.textContent = origLabel;
+        }
+      });
+
+      /* ---------- compare overlay ---------- */
+      function updateOverlaySplit(value) {
+        overlayAfter.style.clipPath = 'inset(0 0 0 ' + value + '%)';
+        overlayDivider.style.left = value + '%';
+      }
+      function openCompare(entry) {
+        overlayTitle.textContent = entry.file.name;
+        overlayBefore.src = entry.originalUrl;
+        overlayAfter.src = entry.resultUrl;
+        overlaySlider.value = 50;
+        updateOverlaySplit(50);
+        var pct = Math.round((1 - entry.resultBlob.size / entry.file.size) * 100);
+        overlayStats.textContent = 'Before: ' + formatBytes(entry.file.size) + ' · After: ' + formatBytes(entry.resultBlob.size) + ' · ' + (pct >= 0 ? pct + '% smaller' : Math.abs(pct) + '% larger');
+        overlay.classList.remove('hidden');
+        overlayClose.focus();
+        document.addEventListener('keydown', onOverlayKeydown);
+      }
+      function closeCompare() {
+        overlay.classList.add('hidden');
+        document.removeEventListener('keydown', onOverlayKeydown);
+      }
+      function onOverlayKeydown(e) {
+        if (e.key === 'Escape') closeCompare();
+      }
+      overlaySlider.addEventListener('input', function () { updateOverlaySplit(overlaySlider.value); });
+      overlayClose.addEventListener('click', closeCompare);
+      overlay.addEventListener('click', function (e) { if (e.target === overlay) closeCompare(); });
+
+      /* ---------- phone bottom bar ----------
+         Stands in for whichever control is off screen: the picker before any
+         image is added, then Compress, then Download all once results exist. */
+      var stickyBar = document.querySelector('.ic-sticky-cta');
+      var stickyCta = document.querySelector('[data-sticky-compress-cta]');
+      var phoneQuery = window.matchMedia('(max-width: 768px)');
+      var inView = { tool: true, compress: false, download: false };
+      function stickyPhase() {
+        if (!queue.length) return 'upload';
+        return downloadAllBtn.classList.contains('hidden') ? 'compress' : 'download';
+      }
+      function updateSticky() {
+        if (!stickyBar || !stickyCta) return;
+        var phase = stickyPhase();
+        var label = '🗜️ Compress Images — Free';
+        var show = !inView.tool;
+        if (phase === 'compress') { label = 'Compress images'; show = !inView.compress && !compressBtn.disabled; }
+        else if (phase === 'download') { label = 'Download all (ZIP)'; show = !inView.download; }
+        show = show && phoneQuery.matches;
+        if (stickyCta.textContent !== label) stickyCta.textContent = label;
+        stickyBar.classList.toggle('is-visible', show);
+        stickyBar.setAttribute('aria-hidden', show ? 'false' : 'true');
+        stickyCta.tabIndex = show ? 0 : -1;
+        var was = document.body.classList.contains('ic-sticky-on');
+        document.body.classList.toggle('ic-sticky-on', show);
+        // app.js re-measures the back-to-top button's clearance on scroll.
+        if (was !== show) window.dispatchEvent(new Event('scroll'));
+      }
+      if (stickyCta) {
+        stickyCta.addEventListener('click', function () {
+          var phase = stickyPhase();
+          if (phase === 'upload') { page.scrollIntoView({ behavior: 'smooth', block: 'start' }); openPicker(); }
+          else if (phase === 'compress') compressBtn.click();
+          else downloadAllBtn.click();
+        });
+      }
+      if ('IntersectionObserver' in window) {
+        var stickyWatch = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.target === page) inView.tool = en.isIntersecting;
+            else if (en.target === compressBtn) inView.compress = en.isIntersecting;
+            else if (en.target === downloadAllBtn) inView.download = en.isIntersecting;
+          });
+          updateSticky();
+        });
+        stickyWatch.observe(page);
+        stickyWatch.observe(compressBtn);
+        stickyWatch.observe(downloadAllBtn);
+      }
+      if (phoneQuery.addEventListener) phoneQuery.addEventListener('change', updateSticky);
+      updateSticky();
+
+      /* ---------- init ---------- */
+      detectAvifSupport().then(function (supported) {
+        avifSupported = supported;
+        if (supported) {
+          var opt = document.createElement('option');
+          opt.value = 'avif';
+          opt.textContent = 'AVIF';
+          outputFormatSelect.appendChild(opt);
+        }
+      });
+    })();
+  </script>
+  <script src="assets/js/side-ads.js" defer></script>
+  <script src="assets/js/inline-ads.js" data-in-article defer></script>
+</body>
+</html>

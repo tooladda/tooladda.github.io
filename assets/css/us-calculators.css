@@ -1,0 +1,1284 @@
+/* ==========================================================================
+   ToolAdda — US finance calculator suite (shared)
+
+   One stylesheet for the four US money tools — mortgage, auto loan, credit
+   card payoff and student loan — following the same suite pattern as
+   pdf-suite.css and game-suite.css rather than repeating 400 lines of
+   inline <style> on each page.
+
+   Everything is expressed in the site's existing custom properties, so the
+   pages inherit light and dark automatically. The only local tokens are the
+   semantic ones these pages need and the rest of the site does not: a
+   positive/negative pair for money saved versus money lost, and a warning
+   tone for the traps these pages exist to point out.
+   ========================================================================== */
+
+.usc-page {
+  --usc-good: #15803d;
+  --usc-good-bg: rgba(21, 128, 61, .09);
+  --usc-bad: #b91c1c;
+  --usc-bad-bg: rgba(185, 28, 28, .09);
+  --usc-warn: #b45309;
+  --usc-warn-bg: rgba(217, 119, 6, .09);
+  --usc-warn-line: rgba(217, 119, 6, .35);
+  --usc-radius: 14px;
+
+  padding: 0 0 3rem;
+}
+
+[data-theme="dark"] .usc-page {
+  --usc-good: #4ade80;
+  --usc-good-bg: rgba(74, 222, 128, .12);
+  --usc-bad: #f87171;
+  --usc-bad-bg: rgba(248, 113, 113, .12);
+  --usc-warn: #fbbf24;
+  --usc-warn-bg: rgba(251, 191, 36, .11);
+  --usc-warn-line: rgba(251, 191, 36, .32);
+}
+
+.usc-wrap {
+  width: min(1180px, 100% - 2rem);
+  margin-inline: auto;
+}
+
+/* ---------------------------------------------------------------- crumbs */
+
+.usc-crumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .45rem;
+  padding: 1.1rem 0 .3rem;
+  font-size: .84rem;
+  color: var(--text-muted);
+}
+
+.usc-crumb a { color: var(--text-muted); text-decoration: none; }
+.usc-crumb a:hover { color: var(--primary); text-decoration: underline; }
+.usc-crumb [aria-current] { color: var(--text); font-weight: 700; }
+
+/* ------------------------------------------------------------------ hero */
+
+.usc-hero { padding: 1.2rem 0 1.6rem; }
+
+.usc-eyebrow {
+  margin: 0 0 .5rem;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.usc-h1 {
+  margin: 0 0 .7rem;
+  font-size: clamp(1.7rem, 1.15rem + 2.2vw, 2.5rem);
+  line-height: 1.15;
+  letter-spacing: -.02em;
+}
+
+.usc-lede {
+  margin: 0;
+  max-width: 68ch;
+  font-size: 1.03rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.usc-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+  margin-top: 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.usc-trust li {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .32rem .7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------- layout */
+
+.usc-studio {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 1.2rem;
+  align-items: start;
+  margin-top: 1.4rem;
+}
+
+/* A grid track sized `1fr` still has `min-width: auto`, so it refuses to
+   shrink below its content's min-content width. The amortization table sets
+   min-width: 460px inside a scrolling wrapper; without the explicit minmax(0)
+   below, that 460px propagates up and pushes the whole column — and with it
+   the page — wider than a phone screen, which is exactly the horizontal
+   scroll this rule exists to prevent. */
+@media (max-width: 940px) {
+  .usc-studio { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Same reasoning one level down: every direct child of the studio, and every
+   panel, must be allowed to shrink rather than be sized by its widest
+   descendant. */
+.usc-studio > * { min-width: 0; }
+
+.usc-panel {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--usc-radius);
+  background: var(--surface);
+  padding: 1.1rem 1.2rem 1.3rem;
+}
+
+.usc-panel + .usc-panel { margin-top: 1rem; }
+
+.usc-panel__title {
+  margin: 0 0 .3rem;
+  font-size: 1.02rem;
+  letter-spacing: -.01em;
+}
+
+.usc-panel__note {
+  margin: 0 0 1rem;
+  font-size: .84rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------- inputs */
+
+.usc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .85rem;
+}
+
+.usc-grid--1 { grid-template-columns: 1fr; }
+
+@media (max-width: 560px) {
+  .usc-grid { grid-template-columns: 1fr; }
+}
+
+.usc-field { display: flex; flex-direction: column; gap: .32rem; min-width: 0; }
+.usc-field--wide { grid-column: 1 / -1; }
+
+.usc-label {
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.usc-hint {
+  font-size: .76rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.usc-input,
+.usc-select {
+  width: 100%;
+  padding: .55rem .7rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: .93rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.usc-input:focus-visible,
+.usc-select:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+/* A currency or percent affix that reads as part of the field. */
+.usc-affix { position: relative; display: block; }
+.usc-affix .usc-input { padding-left: 1.7rem; }
+.usc-affix--pct .usc-input { padding-left: .7rem; padding-right: 2rem; }
+
+.usc-affix::before {
+  content: attr(data-prefix);
+  position: absolute;
+  left: .7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.usc-affix--pct::before { content: none; }
+
+.usc-affix--pct::after {
+  content: attr(data-suffix);
+  position: absolute;
+  right: .7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.usc-toggle-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  align-items: center;
+}
+
+.usc-check {
+  display: flex;
+  align-items: flex-start;
+  gap: .5rem;
+  font-size: .84rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.usc-check input { margin-top: .2rem; flex: none; }
+.usc-check strong { color: var(--text); }
+
+/* Segmented control for term / strategy switches. */
+.usc-seg {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+.usc-seg button {
+  border: 0;
+  border-radius: 999px;
+  padding: .38rem .85rem;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: .84rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.usc-seg button[aria-pressed="true"] {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* --------------------------------------------------------------- results */
+
+.usc-headline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .5rem .8rem;
+  padding: .2rem 0 .9rem;
+  border-bottom: 1px dashed var(--border);
+  margin-bottom: .9rem;
+}
+
+.usc-headline__value {
+  font-size: clamp(1.9rem, 1.2rem + 2.6vw, 2.7rem);
+  font-weight: 800;
+  letter-spacing: -.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.usc-headline__label {
+  font-size: .86rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.usc-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: .6rem;
+}
+
+.usc-stat {
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--bg);
+  padding: .65rem .75rem;
+}
+
+.usc-stat dt {
+  margin: 0 0 .2rem;
+  font-size: .76rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.usc-stat dd {
+  margin: 0;
+  font-size: 1.08rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.usc-stat dd small {
+  display: block;
+  margin-top: .15rem;
+  font-size: .74rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0;
+}
+
+.usc-good { color: var(--usc-good); }
+.usc-bad { color: var(--usc-bad); }
+
+/* The payment-composition bar lives in the Charts block below as .usc-stack,
+   which adds the 2px surface gaps between segments. */
+
+.usc-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-size: .8rem;
+  color: var(--text-muted);
+}
+
+.usc-legend li { display: inline-flex; align-items: center; gap: .35rem; }
+
+.usc-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex: none;
+}
+
+/* --------------------------------------------------------------- callouts */
+
+.usc-note {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: 10px;
+  background: var(--bg);
+  padding: .7rem .9rem;
+  margin: .9rem 0 0;
+  font-size: .86rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+.usc-note strong { color: var(--text); }
+
+.usc-note--warn {
+  border-left-color: var(--usc-warn);
+  border-color: var(--usc-warn-line);
+  background: var(--usc-warn-bg);
+}
+
+.usc-note--good {
+  border-left-color: var(--usc-good);
+  background: var(--usc-good-bg);
+}
+
+.usc-note--bad {
+  border-left-color: var(--usc-bad);
+  background: var(--usc-bad-bg);
+}
+
+/* The YMYL disclaimer every one of these pages carries. */
+.usc-disclaimer {
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: .75rem .9rem;
+  margin: 1.2rem 0 0;
+  font-size: .82rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+.usc-disclaimer strong { color: var(--text); }
+
+/* --------------------------------------------------------------- tables */
+
+.usc-tablewrap {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  /* Keep the horizontal swipe from also dragging the page up and down. */
+  overscroll-behavior-x: contain;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  margin-top: .8rem;
+}
+
+/* Shadows that appear only on the side that has content scrolled out of
+   view, so a narrow screen shows there is more table to the right. The two
+   `local` gradients are opaque covers that scroll WITH the content and hide
+   the shadow once that end is reached; the two `scroll` radials are the
+   shadows themselves. Pure CSS, no scroll listener. */
+.usc-tablewrap {
+  background:
+    linear-gradient(to right, var(--surface-strong) 30%, transparent) 0 0,
+    linear-gradient(to left, var(--surface-strong) 30%, transparent) 100% 0,
+    radial-gradient(farthest-side at 0 50%, rgba(2, 6, 23, .13), transparent) 0 0,
+    radial-gradient(farthest-side at 100% 50%, rgba(2, 6, 23, .13), transparent) 100% 0;
+  background-repeat: no-repeat;
+  background-size: 36px 100%, 36px 100%, 13px 100%, 13px 100%;
+  background-attachment: local, local, scroll, scroll;
+}
+
+.usc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .86rem;
+  font-variant-numeric: tabular-nums;
+  min-width: 460px;
+  /* The wrapper's shadow trick needs the table to be opaque, or the gradients
+     show through the cells instead of only at the edges. */
+  background: var(--surface-strong);
+}
+
+.usc-table th,
+.usc-table td {
+  padding: .5rem .65rem;
+  text-align: right;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.usc-table th:first-child,
+.usc-table td:first-child { text-align: left; }
+
+.usc-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  font-size: .78rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  z-index: 1;
+}
+
+.usc-table tbody tr:last-child td { border-bottom: 0; }
+.usc-table tbody tr.is-highlight { background: var(--usc-good-bg); }
+.usc-table tbody tr.is-highlight td { font-weight: 800; }
+
+.usc-year-toggle {
+  border: 0;
+  background: transparent;
+  color: var(--primary);
+  font: inherit;
+  font-weight: 800;
+  font-size: .86rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.usc-month-row td {
+  background: var(--bg);
+  font-size: .82rem;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------- card list */
+
+.usc-cards { display: grid; gap: .7rem; }
+
+.usc-card-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)) auto;
+  gap: .5rem;
+  align-items: end;
+  padding: .7rem .8rem;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--bg);
+}
+
+@media (max-width: 720px) {
+  .usc-card-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .usc-card-row .usc-field--name { grid-column: 1 / -1; }
+
+  /* Stretched across half a row, the remove button reads as a large empty
+     box with a small cross in it. Shrink it to its content and push it to
+     the end of the row, where a destructive action belongs. */
+  .usc-card-row .usc-remove {
+    justify-self: end;
+    align-self: end;
+    width: auto;
+    min-width: 44px;   /* stays a comfortable touch target */
+    min-height: 44px;
+  }
+}
+
+.usc-remove {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--usc-bad);
+  font: inherit;
+  font-weight: 800;
+  padding: .5rem .6rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.usc-remove:disabled { opacity: .4; cursor: not-allowed; }
+
+.usc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: .9rem;
+}
+
+/* --------------------------------------------------------------- content */
+
+.usc-section { padding: 2.2rem 0 0; }
+
+.usc-h2 {
+  margin: 0 0 .8rem;
+  font-size: clamp(1.25rem, 1rem + 1vw, 1.6rem);
+  letter-spacing: -.02em;
+}
+
+.usc-h3 {
+  margin: 1.4rem 0 .5rem;
+  font-size: 1.02rem;
+  letter-spacing: -.01em;
+}
+
+.usc-prose p,
+.usc-prose li {
+  font-size: .95rem;
+  line-height: 1.75;
+  color: var(--text-muted);
+}
+
+.usc-prose p { margin: 0 0 .9rem; max-width: 74ch; }
+.usc-prose ul { margin: 0 0 .9rem; padding-left: 1.15rem; max-width: 74ch; }
+.usc-prose li { margin-bottom: .35rem; }
+.usc-prose strong { color: var(--text); }
+
+.usc-faq { display: grid; gap: .55rem; }
+
+.usc-faq-item {
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--surface);
+  padding: .7rem .9rem;
+}
+
+.usc-faq-item summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: .92rem;
+  color: var(--text);
+}
+
+.usc-faq-item p {
+  margin: .6rem 0 0;
+  font-size: .9rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+/* Screen-reader-only live region for result announcements. */
+.usc-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------- print */
+
+@media print {
+  .usc-panel--form,
+  .usc-actions,
+  .usc-seg,
+  .usc-section,
+  .usc-trust,
+  .usc-crumb { display: none !important; }
+
+  .usc-studio { grid-template-columns: 1fr; }
+  .usc-panel { border: 0; padding: 0; }
+}
+
+/* ==========================================================================
+   Charts
+   ==========================================================================
+
+   The series colours are a validated categorical palette, not a hand-picked
+   set. The order is the colourblind-safety mechanism: adjacent pairs were
+   checked for CVD separation (worst adjacent dE 9.1 light / 8.4 dark against
+   an >=8 target) and for normal-vision separation (19.6 / 19.3 against an >=15
+   floor) on both surfaces. Re-ordering the slots or substituting a hue means
+   re-running that check, not eyeballing it.
+
+   Three of the light-mode hues sit under 3:1 against a white panel. That is
+   allowed here because the relief rule is satisfied twice over: every series
+   is direct-labelled in the legend with its own value, and every chart on
+   these pages restates its data in a table underneath. Colour never carries a
+   value on its own.
+
+   The dark column is the same hues re-stepped for a dark surface - a selected
+   set, not an automatic inversion of the light one. */
+
+.usc-page {
+  --usc-series-1: #2a78d6;   /* blue    */
+  --usc-series-2: #eb6834;   /* orange  */
+  --usc-series-3: #1baf7a;   /* aqua    */
+  --usc-series-4: #eda100;   /* yellow  */
+  --usc-series-5: #e87ba4;   /* magenta */
+
+  /* Charts need an opaque ground: the 2px ring around a marker and the 2px
+     gap between stack segments are painted IN the surface colour, so a
+     translucent panel would let the mark show through its own separator. */
+  --usc-chart-surface: #ffffff;
+  --usc-chart-grid: rgba(20, 33, 61, .10);
+  --usc-chart-axis: rgba(20, 33, 61, .22);
+}
+
+[data-theme="dark"] .usc-page {
+  --usc-series-1: #3987e5;
+  --usc-series-2: #d95926;
+  --usc-series-3: #199e70;
+  --usc-series-4: #c98500;
+  --usc-series-5: #d55181;
+
+  --usc-chart-surface: #0f172a;
+  --usc-chart-grid: rgba(148, 163, 184, .18);
+  --usc-chart-axis: rgba(148, 163, 184, .34);
+}
+
+.usc-chart {
+  position: relative;
+  margin-top: .9rem;
+  padding: .9rem .9rem .6rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--usc-chart-surface);
+}
+
+.usc-chart-title {
+  margin: 0 0 .1rem;
+  font-size: .88rem;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  color: var(--text);
+}
+
+.usc-chart-sub {
+  margin: 0 0 .5rem;
+  font-size: .78rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.usc-chart-svg {
+  display: block;
+  width: 100%;
+  /* Matches the 720x300 viewBox so uniform scaling fills the box exactly and
+     no glyph is stretched. */
+  aspect-ratio: 12 / 5;
+  height: auto;
+  overflow: visible;
+}
+
+/* aspect-ratio is widely supported, but a fallback keeps the chart from
+   collapsing to zero height on anything that lacks it. */
+@supports not (aspect-ratio: 12 / 5) {
+  .usc-chart-svg { height: 240px; }
+}
+
+/* Recessive chrome: hairline, solid, never dashed. */
+.usc-chart-grid { stroke: var(--usc-chart-grid); stroke-width: 1; }
+.usc-chart-axis { stroke: var(--usc-chart-axis); stroke-width: 1; }
+
+.usc-chart-crosshair {
+  stroke: var(--usc-chart-axis);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+/* Text wears ink tokens, never the series colour - three of these hues are
+   illegible as text on a light panel. */
+.usc-chart-tick {
+  fill: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.usc-chart-endlabel {
+  fill: var(--text);
+  font-size: 11.5px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The 2px ring is what keeps a marker readable where two lines cross. */
+.usc-chart-dot {
+  stroke: var(--usc-chart-surface);
+  stroke-width: 2;
+  pointer-events: none;
+}
+
+.usc-chart-hit { cursor: crosshair; }
+.usc-chart-hit:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.usc-chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem .9rem;
+  margin: .55rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.usc-chart-legend li { display: inline-flex; align-items: center; gap: .35rem; }
+.usc-chart-legend b { color: var(--text); font-variant-numeric: tabular-nums; }
+
+.usc-chart-key {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex: none;
+}
+
+.usc-chart-tip {
+  position: absolute;
+  top: 2.6rem;
+  transform: translateX(-50%);
+  min-width: 110px;
+  padding: .45rem .6rem;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface-strong);
+  box-shadow: 0 8px 20px rgba(2, 6, 23, .18);
+  font-size: .76rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.usc-chart-tip.is-flipped { transform: translateX(-92%); }
+.usc-chart-tip strong { display: block; color: var(--text); font-size: .78rem; margin-bottom: .2rem; }
+.usc-chart-tiprow { display: flex; align-items: center; gap: .35rem; white-space: nowrap; }
+
+/* A short stroke keys the series in the tooltip; at this density a filled box
+   is data-weight ink doing a label's job. */
+.usc-chart-tipkey {
+  width: 12px;
+  height: 2px;
+  border-radius: 2px;
+  flex: none;
+}
+
+.usc-chart-tip b {
+  color: var(--text);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- stacked bar: 2px of surface separates segments, never a stroke --- */
+
+.usc-stack {
+  display: flex;
+  margin: .9rem 0 .6rem;
+  height: 14px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--usc-chart-grid);
+  gap: 2px;
+}
+
+.usc-stack-seg { display: block; min-width: 3px; }
+.usc-stack-seg:first-child { border-radius: 999px 0 0 999px; }
+.usc-stack-seg:last-child { border-radius: 0 999px 999px 0; }
+.usc-stack-seg:only-child { border-radius: 999px; }
+
+/* ==========================================================================
+   Visual polish
+   ========================================================================== */
+
+/* The hero carries a soft accent wash so the top of the page has somewhere
+   for the eye to land before it reaches the form. */
+.usc-hero {
+  position: relative;
+  border-radius: 18px;
+  padding: 1.6rem 1.4rem 1.5rem;
+  margin-top: .4rem;
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(79, 70, 229, .10), transparent 60%),
+    radial-gradient(100% 120% at 100% 0%, rgba(27, 175, 122, .09), transparent 55%),
+    var(--surface);
+  border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .usc-hero {
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(99, 102, 241, .16), transparent 60%),
+    radial-gradient(100% 120% at 100% 0%, rgba(25, 158, 112, .13), transparent 55%),
+    var(--surface);
+}
+
+/* The answer panel is the one thing on the page that should look loud. */
+.usc-panel--result {
+  border-color: rgba(79, 70, 229, .28);
+  background:
+    linear-gradient(180deg, rgba(79, 70, 229, .07), transparent 42%),
+    var(--surface);
+}
+
+[data-theme="dark"] .usc-panel--result {
+  border-color: rgba(129, 140, 248, .3);
+  background:
+    linear-gradient(180deg, rgba(99, 102, 241, .14), transparent 42%),
+    var(--surface);
+}
+
+.usc-headline__value {
+  background: linear-gradient(135deg, var(--text), var(--primary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Fallback for engines without background-clip on text - without it the
+   number renders transparent and disappears entirely. */
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .usc-headline__value { color: var(--text); background: none; }
+}
+
+.usc-stat { transition: border-color .18s ease, transform .18s ease; }
+
+.usc-stat:hover {
+  border-color: rgba(79, 70, 229, .3);
+  transform: translateY(-1px);
+}
+
+.usc-seg button { transition: background .16s ease, color .16s ease; }
+.usc-input, .usc-select { transition: border-color .16s ease, box-shadow .16s ease; }
+
+.usc-input:focus-visible,
+.usc-select:focus-visible {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, .16);
+}
+
+.usc-trust li { transition: border-color .18s ease, color .18s ease; }
+.usc-trust li:hover { border-color: rgba(79, 70, 229, .32); color: var(--text); }
+
+@media (prefers-reduced-motion: reduce) {
+  .usc-stat,
+  .usc-seg button,
+  .usc-input,
+  .usc-select,
+  .usc-trust li { transition: none; }
+  .usc-stat:hover { transform: none; }
+}
+
+@media print {
+  .usc-chart-tip,
+  .usc-chart-crosshair { display: none !important; }
+  .usc-hero,
+  .usc-panel--result { background: none !important; border: 0 !important; }
+  .usc-headline__value { color: #000 !important; background: none !important; }
+}
+
+/* ==========================================================================
+   Page shell - the dotted ground the rest of the site uses
+   ==========================================================================
+
+   Every other tool page on ToolAdda sits on a fixed dot grid with a few soft
+   radial glows over it; these four were rendering on the plain body colour,
+   which is why they felt flat next to the rest of the site. Same construction
+   as invoice-generator and the ID card maker: the grid is a fixed ::before
+   layer so it does not scroll with the content or repaint on every frame.
+
+   Each page then sets its own --usc-accent. The accent is CHROME ONLY - hero
+   glow, eyebrow, focus rings, the result panel's edge. It is deliberately
+   never used inside a chart: chart marks come from the validated --usc-series
+   slots, and letting a page's decorative hue leak into the plot would put an
+   unvalidated colour next to data and break the CVD guarantees. */
+
+.usc-page-shell {
+  --pg-bg: #eef0fb;
+  --pg-dot: rgba(67, 56, 202, .16);
+
+  /* Sensible default; each page overrides both. */
+  --usc-accent: #4f46e5;
+  --usc-accent-soft: rgba(79, 70, 229, .12);
+  --usc-accent-line: rgba(79, 70, 229, .30);
+}
+
+[data-theme="dark"] .usc-page-shell {
+  --pg-bg: #0b0c18;
+  --pg-dot: rgba(165, 180, 252, .12);
+
+  --usc-accent: #818cf8;
+  --usc-accent-soft: rgba(129, 140, 248, .16);
+  --usc-accent-line: rgba(129, 140, 248, .34);
+}
+
+body.usc-page-shell {
+  position: relative;
+  isolation: isolate;
+  background-color: transparent !important;
+  background-image:
+    radial-gradient(920px 480px at 6% -8%, var(--usc-accent-soft), transparent 58%),
+    radial-gradient(780px 420px at 100% 0%, rgba(165, 180, 252, .08), transparent 52%),
+    radial-gradient(640px 340px at 50% 100%, var(--usc-accent-soft), transparent 55%) !important;
+}
+
+body.usc-page-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--pg-bg);
+  background-image: radial-gradient(circle, var(--pg-dot) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* --- per-page accents, matching each page's OG card so the tool looks the
+       same in a search result as it does when you land on it --- */
+
+.usc-page-shell--mortgage { --usc-accent: #047857; --usc-accent-soft: rgba(4, 120, 87, .12); --usc-accent-line: rgba(4, 120, 87, .32); --pg-dot: rgba(4, 120, 87, .15); --pg-bg: #ecf6f1; }
+[data-theme="dark"] .usc-page-shell--mortgage { --usc-accent: #34d399; --usc-accent-soft: rgba(52, 211, 153, .15); --usc-accent-line: rgba(52, 211, 153, .34); --pg-dot: rgba(52, 211, 153, .12); --pg-bg: #06120f; }
+
+.usc-page-shell--auto { --usc-accent: #0369a1; --usc-accent-soft: rgba(3, 105, 161, .12); --usc-accent-line: rgba(3, 105, 161, .32); --pg-dot: rgba(3, 105, 161, .15); --pg-bg: #eaf3fb; }
+[data-theme="dark"] .usc-page-shell--auto { --usc-accent: #38bdf8; --usc-accent-soft: rgba(56, 189, 248, .15); --usc-accent-line: rgba(56, 189, 248, .34); --pg-dot: rgba(56, 189, 248, .12); --pg-bg: #06121c; }
+
+.usc-page-shell--card { --usc-accent: #be123c; --usc-accent-soft: rgba(190, 18, 60, .11); --usc-accent-line: rgba(190, 18, 60, .30); --pg-dot: rgba(190, 18, 60, .14); --pg-bg: #fceef1; }
+[data-theme="dark"] .usc-page-shell--card { --usc-accent: #fb7185; --usc-accent-soft: rgba(251, 113, 133, .15); --usc-accent-line: rgba(251, 113, 133, .34); --pg-dot: rgba(251, 113, 133, .12); --pg-bg: #170a0e; }
+
+.usc-page-shell--student { --usc-accent: #b45309; --usc-accent-soft: rgba(180, 83, 9, .12); --usc-accent-line: rgba(180, 83, 9, .32); --pg-dot: rgba(180, 83, 9, .15); --pg-bg: #fbf3e9; }
+[data-theme="dark"] .usc-page-shell--student { --usc-accent: #fbbf24; --usc-accent-soft: rgba(251, 191, 36, .14); --usc-accent-line: rgba(251, 191, 36, .32); --pg-dot: rgba(251, 191, 36, .11); --pg-bg: #161104; }
+
+/* Luxembourg — the national red-white-blue has no usable mid-tone, so the
+   page takes the deep cyan of the Grand Duchy's civil ensign instead: far
+   enough from mortgage green and auto blue to be told apart in a tab strip. */
+.usc-page-shell--lux { --usc-accent: #0e7490; --usc-accent-soft: rgba(14, 116, 144, .12); --usc-accent-line: rgba(14, 116, 144, .32); --pg-dot: rgba(14, 116, 144, .15); --pg-bg: #e9f4f7; }
+[data-theme="dark"] .usc-page-shell--lux { --usc-accent: #22d3ee; --usc-accent-soft: rgba(34, 211, 238, .15); --usc-accent-line: rgba(34, 211, 238, .34); --pg-dot: rgba(34, 211, 238, .12); --pg-bg: #05141a; }
+
+/* Panels sit ON the dot grid, so they need an opaque-ish ground of their own
+   or the dots show through the numbers. */
+.usc-page-shell .usc-panel {
+  background: color-mix(in srgb, var(--surface-strong) 88%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+@supports not (background: color-mix(in srgb, red 50%, blue)) {
+  .usc-page-shell .usc-panel { background: var(--surface-strong); }
+}
+
+/* ==========================================================================
+   Accent application
+   ========================================================================== */
+
+.usc-page .usc-eyebrow { color: var(--usc-accent); }
+
+.usc-page .usc-hero {
+  border-color: var(--usc-accent-line);
+  background:
+    radial-gradient(120% 140% at 0% 0%, var(--usc-accent-soft), transparent 62%),
+    radial-gradient(100% 120% at 100% 0%, var(--usc-accent-soft), transparent 55%),
+    color-mix(in srgb, var(--surface-strong) 82%, transparent);
+}
+
+[data-theme="dark"] .usc-page .usc-hero {
+  background:
+    radial-gradient(120% 140% at 0% 0%, var(--usc-accent-soft), transparent 62%),
+    radial-gradient(100% 120% at 100% 0%, var(--usc-accent-soft), transparent 55%),
+    color-mix(in srgb, var(--surface-strong) 82%, transparent);
+}
+
+.usc-page .usc-panel--result {
+  border-color: var(--usc-accent-line);
+  background:
+    linear-gradient(180deg, var(--usc-accent-soft), transparent 46%),
+    color-mix(in srgb, var(--surface-strong) 88%, transparent);
+}
+
+.usc-page .usc-headline__value {
+  background: linear-gradient(135deg, var(--text) 15%, var(--usc-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.usc-page .usc-seg button[aria-pressed="true"] { background: var(--usc-accent); color: #fff; }
+.usc-page .usc-stat:hover { border-color: var(--usc-accent-line); }
+.usc-page .usc-trust li:hover { border-color: var(--usc-accent-line); color: var(--text); }
+.usc-page .usc-crumb a:hover { color: var(--usc-accent); }
+.usc-page .usc-note { border-left-color: var(--usc-accent); }
+.usc-page .usc-year-toggle { color: var(--usc-accent); }
+
+.usc-page .usc-input:focus-visible,
+.usc-page .usc-select:focus-visible {
+  border-color: var(--usc-accent);
+  box-shadow: 0 0 0 3px var(--usc-accent-soft);
+  outline-color: var(--usc-accent);
+}
+
+/* color-mix is well supported but not universal. Where it is missing the whole
+   background declaration is dropped, so these restate an opaque ground rather
+   than leaving the hero and result panel transparent over the dot grid. */
+@supports not (background: color-mix(in srgb, red 50%, blue)) {
+  .usc-page .usc-hero,
+  .usc-page .usc-panel--result,
+  .usc-page-shell .usc-panel { background: var(--surface-strong); }
+  .usc-sticky { background: var(--surface-strong); }
+}
+
+/* The good/warn/bad notes keep their own semantic colours - an accent-tinted
+   warning would stop reading as a warning. */
+.usc-page .usc-note--good { border-left-color: var(--usc-good); }
+.usc-page .usc-note--warn { border-left-color: var(--usc-warn); }
+.usc-page .usc-note--bad { border-left-color: var(--usc-bad); }
+
+/* ==========================================================================
+   Presets - the fastest way into a calculator is not an empty form
+   ========================================================================== */
+
+.usc-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.usc-preset {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--text-muted);
+  font: inherit;
+  font-size: .8rem;
+  font-weight: 700;
+  padding: .36rem .8rem;
+  cursor: pointer;
+  transition: border-color .16s ease, color .16s ease, background .16s ease;
+}
+
+.usc-preset:hover {
+  border-color: var(--usc-accent-line);
+  color: var(--text);
+}
+
+.usc-preset:focus-visible {
+  outline: 2px solid var(--usc-accent);
+  outline-offset: 2px;
+}
+
+.usc-presets-label {
+  margin: 0 0 .4rem;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Sticky answer bar - on a phone the form is long and the answer scrolls away
+   ========================================================================== */
+
+.usc-sticky {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: .8rem;
+  padding: .6rem 1rem calc(.6rem + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--usc-accent-line);
+  background: color-mix(in srgb, var(--surface-strong) 94%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 -6px 20px rgba(2, 6, 23, .12);
+}
+
+.usc-sticky__label {
+  font-size: .74rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  display: block;
+}
+
+.usc-sticky__value {
+  font-size: 1.22rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.usc-sticky__jump {
+  border: 1px solid var(--usc-accent-line);
+  border-radius: 999px;
+  background: var(--usc-accent);
+  color: #fff;
+  font: inherit;
+  font-size: .8rem;
+  font-weight: 800;
+  padding: .45rem .9rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Only on small screens, and only once the answer has scrolled out of view. */
+@media (max-width: 940px) {
+  .usc-sticky.is-visible { display: flex; }
+  .usc-page { padding-bottom: 5rem; }
+}
+
+@media print {
+  .usc-sticky { display: none !important; }
+  body.usc-page-shell, body.usc-page-shell::before {
+    background: #fff !important;
+    background-image: none !important;
+  }
+  .usc-page .usc-hero,
+  .usc-page .usc-panel--result { background: none !important; }
+  .usc-page .usc-headline__value { color: #000 !important; background: none !important; }
+  .usc-presets { display: none !important; }
+}
+
+/* ==========================================================================
+   Light-mode weight
+   ==========================================================================
+
+   The first pass was too timid in light mode: the accent wash read as a grey
+   smudge next to a dark theme that had real character. These push the light
+   values up — a deeper page tint, a visible dot grid, a hero gradient with
+   somewhere to travel — while leaving dark alone, which was already right. */
+
+.usc-page-shell--mortgage { --pg-bg: #e6f4ee; --pg-dot: rgba(4, 120, 87, .22); --usc-accent-soft: rgba(4, 120, 87, .16); }
+.usc-page-shell--auto     { --pg-bg: #e4f0fa; --pg-dot: rgba(3, 105, 161, .22); --usc-accent-soft: rgba(3, 105, 161, .16); }
+.usc-page-shell--card     { --pg-bg: #fce9ee; --pg-dot: rgba(190, 18, 60, .20); --usc-accent-soft: rgba(190, 18, 60, .14); }
+.usc-page-shell--student  { --pg-bg: #faefe0; --pg-dot: rgba(180, 83, 9, .22); --usc-accent-soft: rgba(180, 83, 9, .16); }
+.usc-page-shell--lux      { --pg-bg: #e2f0f5; --pg-dot: rgba(14, 116, 144, .22); --usc-accent-soft: rgba(14, 116, 144, .16); }
+
+/* The hero is the page's one chance to establish its colour before the reader
+   is looking at a form. Give the gradient a real destination rather than
+   fading to nothing a third of the way across. */
+.usc-page .usc-hero {
+  background:
+    radial-gradient(130% 150% at 0% 0%, var(--usc-accent-soft), transparent 70%),
+    radial-gradient(110% 130% at 100% 10%, var(--usc-accent-soft), transparent 62%),
+    color-mix(in srgb, var(--surface-strong) 86%, var(--usc-accent) 4%);
+  box-shadow: 0 1px 2px rgba(2, 6, 23, .04), 0 12px 32px -18px var(--usc-accent-line);
+}
+
+/* A short accent rule under the eyebrow: cheap, and it makes the label read
+   as a deliberate mark rather than small grey text. */
+.usc-page .usc-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.usc-page .usc-eyebrow::after {
+  content: "";
+  width: 2rem;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--usc-accent), transparent);
+}
+
+.usc-page .usc-panel--result {
+  background:
+    linear-gradient(180deg, var(--usc-accent-soft), transparent 52%),
+    color-mix(in srgb, var(--surface-strong) 92%, transparent);
+  box-shadow: 0 1px 2px rgba(2, 6, 23, .05), 0 16px 40px -26px var(--usc-accent-line);
+}
+
+/* Panels lift slightly off the dotted ground so the grid reads as background
+   rather than as texture printed on the card. */
+.usc-page-shell .usc-panel {
+  box-shadow: 0 1px 2px rgba(2, 6, 23, .04);
+}
+
+/* The headline number is the thing people came for. Let it run further into
+   the accent instead of staying mostly ink. */
+.usc-page .usc-headline__value {
+  background: linear-gradient(120deg, var(--text) 5%, var(--usc-accent) 85%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Preset chips carry a tint of the page accent so the row reads as part of
+   the tool rather than as a stray group of buttons. */
+.usc-page .usc-preset {
+  background: color-mix(in srgb, var(--surface-strong) 80%, transparent);
+  border-color: var(--usc-accent-line);
+  color: var(--text);
+}
+
+.usc-page .usc-preset:hover {
+  background: var(--usc-accent-soft);
+  border-color: var(--usc-accent);
+}
+
+/* Trust chips likewise. */
+.usc-page .usc-trust li {
+  background: color-mix(in srgb, var(--surface-strong) 78%, transparent);
+  border-color: var(--usc-accent-line);
+}
+
+@supports not (background: color-mix(in srgb, red 50%, blue)) {
+  .usc-page .usc-preset,
+  .usc-page .usc-trust li { background: var(--surface-strong); }
+}
+
+/* The section headings on the long-form content get the accent too, so the
+   colour carries all the way down the page rather than stopping at the tool. */
+.usc-page .usc-h2 {
+  padding-left: .7rem;
+  border-left: 3px solid var(--usc-accent);
+}
+
+@media print {
+  .usc-page .usc-hero,
+  .usc-page .usc-panel--result,
+  .usc-page-shell .usc-panel { box-shadow: none !important; }
+  .usc-page .usc-eyebrow::after { display: none; }
+  .usc-page .usc-h2 { border-left: 0; padding-left: 0; }
+}

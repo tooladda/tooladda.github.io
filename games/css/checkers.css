@@ -1,0 +1,254 @@
+/* ==========================================================================
+   Checkers — board, pieces and the move animation.
+
+   The pieces live inside their squares rather than on a layer of their own,
+   so everything a square carries — the selected ring, the landing dots, the
+   keyboard focus ring — lines up with its piece by construction. A move is
+   animated by putting the piece element into its destination square and
+   sliding it in from where it came, one hop at a time. The offset is always
+   a whole number of squares, so nothing ever has to be measured.
+
+   Sizes inside a square are in em, and a square's font-size is a tenth of
+   its own width (container query units on the grid), so the rim, the lift
+   and the crown scale together from a phone to a desktop.
+   ========================================================================== */
+
+/* -------------------------------------------------------------- styles --
+   Four board-and-piece sets; the board reads nothing but these variables.
+   "contrast" is the blue-and-orange pair for players who cannot reliably
+   tell red from green or brown. */
+[data-checkers] {
+  --ck-light: #f0d9b5; --ck-dark: #b58863;
+  --ck-frame: #6b4423; --ck-frame-deep: #3b2412;
+  --ck-p1: #4b4b4b; --ck-p1-deep: #111111; --ck-crown-1: #facc15;
+  --ck-p2: #fffaf0; --ck-p2-deep: #cdbb98; --ck-crown-2: #a16207;
+  --ck-mark: rgba(255, 255, 255, 0.7);
+  --ck-crown-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M2.5 8.4l4.9 3.8L12 4.9l4.6 7.3 4.9-3.8-1.9 10.1H4.4z'/%3E%3Crect x='4.4' y='20' width='15.2' height='2.2' rx='1'/%3E%3C/svg%3E");
+}
+[data-checkers][data-style="classic"] {
+  --ck-light: #f1e3c3; --ck-dark: #2f6d3b;
+  --ck-frame: #7c2d12; --ck-frame-deep: #431407;
+  --ck-p1: #3f3f46; --ck-p1-deep: #09090b; --ck-crown-1: #fbbf24;
+  --ck-p2: #f87171; --ck-p2-deep: #991b1b; --ck-crown-2: #fef3c7;
+}
+[data-checkers][data-style="contrast"] {
+  --ck-light: #e2e8f0; --ck-dark: #475569;
+  --ck-frame: #334155; --ck-frame-deep: #0f172a;
+  --ck-p1: #60a5fa; --ck-p1-deep: #1e40af; --ck-crown-1: #fff7ed;
+  --ck-p2: #fdba74; --ck-p2-deep: #c2410c; --ck-crown-2: #1e293b;
+}
+[data-checkers][data-style="ocean"] {
+  --ck-light: #e0f2fe; --ck-dark: #0e7490;
+  --ck-frame: #164e63; --ck-frame-deep: #082f49;
+  --ck-p1: #475569; --ck-p1-deep: #020617; --ck-crown-1: #fde047;
+  --ck-p2: #fde68a; --ck-p2-deep: #b45309; --ck-crown-2: #7c2d12;
+}
+
+/* --------------------------------------------------------------- stage -- */
+.ck-stage { position: relative; display: grid; justify-items: center; gap: 0.8rem; }
+
+.ck-turn {
+  display: flex; align-items: center; justify-content: center; gap: 0.55rem;
+  min-height: 2.2rem; margin: 0; font-weight: 800; font-size: 1rem; text-align: center;
+}
+.ck-dot {
+  display: inline-block; width: 20px; height: 20px; border-radius: 50%; flex: 0 0 auto;
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.3), inset 0 2px 3px rgba(255, 255, 255, 0.4);
+}
+.ck-dot.is-p1 { background: radial-gradient(circle at 35% 30%, var(--ck-p1), var(--ck-p1-deep)); }
+.ck-dot.is-p2 { background: radial-gradient(circle at 35% 30%, var(--ck-p2), var(--ck-p2-deep)); }
+.ck-turn[data-state="thinking"] .ck-dot { animation: ck-pulse 0.9s ease-in-out infinite; }
+@keyframes ck-pulse { 50% { transform: scale(0.8); opacity: 0.6; } }
+
+.ck-tally { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin: 0; }
+.ck-tally span {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.28rem 0.72rem; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface-strong);
+  font-size: 0.82rem; font-weight: 800; font-variant-numeric: tabular-nums;
+}
+.ck-tally .ck-dot { width: 14px; height: 14px; }
+.ck-tally small { color: var(--text-muted); font-weight: 600; font-size: 0.78rem; }
+
+/* --------------------------------------------------------------- board -- */
+.ck-board {
+  position: relative; width: 100%; max-width: 560px;
+  padding: clamp(6px, 1.8vw, 14px); border-radius: 16px;
+  background: linear-gradient(155deg, var(--ck-frame), var(--ck-frame-deep));
+  box-shadow: 0 26px 60px -30px rgba(15, 23, 42, 0.75), inset 0 2px 0 rgba(255, 255, 255, 0.16);
+  touch-action: manipulation;
+}
+.ck-board[data-size="10"] { max-width: 640px; }
+
+.ck-grid {
+  display: grid; grid-template-columns: repeat(var(--ck-size, 8), 1fr);
+  border-radius: 5px; overflow: hidden; container-type: inline-size;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.28);
+}
+.ck-sq {
+  position: relative; aspect-ratio: 1; margin: 0; padding: 0; border: 0; border-radius: 0;
+  font: inherit; color: inherit;
+  font-size: 5px; font-size: calc(100cqi / var(--ck-size, 8) / 10);
+  -webkit-tap-highlight-color: transparent;
+}
+.ck-sq.is-light { background: var(--ck-light); }
+.ck-sq.is-dark {
+  cursor: pointer;
+  background-color: var(--ck-dark);
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(0, 0, 0, 0.09));
+}
+.ck-sq.is-dark[aria-disabled="true"] { cursor: default; }
+
+/* square numbers (or a1-style names) for anyone following notation */
+.ck-num {
+  position: absolute; left: 6%; top: 4%; z-index: 3;
+  font-size: 2.1em; font-weight: 800; line-height: 1; letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.78); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+[data-checkers]:not([data-numbers="on"]) .ck-num { display: none; }
+
+/* ------------------------------------------------------------- markers -- */
+.ck-sq.is-last { background-image: linear-gradient(rgba(250, 204, 21, 0.3), rgba(250, 204, 21, 0.3)); }
+.ck-sq.is-selected { box-shadow: inset 0 0 0 0.32em rgba(250, 204, 21, 0.95); }
+.ck-sq.is-path { box-shadow: inset 0 0 0 0.24em rgba(250, 204, 21, 0.6); }
+
+.ck-sq.is-target::after {
+  content: ''; position: absolute; inset: 37%; z-index: 1; border-radius: 50%;
+  background: var(--ck-mark); box-shadow: 0 0 0 0.14em rgba(0, 0, 0, 0.2);
+  pointer-events: none; transition: transform 0.12s ease;
+}
+.ck-sq.is-target.is-jump::after { inset: 18%; background: transparent; box-shadow: inset 0 0 0 0.42em var(--ck-mark); }
+.ck-sq.is-target:hover::after { transform: scale(1.18); }
+
+.ck-sq.is-hint { animation: ck-hint 1s ease-in-out infinite; }
+@keyframes ck-hint {
+  0%, 100% { box-shadow: inset 0 0 0 0.18em rgba(34, 211, 238, 0.5); }
+  50% { box-shadow: inset 0 0 0 0.42em rgba(34, 211, 238, 0.98); }
+}
+
+.ck-sq:focus-visible { outline: 3px solid #fff; outline-offset: -4px; z-index: 4; }
+.ck-sq.is-moving { z-index: 5; }
+
+/* -------------------------------------------------------------- pieces -- */
+.ck-piece {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  transition: transform var(--ck-hop, 200ms) cubic-bezier(0.3, 0.8, 0.3, 1);
+}
+.ck-piece.is-p1 { --top: var(--ck-p1); --deep: var(--ck-p1-deep); --crown: var(--ck-crown-1); }
+.ck-piece.is-p2 { --top: var(--ck-p2); --deep: var(--ck-p2-deep); --crown: var(--ck-crown-2); }
+
+/* a stacked-rim checker: a solid edge below for thickness, two turned rings on top */
+.ck-disc {
+  position: absolute; inset: 12%; border-radius: 50%;
+  transform: translateY(-0.2em);
+  background:
+    radial-gradient(circle, transparent 0 45%, rgba(0, 0, 0, 0.22) 46% 49%, transparent 50% 61%,
+      rgba(255, 255, 255, 0.16) 62% 65%, transparent 66%),
+    radial-gradient(circle at 35% 28%, var(--top), var(--deep) 80%);
+  box-shadow: 0 0.42em 0 var(--deep), 0 0.62em 0.9em rgba(0, 0, 0, 0.38), inset 0 0.14em 0.1em rgba(255, 255, 255, 0.32);
+  transition: transform 0.16s ease, opacity 0.22s ease, box-shadow 0.16s ease;
+}
+
+.ck-crown {
+  position: absolute; inset: 24%;
+  background: var(--crown);
+  -webkit-mask: var(--ck-crown-mask) center / contain no-repeat;
+  mask: var(--ck-crown-mask) center / contain no-repeat;
+  opacity: 0; transform: scale(0.3);
+  transition: opacity 0.25s ease, transform 0.4s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.ck-piece.is-king .ck-crown { opacity: 1; transform: scale(1); }
+
+/* a dark edge inside a light ring, so it reads on black and white pieces alike */
+.ck-piece.is-movable .ck-disc {
+  box-shadow: 0 0.42em 0 var(--deep), 0 0.62em 0.9em rgba(0, 0, 0, 0.38),
+    0 0 0 0.14em rgba(15, 23, 42, 0.5), 0 0 0 0.36em rgba(255, 255, 255, 0.88);
+}
+/* a capture is compulsory: the pieces that can make it pulse */
+.ck-piece.is-must .ck-disc { animation: ck-must 1.1s ease-in-out infinite; }
+@keyframes ck-must {
+  0%, 100% { box-shadow: 0 0.42em 0 var(--deep), 0 0.62em 0.9em rgba(0, 0, 0, 0.38), 0 0 0 0.16em rgba(250, 204, 21, 0.55); }
+  50% { box-shadow: 0 0.42em 0 var(--deep), 0 0.62em 0.9em rgba(0, 0, 0, 0.38), 0 0 0 0.46em rgba(250, 204, 21, 0.9); }
+}
+.ck-piece.is-lifted { z-index: 6; }
+.ck-piece.is-lifted .ck-disc {
+  transform: translateY(-0.6em) scale(1.06);
+  box-shadow: 0 0.62em 0 var(--deep), 0 1.3em 1.4em rgba(0, 0, 0, 0.4), 0 0 0 0.2em rgba(250, 204, 21, 0.9);
+}
+.ck-piece.is-pending .ck-disc { opacity: 0.32; }
+.ck-piece.is-taken .ck-disc { opacity: 0; transform: translateY(-0.2em) scale(0.35); }
+.ck-piece.is-shake .ck-disc { animation: ck-shake 0.32s ease; }
+@keyframes ck-shake {
+  20%, 60% { transform: translate(-0.4em, -0.2em); }
+  40%, 80% { transform: translate(0.4em, -0.2em); }
+}
+
+/* ----------------------------------------------------- under the board -- */
+.ck-result {
+  margin: 0; padding: 0.75rem 0.9rem; border-radius: 14px; font-weight: 700; text-align: center;
+  border: 1px solid var(--gm-a-soft); background: var(--gm-tint-1);
+}
+[data-theme="dark"] .ck-result { background: rgba(30, 41, 59, 0.6); border-color: rgba(148, 163, 184, 0.2); }
+.ck-result[data-tone="win"] { border-color: rgba(34, 197, 94, 0.5); background: rgba(34, 197, 94, 0.12); }
+.ck-result[data-tone="loss"] { border-color: rgba(239, 68, 68, 0.45); background: rgba(239, 68, 68, 0.1); }
+.ck-result[data-tone="draw"] { border-color: rgba(245, 158, 11, 0.5); background: rgba(245, 158, 11, 0.12); }
+
+.ck-controls { display: flex; flex-wrap: wrap; gap: 0.45rem; justify-content: center; }
+.ck-hint { color: var(--text-muted); font-size: 0.82rem; text-align: center; margin: 0; max-width: 60ch; }
+
+.ck-stage .confetti-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 8; }
+
+/* ---------------------------------------------------------- side panel -- */
+.ck-checks { display: grid; gap: 0.4rem; margin: 0 0 0.85rem; }
+.ck-check { display: flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; font-weight: 600; cursor: pointer; }
+.ck-check input { width: 1.05rem; height: 1.05rem; margin: 0; accent-color: var(--gm-a); }
+
+.ck-styles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; }
+.ck-style {
+  display: grid; grid-template-columns: 1fr 1fr; align-items: center; justify-items: center;
+  height: 36px; padding: 0 4px; cursor: pointer; overflow: hidden;
+  border-radius: 10px; border: 2px solid var(--border); background: var(--sw-sq);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.ck-style:hover { transform: translateY(-1px); }
+.ck-style.is-active { border-color: var(--gm-a); box-shadow: 0 0 0 2px var(--gm-a-soft); }
+.ck-style span { display: block; width: 18px; height: 18px; border-radius: 50%; box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35); }
+.ck-style .a { background: radial-gradient(circle at 35% 30%, var(--sw-1), var(--sw-1-deep)); }
+.ck-style .b { background: radial-gradient(circle at 35% 30%, var(--sw-2), var(--sw-2-deep)); }
+
+.ck-score { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+.ck-score div {
+  text-align: center; padding: 0.6rem 0.3rem; border-radius: 14px;
+  border: 1px solid var(--border); background: var(--surface-strong);
+}
+.ck-score b { display: block; font-size: 1.35rem; font-weight: 900; line-height: 1.1; }
+.ck-score span { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.ck-streak { margin: 0.7rem 0; font-size: 0.85rem; color: var(--text-muted); text-align: center; }
+
+.ck-moves {
+  list-style: none; margin: 0; padding: 0.2rem 0; max-height: 196px; overflow-y: auto;
+  border-radius: 12px; border: 1px solid var(--border); background: var(--surface-strong);
+  font-size: 0.86rem; font-variant-numeric: tabular-nums;
+}
+.ck-moves li { display: grid; grid-template-columns: 2.3rem 1fr 1fr; gap: 0.3rem; padding: 0.24rem 0.65rem; }
+.ck-moves li:nth-child(even) { background: rgba(148, 163, 184, 0.09); }
+.ck-moves .n { color: var(--text-muted); }
+.ck-moves .is-latest { font-weight: 800; color: var(--gm-a-deep); }
+[data-theme="dark"] .ck-moves .is-latest { color: #fca5a5; }
+.ck-moves-empty { margin: 0; color: var(--text-muted); font-size: 0.85rem; }
+
+/* ------------------------------------------------------- small screens -- */
+@media (max-width: 560px) {
+  .ck-turn { font-size: 0.92rem; }
+  .ck-controls .gm-btn { flex: 1 1 auto; justify-content: center; }
+  .ck-hint { font-size: 0.78rem; }
+  .ck-score b { font-size: 1.15rem; }
+  .ck-result { font-size: 0.9rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ck-piece, .ck-disc, .ck-crown, .ck-sq.is-target::after { transition: none; }
+  .ck-piece.is-must .ck-disc, .ck-piece.is-shake .ck-disc, .ck-sq.is-hint,
+  .ck-turn[data-state="thinking"] .ck-dot { animation: none; }
+}

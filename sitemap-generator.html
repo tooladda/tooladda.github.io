@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+    <meta name="description" content="Free online XML sitemap generator — paste your website URLs, set priority, changefreq, and lastmod, then download a valid sitemap.xml for Google Search Console instantly in your browser." />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="ToolAdda" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta name="theme-color" content="#4f46e5" />
+    <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="canonical" href="https://tooladda.online/sitemap-generator.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+    <meta property="og:title" content="Sitemap Generator Online | Free XML Sitemap Creator | ToolAdda" />
+    <meta property="og:description" content="Create a valid XML sitemap from your website URLs with custom priority, change frequency, and last modified dates — free, private, and instant." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tooladda.online/sitemap-generator.html" />
+    <meta property="og:site_name" content="ToolAdda" />
+    <meta property="og:image" content="https://tooladda.online/assets/images/og/sitemap-generator.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Sitemap Generator Online | Free XML Sitemap Creator — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="Sitemap Generator Online | Free XML Sitemap Creator — free online tool on ToolAdda, runs in your browser with no sign-up." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sitemap Generator Online | Free XML Sitemap Creator | ToolAdda" />
+    <meta name="twitter:description" content="Build SEO-friendly XML sitemaps from a list of URLs instantly in your browser. No upload, no sign-up." />
+    <meta name="twitter:image" content="https://tooladda.online/assets/images/og/sitemap-generator.jpg" />
+    <title>Sitemap Generator Online | Free XML Sitemap Creator | ToolAdda</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <style>
+      :root {
+        --sg-indigo: #4f46e5;
+        --sg-sky: #38bdf8;
+        --sg-emerald: #10b981;
+        --sg-amber: #f59e0b;
+        --sg-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+      }
+
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(18px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes floatBlob {
+        0%, 100% { transform: translateY(0) scale(1); }
+        50% { transform: translateY(-12px) scale(1.04); }
+      }
+      @keyframes pulseGlow {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.18); }
+        50% { box-shadow: 0 0 0 10px rgba(79, 70, 229, 0); }
+      }
+
+      .sitemap-shell {
+        position: relative;
+        padding: 2rem 0 3.5rem;
+        background:
+          radial-gradient(circle at 12% 8%, rgba(79, 70, 229, 0.14), transparent 28%),
+          radial-gradient(circle at 88% 18%, rgba(56, 189, 248, 0.12), transparent 24%),
+          linear-gradient(135deg, #eef2ff 0%, #f8fafc 48%, #ecfeff 100%);
+        overflow: hidden;
+      }
+      .sitemap-shell::before,
+      .sitemap-shell::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+        filter: blur(18px);
+        animation: floatBlob 9s ease-in-out infinite;
+      }
+      .sitemap-shell::before {
+        width: 260px;
+        height: 260px;
+        top: -90px;
+        right: -70px;
+        background: rgba(79, 70, 229, 0.16);
+      }
+      .sitemap-shell::after {
+        width: 220px;
+        height: 220px;
+        bottom: -80px;
+        left: -70px;
+        background: rgba(16, 185, 129, 0.12);
+        animation-delay: 1.4s;
+      }
+
+      .sitemap-card {
+        position: relative;
+        isolation: isolate;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: clamp(1.2rem, 2.5vw, 2rem);
+        border-radius: 28px;
+        border: 1px solid rgba(148, 163, 184, 0.22);
+        background: rgba(255, 255, 255, 0.78);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        box-shadow: 0 24px 90px rgba(15, 23, 42, 0.12);
+        overflow: hidden;
+      }
+      .sitemap-card::after {
+        content: "";
+        position: absolute;
+        inset: auto -120px -120px auto;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.16), transparent 68%);
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .breadcrumb {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.45rem;
+        margin-bottom: 1.1rem;
+        font-size: 0.92rem;
+        color: var(--text-secondary);
+      }
+      .breadcrumb a {
+        color: var(--accent-strong);
+        font-weight: 700;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 1.4rem;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+      .hero-topline {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.55rem;
+        margin-bottom: 0.7rem;
+      }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.48rem 0.78rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--sg-indigo), var(--sg-sky));
+        color: #fff;
+        font-size: 0.76rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        box-shadow: 0 10px 24px rgba(79, 70, 229, 0.24);
+      }
+      .hero-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.42rem 0.72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(148, 163, 184, 0.24);
+        color: #334155;
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+      .hero-title {
+        margin: 0 0 0.65rem;
+        font-size: clamp(2rem, 4vw, 3rem);
+        line-height: 1.06;
+        letter-spacing: -0.03em;
+        background: linear-gradient(135deg, #0f172a, var(--sg-indigo) 58%, var(--sg-sky));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
+        animation: fadeInUp 0.7s ease both;
+      }
+      .hero-copy {
+        margin: 0;
+        max-width: 62ch;
+        color: #475569;
+        font-size: 1.02rem;
+        line-height: 1.75;
+        font-weight: 600;
+      }
+
+      .hero-visual {
+        position: relative;
+        display: grid;
+        gap: 0.75rem;
+        padding: 1.2rem;
+        border-radius: 24px;
+        background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(56, 189, 248, 0.08));
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.85);
+        animation: fadeInUp 0.85s ease both;
+      }
+      .mini-xml {
+        padding: 0.95rem 1rem;
+        border-radius: 16px;
+        background: rgba(15, 23, 42, 0.92);
+        color: #cbd5e1;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.78rem;
+        line-height: 1.6;
+        box-shadow: 0 16px 34px rgba(15, 23, 42, 0.18);
+      }
+      .mini-xml .tag { color: #818cf8; }
+      .mini-xml .loc { color: #38bdf8; }
+      .mini-xml .val { color: #34d399; }
+      .hero-stat-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.55rem;
+      }
+      .hero-stat {
+        padding: 0.7rem 0.75rem;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.88);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        text-align: center;
+      }
+      .hero-stat strong {
+        display: block;
+        font-size: 1rem;
+        color: #0f172a;
+      }
+      .hero-stat span {
+        display: block;
+        margin-top: 0.15rem;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.85rem;
+        margin-bottom: 2rem;
+      }
+      .feature-card {
+        margin-top: 0.5rem;
+        padding: 1rem;
+        border-radius: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        background: rgba(255, 255, 255, 0.86);
+        box-shadow: 0 14px 28px rgba(15, 23, 42, 0.05);
+        transition: transform 0.2s var(--sg-ease), box-shadow 0.2s var(--sg-ease);
+      }
+      .feature-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 18px 34px rgba(15, 23, 42, 0.1);
+      }
+      .feature-card .icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.4rem;
+        height: 2.4rem;
+        border-radius: 12px;
+        margin-bottom: 0.65rem;
+        font-size: 1.15rem;
+      }
+      .feature-card:nth-child(1) .icon { background: linear-gradient(135deg, rgba(79,70,229,0.14), rgba(56,189,248,0.12)); }
+      .feature-card:nth-child(2) .icon { background: linear-gradient(135deg, rgba(16,185,129,0.14), rgba(34,197,94,0.12)); }
+      .feature-card:nth-child(3) .icon { background: linear-gradient(135deg, rgba(245,158,11,0.14), rgba(251,146,60,0.12)); }
+      .feature-card:nth-child(4) .icon { background: linear-gradient(135deg, rgba(236,72,153,0.14), rgba(244,114,182,0.12)); }
+      .feature-card strong {
+        display: block;
+        margin-bottom: 0.35rem;
+        color: #0f172a;
+        font-size: 0.98rem;
+      }
+      .feature-card span {
+        color: #64748b;
+        font-size: 0.88rem;
+        line-height: 1.55;
+        font-weight: 600;
+      }
+
+      .tool-panel {
+        padding: clamp(1rem, 2.5vw, 1.45rem);
+        border-radius: 24px;
+        border: 1px solid rgba(79, 70, 229, 0.14);
+        background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,250,255,0.92));
+        box-shadow: 0 18px 42px rgba(15, 23, 42, 0.07);
+      }
+      .panel-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+      }
+      .panel-head h2 {
+        margin: 0;
+        font-size: clamp(1.25rem, 2.4vw, 1.65rem);
+        color: #0f172a;
+        letter-spacing: -0.02em;
+      }
+      .steps-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.55rem;
+      }
+      .step-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.42rem 0.72rem;
+        border-radius: 999px;
+        background: rgba(79, 70, 229, 0.08);
+        border: 1px solid rgba(79, 70, 229, 0.14);
+        color: var(--sg-indigo);
+        font-size: 0.78rem;
+        font-weight: 800;
+      }
+      .step-pill em {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.25rem;
+        height: 1.25rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--sg-indigo), var(--sg-sky));
+        color: #fff;
+        font-style: normal;
+        font-size: 0.72rem;
+      }
+
+      .workspace-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      .field-card {
+        padding: 1rem;
+        border-radius: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        background: rgba(255, 255, 255, 0.92);
+      }
+      .field-card label {
+        display: block;
+        margin-bottom: 0.45rem;
+        font-size: 0.9rem;
+        font-weight: 800;
+        color: var(--sg-indigo);
+      }
+      .field-card input,
+      .field-card select,
+      .field-card textarea {
+        width: 100%;
+        border: 1px solid rgba(79, 70, 229, 0.16);
+        border-radius: 14px;
+        background: #fff;
+        color: var(--text-primary);
+        font-size: 0.98rem;
+        box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
+        transition: border-color 0.18s var(--sg-ease), box-shadow 0.18s var(--sg-ease);
+      }
+      .field-card input,
+      .field-card select {
+        min-height: 3rem;
+        padding: 0.85rem 0.95rem;
+      }
+      .field-card textarea {
+        min-height: 240px;
+        resize: vertical;
+        padding: 0.95rem 1rem;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        line-height: 1.55;
+      }
+      .field-card input:focus,
+      .field-card select:focus,
+      .field-card textarea:focus {
+        outline: none;
+        border-color: var(--sg-indigo);
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+      }
+      .field-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        margin-top: 0.55rem;
+      }
+      .field-meta .hint,
+      .field-meta .live-count {
+        font-size: 0.86rem;
+        font-weight: 700;
+        color: #64748b;
+      }
+      .live-count {
+        padding: 0.35rem 0.65rem;
+        border-radius: 999px;
+        background: rgba(79, 70, 229, 0.08);
+        color: var(--sg-indigo) !important;
+      }
+
+      .options-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+      .toggle-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        margin-top: 0.85rem;
+      }
+      .toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.62rem 0.85rem;
+        border-radius: 999px;
+        border: 1px solid rgba(79, 70, 229, 0.14);
+        background: rgba(255, 255, 255, 0.88);
+        font-weight: 700;
+        font-size: 0.88rem;
+        cursor: pointer;
+      }
+      .toggle input { accent-color: var(--sg-indigo); }
+
+      .action-row,
+      .output-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        margin-top: 1rem;
+      }
+      .btn-primary,
+      .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        min-height: 3rem;
+        padding: 0 1.2rem;
+        border-radius: 14px;
+        font-weight: 800;
+        font-size: 0.96rem;
+        cursor: pointer;
+        transition: transform 0.16s var(--sg-ease), box-shadow 0.16s var(--sg-ease);
+      }
+      .btn-primary {
+        border: none;
+        color: #fff;
+        background: linear-gradient(135deg, var(--sg-indigo), var(--sg-sky));
+        box-shadow: 0 14px 28px rgba(79, 70, 229, 0.24);
+        animation: pulseGlow 2.8s ease infinite;
+      }
+      .btn-primary:hover,
+      .btn-secondary:hover {
+        transform: translateY(-2px);
+      }
+      .btn-secondary {
+        border: 1px solid rgba(79, 70, 229, 0.16);
+        background: rgba(255, 255, 255, 0.95);
+        color: #0f172a;
+      }
+      .btn-download {
+        background: linear-gradient(135deg, var(--sg-emerald), #059669);
+        color: #fff;
+        border: none;
+        box-shadow: 0 14px 28px rgba(16, 185, 129, 0.22);
+      }
+
+      .error-box {
+        margin-top: 0.85rem;
+        padding: 0.9rem 1rem;
+        border-radius: 14px;
+        border: 1px solid rgba(220, 38, 38, 0.2);
+        background: rgba(220, 38, 38, 0.08);
+        color: #991b1b;
+        font-weight: 700;
+      }
+      .error-box.hidden { display: none; }
+
+      .output-shell {
+        margin-top: 1rem;
+        padding: 0.85rem;
+        border-radius: 18px;
+        border: 1px solid rgba(79, 70, 229, 0.14);
+        background: rgba(15, 23, 42, 0.94);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 18px 36px rgba(15, 23, 42, 0.18);
+      }
+      .output-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.6rem;
+        margin-bottom: 0.65rem;
+        color: #94a3b8;
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .output-dots {
+        display: inline-flex;
+        gap: 0.35rem;
+      }
+      .output-dots span {
+        width: 0.62rem;
+        height: 0.62rem;
+        border-radius: 999px;
+        background: #475569;
+      }
+      .output-dots span:nth-child(1) { background: #ef4444; }
+      .output-dots span:nth-child(2) { background: #f59e0b; }
+      .output-dots span:nth-child(3) { background: #22c55e; }
+
+      .output-pre {
+        margin: 0;
+        padding: 0.2rem 0.1rem 0.1rem;
+        overflow: auto;
+        max-height: 360px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.88rem;
+        line-height: 1.6;
+        color: #cbd5e1;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .output-pre .tok-tag { color: #818cf8; }
+      .output-pre .tok-loc { color: #38bdf8; }
+      .output-pre .tok-val { color: #34d399; }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+      .stat-card {
+        padding: 0.95rem 1rem;
+        border-radius: 16px;
+        border: 1px solid rgba(79, 70, 229, 0.12);
+        background: linear-gradient(135deg, rgba(79, 70, 229, 0.08), rgba(56, 189, 248, 0.06));
+      }
+      .stat-card span {
+        display: block;
+        font-size: 0.78rem;
+        font-weight: 800;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .stat-card strong {
+        display: block;
+        margin-top: 0.25rem;
+        font-size: clamp(1.35rem, 3vw, 1.7rem);
+        color: #0f172a;
+      }
+
+      .seo-section {
+        max-width: 1180px;
+        margin: 1.4rem auto 0;
+        padding: clamp(1.2rem, 2.5vw, 1.8rem);
+        border-radius: 24px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        background: rgba(255, 255, 255, 0.82);
+        box-shadow: 0 18px 42px rgba(15, 23, 42, 0.06);
+      }
+      .seo-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.85rem;
+        margin-top: 1rem;
+      }
+      .seo-box {
+        padding: 1rem;
+        border-radius: 16px;
+        border: 1px solid rgba(79, 70, 229, 0.12);
+        background: linear-gradient(135deg, rgba(79, 70, 229, 0.06), rgba(56, 189, 248, 0.05));
+      }
+      .seo-box strong {
+        display: block;
+        margin-bottom: 0.35rem;
+        color: var(--sg-indigo);
+      }
+      .seo-box p,
+      .seo-box li {
+        margin: 0;
+        color: #64748b;
+        font-weight: 600;
+        line-height: 1.65;
+      }
+      .faq-list {
+        display: grid;
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+      .faq-item {
+        padding: 0.95rem 1rem;
+        border-radius: 16px;
+        border: 1px solid rgba(79, 70, 229, 0.1);
+        background: rgba(255, 255, 255, 0.92);
+      }
+      .faq-item summary {
+        cursor: pointer;
+        font-weight: 800;
+        color: var(--sg-indigo);
+      }
+      .faq-item p {
+        margin: 0.45rem 0 0;
+        color: #64748b;
+        font-weight: 600;
+        line-height: 1.65;
+      }
+
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 1.5rem;
+        transform: translate(-50%, 120%);
+        z-index: 1200;
+        padding: 0.85rem 1.1rem;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.94);
+        color: #fff;
+        font-weight: 700;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.28);
+        transition: transform 0.25s var(--sg-ease);
+        pointer-events: none;
+      }
+      .toast.is-visible {
+        transform: translate(-50%, 0);
+      }
+
+      [data-theme="dark"] .sitemap-shell {
+        background:
+          radial-gradient(circle at 12% 8%, rgba(79, 70, 229, 0.18), transparent 28%),
+          linear-gradient(135deg, #0f172a 0%, #111827 48%, #1e1b4b 100%);
+      }
+      [data-theme="dark"] .sitemap-card,
+      [data-theme="dark"] .seo-section,
+      [data-theme="dark"] .feature-card,
+      [data-theme="dark"] .field-card,
+      [data-theme="dark"] .tool-panel {
+        background: rgba(17, 24, 39, 0.88);
+        border-color: rgba(148, 163, 184, 0.16);
+      }
+      [data-theme="dark"] .field-card input,
+      [data-theme="dark"] .field-card select,
+      [data-theme="dark"] .field-card textarea {
+        background: rgba(15, 23, 42, 0.9);
+        color: #f1f5f9;
+        border-color: rgba(148, 163, 184, 0.22);
+      }
+      [data-theme="dark"] .field-card input::placeholder,
+      [data-theme="dark"] .field-card textarea::placeholder {
+        color: #64748b;
+      }
+      [data-theme="dark"] .hero-visual,
+      [data-theme="dark"] .hero-stat,
+      [data-theme="dark"] .hero-chip,
+      [data-theme="dark"] .seo-box,
+      [data-theme="dark"] .toggle,
+      [data-theme="dark"] .btn-secondary,
+      [data-theme="dark"] .faq-item {
+        background: rgba(15, 23, 42, 0.7);
+        border-color: rgba(148, 163, 184, 0.18);
+      }
+      [data-theme="dark"] .hero-stat strong,
+      [data-theme="dark"] .toggle,
+      [data-theme="dark"] .btn-secondary {
+        color: #f1f5f9;
+      }
+      [data-theme="dark"] .field-meta .hint {
+        color: #94a3b8;
+      }
+      [data-theme="dark"] .hero-title,
+      [data-theme="dark"] .panel-head h2,
+      [data-theme="dark"] .feature-card strong,
+      [data-theme="dark"] .stat-card strong {
+        color: #f8fafc;
+      }
+      [data-theme="dark"] .hero-copy,
+      [data-theme="dark"] .feature-card span,
+      [data-theme="dark"] .seo-box p {
+        color: #94a3b8;
+      }
+      /* The chips got a dark background but kept #334155 text, and the title's
+         gradient starts at near-black, so "Free" vanished on the dark card. */
+      [data-theme="dark"] .hero-chip { color: #e2e8f0; }
+      [data-theme="dark"] .step-pill,
+      [data-theme="dark"] .field-card label { color: #c7d2fe; }
+      /* Article headings carry an inline near-black colour. */
+      [data-theme="dark"] main h3[style*="#0f172a"] { color: #f8fafc !important; }
+      [data-theme="dark"] .hero-title {
+        background: linear-gradient(135deg, #f8fafc, #a5b4fc 58%, var(--sg-sky));
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+
+      @media (max-width: 960px) {
+        .hero-grid,
+        .workspace-grid,
+        .seo-grid {
+          grid-template-columns: 1fr;
+        }
+        .feature-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 640px) {
+        /* The XML sample and stats are decoration (aria-hidden) and pushed the
+           real form about 600px down on phones. */
+        .hero-visual { display: none; }
+        .feature-grid,
+        .options-grid,
+        .stats-grid,
+        .hero-stat-row {
+          grid-template-columns: 1fr;
+        }
+        .action-row .btn-primary,
+        .action-row .btn-secondary,
+        .output-actions .btn-primary,
+        .output-actions .btn-secondary {
+          width: 100%;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+      /* =================================================================
+         "Metro map" - a sitemap is a map of a site, so the page draws one
+         the way transit maps do: each section of the site is a coloured
+         line, each page a station. The headline's Sitemap rides a line;
+         the cover maps the tool's own sample site. Indigo, emerald, sky
+         and amber are the page's colours, now line colours. Scoped to
+         body.mt-page.
+         ================================================================= */
+      body.mt-page { --mt-l1: #4f46e5; --mt-l2: #059669; --mt-l3: #0ea5e9; --mt-l4: #d97706; --mt-paper: #fbfcfe; --mt-line: rgba(79, 70, 229, .14); --mt-ink: #111827; }
+      [data-theme="dark"] body.mt-page { --mt-l1: #818cf8; --mt-l2: #34d399; --mt-l3: #38bdf8; --mt-l4: #fbbf24; --mt-paper: #0e1324; --mt-line: rgba(129, 140, 248, .2); --mt-ink: #e5e7eb; }
+      /* ground: faint transit lines; the shell stops clipping (it stopped the ad sticking) */
+      body.mt-page .sitemap-shell { overflow: visible; overflow-x: clip; }
+      body.mt-page .sitemap-shell::before, body.mt-page .sitemap-shell::after { display: none; }
+      body.mt-page .sitemap-shell {
+        background:
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='160'%3E%3Cg fill='none' stroke-width='3' stroke-linecap='round' stroke-opacity='.07'%3E%3Cpath d='M-10 40 H90 L130 80 H250' stroke='%234f46e5'/%3E%3Cpath d='M-10 120 H40 L80 80 H140' stroke='%23059669'/%3E%3C/g%3E%3Cg fill='%23fff' stroke-width='2' stroke-opacity='.12'%3E%3Ccircle cx='90' cy='40' r='4' stroke='%234f46e5'/%3E%3Ccircle cx='40' cy='120' r='4' stroke='%23059669'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 240px 160px,
+          linear-gradient(180deg, #f5f7ff 0%, #f8fafc 60%, #f3fbf7 100%); }
+      [data-theme="dark"] body.mt-page .sitemap-shell {
+        background:
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='160'%3E%3Cg fill='none' stroke-width='3' stroke-linecap='round' stroke-opacity='.08'%3E%3Cpath d='M-10 40 H90 L130 80 H250' stroke='%23818cf8'/%3E%3Cpath d='M-10 120 H40 L80 80 H140' stroke='%2334d399'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 240px 160px,
+          linear-gradient(180deg, #0a0e1a 0%, #0b1220 100%); }
+      html body.mt-page .ta-donate:is(a) { color: #14213d; }
+
+      /* ---------- cover ---------- */
+      .mt-cover { display: grid; gap: 1.2rem; align-items: center; margin: .4rem 0 1.3rem; }
+      .mt-cover .hero-topline { margin-bottom: .7rem; }
+      .mt-page .mt-title { margin: 0; font-size: clamp(2rem, 8.4vw, 3.1rem); line-height: 1.12; letter-spacing: -.03em; color: var(--mt-ink);
+        background: none; -webkit-text-fill-color: currentColor; }
+      /* Sitemap rides a metro line, stations under it */
+      .mt-ride { position: relative; display: inline-block; padding-bottom: .26em; color: var(--mt-l1); }
+      .mt-ride::after { content: ""; position: absolute; left: 0; right: 0; bottom: .02em; height: .2em; border-radius: 1em;
+        background:
+          radial-gradient(circle, #fff 0 .045em, var(--mt-l1) .05em .09em, transparent .1em) 0 50% / 25% 100% repeat-x,
+          linear-gradient(var(--mt-l1), var(--mt-l1)) 0 50% / 100% 46% no-repeat; }
+      [data-theme="dark"] .mt-ride::after { background:
+          radial-gradient(circle, #0e1324 0 .045em, var(--mt-l1) .05em .09em, transparent .1em) 0 50% / 25% 100% repeat-x,
+          linear-gradient(var(--mt-l1), var(--mt-l1)) 0 50% / 100% 46% no-repeat; }
+      .mt-art { display: none; margin: 0; }
+      @media (min-width: 900px) {
+        .mt-cover { grid-template-columns: minmax(0, 1fr) minmax(0, 450px); gap: 2rem; }
+        .mt-art { display: block; }
+      }
+      .mt-art { padding: .9rem 1rem .8rem; border-radius: 18px; background: var(--mt-paper); border: 1px solid var(--mt-line); box-shadow: 0 20px 44px -30px rgba(30, 27, 75, .55); }
+      .mt-art svg { display: block; width: 100%; height: auto; }
+      .mt-art .st { fill: var(--mt-paper); stroke-width: 3; }
+      .mt-art text { font: 700 10.5px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: var(--mt-ink); }
+      .mt-art .ln { fill: none; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+      .mt-art figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .3rem .8rem; margin-top: .5rem; font-size: .72rem; color: var(--text-muted); }
+      .mt-art figcaption span::before { content: ""; display: inline-block; width: 14px; height: 5px; margin-right: .35rem; border-radius: 3px; vertical-align: 2px; background: var(--c); }
+
+      /* ---------- the tool: one grid ---------- */
+      body.mt-page .sitemap-card.mt-card { overflow: visible; }
+      .mt-cq { container: mtcq / inline-size; }
+      .mt-grid { display: grid; gap: .9rem; grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "in" "ad" "opts" "out"; }
+      .mt-head { grid-area: head; min-width: 0; } .mt-in { grid-area: in; min-width: 0; } .mt-opts { grid-area: opts; min-width: 0; } .mt-out { grid-area: out; min-width: 0; }
+      .mt-ad-zone { grid-area: ad; min-width: 0; }
+      @media (min-width: 700px) {
+        .mt-grid { grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "head ad" "in ad" "opts ad" "out ad"; gap: 1rem 1.3rem; }
+        .mt-grid > .mt-ad-zone { position: sticky; top: calc(var(--header-overlap, 5.5rem) + .5rem); align-self: start; }
+      }
+      @container mtcq (min-width: 1000px) {
+        .mt-cq > .mt-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 300px; grid-template-rows: auto auto 1fr; grid-template-areas: "head head ad" "in opts ad" "out out ad"; }
+      }
+      body.mt-page .mt-ad-zone { text-align: center; }
+      body.mt-page .mt-ad-zone .ta-inline-ad { display: block !important; margin: 0 auto !important; }
+      .mt-page .mt-head .panel-head { margin: 0; }
+      .mt-page .mt-in .field-card + .field-card { margin-top: .8rem; }
+      .mt-page .mt-in .field-card:first-child { margin-bottom: 0 !important; }
+      /* the URL list reads as a line of stations */
+      .mt-page #urlListInput { border-left: 5px solid var(--mt-l2); }
+      .mt-page .mt-opts .toggle-row, .mt-page .mt-opts .action-row { margin-top: .8rem; }
+      /* three selects need ~620px; beside the ad the column is narrower, so two a row */
+      .mt-opts { container: mtopts / inline-size; }
+      @container mtopts (min-width: 420px) and (max-width: 620px) {
+        .mt-page .mt-opts .options-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .mt-page .mt-opts .options-grid > :last-child { grid-column: 1 / -1; }
+      }
+
+      /* ---------- after the tool ---------- */
+      .mt-after { margin: 1.4rem 0 0; padding: 1rem 1.15rem; border-radius: 18px; border: 1px solid var(--mt-line); background: var(--mt-paper); }
+      .mt-page .mt-after .hero-copy { margin: 0; max-width: none; }
+
+      /* ---------- new section ---------- */
+      .mt-ext .mt-tablewrap { overflow-x: auto; margin: .9rem 0 1rem; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); }
+      .mt-locs { width: 100%; min-width: 720px; border-collapse: collapse; font-size: .87rem; }
+      .mt-locs th, .mt-locs td { padding: .6rem .75rem; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+      .mt-locs tbody tr:last-child td { border-bottom: 0; }
+      .mt-locs thead th { font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); background: rgba(79, 70, 229, .07); }
+      .mt-locs td:nth-child(-n+2) code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .8rem; background: none; padding: 0; overflow-wrap: anywhere; }
+      .mt-locs td:nth-child(2) code { color: var(--mt-l2); font-weight: 700; }
+      .mt-locs tr.mt-no td:nth-child(2) { color: #be123c; font-weight: 700; } [data-theme="dark"] .mt-locs tr.mt-no td:nth-child(2) { color: #fda4af; }
+      .mt-locs tr.mt-skip td:nth-child(2) { color: var(--text-muted); font-style: italic; }
+      .mt-locs td:last-child { color: var(--text-muted); line-height: 1.55; }
+      @media (max-width: 640px) {
+        .mt-ext .mt-tablewrap { overflow: visible; border: 0; background: none; }
+        .mt-locs { min-width: 0; }
+        .mt-locs, .mt-locs tbody, .mt-locs tr, .mt-locs td { display: block; }
+        .mt-locs thead { display: none; }
+        .mt-locs tr { margin-bottom: .5rem; padding: .6rem .8rem; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+        .mt-locs td { padding: .12rem 0; border: 0; }
+        .mt-locs td:nth-child(2)::before { content: "\2192  "; color: var(--text-muted); font-style: normal; }
+      }
+
+      @media print { .mt-page .mt-ad-zone, .mt-page .mt-art { display: none !important; } }
+
+      /* ---------- phones ---------- */
+      @media (max-width: 699px) {
+        .mt-page .sitemap-shell .breadcrumb, .mt-page .mt-cover .hero-topline, .mt-page .mt-head .steps-row { display: none; }
+        .mt-cover { margin: 0 0 1rem; }
+        .mt-page .sitemap-card.mt-card { padding: .8rem; }
+        /* one box, not two: the panel inside the card goes flat */
+        .mt-page .mt-card > .tool-panel { padding: 0; border: 0; background: none; box-shadow: none; }
+        .mt-page .mt-in .field-meta { margin-top: .4rem; gap: .3rem .5rem; }
+        .mt-page .mt-in .field-meta .hint { font-size: .76rem; line-height: 1.35; }
+        .mt-page .mt-in .field-meta .live-count { padding: .2rem .55rem; font-size: .78rem; }
+        .mt-page .mt-head h2 { margin: 0; font-size: 1.05rem; }
+        /* the base URL and the list share one card */
+        .mt-page .mt-in { padding: .75rem; border-radius: 18px; border: 1px solid rgba(148, 163, 184, .18); background: rgba(255, 255, 255, .92); }
+        [data-theme="dark"] .mt-page .mt-in { background: rgba(17, 24, 39, .88); border-color: rgba(148, 163, 184, .16); }
+        .mt-page .mt-in .field-card { padding: 0; border: 0; background: none; }
+        .mt-page .mt-in .field-card + .field-card { margin-top: .7rem; }
+        .mt-page .mt-in .field-card label { margin-bottom: .3rem; }
+        .mt-page .mt-in #siteBaseUrl { min-height: 2.7rem; padding: .6rem .8rem; }
+        .mt-page .mt-opts .field-card { padding: .7rem; }
+        .mt-page .mt-in #urlListInput { min-height: 0; height: 118px; }
+      }
+    </style>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/sitemap-generator.html#webpage",
+      "url": "https://tooladda.online/sitemap-generator.html",
+      "inLanguage": "en",
+      "datePublished": "2026-07-20",
+      "dateModified": "2026-09-21",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="mt-page">
+    <!-- Page schema lives in the body, not the head: its FAQ answers use the word "noindex", and Brave's Web Discovery Project skips any page whose head contains that word. -->
+    <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://tooladda.online/#website",
+      "name": "ToolAdda",
+      "alternateName": [
+        "Tool Adda",
+        "Tools Adda",
+        "ToolsAdda",
+        "Tooladda",
+        "ToolAdda.online"
+      ],
+      "url": "https://tooladda.online/",
+      "description": "Free browser-based tools for productivity, SEO, and developer workflows.",
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "alternateName": [
+        "Tool Adda",
+        "Tools Adda",
+        "ToolsAdda",
+        "Tooladda",
+        "ToolAdda.online"
+      ],
+      "url": "https://tooladda.online/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tooladda.online/assets/images/logo.svg"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/sitemap-generator.html#webpage",
+      "url": "https://tooladda.online/sitemap-generator.html",
+      "name": "Sitemap Generator Online | Free XML Sitemap Creator | ToolAdda",
+      "description": "Generate valid XML sitemaps from website URLs with custom priority, change frequency, and last modified dates.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://tooladda.online/sitemap-generator.html#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://tooladda.online/sitemap-generator.html#softwareapplication"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://tooladda.online/sitemap-generator.html#softwareapplication",
+      "name": "Sitemap Generator",
+      "url": "https://tooladda.online/sitemap-generator.html",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "description": "Create valid XML sitemaps from a list of website URLs with SEO metadata for Google Search Console.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "primaryImageOfPage": "https://tooladda.online/assets/images/logo.svg",
+      "featureList": [
+        "Generate valid sitemap.xml files",
+        "Set changefreq, priority, and lastmod values",
+        "Accept absolute or relative URLs",
+        "Copy or download sitemap instantly",
+        "Works entirely in your browser"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tooladda.online/sitemap-generator.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Sitemap Generator",
+          "item": "https://tooladda.online/sitemap-generator.html"
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to generate an XML sitemap online",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Enter your website URL",
+          "text": "Type your domain base URL such as https://example.com in the website URL field."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Add page URLs",
+          "text": "Paste one URL per line using full URLs or paths like /about.html and /contact.html."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Configure SEO settings",
+          "text": "Choose change frequency, priority, and last modified date for your sitemap entries."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Download sitemap.xml",
+          "text": "Click Generate sitemap, then copy the XML or download sitemap.xml for Google Search Console."
+        }
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "name": "Related SEO and developer tools on ToolAdda",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "robots.txt Generator & Tester",
+          "url": "https://tooladda.online/robots-txt-generator.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Website SEO Checker",
+          "url": "https://tooladda.online/website-seo-checker.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Favicon Generator",
+          "url": "https://tooladda.online/favicon-generator.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "QR Code Generator",
+          "url": "https://tooladda.online/qr-code-generator.html"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is an XML sitemap?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An XML sitemap is a file that lists important pages on your website so search engines like Google and Bing can discover and crawl them more efficiently, especially pages that aren't well linked internally."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this sitemap generator completely free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. ToolAdda's Sitemap Generator is free, requires no account, and processes everything locally in your browser."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use relative URLs in the sitemap generator?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Paths like /about.html are automatically converted into full URLs using the base website URL you provide."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my URL data uploaded to a server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. All sitemap generation happens locally in your browser using JavaScript, so your URL list never leaves your device."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I submit my sitemap to Google Search Console?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Upload sitemap.xml to your website root (e.g. https://yoursite.com/sitemap.xml), then add that URL in Google Search Console under Sitemaps."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many URLs can one sitemap.xml file contain?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The sitemaps.org protocol caps a single sitemap at 50,000 URLs and 50MB uncompressed. This tool enforces that limit and tells you to split into multiple files under a sitemap index if you exceed it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What should I do if my site has more than 50,000 URLs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Split your URLs into multiple sitemap files, each under the limit, then create a sitemap index file listing all of them and submit only the index URL to search engines."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Google actually use the priority and changefreq values?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Largely no - Google has said it mostly ignores these and relies on its own crawl signals. They're still valid per the protocol and other engines may weight them lightly, but don't expect them to meaningfully change Google's crawl behavior."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between a sitemap and robots.txt?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "robots.txt restricts what crawlers may access; a sitemap proactively lists what you want discovered. Most sites use both, often with robots.txt pointing to the sitemap's URL."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need a sitemap if my site is already well linked internally?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It still helps - a sitemap gives search engines a direct, authoritative list of canonical URLs and lastmod hints, speeding up discovery beyond what crawling links alone would achieve."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I include images or videos in a sitemap?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, using the separate image/video sitemap extensions with <image:image> or <video:video> tags. This tool generates the standard page-URL sitemap without those extension tags."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the ideal lastmod date format?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "W3C Datetime format, most simply YYYY-MM-DD - what this tool's date picker produces. Only set it to when content actually changed; inflating it on every page reduces the signal's usefulness."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Should every page on my site be in the sitemap?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No — include only canonical, indexable pages you want search engines to rank. Leave out duplicate/parameterized URLs, pages blocked by robots.txt or noindex, redirects, and error pages, since listing non-canonical or non-indexable URLs can create sitemap warnings in Search Console."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does a sitemap guarantee my pages will be indexed?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No - it aids discovery, but indexing still depends on content quality, crawl budget, and technical accessibility. It's a discovery aid, not an indexing guarantee."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How often should I regenerate and resubmit my sitemap?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Whenever you add, remove, or significantly update pages - for actively changing sites, monthly or as part of your deploy process keeps search engines working from current data."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use this tool for very large websites?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, up to the 50,000 URL protocol limit per file — paste your full URL list and the tool deduplicates and validates them locally. For sites beyond that limit, generate multiple sitemap files in batches and combine them under a sitemap index."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why did I get an \"Invalid URL\" error?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A pasted line couldn't be parsed as a valid URL even combined with your base URL - check for stray spaces or non-URL text; the error names the exact line to fix."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this sitemap generator accurate for SEO purposes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — it produces standard-compliant sitemap.xml markup per the sitemaps.org protocol that Google Search Console, Bing Webmaster Tools, and virtually all crawlers accept without modification."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="container navbar">
+        <a class="brand" href="/" aria-label="ToolAdda home">
+          <span class="brand-mark" aria-hidden="true">T</span>
+          <span>ToolAdda</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Home</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="privacy-policy.html">Privacy</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+              <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+              <path d="M3.1 16.9h10.8" />
+              <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+            </svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+          <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+          <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <div class="sitemap-shell" data-sitemap-page>
+        <aside class="ta-support" aria-label="Support ToolAdda">
+          <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+          <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+            <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+            <span class="ta-donate-label">Buy me a coffee</span>
+          </a>
+        </aside>
+
+        <div class="container">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span>/</span>
+            <span>Sitemap Generator</span>
+          </nav>
+
+          <!-- Cover: Sitemap rides a metro line; from 900px the generator's own sample
+               site drawn as a line map. The introduction follows the tool. -->
+          <header class="mt-cover">
+            <div>
+              <div class="hero-topline">
+                <span class="hero-badge">🗺️ SEO Tool</span>
+                <span class="hero-chip">⚡ Instant</span>
+                <span class="hero-chip">🔒 Private</span>
+                <span class="hero-chip">✅ Valid XML</span>
+              </div>
+              <h1 class="hero-title mt-title">Free XML <span class="mt-ride">Sitemap</span> Generator Online</h1>
+            </div>
+            <figure class="mt-art" aria-hidden="true">
+              <svg viewBox="0 0 450 170"><path class="ln" d="M40 56 H410" stroke="var(--mt-l1)"/><path class="ln" d="M40 56 L90 116 H410" stroke="var(--mt-l2)"/><circle class="st" cx="150" cy="56" r="6" stroke="var(--mt-l1)"/><text x="150" y="42" text-anchor="middle">/about.html</text><circle class="st" cx="300" cy="56" r="6" stroke="var(--mt-l1)"/><text x="300" y="42" text-anchor="middle">/contact.html</text><circle class="st" cx="200" cy="116" r="6" stroke="var(--mt-l2)"/><text x="200" y="140" text-anchor="middle">/blog/post-one.html</text><circle class="st" cx="350" cy="116" r="6" stroke="var(--mt-l2)"/><text x="350" y="140" text-anchor="middle">/blog/post-two.html</text><circle class="st" cx="40" cy="56" r="8" stroke="var(--mt-l1)"/><circle cx="40" cy="56" r="3" fill="var(--mt-l2)"/><text x="40" y="42" text-anchor="middle">/</text></svg>
+              <figcaption><span style="--c:var(--mt-l1)">site pages</span><span style="--c:var(--mt-l2)">/blog</span><b>The &ldquo;Load sample&rdquo; site &middot; 5 &lt;url&gt; entries</b></figcaption>
+            </figure>
+          </header>
+
+          <div class="sitemap-card mt-card">
+            <div class="tool-panel">
+              <!-- One grid: heading; base URL and the URL list; the ad; options and
+                   Generate; the XML and its stats. On phones the ad follows the URL
+                   list; from 700px it has its own column - never above the tool. -->
+              <div class="mt-cq">
+              <div class="mt-grid">
+                <div class="mt-head">
+                  <div class="panel-head">
+                    <h2>Build your sitemap.xml</h2>
+                    <div class="steps-row">
+                      <span class="step-pill"><em>1</em> Add URLs</span>
+                      <span class="step-pill"><em>2</em> Configure</span>
+                      <span class="step-pill"><em>3</em> Download</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-in">
+                  <div class="field-card" style="margin-bottom: 1rem;">
+                    <label for="siteBaseUrl">Website base URL</label>
+                    <input id="siteBaseUrl" type="url" placeholder="https://example.com" value="https://example.com" autocomplete="url" />
+                  </div>
+                  <div class="field-card">
+                    <label for="urlListInput">Page URLs (one per line)</label>
+                    <textarea id="urlListInput" placeholder="/&#10;/about.html&#10;/contact.html&#10;/blog/my-post.html&#10;https://example.com/pricing.html"></textarea>
+                    <div class="field-meta">
+                      <span class="hint">Relative paths are converted using your base URL.</span>
+                      <span class="live-count" id="urlPreviewCount">0 URLs detected</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Ad: one 300x250 (see .mt-ad-zone). -->
+                <div class="mt-ad-zone">
+                  <div class="ta-inline-ad" data-unit="inline"></div>
+                </div>
+
+                <div class="mt-opts">
+                  <div class="options-grid">
+                    <div class="field-card">
+                      <label for="changefreqSelect">Change frequency</label>
+                      <select id="changefreqSelect">
+                        <option value="always">always</option>
+                        <option value="hourly">hourly</option>
+                        <option value="daily">daily</option>
+                        <option value="weekly" selected>weekly</option>
+                        <option value="monthly">monthly</option>
+                        <option value="yearly">yearly</option>
+                        <option value="never">never</option>
+                      </select>
+                    </div>
+                    <div class="field-card">
+                      <label for="prioritySelect">Priority</label>
+                      <select id="prioritySelect">
+                        <option value="1.0">1.0 — Homepage</option>
+                        <option value="0.9">0.9</option>
+                        <option value="0.8">0.8</option>
+                        <option value="0.7" selected>0.7 — Default</option>
+                        <option value="0.5">0.5</option>
+                        <option value="0.3">0.3</option>
+                      </select>
+                    </div>
+                    <div class="field-card">
+                      <label for="lastmodInput">Last modified</label>
+                      <input id="lastmodInput" type="date" />
+                    </div>
+                  </div>
+
+                  <div class="toggle-row">
+                    <label class="toggle">
+                      <input id="includeLastmodToggle" type="checkbox" checked />
+                      Include lastmod date
+                    </label>
+                  </div>
+
+                  <div class="action-row">
+                    <button class="btn-primary" id="generateSitemapBtn" type="button">✨ Generate sitemap</button>
+                    <button class="btn-secondary" id="loadSampleBtn" type="button">Load sample</button>
+                    <button class="btn-secondary" id="clearSitemapBtn" type="button">Clear</button>
+                  </div>
+
+                  <div id="sitemapErrorBox" class="error-box hidden" role="alert" aria-live="polite"></div>
+                </div>
+                <div class="mt-out">
+                  <div class="output-shell">
+                    <div class="output-head">
+                      <span class="output-dots"><span></span><span></span><span></span></span>
+                      <span>sitemap.xml preview</span>
+                    </div>
+                    <pre id="sitemapOutput" class="output-pre" aria-label="Generated sitemap XML">Generate a sitemap to preview XML here.</pre>
+                  </div>
+
+                  <div class="output-actions">
+                    <button class="btn-secondary" id="copySitemapBtn" type="button">📋 Copy XML</button>
+                    <button class="btn-primary btn-download" id="downloadSitemapBtn" type="button">⬇️ Download sitemap.xml</button>
+                  </div>
+
+                  <div class="stats-grid" aria-label="Sitemap statistics">
+                    <div class="stat-card">
+                      <span>Total URLs</span>
+                      <strong id="statUrlCount">—</strong>
+                    </div>
+                    <div class="stat-card">
+                      <span>XML lines</span>
+                      <strong id="statLineCount">—</strong>
+                    </div>
+                    <div class="stat-card">
+                      <span>File size</span>
+                      <strong id="statXmlSize">—</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+
+            <div class="mt-after">
+              <p class="hero-copy">Create a valid <strong>sitemap.xml</strong> file for Google Search Console in seconds. Paste your page URLs, configure SEO metadata, and download — everything runs locally in your browser.</p>
+            </div>
+
+            <div class="feature-grid">
+              <div class="feature-card">
+                <div class="icon">📄</div>
+                <strong>Valid XML output</strong>
+                <span>Generates standard sitemap.xml markup compatible with Google and Bing.</span>
+              </div>
+              <div class="feature-card">
+                <div class="icon">🔗</div>
+                <strong>Flexible URL input</strong>
+                <span>Accepts absolute URLs or site-relative paths using your base domain.</span>
+              </div>
+              <div class="feature-card">
+                <div class="icon">📈</div>
+                <strong>SEO metadata</strong>
+                <span>Set changefreq, priority, and lastmod for every listed page.</span>
+              </div>
+              <div class="feature-card">
+                <div class="icon">🛡️</div>
+                <strong>Private by design</strong>
+                <span>Your URL list never leaves your device — no server uploads.</span>
+              </div>
+            </div>
+
+            <h2 class="hero-title" style="font-size: clamp(1.4rem, 3vw, 1.9rem); margin: 1.6rem 0 0.5rem;">Related SEO &amp; Developer Tools</h2>
+            <div class="feature-grid" style="margin-top: 0.25rem;">
+              <a class="feature-card" href="robots-txt-generator.html" style="text-decoration: none; display: block;">
+                <div class="icon">🤖</div>
+                <strong>robots.txt Generator &amp; Tester</strong>
+                <span>Visually build and test a robots.txt with real crawler-matching logic — pairs naturally with a sitemap.</span>
+              </a>
+              <a class="feature-card" href="cyber-tools/dofollow-nofollow-link-checker.html" style="text-decoration: none; display: block;">
+                <div class="icon">🔗</div>
+                <strong>Dofollow &amp; Nofollow Link Checker</strong>
+                <span>Read every link’s rel attribute to find nofollow, sponsored and UGC links, and split internal from external.</span>
+              </a>
+              <a class="feature-card" href="website-seo-checker.html" style="text-decoration: none; display: block;">
+                <div class="icon">🔍</div>
+                <strong>Website SEO Checker</strong>
+                <span>Audit a page's on-page SEO signals — titles, meta tags, headings, and more.</span>
+              </a>
+              <a class="feature-card" href="favicon-generator.html" style="text-decoration: none; display: block;">
+                <div class="icon">🎨</div>
+                <strong>Favicon Generator</strong>
+                <span>Create favicon.ico, Apple touch icons, and web manifest files.</span>
+              </a>
+              <a class="feature-card" href="qr-code-generator.html" style="text-decoration: none; display: block;">
+                <div class="icon">📱</div>
+                <strong>QR Code Generator</strong>
+                <span>Generate QR codes for URLs, text, and contact info.</span>
+              </a>
+            </div>
+          </div>
+
+
+          <section class="seo-section" aria-labelledby="seo-sitemap-generator">
+            <h2 id="seo-sitemap-generator" class="hero-title" style="font-size: clamp(1.5rem, 3vw, 2rem);">What is this XML sitemap generator?</h2>
+            <p class="hero-copy">Use this free <strong>online sitemap generator</strong> to create a valid, standards-compliant XML sitemap for your website. Sitemaps help search engines like Google and Bing discover, crawl, and index your most important pages faster — especially useful for new sites, large sites with deep page hierarchies, and routine SEO audits.</p>
+
+            <div class="seo-grid">
+              <article class="seo-box">
+                <strong>How to use</strong>
+                <ol style="margin: 0.45rem 0 0; padding-left: 1.15rem;">
+                  <li>Enter your website base URL (e.g. https://yoursite.com).</li>
+                  <li>Paste page URLs — one per line — as paths or full URLs.</li>
+                  <li>Set changefreq, priority, and lastmod values.</li>
+                  <li>Click Generate, then copy or download sitemap.xml.</li>
+                </ol>
+              </article>
+              <article class="seo-box">
+                <strong>Why it helps</strong>
+                <ul style="margin: 0.45rem 0 0; padding-left: 1.15rem;">
+                  <li>Speeds up SEO setup for new websites.</li>
+                  <li>Creates Google Search Console-ready sitemaps.</li>
+                  <li>Removes duplicate URLs automatically.</li>
+                  <li>Validates every URL and enforces the 50,000-URL protocol limit.</li>
+                  <li>Works offline after the page loads.</li>
+                </ul>
+              </article>
+            </div>
+
+            <h3 style="margin: 1.6rem 0 0.5rem; font-size: clamp(1.2rem, 2.4vw, 1.55rem); color: #0f172a;">How Search Engines Actually Use Your Sitemap</h3>
+            <p class="hero-copy">A sitemap is a discovery aid, not a ranking lever. It gives crawlers a direct, authoritative list of the canonical URLs you consider important, along with optional hints — <code>lastmod</code>, <code>changefreq</code>, <code>priority</code> — about how they change over time. Google has been explicit that it largely ignores <code>changefreq</code> and <code>priority</code> today, relying instead on its own crawl signals; <code>lastmod</code> is the one hint still meaningfully used, and only when it's accurate. A sitemap won't force indexing — a page still has to clear Google's own quality and crawl-budget bar — but it removes "the crawler never found this page" as a reason it wasn't indexed.</p>
+
+            <h3 style="margin: 1.6rem 0 0.5rem; font-size: clamp(1.2rem, 2.4vw, 1.55rem); color: #0f172a;">Sitemap vs. robots.txt</h3>
+            <p class="hero-copy">These two files do opposite jobs and most sites need both. <strong>robots.txt</strong> tells crawlers which parts of your site they may <em>not</em> crawl. A <strong>sitemap</strong> proactively lists the pages you <em>do</em> want discovered and indexed. It's common practice to reference your sitemap's URL directly inside robots.txt (a <code>Sitemap:</code> line) so crawlers find it automatically — use ToolAdda's <a href="robots-txt-generator.html">robots.txt Generator</a> alongside this tool to set that up correctly.</p>
+
+            <h3 style="margin: 1.6rem 0 0.5rem; font-size: clamp(1.2rem, 2.4vw, 1.55rem); color: #0f172a;">The 50,000-URL Limit, and What to Do at Scale</h3>
+            <p class="hero-copy">The sitemaps.org protocol caps a single sitemap file at 50,000 URLs and 50MB uncompressed — this tool enforces that limit and will tell you exactly how many URLs you're over if you exceed it. Sites larger than that split their URLs across multiple sitemap files (e.g. <code>sitemap-pages.xml</code>, <code>sitemap-blog.xml</code>) and list all of them inside a single sitemap index file, which is what you then submit to Search Console instead of an individual sitemap.</p>
+
+            <h3 style="margin: 1.6rem 0 0.5rem; font-size: clamp(1.2rem, 2.4vw, 1.55rem); color: #0f172a;">What Belongs in a Sitemap (and What Doesn't)</h3>
+            <p class="hero-copy">Include only canonical, indexable pages you actually want ranked. Leave out duplicate or parameterized URLs (like <code>?sort=price</code> variants of the same page), pages blocked by robots.txt or marked <code>noindex</code>, redirects, and error pages — listing non-canonical or non-indexable URLs is one of the most common causes of "Submitted URL not indexed" style warnings in Search Console, since it signals a mismatch between what you're asking to be indexed and what your own site's directives allow.</p>
+
+            <h3 style="margin: 1.6rem 0 0.5rem; font-size: clamp(1.2rem, 2.4vw, 1.55rem); color: #0f172a;">Common Sitemap Mistakes</h3>
+            <ul class="hero-copy" style="padding-left: 1.15rem;">
+              <li>Listing URLs that redirect, 404, or are blocked by robots.txt/noindex.</li>
+              <li>Setting <code>lastmod</code> to today's date on every page regardless of whether it actually changed, which erodes the signal's usefulness over time.</li>
+              <li>Forgetting to regenerate and resubmit the sitemap after a site restructure or bulk content update.</li>
+              <li>Mixing HTTP and HTTPS, or www and non-www, versions of the same URLs instead of using one consistent canonical form.</li>
+              <li>Exceeding the 50,000-URL single-file limit without switching to a sitemap index.</li>
+            </ul>
+
+            <h3 style="margin: 1.6rem 0 0.5rem; font-size: clamp(1.2rem, 2.4vw, 1.55rem); color: #0f172a;">Frequently Asked Questions</h3>
+            <div class="faq-list">
+              <details class="faq-item"><summary>What is an XML sitemap and why do I need one?</summary><p>An XML sitemap lists your website pages for search engines. It improves crawl efficiency and helps Google index new or updated content faster, especially pages that aren't well linked internally.</p></details>
+              <details class="faq-item"><summary>How do I submit my sitemap to Google Search Console?</summary><p>Upload sitemap.xml to your website root (e.g. https://yoursite.com/sitemap.xml), then add that URL in Google Search Console under Sitemaps.</p></details>
+              <details class="faq-item"><summary>Can I use relative URLs like /about.html?</summary><p>Yes. Relative paths are converted to full URLs using the base website URL you enter at the top of the tool.</p></details>
+              <details class="faq-item"><summary>Is this sitemap generator completely free?</summary><p>Yes. ToolAdda's Sitemap Generator is free, requires no account, and processes everything locally in your browser.</p></details>
+              <details class="faq-item"><summary>Is my website data secure?</summary><p>Absolutely. No URLs or sitemap data are sent to any server. Generation happens entirely on your device.</p></details>
+              <details class="faq-item"><summary>How many URLs can one sitemap.xml file contain?</summary><p>The sitemaps.org protocol caps a single sitemap at 50,000 URLs and 50MB uncompressed. This tool enforces that limit and tells you to split into multiple files under a sitemap index if you exceed it.</p></details>
+              <details class="faq-item"><summary>What should I do if my site has more than 50,000 URLs?</summary><p>Split your URLs into multiple sitemap files, each under the limit, then create a sitemap index file listing all of them and submit only the index URL to search engines.</p></details>
+              <details class="faq-item"><summary>Does Google actually use the priority and changefreq values?</summary><p>Largely no — Google has said it mostly ignores these and relies on its own crawl signals. They're still valid per the protocol and other engines may weight them lightly, but don't expect them to meaningfully change Google's crawl behavior.</p></details>
+              <details class="faq-item"><summary>What is the difference between a sitemap and robots.txt?</summary><p>robots.txt restricts what crawlers may access; a sitemap proactively lists what you want discovered. Most sites use both, often with robots.txt pointing to the sitemap's URL.</p></details>
+              <details class="faq-item"><summary>Do I need a sitemap if my site is already well linked internally?</summary><p>It still helps — a sitemap gives search engines a direct, authoritative list of canonical URLs and lastmod hints, speeding up discovery beyond what crawling links alone would achieve.</p></details>
+              <details class="faq-item"><summary>Can I include images or videos in a sitemap?</summary><p>Yes, using the separate image/video sitemap extensions with <code>&lt;image:image&gt;</code> or <code>&lt;video:video&gt;</code> tags. This tool generates the standard page-URL sitemap without those extension tags.</p></details>
+              <details class="faq-item"><summary>What's the ideal lastmod date format?</summary><p>W3C Datetime format, most simply YYYY-MM-DD — what this tool's date picker produces. Only set it to when content actually changed; inflating it on every page reduces the signal's usefulness.</p></details>
+              <details class="faq-item"><summary>Should every page on my site be in the sitemap?</summary><p>No — include only canonical, indexable pages. Leave out duplicate/parameterized URLs, blocked or noindexed pages, redirects, and error pages.</p></details>
+              <details class="faq-item"><summary>Does a sitemap guarantee my pages will be indexed?</summary><p>No — it aids discovery, but indexing still depends on content quality, crawl budget, and technical accessibility. It's a discovery aid, not an indexing guarantee.</p></details>
+              <details class="faq-item"><summary>How often should I regenerate and resubmit my sitemap?</summary><p>Whenever you add, remove, or significantly update pages — for actively changing sites, monthly or as part of your deploy process keeps search engines working from current data.</p></details>
+              <details class="faq-item"><summary>Why did I get an "Invalid URL" error?</summary><p>A pasted line couldn't be parsed as a valid URL even combined with your base URL — check for stray spaces or non-URL text; the error names the exact line to fix.</p></details>
+              <details class="faq-item"><summary>Can I use relative URLs in the sitemap generator?</summary><p>Yes. Paths like /about.html are automatically converted into full URLs using the base website URL you provide.</p></details>
+              <details class="faq-item"><summary>Is my URL data uploaded to a server?</summary><p>No. All sitemap generation happens locally in your browser using JavaScript, so your URL list never leaves your device.</p></details>
+              <details class="faq-item"><summary>Can I use this tool for very large websites?</summary><p>Yes, up to the 50,000 URL protocol limit per file — paste your full URL list and the tool deduplicates and validates them locally. For sites beyond that limit, generate multiple sitemap files in batches and combine them under a sitemap index.</p></details>
+              <details class="faq-item"><summary>Is this sitemap generator accurate for SEO purposes?</summary><p>Yes — it produces standard-compliant sitemap.xml markup per the sitemaps.org protocol that Google Search Console, Bing Webmaster Tools, and virtually all crawlers accept without modification.</p></details>
+            </div>
+          </section>
+
+          <!-- NEW SECTION -->
+          <section class="seo-section mt-ext" aria-labelledby="mt-locs-heading">
+            <h2 id="mt-locs-heading" class="hero-title" style="font-size: clamp(1.5rem, 3vw, 2rem);">How Your List Becomes &lt;loc&gt; Lines</h2>
+            <p class="hero-copy">Every line you paste is turned into a full address before it goes into the sitemap. With <code>https://example.com</code> as the base URL, these lines, pasted together in this order, come out as shown. Each was run through the generator above.</p>
+            <div class="mt-tablewrap">
+              <table class="mt-locs">
+                <thead><tr><th scope="col">You paste</th><th scope="col">In sitemap.xml</th><th scope="col">Why</th></tr></thead>
+                <tbody>
+                  <tr data-line="/about.html" data-loc="https://example.com/about.html" data-kind="loc"><td><code>/about.html</code></td><td><code>&lt;loc&gt;https://example.com/about.html&lt;/loc&gt;</code></td><td>A path gets the base URL in front.</td></tr>
+                  <tr data-line="contact.html" data-loc="https://example.com/contact.html" data-kind="loc"><td><code>contact.html</code></td><td><code>&lt;loc&gt;https://example.com/contact.html&lt;/loc&gt;</code></td><td>A missing first slash is added.</td></tr>
+                  <tr class="mt-skip" data-line="https://example.com/about.html" data-loc="" data-kind="skip"><td><code>https://example.com/about.html</code></td><td>Skipped (already listed)</td><td>The page from line 1 again, written in full, so it is left out: each page appears once.</td></tr>
+                  <tr data-line="/search?q=mugs&amp;sort=new" data-loc="https://example.com/search?q=mugs&amp;amp;sort=new" data-kind="loc"><td><code>/search?q=mugs&amp;sort=new</code></td><td><code>&lt;loc&gt;https://example.com/search?q=mugs&amp;amp;sort=new&lt;/loc&gt;</code></td><td>The <code>&amp;</code> is written as <code>&amp;amp;</code>, as the sitemap protocol requires.</td></tr>
+                  <tr data-line="/café menu.html" data-loc="https://example.com/caf%C3%A9%20menu.html" data-kind="loc"><td><code>/café menu.html</code></td><td><code>&lt;loc&gt;https://example.com/caf%C3%A9%20menu.html&lt;/loc&gt;</code></td><td>Spaces and accented letters are percent-encoded.</td></tr>
+                  <tr data-line="HTTPS://Example.COM/Blog/" data-loc="https://example.com/Blog/" data-kind="loc"><td><code>HTTPS://Example.COM/Blog/</code></td><td><code>&lt;loc&gt;https://example.com/Blog/&lt;/loc&gt;</code></td><td>The scheme and domain are lower-cased; the path keeps its case, because <code>/Blog</code> and <code>/blog</code> are different addresses.</td></tr>
+                  <tr class="mt-no" data-line="ftp://example.com/file.zip" data-loc="" data-kind="error"><td><code>ftp://example.com/file.zip</code></td><td>Error: Invalid URL on line 7</td><td>Only http and https pages are allowed, so the generator stops and names the line.</td></tr>
+                  <tr data-line="https://another-site.com/page" data-loc="https://another-site.com/page" data-kind="loc"><td><code>https://another-site.com/page</code></td><td><code>&lt;loc&gt;https://another-site.com/page&lt;/loc&gt;</code></td><td>Accepted, but the sitemap protocol only allows URLs on the sitemap&rsquo;s own host, and search engines skip the rest. Use one sitemap per domain.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="hero-copy">The other fields matter less than they look. Google says it ignores <code>&lt;priority&gt;</code> and <code>&lt;changefreq&gt;</code>, and uses <code>&lt;lastmod&gt;</code> only when it is consistently accurate. This generator writes the same date for every page, so use it when you list pages that really did change on that day; otherwise untick <strong>Include lastmod date</strong> rather than telling search engines every page changed today.</p>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+          <p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <div class="footer-links">
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms.html">Terms</a>
+          </div>
+        </div>
+        <div>
+          <h3>Stay updated</h3>
+          <p>© <span data-year></span> ToolAdda. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <div id="sitemapToast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="assets/js/sitemap-generator.js" defer></script>
+    <script src="assets/js/app.js" defer></script>
+    <script src="assets/js/side-ads.js" defer></script>
+    <script src="assets/js/inline-ads.js" data-in-article defer></script>
+  </body>
+</html>

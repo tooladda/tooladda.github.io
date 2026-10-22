@@ -1,0 +1,557 @@
+/* ==========================================================================
+   blog.css — the situation-first guide to every ToolAdda tool (blog.html)
+
+   Page-scoped behind .blg-scope / .blg-page-shell so nothing leaks into
+   style.css, which is shared by ~140 other pages.
+
+   Base accent: crimson #9d174d (light) / #f9a8d4 (dark).
+
+   Every section additionally carries its own hue as `--blg-h`, set inline by
+   scripts/build_blog.py. Section headings, icons, links, tips, chips and the
+   matching table-of-contents entry all derive their colour from that one
+   number via hsl(), so adding a fifteenth section means choosing one hue
+   rather than writing another block of colour rules.
+
+   This is a long reading page, not a tool, so the type is sized for prose:
+   a measure capped near 70 characters, generous leading, and links that are
+   obviously links, because the whole point of the page is that the reader
+   leaves it for a tool.
+   ========================================================================== */
+
+.blg-page-shell {
+  --blg-dot: rgba(157, 23, 77, 0.14);
+  background-image: radial-gradient(circle, var(--blg-dot) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: center top;
+  background-attachment: fixed;
+}
+
+[data-theme="dark"] .blg-page-shell {
+  --blg-dot: rgba(249, 168, 212, 0.12);
+}
+
+.blg-scope {
+  --blg-accent: #9d174d;
+  --blg-accent-2: #be123c;
+  --blg-accent-soft: rgba(157, 23, 77, 0.08);
+  --blg-accent-line: rgba(157, 23, 77, 0.22);
+  --blg-ink: var(--text);
+  --blg-muted: var(--text-muted);
+  --blg-card: var(--surface-strong);
+  --blg-line: var(--border);
+}
+
+[data-theme="dark"] .blg-scope {
+  --blg-accent: #f9a8d4;
+  --blg-accent-2: #fb7185;
+  --blg-accent-soft: rgba(249, 168, 212, 0.1);
+  --blg-accent-line: rgba(249, 168, 212, 0.26);
+  --blg-card: #0f172a;
+}
+
+/* ------------------------------------------------------------------ hero */
+
+.blg-hero {
+  position: relative;
+  text-align: center;
+  max-width: 56rem;
+  margin: 0 auto 2.25rem;
+  padding: 1rem 0 0;
+}
+.blg-hero::before {
+  content: "";
+  position: absolute;
+  /* Kept inside the box horizontally: a percentage bleed here widened the
+     page past the viewport on a phone and gave the whole document a
+     sideways scroll. The gradient is widened instead, so the fade looks
+     the same without any overflow. */
+  inset: -2rem 0 auto 0;
+  height: 17rem;
+  background: radial-gradient(85% 70% at 50% 0%, var(--blg-accent-soft), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+.blg-hero > * { position: relative; z-index: 1; }
+
+.blg-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .74rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--blg-accent);
+  background: var(--blg-accent-soft);
+  border: 1px solid var(--blg-accent-line);
+  border-radius: 999px;
+  padding: .4rem 1rem;
+  margin: 0 0 1.15rem;
+}
+.blg-eyebrow::before {
+  content: "";
+  width: .45rem;
+  height: .45rem;
+  border-radius: 50%;
+  background: var(--blg-accent);
+  flex: none;
+}
+
+.blg-hero h1 {
+  font-size: clamp(2rem, 4.8vw, 3.2rem);
+  line-height: 1.08;
+  letter-spacing: -.02em;
+  margin: 0 0 .9rem;
+}
+.blg-hero h1 em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--blg-accent), var(--blg-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.blg-hero-sub {
+  font-size: clamp(1rem, 1.7vw, 1.15rem);
+  line-height: 1.65;
+  color: var(--blg-muted);
+  margin: 0 auto;
+  max-width: 44rem;
+}
+
+.blg-updated {
+  font-size: .76rem;
+  font-weight: 700;
+  color: var(--blg-muted);
+  margin: 1.2rem 0 0;
+}
+
+/* ----------------------------------------------------------------- stats */
+
+.blg-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .5rem;
+  list-style: none;
+  padding: 0;
+  margin: 1.6rem 0 0;
+}
+.blg-stats li {
+  min-width: 6.5rem;
+  padding: .7rem 1.1rem;
+  background: var(--blg-card);
+  border: 1px solid var(--blg-line);
+  border-radius: var(--radius-md);
+}
+.blg-stat-num {
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  background: linear-gradient(135deg, var(--blg-accent), var(--blg-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.blg-stat-label {
+  display: block;
+  font-size: .68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--blg-muted);
+  margin-top: .15rem;
+}
+
+/* ---------------------------------------------------------------- layout */
+
+.blg-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+  gap: 1.75rem;
+  align-items: start;
+}
+
+@media (max-width: 980px) {
+  .blg-layout { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+}
+
+/* ------------------------------------------------------------------- toc */
+
+.blg-toc {
+  position: sticky;
+  top: 1.25rem;
+  max-height: calc(100vh - 2.5rem);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: .12rem;
+  padding: .9rem;
+  background: var(--blg-card);
+  border: 1px solid var(--blg-line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  scrollbar-width: thin;
+}
+
+.blg-toc-head {
+  font-size: .68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: var(--blg-muted);
+  margin: 0 0 .5rem .55rem;
+}
+
+.blg-toc-item {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .45rem .55rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--blg-muted);
+  font-size: .82rem;
+  font-weight: 700;
+  line-height: 1.35;
+  border-left: 2px solid transparent;
+  transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+.blg-toc-icon { flex: none; font-size: .95rem; line-height: 1; filter: saturate(.45); }
+.blg-toc-text { flex: 1 1 auto; min-width: 0; }
+.blg-toc-num {
+  flex: none;
+  font-size: .65rem;
+  font-weight: 800;
+  color: var(--blg-line);
+  font-variant-numeric: tabular-nums;
+}
+
+.blg-toc-item:hover {
+  background: var(--blg-accent-soft);
+  color: var(--blg-ink);
+}
+
+/* Set by blog.js as the reader moves down the page. Each entry borrows its
+   own section's hue, so the rail and the section agree on colour. */
+.blg-toc-item[aria-current="true"] {
+  color: hsl(var(--blg-h, 340) 62% var(--blg-l, 38%));
+  background: hsl(var(--blg-h, 340) 62% 48% / .1);
+  border-left-color: hsl(var(--blg-h, 340) 62% 45%);
+}
+.blg-toc-item[aria-current="true"] .blg-toc-icon { filter: none; }
+[data-theme="dark"] .blg-scope .blg-toc-item[aria-current="true"] {
+  color: hsl(var(--blg-h, 340) 78% var(--blg-ld, 76%));
+  background: hsl(var(--blg-h, 340) 78% var(--blg-ld, 76%) / .12);
+  border-left-color: hsl(var(--blg-h, 340) 78% var(--blg-ld, 76%));
+}
+
+/* On narrow screens the rail becomes a horizontal strip above the article,
+   which keeps it useful without eating a third of a phone screen. */
+@media (max-width: 980px) {
+  .blg-toc {
+    position: static;
+    flex-direction: row;
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: .4rem;
+    padding: .6rem;
+  }
+  .blg-toc-head { display: none; }
+  .blg-toc-item {
+    flex: 0 0 auto;
+    border-left: 0;
+    white-space: nowrap;
+    border-radius: 999px;
+  }
+  .blg-toc-num { display: none; }
+  .blg-toc-item[aria-current="true"] { border-left-color: transparent; }
+}
+
+/* ----------------------------------------------------------------- prose */
+
+.blg-prose {
+  font-size: 1.02rem;
+  line-height: 1.75;
+}
+.blg-prose p { max-width: 42rem; }
+
+/* Each section is its own card. Fourteen hairline-separated blocks inside one
+   long card read as an undifferentiated wall; separate cards give the page a
+   rhythm you can scan. */
+.blg-sec {
+  scroll-margin-top: 5.5rem;
+  background: var(--blg-card);
+  border: 1px solid var(--blg-line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  padding: 1.5rem 1.6rem 1.6rem;
+  margin-bottom: 1.1rem;
+  position: relative;
+  overflow: hidden;
+}
+/* A hairline of the section's own colour along the top edge. */
+.blg-sec::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg,
+    hsl(var(--blg-h, 340) 62% 48%),
+    hsl(var(--blg-h, 340) 62% 48% / 0));
+}
+
+@media (max-width: 560px) {
+  .blg-sec { padding: 1.2rem 1.1rem 1.3rem; }
+}
+
+.blg-sec-head {
+  display: flex;
+  align-items: flex-start;
+  gap: .85rem;
+  margin-bottom: 1rem;
+}
+
+.blg-sec-icon {
+  flex: none;
+  width: 2.6rem;
+  height: 2.6rem;
+  display: grid;
+  place-items: center;
+  font-size: 1.25rem;
+  line-height: 1;
+  border-radius: var(--radius-sm);
+  background: hsl(var(--blg-h, 340) 62% 48% / .12);
+  border: 1px solid hsl(var(--blg-h, 340) 62% 48% / .3);
+}
+
+.blg-prose h2 {
+  font-size: clamp(1.3rem, 2.3vw, 1.65rem);
+  letter-spacing: -.015em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.blg-sec-blurb {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--blg-muted);
+  margin: 0 0 .25rem;
+  max-width: none !important;
+}
+.blg-sec-num {
+  font-variant-numeric: tabular-nums;
+  color: hsl(var(--blg-h, 340) 62% var(--blg-l, 38%));
+  font-size: .78rem;
+}
+[data-theme="dark"] .blg-scope .blg-sec-num { color: hsl(var(--blg-h, 340) 78% var(--blg-ld, 76%)); }
+
+.blg-prose h3 {
+  font-size: 1rem;
+  margin: 0 0 .35rem;
+  letter-spacing: -.01em;
+}
+
+/* Tool links carry an underline that thickens on hover — on a page whose job
+   is to send people to tools, a link must never read as plain bold text.
+   :not(.blg-chip) matters: the chip rows are <p class="blg-also">, so without
+   it the pills inherit the prose underline and stop reading as pills. */
+.blg-prose p a:not(.blg-chip),
+.blg-prose td a {
+  color: hsl(var(--blg-h, 340) 62% var(--blg-l, 38%));
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: hsl(var(--blg-h, 340) 62% var(--blg-l, 38%) / .35);
+  text-underline-offset: .18em;
+  text-decoration-thickness: 1.5px;
+  transition: text-decoration-color .15s ease;
+}
+.blg-prose p a:not(.blg-chip):hover,
+.blg-prose td a:hover { text-decoration-color: hsl(var(--blg-h, 340) 62% var(--blg-l, 38%)); }
+
+[data-theme="dark"] .blg-scope .blg-prose p a:not(.blg-chip),
+[data-theme="dark"] .blg-scope .blg-prose td a {
+  color: hsl(var(--blg-h, 340) 78% var(--blg-ld, 76%));
+  text-decoration-color: hsl(var(--blg-h, 340) 78% var(--blg-ld, 76%) / .35);
+}
+[data-theme="dark"] .blg-scope .blg-prose p a:not(.blg-chip):hover,
+[data-theme="dark"] .blg-scope .blg-prose td a:hover {
+  text-decoration-color: hsl(var(--blg-h, 340) 78% var(--blg-ld, 76%));
+}
+
+.blg-prose code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .88em;
+  background: var(--blg-accent-soft);
+  border: 1px solid var(--blg-accent-line);
+  border-radius: 4px;
+  padding: .08rem .32rem;
+}
+
+/* ------------------------------------------------------------------ tips */
+
+.blg-tip {
+  background: hsl(var(--blg-h, 340) 62% 48% / .08);
+  border-left: 3px solid hsl(var(--blg-h, 340) 62% 48%);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: .75rem .95rem;
+  font-size: .93rem;
+  margin: 1.1rem 0 0;
+  max-width: none !important;
+}
+.blg-tip::before {
+  content: "Tip";
+  display: block;
+  font-size: .66rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: hsl(var(--blg-h, 340) 62% var(--blg-l, 38%));
+  margin-bottom: .2rem;
+}
+[data-theme="dark"] .blg-scope .blg-tip::before { color: hsl(var(--blg-h, 340) 78% var(--blg-ld, 76%)); }
+
+/* ------------------------------------------------------------ chip lists */
+
+.blg-also {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .4rem;
+  max-width: none !important;
+  margin: 1.2rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--blg-line);
+}
+.blg-also > span {
+  font-size: .68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--blg-muted);
+  margin-right: .2rem;
+}
+.blg-chip {
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--blg-ink);
+  background: var(--bg);
+  border: 1px solid var(--blg-line);
+  border-radius: 999px;
+  padding: .32rem .75rem;
+  text-decoration: none;
+  transition: color .15s ease, border-color .15s ease, background .15s ease;
+}
+.blg-chip:hover {
+  color: hsl(var(--blg-h, 340) 62% var(--blg-l, 38%));
+  border-color: hsl(var(--blg-h, 340) 62% 48%);
+  background: hsl(var(--blg-h, 340) 62% 48% / .1);
+}
+[data-theme="dark"] .blg-scope .blg-chip:hover { color: hsl(var(--blg-h, 340) 78% var(--blg-ld, 76%)); }
+
+/* ------------------------------------------------------------------- faq */
+
+.blg-faq { display: grid; gap: .6rem; }
+.blg-faq-item {
+  background: var(--bg);
+  border: 1px solid var(--blg-line);
+  border-radius: var(--radius-sm);
+  padding: .9rem 1rem;
+}
+.blg-faq-item p { margin: 0; max-width: none; font-size: .95rem; }
+
+/* ---------------------------------------------------------------- tables */
+
+.blg-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--blg-line);
+  border-radius: var(--radius-md);
+  background: var(--bg);
+  margin: 1.2rem 0 0;
+}
+.blg-table { width: 100%; border-collapse: collapse; font-size: .93rem; }
+.blg-table th,
+.blg-table td {
+  text-align: left;
+  padding: .8rem .9rem;
+  border-bottom: 1px solid var(--blg-line);
+  vertical-align: top;
+  line-height: 1.6;
+}
+.blg-table th {
+  font-size: .7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--blg-muted);
+  background: var(--blg-card);
+}
+.blg-table td:first-child { white-space: normal; min-width: 13rem; font-weight: 600; }
+.blg-table tbody tr:last-child td { border-bottom: 0; }
+
+@media (max-width: 640px) {
+  .blg-table td:first-child { min-width: 9rem; }
+  .blg-table th, .blg-table td { padding: .6rem .65rem; }
+}
+
+/* --------------------------------------------------------- reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .blg-scope * { transition: none !important; }
+}
+
+/* ----------------------------------------------------------------- print */
+
+@media print {
+  .blg-page-shell { background-image: none !important; }
+  .site-header,
+  .site-footer,
+  .breadcrumb,
+  .blg-toc,
+  .blg-stats,
+  .to-top,
+  .skip-link { display: none !important; }
+
+  .blg-layout { display: block; }
+  .blg-prose { font-size: 10.5pt; line-height: 1.5; }
+  .blg-prose p { max-width: none; }
+
+  .blg-sec {
+    break-inside: avoid-page;
+    border: 0;
+    border-top: 1px solid #999;
+    border-radius: 0;
+    box-shadow: none;
+    background: #fff;
+    padding: .6rem 0 0;
+    margin-bottom: .6rem;
+  }
+  .blg-sec::before { display: none; }
+  .blg-sec-icon { display: none; }
+  .blg-prose h2 { break-after: avoid-page; }
+
+  .blg-faq-item, .blg-table-wrap { border-color: #999; background: #fff; }
+  .blg-table th { background: #eee !important; }
+
+  /* A printed guide is useless if the links are invisible, so spell them out. */
+  .blg-prose p a::after,
+  .blg-chip::after {
+    content: " (tooladda.online" attr(href) ")";
+    font-size: .8em;
+    font-weight: 400;
+    color: #555;
+  }
+  .blg-prose p a, .blg-chip { color: #000; text-decoration: underline; }
+  .blg-chip { border: 0; padding: 0; background: none; }
+  .blg-also { display: block; border-top: 0; }
+
+  @page { margin: 14mm; }
+}

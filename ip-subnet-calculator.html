@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Consent Mode v2 defaults. This has to run before adsbygoogle.js,
+       which is why it sits inline here rather than in app.js: app.js is
+       deferred to the end of <body>, so the async ad script would already have
+       fired before it could deny anything. assets/js/app.js flips these to
+       granted when the visitor accepts. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+  </script>
+  <title>IP Subnet Calculator — Free CIDR &amp; Subnet Mask Tool | ToolAdda</title>
+  <meta name="description" content="Free IP subnet calculator — instantly calculate network address, broadcast address, usable host range, wildcard mask, binary/hex, and CIDR notation. Includes VLSM planner, subnet list generator, and reverse calculators for required hosts or subnets. 100% client-side." />
+  <meta name="author" content="ToolAdda" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="theme-color" content="#0a7a96" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#091116" media="(prefers-color-scheme: dark)" />
+  <link rel="canonical" href="https://tooladda.online/ip-subnet-calculator.html" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="ToolAdda tool index for AI assistants (llms.txt)" />
+  <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="preload" as="style" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+
+  <meta property="og:title" content="IP Subnet Calculator — Free CIDR & Subnet Mask Tool" />
+  <meta property="og:description" content="Calculate network address, broadcast, usable host range, wildcard mask, and CIDR notation instantly. VLSM planner, subnet list generator, reverse host/subnet calculators — all client-side." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tooladda.online/ip-subnet-calculator.html" />
+  <meta property="og:site_name" content="ToolAdda" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:image" content="https://tooladda.online/assets/images/og/ip-subnet-calculator.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="IP Subnet Calculator — Free CIDR &amp;amp; Subnet Mask Tool — free online tool on ToolAdda, runs in your browser with no sign-up." />
+  <meta name="twitter:image:alt" content="IP Subnet Calculator — Free CIDR &amp;amp; Subnet Mask Tool — free online tool on ToolAdda, runs in your browser with no sign-up." />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@tooladda" />
+  <meta name="twitter:title" content="IP Subnet Calculator — Free CIDR & Subnet Mask Tool" />
+  <meta name="twitter:description" content="Network address, broadcast, usable hosts, wildcard mask, binary/hex, VLSM planner, and subnet list generator — instant, free, no signup." />
+  <meta name="twitter:image" content="https://tooladda.online/assets/images/og/ip-subnet-calculator.jpg" />
+
+  <style>
+    .sn-shell{position:relative;padding:1.75rem 0 3rem;background:radial-gradient(circle at 10% 8%,rgba(79,70,229,.13),transparent 30%),radial-gradient(circle at 90% 12%,rgba(14,165,233,.12),transparent 27%),linear-gradient(150deg,#eef2ff 0%,#f8fafc 46%,#f0f9ff 100%);overflow:hidden}
+    [data-theme="dark"] .sn-shell{background:radial-gradient(circle at 10% 8%,rgba(79,70,229,.22),transparent 32%),radial-gradient(circle at 90% 12%,rgba(14,165,233,.14),transparent 28%),linear-gradient(150deg,#0f172a 0%,#111827 52%,#0b1220 100%)}
+    .sn-wrap{max-width:1240px;margin:0 auto}
+    .sn-card{padding:clamp(1.1rem,2.6vw,1.85rem);border-radius:28px;border:1px solid rgba(148,163,184,.22);background:rgba(255,255,255,.86);backdrop-filter:blur(24px);box-shadow:0 24px 90px rgba(15,23,42,.12)}
+    [data-theme="dark"] .sn-card{background:rgba(15,23,42,.85);border-color:rgba(148,163,184,.18)}
+
+    .sn-badge{display:inline-flex;align-items:center;gap:.35rem;padding:.32rem .78rem;border-radius:999px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.6rem;background:linear-gradient(135deg,#4f46e5,#0284c7);color:#fff}
+    .sn-title{margin:0 0 .55rem;font-size:clamp(1.72rem,4.2vw,2.5rem);font-weight:900;line-height:1.13;letter-spacing:-.022em;background:linear-gradient(135deg,#1f2937,#4f46e5 55%,#0284c7);-webkit-background-clip:text;background-clip:text;color:transparent}
+    [data-theme="dark"] .sn-title{background:linear-gradient(135deg,#f8fafc,#a5b4fc 55%,#7dd3fc);-webkit-background-clip:text;background-clip:text}
+    .sn-lead{margin:0;color:var(--text-muted);line-height:1.66;max-width:72ch;font-size:clamp(.95rem,1.9vw,1.03rem)}
+
+    .sn-trust-row{display:flex;flex-wrap:wrap;gap:.4rem;margin:.95rem 0 0;padding:0;list-style:none}
+    .sn-trust-row li{display:inline-flex;align-items:center;gap:.32rem;font-size:.78rem;font-weight:700;color:var(--text-muted);background:var(--surface-strong);border:1px solid var(--border);border-radius:999px;padding:.33rem .72rem}
+    .sn-trust-row li b{color:var(--text);font-weight:800}
+    .sn-privacy{display:flex;align-items:flex-start;gap:.55rem;font-weight:700;color:#166534;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.24);border-radius:14px;padding:.65rem 1rem;margin:.95rem 0 0;font-size:.87rem;line-height:1.55}
+    [data-theme="dark"] .sn-privacy{color:#86efac}
+    .sn-hero-cta{margin-top:1.1rem;display:flex;flex-wrap:wrap;gap:.65rem}
+    .sn-hero-cta .primary-btn{border-radius:14px;font-weight:800;padding:.75rem 1.4rem;box-shadow:0 10px 28px rgba(79,70,229,.3)}
+
+    .sn-tab-row{display:flex;gap:.4rem;margin-bottom:1rem;flex-wrap:wrap}
+    .sn-tab-btn{border:1px solid var(--border);background:var(--surface-strong);color:var(--text);font-family:inherit;font-weight:700;padding:.5rem .95rem;border-radius:999px;cursor:pointer;font-size:.85rem}
+    .sn-tab-btn:hover{border-color:#4f46e5}
+    .sn-tab-btn.is-active{background:linear-gradient(135deg,#4f46e5,#0284c7);color:#fff;border-color:transparent}
+    .sn-tab-panel{display:none}
+    .sn-tab-panel.is-active{display:block}
+
+    .sn-input-row{display:grid;grid-template-columns:2fr 1fr auto;gap:.6rem;align-items:end;margin-bottom:.6rem}
+    @media(max-width:720px){ .sn-input-row{grid-template-columns:1fr} }
+    .sn-field{display:flex;flex-direction:column;gap:.3rem}
+    .sn-field label{font-weight:700;font-size:.82rem}
+    .sn-field input,.sn-field select{border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:12px;padding:.65rem .8rem;width:100%;font-size:1rem;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;box-sizing:border-box}
+    .sn-field input:focus,.sn-field select:focus{outline:none;border-color:#4f46e5;box-shadow:0 0 0 3px rgba(79,70,229,.15)}
+    .sn-field input.is-invalid{border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.12)}
+    .sn-mode-toggle{display:inline-flex;border:1px solid var(--border);border-radius:12px;overflow:hidden;flex:0 0 auto}
+    .sn-mode-toggle button{border:none;background:var(--surface-strong);color:var(--text);font-family:inherit;font-weight:700;padding:.65rem .85rem;cursor:pointer;font-size:.82rem}
+    .sn-mode-toggle button.is-active{background:#4f46e5;color:#fff}
+    .sn-error{font-size:.82rem;color:#b91c1c;font-weight:700;margin:.2rem 0 .6rem;min-height:1.2em}
+    [data-theme="dark"] .sn-error{color:#fca5a5}
+    .sn-error.sn-hint-success{color:#15803d}
+    [data-theme="dark"] .sn-error.sn-hint-success{color:#4ade80}
+
+    .sn-preset-row{display:flex;flex-wrap:wrap;gap:.4rem;margin:.3rem 0 1rem}
+    .sn-preset-chip{border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:999px;padding:.3rem .68rem;font-size:.75rem;font-weight:700;cursor:pointer;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .sn-preset-chip:hover{border-color:#4f46e5}
+
+    .sn-cidr-slider-wrap{margin:.6rem 0 1.1rem}
+    .sn-cidr-slider-wrap label{display:flex;justify-content:space-between;font-weight:700;font-size:.82rem;margin-bottom:.3rem}
+    input[type="range"].sn-cidr-slider{width:100%;accent-color:#4f46e5}
+
+    .sn-bits{display:flex;flex-wrap:wrap;gap:2px;margin:.5rem 0 1.1rem;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .sn-bit{width:1.65rem;height:1.9rem;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;border-radius:4px;background:var(--surface-strong);border:1px solid var(--border);color:var(--text-muted)}
+    .sn-bit.net{background:rgba(79,70,229,.18);color:#4338ca;border-color:rgba(79,70,229,.3)}
+    [data-theme="dark"] .sn-bit.net{color:#a5b4fc}
+    .sn-bit.host{background:rgba(14,165,233,.15);color:#0369a1;border-color:rgba(14,165,233,.28)}
+    [data-theme="dark"] .sn-bit.host{color:#7dd3fc}
+    .sn-bit-legend{display:flex;gap:1rem;font-size:.78rem;color:var(--text-muted);margin:-.4rem 0 1rem;flex-wrap:wrap}
+    .sn-bit-legend span{display:inline-flex;align-items:center;gap:.35rem}
+    .sn-bit-legend i{width:.8rem;height:.8rem;border-radius:3px;display:inline-block}
+    .sn-bit-legend i.net{background:rgba(79,70,229,.4)}
+    .sn-bit-legend i.host{background:rgba(14,165,233,.35)}
+
+    .sn-summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1rem}
+    @media(max-width:900px){ .sn-summary-grid{grid-template-columns:repeat(2,1fr)} }
+    @media(max-width:480px){ .sn-summary-grid{grid-template-columns:1fr} }
+    .sn-summary-card{padding:.85rem;border-radius:16px;border:1px solid var(--border);background:var(--surface-strong)}
+    .sn-summary-card .lbl{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--text-muted);margin-bottom:.25rem}
+    .sn-summary-card .val{font-size:1.05rem;font-weight:900;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;word-break:break-all}
+
+    .sn-badge-row{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
+    .sn-pill{font-size:.74rem;font-weight:800;padding:.3rem .65rem;border-radius:999px}
+    .sn-pill.pub{background:rgba(34,197,94,.15);color:#15803d}
+    [data-theme="dark"] .sn-pill.pub{color:#4ade80}
+    .sn-pill.priv{background:rgba(245,158,11,.15);color:#92400e}
+    [data-theme="dark"] .sn-pill.priv{color:#fcd34d}
+    .sn-pill.special{background:rgba(79,70,229,.15);color:#4338ca}
+    [data-theme="dark"] .sn-pill.special{color:#a5b4fc}
+
+    .sn-detail-table{width:100%;border-collapse:collapse;font-size:.86rem;margin-bottom:1rem}
+    .sn-detail-table td{padding:.5rem .3rem;border-bottom:1px solid var(--border)}
+    .sn-detail-table td:first-child{color:var(--text-muted);font-weight:700;width:40%}
+    .sn-detail-table td:last-child{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-weight:700;word-break:break-all}
+    .sn-detail-table tr:last-child td{border-bottom:none}
+    .sn-copy-cell{display:inline-flex;align-items:center;gap:.4rem}
+    .sn-copy-cell button{border:none;background:transparent;color:var(--accent);cursor:pointer;font-size:.76rem;font-weight:800}
+    .sn-copy-cell button:hover{text-decoration:underline}
+
+    .sn-actions-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}
+    .sn-actions-row button{border:1px solid var(--border);background:var(--surface-strong);color:var(--text);border-radius:12px;padding:.55rem .9rem;font-weight:700;font-size:.84rem;cursor:pointer;font-family:inherit}
+    .sn-actions-row button:hover{border-color:#4f46e5}
+
+    .sn-panel{padding:1rem;border-radius:18px;border:1px solid var(--border);background:var(--surface);margin-top:1rem}
+    .sn-panel-title{font-size:.82rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--text-muted);margin:0 0 .7rem}
+    .sn-inline-row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:end}
+    .sn-btn-block{border:none;border-radius:12px;padding:.65rem 1.1rem;font-family:inherit;font-weight:800;font-size:.86rem;color:#fff;cursor:pointer;background:linear-gradient(135deg,#4f46e5,#0284c7)}
+    .sn-btn-block:hover{transform:translateY(-1px)}
+    .sn-btn-ghost{border:1px solid var(--border);border-radius:12px;padding:.6rem 1rem;font-family:inherit;font-weight:700;font-size:.84rem;color:var(--text);cursor:pointer;background:var(--surface-strong)}
+    .sn-btn-ghost:hover{border-color:#4f46e5}
+
+    .sn-table-wrap{overflow-x:auto;margin-top:.8rem;border-radius:14px;border:1px solid var(--border)}
+    table.sn-list-table{width:100%;border-collapse:collapse;font-size:.8rem;min-width:640px}
+    table.sn-list-table th,table.sn-list-table td{padding:.5rem .65rem;text-align:left;border-bottom:1px solid var(--border);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:nowrap}
+    table.sn-list-table thead th{background:var(--surface-strong);font-weight:800;font-family:inherit;text-transform:uppercase;font-size:.7rem;letter-spacing:.03em;color:var(--text-muted)}
+    table.sn-list-table tbody tr:last-child td{border-bottom:none}
+    table.sn-list-table tbody tr:hover{background:var(--accent-soft)}
+    .sn-table-note{font-size:.78rem;color:var(--text-muted);margin-top:.5rem}
+
+    .sn-vlsm-row{display:grid;grid-template-columns:2fr 1fr auto;gap:.5rem;margin-bottom:.5rem;align-items:end}
+    @media(max-width:640px){ .sn-vlsm-row{grid-template-columns:1fr 1fr} }
+    .sn-vlsm-row button{border:1px solid var(--border);background:var(--surface-strong);color:#dc2626;border-radius:10px;width:2.6rem;height:2.6rem;cursor:pointer;font-weight:900}
+
+    .sn-hint{font-size:.8rem;color:var(--text-muted);line-height:1.55;margin:0 0 .8rem}
+
+    .sn-sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:40;padding:.75rem 1rem;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-top:1px solid var(--border);display:none}
+    [data-theme="dark"] .sn-sticky-cta{background:rgba(15,23,42,.94)}
+    @media(max-width:768px){ .sn-sticky-cta{display:block} .sn-sticky-cta .primary-btn{width:100%;font-weight:800;min-height:2.85rem} }
+
+    @media(prefers-reduced-motion:reduce){ [data-subnet-page] *{animation:none!important;transition:none!important} }
+
+    .sn-security-grid,.sn-benefits-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.7rem;margin:1.1rem 0}
+    .sn-usecase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.85rem;margin:1.1rem 0}
+    @media(max-width:960px){ .sn-security-grid,.sn-benefits-grid{grid-template-columns:repeat(3,1fr)} }
+    @media(max-width:640px){ .sn-security-grid,.sn-benefits-grid{grid-template-columns:repeat(2,1fr)} .sn-usecase-grid{grid-template-columns:1fr} }
+    .sn-security-card,.sn-benefit-card{padding:.85rem;border-radius:16px;border:1px solid var(--border);background:var(--surface);text-align:center}
+    .sn-security-card span,.sn-benefit-card span{display:block;font-size:1.3rem;margin-bottom:.25rem}
+    .sn-security-card strong,.sn-benefit-card strong{display:block;font-size:.78rem;margin-bottom:.15rem}
+    .sn-security-card p,.sn-benefit-card p{margin:0;font-size:.72rem;color:var(--text-muted);line-height:1.45}
+    .sn-usecase-card{padding:1.1rem;border-radius:16px;border:1px solid var(--border);background:var(--surface-strong)}
+    .sn-usecase-card strong{display:block;margin-bottom:.35rem;font-size:.98rem}
+    .sn-usecase-card p{margin:0;font-size:.86rem;color:var(--text-muted);line-height:1.55}
+
+    .sn-compare-wrap{overflow-x:auto;margin:1.1rem 0;border-radius:16px;border:1px solid var(--border)}
+    table.sn-compare{width:100%;border-collapse:collapse;font-size:.84rem;min-width:640px}
+    table.sn-compare th,table.sn-compare td{padding:.65rem .8rem;text-align:left;border-bottom:1px solid var(--border)}
+    table.sn-compare thead th{background:var(--surface-strong);font-weight:800;font-size:.76rem;text-transform:uppercase;letter-spacing:.03em;color:var(--text-muted)}
+    table.sn-compare tbody tr:last-child td{border-bottom:none}
+    table.sn-compare td:first-child{font-weight:700}
+    table.sn-compare td.yes{color:#15803d;font-weight:800}
+    [data-theme="dark"] table.sn-compare td.yes{color:#4ade80}
+    table.sn-compare td.no{color:#b91c1c;font-weight:700}
+    [data-theme="dark"] table.sn-compare td.no{color:#fca5a5}
+
+    .sn-ref-wrap{overflow-x:auto;margin:1rem 0;border-radius:16px;border:1px solid var(--border)}
+    table.sn-ref{width:100%;border-collapse:collapse;font-size:.82rem;min-width:600px}
+    table.sn-ref th,table.sn-ref td{padding:.55rem .7rem;text-align:left;border-bottom:1px solid var(--border);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    table.sn-ref thead th{background:var(--surface-strong);font-family:inherit;font-weight:800;font-size:.72rem;text-transform:uppercase;color:var(--text-muted)}
+    table.sn-ref tbody tr:last-child td{border-bottom:none}
+    table.sn-ref tbody tr:hover{background:var(--accent-soft);cursor:pointer}
+
+    .sn-seo h2{margin:2.1rem 0 .75rem;font-size:clamp(1.25rem,2.5vw,1.55rem);scroll-margin-top:90px}
+    .sn-seo h2:first-child{margin-top:0}
+    .sn-seo h3{margin:1.3rem 0 .5rem;font-size:1.05rem}
+    .sn-seo p,.sn-seo li{line-height:1.75;color:var(--text-muted)}
+    .sn-seo ul,.sn-seo ol{padding-left:1.3rem}
+    .sn-seo code{background:var(--surface-strong);border:1px solid var(--border);border-radius:5px;padding:.05rem .35rem;font-size:.9em}
+    /* =====================================================================
+       2026-09 redesign: "router console". Subnetting is done at a prompt,
+       one bit at a time, so the cover is a terminal window and every bit
+       keeps one meaning across the page: network bits cyan, host bits
+       amber. Scoped to .ipc-page; the rules above still style the tool's
+       components and are overruled here where the look changes.
+       ===================================================================== */
+    .ipc-page {
+      --ipc-bg: #edf2f5; --ipc-card: #ffffff; --ipc-well: #f4f7f9;
+      --ipc-ink: #0f1b24; --ipc-body: #34454f; --ipc-mute: #5a6b78; --ipc-line: #d3dde4;
+      --ipc-cyan: #0a7a96; --ipc-cyan-hover: #086a83; --ipc-cyan-text: #0a6f89; --ipc-cyan-soft: rgba(10, 122, 150, .1); --ipc-cyan-ring: rgba(10, 122, 150, .35);
+      --ipc-on-cyan: #ffffff;
+      --ipc-host: #b86a00; --ipc-host-soft: rgba(255, 180, 84, .22);
+      --ipc-term: #0b1419; --ipc-term-ink: #d6e4ea; --ipc-term-dim: #7f97a3; --ipc-term-cyan: #3fd8f2; --ipc-term-amber: #ffb454;
+      --ipc-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --ipc-shadow: 0 1px 0 rgba(15, 27, 36, .04), 0 14px 30px -18px rgba(15, 27, 36, .3);
+      --accent-soft: rgba(10, 122, 150, .14);
+      background: var(--ipc-bg);
+    }
+    [data-theme="dark"] .ipc-page {
+      --ipc-bg: #091116; --ipc-card: #0f1a20; --ipc-well: #0c161b;
+      --ipc-ink: #e3eef3; --ipc-body: #bccbd3; --ipc-mute: #8ea3ae; --ipc-line: #1f313a;
+      --ipc-cyan: #3fd8f2; --ipc-cyan-hover: #72e4f7; --ipc-cyan-text: #3fd8f2; --ipc-cyan-soft: rgba(63, 216, 242, .12); --ipc-cyan-ring: rgba(63, 216, 242, .4);
+      --ipc-on-cyan: #04161c;
+      --ipc-host: #ffb454; --ipc-host-soft: rgba(255, 180, 84, .14);
+      --ipc-term: #050b0e;
+      --ipc-shadow: 0 1px 0 rgba(0, 0, 0, .25), 0 16px 32px -18px rgba(0, 0, 0, .75);
+      --accent-soft: rgba(63, 216, 242, .14);
+    }
+
+    /* ---------- the page ---------- */
+    .ipc-page .sn-shell, [data-theme="dark"] .ipc-page .sn-shell { background: var(--ipc-bg); padding-top: 1.1rem; }
+    .ipc-page .breadcrumb { margin: .2rem 0 .8rem; }
+    .ipc-page .breadcrumb a { color: var(--ipc-cyan-text); font-weight: 700; }
+
+    /* ---------- cover: a terminal window ---------- */
+    .ipc-cover { margin: 0 0 1rem; border-radius: 12px; overflow: hidden; background: var(--ipc-term); color: var(--ipc-term-ink); box-shadow: var(--ipc-shadow), 0 0 0 1px rgba(63, 216, 242, .18); }
+    .ipc-bar { display: flex; align-items: center; gap: .45rem; padding: .5rem .8rem; background: rgba(255, 255, 255, .05); border-bottom: 1px solid rgba(255, 255, 255, .07); font: 600 .72rem/1.3 var(--ipc-mono); color: var(--ipc-term-dim); }
+    .ipc-bar i { width: 10px; height: 10px; border-radius: 50%; background: #3a4a52; }
+    .ipc-bar i:first-child { background: #ff5f57; } .ipc-bar i:nth-child(2) { background: #febc2e; } .ipc-bar i:nth-child(3) { background: #28c840; }
+    .ipc-bar span { margin-left: .5rem; }
+    .ipc-cover-body { display: grid; gap: 1rem 2rem; align-items: center; padding: 1.15rem 1.4rem 1.25rem; }
+    @media (min-width: 900px) { .ipc-cover-body { grid-template-columns: minmax(0, 1fr) 360px; } }
+    .ipc-page .ipc-cover .sn-badge { margin-bottom: .55rem; border-radius: 4px; background: rgba(63, 216, 242, .12); color: var(--ipc-term-cyan); border: 1px solid rgba(63, 216, 242, .3); font-family: var(--ipc-mono); }
+    .ipc-title { margin: 0; font-weight: 900; line-height: 1.08; letter-spacing: -.02em; color: #f2f8fb; font-size: clamp(1.8rem, 1.1rem + 2.4vw, 2.75rem); }
+    .ipc-t1 { display: block; }
+    /* the rest of the H1 as typed at the prompt */
+    .ipc-t2 { display: block; margin-top: .35rem; font: 700 .5em/1.35 var(--ipc-mono); letter-spacing: 0; color: var(--ipc-term-cyan); }
+    .ipc-t2::after { content: "" / ""; display: inline-block; width: .55em; height: 1.05em; margin-left: .25em; vertical-align: -.15em; background: var(--ipc-term-cyan); animation: ipcBlink 1.1s steps(1) infinite; }
+    @keyframes ipcBlink { 50% { opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { .ipc-t2::after { animation: none; } }
+
+    /* the readout: one address, its 32 bits split into network and host */
+    .ipc-readout { font-family: var(--ipc-mono); font-size: .78rem; color: var(--ipc-term-dim); }
+    .ipc-readout-ip { margin: 0 0 .5rem; font-size: 1.35rem; font-weight: 800; color: #f2f8fb; }
+    .ipc-readout-ip b { color: var(--ipc-term-cyan); font-weight: 800; }
+    .ipc-rbits { display: grid; grid-template-columns: repeat(32, 1fr); gap: 2px; margin: 0 0 .45rem; }
+    .ipc-rbits i { height: 18px; border-radius: 2px; background: var(--ipc-term-cyan); opacity: .9; }
+    .ipc-rbits i.h { background: var(--ipc-term-amber); }
+    .ipc-rbits i.gap { margin-left: 3px; }
+    .ipc-readout-key { display: flex; justify-content: space-between; gap: .5rem; margin: 0; }
+    .ipc-readout-key .n { color: var(--ipc-term-cyan); } .ipc-readout-key .h { color: var(--ipc-term-amber); }
+
+    /* ---------- the tool grid ----------
+       [data-subnet-page] (the script's root) is the grid. Phones: the
+       inputs, the ad, the results. From 700px the ad sits beside both and
+       stays in view; it spans every row. The results box belongs to the
+       Subnet Calculator tab; the other tabs show theirs in place. */
+    .ipc-page .sn-card.ipc-work, [data-theme="dark"] .ipc-page .sn-card.ipc-work { padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; backdrop-filter: none; }
+    .ipc-work { display: grid; gap: 1rem; align-items: start; grid-template-areas: "in" "ad" "out"; }
+    .ipc-work > * { min-width: 0; }
+    .ipc-box--in { grid-area: in; }
+    .ipc-box--out { grid-area: out; }
+    .ipc-work > .ipc-ad-zone { grid-area: ad; }
+    @media (min-width: 700px) {
+      .ipc-work { grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "in ad" "out ad"; grid-template-rows: auto 1fr; column-gap: 1.1rem; }
+      .ipc-work > .ipc-ad-zone { position: sticky; top: calc(var(--header-overlap, 5.5rem) + .5rem); }
+    }
+    .ipc-work:has([data-sn-panel="basic"]:not(.is-active)) > .ipc-box--out { display: none; }
+    body.ipc-page .ipc-ad-zone { text-align: center; }
+    body.ipc-page .ipc-ad-zone .ta-inline-ad { display: block !important; margin: 0 auto !important; }
+    .ipc-page #subnet-tool { scroll-margin-top: calc(var(--header-overlap, 5.5rem) + .75rem); }
+
+    .ipc-box { position: relative; padding: 1.1rem 1.15rem; border-radius: 12px; background: var(--ipc-card); border: 1px solid var(--ipc-line); box-shadow: var(--ipc-shadow); color: var(--ipc-ink); }
+    .ipc-box--in { border-top: 4px solid var(--ipc-cyan); }
+
+    /* tabs */
+    .ipc-page .sn-tab-row { margin-bottom: .9rem; padding: .25rem; gap: .25rem; border-radius: 8px; background: var(--ipc-well); border: 1px solid var(--ipc-line); }
+    .ipc-page .sn-tab-btn { border-radius: 6px; border-color: transparent; background: none; color: var(--ipc-body); }
+    .ipc-page .sn-tab-btn:hover { border-color: var(--ipc-cyan-ring); color: var(--ipc-ink); }
+    .ipc-page .sn-tab-btn.is-active { background: var(--ipc-ink); color: var(--ipc-card); border-color: var(--ipc-ink); box-shadow: inset 0 -3px 0 var(--ipc-cyan); }
+    [data-theme="dark"] .ipc-page .sn-tab-btn.is-active { background: var(--ipc-cyan); color: var(--ipc-on-cyan); border-color: var(--ipc-cyan); box-shadow: none; }
+
+    /* inputs: typed at a prompt */
+    .ipc-page .sn-field label { color: var(--ipc-ink); }
+    .ipc-page .sn-field input, .ipc-page .sn-field select { border-radius: 6px; border-color: var(--ipc-line); background: var(--ipc-well); color: var(--ipc-ink); font-family: var(--ipc-mono); }
+    .ipc-page .sn-field input:focus, .ipc-page .sn-field select:focus { border-color: var(--ipc-cyan); box-shadow: 0 0 0 3px var(--ipc-cyan-soft); }
+    .ipc-page [data-ip-input] { font-size: 1.15rem; font-weight: 700; }
+    .ipc-page .sn-mode-toggle { border-radius: 6px; border-color: var(--ipc-line); }
+    .ipc-page .sn-mode-toggle button { background: var(--ipc-well); color: var(--ipc-body); font-family: var(--ipc-mono); }
+    .ipc-page .sn-mode-toggle button.is-active { background: var(--ipc-cyan); color: var(--ipc-on-cyan); }
+    .ipc-page .sn-preset-chip { border-radius: 5px; border-color: var(--ipc-line); background: var(--ipc-card); color: var(--ipc-body); font-family: var(--ipc-mono); }
+    .ipc-page .sn-preset-chip:hover { border-color: var(--ipc-cyan); color: var(--ipc-cyan-text); }
+    .ipc-page input[type="range"].sn-cidr-slider { accent-color: var(--ipc-cyan); }
+    /* the example chips now open the results box */
+    .ipc-page .ipc-box--out > .sn-preset-row { align-items: center; margin: 0 0 .9rem; padding-bottom: .8rem; border-bottom: 1px dashed var(--ipc-line); }
+    .ipc-page .ipc-box--out > .sn-preset-row::before { content: "Try an example" / ""; margin-right: .3rem; font: 800 .7rem/1 system-ui, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--ipc-mute); }
+    .ipc-page .sn-cidr-slider-wrap { margin-bottom: .2rem; }
+    .ipc-page .sn-cidr-slider-wrap [data-slider-label] { font-family: var(--ipc-mono); color: var(--ipc-cyan-text); }
+    .ipc-page .sn-btn-block { border-radius: 6px; background: var(--ipc-cyan); color: var(--ipc-on-cyan); }
+    .ipc-page .sn-btn-block:hover { background: var(--ipc-cyan-hover); color: var(--ipc-on-cyan); transform: none; }
+    .ipc-page .sn-hint { color: var(--ipc-mute); }
+    .ipc-page .sn-vlsm-row button { border-radius: 6px; border-color: var(--ipc-line); background: var(--ipc-well); }
+
+    /* results: network bits cyan, host bits amber */
+    .ipc-page .sn-bit-legend { margin: 0 0 .5rem; color: var(--ipc-mute); }
+    .ipc-page .sn-bit-legend i.net { background: var(--ipc-cyan); }
+    .ipc-page .sn-bit-legend i.host { background: var(--ipc-host); }
+    .ipc-page .sn-bits { margin-bottom: 1rem; }
+    /* all 32 bits on one line where there is room: they shrink instead of wrapping */
+    .ipc-page .sn-bits { flex-wrap: nowrap; }
+    .ipc-page .sn-bit { width: auto; min-width: 0; flex: 1 1 0; max-width: 1.8rem; border-radius: 3px; font-family: var(--ipc-mono); }
+    .ipc-page .sn-bit.net, [data-theme="dark"] .ipc-page .sn-bit.net { background: var(--ipc-cyan-soft); color: var(--ipc-cyan-text); border-color: var(--ipc-cyan-ring); }
+    .ipc-page .sn-bit.host, [data-theme="dark"] .ipc-page .sn-bit.host { background: var(--ipc-host-soft); color: var(--ipc-host); border-color: rgba(184, 106, 0, .35); }
+    .ipc-page .sn-summary-card { border-radius: 8px; border-color: var(--ipc-line); background: var(--ipc-well); }
+    .ipc-page .sn-summary-card:first-child { background: var(--ipc-term); border-color: var(--ipc-term); }
+    .ipc-page .sn-summary-card:first-child .lbl { color: var(--ipc-term-dim); }
+    .ipc-page .sn-summary-card:first-child .val { color: var(--ipc-term-cyan); }
+    .ipc-page .sn-summary-card .val { color: var(--ipc-ink); word-break: normal; overflow-wrap: anywhere; }
+    .ipc-page .sn-pill { border-radius: 4px; }
+    .ipc-page .sn-detail-table td { border-bottom-color: var(--ipc-line); }
+    .ipc-page .sn-detail-table td:first-child { color: var(--ipc-mute); }
+    .ipc-page .sn-copy-cell button { color: var(--ipc-cyan-text); }
+    .ipc-page .sn-actions-row button { border-radius: 6px; border-color: var(--ipc-line); background: var(--ipc-well); color: var(--ipc-ink); }
+    .ipc-page .sn-actions-row button:hover { border-color: var(--ipc-cyan); color: var(--ipc-cyan-text); }
+    .ipc-page .sn-panel { border-radius: 10px; border-color: var(--ipc-line); background: var(--ipc-well); }
+    .ipc-page .sn-panel-title { color: var(--ipc-ink); }
+    .ipc-page .sn-table-wrap { border-radius: 8px; border-color: var(--ipc-line); }
+    .ipc-page table.sn-list-table thead th, .ipc-page table.sn-ref thead th, .ipc-page table.sn-compare thead th { background: var(--ipc-ink); color: var(--ipc-card); }
+    .ipc-page table.sn-list-table tbody tr:hover, .ipc-page table.sn-ref tbody tr:hover { background: var(--ipc-cyan-soft); }
+
+    /* ---------- below the tool ---------- */
+    .ipc-after { display: grid; gap: .9rem 1.6rem; align-items: center; margin: 1.2rem 0 0; padding: 1.1rem 1.3rem; border-radius: 12px; background: var(--ipc-card); border: 1px solid var(--ipc-line); color: var(--ipc-ink); }
+    @media (min-width: 900px) { .ipc-after { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); } }
+    .ipc-page .ipc-after .sn-lead { color: var(--ipc-body); max-width: none; }
+    .ipc-page .ipc-after .sn-privacy, [data-theme="dark"] .ipc-page .ipc-after .sn-privacy { margin: 0 0 .7rem; border-radius: 8px; background: var(--ipc-cyan-soft); border-color: var(--ipc-cyan-ring); color: var(--ipc-ink); }
+    .ipc-page .ipc-after .sn-trust-row { margin: 0 0 .7rem; }
+    .ipc-page .sn-trust-row li { border-radius: 5px; border-color: var(--ipc-line); background: var(--ipc-well); }
+    .ipc-page .sn-hero-cta { margin: 0; }
+    .ipc-page main .primary-btn { background: var(--ipc-cyan); color: var(--ipc-on-cyan); border-radius: 6px; box-shadow: none; }
+    .ipc-page main .primary-btn:hover, .ipc-page main .primary-btn:focus-visible { background: var(--ipc-cyan-hover); color: var(--ipc-on-cyan); filter: none; }
+    .ipc-page main .secondary-btn { background: var(--ipc-card); color: var(--ipc-ink); border: 1px solid var(--ipc-line); border-radius: 6px; }
+    .ipc-page main .secondary-btn:hover { border-color: var(--ipc-cyan); color: var(--ipc-cyan-text); }
+
+    .ipc-page .sn-card, [data-theme="dark"] .ipc-page .sn-card { border-radius: 12px; background: var(--ipc-card); border-color: var(--ipc-line); box-shadow: var(--ipc-shadow); backdrop-filter: none; }
+    .ipc-page .sn-seo p, .ipc-page .sn-seo li { color: var(--ipc-body); }
+    .ipc-page .sn-seo a, .ipc-page .sn-card p a { color: var(--ipc-cyan-text); }
+    .ipc-page .sn-security-card, .ipc-page .sn-benefit-card, .ipc-page .sn-usecase-card { border-radius: 8px; border-color: var(--ipc-line); background: var(--ipc-well); }
+    .ipc-page .sn-compare-wrap, .ipc-page .sn-ref-wrap { border-radius: 8px; border-color: var(--ipc-line); }
+    .ipc-page .sn-seo code { border-radius: 4px; background: var(--ipc-well); border-color: var(--ipc-line); }
+    .ipc-page .related-tools-section { background: var(--ipc-card); border-color: var(--ipc-line); border-radius: 12px; box-shadow: var(--ipc-shadow); }
+    .ipc-page .related-tools-eyebrow { color: var(--ipc-cyan-text); }
+    .ipc-page .related-tools-title { color: var(--ipc-ink); }
+    .ipc-page .related-tools-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: .6rem; }
+    .ipc-page .related-tool-card { border-radius: 8px; background: var(--ipc-well); border-color: var(--ipc-line); box-shadow: none; }
+    .ipc-page .cta-card { border-radius: 12px; background: var(--ipc-term); color: var(--ipc-term-ink); border: 0; box-shadow: var(--ipc-shadow); }
+    .ipc-page .cta-card h2 { color: #f2f8fb; }
+    .ipc-page .cta-card p { color: var(--ipc-term-dim); }
+
+    /* the new "by hand" section */
+    .ipc-hand { width: 100%; margin: 1rem 0 .7rem; border-collapse: separate; border-spacing: 0; font-size: .92rem; border: 1px solid var(--ipc-line); border-radius: 10px; overflow: hidden; }
+    .ipc-hand th { padding: .55rem .75rem; text-align: left; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; background: var(--ipc-ink); color: var(--ipc-card); }
+    .ipc-hand td { padding: .6rem .75rem; border-top: 1px solid var(--ipc-line); vertical-align: middle; color: var(--ipc-body); }
+    .ipc-hand tbody tr:nth-child(even) td { background: var(--ipc-well); }
+    .ipc-hand td:first-child { color: var(--ipc-ink); font-weight: 650; }
+    .ipc-hand td:last-child { font: 800 1rem var(--ipc-mono); color: var(--ipc-ink); }
+    .ipc-byte { display: inline-flex; gap: 2px; font: 800 .92rem var(--ipc-mono); }
+    .ipc-byte b { display: inline-grid; place-items: center; width: 1.45rem; height: 1.6rem; border-radius: 3px; font-weight: 800; }
+    .ipc-byte b.n { background: var(--ipc-cyan-soft); color: var(--ipc-cyan-text); box-shadow: inset 0 0 0 1px var(--ipc-cyan-ring); }
+    .ipc-byte b.h { background: var(--ipc-host-soft); color: var(--ipc-host); box-shadow: inset 0 0 0 1px rgba(184, 106, 0, .35); }
+    .ipc-page .ipc-notes { list-style: none; padding-left: 0 !important; display: grid; gap: .45rem; }
+    .ipc-page .ipc-notes li { position: relative; padding: .55rem .8rem .55rem 2.2rem; border-radius: 8px; background: var(--ipc-well); border: 1px solid var(--ipc-line); }
+    .ipc-page .ipc-notes li::before { content: ">" / ""; position: absolute; left: .85rem; top: .5rem; font: 800 .95rem var(--ipc-mono); color: var(--ipc-cyan-text); }
+
+    /* ---------- the phone quick bar ----------
+       It covered the bottom of every phone screen from first load. It now
+       shows only when the whole tool is off screen, when "Calculate a
+       subnet" (which scrolls back to it) actually helps. */
+    body.ipc-page .sn-sticky-cta { display: none; background: var(--ipc-card); border-top: 2px solid var(--ipc-cyan); }
+    body.ipc-page .sn-sticky-cta .primary-btn { background: var(--ipc-cyan); color: var(--ipc-on-cyan); border-radius: 6px; box-shadow: none; }
+    body.ipc-page .sn-sticky-cta .primary-btn:hover { background: var(--ipc-cyan-hover); color: var(--ipc-on-cyan); filter: none; }
+    @media (max-width: 768px) { body.ipc-page.ipc-tool-away .sn-sticky-cta { display: block; } }
+
+    /* ---------- smaller screens ---------- */
+    @media (max-width: 899px) { .ipc-readout { display: none; } }
+    @media (max-width: 699px) {
+      /* phones: the headline, then the inputs, so the ad after them reaches
+         the first screen; the results follow the ad */
+      .ipc-page .breadcrumb { display: none; }
+      .ipc-cover-body { padding: .9rem 1rem 1rem; }
+      .ipc-page .ipc-cover .sn-badge { display: none; }
+      .ipc-bar { padding: .4rem .7rem; }
+      .ipc-title { font-size: clamp(1.7rem, 8.4vw, 2.1rem); }
+      .ipc-t2 { font-size: .52em; }
+      .ipc-box { padding: .85rem; }
+      .ipc-page .sn-tab-row { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-right: -.2rem; }
+      .ipc-page .sn-tab-row::-webkit-scrollbar { display: none; }
+      .ipc-page .sn-tab-btn { flex: none; padding: .45rem .75rem; font-size: .8rem; white-space: nowrap; }
+      /* address and prefix on one line, the /CIDR-Mask switch under them */
+      .ipc-page [data-sn-panel="basic"] .sn-input-row { grid-template-columns: minmax(0, 1fr) 5.2rem; gap: .5rem; }
+      .ipc-page [data-sn-panel="basic"] .sn-mode-toggle { grid-column: 1 / -1; justify-self: start; }
+      .ipc-page [data-sn-panel="basic"] .sn-mode-toggle button { padding: .4rem .8rem; }
+      .ipc-page .ipc-box--out > .sn-preset-row::before { display: none; }
+      .ipc-page .sn-field input { padding: .55rem .7rem; }
+      .ipc-page .sn-error:empty { min-height: 0; margin: 0; }
+      .ipc-page .sn-preset-row, .ipc-page .ipc-box--out > .sn-preset-row { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-right: -.85rem; padding-right: .85rem; }
+      .ipc-page .sn-preset-row::-webkit-scrollbar { display: none; }
+      .ipc-page .sn-preset-chip { flex: none; }
+      .ipc-page .sn-cidr-slider-wrap { margin: .4rem 0 0; }
+      /* phones: two rows of 16 */
+      .ipc-page .sn-bits { flex-wrap: wrap; }
+      .ipc-page .sn-bit { flex: 0 0 calc((100% - 34px) / 16); font-size: .7rem; height: 1.6rem; }
+      /* the script's octet spacers would push a row over; mark octets 2 and 4 with a margin instead */
+      .ipc-page .sn-bits > span:not(.sn-bit) { display: none; }
+      .ipc-page .sn-bits > .sn-bit:nth-child(10), .ipc-page .sn-bits > .sn-bit:nth-child(28) { margin-left: 4px; }
+    }
+    @media (max-width: 559px) {
+      body.ipc-page .sn-shell > .container, body.ipc-page .ta-support { width: calc(100% - 20px); }
+      .ipc-page .related-tools-section { padding: 1rem .85rem; }
+      .ipc-page .sn-card { padding: 1.05rem .95rem; }
+      .ipc-hand, .ipc-hand tbody, .ipc-hand tr, .ipc-hand td { display: block; }
+      .ipc-hand { border: 0; }
+      .ipc-hand thead { display: none; }
+      .ipc-hand tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; margin-bottom: .5rem; border: 1px solid var(--ipc-line); border-radius: 8px; overflow: hidden; }
+      .ipc-hand td { border-top: 0; padding: .45rem .7rem; }
+      .ipc-hand td:first-child { grid-column: 1 / -1; background: var(--ipc-well); }
+      .ipc-hand tbody tr:nth-child(even) td { background: none; }
+      .ipc-hand tbody tr:nth-child(even) td:first-child { background: var(--ipc-well); }
+      .ipc-byte b { width: 1.2rem; height: 1.45rem; font-size: .8rem; }
+    }
+  </style>
+
+  <script type="application/ld+json" data-tooladda-page-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://tooladda.online/#website",
+      "name": "ToolAdda",
+      "alternateName": [
+        "Tool Adda",
+        "Tools Adda",
+        "ToolsAdda",
+        "Tooladda",
+        "ToolAdda.online"
+      ],
+      "url": "https://tooladda.online/",
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "alternateName": [
+        "Tool Adda",
+        "Tools Adda",
+        "ToolsAdda",
+        "Tooladda",
+        "ToolAdda.online"
+      ],
+      "url": "https://tooladda.online/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tooladda.online/assets/images/logo.svg"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/ip-subnet-calculator.html#webpage",
+      "url": "https://tooladda.online/ip-subnet-calculator.html",
+      "name": "IP Subnet Calculator — Free CIDR & Subnet Mask Tool | ToolAdda",
+      "description": "Free IP subnet calculator — network address, broadcast address, usable host range, wildcard mask, binary/hex, CIDR notation, VLSM planner, and subnet list generator. 100% client-side.",
+      "inLanguage": "en",
+      "datePublished": "2026-08-03",
+      "dateModified": "2026-08-03",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://tooladda.online/ip-subnet-calculator.html#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://tooladda.online/ip-subnet-calculator.html#softwareapplication"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://tooladda.online/ip-subnet-calculator.html#softwareapplication",
+      "name": "IP Subnet Calculator",
+      "alternateName": [
+        "Subnet Calculator",
+        "CIDR Calculator",
+        "IPv4 Calculator"
+      ],
+      "url": "https://tooladda.online/ip-subnet-calculator.html",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "description": "Calculate IPv4 network address, broadcast address, subnet mask, wildcard mask, usable host range, binary/hex representation, and CIDR notation. Includes a VLSM planner, subnet list generator, supernet view, and reverse calculators for required hosts or subnets.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "IP + CIDR or subnet mask calculation",
+        "Required-hosts reverse calculator",
+        "Required-subnets reverse calculator",
+        "VLSM planning tool",
+        "Subnet list generator",
+        "Supernet (route summarization) view",
+        "Live binary bit visualization with CIDR slider",
+        "Private/public/reserved/loopback/multicast detection",
+        "Binary and hexadecimal conversion",
+        "Reverse DNS pointer (in-addr.arpa)",
+        "CIDR reference table",
+        "Copy, CSV export, JSON export, print/PDF",
+        "100% client-side — no data sent anywhere",
+        "No registration required"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://tooladda.online/ip-subnet-calculator.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://tooladda.online/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "IP Subnet Calculator"
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to calculate an IP subnet online",
+      "totalTime": "PT1M",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Enter an IPv4 address",
+          "text": "Type any IPv4 address, such as 192.168.1.0."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Enter a CIDR prefix or subnet mask",
+          "text": "Choose /24 style CIDR notation or a dotted subnet mask like 255.255.255.0."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Review the results",
+          "text": "Instantly see network address, broadcast address, usable host range, wildcard mask, binary/hex, and classification."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Generate subnets or plan VLSM",
+          "text": "Optionally split the network into smaller subnets or plan variable-length subnets for multiple departments."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Export or copy",
+          "text": "Copy any value, export the full report as CSV or JSON, or print/save as PDF."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is subnetting?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Subnetting is dividing a larger IP network into smaller, logically separated networks (subnets) by borrowing bits from the host portion of an address for network identification — improving routing efficiency, security segmentation, and address utilization."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I calculate a subnet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Enter an IPv4 address and a CIDR prefix or subnet mask into the calculator. It instantly computes the network address, broadcast address, usable host range, and every other subnet detail."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is CIDR notation?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CIDR (Classless Inter-Domain Routing) notation appends a slash and a number to an IP address — like 192.168.1.0/24 — indicating how many leading bits form the network portion of the address."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a subnet mask?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A subnet mask is a 32-bit value, written like 255.255.255.0, that marks which bits of an IP address belong to the network versus the host — mathematically equivalent to a CIDR prefix."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a wildcard mask?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A wildcard mask is the bitwise inverse of a subnet mask, used by Cisco ACLs and OSPF configuration to specify which address bits to match versus ignore."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a broadcast address?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The last address in a subnet (all host bits set to 1), used to reach every device on the segment at once."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a network address?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The network address is the first address in a subnet, with all host bits set to 0, identifying the subnet itself rather than any individual device on it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many hosts fit in a /24?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A /24 network has 256 total addresses and 254 usable host addresses, after reserving one for the network address and one for the broadcast address."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many hosts fit in a /30?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A /30 network has 4 total addresses and 2 usable host addresses — the standard size for a point-to-point link between two routers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why don't /31 and /32 follow the usual rule?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "RFC 3021 gives /31 exactly 2 usable addresses with no reservation; /32 identifies a single host route with 1 usable address."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is VLSM?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Variable Length Subnet Masking (VLSM) allows different subnets within the same network to use different prefix lengths, sized to match each subnet's actual host requirement instead of wasting addresses on a single uniform mask."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is supernetting?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Supernetting (route summarization) combines multiple smaller, contiguous networks into one larger block advertised as a single route, reducing routing table size."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the difference between IPv4 and IPv6?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "IPv4 uses 32-bit addresses (about 4.3 billion total), written in dotted-decimal like 192.168.1.1. IPv6 uses 128-bit addresses, written in hexadecimal groups, offering a vastly larger address space. This calculator currently supports IPv4 only."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I subnet private IP addresses?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — the calculator works identically for private ranges (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) and public IP addresses, and flags which type you entered."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it support subnet mask input as well as CIDR?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - toggle between /CIDR and a dotted subnet mask; both produce identical results."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How accurate is the calculator?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It uses standard 32-bit binary arithmetic per RFC 950/4632 - the same rules used by real routers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use it for AWS VPC CIDR planning?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — AWS VPC subnets follow standard CIDR math (with 5 reserved addresses per subnet handled by AWS itself, not by IP math), so this calculator correctly plans the underlying address ranges."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use it for Azure virtual networks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — Azure VNets and subnets also use standard CIDR notation; the calculator's network/broadcast/usable-range output applies directly, keeping in mind Azure also reserves 5 addresses per subnet."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use it for Kubernetes CIDR planning?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - cluster, pod, and service CIDR ranges are standard IPv4 blocks the calculator and VLSM planner can size."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is the calculator free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - completely free with no signup or limits."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work offline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - once loaded, all math runs locally with no network requests."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my IP address data sent anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No — every calculation happens entirely in your browser. Nothing you type is transmitted to any server."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the difference between a network class and CIDR?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Classful addressing (Class A/B/C) was a rigid, obsolete 1981 scheme fixing subnet sizes by IP range. CIDR, introduced in 1993, decouples prefix length from address range entirely, allowing any subnet size at any address."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I find the number of subnets from a prefix?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The number of subnets created by borrowing bits equals 2 raised to the number of borrowed bits — for example, borrowing 2 bits from a /24 to make /26s creates 4 subnets."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a default gateway and how is it chosen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The default gateway is the router address devices use to reach other networks. By convention it's often the first usable address in a subnet, though any usable address can be configured as the gateway."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does 'usable hosts' mean versus 'total addresses'?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Total addresses is every address in the block, including the network and broadcast address. Usable hosts excludes those two reserved addresses (except for /31 and /32, which have their own rules)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I generate a list of all subnets in a range?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — the Subnet List Generator splits a base network into equal-sized subnets at any new prefix length and lists each one's network, broadcast, and usable range."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is reverse DNS (in-addr.arpa)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Reverse DNS maps an IP address back to a hostname using PTR records under the special in-addr.arpa domain, with the address octets reversed — for example 192.168.1.0 becomes 0.1.168.192.in-addr.arpa."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <!-- Entity and freshness graph. Separate from the page schema above so the
+       hand-written blocks stay untouched; consumers merge nodes by @id.
+       Generated by scripts/build_entity_schema.py - do not hand-edit. -->
+  <script type="application/ld+json" data-tooladda-entity-schema="true">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tooladda.online/#organization",
+      "name": "ToolAdda",
+      "url": "https://tooladda.online/",
+      "description": "ToolAdda is a free online toolkit of 158 browser-based tools covering PDF, image, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry and SEO. Almost every tool runs entirely in the visitor's own browser, so files are never uploaded, and there is no account, no watermark and no usage limit.",
+      "knowsAbout": [
+        "PDF editing and conversion",
+        "Image compression and resizing",
+        "QR code and barcode generation",
+        "Payroll and HR documents",
+        "Indian income tax and GST calculation",
+        "Developer and data-format utilities",
+        "Text processing and writing tools",
+        "Resume building and ATS screening",
+        "Chemistry and science calculators",
+        "Client-side, in-browser file processing"
+      ],
+      "founder": {
+        "@id": "https://tooladda.online/about.html#founder"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@tooladda.online",
+        "url": "https://tooladda.online/contact.html",
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tooladda.online/about.html#founder",
+      "name": "Subhash Yadav",
+      "url": "https://tooladda.online/about.html#founder",
+      "sameAs": [
+        "https://github.com/yadavsubhash0001",
+        "https://www.linkedin.com/in/subhash-yadav-121053162/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tooladda.online/ip-subnet-calculator.html#webpage",
+      "url": "https://tooladda.online/ip-subnet-calculator.html",
+      "inLanguage": "en",
+      "datePublished": "2026-08-03",
+      "dateModified": "2026-09-24",
+      "isPartOf": {
+        "@id": "https://tooladda.online/#website"
+      },
+      "publisher": {
+        "@id": "https://tooladda.online/#organization"
+      },
+      "author": {
+        "@id": "https://tooladda.online/about.html#founder"
+      }
+    }
+  ]
+}
+  </script>
+    <style id="page-chrome-accent">
+      /* This page's colour, applied to the two pieces of chrome that sit OUTSIDE
+         the page wrapper and so never inherit its palette: the consent banner (a
+         direct child of <body>) and the sticky site header.
+
+         Declared here rather than in the shared stylesheet, so the rest of the
+         site is untouched — each page carries its own copy with its own value,
+         taken from the page's --accent where it declares one and from its
+         <meta name="theme-color"> otherwise. --pca is redefined per theme so a
+         deep colour is lifted on dark backgrounds rather than leaving white
+         text unreadable. */
+      :root { --pca: 10, 122, 150; }
+      [data-theme="dark"] { --pca: 63, 216, 242; }
+      @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --pca: 63, 216, 242; } }
+
+      /* ---- consent banner ---- */
+      .consent-banner__inner { border-color: rgba(var(--pca), .32) !important;
+        box-shadow: 0 24px 60px -24px rgba(15, 23, 42, .5), 0 0 0 1px rgba(var(--pca), .08) !important; }
+      .consent-banner__inner::before { background: linear-gradient(90deg, rgb(var(--pca)), rgba(var(--pca), .5), rgb(var(--pca))) !important; }
+      .consent-ic { background: rgba(var(--pca), .14) !important; border-color: rgba(var(--pca), .3) !important; }
+      .consent-link { color: rgb(var(--pca)) !important; }
+      .consent-actions .primary-btn { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 8px 18px -8px rgba(var(--pca), .7) !important; }
+
+      /* ---- header ---- */
+      .navbar { border-color: rgba(var(--pca), .16) !important; }
+      .navbar::before { background: linear-gradient(135deg, rgba(var(--pca), .45), rgba(var(--pca), .25), rgba(var(--pca), .3)) !important; }
+      .nav-links { background: rgba(var(--pca), .05) !important; border-color: rgba(var(--pca), .1) !important; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: rgb(var(--pca)) !important; border-color: rgba(var(--pca), .18) !important;
+        box-shadow: 0 4px 12px rgba(var(--pca), .12) !important; }
+      .nav-links a.is-active { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .8)) !important;
+        box-shadow: 0 8px 22px rgba(var(--pca), .32) !important; }
+      .nav-tools-cta { background: linear-gradient(135deg, rgb(var(--pca)), rgba(var(--pca), .78)) !important;
+        box-shadow: 0 10px 24px -10px rgba(var(--pca), .55) !important; }
+      .icon-btn { border-color: rgba(var(--pca), .16) !important; }
+      .icon-btn:hover { border-color: rgba(var(--pca), .32) !important; box-shadow: 0 6px 16px rgba(var(--pca), .16) !important; }
+      .site-header--scrolled .navbar { border-color: rgba(var(--pca), .24) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 20px 56px rgba(var(--pca), .16), 0 6px 16px rgba(15, 23, 42, .07) !important; }
+      [data-theme="dark"] .site-header--scrolled .navbar { box-shadow: 0 20px 56px rgba(var(--pca), .2), 0 6px 16px rgba(0, 0, 0, .4) !important; }
+    </style>
+</head>
+<body class="no-side-ad-squeeze ipc-page">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/" aria-label="ToolAdda home"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a>
+      <nav class="nav-links" aria-label="Primary"><a href="/">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy</a></nav>
+      <div class="nav-actions">
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" />
+            <path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" />
+            <path d="M3.1 16.9h10.8" />
+            <path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" />
+          </svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle color theme" aria-pressed="false">🌙</button>
+        <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Open navigation" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <div class="sn-shell">
+      <aside class="ta-support" aria-label="Support ToolAdda">
+        <svg class="ta-support-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+        <p class="ta-support-text"><strong>Every tool here is free</strong><span class="ta-support-more">, with no sign-up and no upload</span>.<span class="ta-support-more"> If one saved you some time today, you can buy me a coffee.</span></p>
+        <a class="ta-donate" href="https://buymeacoffee.com/yadavsubhash" target="_blank" rel="noopener noreferrer nofollow" aria-label="Support ToolAdda on Buy Me a Coffee">
+          <svg class="ta-donate-ic" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.4 5.6h9.2v5.1a4.6 4.6 0 0 1-9.2 0z" /><path d="M12.6 6.8h1.7a2.2 2.2 0 0 1 0 4.4h-.3" /><path d="M3.1 16.9h10.8" /><path d="M6.6 2.4c-.5.8-.5 1.4 0 2.1M9.8 2.4c-.5.8-.5 1.4 0 2.1" /></svg>
+          <span class="ta-donate-label">Buy me a coffee</span>
+        </a>
+      </aside>
+
+      <div class="container sn-wrap">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">›</span>
+          <a href="/">Developer Tools</a><span aria-hidden="true">›</span>
+          <span aria-current="page">IP Subnet Calculator</span>
+        </nav>
+
+        <!-- Cover: a terminal window. Headline on the left; from 900px a
+             readout of 192.168.1.0/24 split into network and host bits. -->
+        <header class="ipc-cover">
+          <div class="ipc-bar" aria-hidden="true"><i></i><i></i><i></i><span>router# show ip subnet</span></div>
+          <div class="ipc-cover-body">
+            <div>
+              <p class="sn-badge">🌐 IP Subnet Calculator</p>
+              <h1 class="ipc-title"><span class="ipc-t1">IP Subnet Calculator</span> <span class="ipc-t2">— CIDR &amp; Subnet Mask Tool</span></h1>
+            </div>
+            <div class="ipc-readout" aria-hidden="true">
+              <p class="ipc-readout-ip">192.168.1.0<b>/24</b></p>
+              <div class="ipc-rbits"><i ></i><i ></i><i ></i><i ></i><i ></i><i ></i><i ></i><i ></i><i class="gap"></i><i ></i><i ></i><i ></i><i ></i><i ></i><i ></i><i ></i><i class="gap"></i><i ></i><i ></i><i ></i><i ></i><i ></i><i ></i><i ></i><i class="h gap"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i><i class="h"></i></div>
+              <p class="ipc-readout-key"><span class="n">24 network bits</span><span class="h">8 host bits · 254 usable</span></p>
+            </div>
+          </div>
+        </header>
+
+        <!-- The tool is one grid (.ipc-work) and the script's root
+             ([data-subnet-page]). Phones: the inputs, the ad, the results.
+             From 700px the ad sits beside the tool and spans every row, never
+             above it. The Subnet Calculator's results moved out of its tab
+             panel into their own box (the script finds them inside the root);
+             the other tabs keep their results in place. -->
+        <div class="sn-card ipc-work" id="subnet-tool" data-subnet-page>
+          <div class="ipc-box ipc-box--in">
+            <div class="sn-tab-row" role="tablist" aria-label="Calculator mode">
+              <button type="button" class="sn-tab-btn is-active" data-sn-mode="basic" role="tab" aria-selected="true">Subnet Calculator</button>
+              <button type="button" class="sn-tab-btn" data-sn-mode="hosts" role="tab" aria-selected="false">Required Hosts</button>
+              <button type="button" class="sn-tab-btn" data-sn-mode="subnets" role="tab" aria-selected="false">Required Subnets</button>
+              <button type="button" class="sn-tab-btn" data-sn-mode="vlsm" role="tab" aria-selected="false">VLSM Planner</button>
+            </div>
+
+            <!-- BASIC MODE -->
+            <div class="sn-tab-panel is-active" data-sn-panel="basic">
+              <div class="sn-input-row">
+                <div class="sn-field"><label for="snIp">IPv4 address</label><input type="text" id="snIp" data-ip-input value="192.168.1.0" inputmode="decimal" autocomplete="off" spellcheck="false" /></div>
+                <div class="sn-field"><label for="snCidr" data-cidr-label>CIDR prefix</label><input type="text" id="snCidr" data-cidr-input value="24" inputmode="decimal" autocomplete="off" spellcheck="false" /></div>
+                <div class="sn-mode-toggle" role="group" aria-label="Prefix input type">
+                  <button type="button" class="is-active" data-mask-mode="cidr" aria-pressed="true">/CIDR</button>
+                  <button type="button" data-mask-mode="mask" aria-pressed="false">Mask</button>
+                </div>
+              </div>
+              <p class="sn-error" data-sn-error role="alert" aria-live="polite"></p>
+
+              <div class="sn-cidr-slider-wrap">
+                <label for="snCidrSlider"><span>Drag to change prefix</span><span data-slider-label>/24</span></label>
+                <input type="range" id="snCidrSlider" class="sn-cidr-slider" data-cidr-slider min="0" max="32" value="24" aria-label="CIDR prefix slider" />
+              </div>
+            </div>
+
+            <!-- REQUIRED HOSTS MODE -->
+            <div class="sn-tab-panel" data-sn-panel="hosts">
+              <p class="sn-hint">Enter how many usable host addresses you need — the calculator finds the smallest CIDR block that fits, starting from a base network of your choice.</p>
+              <div class="sn-input-row">
+                <div class="sn-field"><label for="snHostsIp">Base IPv4 network</label><input type="text" id="snHostsIp" data-hosts-ip value="192.168.1.0" autocomplete="off" spellcheck="false" /></div>
+                <div class="sn-field"><label for="snHostsCount">Hosts needed</label><input type="text" id="snHostsCount" data-hosts-count value="50" inputmode="numeric" autocomplete="off" /></div>
+                <button type="button" class="sn-btn-block" data-calc-hosts>Calculate</button>
+              </div>
+              <p class="sn-error" data-hosts-error role="alert" aria-live="polite"></p>
+              <div class="sn-summary-grid" data-hosts-summary></div>
+              <table class="sn-detail-table" data-hosts-table></table>
+            </div>
+
+            <!-- REQUIRED SUBNETS MODE -->
+            <div class="sn-tab-panel" data-sn-panel="subnets">
+              <p class="sn-hint">Enter a base network and how many equal-sized subnets you need — the calculator borrows the minimum number of bits and lists every resulting subnet.</p>
+              <div class="sn-input-row">
+                <div class="sn-field"><label for="snSubnetsIp">Base network</label><input type="text" id="snSubnetsIp" data-subnets-ip value="192.168.0.0" autocomplete="off" spellcheck="false" /></div>
+                <div class="sn-field"><label for="snSubnetsBaseCidr">Base CIDR</label><input type="text" id="snSubnetsBaseCidr" data-subnets-base-cidr value="24" inputmode="decimal" autocomplete="off" /></div>
+                <div class="sn-field"><label for="snSubnetsCount">Subnets needed</label><input type="text" id="snSubnetsCount" data-subnets-count value="4" inputmode="numeric" autocomplete="off" /></div>
+              </div>
+              <button type="button" class="sn-btn-block" data-calc-subnets>Calculate</button>
+              <p class="sn-error" data-subnets-error role="alert" aria-live="polite"></p>
+              <p class="sn-hint" data-subnets-hint></p>
+              <div class="sn-table-wrap hidden" data-subnets-result-wrap>
+                <table class="sn-list-table">
+                  <thead><tr><th>#</th><th>Network</th><th>CIDR</th><th>First usable</th><th>Last usable</th><th>Broadcast</th></tr></thead>
+                  <tbody data-subnets-result-body></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- VLSM PLANNER MODE -->
+            <div class="sn-tab-panel" data-sn-panel="vlsm">
+              <p class="sn-hint">Plan variable-length subnets for multiple departments or sites from one base network — each gets the smallest block that fits its host requirement, allocated largest-first to avoid waste.</p>
+              <div class="sn-input-row">
+                <div class="sn-field"><label for="snVlsmIp">Base network</label><input type="text" id="snVlsmIp" data-vlsm-ip value="192.168.0.0" autocomplete="off" spellcheck="false" /></div>
+                <div class="sn-field"><label for="snVlsmCidr">Base CIDR</label><input type="text" id="snVlsmCidr" data-vlsm-cidr value="24" inputmode="decimal" autocomplete="off" /></div>
+                <div></div>
+              </div>
+              <div data-vlsm-rows>
+                <div class="sn-vlsm-row" data-vlsm-row>
+                  <div class="sn-field"><label>Name</label><input type="text" data-vlsm-name value="Sales" /></div>
+                  <div class="sn-field"><label>Hosts needed</label><input type="text" data-vlsm-hosts value="50" inputmode="numeric" /></div>
+                  <button type="button" data-vlsm-remove aria-label="Remove this requirement">✕</button>
+                </div>
+              </div>
+              <div class="sn-actions-row">
+                <button type="button" data-vlsm-add>➕ Add requirement</button>
+                <button type="button" data-vlsm-calc>🧮 Plan VLSM</button>
+              </div>
+              <p class="sn-error" data-vlsm-error role="alert" aria-live="polite"></p>
+              <div class="sn-table-wrap hidden" data-vlsm-result-wrap>
+                <table class="sn-list-table">
+                  <thead><tr><th>Name</th><th>Hosts needed</th><th>CIDR</th><th>Network</th><th>Usable range</th><th>Broadcast</th></tr></thead>
+                  <tbody data-vlsm-result-body></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ad: one 300x250 (see .ipc-ad-zone CSS). -->
+          <div class="ipc-ad-zone">
+            <div class="ta-inline-ad" data-unit="inline"></div>
+          </div>
+
+          <div class="ipc-box ipc-box--out">
+            <!-- The example chips moved here from the input box, so on
+                 phones the inputs stay short enough for the ad to show. -->
+            <div class="sn-preset-row" data-preset-row>
+              <button type="button" class="sn-preset-chip" data-preset="192.168.1.0/24">192.168.1.0/24</button>
+              <button type="button" class="sn-preset-chip" data-preset="10.0.0.0/8">10.0.0.0/8</button>
+              <button type="button" class="sn-preset-chip" data-preset="172.16.0.0/16">172.16.0.0/16</button>
+              <button type="button" class="sn-preset-chip" data-preset="8.8.8.0/24">8.8.8.0/24</button>
+              <button type="button" class="sn-preset-chip" data-preset="192.168.1.0/30">192.168.1.0/30</button>
+            </div>
+
+            <div class="sn-bit-legend">
+              <span><i class="net"></i> Network bits</span>
+              <span><i class="host"></i> Host bits</span>
+            </div>
+            <div class="sn-bits" data-bit-grid aria-hidden="true"></div>
+
+            <div class="sn-badge-row" data-badge-row></div>
+
+            <div class="sn-summary-grid" data-summary-grid></div>
+
+            <table class="sn-detail-table" data-detail-table></table>
+
+            <div class="sn-actions-row">
+              <button type="button" data-copy-report>📋 Copy full report</button>
+              <button type="button" data-download-csv>⬇️ Download CSV</button>
+              <button type="button" data-download-json>⬇️ Download JSON</button>
+              <button type="button" data-print-report>🖨️ Print / Save as PDF</button>
+              <button type="button" data-share-link>🔗 Copy shareable link</button>
+            </div>
+
+            <div class="sn-panel">
+              <p class="sn-panel-title">Subnet list generator — split this network further</p>
+              <div class="sn-inline-row">
+                <div class="sn-field" style="max-width:180px"><label for="snNewPrefix">New CIDR prefix</label><input type="text" id="snNewPrefix" data-new-prefix value="26" inputmode="decimal" /></div>
+                <button type="button" class="sn-btn-block" data-generate-subnets>🧩 Generate subnets</button>
+              </div>
+              <p class="sn-hint" data-subnet-list-hint>Splitting /24 into /26 creates 4 subnets of 64 addresses each.</p>
+              <div class="sn-table-wrap hidden" data-subnet-list-wrap>
+                <table class="sn-list-table">
+                  <thead><tr><th>#</th><th>Network</th><th>CIDR</th><th>First usable</th><th>Last usable</th><th>Broadcast</th></tr></thead>
+                  <tbody data-subnet-list-body></tbody>
+                </table>
+              </div>
+              <p class="sn-table-note hidden" data-subnet-list-note></p>
+            </div>
+
+            <div class="sn-panel">
+              <p class="sn-panel-title">Supernet (route summarization)</p>
+              <p class="sn-hint">The next larger block (prefix − 1) that contains this network, useful for route aggregation.</p>
+              <table class="sn-detail-table" data-supernet-table></table>
+            </div>
+          </div>
+        </div>
+
+        <div class="ipc-after">
+          <div>
+          <p class="sn-lead">Enter any IPv4 address with a CIDR prefix or subnet mask to instantly get the network address, broadcast address, usable host range, wildcard mask, binary/hex breakdown, and classification. Includes a VLSM planner, subnet list generator, and reverse calculators for required hosts or subnets.</p>
+          </div>
+          <div>
+          <p class="sn-privacy">🔒 Runs 100% in your browser — no IP data is ever sent to a server.</p>
+          <ul class="sn-trust-row">
+            <li><b>Instant results</b></li>
+            <li>VLSM planner</li>
+            <li>Subnet list generator</li>
+            <li>CCNA-accurate math</li>
+            <li>No signup</li>
+          </ul>
+          <div class="sn-hero-cta">
+            <a class="primary-btn" href="#subnet-tool">Calculate a subnet free</a>
+            <a class="secondary-btn" href="#cidr-reference">View CIDR chart →</a>
+          </div>
+          </div>
+        </div>
+
+        <!-- NEW SECTION -->
+        <section class="sn-card" style="margin-top:1.25rem" aria-labelledby="ipc-hand-h">
+          <h2 id="ipc-hand-h" style="margin-top:0">Working Out 192.168.10.77/26 by Hand</h2>
+          <p>A /26 mask keeps the first 26 bits for the network and leaves 6 for hosts. The first three octets, 192.168.10, are network bits all the way, so only the last octet needs any work. Here it is bit by bit — network bits in cyan, host bits in amber.</p>
+          <table class="ipc-hand">
+            <thead><tr><th scope="col">Step</th><th scope="col">Last octet in binary</th><th scope="col">Decimal</th></tr></thead>
+            <tbody>
+              <tr><td data-label="Step">The address, .77</td><td data-label="Last octet in binary"><span class="ipc-byte"><b class="n">0</b><b class="n">1</b><b class="h">0</b><b class="h">0</b><b class="h">1</b><b class="h">1</b><b class="h">0</b><b class="h">1</b></span></td><td data-label="Decimal">77</td></tr>
+              <tr><td data-label="Step">The mask, /26</td><td data-label="Last octet in binary"><span class="ipc-byte"><b class="n">1</b><b class="n">1</b><b class="h">0</b><b class="h">0</b><b class="h">0</b><b class="h">0</b><b class="h">0</b><b class="h">0</b></span></td><td data-label="Decimal">192</td></tr>
+              <tr><td data-label="Step">Network = address AND mask</td><td data-label="Last octet in binary"><span class="ipc-byte"><b class="n">0</b><b class="n">1</b><b class="h">0</b><b class="h">0</b><b class="h">0</b><b class="h">0</b><b class="h">0</b><b class="h">0</b></span></td><td data-label="Decimal">64</td></tr>
+              <tr><td data-label="Step">Broadcast = network with every host bit set</td><td data-label="Last octet in binary"><span class="ipc-byte"><b class="n">0</b><b class="n">1</b><b class="h">1</b><b class="h">1</b><b class="h">1</b><b class="h">1</b><b class="h">1</b><b class="h">1</b></span></td><td data-label="Decimal">127</td></tr>
+              <tr><td data-label="Step">Usable hosts = 2<sup>6</sup> − 2</td><td data-label="Last octet in binary">64 addresses, minus network and broadcast</td><td data-label="Decimal">62</td></tr>
+            </tbody>
+          </table>
+          <p>So 192.168.10.77/26 sits in network 192.168.10.64, broadcasts on 192.168.10.127, and has 62 usable addresses from .65 to .126 — the same four numbers the calculator shows when you type it in.</p>
+          <ul class="ipc-notes">
+            <li><strong>/31 skips the "minus two".</strong> On a point-to-point link both addresses are usable (RFC 3021): 10.0.0.5/31 gives 10.0.0.4 – 10.0.0.5, 2 of 2.</li>
+            <li><strong>/32 is one host</strong> — the address itself, 1 of 1. It is used for loopbacks and host routes.</li>
+            <li><strong>The wildcard mask is the mask flipped:</strong> 255.255.255.192 becomes 0.0.0.63, the form ACLs and OSPF expect.</li>
+          </ul>
+        </section>
+
+        <!-- ============ TRUST ============ -->
+
+        <section class="sn-card" style="margin-top:1.25rem" aria-label="Trust signals">
+          <h2 style="margin-top:0">Built for Networking Professionals</h2>
+          <div class="sn-security-grid">
+            <div class="sn-security-card"><span>💻</span><strong>100% browser-based</strong><p>Nothing sent to a server.</p></div>
+            <div class="sn-security-card"><span>⚡</span><strong>Instant calculation</strong><p>Updates as you type.</p></div>
+            <div class="sn-security-card"><span>🔓</span><strong>No registration</strong><p>Open and use immediately.</p></div>
+            <div class="sn-security-card"><span>♾️</span><strong>Free forever</strong><p>No limits, no premium tier.</p></div>
+            <div class="sn-security-card"><span>🎓</span><strong>CCNA-accurate</strong><p>Standard RFC 950/4632 math.</p></div>
+          </div>
+        </section>
+
+        <!-- ============ BENEFITS ============ -->
+        <section class="sn-card" style="margin-top:1.25rem" aria-label="Benefits">
+          <h2 style="margin-top:0">Deeper Than a Basic Subnet Calculator</h2>
+          <div class="sn-benefits-grid">
+            <div class="sn-benefit-card"><span>🧮</span><strong>VLSM planner</strong><p>Allocate variable-size subnets.</p></div>
+            <div class="sn-benefit-card"><span>🧩</span><strong>Subnet list generator</strong><p>Split a network into all children.</p></div>
+            <div class="sn-benefit-card"><span>🔍</span><strong>Reverse calculators</strong><p>From host or subnet count.</p></div>
+            <div class="sn-benefit-card"><span>🎚️</span><strong>Live CIDR slider</strong><p>Drag to see bits shift live.</p></div>
+            <div class="sn-benefit-card"><span>📤</span><strong>CSV, JSON, PDF export</strong><p>Take results anywhere.</p></div>
+          </div>
+        </section>
+
+        <!-- ============ USE CASES ============ -->
+        <section class="sn-card" style="margin-top:1.25rem" aria-label="Use cases">
+          <h2 style="margin-top:0">Built for Every Networking Workflow</h2>
+          <div class="sn-usecase-grid">
+            <div class="sn-usecase-card"><strong>🎓 CCNA / CCNP Study</strong><p>Verify subnetting practice problems instantly and see the binary math behind every answer.</p></div>
+            <div class="sn-usecase-card"><strong>🏢 Enterprise Network Design</strong><p>Plan VLANs and department subnets with VLSM to avoid wasting address space.</p></div>
+            <div class="sn-usecase-card"><strong>☁️ Cloud VPC Planning</strong><p>Size non-overlapping CIDR blocks for AWS VPCs, Azure VNets, or GCP networks.</p></div>
+            <div class="sn-usecase-card"><strong>🐳 Kubernetes &amp; Docker</strong><p>Plan pod, service, and bridge network CIDR ranges without collisions.</p></div>
+            <div class="sn-usecase-card"><strong>🔐 Security &amp; Firewall Rules</strong><p>Compute exact wildcard masks for Cisco ACLs and OSPF network statements.</p></div>
+            <div class="sn-usecase-card"><strong>🖥️ System Administration</strong><p>Quickly check whether an IP is private, reserved, or routable before troubleshooting.</p></div>
+          </div>
+        </section>
+
+        <!-- ============ COMPARISON ============ -->
+        <section class="sn-card" style="margin-top:1.25rem" aria-label="Comparison with other tools">
+          <h2 style="margin-top:0">How ToolAdda Compares</h2>
+          <div class="sn-compare-wrap">
+            <table class="sn-compare">
+              <thead><tr><th>Feature</th><th>ToolAdda</th><th>Calculator.net</th><th>MXToolbox / IPVoid</th></tr></thead>
+              <tbody>
+                <tr><td>VLSM planner built in</td><td class="yes">Yes</td><td class="no">No</td><td class="no">No</td></tr>
+                <tr><td>Subnet list generator</td><td class="yes">Yes</td><td class="no">Limited</td><td class="no">No</td></tr>
+                <tr><td>Live binary bit visualization</td><td class="yes">Yes</td><td class="no">No</td><td class="no">No</td></tr>
+                <tr><td>Reverse (required hosts/subnets) calculators</td><td class="yes">Yes</td><td class="yes">Partial</td><td class="no">No</td></tr>
+                <tr><td>CSV / JSON / PDF export</td><td class="yes">Yes</td><td class="no">No</td><td class="no">No</td></tr>
+                <tr><td>No data leaves your browser</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="no">Server-based lookups</td></tr>
+                <tr><td>Dark mode</td><td class="yes">Yes</td><td class="no">No</td><td class="no">No</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ============ CIDR REFERENCE ============ -->
+        <section class="sn-card" style="margin-top:1.25rem" id="cidr-reference" aria-label="CIDR reference table">
+          <h2 style="margin-top:0">CIDR Reference Table</h2>
+          <p style="color:var(--text-muted);margin-top:-.4rem">Click any row to load it into the calculator above.</p>
+          <div class="sn-ref-wrap">
+            <table class="sn-ref" data-cidr-ref-table>
+              <thead><tr><th>CIDR</th><th>Subnet mask</th><th>Wildcard mask</th><th>Total addresses</th><th>Usable hosts</th></tr></thead>
+              <tbody data-cidr-ref-body></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ============ SPECIAL RANGES REFERENCE ============ -->
+        <section class="sn-card" style="margin-top:1.25rem" aria-label="Special IPv4 ranges">
+          <h2 style="margin-top:0">Private, Reserved &amp; Special-Use IPv4 Ranges</h2>
+          <div class="sn-ref-wrap">
+            <table class="sn-ref">
+              <thead><tr><th>Range</th><th>CIDR</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td>10.0.0.0 – 10.255.255.255</td><td>10.0.0.0/8</td><td>Private (RFC 1918)</td></tr>
+                <tr><td>172.16.0.0 – 172.31.255.255</td><td>172.16.0.0/12</td><td>Private (RFC 1918)</td></tr>
+                <tr><td>192.168.0.0 – 192.168.255.255</td><td>192.168.0.0/16</td><td>Private (RFC 1918)</td></tr>
+                <tr><td>100.64.0.0 – 100.127.255.255</td><td>100.64.0.0/10</td><td>Shared / CGNAT (RFC 6598)</td></tr>
+                <tr><td>127.0.0.0 – 127.255.255.255</td><td>127.0.0.0/8</td><td>Loopback (RFC 990)</td></tr>
+                <tr><td>169.254.0.0 – 169.254.255.255</td><td>169.254.0.0/16</td><td>Link-local / APIPA (RFC 3927)</td></tr>
+                <tr><td>192.0.2.0 – 192.0.2.255</td><td>192.0.2.0/24</td><td>Documentation TEST-NET-1 (RFC 5737)</td></tr>
+                <tr><td>198.51.100.0 – 198.51.100.255</td><td>198.51.100.0/24</td><td>Documentation TEST-NET-2 (RFC 5737)</td></tr>
+                <tr><td>203.0.113.0 – 203.0.113.255</td><td>203.0.113.0/24</td><td>Documentation TEST-NET-3 (RFC 5737)</td></tr>
+                <tr><td>198.18.0.0 – 198.19.255.255</td><td>198.18.0.0/15</td><td>Benchmarking (RFC 2544)</td></tr>
+                <tr><td>224.0.0.0 – 239.255.255.255</td><td>224.0.0.0/4</td><td>Multicast (RFC 5771)</td></tr>
+                <tr><td>240.0.0.0 – 255.255.255.254</td><td>240.0.0.0/4</td><td>Reserved for future use (RFC 1112)</td></tr>
+                <tr><td>255.255.255.255</td><td>255.255.255.255/32</td><td>Limited broadcast</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ============ SEO CONTENT ============ -->
+        <article class="sn-card sn-seo" style="margin-top:1.25rem" id="article" aria-label="Subnetting guide">
+          <h2 id="what-is">What Is an IP Subnet Calculator?</h2>
+          <p>An IP subnet calculator is a tool that takes an IPv4 address plus a prefix length (CIDR notation or a dotted subnet mask) and computes every derived value a network engineer needs: the network address, the broadcast address, the usable range of host addresses, the wildcard mask, and how many total and usable addresses the block contains. It automates arithmetic that's entirely mechanical but tedious and error-prone to do by hand — binary math on 32-bit numbers, bit borrowing, and boundary alignment — the same skills tested on the CCNA exam and used daily by network engineers, DevOps teams, and cloud architects.</p>
+
+          <h2 id="ipv4-address">What Is an IPv4 Address?</h2>
+          <p>An IPv4 address is a 32-bit number that uniquely identifies a device on a network, conventionally written as four decimal numbers from 0–255 separated by dots — <code>192.168.1.1</code>, for example. Each of those four numbers, called an octet, represents 8 bits, so the full address is really just a 32-digit binary number split into readable chunks. Because it's only 32 bits, IPv4 provides roughly 4.3 billion possible addresses — a number that felt enormous in 1981 and has been under pressure ever since the public internet scaled past it, which is part of why private addressing (RFC 1918), NAT, and eventually IPv6 all exist.</p>
+
+          <h2 id="what-is-cidr">What Is CIDR?</h2>
+          <p>CIDR (Classless Inter-Domain Routing), introduced in 1993 by RFC 1518/1519, replaced the original rigid "classful" addressing scheme with a flexible notation: an IP address followed by a slash and a number, like <code>192.168.1.0/24</code>, where the number states how many of the 32 bits form the network portion. This single change let network designers create subnets of any size instead of being locked into fixed Class A/B/C boundaries, and it's the reason the internet's routing tables didn't collapse under their own growth in the 1990s.</p>
+
+          <h2 id="subnet-mask">What Is a Subnet Mask?</h2>
+          <p>A subnet mask expresses the exact same information as a CIDR prefix, just in dotted-decimal form: <code>255.255.255.0</code> is mathematically identical to <code>/24</code>. Both describe a 32-bit pattern of contiguous 1s (network bits) followed by contiguous 0s (host bits) — a subnet mask is only valid if its binary form never has a 0 followed later by a 1. This calculator accepts either format and treats them as fully interchangeable.</p>
+
+          <h2 id="how-subnetting-works">How Subnetting Works</h2>
+          <p>Subnetting works by "borrowing" bits from the host portion of an address and reassigning them to the network portion, which shrinks each individual subnet's size but creates more of them. Borrowing one bit from a /24 doubles the number of subnets (to 2) while halving each one's size (to /25, 128 addresses); borrowing two bits quadruples the subnet count (to 4) at /26 (64 addresses each), and so on. The relationship is always a clean power of two: borrowing <em>n</em> bits creates 2ⁿ subnets, each with 2^(32−prefix) total addresses.</p>
+
+          <h2 id="binary">Binary Representation Explained</h2>
+          <p>Every IPv4 calculation ultimately reduces to binary arithmetic on 32 bits. The subnet mask is ANDed with the IP address to isolate the network address; the mask is bitwise-inverted (giving the wildcard mask) and ORed with the network address to compute the broadcast address. This calculator's live bit visualization shows exactly which of the 32 bits are network bits (fixed, shared by every device on the subnet) versus host bits (variable, unique per device) — dragging the CIDR slider moves that boundary in real time so the relationship becomes visually obvious rather than abstract.</p>
+
+          <h2 id="network-host-bits">Network Bits vs. Host Bits</h2>
+          <p>Network bits are the leading bits shared by every address in a subnet — they define which subnet an address belongs to. Host bits are the remaining trailing bits, and every possible combination of them (except all-zeros and all-ones, which are reserved) identifies a specific usable device address within that subnet. A /24 has 24 network bits and 8 host bits, giving 2⁸ = 256 total combinations, 254 of them usable.</p>
+
+          <h2 id="network-address">Network Address</h2>
+          <p>The network address is the subnet's own identity — the address with every host bit set to 0. It's never assigned to a device; routers use it to refer to the subnet as a whole in routing tables. For <code>192.168.1.0/24</code>, the network address is <code>192.168.1.0</code> itself.</p>
+
+          <h2 id="broadcast-address">Broadcast Address</h2>
+          <p>The broadcast address is the subnet's last address, with every host bit set to 1, used to send a single packet to every host on that local segment at once. For <code>192.168.1.0/24</code>, that's <code>192.168.1.255</code>. Like the network address, it's reserved and can't be assigned to a device (except in the /31 special case covered below).</p>
+
+          <h2 id="usable-range">Usable Host Range</h2>
+          <p>The usable host range is every address between the network and broadcast address, excluding both — for <code>192.168.1.0/24</code>, that's <code>192.168.1.1</code> through <code>192.168.1.254</code>. Two well-known exceptions matter for exam questions and real configuration alike: a /31 (RFC 3021) has no reserved network or broadcast address and offers both its addresses as usable, standard for point-to-point WAN links; a /32 identifies exactly one address, used for host routes and loopback interfaces.</p>
+
+          <h2 id="public-private">Public vs. Private IP Addresses</h2>
+          <p>RFC 1918 reserves three ranges — <code>10.0.0.0/8</code>, <code>172.16.0.0/12</code>, and <code>192.168.0.0/16</code> — for private use inside organizations; routers on the public internet never forward traffic to or from these ranges directly, which is why home and office networks reuse them freely alongside Network Address Translation (NAT). Every other IPv4 address (outside private, loopback, link-local, multicast, and other reserved ranges) is potentially publicly routable. This calculator flags which category any address you enter falls into.</p>
+
+          <h2 id="classes">Classes of IPv4 Networks</h2>
+          <p>Before CIDR, addresses were divided into classes purely by their first octet: Class A (1–126, implying a /8), Class B (128–191, implying a /16), Class C (192–223, implying a /24), Class D (224–239, reserved for multicast), and Class E (240–255, reserved for experimental use). Classful addressing is obsolete for routing purposes — CIDR lets any prefix apply to any address — but the class labels are still commonly referenced in documentation and certification exams, so this calculator reports both the legacy class and the modern CIDR-based classification.</p>
+
+          <h2 id="cidr-chart">CIDR Prefix Chart</h2>
+          <p>The full reference table above lists every prefix from /0 to /32 with its subnet mask, wildcard mask, total address count, and usable host count. A few are worth memorizing for quick mental math: /24 (254 hosts), /25 (126 hosts), /26 (62 hosts), /27 (30 hosts), /28 (14 hosts), /29 (6 hosts), /30 (2 hosts) — each step halves the previous host count, which is the fastest way to sanity-check a subnetting answer without a calculator at all.</p>
+
+          <h2 id="vlsm">VLSM Explained</h2>
+          <p>Variable Length Subnet Masking assigns a different prefix length to each subnet based on its actual host requirement, instead of forcing every subnet in a network to share one uniform mask. A department needing 100 hosts gets a /25; a point-to-point link needing 2 addresses gets a /30 — allocated correctly, VLSM can turn a network that would only support a handful of equally-sized subnets into dozens of appropriately-sized ones. The standard allocation strategy (and the one this tool's VLSM planner implements) is to sort requirements largest-first and allocate each into the smallest block that fits, which avoids fragmenting the address space with wasted gaps.</p>
+
+          <h2 id="supernetting">Supernetting Explained</h2>
+          <p>Supernetting is the inverse of subnetting: combining multiple contiguous, equally-sized networks into one larger block that can be advertised as a single route — the mechanism behind CIDR route aggregation across the entire public internet's routing tables. Two adjacent /24s that share the same /23 parent (differing only in their lowest network bit) can be summarized as one /23 route, halving the number of routes a router needs to track for that address space.</p>
+
+          <h2 id="network-planning">Network Planning Examples</h2>
+          <p>A typical small office might allocate <code>192.168.1.0/24</code> for general staff (254 hosts), <code>192.168.2.0/26</code> for a guest Wi-Fi network isolated by VLAN (62 hosts), and <code>192.168.2.64/30</code> for a router-to-firewall link (2 hosts) — three subnets, three different sizes, planned with VLSM instead of wasting a /24 on a 2-address link.</p>
+
+          <h2 id="enterprise-design">Enterprise Network Design and VLANs</h2>
+          <p>Larger networks pair subnetting with VLANs (Virtual LANs) — each VLAN typically maps to its own subnet, letting a single physical switch infrastructure logically separate departments, guest traffic, VoIP, and server segments without separate cabling. Getting the subnet sizes right during design (using VLSM rather than one-size-fits-all) is what keeps the address plan from needing a disruptive re-architecture as the organization grows.</p>
+
+          <h2 id="cloud-networking">Subnetting in Cloud and Container Networking</h2>
+          <p>Cloud platforms didn't replace subnetting — they just moved it into a console. An AWS VPC is defined by a CIDR block (commonly a /16), subdivided into smaller subnets per availability zone; AWS additionally reserves 5 addresses in every subnet for internal networking purposes, on top of the standard network/broadcast reservation. Azure Virtual Networks and subnets work almost identically, also reserving 5 addresses per subnet. Google Cloud VPC networks use a similar CIDR-based subnet model, though GCP subnets can span multiple zones within a region. Container orchestration adds another layer: Kubernetes clusters need distinct, non-overlapping CIDR ranges for the cluster network, pod network, and service network, and Docker's default bridge network allocates its own private subnet for container-to-container communication. In every case, the underlying math this calculator performs — network address, broadcast, usable range — is exactly what you're planning when you type a CIDR block into any of these consoles.</p>
+
+          <h2 id="certification">Subnetting for CCNA and CCNP Exams</h2>
+          <p>Subnetting is one of the highest-value topics on the CCNA exam because it's tested constantly across multiple question formats — fill-in-the-blank, drag-and-drop, and embedded inside larger scenario questions — and because real speed matters under exam time pressure. The fastest path to fluency is memorizing the power-of-two host counts per prefix (covered above) and practicing the "magic number" method: subtract the interesting octet's mask value from 256 to get the block size, then count in that increment to find subnet boundaries. Use this calculator to check your manual answers while you build that speed, not as a permanent substitute for doing the math yourself — exams don't allow calculators, so the mental shortcuts are the actual skill being tested. CCNP-level design questions build on the same foundation with VLSM and route summarization across multi-router topologies, which is exactly what the VLSM planner and supernet view above are built to illustrate.</p>
+
+          <h2 id="mistakes">Common Subnetting Mistakes</h2>
+          <ul>
+            <li><strong>Forgetting the network and broadcast reservation.</strong> A /24 has 256 total addresses but only 254 usable — a very common off-by-two error.</li>
+            <li><strong>Misaligning subnet boundaries.</strong> Subnets must start on a multiple of their own block size; picking an arbitrary starting address instead of a valid boundary produces overlapping or invalid ranges.</li>
+            <li><strong>Assuming /31 and /32 follow the "minus 2" rule.</strong> They don't — /31 has 2 usable addresses and /32 has exactly 1.</li>
+            <li><strong>Confusing a subnet mask with a wildcard mask.</strong> They're bitwise inverses of each other; using one where the other is expected (a frequent ACL misconfiguration) silently matches the wrong addresses.</li>
+            <li><strong>Overlapping VPC or VLSM ranges.</strong> Always verify new subnet ranges don't intersect existing ones before deploying — a mistake that's easy to make by hand and easy to catch with a generated subnet list.</li>
+          </ul>
+
+          <h2 id="security">Security Best Practices for Subnetting</h2>
+          <p>Segment by function and trust level, not just by convenience — put guest Wi-Fi, IoT devices, servers, and staff workstations in separate subnets so a firewall or ACL can enforce which segments may talk to which, containing a compromise instead of letting it spread laterally across a flat network. Use the smallest subnet that reasonably fits each segment's growth plan rather than defaulting every VLAN to a /24; oversized subnets waste address space and, more importantly, put more devices inside a single broadcast domain and a single blast radius than necessary.</p>
+
+          <h2 id="faq-heading">IP Subnet Calculator — Frequently Asked Questions</h2>
+          <div class="faq-grid" data-faq-grid>
+            <details class="faq-item"><summary>What is subnetting?</summary><p>Dividing a larger IP network into smaller, logically separated networks by borrowing bits from the host portion for network identification.</p></details>
+            <details class="faq-item"><summary>How do I calculate a subnet?</summary><p>Enter an IPv4 address and a CIDR prefix or subnet mask — the calculator instantly computes every derived value.</p></details>
+            <details class="faq-item"><summary>What is CIDR notation?</summary><p>A slash and number appended to an IP, like /24, indicating how many leading bits form the network portion.</p></details>
+            <details class="faq-item"><summary>What is a subnet mask?</summary><p>A dotted-decimal value like 255.255.255.0 that's mathematically equivalent to a CIDR prefix.</p></details>
+            <details class="faq-item"><summary>What is a wildcard mask?</summary><p>The bitwise inverse of a subnet mask, used in Cisco ACLs and OSPF configuration.</p></details>
+            <details class="faq-item"><summary>What is a broadcast address?</summary><p>The last address in a subnet (all host bits set to 1), used to reach every device on the segment at once.</p></details>
+            <details class="faq-item"><summary>What is a network address?</summary><p>The first address in a subnet (all host bits set to 0), identifying the subnet itself.</p></details>
+            <details class="faq-item"><summary>How many hosts fit in a /24?</summary><p>256 total addresses, 254 usable after reserving the network and broadcast address.</p></details>
+            <details class="faq-item"><summary>How many hosts fit in a /30?</summary><p>4 total addresses, 2 usable — the standard size for a point-to-point link.</p></details>
+            <details class="faq-item"><summary>Why don't /31 and /32 follow the usual rule?</summary><p>RFC 3021 gives /31 exactly 2 usable addresses with no reservation; /32 identifies a single host route with 1 usable address.</p></details>
+            <details class="faq-item"><summary>What is VLSM?</summary><p>Variable Length Subnet Masking — sizing each subnet's prefix to match its actual host requirement instead of one uniform mask.</p></details>
+            <details class="faq-item"><summary>What is supernetting?</summary><p>Combining multiple contiguous networks into one larger block advertised as a single route.</p></details>
+            <details class="faq-item"><summary>What's the difference between IPv4 and IPv6?</summary><p>IPv4 uses 32-bit addresses; IPv6 uses 128-bit addresses. This calculator currently supports IPv4 only.</p></details>
+            <details class="faq-item"><summary>Can I subnet private IP addresses?</summary><p>Yes — private and public ranges work identically, and the tool flags which type you entered.</p></details>
+            <details class="faq-item"><summary>Does it support subnet mask input as well as CIDR?</summary><p>Yes — toggle between /CIDR and a dotted subnet mask; both produce identical results.</p></details>
+            <details class="faq-item"><summary>How accurate is the calculator?</summary><p>It uses standard 32-bit binary arithmetic per RFC 950/4632 — the same rules used by real routers.</p></details>
+            <details class="faq-item"><summary>Can I use it for AWS VPC planning?</summary><p>Yes — standard CIDR math applies; AWS separately reserves 5 addresses per subnet.</p></details>
+            <details class="faq-item"><summary>Can I use it for Azure virtual networks?</summary><p>Yes — Azure VNets use the same CIDR model, also reserving 5 addresses per subnet.</p></details>
+            <details class="faq-item"><summary>Can I use it for Kubernetes CIDR planning?</summary><p>Yes — cluster, pod, and service CIDR ranges are standard IPv4 blocks the calculator and VLSM planner can size.</p></details>
+            <details class="faq-item"><summary>Is the calculator free?</summary><p>Yes — completely free with no signup or limits.</p></details>
+            <details class="faq-item"><summary>Does it work offline?</summary><p>Yes — once loaded, all math runs locally with no network requests.</p></details>
+            <details class="faq-item"><summary>Is my IP data sent anywhere?</summary><p>No — every calculation happens entirely in your browser.</p></details>
+            <details class="faq-item"><summary>What's the difference between a network class and CIDR?</summary><p>Classful addressing was a rigid 1981 scheme; CIDR (1993) decouples prefix length from address range entirely.</p></details>
+            <details class="faq-item"><summary>How do I find the number of subnets from a prefix?</summary><p>2 raised to the number of borrowed bits — borrowing 2 bits creates 4 subnets.</p></details>
+            <details class="faq-item"><summary>What is a default gateway and how is it chosen?</summary><p>The router address devices use to reach other networks — by convention often the first usable address.</p></details>
+            <details class="faq-item"><summary>What does 'usable hosts' mean vs 'total addresses'?</summary><p>Total addresses includes the network and broadcast address; usable hosts excludes both (except /31 and /32).</p></details>
+            <details class="faq-item"><summary>Can I generate a list of all subnets in a range?</summary><p>Yes — the Subnet List Generator splits a base network into equal-sized subnets at any new prefix.</p></details>
+            <details class="faq-item"><summary>What is reverse DNS (in-addr.arpa)?</summary><p>Mapping an IP back to a hostname via PTR records, with octets reversed under the in-addr.arpa domain.</p></details>
+          </div>
+        </article>
+
+        <aside class="related-tools-section" style="margin-top:1.25rem" aria-label="Related tools">
+          <div class="related-tools-section__header">
+            <div><p class="related-tools-eyebrow">Related tools</p><h2 class="related-tools-title">More developer tools</h2></div>
+          </div>
+          <div class="related-tools-grid">
+            <a class="related-tool-card" href="dns-lookup.html"><div class="related-tool-icon">🔎</div><div><strong>DNS Lookup</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Check A, MX, TXT, NS &amp; more</span></div></a>
+            <a class="related-tool-card" href="dns-propagation-checker.html"><div class="related-tool-icon">🛰️</div><div><strong>DNS Propagation Checker</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Multi-resolver consensus check</span></div></a>
+            <a class="related-tool-card" href="uuid-generator.html"><div class="related-tool-icon">🆔</div><div><strong>UUID Generator</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Generate v4/v7 UUIDs</span></div></a>
+            <a class="related-tool-card" href="jwt-debugger.html"><div class="related-tool-icon">🔑</div><div><strong>JWT Debugger</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Decode &amp; verify tokens</span></div></a>
+            <a class="related-tool-card" href="jwt-encoder.html"><div class="related-tool-icon">🔏</div><div><strong>JWT Encoder</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Build signed tokens</span></div></a>
+            <a class="related-tool-card" href="ssl-checker.html"><div class="related-tool-icon">🔒</div><div><strong>SSL Checker</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Inspect TLS certificates</span></div></a>
+            <a class="related-tool-card" href="text-tools/base64-encoder-decoder.html"><div class="related-tool-icon">🔤</div><div><strong>Base64 Encoder</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Encode &amp; decode text</span></div></a>
+            <a class="related-tool-card" href="developer-tools/json-formatter.html"><div class="related-tool-icon">🧩</div><div><strong>JSON Formatter</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Pretty-print &amp; validate</span></div></a>
+            <a class="related-tool-card" href="cron-expression-generator.html"><div class="related-tool-icon">⏱️</div><div><strong>Cron Expression Generator</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Build &amp; explain cron syntax</span></div></a>
+            <a class="related-tool-card" href="epoch-converter.html"><div class="related-tool-icon">🕐</div><div><strong>Epoch Converter</strong><span style="display:block;color:var(--text-muted);font-weight:700;margin-top:.25rem">Unix timestamp tool</span></div></a>
+          </div>
+        </aside>
+
+        <div class="cta-card" style="margin-top:1.25rem;text-align:center">
+          <h2>Ready to calculate your subnet?</h2>
+          <p>No signup, no limits — instant, accurate subnet math in your browser.</p>
+          <a class="primary-btn" href="#subnet-tool">Calculate a subnet now</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="sn-sticky-cta">
+    <button type="button" class="primary-btn" data-sticky-subnet-cta>🌐 Calculate a subnet</button>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>ToolAdda</span></a><p>ToolAdda (also known as Tool Adda or Tools Adda) - premium utility tools for modern workflows.</p></div>
+      <div><h3>Explore</h3><div class="footer-links"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms</a></div></div>
+      <div><h3>Stay updated</h3><p>© <span data-year></span> ToolAdda. All rights reserved.</p></div>
+    </div>
+  </footer>
+
+  <script src="assets/js/ip-subnet-calculator.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/side-ads.js" defer></script>
+  <script src="assets/js/inline-ads.js" data-in-article defer></script>
+  <script>
+    /* The phone quick bar ("Calculate a subnet" scrolls back to the tool):
+       only while the whole tool is off screen (see .sn-sticky-cta CSS). */
+    (function () {
+      var tool = document.getElementById('subnet-tool');
+      if (!tool || !('IntersectionObserver' in window)) return;
+      new IntersectionObserver(function (entries) {
+        document.body.classList.toggle('ipc-tool-away', !entries[0].isIntersecting);
+      }).observe(tool);
+    })();
+  </script>
+</body>
+</html>

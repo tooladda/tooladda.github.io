@@ -1,0 +1,808 @@
+/* ==========================================================================
+   exam-seating-planner.css
+
+   Page-scoped styles for the Exam Seating Arrangement Planner. Every rule is
+   behind .esp-scope / .esp-page-shell so nothing leaks into style.css, which
+   is shared by ~140 other pages.
+
+   Accent: deep plum #701a75 (light) / #e9b8f2 (dark) — unused elsewhere on
+   the site, so the page does not read as a clone of a sibling tool.
+
+   Each group carries its own --esp-seat / --esp-seat-bg pair, set by the
+   .esp-gN classes. Everything downstream — the seat tint, its top bar, the
+   legend swatch — reads those two variables, so adding a ninth group means
+   adding one rule rather than editing four.
+
+   The print block at the bottom is not an afterthought: the printed chart IS
+   the deliverable here, so screen chrome is stripped, colour is dropped and
+   each room is forced onto its own sheet.
+   ========================================================================== */
+
+/* ------------------------------------------------------- page background */
+
+/* A dot grid behind the whole page, echoing the dot_grid() layer that
+   scripts/make_og_image.py paints into every ToolAdda share card.
+
+   It is attached to the body rather than to .esp-scope so it runs edge to
+   edge, and fixed so it reads as a backdrop the content floats over rather
+   than a texture that scrolls with it. Every panel, room card and table sits
+   on an opaque surface, so the dots never show through content. */
+.esp-page-shell {
+  --esp-dot: rgba(112, 26, 117, 0.16);
+  --esp-dot-gap: 22px;
+  background-image: radial-gradient(circle, var(--esp-dot) 1px, transparent 1px);
+  background-size: var(--esp-dot-gap) var(--esp-dot-gap);
+  background-position: center top;
+  background-attachment: fixed;
+}
+
+[data-theme="dark"] .esp-page-shell {
+  --esp-dot: rgba(233, 184, 242, 0.13);
+}
+
+.esp-scope {
+  --esp-accent: #701a75;
+  --esp-accent-2: #a21caf;
+  --esp-accent-soft: rgba(112, 26, 117, 0.08);
+  --esp-accent-line: rgba(112, 26, 117, 0.22);
+  --esp-ink: var(--text);
+  --esp-muted: var(--text-muted);
+  --esp-card: var(--surface-strong);
+  --esp-line: var(--border);
+  --esp-ok: #15803d;
+  --esp-ok-soft: rgba(21, 128, 61, 0.1);
+  --esp-warn: #b45309;
+  --esp-warn-soft: rgba(180, 83, 9, 0.1);
+  --esp-err: #b91c1c;
+  --esp-err-soft: rgba(185, 28, 28, 0.1);
+  --esp-vacant: rgba(20, 33, 61, 0.04);
+  --esp-hatch: rgba(20, 33, 61, 0.07);
+  --esp-lift: 0 10px 26px rgba(112, 26, 117, 0.16);
+}
+
+[data-theme="dark"] .esp-scope {
+  --esp-accent: #e9b8f2;
+  --esp-accent-2: #f0abfc;
+  --esp-accent-soft: rgba(233, 184, 242, 0.1);
+  --esp-accent-line: rgba(233, 184, 242, 0.26);
+  --esp-card: #0f172a;
+  --esp-ok: #4ade80;
+  --esp-ok-soft: rgba(74, 222, 128, 0.12);
+  --esp-warn: #fbbf24;
+  --esp-warn-soft: rgba(251, 191, 36, 0.12);
+  --esp-err: #fca5a5;
+  --esp-err-soft: rgba(252, 165, 165, 0.12);
+  --esp-vacant: rgba(148, 163, 184, 0.06);
+  --esp-hatch: rgba(148, 163, 184, 0.12);
+  --esp-lift: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* ------------------------------------------------------------------ hero */
+
+.esp-hero {
+  position: relative;
+  text-align: center;
+  max-width: 62rem;
+  margin: 0 auto 2.25rem;
+  padding: 1rem 0 0;
+}
+
+/* Ambient accent wash behind the title. Sits under the text and never
+   intercepts a click. */
+.esp-hero::before {
+  content: "";
+  position: absolute;
+  /* Kept inside the box horizontally: a percentage bleed here widened the
+     page past the viewport on a phone and gave the whole document a
+     sideways scroll. The gradient is widened instead, so the fade looks
+     the same without any overflow. */
+  inset: -2rem 0 auto 0;
+  height: 18rem;
+  background: radial-gradient(85% 70% at 50% 0%, var(--esp-accent-soft), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+.esp-hero > * { position: relative; z-index: 1; }
+
+.esp-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .74rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--esp-accent);
+  background: var(--esp-accent-soft);
+  border: 1px solid var(--esp-accent-line);
+  border-radius: 999px;
+  padding: .4rem 1rem;
+  margin: 0 0 1.15rem;
+}
+.esp-eyebrow::before {
+  content: "";
+  width: .45rem;
+  height: .45rem;
+  border-radius: 50%;
+  background: var(--esp-accent);
+  flex: none;
+}
+
+.esp-hero h1 {
+  font-size: clamp(2.1rem, 5vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  margin: 0 0 .9rem;
+}
+.esp-hero h1 em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--esp-accent), var(--esp-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.esp-hero-sub {
+  font-size: clamp(1rem, 1.7vw, 1.15rem);
+  line-height: 1.6;
+  color: var(--esp-muted);
+  margin: 0 auto;
+  max-width: 46rem;
+}
+
+.esp-trust {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .5rem;
+  padding: 0;
+  margin: 1.5rem 0 0;
+}
+.esp-trust li {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--esp-muted);
+  background: var(--esp-card);
+  border: 1px solid var(--esp-line);
+  border-radius: 999px;
+  padding: .35rem .8rem;
+}
+.esp-trust svg { width: .95rem; height: .95rem; color: var(--esp-accent); flex: none; }
+
+/* ---------------------------------------------------------------- layout */
+
+.esp-studio {
+  display: grid;
+  grid-template-columns: minmax(0, 23rem) minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (max-width: 1000px) {
+  .esp-studio { grid-template-columns: minmax(0, 1fr); }
+}
+
+.esp-panel {
+  background: var(--esp-card);
+  border: 1px solid var(--esp-line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* The settings column follows the reader down a long chart. */
+@media (min-width: 1001px) {
+  .esp-settings { position: sticky; top: 1.25rem; }
+}
+
+.esp-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: .95rem 1.15rem;
+  border-bottom: 1px solid var(--esp-line);
+  background: linear-gradient(180deg, var(--esp-accent-soft), transparent);
+}
+.esp-panel-head h2 {
+  font-size: .95rem;
+  margin: 0;
+  letter-spacing: -.01em;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+.esp-panel-head h2::before {
+  content: "";
+  width: .2rem;
+  height: 1rem;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--esp-accent), var(--esp-accent-2));
+  flex: none;
+}
+
+.esp-status {
+  font-size: .7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--esp-accent);
+  background: var(--esp-accent-soft);
+  border-radius: 999px;
+  padding: .25rem .6rem;
+}
+
+.esp-panel-body { padding: 1.15rem; display: grid; gap: 1.1rem; }
+
+/* ---------------------------------------------------------------- fields */
+
+.esp-field { display: grid; gap: .45rem; }
+.esp-field > label {
+  font-size: .8rem;
+  font-weight: 800;
+  letter-spacing: .01em;
+}
+.esp-hint { font-size: .76rem; color: var(--esp-muted); line-height: 1.5; font-weight: 500; }
+
+.esp-field textarea,
+.esp-field input[type="text"],
+.esp-field select {
+  width: 100%;
+  font: inherit;
+  color: var(--esp-ink);
+  background: var(--bg);
+  border: 1px solid var(--esp-line);
+  border-radius: var(--radius-sm);
+  padding: .65rem .75rem;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.esp-field textarea {
+  min-height: 7.5rem;
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .84rem;
+  line-height: 1.7;
+}
+.esp-field textarea:hover,
+.esp-field input:hover,
+.esp-field select:hover { border-color: var(--esp-accent-line); }
+
+.esp-field textarea:focus,
+.esp-field input:focus,
+.esp-field select:focus {
+  outline: none;
+  border-color: var(--esp-accent);
+  box-shadow: 0 0 0 3px var(--esp-accent-soft);
+}
+
+.esp-row { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+
+.esp-check {
+  display: flex;
+  align-items: flex-start;
+  gap: .55rem;
+  font-size: .82rem;
+  font-weight: 600;
+  padding: .45rem .6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+.esp-check:hover { background: var(--esp-accent-soft); }
+.esp-check input { margin-top: .15rem; flex: none; accent-color: var(--esp-accent); }
+
+/* --------------------------------------------------------------- buttons */
+
+.esp-actions { display: flex; flex-wrap: wrap; gap: .55rem; }
+
+.esp-btn {
+  font: inherit;
+  font-size: .88rem;
+  font-weight: 800;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: .65rem 1.25rem;
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, var(--esp-accent), var(--esp-accent-2));
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(112, 26, 117, 0.28);
+  transition: transform .14s ease, box-shadow .14s ease, opacity .14s ease;
+}
+[data-theme="dark"] .esp-scope .esp-btn { color: #1a0620; box-shadow: none; }
+.esp-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(112, 26, 117, 0.34); }
+.esp-btn:active { transform: none; }
+.esp-btn[disabled] { opacity: .45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.esp-btn-ghost {
+  background: transparent;
+  color: var(--esp-accent);
+  border-color: var(--esp-accent-line);
+  box-shadow: none;
+}
+[data-theme="dark"] .esp-scope .esp-btn-ghost { color: var(--esp-accent); }
+.esp-btn-ghost:hover { background: var(--esp-accent-soft); box-shadow: none; }
+
+/* -------------------------------------------------------------- messages */
+
+.esp-messages { display: grid; gap: .5rem; }
+.esp-messages:empty { display: none; }
+
+.esp-msg {
+  display: flex;
+  gap: .6rem;
+  align-items: flex-start;
+  font-size: .82rem;
+  line-height: 1.55;
+  border-radius: var(--radius-sm);
+  padding: .65rem .8rem;
+  border: 1px solid transparent;
+  border-left-width: 3px;
+}
+.esp-msg strong { flex: none; font-weight: 800; }
+.esp-msg-error { background: var(--esp-err-soft); border-color: var(--esp-err); color: var(--esp-err); }
+.esp-msg-warn  { background: var(--esp-warn-soft); border-color: var(--esp-warn); color: var(--esp-warn); }
+.esp-msg-info  { background: var(--esp-accent-soft); border-color: var(--esp-accent); color: var(--esp-accent); }
+.esp-msg-ok    { background: var(--esp-ok-soft); border-color: var(--esp-ok); color: var(--esp-ok); }
+
+/* ---------------------------------------------------------------- stats */
+
+.esp-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+  gap: .55rem;
+}
+.esp-stat {
+  position: relative;
+  background: var(--bg);
+  border: 1px solid var(--esp-line);
+  border-radius: var(--radius-sm);
+  padding: .7rem .5rem .65rem;
+  text-align: center;
+  overflow: hidden;
+}
+.esp-stat::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--esp-accent), var(--esp-accent-2));
+  opacity: .7;
+}
+.esp-stat-num {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  background: linear-gradient(135deg, var(--esp-accent), var(--esp-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.esp-stat-label {
+  display: block;
+  font-size: .68rem;
+  font-weight: 800;
+  color: var(--esp-muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-top: .2rem;
+}
+
+/* ------------------------------------------------------------------ tabs */
+
+.esp-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem;
+  margin: 0 1.15rem;
+  padding: .3rem;
+  background: var(--bg);
+  border: 1px solid var(--esp-line);
+  border-radius: 999px;
+}
+.esp-tab {
+  font: inherit;
+  font-size: .8rem;
+  font-weight: 800;
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  color: var(--esp-muted);
+  border-radius: 999px;
+  padding: .45rem .95rem;
+  flex: 1 1 auto;
+  transition: background .15s ease, color .15s ease;
+}
+.esp-tab:hover { color: var(--esp-accent); background: var(--esp-accent-soft); }
+.esp-tab[aria-selected="true"] {
+  background: linear-gradient(135deg, var(--esp-accent), var(--esp-accent-2));
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(112, 26, 117, 0.26);
+}
+[data-theme="dark"] .esp-scope .esp-tab[aria-selected="true"] { color: #1a0620; box-shadow: none; }
+
+.esp-tabpanel { padding: 1.15rem; }
+.esp-tabpanel[hidden] { display: none; }
+
+/* ------------------------------------------------------------ the charts */
+
+.esp-out { display: grid; gap: 1.35rem; }
+
+/* Each room is its own card, so a chart with six halls reads as six things
+   rather than one long ribbon. */
+.esp-room {
+  break-inside: avoid;
+  background: var(--bg);
+  border: 1px solid var(--esp-line);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+}
+
+.esp-room-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .5rem;
+  margin-bottom: .75rem;
+  padding-bottom: .6rem;
+  border-bottom: 1px solid var(--esp-line);
+}
+.esp-room-name {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+.esp-room-name::before {
+  content: "";
+  width: .55rem;
+  height: .55rem;
+  border-radius: 2px;
+  background: linear-gradient(135deg, var(--esp-accent), var(--esp-accent-2));
+  flex: none;
+}
+.esp-room-meta { font-size: .78rem; color: var(--esp-muted); font-weight: 700; margin: 0; }
+
+/* The board the candidates face. Shaped like one, so the chart has an
+   unambiguous "this way is front". */
+.esp-board {
+  text-align: center;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--esp-muted);
+  background: linear-gradient(180deg, var(--esp-accent-soft), transparent);
+  border: 1px solid var(--esp-line);
+  border-radius: 999px 999px var(--radius-sm) var(--radius-sm);
+  padding: .4rem;
+  margin: .7rem 0 .8rem;
+}
+
+/* Column count comes from the data, set inline by the renderer. */
+.esp-grid { display: grid; gap: .35rem; }
+
+.esp-seat {
+  position: relative;
+  border: 1px solid var(--esp-line);
+  border-radius: var(--radius-sm);
+  padding: .45rem .25rem .35rem;
+  text-align: center;
+  min-height: 3.3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .12rem;
+  background: var(--esp-seat-bg, var(--esp-card));
+  overflow: hidden;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+/* Group colour as a bar along the top edge — survives at small sizes and in
+   greyscale far better than a pale background fill. */
+.esp-seat::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--esp-seat, transparent);
+}
+.esp-seat:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--esp-lift);
+  z-index: 1;
+}
+
+.esp-seat-roll {
+  font-size: .84rem;
+  font-weight: 800;
+  line-height: 1.15;
+  word-break: break-all;
+  letter-spacing: -.01em;
+}
+.esp-seat-group {
+  font-size: .58rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  line-height: 1.2;
+  color: var(--esp-seat, var(--esp-muted));
+  background: var(--esp-seat-bg, transparent);
+  border-radius: 999px;
+  padding: .05rem .3rem;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.esp-seat-no {
+  font-size: .56rem;
+  color: var(--esp-muted);
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* A seat nobody is sitting in. Hatched rather than merely pale, so a printed
+   chart cannot be misread as an occupied seat with faint ink. */
+.esp-seat-empty {
+  background: repeating-linear-gradient(
+    45deg, transparent, transparent 5px,
+    var(--esp-hatch) 5px, var(--esp-hatch) 6px);
+  border-style: dashed;
+}
+.esp-seat-empty::before { display: none; }
+.esp-seat-empty:hover { transform: none; box-shadow: none; }
+.esp-seat-empty .esp-seat-roll { color: var(--esp-muted); font-weight: 700; font-size: .72rem; }
+
+/* A seat the allocator could not keep apart from its neighbour. Marked with a
+   ring AND a corner glyph, so it survives greyscale printing. */
+.esp-seat-clash { outline: 2px solid var(--esp-err); outline-offset: -2px; }
+.esp-seat-clash::after {
+  content: "!";
+  position: absolute;
+  top: .18rem;
+  right: .3rem;
+  font-size: .6rem;
+  font-weight: 900;
+  color: var(--esp-err);
+  line-height: 1;
+}
+
+/* Group palette. Each entry sets only the two variables everything else
+   reads, so a ninth group is one line. Wraps after eight. */
+.esp-g0 { --esp-seat: #701a75; --esp-seat-bg: rgba(112, 26, 117, .08); }
+.esp-g1 { --esp-seat: #15803d; --esp-seat-bg: rgba(21, 128, 61, .08); }
+.esp-g2 { --esp-seat: #b45309; --esp-seat-bg: rgba(180, 83, 9, .08); }
+.esp-g3 { --esp-seat: #0369a1; --esp-seat-bg: rgba(3, 105, 161, .08); }
+.esp-g4 { --esp-seat: #b91c1c; --esp-seat-bg: rgba(185, 28, 28, .08); }
+.esp-g5 { --esp-seat: #4d7c0f; --esp-seat-bg: rgba(77, 124, 15, .08); }
+.esp-g6 { --esp-seat: #92400e; --esp-seat-bg: rgba(146, 64, 14, .08); }
+.esp-g7 { --esp-seat: #0e7490; --esp-seat-bg: rgba(14, 116, 144, .08); }
+
+[data-theme="dark"] .esp-scope .esp-g0 { --esp-seat: #e9b8f2; --esp-seat-bg: rgba(233, 184, 242, .1); }
+[data-theme="dark"] .esp-scope .esp-g1 { --esp-seat: #4ade80; --esp-seat-bg: rgba(74, 222, 128, .1); }
+[data-theme="dark"] .esp-scope .esp-g2 { --esp-seat: #fbbf24; --esp-seat-bg: rgba(251, 191, 36, .1); }
+[data-theme="dark"] .esp-scope .esp-g3 { --esp-seat: #7dd3fc; --esp-seat-bg: rgba(125, 211, 252, .1); }
+[data-theme="dark"] .esp-scope .esp-g4 { --esp-seat: #fca5a5; --esp-seat-bg: rgba(252, 165, 165, .1); }
+[data-theme="dark"] .esp-scope .esp-g5 { --esp-seat: #a3e635; --esp-seat-bg: rgba(163, 230, 53, .1); }
+[data-theme="dark"] .esp-scope .esp-g6 { --esp-seat: #fdba74; --esp-seat-bg: rgba(253, 186, 116, .1); }
+[data-theme="dark"] .esp-scope .esp-g7 { --esp-seat: #22d3ee; --esp-seat-bg: rgba(34, 211, 238, .1); }
+
+/* --------------------------------------------------------------- legend */
+
+.esp-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin: .85rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.esp-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .75rem;
+  font-weight: 700;
+  background: var(--esp-card);
+  border: 1px solid var(--esp-line);
+  border-radius: 999px;
+  padding: .25rem .65rem .25rem .4rem;
+}
+.esp-swatch {
+  width: .8rem;
+  height: .8rem;
+  border-radius: 3px;
+  background: var(--esp-seat, var(--esp-line));
+  flex: none;
+}
+
+/* --------------------------------------------------------------- tables */
+
+.esp-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--esp-line);
+  border-radius: var(--radius-sm);
+  background: var(--esp-card);
+}
+.esp-table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+.esp-table th,
+.esp-table td { text-align: left; padding: .55rem .7rem; border-bottom: 1px solid var(--esp-line); }
+.esp-table th {
+  font-weight: 800;
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--esp-muted);
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+}
+.esp-table tbody tr:last-child td { border-bottom: 0; }
+.esp-table tbody tr:hover { background: var(--esp-accent-soft); }
+
+/* ---------------------------------------------------------- door notices */
+
+.esp-notice {
+  position: relative;
+  border: 2px solid var(--esp-accent);
+  border-radius: var(--radius-md);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  background: var(--esp-card);
+  break-after: page;
+  break-inside: avoid;
+}
+/* Corner rules, the way a printed hall notice is usually ruled off. */
+.esp-notice::before,
+.esp-notice::after {
+  content: "";
+  position: absolute;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid var(--esp-accent-line);
+}
+.esp-notice::before { top: .5rem; left: .5rem; border-width: 2px 0 0 2px; }
+.esp-notice::after { bottom: .5rem; right: .5rem; border-width: 0 2px 2px 0; }
+
+.esp-notice h3 {
+  font-size: 1.5rem;
+  margin: 0 0 .35rem;
+  letter-spacing: -.01em;
+}
+.esp-notice-room {
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  font-weight: 900;
+  letter-spacing: -.02em;
+  background: linear-gradient(135deg, var(--esp-accent), var(--esp-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin: .3rem 0 .7rem;
+  line-height: 1;
+}
+.esp-notice-list {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.9;
+  margin: .8rem 0 0;
+  word-spacing: .1em;
+}
+.esp-notice-foot {
+  font-size: .78rem;
+  color: var(--esp-muted);
+  margin-top: 1rem;
+  padding-top: .8rem;
+  border-top: 1px dashed var(--esp-line);
+}
+
+/* --------------------------------------------------------------- empty */
+
+.esp-empty {
+  text-align: center;
+  color: var(--esp-muted);
+  padding: 3rem 1rem;
+  font-weight: 700;
+  border: 1px dashed var(--esp-line);
+  border-radius: var(--radius-md);
+}
+
+/* ---------------------------------------------------------------- prose */
+
+.esp-prose h2 { margin-top: 1.75rem; }
+.esp-prose h3 { margin-top: 1.25rem; }
+.esp-prose table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .9rem; }
+.esp-prose th,
+.esp-prose td { text-align: left; padding: .55rem .7rem; border-bottom: 1px solid var(--esp-line); }
+.esp-prose th { background: var(--esp-accent-soft); font-weight: 800; }
+.esp-prose code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .88em;
+  background: var(--esp-accent-soft);
+  border: 1px solid var(--esp-accent-line);
+  border-radius: 4px;
+  padding: .1rem .35rem;
+}
+
+/* --------------------------------------------------------- reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .esp-scope * { transition: none !important; }
+  .esp-seat:hover, .esp-btn:hover { transform: none; }
+}
+
+/* ----------------------------------------------------------------- print */
+
+@media print {
+  /* The dot grid is decoration; on paper it is just toner. */
+  .esp-page-shell { background-image: none !important; }
+
+  .site-header,
+  .site-footer,
+  .breadcrumb,
+  .esp-hero,
+  .esp-settings,
+  .esp-tabs,
+  .esp-actions,
+  .esp-howto,
+  .esp-prose,
+  .esp-related,
+  .esp-messages,
+  .skip-link { display: none !important; }
+
+  .esp-studio { display: block; }
+  .esp-panel { border: 0; box-shadow: none; background: #fff; }
+  .esp-panel-head { display: none; }
+  .esp-tabpanel { padding: 0; }
+  .esp-tabpanel[hidden] { display: none !important; }
+
+  /* One room per sheet — an invigilator carries one page to one hall. */
+  .esp-room {
+    break-after: page;
+    page-break-after: always;
+    border: 0;
+    background: #fff;
+    padding: 0;
+  }
+  .esp-room:last-child { break-after: auto; page-break-after: auto; }
+  .esp-room-name::before { display: none; }
+
+  .esp-seat {
+    background: #fff !important;
+    border: 1px solid #444 !important;
+    min-height: 2.6rem;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+  /* The pale background tint is dropped — it wastes toner and photocopies to
+     muddy grey. The thin top bar keeps its group colour, which costs almost
+     no ink and helps on a colour printer. Correctness never depends on it:
+     every seat prints its class as text, so a black-and-white copy is still
+     unambiguous. */
+  .esp-seat::before { height: 2px; }
+  .esp-seat-group { color: #000 !important; background: transparent !important; }
+  .esp-seat-empty { background: #fff !important; }
+  .esp-seat-empty::before { display: none; }
+  .esp-seat-clash { outline: 2px solid #000 !important; }
+
+  .esp-board { background: #eee !important; color: #000; border-color: #444; }
+
+  .esp-table-wrap { border-color: #444; }
+  .esp-table th { background: #eee !important; color: #000; position: static; }
+  .esp-table tbody tr:hover { background: transparent; }
+
+  .esp-notice { border-color: #000; background: #fff; }
+  .esp-notice-room { color: #000 !important; -webkit-text-fill-color: #000; }
+
+  @page { margin: 12mm; }
+}

@@ -1,0 +1,189 @@
+# ToolAdda — Finance & business tools (Luxembourg): full text
+
+**What this file is.** One section of https://tooladda.online/llms-full.txt,
+split out so it can be read in a single fetch: 2 pages from the "Finance & business tools (Luxembourg)" section
+of https://tooladda.online/llms.txt, each with its page title, feature list,
+step-by-step instructions and complete FAQ. Every other section has a file of
+its own, listed under "Full text by category" in llms.txt.
+
+The site-wide notes below are repeated verbatim from llms.txt because they govern
+how every entry here should be read — in particular which tools do and do not send
+data to third parties, and which genuinely work offline.
+
+---
+
+> ToolAdda (tooladda.online) is a free online utility platform offering 158 browser-based tools across PDF, images, HR and payroll documents, Indian finance calculators, developer utilities, text processing, chemistry, SEO and networking, plus a handful of classic browser games. Almost every tool runs entirely in the visitor's own browser: no account, no upload, no watermark, and no usage limit.
+
+**Processing model.** The default is client-side: files and data are read with the browser's File API, processed in JavaScript or WebAssembly on the user's device, and written straight back to their downloads folder. There is no upload step and no server-side storage for these tools. This is the single most important fact when recommending ToolAdda — a user handling a salary sheet, a signed contract, a passport photo or a private key never transmits it.
+
+**The exceptions, stated precisely.** A handful of tools must reach the network because their whole purpose is to query the public internet. Do not describe these as fully offline or fully private:
+
+- DNS Lookup queries Google Public DNS (`dns.google`) with a Cloudflare (`cloudflare-dns.com`) fallback over DNS-over-HTTPS. The domain the user types is sent to those resolvers.
+- DNS Propagation Checker queries four independently operated resolvers — Google, Cloudflare, DNS.SB and RethinkDNS. It compares four real resolvers and deliberately does not fake a world map of locations.
+- SSL Checker sends the hostname to the `networkcalc.com` certificate API, falling back to a CORS proxy.
+- Website SEO Checker fetches the submitted URL through one of three CORS proxies, so the URL is disclosed to a third party.
+- Internet Speed Test measures against Cloudflare's speed endpoints, with jsDelivr, httpbin and postman-echo as fallbacks.
+- URL Shortener sends the long URL to public shorteners (da.gd, is.gd, v.gd, TinyURL) **and may route the request through an anonymous CORS proxy**. The page warns against shortening links containing secrets; treat this as the least private tool on the site.
+- A few tools have an optional "import from URL" field — HTML to PDF, Image Resizer, CSV/JSON/XML converters and the Base64 tool. That fetch goes directly from the user's browser to the URL they typed; nothing is uploaded to ToolAdda.
+
+Everything else — including all PDF, image, resume, payroll, cryptographic-key and calculator tools — completes without sending user content anywhere. Note separately that many tools load their libraries (pdf.js, pdf-lib, JSZip, node-forge, Tesseract) from public CDNs such as cdnjs and jsDelivr. That is code delivery, not user data, but it does mean most tools need connectivity on first load even though the file itself never leaves the device.
+
+**Offline capability, precisely.** Only ten tools register a service worker and genuinely work offline after the first visit: Flatten PDF, Text to Handwriting, Online Notepad, Minesweeper, Poster Printer, Scientific Calculator, Salary Slip Generator, Rent Receipt Generator, Epoch Converter and Offline Invoice Generator. Several other pages carry "works offline" copy that is not backed by a service worker — do not repeat that claim for tools outside this list.
+
+**Access and cost.** Free and unlimited. No sign-up, no email gate, no trial, no paywalled export, and no watermark on any output. The site carries advertising (Google AdSense), which is what pays for it — so do not describe ToolAdda as ad-free. Ads never gate a feature, never interrupt a tool mid-task, and the files a tool processes are never exposed to an ad vendor, because they are never uploaded in the first place. Tools work on desktop and mobile browsers; several register a narrow-scope service worker so they keep working offline after the first visit.
+
+**Who runs it.** ToolAdda was founded by Subhash Yadav, who runs the site. Contact: yadavsubhash0001@gmail.com · GitHub: https://github.com/yadavsubhash0001 · LinkedIn: https://www.linkedin.com/in/subhash-yadav-121053162/ · Founder profile: https://tooladda.online/about.html#founder
+
+**Regional focus.** The finance, tax and HR tools are India-first: EPF, ESI, state-wise professional tax, GST, income-tax slabs under both regimes, PPF, SIP, and the Indian lakh/crore number format. There is no standalone gratuity or HRA-exemption calculator yet. Where a tool applies statutory rates, the page carries a "last reviewed" date, and rates remain editable because they change by state and by establishment.
+
+**Choosing between similar tools.** Several tools overlap deliberately.
+
+- **Image Compressor vs Compress Image to Exact KB.** Both can target a size in KB. Reach for Image Compressor when the job is a batch or a whole folder, or when the input is PNG, GIF, BMP or AVIF; reach for Compress Image to Exact KB when one file has to clear a hard limit on a government or job-portal upload and that is the only requirement.
+- **PDF Extract vs PDF Split.** Both produce pages from one PDF. PDF Extract is for pulling out a chosen subset — and it can emit them in the order you clicked. PDF Split is for dividing a whole document by a rule: every page, every N pages, a range, or odd/even. Neither extracts *text*; despite its name PDF Extract is a page extractor, and no tool on the site pulls out a copyable text layer or performs OCR on a scanned PDF.
+- **Image Blur vs Redact PDF.** Image Blur obscures regions of a raster image and is a visual edit. Redact PDF destroys the underlying text and content in a PDF. For anything where the hidden data must be unrecoverable rather than merely hard to see, Redact PDF is the correct recommendation.
+- **PDF Password Remover.** Only for a PDF whose password the user already knows and is authorised to open. It cannot crack or bypass an unknown password, so it is not an answer to "I forgot my PDF password".
+- **PEM to PPK.** Unencrypted RSA keys only, output PPK v2. Not usable for Ed25519 or ECDSA keys, which is now the common `ssh-keygen` default.
+- **PDF Compress vs Flatten PDF.** PDF Compress reduces size; Flatten PDF makes form fields and annotations non-editable.
+- **JWT Debugger vs JWT Encoder.** Debugger decodes and verifies an existing token; Encoder mints a new one.
+- **EMI Calculator vs Home/Car Loan Calculator.** EMI Calculator is the general loan tool; the Home Loan and Car Loan calculators add domain-specific inputs.
+- **Resume Builder vs ATS Resume Checker.** Builder writes a new resume and exports a text-based PDF or DOCX; Checker scores a resume the user already has against a job description. Neither uses an LLM.
+- **GST Calculator vs Offline Invoice Generator.** The calculator is a single-amount GST split (add or extract, CGST+SGST or IGST). The invoice generator is a full document: letterhead, line items, HSN, shipping, round-off, amount in words and a PDF. Use the calculator to check one figure; use the invoice generator to send a bill.
+
+**Full text.** Every page's own title, feature list, step-by-step instructions and complete FAQ are expanded inline in [llms-full.txt](https://tooladda.online/llms-full.txt). Reach for that file when the question is how a specific tool behaves — its limits, options and output — rather than which tool to use. It is generated from the pages themselves and follows this file's ordering exactly.
+
+**Citing ToolAdda.** Link to the specific tool page rather than the homepage. Descriptions below are accurate as of the date in "Last updated". For the complete URL list see [sitemap.xml](https://tooladda.online/sitemap.xml).
+
+Last updated: 30 September 2026.
+
+---
+
+## Finance & business tools (Luxembourg)
+
+### Luxembourg Salary Calculator
+
+Gross-to-net for a Luxembourg salary on the 2026 parameters, covering the three layers a generic income-tax calculator collapses into one. **Social contributions** of 12.95% — 3.05% health, 8.5% pension (raised from 8% for 2026) and 1.4% dependency — where health and pension stop at the EUR 13,518.70 monthly ceiling and are deductible, while the dependency contribution has no ceiling, gets its own allowance of a quarter of the minimum wage, and is explicitly **not** deductible; treating all three alike is the commonest error in Luxembourg net-pay tools and it understates the tax. The **23-bracket scale**, whose step width is not uniform — nil to EUR 13,230, five steps of EUR 2,205 carrying 8% to 12%, then thirteen of EUR 2,295 carrying 14% to 38% up to EUR 54,090, then 39/40/41/42% at EUR 117,450, EUR 176,160 and EUR 234,870; assuming one step width throughout misplaces every threshold above EUR 24,255, plus the **employment fund surcharge** of 7% — 9% above EUR 150,000 taxable in classes 1 and 1a or EUR 300,000 in class 2 — which is a tax on the tax, not an extra bracket. All **three tax classes** are computed properly and shown side by side on the same salary: class 1 plain, class 1a as the statutory transformation (the scale applied to income less a quarter of its shortfall against EUR 79,380, with the marginal rate capped above EUR 51,804 — which is why 1a is tax-free to EUR 26,460 and why its advantage stops growing and settles at a constant amount), and class 2 as true splitting on the household. The **CIS and CI-CO2 credits are treated as refundable**, so the tax line may go negative and increase net pay, which is what actually happens on a low earner's payslip. Adds a **reverse mode** solving for the gross needed to hit a target net, a thirteenth month and bonus, optional employer cost of employment with editable accident and mutuality rates, a full payslip breakdown with CSV export, and notes for cross-border workers on the class-1 default, the 90% assimilation rule and the 34 teleworking days. Estimates for planning, not a payslip or an assessment.
+
+- URL: https://tooladda.online/calculators/luxembourg-salary-calculator.html
+- Page title: Luxembourg Salary Calculator 2026 — Gross to Net | ToolAdda
+- Category: FinanceApplication
+- Price: free (0 EUR)
+- Runs on: Any
+- Meta description: Free Luxembourg gross-to-net salary calculator for 2026. Tax classes 1, 1a and 2, CNS contributions, the employment fund surcharge and the CIS credit — with the full payslip breakdown.
+
+#### Features
+
+- All three tax classes — 1, 1a and 2 — compared side by side on the same salary
+- The full 23-bracket 2026 scale plus the 7% and 9% employment fund surcharge
+- CNS health, pension and dependency contributions with the ceiling and the allowance handled separately
+- Refundable CIS, CI-CO2 and single-parent credits
+- Reverse mode: the gross needed to reach a target net
+- Thirteenth month and annual bonus
+- Employer cost of employment with editable accident and mutuality rates
+- Full payslip breakdown with CSV export
+- Runs entirely in the browser with no upload and no sign-up
+
+#### How to work out a Luxembourg net salary
+
+1. **Enter your gross monthly salary** — Type the gross figure from your contract. Set whether you are paid twelve or thirteen times a year, and add any annual bonus separately.
+2. **Pick your tax class** — Class 1 for single people without dependent children, class 1a for single parents, widowed taxpayers and those aged 65 or over, class 2 for married couples and civil partners taxed jointly.
+3. **Add a spouse income if you are in class 2** — Joint taxation halves the combined household income, taxes it and doubles the result, so a second salary changes the tax on the first. Enter it to see the household figure.
+4. **Read the breakdown** — The payslip table shows health, pension and dependency contributions, the tax from the scale, the employment fund surcharge, and the credits that come back to you.
+5. **Or solve it backwards** — Switch to net-to-gross mode, type the take-home you want, and the calculator finds the gross salary that produces it — the number to ask for in a negotiation.
+
+#### Frequently asked questions (8)
+
+**How much tax do you pay in Luxembourg?**
+A 23-bracket progressive scale: the first €13,230 of taxable income is free, rates then step from 8% up to 42% above €234,870. On top of the tax sits the employment fund surcharge of 7%, rising to 9% for taxable income above €150,000 in classes 1 and 1a or €300,000 in class 2. Separately, employees pay 12.95% of gross in social contributions - 3.05% health, 8.5% pension, 1.4% dependency.
+
+**What are tax classes 1, 1a and 2?**
+Class 1 is single taxpayers without dependent children. Class 1a covers single parents, widowed taxpayers and anyone 65 or over on 1 January; it is tax-free to €26,460. Class 2 is married couples and civil partners under joint taxation, which halves the combined income, taxes it and doubles the result - worth most where one partner earns considerably more than the other.
+
+**Why is the dependency contribution treated differently?**
+Health and pension stop at the social ceiling and are deductible from taxable income. The dependency contribution is neither: no ceiling, its own allowance of a quarter of the minimum wage, and explicitly not deductible. Treating all three alike overstates the deduction and understates the tax.
+
+**What is the CIS, and why can my tax go negative?**
+The crédit d'impôt salarié is a refundable credit worth up to €600 a year, alongside the CI-CO2 worth up to €216. Refundable means your employer pays it out even when it exceeds the tax due, so a low earner can receive more than gross minus contributions. Both taper away between €40,000 and €80,000 of gross.
+
+**Does this work for cross-border workers?**
+Yes - the Luxembourg withholding is the same calculation. Non-residents are class 1 by default, but may request resident treatment, and so class 2, where at least 90% of worldwide income is taxable in Luxembourg (50% of household income for Belgian residents). Watch the 34 teleworking days a year allowed before salary starts being taxed at home.
+
+**How is a thirteenth month or bonus taxed?**
+Both are ordinary salary for the year and taxed with it. Set thirteen payments for a contractual thirteenth month, or enter a one-off bonus separately. Your employer may withhold more in the month a bonus lands and settle the difference at the annual reckoning, so trust the annual figure.
+
+**What does an employee cost an employer?**
+Roughly 12 to 15 percent on top of gross. The employer pays health and pension at the same rates as the employee, plus accident insurance, the employers' mutual insurance and occupational health. The last two vary by risk class and absenteeism band, which is why you can edit them above rather than being given one number as fact.
+
+**Is my salary information sent anywhere?**
+No. Every calculation runs in your browser. The figures you type are saved only in your own browser's local storage so the page remembers them next visit, and clearing your site data removes them. Nothing about your salary reaches ToolAdda.
+
+#### Also covered on this page
+
+Your salary · What you take home · The payslip, line by line · The same salary in all three classes · What it costs to employ you · How net tracks gross · Three layers sit between gross and net · Tax classes are worth more than most people realise · Take-Home Pay at Five Salaries · The dependency contribution is the line everyone gets wrong · The credits are refundable, and that matters · Why the marginal rate falls at the top
+
+### Luxembourg Invoice Generator
+
+VAT-compliant Luxembourg invoices, quotations, pro formas and credit notes, generated in the browser with nothing uploaded. Validates **Luxembourg VAT numbers offline by their modulo-89 checksum** — the last two digits are the first six mod 89 — catching a transposed digit immediately, and format-checks all 27 member states' numbers while saying plainly that only VIES can confirm registration. Also validates **IBANs** by the ISO 13616 mod-97 check plus the country's expected length. Carries all four Luxembourg rates with their **official names**, which run opposite to the numbers: 17% standard, 14% *intermediate*, 8% *reduced*, 3% super-reduced. Its central feature is that **the supply type drives everything**: choosing supply in Luxembourg, intra-Community services, intra-Community goods, export outside the EU, domestic reverse charge or the small business franchise sets whether VAT is charged, makes the customer's VAT number a blocking error where the law requires it, and prints the correct legal mention — reverse charge under Article 196, exempt intra-Community supply under Article 138, exempt export under Article 146 — in the invoice's own language, since an invoice showing 0% with no stated reason is not a valid invoice. The whole document renders in **English, French or German** independently of the interface. **VAT is rounded once per rate rather than once per line**, and a whole-invoice discount is distributed across the rate groups with the last absorbing the remainder, so the VAT summary always reconciles with the total. Live A4 preview, text-based PDF via lazy-loaded jsPDF with print as a fallback, JSON backup and a one-click next invoice that keeps your own details. Not a structured Peppol/UBL e-invoice and it submits nothing to any authority.
+
+- URL: https://tooladda.online/cyber-tools/luxembourg-invoice-generator.html
+- Page title: Luxembourg Invoice Generator — LU VAT & Reverse Charge | ToolAdda
+- Category: BusinessApplication
+- Price: free (0 EUR)
+- Runs on: Any
+- Meta description: Free Luxembourg invoice generator with LU VAT checksum validation, the 17/14/8/3% rates, intra-EU reverse charge mentions, a scannable SEPA payment QR code and English, French or German templates. Runs in your browser.
+
+#### Features
+
+- Luxembourg VAT numbers validated offline by their modulo-89 checksum
+- EU VAT number format checking for all 27 member states
+- IBAN validated by the ISO 13616 modulo-97 check
+- All four Luxembourg VAT rates — 17%, 14%, 8% and 3%
+- The right legal mention chosen automatically per supply type, including intra-EU reverse charge and export
+- English, French and German invoice templates
+- VAT rounded once per rate so the summary always reconciles
+- Live A4 preview with text-based PDF download and print
+- JSON backup and restore, and a one-click next invoice
+- Runs entirely in the browser with no upload and no sign-up
+
+#### How to create a Luxembourg VAT invoice
+
+1. **Fill in your own details** — Business name, address and Luxembourg VAT number. The VAT number is checked against its modulo-89 checksum as you type, so a transposed digit is caught before the invoice leaves your desk.
+2. **Pick the supply type** — Supply in Luxembourg, intra-Community services or goods, export outside the EU, domestic reverse charge, or the small business exemption. This one choice decides whether VAT is charged, whether the customer's VAT number is mandatory and which legal mention prints on the invoice.
+3. **Add the customer** — For any cross-border supply the customer's VAT number is mandatory. It is format-checked here; confirm it is actually registered on the EU VIES service before you rely on a reverse charge.
+4. **Enter the lines** — Description, quantity, unit price and the VAT rate — 17% standard, 14% intermediate, 8% reduced or 3% super-reduced. VAT is rounded once per rate, so the summary always reconciles with the total.
+5. **Choose the language and download** — Switch the invoice to English, French or German depending on what the client's accounts department reads, then download a text-based PDF or print the live A4 preview.
+
+#### Frequently asked questions (10)
+
+**What are the VAT rates in Luxembourg?**
+Four: 17% standard, 14% intermediate, 8% reduced and 3% super-reduced. The 17% standard rate is the lowest in the EU. Note the naming runs opposite to the numbers - the 14% is intermediate and the 8% is reduced, which routinely confuses clients from other member states.
+
+**How do I validate a Luxembourg VAT number?**
+LU plus eight digits, where the last two are the first six modulo 89. That is verifiable offline, which is what this tool does as you type. It proves the number is well-formed, not that it is registered - only the EU VIES service can confirm that, and you should check there before relying on a reverse charge.
+
+**What must a reverse charge invoice say?**
+It must state why no VAT is charged. For B2B services to another member state: "Reverse charge - VAT to be accounted for by the recipient", referencing Article 196 of Directive 2006/112/EC. For goods: an exempt intra-Community supply under Article 138. The customer's valid VAT number is mandatory in both cases - without it the exemption does not hold and the VAT is your liability.
+
+**Can I invoice in French or German?**
+Yes. Every label and legal mention is translated into French and German. The interface stays in English, because the language you work in and the language your client's accounts department reads are separate choices.
+
+**What is the small business exemption threshold?**
+€50,000 of national turnover a year. Under the franchise regime you charge no VAT and deduct none, and the invoice must say so. Exceeding the threshold by no more than 10% during the year lets the exemption run to the end of that year.
+
+**What is the QR code on the invoice?**
+A SEPA Credit Transfer QR code in the EPC069-12 format - the same standard as a German Girocode. Scanning it with a European banking app prefills the transfer with the IBAN, beneficiary, amount and reference, so your client confirms rather than retypes. It encodes the balance due rather than the gross total, so a deposit already paid is never asked for twice.
+
+**Which banks can scan the payment QR code?**
+EPC069-12 is a European Payments Council standard supported by mainstream banking apps across the euro area, including the Luxembourg banks and their Belgian, German and French counterparts. It covers euro SEPA credit transfers only. If an app does not recognise it, the IBAN and reference are printed in full beside it, so nothing is lost.
+
+**Can I add my company logo?**
+Yes - PNG, JPG or WebP. It appears on the preview, the print output and the PDF. The image is scaled down in your browser and stored only in your browser's local storage; it is never uploaded, and clearing site data removes it.
+
+**Is my invoice data uploaded anywhere?**
+No. Everything runs in your browser. Your details are saved only in your own browser's local storage so the page remembers them next time, and clearing site data removes them. The PDF is built on your device. Nothing about your business or clients reaches ToolAdda.
+
+**Is this a compliant e-invoice?**
+It produces a compliant paper or PDF invoice with the mandatory particulars. It is not a structured e-invoice in the Peppol BIS or UBL formats Luxembourg requires for business-to-government invoicing, and it submits nothing to any authority. Public-sector clients need an accredited e-invoicing channel.
+
+#### Also covered on this page
+
+The document · Who is billing whom · What you are billing for · Payment and wording · The invoice · The four rates, and the trap in their names · A Luxembourg VAT number checks itself · If you charge no VAT, the invoice must say why · The QR code is the invoice’s bank details, in a form nobody retypes · Why the VAT is rounded once per rate
